@@ -7,6 +7,12 @@ import {
   type ApprovalGateEnforcementSummaryRow,
 } from "@/components/master-control/approval-gate-enforcement";
 import {
+  WorkflowRequestEngine,
+  type WorkflowApprovalOptionRow,
+  type WorkflowRequestRow,
+  type WorkflowRequestSummaryRow,
+} from "@/components/master-control/workflow-request-engine";
+import {
   HeuOsMapOverview,
   type HeuOsApprovalRow,
   type HeuOsMasterDataRow,
@@ -38,11 +44,17 @@ type MasterControlPageProps = {
     data_field_created?: string;
     decision_created?: string;
     decision_updated?: string;
+    workflow_request_created?: string;
+    workflow_request_updated?: string;
     error?: string;
   }>;
 };
 
 const errorMessages: Record<string, string> = {
+  missing_workflow_request: "Thiếu thông tin workflow request.",
+  invalid_workflow_request_status: "Trạng thái workflow request không hợp lệ.",
+  not_allowed_workflow_request:
+    "Bạn chưa có quyền tạo, kiểm hoặc duyệt workflow request.",
   not_allowed: "Bạn chưa có quyền thao tác Master Control.",
   missing_legal_data: "Thiếu mã hoặc tên căn cứ pháp chế.",
   missing_sop_data: "Thiếu mã SOP, tên SOP hoặc module.",
@@ -60,6 +72,8 @@ function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
   if (params?.data_field_created) return "Đã thêm cột data dictionary.";
   if (params?.decision_created) return "Đã tạo decision gate.";
   if (params?.decision_updated) return "Đã cập nhật decision gate.";
+  if (params?.workflow_request_created) return "Đã tạo workflow request.";
+  if (params?.workflow_request_updated) return "Đã cập nhật workflow request.";
   return undefined;
 }
 
@@ -111,6 +125,7 @@ export default async function MasterControlPage({
   }
 
   const canManage = currentRoleCode === "ADMIN" || Boolean(canManagePermission);
+  const canCheck = currentRoleCode === "ADMIN" || Boolean(canCheckPermission);
   const canApprove =
     currentRoleCode === "ADMIN" || Boolean(canApprovePermission);
   const params = await searchParams;
@@ -129,6 +144,8 @@ export default async function MasterControlPage({
     { data: moduleReadiness, error: moduleReadinessError },
     { data: approvalGateRows, error: approvalGateRowsError },
     { data: approvalGateSummary, error: approvalGateSummaryError },
+    { data: workflowRequestRows, error: workflowRequestRowsError },
+    { data: workflowRequestSummary, error: workflowRequestSummaryError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -226,6 +243,19 @@ export default async function MasterControlPage({
         "approval_count,ready_count,needs_approval_count,needs_fix_count,blocked_count,open_request_count,approved_request_count",
       )
       .maybeSingle<ApprovalGateEnforcementSummaryRow>(),
+    supabase
+      .from("workflow_request_engine_status")
+      .select(
+        "id,request_code,request_title,approval_code,decision_name,decision_level,module_code,module_name,workflow_code,workflow_name,maker_role,checker_role,approver_role,required_evidence,blocking_rule,sla_hours,entity_type,entity_id,entity_code,request_note,evidence_url,maker_note,checker_note,approver_note,request_status,requested_by,requested_by_name,requested_by_email,checked_by,checked_by_name,approved_by,approved_by_name,rejected_by,rejected_by_name,due_at,checked_at,approved_at,rejected_at,created_at,updated_at,is_overdue,request_flags,next_action",
+      )
+      .order("created_at", { ascending: false })
+      .returns<WorkflowRequestRow[]>(),
+    supabase
+      .from("workflow_request_engine_summary")
+      .select(
+        "request_count,draft_count,pending_check_count,checked_count,approved_count,rejected_count,needs_fix_count,overdue_count",
+      )
+      .maybeSingle<WorkflowRequestSummaryRow>(),
   ]);
 
   const error = params?.error
@@ -248,6 +278,28 @@ export default async function MasterControlPage({
           summary={approvalGateSummary}
           loadError={
             approvalGateRowsError?.message ?? approvalGateSummaryError?.message
+          }
+        />
+        <WorkflowRequestEngine
+          rows={workflowRequestRows ?? []}
+          summary={workflowRequestSummary}
+          approvalOptions={(heuOsApprovals ?? []).map(
+            (approval): WorkflowApprovalOptionRow => ({
+              approval_code: approval.approval_code,
+              decision_name: approval.decision_name,
+              module_code: approval.module_code,
+              workflow_code: approval.workflow_code,
+              required_evidence: approval.required_evidence,
+              blocking_rule: approval.blocking_rule,
+              control_status: approval.control_status,
+            }),
+          )}
+          canCreate={canManage}
+          canCheck={canCheck || canManage}
+          canApprove={canApprove}
+          loadError={
+            workflowRequestRowsError?.message ??
+            workflowRequestSummaryError?.message
           }
         />
         <HeuOsMapOverview

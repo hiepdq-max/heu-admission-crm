@@ -22,6 +22,18 @@ function boolValue(formData: FormData, key: string) {
   return formData.get(key) === "on";
 }
 
+function uuidValue(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    value,
+  )
+    ? value
+    : null;
+}
+
 async function requireMasterControlPermission(
   permission: "manage" | "approve" = "manage",
 ) {
@@ -45,6 +57,36 @@ async function requireMasterControlPermission(
 
   if (roleCode !== "ADMIN" && !hasPermission) {
     redirect("/master-control?error=not_allowed");
+  }
+
+  return { supabase, user };
+}
+
+async function requireWorkflowRequestPermission(
+  permission: "create" | "check" | "approve",
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const rpcName =
+    permission === "approve"
+      ? "can_approve_workflow_request"
+      : permission === "check"
+        ? "can_check_workflow_request"
+        : "can_create_workflow_request";
+  const [{ data: roleCode }, { data: hasPermission }] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc(rpcName),
+  ]);
+
+  if (roleCode !== "ADMIN" && !hasPermission) {
+    redirect("/master-control?error=not_allowed_workflow_request");
   }
 
   return { supabase, user };
@@ -336,4 +378,128 @@ export async function updateDecisionGateAction(formData: FormData) {
 
   revalidatePath("/master-control");
   redirect("/master-control?decision_updated=1");
+}
+
+export async function createWorkflowRequestAction(formData: FormData) {
+  const { supabase, user } = await requireWorkflowRequestPermission("create");
+  const approvalCode = normalizeCode(textValue(formData, "approval_code"));
+  const requestTitle = textValue(formData, "request_title");
+  const entityType = normalizeCode(textValue(formData, "entity_type"));
+  const entityCode = normalizeCode(textValue(formData, "entity_code"));
+  const requestStatus = textValue(formData, "request_status") ?? "PENDING_CHECK";
+
+  if (!approvalCode || !requestTitle || !entityType) {
+    redirect("/master-control?error=missing_workflow_request");
+  }
+
+  if (!["DRAFT", "PENDING_CHECK"].includes(requestStatus)) {
+    redirect("/master-control?error=invalid_workflow_request_status");
+  }
+
+  const { data: requestCode, error: requestCodeError } = await supabase.rpc(
+    "next_workflow_request_code",
+    { p_approval_code: approvalCode },
+  );
+
+  if (requestCodeError || !requestCode) {
+    redirect(
+      `/master-control?error=${encodeURIComponent(
+        requestCodeError?.message ?? "Không tạo được mã request.",
+      )}`,
+    );
+  }
+
+  const { error } = await supabase.from("approval_requests").insert({
+    approval_code: approvalCode,
+    request_code: requestCode,
+    request_title: requestTitle,
+    entity_type: entityType,
+    entity_id: uuidValue(textValue(formData, "entity_id")),
+    entity_code: entityCode,
+    request_note: textValue(formData, "request_note"),
+    evidence_url: textValue(formData, "evidence_url"),
+    maker_note: textValue(formData, "maker_note"),
+    request_status: requestStatus,
+    requested_by: user.id,
+    due_at: textValue(formData, "due_at"),
+    created_by: user.id,
+    updated_by: user.id,
+  });
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?workflow_request_created=1");
+}
+
+export async function updateWorkflowRequestAction(formData: FormData) {
+  const requestId = textValue(formData, "request_id");
+  const requestStatus = textValue(formData, "request_status");
+
+  if (!requestId || !requestStatus) {
+    redirect("/master-control?error=missing_workflow_request");
+  }
+
+  if (
+    !["PENDING_CHECK", "CHECKED", "APPROVED", "REJECTED", "NEEDS_FIX", "CANCELLED"].includes(
+      requestStatus,
+    )
+  ) {
+    redirect("/master-control?error=invalid_workflow_request_status");
+  }
+
+  const requiredPermission =
+    requestStatus === "APPROVED" || requestStatus === "REJECTED"
+      ? "approve"
+      : "check";
+  const { supabase, user } = await requireWorkflowRequestPermission(
+    requiredPermission,
+  );
+  const now = new Date().toISOString();
+
+  const updatePayload: Record<string, string | null> = {
+    request_status: requestStatus,
+    checker_note: textValue(formData, "checker_note"),
+    approver_note: textValue(formData, "approver_note"),
+    evidence_url: textValue(formData, "evidence_url"),
+    updated_by: user.id,
+  };
+
+  if (requestStatus === "CHECKED") {
+    updatePayload.checked_by = user.id;
+    updatePayload.checked_at = now;
+  }
+
+  if (requestStatus === "APPROVED") {
+    updatePayload.approved_by = user.id;
+    updatePayload.approved_at = now;
+    updatePayload.rejected_by = null;
+    updatePayload.rejected_at = null;
+  }
+
+  if (requestStatus === "REJECTED") {
+    updatePayload.rejected_by = user.id;
+    updatePayload.rejected_at = now;
+    updatePayload.approved_by = null;
+    updatePayload.approved_at = null;
+  }
+
+  if (requestStatus === "NEEDS_FIX") {
+    updatePayload.checked_by = user.id;
+    updatePayload.checked_at = now;
+  }
+
+  const { error } = await supabase
+    .from("approval_requests")
+    .update(updatePayload)
+    .eq("id", requestId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?workflow_request_updated=1");
 }
