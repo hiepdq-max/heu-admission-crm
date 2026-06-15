@@ -22,6 +22,7 @@ type LeadFormProps = {
   flows: Option[];
   campaigns: Option[];
   partners: Option[];
+  segments: Option[];
   programs: Option[];
   majors: MajorOption[];
   houPrograms: Option[];
@@ -102,6 +103,7 @@ export function LeadForm({
   flows,
   campaigns,
   partners,
+  segments,
   programs,
   majors,
   houPrograms,
@@ -250,6 +252,12 @@ export function LeadForm({
                 ))}
             </select>
           </div>
+          <SelectField
+            label="Đối tượng tuyển sinh"
+            name="admission_segment_id"
+            options={segments}
+            placeholder="Chọn đối tượng tuyển sinh"
+          />
           <SelectField
             label="Nguồn lead"
             name="source_id"

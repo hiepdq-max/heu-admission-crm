@@ -136,6 +136,7 @@ export async function createLeadAction(
     ward: textValue(formData, "ward"),
     source_id: textValue(formData, "source_id"),
     flow_id: textValue(formData, "flow_id"),
+    admission_segment_id: textValue(formData, "admission_segment_id"),
     campaign_id: textValue(formData, "campaign_id"),
     partner_id: textValue(formData, "partner_id"),
     hou_program_id: houProgramId,
@@ -152,6 +153,16 @@ export async function createLeadAction(
   const { error } = await supabase.from("leads").insert(payload);
 
   if (error) {
+    if (
+      error.message.toLowerCase().includes("row-level security") ||
+      error.message.toLowerCase().includes("violates row-level security")
+    ) {
+      return {
+        error:
+          "Tài khoản của bạn chưa được phân quyền tạo lead trong đối tượng tuyển sinh hoặc đối tác đã chọn. Hãy kiểm tra lại phạm vi được phân trong Cấu hình.",
+      };
+    }
+
     return { error: "Chưa lưu được lead: " + error.message };
   }
 

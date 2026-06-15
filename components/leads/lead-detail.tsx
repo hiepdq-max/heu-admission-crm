@@ -35,6 +35,7 @@ type LeadDetailData = {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  admission_segment_id: string | null;
   hou_program_id: string | null;
   hou_major_id: string | null;
   hou_location_id: string | null;
@@ -50,6 +51,7 @@ type LeadDetailProps = {
   lead: LeadDetailData;
   sourceName: string | null;
   flowName: string | null;
+  segmentName: string | null;
   campaignName: string | null;
   partnerName: string | null;
   ownerName: string | null;
@@ -150,6 +152,7 @@ export function LeadDetail({
   lead,
   sourceName,
   flowName,
+  segmentName,
   campaignName,
   partnerName,
   ownerName,
@@ -309,6 +312,7 @@ export function LeadDetail({
               <div className="mt-4 space-y-3">
                 <InfoItem label="Nguồn" value={sourceName} />
                 <InfoItem label="Luồng tuyển sinh" value={flowName} />
+                <InfoItem label="Đối tượng tuyển sinh" value={segmentName} />
                 <InfoItem label="Chiến dịch" value={campaignName} />
                 <InfoItem label="Đối tác / CTV" value={partnerName} />
               </div>

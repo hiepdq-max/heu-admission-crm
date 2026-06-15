@@ -154,6 +154,106 @@ export async function updateRolePermissionsAction(formData: FormData) {
   redirect("/settings?permissions_updated=1");
 }
 
+export async function updateUserBusinessScopesAction(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const requestedReturnTo = textValue(formData, "return_to");
+  const returnPath =
+    requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
+  const targetUserId = textValue(formData, "user_id");
+
+  if (!targetUserId) {
+    redirect(`${returnPath}?error=missing_user`);
+  }
+
+  const { data: canManage, error: canManageError } = await supabase.rpc(
+    "can_manage_user_scope",
+    { target_user_id: targetUserId },
+  );
+
+  if (canManageError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(canManageError.message)}`);
+  }
+
+  if (!canManage) {
+    redirect(`${returnPath}?error=not_allowed_scope`);
+  }
+
+  const segmentIds = formData
+    .getAll("segment_ids")
+    .map((value) => String(value))
+    .filter(Boolean);
+  const partnerIds = formData
+    .getAll("partner_ids")
+    .map((value) => String(value))
+    .filter(Boolean);
+
+  const { error: segmentDeleteError } = await supabase
+    .from("user_admission_segment_scopes")
+    .delete()
+    .eq("user_id", targetUserId);
+
+  if (segmentDeleteError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(segmentDeleteError.message)}`);
+  }
+
+  const { error: partnerDeleteError } = await supabase
+    .from("user_partner_scopes")
+    .delete()
+    .eq("user_id", targetUserId);
+
+  if (partnerDeleteError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(partnerDeleteError.message)}`);
+  }
+
+  if (segmentIds.length > 0) {
+    const { error: segmentInsertError } = await supabase
+      .from("user_admission_segment_scopes")
+      .insert(
+        segmentIds.map((segmentId) => ({
+          user_id: targetUserId,
+          segment_id: segmentId,
+          assigned_by: user.id,
+        })),
+      );
+
+    if (segmentInsertError) {
+      redirect(
+        `${returnPath}?error=${encodeURIComponent(segmentInsertError.message)}`,
+      );
+    }
+  }
+
+  if (partnerIds.length > 0) {
+    const { error: partnerInsertError } = await supabase
+      .from("user_partner_scopes")
+      .insert(
+        partnerIds.map((partnerId) => ({
+          user_id: targetUserId,
+          partner_id: partnerId,
+          assigned_by: user.id,
+        })),
+      );
+
+    if (partnerInsertError) {
+      redirect(
+        `${returnPath}?error=${encodeURIComponent(partnerInsertError.message)}`,
+      );
+    }
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?scopes_updated=1`);
+}
+
 function normalizeDocumentCode(value: string | null) {
   return value
     ?.trim()

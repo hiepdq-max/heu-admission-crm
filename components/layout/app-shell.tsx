@@ -57,6 +57,13 @@ const navigation = [
   { label: "Audit log", href: "/audit", icon: ShieldCheck, key: "audit" },
   { label: "AI Assistant", href: "/ai-assistant", icon: Bot, key: "ai-assistant" },
   {
+    label: "Phạm vi user",
+    href: "/settings/scopes",
+    icon: ShieldCheck,
+    key: "scopes",
+    permission: "scope.manage_department",
+  },
+  {
     label: "Cấu hình",
     href: "/settings",
     icon: Settings,
@@ -80,8 +87,15 @@ export async function AppShell({
   const { data: currentRoleCode } = user
     ? await supabase.rpc("current_user_role_code")
     : { data: null };
+  const { data: canManageScopes } = user
+    ? await supabase.rpc("has_permission", {
+        permission_name: "scope.manage_department",
+      })
+    : { data: false };
   const visibleNavigation = navigation.filter(
-    (item) => !item.adminOnly || currentRoleCode === "ADMIN",
+    (item) =>
+      (!item.adminOnly || currentRoleCode === "ADMIN") &&
+      (!item.permission || currentRoleCode === "ADMIN" || canManageScopes),
   );
 
   return (

@@ -24,6 +24,10 @@ import {
 import { HouLeadForm } from "@/components/leads/hou-lead-form";
 import { HouLeadWorkspace } from "@/components/leads/hou-lead-workspace";
 import { LeadDetail } from "@/components/leads/lead-detail";
+import {
+  LeadHandoverPanel,
+  type LeadHandoverRow,
+} from "@/components/leads/lead-handover-panel";
 import { StatusUpdateForm } from "@/components/leads/status-update-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -61,6 +65,7 @@ type LeadDetailData = {
   updated_at: string;
   source_id: string | null;
   flow_id: string | null;
+  admission_segment_id: string | null;
   campaign_id: string | null;
   partner_id: string | null;
   assigned_to: string | null;
@@ -121,6 +126,8 @@ type LeadDocumentRow = {
   checked_at: string | null;
 };
 
+type LeadHandoverDataRow = LeadHandoverRow;
+
 function toLookup<T extends Record<string, unknown>>(
   rows: T[] | null,
   labelKey: keyof T,
@@ -135,6 +142,7 @@ async function getLookupLabel(
   table:
     | "lead_sources"
     | "admission_flows"
+    | "admission_segments"
     | "campaigns"
     | "partners"
     | "users_profile",
@@ -173,7 +181,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
   const { data: lead, error } = await supabase
     .from("leads")
     .select(
-      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_by,created_at,updated_at,source_id,flow_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
+      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_by,created_at,updated_at,source_id,flow_id,admission_segment_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
     )
     .eq("id", id)
     .eq("is_deleted", false)
@@ -186,6 +194,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
   const [
     sourceName,
     flowName,
+    segmentName,
     campaignName,
     partnerName,
     ownerName,
@@ -202,9 +211,11 @@ export default async function LeadDetailPage({ params }: PageProps) {
     conditionChecksResult,
     activityCountResult,
     documentCountResult,
+    handoversResult,
   ] = await Promise.all([
     getLookupLabel("lead_sources", lead.source_id, "source_name"),
     getLookupLabel("admission_flows", lead.flow_id, "flow_name"),
+    getLookupLabel("admission_segments", lead.admission_segment_id, "segment_name"),
     getLookupLabel("campaigns", lead.campaign_id, "campaign_name"),
     getLookupLabel("partners", lead.partner_id, "partner_name"),
     getLookupLabel("users_profile", lead.assigned_to, "full_name"),
@@ -277,6 +288,15 @@ export default async function LeadDetailPage({ params }: PageProps) {
       .from("lead_documents")
       .select("id", { count: "exact", head: true })
       .eq("lead_id", lead.id),
+    supabase
+      .from("lead_handovers")
+      .select(
+        "id,lead_id,handover_type,from_department,to_department,handover_status,requested_by,requested_at,accepted_by,accepted_at,rejected_by,rejected_at,note",
+      )
+      .eq("lead_id", lead.id)
+      .eq("status", "ACTIVE")
+      .order("created_at", { ascending: false })
+      .returns<LeadHandoverDataRow[]>(),
   ]);
 
   const houPrograms = toLookup(houProgramRowsResult.data, "program_name");
@@ -486,6 +506,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
         lead={lead}
         sourceName={sourceName}
         flowName={flowName}
+        segmentName={segmentName}
         campaignName={campaignName}
         partnerName={partnerName}
         ownerName={ownerName}
@@ -521,6 +542,12 @@ export default async function LeadDetailPage({ params }: PageProps) {
         latestClaimRiskLevel={latestHouCommissionClaim?.dropout_risk_level ?? null}
         claimNetTotalVnd={houClaimNetTotalVnd}
         canSeeFinancial={canManageHouCommission}
+      />
+      <LeadHandoverPanel
+        leadId={lead.id}
+        handovers={handoversResult.data ?? []}
+        users={toLookup(userRowsResult.data, "full_name")}
+        loadError={handoversResult.error?.message}
       />
       <div id="conditions" className="scroll-mt-24">
         <LeadConditionChecklist

@@ -14,6 +14,14 @@ type MajorOption = Option & {
   programLabel: string | null;
 };
 
+type SegmentScopeRow = {
+  segment_id: string;
+};
+
+type PartnerScopeRow = {
+  partner_id: string;
+};
+
 function toOptions<T extends Record<string, unknown>>(
   rows: T[] | null,
   labelKey: keyof T,
@@ -22,6 +30,17 @@ function toOptions<T extends Record<string, unknown>>(
     id: String(row.id),
     label: String(row[labelKey] ?? ""),
   }));
+}
+
+function filterRowsByScope<T extends { id: unknown }>(
+  rows: T[] | null,
+  allowedIds: Set<string>,
+) {
+  if (allowedIds.size === 0) {
+    return rows ?? [];
+  }
+
+  return (rows ?? []).filter((row) => allowedIds.has(String(row.id)));
 }
 
 export default async function NewLeadPage() {
@@ -39,12 +58,15 @@ export default async function NewLeadPage() {
     { data: flowRows },
     { data: campaignRows },
     { data: partnerRows },
+    { data: segmentRows },
     { data: programRows },
     { data: majorRows },
     { data: houProgramRows },
     { data: houMajorRows },
     { data: houLocationRows },
     { data: houStageRows },
+    { data: segmentScopeRows },
+    { data: partnerScopeRows },
   ] = await Promise.all([
       supabase
         .from("lead_sources")
@@ -65,7 +87,13 @@ export default async function NewLeadPage() {
         .from("partners")
         .select("id,partner_name")
         .eq("is_deleted", false)
+        .eq("status", "ACTIVE")
         .order("partner_name", { ascending: true }),
+      supabase
+        .from("admission_segments")
+        .select("id,segment_name")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
       supabase
         .from("admission_programs")
         .select("id,program_name")
@@ -96,8 +124,28 @@ export default async function NewLeadPage() {
         .select("id,stage_name")
         .eq("status", "ACTIVE")
         .order("sort_order", { ascending: true }),
+      supabase
+        .from("user_admission_segment_scopes")
+        .select("segment_id")
+        .eq("user_id", user.id)
+        .eq("status", "ACTIVE")
+        .returns<SegmentScopeRow[]>(),
+      supabase
+        .from("user_partner_scopes")
+        .select("partner_id")
+        .eq("user_id", user.id)
+        .eq("status", "ACTIVE")
+        .returns<PartnerScopeRow[]>(),
     ]);
 
+  const allowedSegmentIds = new Set(
+    (segmentScopeRows ?? []).map((scope) => scope.segment_id),
+  );
+  const allowedPartnerIds = new Set(
+    (partnerScopeRows ?? []).map((scope) => scope.partner_id),
+  );
+  const segmentOptions = filterRowsByScope(segmentRows, allowedSegmentIds);
+  const partnerOptions = filterRowsByScope(partnerRows, allowedPartnerIds);
   const programs = toOptions(programRows, "program_name");
   const programMap = new Map(programs.map((program) => [program.id, program.label]));
   const majors: MajorOption[] = (majorRows ?? []).map((row) => ({
@@ -119,7 +167,8 @@ export default async function NewLeadPage() {
         sources={toOptions(sourceRows, "source_name")}
         flows={toOptions(flowRows, "flow_name")}
         campaigns={toOptions(campaignRows, "campaign_name")}
-        partners={toOptions(partnerRows, "partner_name")}
+        partners={toOptions(partnerOptions, "partner_name")}
+        segments={toOptions(segmentOptions, "segment_name")}
         programs={programs}
         majors={majors}
         houPrograms={toOptions(houProgramRows, "program_name")}

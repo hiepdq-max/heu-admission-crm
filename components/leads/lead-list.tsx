@@ -18,6 +18,7 @@ type LeadRow = {
   created_at: string;
   source_id: string | null;
   flow_id: string | null;
+  admission_segment_id: string | null;
   campaign_id: string | null;
   partner_id: string | null;
   assigned_to: string | null;
@@ -34,6 +35,7 @@ type LeadListProps = {
   leads: LeadRow[];
   sources: LookupRow[];
   flows: LookupRow[];
+  segments: LookupRow[];
   campaigns: LookupRow[];
   partners: LookupRow[];
   users: LookupRow[];
@@ -111,6 +113,7 @@ export function LeadList({
   leads,
   sources,
   flows,
+  segments,
   campaigns,
   partners,
   users,
@@ -119,6 +122,7 @@ export function LeadList({
 }: LeadListProps) {
   const sourceMap = toMap(sources);
   const flowMap = toMap(flows);
+  const segmentMap = toMap(segments);
   const campaignMap = toMap(campaigns);
   const partnerMap = toMap(partners);
   const userMap = toMap(users);
@@ -170,6 +174,9 @@ export function LeadList({
                 ? sourceMap.get(lead.source_id)
                 : null;
               const flow = lead.flow_id ? flowMap.get(lead.flow_id) : null;
+              const segment = lead.admission_segment_id
+                ? segmentMap.get(lead.admission_segment_id)
+                : null;
               const campaign = lead.campaign_id
                 ? campaignMap.get(lead.campaign_id)
                 : null;
@@ -221,6 +228,11 @@ export function LeadList({
                     <p className="mt-1 text-xs text-zinc-500">
                       {formatArea(lead)}
                     </p>
+                    {segment ? (
+                      <p className="mt-2 inline-flex max-w-full rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-700">
+                        {segment}
+                      </p>
+                    ) : null}
                     {houMajor || houStage ? (
                       <p className="mt-2 inline-flex max-w-full rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
                         HOU: {houMajor ?? "Chưa chọn ngành"} ·{" "}

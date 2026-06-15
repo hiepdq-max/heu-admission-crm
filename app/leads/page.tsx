@@ -24,6 +24,7 @@ type LeadRow = {
   created_at: string;
   source_id: string | null;
   flow_id: string | null;
+  admission_segment_id: string | null;
   campaign_id: string | null;
   partner_id: string | null;
   assigned_to: string | null;
@@ -59,7 +60,7 @@ export default async function LeadsPage() {
   const { data: leads, error: leadsError } = await supabase
     .from("leads")
     .select(
-      "id,lead_code,student_name,student_phone,parent_name,parent_phone,interested_major,province,district,ward,status,priority,next_followup_at,created_at,source_id,flow_id,campaign_id,partner_id,assigned_to,hou_major_id,hou_stage_id",
+      "id,lead_code,student_name,student_phone,parent_name,parent_phone,interested_major,province,district,ward,status,priority,next_followup_at,created_at,source_id,flow_id,admission_segment_id,campaign_id,partner_id,assigned_to,hou_major_id,hou_stage_id",
     )
     .eq("is_deleted", false)
     .order("created_at", { ascending: false })
@@ -69,6 +70,7 @@ export default async function LeadsPage() {
   const [
     { data: sourceRows },
     { data: flowRows },
+    { data: segmentRows },
     { data: campaignRows },
     { data: partnerRows },
     { data: userRows },
@@ -77,6 +79,7 @@ export default async function LeadsPage() {
   ] = await Promise.all([
     supabase.from("lead_sources").select("id,source_name"),
     supabase.from("admission_flows").select("id,flow_name"),
+    supabase.from("admission_segments").select("id,segment_name"),
     supabase.from("campaigns").select("id,campaign_name").eq("is_deleted", false),
     supabase.from("partners").select("id,partner_name").eq("is_deleted", false),
     supabase.from("users_profile").select("id,full_name"),
@@ -119,6 +122,7 @@ export default async function LeadsPage() {
           leads={leads ?? []}
           sources={toLookup(sourceRows, "source_name")}
           flows={toLookup(flowRows, "flow_name")}
+          segments={toLookup(segmentRows, "segment_name")}
           campaigns={toLookup(campaignRows, "campaign_name")}
           partners={toLookup(partnerRows, "partner_name")}
           users={toLookup(userRows, "full_name")}

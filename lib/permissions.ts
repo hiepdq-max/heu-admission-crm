@@ -24,9 +24,20 @@ export const permissionGroups: PermissionGroup[] = [
         description: "Cấp role, phòng ban và trạng thái tài khoản.",
       },
       {
+        code: "users.manage_department",
+        label: "Quản lý người dùng cùng phòng",
+        description: "Trưởng phòng phân quyền cho nhân sự thuộc phòng mình.",
+      },
+      {
         code: "settings.manage",
         label: "Quản lý cấu hình",
         description: "Quản lý danh mục và các cấu hình nghiệp vụ.",
+      },
+      {
+        code: "scope.manage_department",
+        label: "Phân phạm vi trong phòng",
+        description:
+          "Gán đối tượng tuyển sinh/trung tâm cho nhân sự trong phòng mình.",
       },
       {
         code: "audit.read",
@@ -152,6 +163,31 @@ export const permissionGroups: PermissionGroup[] = [
         code: "reports.read_team",
         label: "Xem báo cáo đội",
         description: "Xem báo cáo phạm vi đội phụ trách.",
+      },
+      {
+        code: "reports.read_scope",
+        label: "Xem báo cáo theo phạm vi",
+        description: "Xem báo cáo đúng đối tượng/trung tâm được phân.",
+      },
+    ],
+  },
+  {
+    name: "Bàn giao liên phòng",
+    items: [
+      {
+        code: "handover.create",
+        label: "Tạo bàn giao hồ sơ",
+        description: "Tuyển sinh bàn giao hồ sơ đủ điều kiện sang phòng khác.",
+      },
+      {
+        code: "handover.accept_cthssv",
+        label: "CTHSSV nhận bàn giao",
+        description: "Phòng CTHSSV nhận hồ sơ để mở lớp/ra quyết định.",
+      },
+      {
+        code: "handover.accept_accounting",
+        label: "Kế toán nhận bàn giao",
+        description: "Kế toán nhận danh sách để theo dõi công nợ/học phí.",
       },
     ],
   },

@@ -57,6 +57,13 @@ export type HouEvidenceFormState = {
   fieldErrors?: FieldErrors;
 };
 
+export type HandoverFormState = {
+  error?: string;
+  success?: string;
+  fields?: FormFields;
+  fieldErrors?: FieldErrors;
+};
+
 function textValue(formData: FormData, key: string) {
   const value = String(formData.get(key) ?? "").trim();
   return value.length > 0 ? value : null;
@@ -1312,4 +1319,199 @@ export async function createHouEvidenceFileAction(
   revalidatePath("/settings");
 
   return { success: "Đã lưu minh chứng HOU." };
+}
+
+const handoverConfig: Record<
+  string,
+  { label: string; fromDepartment: string; toDepartment: string }
+> = {
+  ADMISSION_TO_CTHSSV: {
+    label: "Bàn giao Tuyển sinh -> CTHSSV",
+    fromDepartment: "ADMISSION",
+    toDepartment: "CTHSSV",
+  },
+  CTHSSV_TO_ACCOUNTING: {
+    label: "Bàn giao CTHSSV -> Kế toán",
+    fromDepartment: "CTHSSV",
+    toDepartment: "ACCOUNTING",
+  },
+  ADMISSION_TO_ACCOUNTING: {
+    label: "Bàn giao Tuyển sinh -> Kế toán",
+    fromDepartment: "ADMISSION",
+    toDepartment: "ACCOUNTING",
+  },
+};
+
+export async function createLeadHandoverAction(
+  _previousState: HandoverFormState,
+  formData: FormData,
+): Promise<HandoverFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const leadId = textValue(formData, "lead_id");
+  const handoverType = textValue(formData, "handover_type");
+  const note = textValue(formData, "note");
+  const fields = submittedFields(formData, ["handover_type", "note"]);
+
+  if (!leadId) {
+    return formError("Thiếu lead_id, chưa thể tạo bàn giao.", fields);
+  }
+
+  if (!handoverType || !handoverConfig[handoverType]) {
+    return formError("Vui lòng chọn đúng loại bàn giao.", fields, {
+      handover_type: "Chọn loại bàn giao.",
+    });
+  }
+
+  const config = handoverConfig[handoverType];
+  const { error } = await supabase.from("lead_handovers").insert({
+    lead_id: leadId,
+    handover_type: handoverType,
+    from_department: config.fromDepartment,
+    to_department: config.toDepartment,
+    note,
+    requested_by: user.id,
+  });
+
+  if (error) {
+    if (error.message.toLowerCase().includes("duplicate")) {
+      return formError(
+        "Lead này đang có bàn giao cùng loại ở trạng thái chờ nhận hoặc đã nhận. Không tạo trùng để tránh bàn giao hai lần.",
+        fields,
+      );
+    }
+
+    return formError(
+      "Chưa tạo được bàn giao. Hãy kiểm tra đã chạy SQL bước 38 và tài khoản có quyền bàn giao chưa. Chi tiết: " +
+        error.message,
+      fields,
+    );
+  }
+
+  await supabase.from("lead_activities").insert({
+    lead_id: leadId,
+    activity_type: "NOTE",
+    activity_result: "HANDOVER_REQUESTED",
+    content: `${config.label}. ${note ?? ""}`.trim(),
+    created_by: user.id,
+  });
+
+  revalidatePath(`/leads/${leadId}`);
+
+  return { success: "Đã tạo bàn giao liên phòng." };
+}
+
+export async function updateLeadHandoverAction(
+  _previousState: HandoverFormState,
+  formData: FormData,
+): Promise<HandoverFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const handoverId = textValue(formData, "handover_id");
+  const leadId = textValue(formData, "lead_id");
+  const handoverStatus = textValue(formData, "handover_status");
+  const note = textValue(formData, "note");
+  const fields = submittedFields(formData, [
+    "handover_id",
+    "handover_status",
+    "note",
+  ]);
+
+  if (!handoverId || !leadId) {
+    return formError("Thiếu thông tin bàn giao, chưa thể cập nhật.", fields);
+  }
+
+  if (!handoverStatus || !["ACCEPTED", "REJECTED"].includes(handoverStatus)) {
+    return formError("Vui lòng chọn nhận hoặc từ chối bàn giao.", fields, {
+      handover_status: "Chọn nhận hoặc từ chối.",
+    });
+  }
+
+  if (handoverStatus === "REJECTED" && !note) {
+    return formError("Từ chối bàn giao cần ghi rõ lý do.", fields, {
+      note: "Nhập lý do từ chối.",
+    });
+  }
+
+  const now = new Date().toISOString();
+  const payload =
+    handoverStatus === "ACCEPTED"
+      ? {
+          handover_status: "ACCEPTED",
+          accepted_by: user.id,
+          accepted_at: now,
+          rejected_by: null,
+          rejected_at: null,
+          note,
+        }
+      : {
+          handover_status: "REJECTED",
+          accepted_by: null,
+          accepted_at: null,
+          rejected_by: user.id,
+          rejected_at: now,
+          note,
+        };
+
+  const { data: handover, error: readError } = await supabase
+    .from("lead_handovers")
+    .select("handover_type")
+    .eq("id", handoverId)
+    .maybeSingle<{ handover_type: string }>();
+
+  if (readError || !handover) {
+    return formError(
+      "Chưa đọc được bàn giao cần cập nhật. Chi tiết: " +
+        (readError?.message ?? "không thấy bàn giao"),
+      fields,
+    );
+  }
+
+  const { error } = await supabase
+    .from("lead_handovers")
+    .update(payload)
+    .eq("id", handoverId);
+
+  if (error) {
+    return formError(
+      "Chưa cập nhật được bàn giao. Hãy kiểm tra quyền của phòng nhận bàn giao. Chi tiết: " +
+        error.message,
+      fields,
+    );
+  }
+
+  const config = handoverConfig[handover.handover_type];
+  await supabase.from("lead_activities").insert({
+    lead_id: leadId,
+    activity_type: "NOTE",
+    activity_result:
+      handoverStatus === "ACCEPTED" ? "HANDOVER_ACCEPTED" : "HANDOVER_REJECTED",
+    content: `${config?.label ?? "Bàn giao liên phòng"}: ${
+      handoverStatus === "ACCEPTED" ? "đã nhận" : "đã từ chối"
+    }. ${note ?? ""}`.trim(),
+    created_by: user.id,
+  });
+
+  revalidatePath(`/leads/${leadId}`);
+
+  return {
+    success:
+      handoverStatus === "ACCEPTED"
+        ? "Đã nhận bàn giao."
+        : "Đã từ chối bàn giao.",
+  };
 }

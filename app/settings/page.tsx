@@ -49,6 +49,14 @@ import {
   type RoleRow,
   type UserProfileRow,
 } from "@/components/settings/user-settings-overview";
+import {
+  UserBusinessScopeSettings,
+  type BusinessScopeDepartmentRow,
+  type BusinessScopeRoleRow,
+  type BusinessScopeUserRow,
+  type UserPartnerScopeRow,
+  type UserSegmentScopeRow,
+} from "@/components/settings/user-business-scope-settings";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 
@@ -68,13 +76,17 @@ type SettingsPageProps = {
     hou_location_created?: string;
     hou_location_updated?: string;
     permissions_updated?: string;
+    scopes_updated?: string;
     error?: string;
   }>;
 };
 
 const errorMessages: Record<string, string> = {
   missing_user_or_role: "Thiếu user hoặc role cần cập nhật.",
+  missing_user: "Thiếu user cần cập nhật.",
   missing_role: "Thiếu role cần cập nhật quyền.",
+  not_allowed_scope:
+    "Bạn không có quyền phân phạm vi cho tài khoản này.",
   missing_checklist_data: "Thiếu mã hoặc tên giấy tờ hồ sơ.",
   duplicate_checklist_code:
     "Mã giấy tờ này đã tồn tại. Hãy sửa dòng giấy tờ hiện có hoặc dùng mã khác.",
@@ -128,6 +140,9 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     { data: leadSources },
     { data: admissionFlows, error: admissionFlowsError },
     { data: admissionSegments, error: admissionSegmentsError },
+    { data: partnerScopeOptions },
+    { data: userSegmentScopes, error: userSegmentScopesError },
+    { data: userPartnerScopes, error: userPartnerScopesError },
     { data: programs, error: programsError },
     { data: majors, error: majorsError },
     { data: houPrograms, error: houProgramsError },
@@ -187,6 +202,24 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       .eq("status", "ACTIVE")
       .order("sort_order", { ascending: true })
       .returns<AdmissionSegmentRow[]>(),
+    supabase
+      .from("partners")
+      .select("id,partner_name,partner_type,area")
+      .eq("is_deleted", false)
+      .eq("status", "ACTIVE")
+      .order("partner_type", { ascending: true })
+      .order("partner_name", { ascending: true })
+      .returns<Array<{ id: string; partner_name: string; partner_type: string; area: string | null }>>(),
+    supabase
+      .from("user_admission_segment_scopes")
+      .select("user_id,segment_id")
+      .eq("status", "ACTIVE")
+      .returns<UserSegmentScopeRow[]>(),
+    supabase
+      .from("user_partner_scopes")
+      .select("user_id,partner_id")
+      .eq("status", "ACTIVE")
+      .returns<UserPartnerScopeRow[]>(),
     supabase
       .from("admission_programs")
       .select("id,program_code,program_name,sort_order,status")
@@ -391,9 +424,31 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                                   ? "Đã cập nhật địa điểm học HOU."
                                   : params?.permissions_updated
                                     ? "Đã cập nhật quyền cho role."
+                                    : params?.scopes_updated
+                                      ? "Đã cập nhật phạm vi làm việc của user."
                               : undefined
           }
           error={error}
+        />
+        <UserBusinessScopeSettings
+          users={(users ?? []) as BusinessScopeUserRow[]}
+          roles={(roles ?? []) as BusinessScopeRoleRow[]}
+          departments={(departments ?? []) as BusinessScopeDepartmentRow[]}
+          segments={(admissionSegments ?? []).map((segment) => ({
+            id: segment.id,
+            label: segment.segment_name,
+            group: segment.program_group,
+          }))}
+          partners={(partnerScopeOptions ?? []).map((partner) => ({
+            id: partner.id,
+            label: partner.partner_name,
+            group: [partner.partner_type, partner.area].filter(Boolean).join(" · "),
+          }))}
+          userSegmentScopes={userSegmentScopes ?? []}
+          userPartnerScopes={userPartnerScopes ?? []}
+          loadError={
+            userSegmentScopesError?.message ?? userPartnerScopesError?.message
+          }
         />
         <ProgramMajorSettings
           programs={programs ?? []}
