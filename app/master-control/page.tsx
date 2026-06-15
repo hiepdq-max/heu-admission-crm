@@ -2,6 +2,14 @@ import { redirect } from "next/navigation";
 
 import { AppShell } from "@/components/layout/app-shell";
 import {
+  HeuOsMapOverview,
+  type HeuOsApprovalRow,
+  type HeuOsMasterDataRow,
+  type HeuOsModuleRow,
+  type HeuOsRiskRow,
+  type HeuOsWorkflowRow,
+} from "@/components/master-control/heu-os-map-overview";
+import {
   MasterControlOverview,
   type DataDictionaryFieldRow,
   type DataDictionaryTableRow,
@@ -104,6 +112,11 @@ export default async function MasterControlPage({
     { data: dataTables, error: dataTablesError },
     { data: dataFields, error: dataFieldsError },
     { data: decisionGates, error: decisionGatesError },
+    { data: heuOsModules, error: heuOsModulesError },
+    { data: heuOsWorkflows, error: heuOsWorkflowsError },
+    { data: heuOsApprovals, error: heuOsApprovalsError },
+    { data: heuOsMasterData, error: heuOsMasterDataError },
+    { data: heuOsRisks, error: heuOsRisksError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -141,6 +154,46 @@ export default async function MasterControlPage({
       .eq("record_status", "ACTIVE")
       .order("created_at", { ascending: false })
       .returns<DecisionGateRow[]>(),
+    supabase
+      .from("heu_os_modules")
+      .select(
+        "id,module_code,module_name,module_group,objective,owner_department,core_policy,ai_policy,sort_order,control_status",
+      )
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<HeuOsModuleRow[]>(),
+    supabase
+      .from("heu_os_workflows")
+      .select(
+        "id,workflow_code,workflow_name,module_code,trigger_event,start_role,owner_department,checker_role,approver_role,output_result,handover_rule,audit_rule,sort_order,control_status",
+      )
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<HeuOsWorkflowRow[]>(),
+    supabase
+      .from("heu_os_approval_matrix")
+      .select(
+        "id,approval_code,module_code,workflow_code,decision_name,decision_level,maker_role,checker_role,approver_role,required_evidence,blocking_rule,sla_hours,control_status",
+      )
+      .eq("status", "ACTIVE")
+      .order("created_at", { ascending: true })
+      .returns<HeuOsApprovalRow[]>(),
+    supabase
+      .from("heu_os_master_data_map")
+      .select(
+        "id,data_code,data_name,module_code,source_table,data_type,owner_department,system_of_record,sensitivity_level,ai_allowed,change_rule,control_status",
+      )
+      .eq("status", "ACTIVE")
+      .order("created_at", { ascending: true })
+      .returns<HeuOsMasterDataRow[]>(),
+    supabase
+      .from("heu_os_risk_controls")
+      .select(
+        "id,risk_code,risk_name,module_code,risk_group,severity,owner_department,risk_description,control_rule,escalation_rule,dashboard_metric,control_status",
+      )
+      .eq("status", "ACTIVE")
+      .order("created_at", { ascending: true })
+      .returns<HeuOsRiskRow[]>(),
   ]);
 
   const error = params?.error
@@ -153,24 +206,40 @@ export default async function MasterControlPage({
       title="Master Control"
       description="Legal Registry, SOP Registry, Data Dictionary và Decision Gate cho HEU OS."
     >
-      <MasterControlOverview
-        legalRows={legalRows ?? []}
-        sopRows={sopRows ?? []}
-        dataTables={dataTables ?? []}
-        dataFields={dataFields ?? []}
-        decisionGates={decisionGates ?? []}
-        canManage={canManage}
-        canApprove={canApprove}
-        message={getMessage(params)}
-        error={error}
-        loadError={
-          legalError?.message ??
-          sopError?.message ??
-          dataTablesError?.message ??
-          dataFieldsError?.message ??
-          decisionGatesError?.message
-        }
-      />
+      <div className="space-y-6">
+        <HeuOsMapOverview
+          modules={heuOsModules ?? []}
+          workflows={heuOsWorkflows ?? []}
+          approvals={heuOsApprovals ?? []}
+          masterData={heuOsMasterData ?? []}
+          risks={heuOsRisks ?? []}
+          loadError={
+            heuOsModulesError?.message ??
+            heuOsWorkflowsError?.message ??
+            heuOsApprovalsError?.message ??
+            heuOsMasterDataError?.message ??
+            heuOsRisksError?.message
+          }
+        />
+        <MasterControlOverview
+          legalRows={legalRows ?? []}
+          sopRows={sopRows ?? []}
+          dataTables={dataTables ?? []}
+          dataFields={dataFields ?? []}
+          decisionGates={decisionGates ?? []}
+          canManage={canManage}
+          canApprove={canApprove}
+          message={getMessage(params)}
+          error={error}
+          loadError={
+            legalError?.message ??
+            sopError?.message ??
+            dataTablesError?.message ??
+            dataFieldsError?.message ??
+            decisionGatesError?.message
+          }
+        />
+      </div>
     </AppShell>
   );
 }
