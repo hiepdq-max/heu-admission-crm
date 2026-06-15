@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ShieldCheck, UserCog } from "lucide-react";
 
 import {
@@ -77,6 +77,28 @@ function toScopeMap<T extends { user_id: string }>(
   return map;
 }
 
+function isDepartmentHeadRole(role: BusinessScopeRoleRow | undefined) {
+  if (!role) {
+    return false;
+  }
+
+  const normalizedName = role.name.toLowerCase();
+
+  return (
+    role.code.endsWith("_HEAD") ||
+    normalizedName.includes("truong phong") ||
+    normalizedName.includes("trưởng phòng")
+  );
+}
+
+function isStaffRole(role: BusinessScopeRoleRow | undefined) {
+  if (!role) {
+    return false;
+  }
+
+  return !["ADMIN", "BGH"].includes(role.code) && !isDepartmentHeadRole(role);
+}
+
 function labelFromMap(map: Map<string, string>, id: string | null) {
   return id ? map.get(id) ?? "Chưa rõ" : "Chưa gắn";
 }
@@ -94,36 +116,93 @@ export function UserBusinessScopeSettings({
   canManageUserProfiles = false,
 }: UserBusinessScopeSettingsProps) {
   const [selectedUserId, setSelectedUserId] = useState(users[0]?.id ?? "");
-  const roleMap = useMemo(
-    () => new Map(roles.map((role) => [role.id, role.name])),
-    [roles],
-  );
-  const departmentMap = useMemo(
-    () =>
-      new Map(
-        departments.map((department) => [department.id, department.name]),
-      ),
-    [departments],
-  );
-  const userMap = useMemo(
-    () => new Map(users.map((user) => [user.id, user.full_name])),
-    [users],
-  );
-  const segmentScopeMap = useMemo(
-    () => toScopeMap(userSegmentScopes, "segment_id"),
-    [userSegmentScopes],
-  );
-  const partnerScopeMap = useMemo(
-    () => toScopeMap(userPartnerScopes, "partner_id"),
-    [userPartnerScopes],
-  );
   const selectedUser = users.find((user) => user.id === selectedUserId) ?? null;
+  const [draftRoleId, setDraftRoleId] = useState(selectedUser?.role_id ?? "");
+  const [draftDepartmentId, setDraftDepartmentId] = useState(
+    selectedUser?.department_id ?? "",
+  );
+  const [draftManagerId, setDraftManagerId] = useState(
+    selectedUser?.manager_id ?? "",
+  );
+  const roleMap = new Map(roles.map((role) => [role.id, role.name]));
+  const departmentMap = new Map(
+    departments.map((department) => [department.id, department.name]),
+  );
+  const userMap = new Map(users.map((user) => [user.id, user.full_name]));
+  const segmentScopeMap = toScopeMap(userSegmentScopes, "segment_id");
+  const partnerScopeMap = toScopeMap(userPartnerScopes, "partner_id");
   const selectedSegments = selectedUser
     ? segmentScopeMap.get(selectedUser.id) ?? new Set<string>()
     : new Set<string>();
   const selectedPartners = selectedUser
     ? partnerScopeMap.get(selectedUser.id) ?? new Set<string>()
     : new Set<string>();
+  const draftRole = roles.find((role) => role.id === draftRoleId);
+  const staffRole = isStaffRole(draftRole);
+  const departmentHeads = users.filter((candidate) => {
+    const role = roles.find((item) => item.id === candidate.role_id);
+
+    return (
+      candidate.id !== selectedUser?.id &&
+      candidate.department_id === draftDepartmentId &&
+      isDepartmentHeadRole(role)
+    );
+  });
+  const sameDepartmentOthers = users.filter((candidate) => {
+    const role = roles.find((item) => item.id === candidate.role_id);
+
+    return (
+      candidate.id !== selectedUser?.id &&
+      candidate.department_id === draftDepartmentId &&
+      !isDepartmentHeadRole(role)
+    );
+  });
+  const managerOptions = draftDepartmentId
+    ? staffRole
+      ? departmentHeads
+      : [...departmentHeads, ...sameDepartmentOthers]
+    : users.filter((candidate) => candidate.id !== selectedUser?.id);
+
+  function firstDepartmentHeadId(departmentId: string, userId: string) {
+    return (
+      users.find((candidate) => {
+        const role = roles.find((item) => item.id === candidate.role_id);
+
+        return (
+          candidate.id !== userId &&
+          candidate.department_id === departmentId &&
+          isDepartmentHeadRole(role)
+        );
+      })?.id ?? ""
+    );
+  }
+
+  function handleSelectedUserChange(userId: string) {
+    const nextUser = users.find((user) => user.id === userId) ?? null;
+
+    setSelectedUserId(userId);
+    setDraftRoleId(nextUser?.role_id ?? "");
+    setDraftDepartmentId(nextUser?.department_id ?? "");
+    setDraftManagerId(nextUser?.manager_id ?? "");
+  }
+
+  function handleDraftRoleChange(roleId: string) {
+    const nextRole = roles.find((role) => role.id === roleId);
+
+    setDraftRoleId(roleId);
+
+    if (isStaffRole(nextRole) && selectedUser) {
+      setDraftManagerId(firstDepartmentHeadId(draftDepartmentId, selectedUser.id));
+    }
+  }
+
+  function handleDraftDepartmentChange(departmentId: string) {
+    setDraftDepartmentId(departmentId);
+
+    if (staffRole && selectedUser) {
+      setDraftManagerId(firstDepartmentHeadId(departmentId, selectedUser.id));
+    }
+  }
 
   return (
     <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
@@ -164,7 +243,7 @@ export function UserBusinessScopeSettings({
                 <select
                   id="selected-user"
                   value={selectedUserId}
-                  onChange={(event) => setSelectedUserId(event.target.value)}
+                  onChange={(event) => handleSelectedUserChange(event.target.value)}
                   className={`${selectClass} mt-2`}
                 >
                   {users.map((user) => (
@@ -214,7 +293,10 @@ export function UserBusinessScopeSettings({
                         <select
                           name="role_id"
                           className={selectClass}
-                          defaultValue={selectedUser.role_id ?? ""}
+                          value={draftRoleId}
+                          onChange={(event) =>
+                            handleDraftRoleChange(event.target.value)
+                          }
                         >
                           <option value="">Chọn nhiệm vụ/role</option>
                           {roles.map((role) => (
@@ -226,7 +308,10 @@ export function UserBusinessScopeSettings({
                         <select
                           name="department_id"
                           className={selectClass}
-                          defaultValue={selectedUser.department_id ?? ""}
+                          value={draftDepartmentId}
+                          onChange={(event) =>
+                            handleDraftDepartmentChange(event.target.value)
+                          }
                         >
                           <option value="">Chọn phòng ban</option>
                           {departments.map((department) => (
@@ -238,16 +323,24 @@ export function UserBusinessScopeSettings({
                         <select
                           name="manager_id"
                           className={selectClass}
-                          defaultValue={selectedUser.manager_id ?? ""}
+                          value={draftManagerId}
+                          onChange={(event) =>
+                            setDraftManagerId(event.target.value)
+                          }
                         >
                           <option value="">Chọn quản lý trực tiếp</option>
-                          {users
-                            .filter((manager) => manager.id !== selectedUser.id)
-                            .map((manager) => (
-                              <option key={manager.id} value={manager.id}>
-                                {manager.full_name}
-                              </option>
-                            ))}
+                          {draftDepartmentId &&
+                          staffRole &&
+                          departmentHeads.length === 0 ? (
+                            <option value="" disabled>
+                              Chưa có Trưởng phòng cùng phòng ban
+                            </option>
+                          ) : null}
+                          {managerOptions.map((manager) => (
+                            <option key={manager.id} value={manager.id}>
+                              {manager.full_name}
+                            </option>
+                          ))}
                         </select>
                         <select
                           name="status"
@@ -258,6 +351,14 @@ export function UserBusinessScopeSettings({
                           <option value="INACTIVE">INACTIVE</option>
                         </select>
                         <Button type="submit">Lưu phân công</Button>
+                        {staffRole ? (
+                          <p className="lg:col-span-5 text-xs leading-5 text-amber-700">
+                            Đối với nhân viên/trưởng nhóm, người quản lý trực
+                            tiếp là Trưởng phòng cùng phòng ban. Nếu danh sách
+                            chưa có Trưởng phòng, hãy tạo hoặc gán role Trưởng
+                            phòng cho user phù hợp trước.
+                          </p>
+                        ) : null}
                       </form>
                     ) : (
                       <div className="mt-4 rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-600">

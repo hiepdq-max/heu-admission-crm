@@ -410,7 +410,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             id: profile.id,
             full_name: profile.full_name,
             email: profile.email,
+            role_id: profile.role_id,
+            department_id: profile.department_id,
           }))}
+          canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
         />
 
         <UserSettingsOverview

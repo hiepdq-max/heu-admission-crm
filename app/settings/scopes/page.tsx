@@ -139,6 +139,7 @@ export default async function ScopeSettingsPage({
   const error = params?.error
     ? errorMessages[params.error] ?? decodeURIComponent(params.error)
     : undefined;
+  const isServiceRoleKeyWarning = params?.error === "missing_service_role_key";
   const message = params?.scopes_updated
     ? "Đã cập nhật phạm vi làm việc của user."
     : params?.updated
@@ -160,7 +161,13 @@ export default async function ScopeSettingsPage({
       ) : null}
 
       {error ? (
-        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+        <div
+          className={`rounded-lg border p-4 text-sm ${
+            isServiceRoleKeyWarning
+              ? "border-amber-200 bg-amber-50 text-amber-800"
+              : "border-rose-200 bg-rose-50 text-rose-700"
+          }`}
+        >
           {error}
         </div>
       ) : null}
@@ -173,8 +180,11 @@ export default async function ScopeSettingsPage({
             id: profile.id,
             full_name: profile.full_name,
             email: profile.email,
+            role_id: profile.role_id,
+            department_id: profile.department_id,
           }))}
           returnPath="/settings/scopes"
+          canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
         />
       ) : null}
 
