@@ -2,6 +2,11 @@ import { redirect } from "next/navigation";
 
 import { AppShell } from "@/components/layout/app-shell";
 import {
+  ApprovalGateEnforcement,
+  type ApprovalGateEnforcementRow,
+  type ApprovalGateEnforcementSummaryRow,
+} from "@/components/master-control/approval-gate-enforcement";
+import {
   HeuOsMapOverview,
   type HeuOsApprovalRow,
   type HeuOsMasterDataRow,
@@ -122,6 +127,8 @@ export default async function MasterControlPage({
     { data: heuOsMasterData, error: heuOsMasterDataError },
     { data: heuOsRisks, error: heuOsRisksError },
     { data: moduleReadiness, error: moduleReadinessError },
+    { data: approvalGateRows, error: approvalGateRowsError },
+    { data: approvalGateSummary, error: approvalGateSummaryError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -206,6 +213,19 @@ export default async function MasterControlPage({
       )
       .order("readiness_score", { ascending: false })
       .returns<HeuOsModuleReadinessRow[]>(),
+    supabase
+      .from("approval_gate_enforcement_status")
+      .select(
+        "id,approval_code,module_code,module_name,workflow_code,workflow_name,decision_name,decision_level,maker_role,checker_role,approver_role,required_evidence,blocking_rule,sla_hours,control_status,gate_code,gate_status,decided_by,decided_at,open_request_count,approved_request_count,has_checker_role,has_approver_role,has_required_evidence,has_blocking_rule,has_audit_rule,has_decision_gate,has_approved_gate,missing_items,enforcement_status",
+      )
+      .order("enforcement_status", { ascending: true })
+      .returns<ApprovalGateEnforcementRow[]>(),
+    supabase
+      .from("approval_gate_enforcement_summary")
+      .select(
+        "approval_count,ready_count,needs_approval_count,needs_fix_count,blocked_count,open_request_count,approved_request_count",
+      )
+      .maybeSingle<ApprovalGateEnforcementSummaryRow>(),
   ]);
 
   const error = params?.error
@@ -222,6 +242,13 @@ export default async function MasterControlPage({
         <ModuleReadinessOverview
           rows={moduleReadiness ?? []}
           loadError={moduleReadinessError?.message}
+        />
+        <ApprovalGateEnforcement
+          rows={approvalGateRows ?? []}
+          summary={approvalGateSummary}
+          loadError={
+            approvalGateRowsError?.message ?? approvalGateSummaryError?.message
+          }
         />
         <HeuOsMapOverview
           modules={heuOsModules ?? []}
