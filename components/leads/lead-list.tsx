@@ -133,9 +133,8 @@ export function LeadList({
         </div>
         <h2 className="mt-4 text-base font-semibold">Chưa có lead</h2>
         <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-zinc-500">
-          Database đã sẵn sàng nhưng bảng leads chưa có dữ liệu phù hợp với tài
-          khoản hiện tại. Hãy chạy file seed_sample_leads.sql để thêm dữ liệu
-          mẫu.
+          Chưa có lead phù hợp với tài khoản hiện tại. Hãy bấm nút tạo lead mới
+          hoặc import danh sách tuyển sinh để bắt đầu theo dõi trên CRM.
         </p>
       </section>
     );

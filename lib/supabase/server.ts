@@ -8,11 +8,13 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   if (!supabaseUrl) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL in .env.local");
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL environment variable");
   }
 
   if (!supabasePublishableKey) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY in .env.local");
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY environment variable",
+    );
   }
 
   return createServerClient(supabaseUrl, supabasePublishableKey, {
