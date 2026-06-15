@@ -503,3 +503,123 @@ export async function updateWorkflowRequestAction(formData: FormData) {
   revalidatePath("/master-control");
   redirect("/master-control?workflow_request_updated=1");
 }
+
+async function requireEvidencePermission(permission: "create" | "check") {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const rpcName =
+    permission === "check"
+      ? "can_check_evidence_document"
+      : "can_create_evidence_document";
+  const [{ data: roleCode }, { data: hasPermission }] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc(rpcName),
+  ]);
+
+  if (roleCode !== "ADMIN" && !hasPermission) {
+    redirect("/master-control?error=not_allowed_evidence");
+  }
+
+  return { supabase, user };
+}
+
+export async function createEvidenceDocumentAction(formData: FormData) {
+  const { supabase, user } = await requireEvidencePermission("create");
+  const evidenceTitle = textValue(formData, "evidence_title");
+  const entityType = normalizeCode(textValue(formData, "entity_type")) ?? "GENERAL";
+  const fileUrl = textValue(formData, "file_url");
+
+  if (!evidenceTitle || !entityType || !fileUrl) {
+    redirect("/master-control?error=missing_evidence_document");
+  }
+
+  if (!/^https?:\/\//i.test(fileUrl)) {
+    redirect("/master-control?error=invalid_evidence_url");
+  }
+
+  const { data: evidenceCode, error: evidenceCodeError } = await supabase.rpc(
+    "next_evidence_code",
+    { p_entity_type: entityType },
+  );
+
+  if (evidenceCodeError || !evidenceCode) {
+    redirect(
+      `/master-control?error=${encodeURIComponent(
+        evidenceCodeError?.message ?? "Không tạo được mã minh chứng.",
+      )}`,
+    );
+  }
+
+  const { error } = await supabase.from("evidence_documents").insert({
+    evidence_code: evidenceCode,
+    evidence_title: evidenceTitle,
+    evidence_type: textValue(formData, "evidence_type") ?? "OTHER",
+    entity_type: entityType,
+    entity_id: uuidValue(textValue(formData, "entity_id")),
+    entity_code: normalizeCode(textValue(formData, "entity_code")) ?? null,
+    lead_id: uuidValue(textValue(formData, "lead_id")),
+    approval_request_id: uuidValue(textValue(formData, "approval_request_id")),
+    file_url: fileUrl,
+    file_name: textValue(formData, "file_name"),
+    file_mime_hint: textValue(formData, "file_mime_hint"),
+    file_date: textValue(formData, "file_date"),
+    storage_provider: textValue(formData, "storage_provider") ?? "GOOGLE_DRIVE",
+    confidentiality: textValue(formData, "confidentiality") ?? "INTERNAL",
+    document_status: textValue(formData, "document_status") ?? "SUBMITTED",
+    note: textValue(formData, "note"),
+    created_by: user.id,
+    updated_by: user.id,
+  });
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?evidence_created=1");
+}
+
+export async function updateEvidenceDocumentAction(formData: FormData) {
+  const { supabase, user } = await requireEvidencePermission("check");
+  const evidenceId = textValue(formData, "evidence_id");
+  const documentStatus = textValue(formData, "document_status");
+
+  if (!evidenceId || !documentStatus) {
+    redirect("/master-control?error=missing_evidence_document");
+  }
+
+  if (
+    !["DRAFT", "SUBMITTED", "CHECKED", "NEEDS_FIX", "REJECTED", "ARCHIVED"].includes(
+      documentStatus,
+    )
+  ) {
+    redirect("/master-control?error=invalid_evidence_status");
+  }
+
+  const checked = ["CHECKED", "NEEDS_FIX", "REJECTED"].includes(documentStatus);
+  const { error } = await supabase
+    .from("evidence_documents")
+    .update({
+      document_status: documentStatus,
+      verification_note: textValue(formData, "verification_note"),
+      note: textValue(formData, "note"),
+      checked_by: checked ? user.id : null,
+      checked_at: checked ? new Date().toISOString() : null,
+      updated_by: user.id,
+    })
+    .eq("id", evidenceId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?evidence_updated=1");
+}

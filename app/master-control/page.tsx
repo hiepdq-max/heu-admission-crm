@@ -7,6 +7,12 @@ import {
   type ApprovalGateEnforcementSummaryRow,
 } from "@/components/master-control/approval-gate-enforcement";
 import {
+  EvidenceDocumentControl,
+  type EvidenceDocumentRow,
+  type EvidenceDocumentSummaryRow,
+  type EvidenceRequestOptionRow,
+} from "@/components/master-control/evidence-document-control";
+import {
   WorkflowRequestEngine,
   type WorkflowApprovalOptionRow,
   type WorkflowRequestRow,
@@ -46,6 +52,8 @@ type MasterControlPageProps = {
     decision_updated?: string;
     workflow_request_created?: string;
     workflow_request_updated?: string;
+    evidence_created?: string;
+    evidence_updated?: string;
     error?: string;
   }>;
 };
@@ -61,6 +69,10 @@ const errorMessages: Record<string, string> = {
   missing_data_table: "Thiếu mã bảng, tên bảng hoặc module.",
   missing_data_field: "Thiếu bảng, mã cột hoặc tên cột.",
   missing_decision_gate: "Thiếu thông tin decision gate.",
+  missing_evidence_document: "Thiếu thông tin minh chứng.",
+  invalid_evidence_url: "Link minh chứng cần bắt đầu bằng http:// hoặc https://.",
+  invalid_evidence_status: "Trạng thái minh chứng không hợp lệ.",
+  not_allowed_evidence: "Bạn chưa có quyền tạo hoặc kiểm minh chứng.",
 };
 
 function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
@@ -74,6 +86,8 @@ function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
   if (params?.decision_updated) return "Đã cập nhật decision gate.";
   if (params?.workflow_request_created) return "Đã tạo workflow request.";
   if (params?.workflow_request_updated) return "Đã cập nhật workflow request.";
+  if (params?.evidence_created) return "Đã thêm minh chứng.";
+  if (params?.evidence_updated) return "Đã cập nhật minh chứng.";
   return undefined;
 }
 
@@ -146,6 +160,8 @@ export default async function MasterControlPage({
     { data: approvalGateSummary, error: approvalGateSummaryError },
     { data: workflowRequestRows, error: workflowRequestRowsError },
     { data: workflowRequestSummary, error: workflowRequestSummaryError },
+    { data: evidenceRows, error: evidenceRowsError },
+    { data: evidenceSummary, error: evidenceSummaryError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -256,6 +272,19 @@ export default async function MasterControlPage({
         "request_count,draft_count,pending_check_count,checked_count,approved_count,rejected_count,needs_fix_count,overdue_count",
       )
       .maybeSingle<WorkflowRequestSummaryRow>(),
+    supabase
+      .from("evidence_document_control_status")
+      .select(
+        "id,evidence_code,evidence_title,evidence_type,entity_type,entity_id,entity_code,lead_id,lead_code,student_name,approval_request_id,request_code,request_title,file_url,file_name,file_mime_hint,file_date,storage_provider,confidentiality,document_status,verification_note,checked_by,checked_by_name,checked_at,note,created_by,created_by_name,created_at,updated_at,control_flags,control_status",
+      )
+      .order("created_at", { ascending: false })
+      .returns<EvidenceDocumentRow[]>(),
+    supabase
+      .from("evidence_document_control_summary")
+      .select(
+        "evidence_count,ready_count,waiting_check_count,needs_fix_count,blocked_count,sensitive_count",
+      )
+      .maybeSingle<EvidenceDocumentSummaryRow>(),
   ]);
 
   const error = params?.error
@@ -301,6 +330,21 @@ export default async function MasterControlPage({
             workflowRequestRowsError?.message ??
             workflowRequestSummaryError?.message
           }
+        />
+        <EvidenceDocumentControl
+          rows={evidenceRows ?? []}
+          summary={evidenceSummary}
+          requestOptions={(workflowRequestRows ?? []).map(
+            (request): EvidenceRequestOptionRow => ({
+              id: request.id,
+              request_code: request.request_code,
+              request_title: request.request_title,
+              request_status: request.request_status,
+            }),
+          )}
+          canCreate={canManage}
+          canCheck={canCheck || canManage}
+          loadError={evidenceRowsError?.message ?? evidenceSummaryError?.message}
         />
         <HeuOsMapOverview
           modules={heuOsModules ?? []}
