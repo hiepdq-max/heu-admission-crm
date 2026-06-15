@@ -42,6 +42,15 @@ type PartnerRow = LookupRow & {
   partner_name: string;
 };
 
+type SegmentRow = LookupRow & {
+  segment_code: string;
+  segment_name: string;
+};
+
+type SegmentScopeRow = {
+  segment_id: string;
+};
+
 type ProgramRow = LookupRow & {
   program_code: string;
   program_name: string;
@@ -72,6 +81,7 @@ type LeadInsert = {
   ward: string | null;
   source_id: string | null;
   flow_id: string | null;
+  admission_segment_id: string | null;
   campaign_id: string | null;
   partner_id: string | null;
   assigned_to: string;
@@ -266,17 +276,23 @@ export async function importLeadsAction(
 
   const defaultSourceId = textValue(formData, "default_source_id");
   const defaultFlowId = textValue(formData, "default_flow_id");
+  const defaultAdmissionSegmentId = textValue(
+    formData,
+    "default_admission_segment_id",
+  );
   const defaultCampaignId = textValue(formData, "default_campaign_id");
   const defaultPartnerId = textValue(formData, "default_partner_id");
 
   const [
     { data: sources },
     { data: flows },
+    { data: segments },
     { data: campaigns },
     { data: partners },
     { data: programs },
     { data: majors },
     { data: existingLeads },
+    { data: segmentScopeRows },
   ] = await Promise.all([
     supabase
       .from("lead_sources")
@@ -286,6 +302,11 @@ export async function importLeadsAction(
       .from("admission_flows")
       .select("id,flow_code,flow_name")
       .returns<FlowRow[]>(),
+    supabase
+      .from("admission_segments")
+      .select("id,segment_code,segment_name")
+      .eq("status", "ACTIVE")
+      .returns<SegmentRow[]>(),
     supabase
       .from("campaigns")
       .select("id,campaign_code,campaign_name")
@@ -308,15 +329,47 @@ export async function importLeadsAction(
       .from("leads")
       .select("lead_code,student_name,student_phone_norm,parent_phone_norm")
       .eq("is_deleted", false),
+    supabase
+      .from("user_admission_segment_scopes")
+      .select("segment_id")
+      .eq("user_id", user.id)
+      .eq("status", "ACTIVE")
+      .returns<SegmentScopeRow[]>(),
   ]);
 
   const sourceMap = mapByManyKeys(sources, ["source_code", "source_name"]);
   const flowMap = mapByManyKeys(flows, ["flow_code", "flow_name"]);
+  const segmentMap = mapByManyKeys(segments, [
+    "id",
+    "segment_code",
+    "segment_name",
+  ]);
   const campaignMap = mapByManyKeys(campaigns, [
     "campaign_code",
     "campaign_name",
   ]);
   const partnerMap = mapByManyKeys(partners, ["partner_code", "partner_name"]);
+  const allowedSegmentIds = new Set(
+    (segmentScopeRows ?? []).map((scope) => scope.segment_id),
+  );
+  const validSegmentIds = new Set((segments ?? []).map((segment) => segment.id));
+  const hasSegmentScope = allowedSegmentIds.size > 0;
+
+  if (defaultAdmissionSegmentId && !validSegmentIds.has(defaultAdmissionSegmentId)) {
+    return { error: "Đối tượng tuyển sinh mặc định không hợp lệ." };
+  }
+
+  if (
+    hasSegmentScope &&
+    defaultAdmissionSegmentId &&
+    !allowedSegmentIds.has(defaultAdmissionSegmentId)
+  ) {
+    return {
+      error:
+        "Tài khoản của bạn không được phân quyền import vào đối tượng tuyển sinh đã chọn.",
+    };
+  }
+
   const programNameMap = new Map<string, string>();
   const majorNameMap = new Map<string, string>();
 
@@ -404,6 +457,39 @@ export async function importLeadsAction(
       return;
     }
 
+    const admissionSegmentId = lookupId(
+      row,
+      [
+        "admission_segment_id",
+        "segment_id",
+        "segment_code",
+        "segment_name",
+        "admission_segment",
+        "doi_tuong_tuyen_sinh",
+      ],
+      segmentMap,
+      defaultAdmissionSegmentId,
+    );
+
+    if (hasSegmentScope && !admissionSegmentId) {
+      errors.push(
+        `Dòng ${rowNumber}: tài khoản này cần chọn đối tượng tuyển sinh khi import.`,
+      );
+      return;
+    }
+
+    if (admissionSegmentId && !validSegmentIds.has(admissionSegmentId)) {
+      errors.push(`Dòng ${rowNumber}: đối tượng tuyển sinh không hợp lệ.`);
+      return;
+    }
+
+    if (hasSegmentScope && !allowedSegmentIds.has(admissionSegmentId ?? "")) {
+      errors.push(
+        `Dòng ${rowNumber}: bạn không có quyền import vào đối tượng tuyển sinh này.`,
+      );
+      return;
+    }
+
     payloads.push({
       student_name: studentName,
       student_phone: studentPhone,
@@ -450,6 +536,7 @@ export async function importLeadsAction(
         flowMap,
         defaultFlowId,
       ),
+      admission_segment_id: admissionSegmentId,
       campaign_id: lookupId(
         row,
         ["campaign_code", "campaign_name", "chien_dich"],
@@ -494,6 +581,10 @@ export async function importLeadsAction(
   revalidatePath("/reports");
   revalidatePath("/pipeline");
   revalidatePath("/import");
+  revalidatePath("/segments");
+  if (defaultAdmissionSegmentId) {
+    revalidatePath(`/segments/${defaultAdmissionSegmentId}`);
+  }
 
   return {
     result: {

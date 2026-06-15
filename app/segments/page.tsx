@@ -4,12 +4,14 @@ import { Plus, RefreshCcw, Settings } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import { AdmissionSegmentOverview } from "@/components/segments/admission-segment-overview";
+import { SegmentReadinessOverview } from "@/components/segments/segment-operating-readiness";
 import { Button } from "@/components/ui/button";
 import {
   buildAdmissionSegmentOverview,
   filterAdmissionSegmentsByScope,
   type AdmissionSegmentCatalogRow,
   type AdmissionSegmentLeadStatRow,
+  type AdmissionSegmentReadinessRow,
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
@@ -29,6 +31,7 @@ export default async function SegmentsPage() {
     segmentRowsResult,
     segmentScopeRowsResult,
     segmentLeadRowsResult,
+    segmentReadinessResult,
   ] = await Promise.all([
     supabase.rpc("current_user_role_code"),
     supabase
@@ -51,6 +54,13 @@ export default async function SegmentsPage() {
       .eq("is_deleted", false)
       .limit(5000)
       .returns<AdmissionSegmentLeadStatRow[]>(),
+    supabase
+      .from("admission_segment_operating_readiness")
+      .select(
+        "segment_id,segment_code,segment_name,program_group,owner_department,workspace_id,workspace_code,operating_model,required_partner,required_contract,required_commission_policy,required_finance_tracking,required_document_checklist,required_handover_cthssv,hou_controls_enabled,ai_allowed,control_status,lead_count,enrolled_count,scoped_user_count,operation_step_count,required_step_count,visible_field_count,required_field_count,has_workspace_profile,has_required_steps,has_required_fields,has_user_scope,readiness_score,readiness_status,missing_items,ai_gate_status",
+      )
+      .order("readiness_score", { ascending: false })
+      .returns<AdmissionSegmentReadinessRow[]>(),
   ]);
 
   const visibleSegmentRows = filterAdmissionSegmentsByScope(
@@ -61,6 +71,10 @@ export default async function SegmentsPage() {
   const overview = buildAdmissionSegmentOverview(
     visibleSegmentRows,
     segmentLeadRowsResult.data ?? [],
+  );
+  const visibleSegmentIds = new Set(visibleSegmentRows.map((segment) => segment.id));
+  const visibleReadinessRows = (segmentReadinessResult.data ?? []).filter((row) =>
+    visibleSegmentIds.has(row.segment_id),
   );
 
   return (
@@ -91,6 +105,11 @@ export default async function SegmentsPage() {
         </>
       }
     >
+      <SegmentReadinessOverview
+        rows={visibleReadinessRows}
+        loadError={segmentReadinessResult.error?.message}
+      />
+
       {segmentRowsResult.error ? (
         <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
           Không đọc được bảng đối tượng tuyển sinh:{" "}

@@ -128,6 +128,12 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const refreshHref = segmentFilter
     ? `/leads?segment=${encodeURIComponent(segmentFilter)}`
     : "/leads";
+  const createLeadHref = segmentFilter
+    ? `/leads/new?segment=${encodeURIComponent(segmentFilter)}`
+    : "/leads/new";
+  const importHref = segmentFilter
+    ? `/import?segment=${encodeURIComponent(segmentFilter)}`
+    : "/import";
 
   return (
     <AppShell
@@ -146,12 +152,14 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
               Tải lại
             </Link>
           </Button>
-          <Button variant="outline">
-            <Upload className="size-4" />
-            Import CSV
+          <Button asChild variant="outline">
+            <Link href={importHref}>
+              <Upload className="size-4" />
+              Import CSV
+            </Link>
           </Button>
           <Button asChild>
-            <Link href="/leads/new">
+            <Link href={createLeadHref}>
               <Plus className="size-4" />
               Tạo lead
             </Link>

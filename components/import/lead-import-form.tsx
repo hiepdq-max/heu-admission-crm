@@ -17,8 +17,11 @@ type Option = {
 type LeadImportFormProps = {
   sources: Option[];
   flows: Option[];
+  segments: Option[];
   campaigns: Option[];
   partners: Option[];
+  defaultSegmentId?: string;
+  hasSegmentScope?: boolean;
 };
 
 const initialState: ImportLeadState = {};
@@ -29,26 +32,36 @@ const inputClass =
 const textareaClass =
   "min-h-40 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 font-mono text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
-const sampleCsv = `student_name,student_phone,parent_name,parent_phone,current_school,current_grade,program_code,major_code,flow_code,province,ward,legacy_district,note
-Nguyen Van Test,0912345678,Nguyen Thi Phu Huynh,0987654321,THCS Mau,9,TRUNG_CAP,HUONG_DAN_DU_LICH,ONLINE_MARKETING,Ha Noi,Phuong Mau,Quan cu neu co,Import thu`;
+const sampleCsv = `student_name,student_phone,parent_name,parent_phone,current_school,current_grade,segment_code,program_code,major_code,flow_code,province,ward,legacy_district,note
+Nguyen Van Test,0912345678,Nguyen Thi Phu Huynh,0987654321,THCS Mau,9,TC9_TTGDTX_LINKED,TRUNG_CAP,HUONG_DAN_DU_LICH,ONLINE_MARKETING,Ha Noi,Phuong Mau,Quan cu neu co,Import thu`;
 
 function SelectField({
   label,
   name,
   options,
   placeholder,
+  defaultValue = "",
+  required = false,
 }: {
   label: string;
   name: string;
   options: Option[];
   placeholder: string;
+  defaultValue?: string;
+  required?: boolean;
 }) {
   return (
     <div className="space-y-2">
       <label htmlFor={name} className="text-sm font-medium text-zinc-700">
         {label}
       </label>
-      <select id={name} name={name} className={inputClass} defaultValue="">
+      <select
+        id={name}
+        name={name}
+        className={inputClass}
+        defaultValue={defaultValue}
+        required={required}
+      >
         <option value="">{placeholder}</option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
@@ -125,8 +138,11 @@ function ResultPanel({ state }: { state: ImportLeadState }) {
 export function LeadImportForm({
   sources,
   flows,
+  segments,
   campaigns,
   partners,
+  defaultSegmentId = "",
+  hasSegmentScope = false,
 }: LeadImportFormProps) {
   const [state, formAction, isPending] = useActionState(
     importLeadsAction,
@@ -153,6 +169,14 @@ export function LeadImportForm({
           </div>
 
           <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <SelectField
+              label="Đối tượng tuyển sinh mặc định"
+              name="default_admission_segment_id"
+              options={segments}
+              placeholder="Chọn đối tượng"
+              defaultValue={defaultSegmentId}
+              required={hasSegmentScope}
+            />
             <SelectField
               label="Nguồn mặc định"
               name="default_source_id"

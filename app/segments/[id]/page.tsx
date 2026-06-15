@@ -4,11 +4,16 @@ import { Plus, RefreshCcw, Upload } from "lucide-react";
 
 import { LeadList } from "@/components/leads/lead-list";
 import { AppShell } from "@/components/layout/app-shell";
+import { SegmentOperatingProfile } from "@/components/segments/segment-operating-readiness";
 import { SegmentWorkspaceGuide } from "@/components/segments/segment-workspace-guide";
 import { Button } from "@/components/ui/button";
 import type {
   AdmissionSegmentCatalogRow,
+  AdmissionSegmentFieldRuleRow,
+  AdmissionSegmentOperationStepRow,
+  AdmissionSegmentReadinessRow,
   AdmissionSegmentScopeRow,
+  AdmissionSegmentWorkspaceRow,
 } from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
 
@@ -98,6 +103,10 @@ export default async function SegmentDetailPage({ params }: PageProps) {
     userRowsResult,
     houMajorRowsResult,
     houStageRowsResult,
+    workspaceResult,
+    operationStepsResult,
+    fieldRulesResult,
+    readinessResult,
   ] = await Promise.all([
     supabase.rpc("current_user_role_code"),
     supabase
@@ -137,6 +146,39 @@ export default async function SegmentDetailPage({ params }: PageProps) {
     supabase.from("users_profile").select("id,full_name"),
     supabase.from("hou_majors").select("id,major_code,major_name"),
     supabase.from("hou_admission_stages").select("id,stage_name"),
+    supabase
+      .from("admission_segment_workspaces")
+      .select(
+        "id,segment_id,workspace_code,operating_model,lead_scope_rule,required_partner,required_contract,required_commission_policy,required_finance_tracking,required_document_checklist,required_handover_cthssv,hou_controls_enabled,ai_allowed,ai_policy,control_note,control_status",
+      )
+      .eq("segment_id", id)
+      .eq("status", "ACTIVE")
+      .maybeSingle<AdmissionSegmentWorkspaceRow>(),
+    supabase
+      .from("admission_segment_operation_steps")
+      .select(
+        "id,segment_id,step_code,step_name,step_group,owner_department,action_href,required_for_operation,control_note,sort_order,control_status",
+      )
+      .eq("segment_id", id)
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionSegmentOperationStepRow[]>(),
+    supabase
+      .from("admission_segment_field_rules")
+      .select(
+        "id,segment_id,field_code,field_label,field_group,is_visible,is_required,help_text,sort_order,control_status",
+      )
+      .eq("segment_id", id)
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionSegmentFieldRuleRow[]>(),
+    supabase
+      .from("admission_segment_operating_readiness")
+      .select(
+        "segment_id,segment_code,segment_name,program_group,owner_department,workspace_id,workspace_code,operating_model,required_partner,required_contract,required_commission_policy,required_finance_tracking,required_document_checklist,required_handover_cthssv,hou_controls_enabled,ai_allowed,control_status,lead_count,enrolled_count,scoped_user_count,operation_step_count,required_step_count,visible_field_count,required_field_count,has_workspace_profile,has_required_steps,has_required_fields,has_user_scope,readiness_score,readiness_status,missing_items,ai_gate_status",
+      )
+      .eq("segment_id", id)
+      .maybeSingle<AdmissionSegmentReadinessRow>(),
   ]);
 
   const segment = segmentResult.data;
@@ -189,6 +231,18 @@ export default async function SegmentDetailPage({ params }: PageProps) {
       }
     >
       <SegmentWorkspaceGuide segment={segment} />
+      <SegmentOperatingProfile
+        readiness={readinessResult.data}
+        workspace={workspaceResult.data}
+        steps={operationStepsResult.data ?? []}
+        fieldRules={fieldRulesResult.data ?? []}
+        loadError={
+          workspaceResult.error?.message ??
+          operationStepsResult.error?.message ??
+          fieldRulesResult.error?.message ??
+          readinessResult.error?.message
+        }
+      />
 
       {leadsResult.error ? (
         <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
