@@ -171,10 +171,10 @@ export function AdmissionSegmentOverview({
                       <div className="mt-4 flex items-center justify-between gap-3 text-xs text-zinc-500">
                         <span>{segment.owner_department}</span>
                         <Link
-                          href={`/leads?segment=${segment.id}`}
+                          href={`/segments/${segment.id}`}
                           className="font-medium text-zinc-800 underline"
                         >
-                          Xem lead
+                          Vào đối tượng
                         </Link>
                       </div>
                     </article>

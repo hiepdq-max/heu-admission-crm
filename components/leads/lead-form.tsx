@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { Loader2, Save } from "lucide-react";
 
 import { createLeadAction, type LeadFormState } from "@/app/leads/actions";
@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 type Option = {
   id: string;
   label: string;
+  code?: string;
+  programGroup?: string;
 };
 
 type MajorOption = Option & {
@@ -31,6 +33,7 @@ type LeadFormProps = {
   houStages: Option[];
   hasSegmentScope: boolean;
   hasPartnerScope: boolean;
+  defaultSegmentId?: string;
 };
 
 const initialState: LeadFormState = {};
@@ -126,11 +129,18 @@ export function LeadForm({
   houStages,
   hasSegmentScope,
   hasPartnerScope,
+  defaultSegmentId = "",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
     createLeadAction,
     initialState,
   );
+  const [selectedSegmentId, setSelectedSegmentId] = useState(defaultSegmentId);
+  const selectedSegment = useMemo(
+    () => segments.find((segment) => segment.id === selectedSegmentId),
+    [segments, selectedSegmentId],
+  );
+  const isHouSegment = selectedSegment?.code === "UNIVERSITY_TRANSFER_HOU";
 
   return (
     <form action={formAction} className="space-y-6">
@@ -268,18 +278,39 @@ export function LeadForm({
                 ))}
             </select>
           </div>
-          <SelectField
-            label="Đối tượng tuyển sinh"
-            name="admission_segment_id"
-            options={segments}
-            placeholder="Chọn đối tượng tuyển sinh"
-            required={hasSegmentScope}
-            helpText={
-              hasSegmentScope
-                ? "Tài khoản này chỉ được tạo lead trong đối tượng đã được phân."
-                : undefined
-            }
-          />
+          <div className="space-y-2">
+            <label
+              htmlFor="admission_segment_id"
+              className="text-sm font-medium text-zinc-700"
+            >
+              Đối tượng tuyển sinh
+              {hasSegmentScope ? <span className="text-rose-600"> *</span> : null}
+            </label>
+            <select
+              id="admission_segment_id"
+              name="admission_segment_id"
+              className={inputClass}
+              value={selectedSegmentId}
+              required={hasSegmentScope}
+              onChange={(event) => setSelectedSegmentId(event.target.value)}
+            >
+              <option value="">Chọn đối tượng tuyển sinh</option>
+              {segments.map((segment) => (
+                <option key={segment.id} value={segment.id}>
+                  {segment.label}
+                </option>
+              ))}
+            </select>
+            {selectedSegment ? (
+              <p className="rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
+                Đang tạo lead trong: {selectedSegment.label}
+              </p>
+            ) : hasSegmentScope ? (
+              <p className="text-xs text-zinc-500">
+                Tài khoản này chỉ được tạo lead trong đối tượng đã được phân.
+              </p>
+            ) : null}
+          </div>
           <SelectField
             label="Nguồn lead"
             name="source_id"
@@ -328,6 +359,7 @@ export function LeadForm({
         </div>
       </section>
 
+      {isHouSegment ? (
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
         <h2 className="text-base font-semibold">Theo dõi HOU nếu là lead liên thông đại học</h2>
         <p className="mt-1 text-sm text-zinc-500">
@@ -367,6 +399,7 @@ export function LeadForm({
           />
         </div>
       </section>
+      ) : null}
 
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
         <h2 className="text-base font-semibold">Trạng thái chăm sóc</h2>

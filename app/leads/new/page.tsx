@@ -24,8 +24,15 @@ type PartnerScopeRow = {
 
 type SegmentOptionRow = {
   id: string;
+  segment_code: string;
   segment_name: string;
   program_group: string | null;
+};
+
+type NewLeadPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 function toOptions<T extends Record<string, unknown>>(
@@ -49,7 +56,11 @@ function filterRowsByScope<T extends { id: unknown }>(
   return (rows ?? []).filter((row) => allowedIds.has(String(row.id)));
 }
 
-export default async function NewLeadPage() {
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -58,6 +69,8 @@ export default async function NewLeadPage() {
   if (!user) {
     redirect("/login");
   }
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
 
   const [
     { data: sourceRows },
@@ -98,7 +111,7 @@ export default async function NewLeadPage() {
         .order("partner_name", { ascending: true }),
       supabase
         .from("admission_segments")
-        .select("id,segment_name,program_group")
+        .select("id,segment_code,segment_name,program_group")
         .eq("status", "ACTIVE")
         .order("sort_order", { ascending: true })
         .returns<SegmentOptionRow[]>(),
@@ -159,7 +172,14 @@ export default async function NewLeadPage() {
     label: segment.program_group
       ? `${segment.program_group} - ${segment.segment_name}`
       : segment.segment_name,
+    code: segment.segment_code,
+    programGroup: segment.program_group ?? undefined,
   }));
+  const defaultSegmentId = segmentSelectOptions.some(
+    (segment) => segment.id === requestedSegmentId,
+  )
+    ? requestedSegmentId ?? ""
+    : "";
   const hasSegmentScope = allowedSegmentIds.size > 0;
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = toOptions(programRows, "program_name");
@@ -196,6 +216,7 @@ export default async function NewLeadPage() {
         houStages={toOptions(houStageRows, "stage_name")}
         hasSegmentScope={hasSegmentScope}
         hasPartnerScope={hasPartnerScope}
+        defaultSegmentId={defaultSegmentId}
       />
     </AppShell>
   );
