@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Bot,
   Database,
@@ -7,6 +8,20 @@ import {
   ShieldAlert,
   ShieldCheck,
 } from "lucide-react";
+
+import {
+  aiAllowedLabel,
+  approvalDisplay,
+  labelToken,
+  masterDataDisplay,
+  moduleDisplay,
+  riskDisplay,
+  severityLabel,
+  statusLabel,
+  statusTone,
+  typeLabel,
+  workflowDisplay,
+} from "@/lib/heu-os-display";
 
 export type HeuOsModuleRow = {
   id: string;
@@ -93,39 +108,12 @@ type HeuOsMapOverviewProps = {
   loadError?: string;
 };
 
-const statusLabels: Record<string, string> = {
-  DAT: "Đạt chính thức",
-  DAT_TAM_THOI: "Đạt tạm thời",
-  CAN_SUA: "Cần sửa",
-  CHUA_DU_DIEU_KIEN: "Chưa đủ điều kiện",
-};
-
 const severityTones: Record<string, string> = {
   LOW: "border-zinc-200 bg-zinc-50 text-zinc-700",
   MEDIUM: "border-amber-200 bg-amber-50 text-amber-700",
   HIGH: "border-orange-200 bg-orange-50 text-orange-700",
   CRITICAL: "border-rose-200 bg-rose-50 text-rose-700",
 };
-
-function statusLabel(value: string) {
-  return statusLabels[value] ?? value;
-}
-
-function statusTone(value: string) {
-  if (value === "DAT") {
-    return "border-emerald-200 bg-emerald-50 text-emerald-700";
-  }
-
-  if (value === "CHUA_DU_DIEU_KIEN") {
-    return "border-rose-200 bg-rose-50 text-rose-700";
-  }
-
-  if (value === "CAN_SUA") {
-    return "border-amber-200 bg-amber-50 text-amber-700";
-  }
-
-  return "border-sky-200 bg-sky-50 text-sky-700";
-}
 
 function groupByModule<T extends { module_code: string }>(rows: T[]) {
   const groups = new Map<string, T[]>();
@@ -241,6 +229,14 @@ export function HeuOsMapOverview({
               const moduleApprovals = approvalMap.get(module.module_code) ?? [];
               const moduleData = dataMap.get(module.module_code) ?? [];
               const moduleRisks = riskMap.get(module.module_code) ?? [];
+              const display = moduleDisplay(module.module_code, {
+                name: module.module_name,
+                objective: module.objective,
+                corePolicy: module.core_policy,
+                aiPolicy: module.ai_policy,
+                group: module.module_group,
+                owner: module.owner_department,
+              });
 
               return (
                 <article
@@ -253,10 +249,10 @@ export function HeuOsMapOverview({
                         {module.module_code}
                       </p>
                       <h4 className="mt-1 font-semibold text-zinc-950">
-                        {module.module_name}
+                        {display.name}
                       </h4>
                       <p className="mt-1 text-xs uppercase text-zinc-500">
-                        {module.module_group} · {module.owner_department}
+                        {display.group} · {display.owner}
                       </p>
                     </div>
                     <span
@@ -268,7 +264,7 @@ export function HeuOsMapOverview({
                     </span>
                   </div>
                   <p className="mt-3 text-sm leading-6 text-zinc-600">
-                    {module.objective}
+                    {display.objective}
                   </p>
                   <div className="mt-4 grid gap-2 text-xs sm:grid-cols-4">
                     <span className="rounded-md bg-white px-2 py-2 text-zinc-600">
@@ -287,16 +283,24 @@ export function HeuOsMapOverview({
                   <dl className="mt-4 space-y-3 text-xs leading-5 text-zinc-600">
                     <div>
                       <dt className="font-medium text-zinc-900">Control</dt>
-                      <dd>{module.core_policy}</dd>
+                      <dd>{display.corePolicy}</dd>
                     </div>
                     <div>
                       <dt className="flex items-center gap-1 font-medium text-zinc-900">
                         <Bot className="size-3.5" />
                         AI policy
                       </dt>
-                      <dd>{module.ai_policy}</dd>
+                      <dd>{display.aiPolicy}</dd>
                     </div>
                   </dl>
+                  <Link
+                    href={`/master-control/modules/${encodeURIComponent(
+                      module.module_code,
+                    )}`}
+                    className="mt-4 inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
+                  >
+                    Mở chi tiết module
+                  </Link>
                 </article>
               );
             })
@@ -310,34 +314,42 @@ export function HeuOsMapOverview({
             <h3 className="text-base font-semibold">Quy trình liên phòng</h3>
           </div>
           <div className="divide-y divide-zinc-200">
-            {workflows.slice(0, 8).map((workflow) => (
-              <article key={workflow.id} className="p-5 text-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs text-zinc-500">
-                      {workflow.workflow_code}
-                    </p>
-                    <h4 className="mt-1 font-semibold">
-                      {workflow.workflow_name}
-                    </h4>
+            {workflows.slice(0, 8).map((workflow) => {
+              const display = workflowDisplay(workflow.workflow_code, {
+                name: workflow.workflow_name,
+                trigger: workflow.trigger_event,
+                output: workflow.output_result,
+                handover: workflow.handover_rule,
+                audit: workflow.audit_rule,
+              });
+
+              return (
+                <article key={workflow.id} className="p-5 text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-xs text-zinc-500">
+                        {workflow.workflow_code}
+                      </p>
+                      <h4 className="mt-1 font-semibold">{display.name}</h4>
+                    </div>
+                    <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
+                      {workflow.module_code}
+                    </span>
                   </div>
-                  <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
-                    {workflow.module_code}
-                  </span>
-                </div>
-                <p className="mt-3 leading-6 text-zinc-600">
-                  {workflow.trigger_event}
-                </p>
-                <p className="mt-2 text-xs text-zinc-500">
-                  Bắt đầu: {workflow.start_role} · Kiểm:{" "}
-                  {workflow.checker_role ?? "Chưa rõ"} · Duyệt:{" "}
-                  {workflow.approver_role ?? "Chưa rõ"}
-                </p>
-                <p className="mt-2 text-xs text-zinc-500">
-                  Kết quả: {workflow.output_result}
-                </p>
-              </article>
-            ))}
+                  <p className="mt-3 leading-6 text-zinc-600">
+                    {display.trigger}
+                  </p>
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Bắt đầu: {labelToken(workflow.start_role)} · Kiểm:{" "}
+                    {labelToken(workflow.checker_role)} · Duyệt:{" "}
+                    {labelToken(workflow.approver_role)}
+                  </p>
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Kết quả: {display.output}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
 
@@ -346,31 +358,37 @@ export function HeuOsMapOverview({
             <h3 className="text-base font-semibold">Ma trận duyệt</h3>
           </div>
           <div className="divide-y divide-zinc-200">
-            {approvals.slice(0, 8).map((approval) => (
-              <article key={approval.id} className="p-5 text-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs text-zinc-500">
-                      {approval.approval_code}
-                    </p>
-                    <h4 className="mt-1 font-semibold">
-                      {approval.decision_name}
-                    </h4>
+            {approvals.slice(0, 8).map((approval) => {
+              const display = approvalDisplay(approval.approval_code, {
+                name: approval.decision_name,
+                evidence: approval.required_evidence,
+                blocking: approval.blocking_rule,
+              });
+
+              return (
+                <article key={approval.id} className="p-5 text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-xs text-zinc-500">
+                        {approval.approval_code}
+                      </p>
+                      <h4 className="mt-1 font-semibold">{display.name}</h4>
+                    </div>
+                    <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
+                      {labelToken(approval.decision_level)}
+                    </span>
                   </div>
-                  <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
-                    {approval.decision_level}
-                  </span>
-                </div>
-                <p className="mt-2 text-xs text-zinc-500">
-                  Người làm: {approval.maker_role} · Kiểm:{" "}
-                  {approval.checker_role ?? "Chưa rõ"} · Duyệt:{" "}
-                  {approval.approver_role}
-                </p>
-                <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
-                  Chặn nếu: {approval.blocking_rule}
-                </p>
-              </article>
-            ))}
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Người làm: {labelToken(approval.maker_role)} · Kiểm:{" "}
+                    {labelToken(approval.checker_role)} · Duyệt:{" "}
+                    {labelToken(approval.approver_role)}
+                  </p>
+                  <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
+                    Chặn nếu: {display.blocking}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -381,28 +399,36 @@ export function HeuOsMapOverview({
             <h3 className="text-base font-semibold">Dữ liệu gốc</h3>
           </div>
           <div className="divide-y divide-zinc-200">
-            {masterData.slice(0, 8).map((data) => (
-              <article key={data.id} className="p-5 text-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs text-zinc-500">
-                      {data.data_code}
-                    </p>
-                    <h4 className="mt-1 font-semibold">{data.data_name}</h4>
+            {masterData.slice(0, 8).map((data) => {
+              const display = masterDataDisplay(data.data_code, {
+                name: data.data_name,
+                changeRule: data.change_rule,
+              });
+
+              return (
+                <article key={data.id} className="p-5 text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-xs text-zinc-500">
+                        {data.data_code}
+                      </p>
+                      <h4 className="mt-1 font-semibold">{display.name}</h4>
+                    </div>
+                    <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
+                      {typeLabel(data.sensitivity_level)}
+                    </span>
                   </div>
-                  <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
-                    {data.sensitivity_level}
-                  </span>
-                </div>
-                <p className="mt-2 text-xs text-zinc-500">
-                  Bảng: {data.source_table} · Owner: {data.owner_department} ·
-                  AI: {data.ai_allowed ? "được đọc" : "không đọc"}
-                </p>
-                <p className="mt-3 text-xs leading-5 text-zinc-600">
-                  {data.change_rule}
-                </p>
-              </article>
-            ))}
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Bảng: {data.source_table} · Owner:{" "}
+                    {labelToken(data.owner_department)} ·{" "}
+                    {aiAllowedLabel(data.ai_allowed)}
+                  </p>
+                  <p className="mt-3 text-xs leading-5 text-zinc-600">
+                    {display.changeRule}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
 
@@ -411,31 +437,40 @@ export function HeuOsMapOverview({
             <h3 className="text-base font-semibold">Rủi ro và kiểm soát</h3>
           </div>
           <div className="divide-y divide-zinc-200">
-            {risks.slice(0, 8).map((risk) => (
-              <article key={risk.id} className="p-5 text-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-xs text-zinc-500">
-                      {risk.risk_code}
-                    </p>
-                    <h4 className="mt-1 font-semibold">{risk.risk_name}</h4>
+            {risks.slice(0, 8).map((risk) => {
+              const display = riskDisplay(risk.risk_code, {
+                name: risk.risk_name,
+                description: risk.risk_description,
+                control: risk.control_rule,
+                escalation: risk.escalation_rule,
+              });
+
+              return (
+                <article key={risk.id} className="p-5 text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-xs text-zinc-500">
+                        {risk.risk_code}
+                      </p>
+                      <h4 className="mt-1 font-semibold">{display.name}</h4>
+                    </div>
+                    <span
+                      className={`rounded-md border px-2 py-1 text-xs font-medium ${
+                        severityTones[risk.severity] ?? severityTones.MEDIUM
+                      }`}
+                    >
+                      {severityLabel(risk.severity)}
+                    </span>
                   </div>
-                  <span
-                    className={`rounded-md border px-2 py-1 text-xs font-medium ${
-                      severityTones[risk.severity] ?? severityTones.MEDIUM
-                    }`}
-                  >
-                    {risk.severity}
-                  </span>
-                </div>
-                <p className="mt-3 text-xs leading-5 text-zinc-600">
-                  {risk.risk_description}
-                </p>
-                <p className="mt-3 rounded-md bg-zinc-50 p-3 text-xs leading-5 text-zinc-600">
-                  Control: {risk.control_rule}
-                </p>
-              </article>
-            ))}
+                  <p className="mt-3 text-xs leading-5 text-zinc-600">
+                    {display.description}
+                  </p>
+                  <p className="mt-3 rounded-md bg-zinc-50 p-3 text-xs leading-5 text-zinc-600">
+                    Kiểm soát: {display.control}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
