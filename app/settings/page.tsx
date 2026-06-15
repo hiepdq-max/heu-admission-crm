@@ -103,6 +103,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     redirect("/login");
   }
 
+  const { data: currentRoleCode } = await supabase.rpc(
+    "current_user_role_code",
+  );
+
+  if (currentRoleCode !== "ADMIN") {
+    redirect("/");
+  }
+
   const params = await searchParams;
 
   const [
@@ -217,9 +225,6 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   const error = params?.error
     ? errorMessages[params.error] ?? decodeURIComponent(params.error)
     : usersError?.message;
-  const currentProfile = users?.find((profile) => profile.id === user.id);
-  const currentRoleCode =
-    roles?.find((role) => role.id === currentProfile?.role_id)?.code ?? "";
   const canViewSensitiveHouFinance = [
     "ADMIN",
     "BGH",

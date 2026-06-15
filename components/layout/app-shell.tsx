@@ -56,7 +56,13 @@ const navigation = [
   },
   { label: "Audit log", href: "/audit", icon: ShieldCheck, key: "audit" },
   { label: "AI Assistant", href: "/ai-assistant", icon: Bot, key: "ai-assistant" },
-  { label: "Cấu hình", href: "/settings", icon: Settings, key: "settings" },
+  {
+    label: "Cấu hình",
+    href: "/settings",
+    icon: Settings,
+    key: "settings",
+    adminOnly: true,
+  },
 ];
 
 export async function AppShell({
@@ -71,6 +77,12 @@ export async function AppShell({
     data: { user },
   } = await supabase.auth.getUser();
   const userEmail = user?.email ?? null;
+  const { data: currentRoleCode } = user
+    ? await supabase.rpc("current_user_role_code")
+    : { data: null };
+  const visibleNavigation = navigation.filter(
+    (item) => !item.adminOnly || currentRoleCode === "ADMIN",
+  );
 
   return (
     <main className="min-h-screen bg-zinc-100 text-zinc-950">
@@ -87,7 +99,7 @@ export async function AppShell({
           </div>
 
           <nav className="space-y-1 px-3 py-4">
-            {navigation.map((item) => {
+            {visibleNavigation.map((item) => {
               const Icon = item.icon;
               const isActive = active === item.key;
 
