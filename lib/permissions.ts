@@ -47,6 +47,33 @@ export const permissionGroups: PermissionGroup[] = [
     ],
   },
   {
+    name: "Master Control",
+    items: [
+      {
+        code: "master_control.read",
+        label: "Xem Master Control",
+        description:
+          "Xem Legal Registry, SOP Registry, Data Dictionary và Decision Gate.",
+      },
+      {
+        code: "master_control.manage",
+        label: "Quản lý Master Control",
+        description:
+          "Tạo và cập nhật căn cứ pháp chế, SOP, data dictionary và gate.",
+      },
+      {
+        code: "master_control.check",
+        label: "Kiểm Master Control",
+        description: "Dành cho Audit/Pháp chế kiểm bằng chứng và trạng thái.",
+      },
+      {
+        code: "master_control.approve",
+        label: "Duyệt Master Control",
+        description: "Dành cho BGH/Hiệu trưởng duyệt decision gate.",
+      },
+    ],
+  },
+  {
     name: "Lead và pipeline",
     items: [
       {

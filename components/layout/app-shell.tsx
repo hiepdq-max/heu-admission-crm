@@ -4,6 +4,7 @@ import {
   CalendarClock,
   ClipboardCheck,
   Database,
+  FileCheck2,
   FileSpreadsheet,
   GraduationCap,
   LayoutDashboard,
@@ -30,6 +31,13 @@ type AppShellProps = {
 
 const navigation = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard, key: "dashboard" },
+  {
+    label: "Master Control",
+    href: "/master-control",
+    icon: FileCheck2,
+    key: "master-control",
+    permission: "master_control.read",
+  },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
   { label: "Pipeline", href: "/pipeline", icon: ListChecks, key: "pipeline" },
