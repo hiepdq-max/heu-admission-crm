@@ -6,6 +6,7 @@ import {
   type BusinessScopeDepartmentRow,
   type BusinessScopeRoleRow,
   type BusinessScopeUserRow,
+  type UserLeadVisibilityScopeRow,
   type UserPartnerScopeRow,
   type UserSegmentScopeRow,
 } from "@/components/settings/user-business-scope-settings";
@@ -40,6 +41,9 @@ const errorMessages: Record<string, string> = {
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
   not_admin: "Chỉ ADMIN mới được tạo user hoặc đổi role/phòng ban.",
+  invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
+  lead_visibility_all_admin_only:
+    "Chỉ ADMIN mới được gán quyền xem lead toàn hệ thống.",
 };
 
 export default async function ScopeSettingsPage({
@@ -76,6 +80,7 @@ export default async function ScopeSettingsPage({
     { data: partnerScopeOptions },
     { data: userSegmentScopes, error: userSegmentScopesError },
     { data: userPartnerScopes, error: userPartnerScopesError },
+    { data: userLeadVisibilityScopes, error: userLeadVisibilityScopesError },
   ] = await Promise.all([
     supabase
       .from("users_profile")
@@ -123,6 +128,11 @@ export default async function ScopeSettingsPage({
       .select("user_id,partner_id")
       .eq("status", "ACTIVE")
       .returns<UserPartnerScopeRow[]>(),
+    supabase
+      .from("user_lead_visibility_scopes")
+      .select("user_id,lead_visibility")
+      .eq("status", "ACTIVE")
+      .returns<UserLeadVisibilityScopeRow[]>(),
   ]);
 
   const visibleUsers =
@@ -139,6 +149,9 @@ export default async function ScopeSettingsPage({
   );
   const visiblePartnerScopes = (userPartnerScopes ?? []).filter((scope) =>
     visibleUserIds.has(scope.user_id),
+  );
+  const visibleLeadVisibilityScopes = (userLeadVisibilityScopes ?? []).filter(
+    (scope) => visibleUserIds.has(scope.user_id),
   );
   const error = params?.error
     ? errorMessages[params.error] ?? decodeURIComponent(params.error)
@@ -224,12 +237,15 @@ export default async function ScopeSettingsPage({
         }))}
         userSegmentScopes={visibleSegmentScopes}
         userPartnerScopes={visiblePartnerScopes}
+        userLeadVisibilityScopes={visibleLeadVisibilityScopes}
         returnPath="/settings/scopes"
         canManageUserProfiles={currentRoleCode === "ADMIN"}
+        canAssignAllLeadVisibility={currentRoleCode === "ADMIN"}
         loadError={
           admissionSegmentsError?.message ??
           userSegmentScopesError?.message ??
-          userPartnerScopesError?.message
+          userPartnerScopesError?.message ??
+          userLeadVisibilityScopesError?.message
         }
       />
     </AppShell>

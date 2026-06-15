@@ -56,6 +56,7 @@ import {
   type BusinessScopeDepartmentRow,
   type BusinessScopeRoleRow,
   type BusinessScopeUserRow,
+  type UserLeadVisibilityScopeRow,
   type UserPartnerScopeRow,
   type UserSegmentScopeRow,
 } from "@/components/settings/user-business-scope-settings";
@@ -99,6 +100,9 @@ const errorMessages: Record<string, string> = {
   missing_role: "Thiếu role cần cập nhật quyền.",
   not_allowed_scope:
     "Bạn không có quyền phân phạm vi cho tài khoản này.",
+  invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
+  lead_visibility_all_admin_only:
+    "Chỉ ADMIN mới được gán quyền xem lead toàn hệ thống.",
   missing_checklist_data: "Thiếu mã hoặc tên giấy tờ hồ sơ.",
   duplicate_checklist_code:
     "Mã giấy tờ này đã tồn tại. Hãy sửa dòng giấy tờ hiện có hoặc dùng mã khác.",
@@ -155,6 +159,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     { data: partnerScopeOptions },
     { data: userSegmentScopes, error: userSegmentScopesError },
     { data: userPartnerScopes, error: userPartnerScopesError },
+    { data: userLeadVisibilityScopes, error: userLeadVisibilityScopesError },
     { data: programs, error: programsError },
     { data: majors, error: majorsError },
     { data: houPrograms, error: houProgramsError },
@@ -233,6 +238,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       .eq("status", "ACTIVE")
       .returns<UserPartnerScopeRow[]>(),
     supabase
+      .from("user_lead_visibility_scopes")
+      .select("user_id,lead_visibility")
+      .eq("status", "ACTIVE")
+      .returns<UserLeadVisibilityScopeRow[]>(),
+    supabase
       .from("admission_programs")
       .select("id,program_code,program_name,sort_order,status")
       .order("sort_order", { ascending: true })
@@ -290,6 +300,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     "BGH",
     "ADMISSION_HEAD",
   ].includes(currentRoleCode);
+  const canAssignAllLeadVisibility = currentRoleCode === "ADMIN";
   const canViewHouCommission = [
     "ADMIN",
     "BGH",
@@ -493,9 +504,13 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
           }))}
           userSegmentScopes={userSegmentScopes ?? []}
           userPartnerScopes={userPartnerScopes ?? []}
+          userLeadVisibilityScopes={userLeadVisibilityScopes ?? []}
           canManageUserProfiles
+          canAssignAllLeadVisibility={canAssignAllLeadVisibility}
           loadError={
-            userSegmentScopesError?.message ?? userPartnerScopesError?.message
+            userSegmentScopesError?.message ??
+            userPartnerScopesError?.message ??
+            userLeadVisibilityScopesError?.message
           }
         />
         <ProgramMajorSettings

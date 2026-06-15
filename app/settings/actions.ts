@@ -12,6 +12,8 @@ function textValue(formData: FormData, key: string) {
   return value.length > 0 ? value : null;
 }
 
+const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
+
 export async function updateUserProfileAction(formData: FormData) {
   const supabase = await createClient();
   const {
@@ -319,9 +321,14 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
   const returnPath =
     requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
   const targetUserId = textValue(formData, "user_id");
+  const leadVisibility = String(formData.get("lead_visibility") ?? "OWN");
 
   if (!targetUserId) {
     redirect(`${returnPath}?error=missing_user`);
+  }
+
+  if (!allowedLeadVisibility.has(leadVisibility)) {
+    redirect(`${returnPath}?error=invalid_lead_visibility`);
   }
 
   const { data: canManage, error: canManageError } = await supabase.rpc(
@@ -335,6 +342,14 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
 
   if (!canManage) {
     redirect(`${returnPath}?error=not_allowed_scope`);
+  }
+
+  const { data: currentRoleCode } = await supabase.rpc(
+    "current_user_role_code",
+  );
+
+  if (leadVisibility === "ALL" && currentRoleCode !== "ADMIN") {
+    redirect(`${returnPath}?error=lead_visibility_all_admin_only`);
   }
 
   const segmentIds = formData
@@ -398,6 +413,28 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
         `${returnPath}?error=${encodeURIComponent(partnerInsertError.message)}`,
       );
     }
+  }
+
+  const { error: leadVisibilityError } = await supabase
+    .from("user_lead_visibility_scopes")
+    .upsert(
+      {
+        user_id: targetUserId,
+        lead_visibility: leadVisibility,
+        assigned_by: user.id,
+        status: "ACTIVE",
+      },
+      { onConflict: "user_id" },
+    );
+
+  if (leadVisibilityError) {
+    const message = leadVisibilityError.message.includes(
+      "user_lead_visibility_scopes",
+    )
+      ? "Chua chay SQL database/step40_user_lead_visibility.sql."
+      : leadVisibilityError.message;
+
+    redirect(`${returnPath}?error=${encodeURIComponent(message)}`);
   }
 
   revalidatePath("/settings");

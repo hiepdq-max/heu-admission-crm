@@ -40,6 +40,11 @@ export type UserPartnerScopeRow = {
   partner_id: string;
 };
 
+export type UserLeadVisibilityScopeRow = {
+  user_id: string;
+  lead_visibility: string;
+};
+
 export type ScopeOptionRow = {
   id: string;
   label: string;
@@ -54,13 +59,38 @@ type UserBusinessScopeSettingsProps = {
   partners: ScopeOptionRow[];
   userSegmentScopes: UserSegmentScopeRow[];
   userPartnerScopes: UserPartnerScopeRow[];
+  userLeadVisibilityScopes: UserLeadVisibilityScopeRow[];
   loadError?: string;
   returnPath?: "/settings" | "/settings/scopes";
   canManageUserProfiles?: boolean;
+  canAssignAllLeadVisibility?: boolean;
 };
 
 const selectClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
+
+const leadVisibilityOptions = [
+  {
+    value: "OWN",
+    label: "Chỉ lead của mình",
+    description: "User chỉ thấy lead do mình tạo hoặc đang được gán xử lý.",
+  },
+  {
+    value: "TEAM",
+    label: "Lead của mình và cấp dưới",
+    description: "Dùng cho trưởng nhóm hoặc người quản lý trực tiếp.",
+  },
+  {
+    value: "DEPARTMENT",
+    label: "Lead cùng phòng ban",
+    description: "Dùng cho trưởng phòng xem đúng phần việc của phòng.",
+  },
+  {
+    value: "ALL",
+    label: "Toàn hệ thống",
+    description: "Chỉ ADMIN nên dùng cho tài khoản quản trị đặc biệt.",
+  },
+];
 
 function toScopeMap<T extends { user_id: string }>(
   rows: T[],
@@ -99,6 +129,26 @@ function isStaffRole(role: BusinessScopeRoleRow | undefined) {
   return !["ADMIN", "BGH"].includes(role.code) && !isDepartmentHeadRole(role);
 }
 
+function defaultLeadVisibilityForRole(role: BusinessScopeRoleRow | undefined) {
+  if (!role) {
+    return "OWN";
+  }
+
+  if (["ADMIN", "BGH"].includes(role.code)) {
+    return "ALL";
+  }
+
+  if (isDepartmentHeadRole(role)) {
+    return "DEPARTMENT";
+  }
+
+  if (role.code === "TEAM_LEAD") {
+    return "TEAM";
+  }
+
+  return "OWN";
+}
+
 function labelFromMap(map: Map<string, string>, id: string | null) {
   return id ? map.get(id) ?? "Chưa rõ" : "Chưa gắn";
 }
@@ -111,9 +161,11 @@ export function UserBusinessScopeSettings({
   partners,
   userSegmentScopes,
   userPartnerScopes,
+  userLeadVisibilityScopes,
   loadError,
   returnPath = "/settings",
   canManageUserProfiles = false,
+  canAssignAllLeadVisibility = false,
 }: UserBusinessScopeSettingsProps) {
   const [selectedUserId, setSelectedUserId] = useState(users[0]?.id ?? "");
   const selectedUser = users.find((user) => user.id === selectedUserId) ?? null;
@@ -131,6 +183,12 @@ export function UserBusinessScopeSettings({
   const userMap = new Map(users.map((user) => [user.id, user.full_name]));
   const segmentScopeMap = toScopeMap(userSegmentScopes, "segment_id");
   const partnerScopeMap = toScopeMap(userPartnerScopes, "partner_id");
+  const leadVisibilityMap = new Map(
+    userLeadVisibilityScopes.map((scope) => [
+      scope.user_id,
+      scope.lead_visibility,
+    ]),
+  );
   const selectedSegments = selectedUser
     ? segmentScopeMap.get(selectedUser.id) ?? new Set<string>()
     : new Set<string>();
@@ -138,6 +196,12 @@ export function UserBusinessScopeSettings({
     ? partnerScopeMap.get(selectedUser.id) ?? new Set<string>()
     : new Set<string>();
   const draftRole = roles.find((role) => role.id === draftRoleId);
+  const effectiveLeadVisibility = selectedUser
+    ? leadVisibilityMap.get(selectedUser.id) ??
+      defaultLeadVisibilityForRole(
+        roles.find((role) => role.id === selectedUser.role_id),
+      )
+    : "OWN";
   const staffRole = isStaffRole(draftRole);
   const departmentHeads = users.filter((candidate) => {
     const role = roles.find((item) => item.id === candidate.role_id);
@@ -222,6 +286,10 @@ export function UserBusinessScopeSettings({
           Chưa đọc được bảng phân phạm vi. Hãy chạy file SQL{" "}
           <span className="font-mono">
             database/step38_user_scopes_and_handovers.sql
+          </span>{" "}
+          và nếu đang thiếu mức hiển thị lead thì chạy thêm{" "}
+          <span className="font-mono">
+            database/step40_user_lead_visibility.sql
           </span>{" "}
           trong Supabase SQL Editor. Chi tiết: {loadError}
         </div>
@@ -392,6 +460,59 @@ export function UserBusinessScopeSettings({
                           {selectedPartners.size} đối tác
                         </span>
                         <Button type="submit">Lưu phạm vi</Button>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 rounded-md border border-zinc-200 bg-zinc-50 p-3">
+                      <label
+                        htmlFor={`lead-visibility-${selectedUser.id}`}
+                        className="text-xs font-semibold uppercase text-zinc-500"
+                      >
+                        Mức hiển thị lead
+                      </label>
+                      <select
+                        id={`lead-visibility-${selectedUser.id}`}
+                        name="lead_visibility"
+                        defaultValue={effectiveLeadVisibility}
+                        className={`${selectClass} mt-2`}
+                      >
+                        {leadVisibilityOptions
+                          .filter(
+                            (option) =>
+                              option.value !== "ALL" ||
+                              canAssignAllLeadVisibility,
+                          )
+                          .map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                      </select>
+                      <p className="mt-2 text-xs leading-5 text-zinc-500">
+                        Nếu user vẫn thấy thông tin của người khác, chọn
+                        &quot;Chỉ lead của mình&quot;. Phạm vi đối tượng/đối tác
+                        bên dưới vẫn được áp dụng song song.
+                      </p>
+                      <div className="mt-2 grid gap-2 text-xs text-zinc-500 sm:grid-cols-2">
+                        {leadVisibilityOptions
+                          .filter(
+                            (option) =>
+                              option.value !== "ALL" ||
+                              canAssignAllLeadVisibility,
+                          )
+                          .map((option) => (
+                            <div
+                              key={option.value}
+                              className="rounded border border-zinc-200 bg-white p-2"
+                            >
+                              <span className="font-medium text-zinc-700">
+                                {option.label}
+                              </span>
+                              <span className="mt-1 block">
+                                {option.description}
+                              </span>
+                            </div>
+                          ))}
                       </div>
                     </div>
 
