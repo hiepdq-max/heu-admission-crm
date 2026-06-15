@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { allPermissions } from "@/lib/permissions";
 
 function textValue(formData: FormData, key: string) {
   const value = String(formData.get(key) ?? "").trim();
@@ -76,6 +77,81 @@ export async function updateUserProfileAction(formData: FormData) {
 
   revalidatePath("/settings");
   redirect("/settings?updated=1");
+}
+
+export async function updateRolePermissionsAction(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: currentRoleCode } = await supabase.rpc(
+    "current_user_role_code",
+  );
+
+  if (currentRoleCode !== "ADMIN") {
+    redirect("/settings?error=not_admin");
+  }
+
+  const roleId = textValue(formData, "role_id");
+
+  if (!roleId) {
+    redirect("/settings?error=missing_role");
+  }
+
+  const { data: targetRole } = await supabase
+    .from("roles")
+    .select("code")
+    .eq("id", roleId)
+    .maybeSingle();
+
+  if (!targetRole) {
+    redirect("/settings?error=missing_role");
+  }
+
+  const allowedPermissions = new Set(allPermissions);
+  const selectedPermissions = new Set(
+    formData
+      .getAll("permissions")
+      .map((permission) => String(permission))
+      .filter((permission) => allowedPermissions.has(permission)),
+  );
+
+  if (targetRole.code === "ADMIN") {
+    selectedPermissions.add("system.manage");
+    selectedPermissions.add("users.manage");
+  }
+
+  const { error: deleteError } = await supabase
+    .from("role_permissions")
+    .delete()
+    .eq("role_id", roleId);
+
+  if (deleteError) {
+    redirect(`/settings?error=${encodeURIComponent(deleteError.message)}`);
+  }
+
+  const rows = [...selectedPermissions].map((permission) => ({
+    role_id: roleId,
+    permission,
+  }));
+
+  if (rows.length > 0) {
+    const { error: insertError } = await supabase
+      .from("role_permissions")
+      .insert(rows);
+
+    if (insertError) {
+      redirect(`/settings?error=${encodeURIComponent(insertError.message)}`);
+    }
+  }
+
+  revalidatePath("/settings");
+  redirect("/settings?permissions_updated=1");
 }
 
 function normalizeDocumentCode(value: string | null) {

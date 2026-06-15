@@ -32,6 +32,7 @@ type LeadDetailData = {
   lost_reason: string | null;
   next_followup_at: string | null;
   note: string | null;
+  created_by: string | null;
   created_at: string;
   updated_at: string;
   hou_program_id: string | null;
@@ -52,6 +53,8 @@ type LeadDetailProps = {
   campaignName: string | null;
   partnerName: string | null;
   ownerName: string | null;
+  creatorName: string | null;
+  lastUpdatedByName: string | null;
   houProgramName: string | null;
   houMajorName: string | null;
   houLocationName: string | null;
@@ -150,6 +153,8 @@ export function LeadDetail({
   campaignName,
   partnerName,
   ownerName,
+  creatorName,
+  lastUpdatedByName,
   houProgramName,
   houMajorName,
   houLocationName,
@@ -312,6 +317,11 @@ export function LeadDetail({
             <div className="rounded-md border border-zinc-200 p-4">
               <h3 className="text-sm font-semibold">Mốc hệ thống</h3>
               <div className="mt-4 space-y-3">
+                <InfoItem label="Người tạo lead" value={creatorName} />
+                <InfoItem
+                  label="Người cập nhật gần nhất"
+                  value={lastUpdatedByName}
+                />
                 <InfoItem label="Ngày tạo" value={formatDateTime(lead.created_at)} />
                 <InfoItem
                   label="Cập nhật gần nhất"

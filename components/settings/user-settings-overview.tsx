@@ -1,7 +1,11 @@
 import { CheckCircle2, ShieldCheck, UserCog, UsersRound } from "lucide-react";
 
-import { updateUserProfileAction } from "@/app/settings/actions";
+import {
+  updateRolePermissionsAction,
+  updateUserProfileAction,
+} from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
+import { permissionGroups } from "@/lib/permissions";
 
 export type UserProfileRow = {
   id: string;
@@ -260,49 +264,105 @@ export function UserSettingsOverview({
         <div className="border-b border-zinc-200 p-5">
           <h2 className="text-base font-semibold">Ma trận role - quyền</h2>
           <p className="mt-1 text-sm text-zinc-500">
-            Bước này đang cho xem quyền theo role. Chỉnh chi tiết từng quyền sẽ
-            làm sau khi có màn hình quản trị nâng cao hơn.
+            Admin tick chọn quyền theo từng role. Các quyền nhạy cảm như cấu
+            hình, audit, COM HOU và xác nhận thanh toán nên chỉ cấp cho đúng
+            nhóm phụ trách.
           </p>
         </div>
 
-        <div className="grid gap-4 p-5 lg:grid-cols-2">
+        <div className="space-y-4 p-5">
           {roles.map((role) => {
-            const rolePermissions = permissionsByRole.get(role.id) ?? [];
+            const rolePermissions = new Set(permissionsByRole.get(role.id) ?? []);
 
             return (
-              <article
+              <form
                 key={role.id}
+                action={updateRolePermissionsAction}
                 className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
               >
-                <div className="flex items-start justify-between gap-4">
+                <input type="hidden" name="role_id" value={role.id} />
+                <div className="flex flex-col gap-3 border-b border-zinc-200 pb-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h3 className="font-semibold text-zinc-950">{role.name}</h3>
                     <p className="mt-1 text-xs font-medium text-zinc-500">
                       {role.code}
                     </p>
+                    <p className="mt-2 max-w-2xl text-sm text-zinc-600">
+                      {role.description ?? "Chưa có mô tả."}
+                    </p>
+                    {role.code === "ADMIN" ? (
+                      <p className="mt-2 text-xs text-amber-700">
+                        ADMIN luôn được giữ quyền quản trị hệ thống và quản lý
+                        người dùng để tránh tự khóa hệ thống.
+                      </p>
+                    ) : null}
                   </div>
-                  <span className="rounded-md bg-white px-2 py-1 text-xs font-medium text-zinc-600">
-                    {rolePermissions.length} quyền
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="rounded-md bg-white px-2 py-1 text-xs font-medium text-zinc-600">
+                      {rolePermissions.size} quyền
+                    </span>
+                    <Button type="submit" size="sm">
+                      Lưu quyền
+                    </Button>
+                  </div>
                 </div>
-                <p className="mt-3 text-sm text-zinc-600">
-                  {role.description ?? "Chưa có mô tả."}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {rolePermissions.length === 0 ? (
-                    <span className="text-sm text-zinc-500">Chưa gắn quyền</span>
-                  ) : (
-                    rolePermissions.map((permission) => (
-                      <span
-                        key={permission}
-                        className="rounded-md border border-zinc-200 bg-white px-2 py-1 text-xs text-zinc-700"
-                      >
-                        {permission}
-                      </span>
-                    ))
-                  )}
+
+                <div className="mt-4 grid gap-4 xl:grid-cols-2">
+                  {permissionGroups.map((group) => (
+                    <fieldset
+                      key={group.name}
+                      className="rounded-md border border-zinc-200 bg-white p-3"
+                    >
+                      <legend className="px-1 text-xs font-semibold uppercase text-zinc-500">
+                        {group.name}
+                      </legend>
+                      <div className="mt-2 space-y-2">
+                        {group.items.map((permission) => {
+                          const lockedAdminPermission =
+                            role.code === "ADMIN" &&
+                            ["system.manage", "users.manage"].includes(
+                              permission.code,
+                            );
+
+                          return (
+                            <label
+                              key={permission.code}
+                              className="flex items-start gap-3 rounded-md p-2 hover:bg-zinc-50"
+                            >
+                              <input
+                                type="checkbox"
+                                name="permissions"
+                                value={permission.code}
+                                defaultChecked={
+                                  rolePermissions.has(permission.code) ||
+                                  lockedAdminPermission
+                                }
+                                disabled={lockedAdminPermission}
+                                className="mt-1 size-4"
+                              />
+                              {lockedAdminPermission ? (
+                                <input
+                                  type="hidden"
+                                  name="permissions"
+                                  value={permission.code}
+                                />
+                              ) : null}
+                              <span>
+                                <span className="block text-sm font-medium text-zinc-900">
+                                  {permission.label}
+                                </span>
+                                <span className="mt-0.5 block text-xs leading-5 text-zinc-500">
+                                  {permission.description}
+                                </span>
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </fieldset>
+                  ))}
                 </div>
-              </article>
+              </form>
             );
           })}
         </div>

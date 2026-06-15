@@ -56,6 +56,7 @@ type LeadDetailData = {
   lost_reason: string | null;
   next_followup_at: string | null;
   note: string | null;
+  created_by: string | null;
   created_at: string;
   updated_at: string;
   source_id: string | null;
@@ -172,7 +173,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
   const { data: lead, error } = await supabase
     .from("leads")
     .select(
-      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_at,updated_at,source_id,flow_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
+      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_by,created_at,updated_at,source_id,flow_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
     )
     .eq("id", id)
     .eq("is_deleted", false)
@@ -293,6 +294,17 @@ export default async function LeadDetailPage({ params }: PageProps) {
     houLocations.find((item) => item.id === lead.hou_location_id)?.label ?? null;
   const houStageName =
     houStages.find((item) => item.id === lead.hou_stage_id)?.label ?? null;
+  const userNameMap = new Map(
+    (userRowsResult.data ?? []).map((profile) => [
+      profile.id,
+      profile.full_name ?? "Không rõ tên",
+    ]),
+  );
+  const creatorName = lead.created_by ? userNameMap.get(lead.created_by) ?? null : null;
+  const lastActivity = activitiesResult.data?.[0];
+  const lastUpdatedByName = lastActivity?.created_by
+    ? userNameMap.get(lastActivity.created_by) ?? null
+    : null;
   const currentUserProfile = userRowsResult.data?.find(
     (profile) => profile.id === user.id,
   );
@@ -477,6 +489,8 @@ export default async function LeadDetailPage({ params }: PageProps) {
         campaignName={campaignName}
         partnerName={partnerName}
         ownerName={ownerName}
+        creatorName={creatorName}
+        lastUpdatedByName={lastUpdatedByName}
         houProgramName={houProgramName}
         houMajorName={houMajorName}
         houLocationName={houLocationName}

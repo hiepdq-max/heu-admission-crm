@@ -16,6 +16,10 @@ import {
   type AdmissionFlowRow,
 } from "@/components/settings/admission-flow-settings";
 import {
+  AdmissionSegmentSettings,
+  type AdmissionSegmentRow,
+} from "@/components/settings/admission-segment-settings";
+import {
   ProgramMajorSettings,
   type AdmissionMajorRow,
   type AdmissionProgramRow,
@@ -63,12 +67,14 @@ type SettingsPageProps = {
     major_updated?: string;
     hou_location_created?: string;
     hou_location_updated?: string;
+    permissions_updated?: string;
     error?: string;
   }>;
 };
 
 const errorMessages: Record<string, string> = {
   missing_user_or_role: "Thiếu user hoặc role cần cập nhật.",
+  missing_role: "Thiếu role cần cập nhật quyền.",
   missing_checklist_data: "Thiếu mã hoặc tên giấy tờ hồ sơ.",
   duplicate_checklist_code:
     "Mã giấy tờ này đã tồn tại. Hãy sửa dòng giấy tờ hiện có hoặc dùng mã khác.",
@@ -121,6 +127,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     { data: checklists },
     { data: leadSources },
     { data: admissionFlows, error: admissionFlowsError },
+    { data: admissionSegments, error: admissionSegmentsError },
     { data: programs, error: programsError },
     { data: majors, error: majorsError },
     { data: houPrograms, error: houProgramsError },
@@ -172,6 +179,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       )
       .order("sort_order", { ascending: true })
       .returns<AdmissionFlowRow[]>(),
+    supabase
+      .from("admission_segments")
+      .select(
+        "id,segment_code,segment_name,program_group,admission_object,delivery_context,partner_model,commission_model,contract_model,finance_risk,owner_department,sort_order,status",
+      )
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionSegmentRow[]>(),
     supabase
       .from("admission_programs")
       .select("id,program_code,program_name,sort_order,status")
@@ -372,8 +387,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                               ? "Đã cập nhật ngành tuyển sinh."
                               : params?.hou_location_created
                                 ? "Đã thêm địa điểm học HOU mới."
-                                : params?.hou_location_updated
+                              : params?.hou_location_updated
                                   ? "Đã cập nhật địa điểm học HOU."
+                                  : params?.permissions_updated
+                                    ? "Đã cập nhật quyền cho role."
                               : undefined
           }
           error={error}
@@ -414,6 +431,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
         <AdmissionFlowSettings
           flows={admissionFlows ?? []}
           loadError={admissionFlowsError?.message}
+        />
+        <AdmissionSegmentSettings
+          segments={admissionSegments ?? []}
+          loadError={admissionSegmentsError?.message}
         />
         <LeadSourceSettings sources={leadSources ?? []} />
         <ChecklistSettings checklists={checklists ?? []} />
