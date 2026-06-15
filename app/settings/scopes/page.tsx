@@ -12,6 +12,11 @@ import {
 } from "@/components/settings/user-business-scope-settings";
 import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
+import {
+  UserScopeEnforcementPanel,
+  type UserScopeEffectiveAccessRow,
+  type UserScopeEnforcementSummaryRow,
+} from "@/components/settings/user-scope-enforcement-panel";
 import { createClient } from "@/lib/supabase/server";
 
 type ScopePageProps = {
@@ -81,6 +86,8 @@ export default async function ScopeSettingsPage({
     { data: userSegmentScopes, error: userSegmentScopesError },
     { data: userPartnerScopes, error: userPartnerScopesError },
     { data: userLeadVisibilityScopes, error: userLeadVisibilityScopesError },
+    { data: scopeEnforcementRows, error: scopeEnforcementRowsError },
+    { data: scopeEnforcementSummary, error: scopeEnforcementSummaryError },
   ] = await Promise.all([
     supabase
       .from("users_profile")
@@ -133,6 +140,19 @@ export default async function ScopeSettingsPage({
       .select("user_id,lead_visibility")
       .eq("status", "ACTIVE")
       .returns<UserLeadVisibilityScopeRow[]>(),
+    supabase
+      .from("user_scope_effective_access")
+      .select(
+        "user_id,email,full_name,user_status,role_code,role_name,department_id,department_code,department_name,manager_id,manager_name,lead_visibility,segment_scope_count,partner_scope_count,direct_report_count,assigned_lead_count,created_lead_count,permission_count,has_leads_read_all,has_leads_write_all,has_settings_manage,has_scope_manage_department,broad_lead_access,has_business_scope,risk_flags,enforcement_status,access_model",
+      )
+      .order("enforcement_status", { ascending: false })
+      .returns<UserScopeEffectiveAccessRow[]>(),
+    supabase
+      .from("user_scope_enforcement_summary")
+      .select(
+        "user_count,ok_count,check_count,needs_fix_count,high_risk_count,broad_access_count,strict_access_count,missing_scope_count",
+      )
+      .maybeSingle<UserScopeEnforcementSummaryRow>(),
   ]);
 
   const visibleUsers =
@@ -152,6 +172,9 @@ export default async function ScopeSettingsPage({
   );
   const visibleLeadVisibilityScopes = (userLeadVisibilityScopes ?? []).filter(
     (scope) => visibleUserIds.has(scope.user_id),
+  );
+  const visibleScopeEnforcementRows = (scopeEnforcementRows ?? []).filter(
+    (row) => visibleUserIds.has(row.user_id),
   );
   const error = params?.error
     ? errorMessages[params.error] ?? decodeURIComponent(params.error)
@@ -220,6 +243,15 @@ export default async function ScopeSettingsPage({
           />
         </>
       ) : null}
+
+      <UserScopeEnforcementPanel
+        rows={visibleScopeEnforcementRows}
+        summary={currentRoleCode === "ADMIN" ? scopeEnforcementSummary : null}
+        loadError={
+          scopeEnforcementRowsError?.message ??
+          scopeEnforcementSummaryError?.message
+        }
+      />
 
       <UserBusinessScopeSettings
         users={visibleUsers}

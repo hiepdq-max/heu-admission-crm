@@ -148,10 +148,19 @@ export function LeadImportForm({
     importLeadsAction,
     initialState,
   );
+  const cannotImportByScope = hasSegmentScope && segments.length === 0;
 
   return (
     <div className="space-y-6">
       <ResultPanel state={state} />
+
+      {cannotImportByScope ? (
+        <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">
+          Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể import
+          lead. Hãy nhờ ADMIN hoặc trưởng phòng vào Phạm vi user để phân đúng
+          đối tượng trước.
+        </section>
+      ) : null}
 
       <form action={formAction} className="space-y-6">
         <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
@@ -265,7 +274,7 @@ export function LeadImportForm({
         </section>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isPending || cannotImportByScope}>
             {isPending ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (

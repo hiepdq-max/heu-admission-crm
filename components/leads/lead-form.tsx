@@ -141,12 +141,21 @@ export function LeadForm({
     [segments, selectedSegmentId],
   );
   const isHouSegment = selectedSegment?.code === "UNIVERSITY_TRANSFER_HOU";
+  const cannotCreateByScope = hasSegmentScope && segments.length === 0;
 
   return (
     <form action={formAction} className="space-y-6">
       {state.error ? (
         <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
           {state.error}
+        </div>
+      ) : null}
+
+      {cannotCreateByScope ? (
+        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm leading-6 text-rose-700">
+          Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể tạo
+          lead. Hãy nhờ ADMIN hoặc trưởng phòng vào Phạm vi user để phân đúng
+          đối tượng trước.
         </div>
       ) : null}
 
@@ -462,7 +471,7 @@ export function LeadForm({
         <Button asChild variant="outline">
           <Link href="/leads">Hủy</Link>
         </Button>
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={isPending || cannotCreateByScope}>
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (

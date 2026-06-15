@@ -47,12 +47,14 @@ export async function createLeadAction(
   }
 
   const [
+    { data: currentRoleCode },
     { data: canWriteAssigned },
     { data: canWriteTeam },
     { data: canWriteAll },
     { data: segmentScopeRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
     supabase.rpc("has_permission", {
       permission_name: "leads.write_assigned",
     }),
@@ -89,8 +91,17 @@ export async function createLeadAction(
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
+  const requiresSegmentScope =
+    currentRoleCode !== "ADMIN" && currentRoleCode !== "BGH";
 
-  if (allowedSegmentIds.size > 0) {
+  if (requiresSegmentScope) {
+    if (allowedSegmentIds.size === 0) {
+      return {
+        error:
+          "Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể tạo lead. Hãy nhờ ADMIN hoặc trưởng phòng phân phạm vi trước.",
+      };
+    }
+
     if (!admissionSegmentId) {
       return {
         error:

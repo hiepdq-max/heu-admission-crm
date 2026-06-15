@@ -16,6 +16,10 @@ type SegmentScopeRow = {
   segment_id: string;
 };
 
+type PartnerScopeRow = {
+  partner_id: string;
+};
+
 type SegmentOptionRow = {
   id: string;
   segment_name: string;
@@ -45,9 +49,10 @@ function firstParam(value: string | string[] | undefined) {
 function filterRowsByScope<T extends { id: unknown }>(
   rows: T[] | null,
   allowedIds: Set<string>,
+  showAllWhenUnscoped: boolean,
 ) {
   if (allowedIds.size === 0) {
-    return rows ?? [];
+    return showAllWhenUnscoped ? (rows ?? []) : [];
   }
 
   return (rows ?? []).filter((row) => allowedIds.has(String(row.id)));
@@ -66,13 +71,16 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
 
   const [
+    { data: currentRoleCode },
     { data: sourceRows },
     { data: flowRows },
     { data: segmentRows },
     { data: campaignRows },
     { data: partnerRows },
     { data: segmentScopeRows },
+    { data: partnerScopeRows },
   ] = await Promise.all([
+      supabase.rpc("current_user_role_code"),
       supabase
         .from("lead_sources")
         .select("id,source_name")
@@ -105,17 +113,37 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
         .eq("user_id", user.id)
         .eq("status", "ACTIVE")
         .returns<SegmentScopeRow[]>(),
+      supabase
+        .from("user_partner_scopes")
+        .select("partner_id")
+        .eq("user_id", user.id)
+        .eq("status", "ACTIVE")
+        .returns<PartnerScopeRow[]>(),
     ]);
   const allowedSegmentIds = new Set(
     (segmentScopeRows ?? []).map((scope) => scope.segment_id),
   );
-  const segmentOptions = filterRowsByScope(segmentRows, allowedSegmentIds).map(
+  const allowedPartnerIds = new Set(
+    (partnerScopeRows ?? []).map((scope) => scope.partner_id),
+  );
+  const canUseGlobalScope =
+    currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
+  const segmentOptions = filterRowsByScope(
+    segmentRows,
+    allowedSegmentIds,
+    canUseGlobalScope,
+  ).map(
     (segment) => ({
       id: String(segment.id),
       label: segment.program_group
         ? `${segment.program_group} - ${segment.segment_name}`
         : segment.segment_name,
     }),
+  );
+  const partnerOptions = filterRowsByScope(
+    partnerRows,
+    allowedPartnerIds,
+    canUseGlobalScope,
   );
   const defaultSegmentId = segmentOptions.some(
     (segment) => segment.id === requestedSegmentId,
@@ -142,9 +170,9 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
         flows={toOptions(flowRows, "flow_name")}
         segments={segmentOptions}
         campaigns={toOptions(campaignRows, "campaign_name")}
-        partners={toOptions(partnerRows, "partner_name")}
+        partners={toOptions(partnerOptions, "partner_name")}
         defaultSegmentId={defaultSegmentId}
-        hasSegmentScope={allowedSegmentIds.size > 0}
+        hasSegmentScope={!canUseGlobalScope}
       />
     </AppShell>
   );

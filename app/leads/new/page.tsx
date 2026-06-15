@@ -48,9 +48,10 @@ function toOptions<T extends Record<string, unknown>>(
 function filterRowsByScope<T extends { id: unknown }>(
   rows: T[] | null,
   allowedIds: Set<string>,
+  showAllWhenUnscoped: boolean,
 ) {
   if (allowedIds.size === 0) {
-    return rows ?? [];
+    return showAllWhenUnscoped ? (rows ?? []) : [];
   }
 
   return (rows ?? []).filter((row) => allowedIds.has(String(row.id)));
@@ -73,6 +74,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
 
   const [
+    { data: currentRoleCode },
     { data: sourceRows },
     { data: flowRows },
     { data: campaignRows },
@@ -87,6 +89,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     { data: segmentScopeRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
+      supabase.rpc("current_user_role_code"),
       supabase
         .from("lead_sources")
         .select("id,source_name")
@@ -165,8 +168,18 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
-  const segmentOptions = filterRowsByScope(segmentRows, allowedSegmentIds);
-  const partnerOptions = filterRowsByScope(partnerRows, allowedPartnerIds);
+  const canUseGlobalScope =
+    currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
+  const segmentOptions = filterRowsByScope(
+    segmentRows,
+    allowedSegmentIds,
+    canUseGlobalScope,
+  );
+  const partnerOptions = filterRowsByScope(
+    partnerRows,
+    allowedPartnerIds,
+    canUseGlobalScope,
+  );
   const segmentSelectOptions = segmentOptions.map((segment) => ({
     id: String(segment.id),
     label: segment.program_group
@@ -180,7 +193,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   )
     ? requestedSegmentId ?? ""
     : "";
-  const hasSegmentScope = allowedSegmentIds.size > 0;
+  const hasSegmentScope = !canUseGlobalScope;
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = toOptions(programRows, "program_name");
   const programMap = new Map(programs.map((program) => [program.id, program.label]));

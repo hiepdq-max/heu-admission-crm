@@ -284,6 +284,7 @@ export async function importLeadsAction(
   const defaultPartnerId = textValue(formData, "default_partner_id");
 
   const [
+    { data: currentRoleCode },
     { data: sources },
     { data: flows },
     { data: segments },
@@ -294,6 +295,7 @@ export async function importLeadsAction(
     { data: existingLeads },
     { data: segmentScopeRows },
   ] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
     supabase
       .from("lead_sources")
       .select("id,source_code,source_name")
@@ -353,14 +355,22 @@ export async function importLeadsAction(
     (segmentScopeRows ?? []).map((scope) => scope.segment_id),
   );
   const validSegmentIds = new Set((segments ?? []).map((segment) => segment.id));
-  const hasSegmentScope = allowedSegmentIds.size > 0;
+  const requiresSegmentScope =
+    currentRoleCode !== "ADMIN" && currentRoleCode !== "BGH";
 
   if (defaultAdmissionSegmentId && !validSegmentIds.has(defaultAdmissionSegmentId)) {
     return { error: "Đối tượng tuyển sinh mặc định không hợp lệ." };
   }
 
+  if (requiresSegmentScope && allowedSegmentIds.size === 0) {
+    return {
+      error:
+        "Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể import lead. Hãy nhờ ADMIN hoặc trưởng phòng phân phạm vi trước.",
+    };
+  }
+
   if (
-    hasSegmentScope &&
+    requiresSegmentScope &&
     defaultAdmissionSegmentId &&
     !allowedSegmentIds.has(defaultAdmissionSegmentId)
   ) {
@@ -471,7 +481,7 @@ export async function importLeadsAction(
       defaultAdmissionSegmentId,
     );
 
-    if (hasSegmentScope && !admissionSegmentId) {
+    if (requiresSegmentScope && !admissionSegmentId) {
       errors.push(
         `Dòng ${rowNumber}: tài khoản này cần chọn đối tượng tuyển sinh khi import.`,
       );
@@ -483,7 +493,10 @@ export async function importLeadsAction(
       return;
     }
 
-    if (hasSegmentScope && !allowedSegmentIds.has(admissionSegmentId ?? "")) {
+    if (
+      requiresSegmentScope &&
+      !allowedSegmentIds.has(admissionSegmentId ?? "")
+    ) {
       errors.push(
         `Dòng ${rowNumber}: bạn không có quyền import vào đối tượng tuyển sinh này.`,
       );
