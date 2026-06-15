@@ -29,6 +29,8 @@ type LeadFormProps = {
   houMajors: Option[];
   houLocations: Option[];
   houStages: Option[];
+  hasSegmentScope: boolean;
+  hasPartnerScope: boolean;
 };
 
 const initialState: LeadFormState = {};
@@ -75,18 +77,29 @@ function SelectField({
   name,
   options,
   placeholder = "Chọn",
+  required,
+  helpText,
 }: {
   label: string;
   name: string;
   options: Option[];
   placeholder?: string;
+  required?: boolean;
+  helpText?: string;
 }) {
   return (
     <div className="space-y-2">
       <label htmlFor={name} className="text-sm font-medium text-zinc-700">
         {label}
+        {required ? <span className="text-rose-600"> *</span> : null}
       </label>
-      <select id={name} name={name} className={inputClass} defaultValue="">
+      <select
+        id={name}
+        name={name}
+        className={inputClass}
+        defaultValue=""
+        required={required}
+      >
         <option value="">{placeholder}</option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
@@ -94,6 +107,7 @@ function SelectField({
           </option>
         ))}
       </select>
+      {helpText ? <p className="text-xs text-zinc-500">{helpText}</p> : null}
     </div>
   );
 }
@@ -110,6 +124,8 @@ export function LeadForm({
   houMajors,
   houLocations,
   houStages,
+  hasSegmentScope,
+  hasPartnerScope,
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
     createLeadAction,
@@ -257,6 +273,12 @@ export function LeadForm({
             name="admission_segment_id"
             options={segments}
             placeholder="Chọn đối tượng tuyển sinh"
+            required={hasSegmentScope}
+            helpText={
+              hasSegmentScope
+                ? "Tài khoản này chỉ được tạo lead trong đối tượng đã được phân."
+                : undefined
+            }
           />
           <SelectField
             label="Nguồn lead"
@@ -281,6 +303,12 @@ export function LeadForm({
             name="partner_id"
             options={partners}
             placeholder="Không gắn đối tác"
+            required={hasPartnerScope}
+            helpText={
+              hasPartnerScope
+                ? "Tài khoản này đang bị giới hạn theo đối tác/trung tâm được phân."
+                : undefined
+            }
           />
           <Field
             label="Tỉnh/thành"

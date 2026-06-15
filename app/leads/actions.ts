@@ -35,6 +35,8 @@ export async function createLeadAction(
   const parentPhone = textValue(formData, "parent_phone");
   const studentPhoneNorm = normalizePhone(studentPhone);
   const parentPhoneNorm = normalizePhone(parentPhone);
+  const admissionSegmentId = textValue(formData, "admission_segment_id");
+  const partnerId = textValue(formData, "partner_id");
 
   if (!studentName) {
     return { error: "Vui lòng nhập họ tên học sinh." };
@@ -42,6 +44,82 @@ export async function createLeadAction(
 
   if (!studentPhone && !parentPhone) {
     return { error: "Cần nhập ít nhất một số điện thoại học sinh hoặc phụ huynh." };
+  }
+
+  const [
+    { data: canWriteAssigned },
+    { data: canWriteTeam },
+    { data: canWriteAll },
+    { data: segmentScopeRows },
+    { data: partnerScopeRows },
+  ] = await Promise.all([
+    supabase.rpc("has_permission", {
+      permission_name: "leads.write_assigned",
+    }),
+    supabase.rpc("has_permission", {
+      permission_name: "leads.write_team",
+    }),
+    supabase.rpc("has_permission", {
+      permission_name: "leads.write_all",
+    }),
+    supabase
+      .from("user_admission_segment_scopes")
+      .select("segment_id")
+      .eq("user_id", user.id)
+      .eq("status", "ACTIVE")
+      .returns<Array<{ segment_id: string }>>(),
+    supabase
+      .from("user_partner_scopes")
+      .select("partner_id")
+      .eq("user_id", user.id)
+      .eq("status", "ACTIVE")
+      .returns<Array<{ partner_id: string }>>(),
+  ]);
+
+  if (!canWriteAssigned && !canWriteTeam && !canWriteAll) {
+    return {
+      error:
+        "Tài khoản này chưa có quyền tạo lead. ADMIN cần gán role Tư vấn viên/Trưởng nhóm/Trưởng phòng tuyển sinh hoặc cấp quyền tạo lead.",
+    };
+  }
+
+  const allowedSegmentIds = new Set(
+    (segmentScopeRows ?? []).map((scope) => scope.segment_id),
+  );
+  const allowedPartnerIds = new Set(
+    (partnerScopeRows ?? []).map((scope) => scope.partner_id),
+  );
+
+  if (allowedSegmentIds.size > 0) {
+    if (!admissionSegmentId) {
+      return {
+        error:
+          "Bạn đang được phân theo đối tượng tuyển sinh, nên cần chọn đúng ô Đối tượng tuyển sinh trước khi lưu lead.",
+      };
+    }
+
+    if (!allowedSegmentIds.has(admissionSegmentId)) {
+      return {
+        error:
+          "Đối tượng tuyển sinh đã chọn nằm ngoài phạm vi tài khoản này. Hãy chọn đúng đối tượng được phân hoặc nhờ quản lý cập nhật phạm vi.",
+      };
+    }
+  }
+
+  if (allowedPartnerIds.size > 0) {
+    if (!partnerId) {
+      return {
+        error:
+          "Tài khoản này đang được giới hạn theo đối tác/trung tâm, nên cần chọn đúng ô Đối tác / CTV. Nếu đây là lead tuyển sinh tại chỗ HEU, quản lý cần bỏ giới hạn đối tác cho user này.",
+      };
+    }
+
+    if (!allowedPartnerIds.has(partnerId)) {
+      return {
+        error:
+          "Đối tác / CTV đã chọn nằm ngoài phạm vi tài khoản này. Hãy chọn đúng đối tác được phân hoặc nhờ quản lý cập nhật phạm vi.",
+      };
+    }
   }
 
   const phonesToCheck = [studentPhoneNorm, parentPhoneNorm].filter(Boolean);
@@ -136,9 +214,9 @@ export async function createLeadAction(
     ward: textValue(formData, "ward"),
     source_id: textValue(formData, "source_id"),
     flow_id: textValue(formData, "flow_id"),
-    admission_segment_id: textValue(formData, "admission_segment_id"),
+    admission_segment_id: admissionSegmentId,
     campaign_id: textValue(formData, "campaign_id"),
-    partner_id: textValue(formData, "partner_id"),
+    partner_id: partnerId,
     hou_program_id: houProgramId,
     hou_major_id: houMajorId,
     hou_location_id: houLocationId,

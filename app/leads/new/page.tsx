@@ -82,6 +82,7 @@ export default async function NewLeadPage() {
         .from("campaigns")
         .select("id,campaign_name")
         .eq("is_deleted", false)
+        .eq("status", "ACTIVE")
         .order("campaign_name", { ascending: true }),
       supabase
         .from("partners")
@@ -146,6 +147,8 @@ export default async function NewLeadPage() {
   );
   const segmentOptions = filterRowsByScope(segmentRows, allowedSegmentIds);
   const partnerOptions = filterRowsByScope(partnerRows, allowedPartnerIds);
+  const hasSegmentScope = allowedSegmentIds.size > 0;
+  const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = toOptions(programRows, "program_name");
   const programMap = new Map(programs.map((program) => [program.id, program.label]));
   const majors: MajorOption[] = (majorRows ?? []).map((row) => ({
@@ -178,6 +181,8 @@ export default async function NewLeadPage() {
         }))}
         houLocations={toOptions(houLocationRows, "location_name")}
         houStages={toOptions(houStageRows, "stage_name")}
+        hasSegmentScope={hasSegmentScope}
+        hasPartnerScope={hasPartnerScope}
       />
     </AppShell>
   );
