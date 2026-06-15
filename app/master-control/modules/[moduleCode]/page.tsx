@@ -18,6 +18,10 @@ import type {
   HeuOsRiskRow,
   HeuOsWorkflowRow,
 } from "@/components/master-control/heu-os-map-overview";
+import {
+  ModuleReadinessCard,
+  type HeuOsModuleReadinessRow,
+} from "@/components/master-control/module-readiness-overview";
 import { Button } from "@/components/ui/button";
 import {
   aiAllowedLabel,
@@ -112,6 +116,7 @@ export default async function HeuOsModuleDetailPage({ params }: PageProps) {
     approvalsResult,
     masterDataResult,
     risksResult,
+    readinessResult,
   ] = await Promise.all([
     supabase
       .from("heu_os_modules")
@@ -157,6 +162,13 @@ export default async function HeuOsModuleDetailPage({ params }: PageProps) {
       .eq("status", "ACTIVE")
       .order("created_at", { ascending: true })
       .returns<HeuOsRiskRow[]>(),
+    supabase
+      .from("heu_os_module_readiness")
+      .select(
+        "id,module_code,module_name,module_group,owner_department,control_status,has_owner,workflow_count,approval_count,master_data_count,risk_count,sop_count,legal_count,has_workflow,has_approval,has_master_data,has_risk,has_sop,has_legal,readiness_score,readiness_status,missing_items,ai_gate_status",
+      )
+      .eq("module_code", decodedModuleCode)
+      .maybeSingle<HeuOsModuleReadinessRow>(),
   ]);
 
   const osModule = moduleResult.data;
@@ -177,6 +189,7 @@ export default async function HeuOsModuleDetailPage({ params }: PageProps) {
   const approvals = approvalsResult.data ?? [];
   const masterData = masterDataResult.data ?? [];
   const risks = risksResult.data ?? [];
+  const readiness = readinessResult.data;
 
   return (
     <AppShell
@@ -236,6 +249,18 @@ export default async function HeuOsModuleDetailPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      {readiness ? (
+        <ModuleReadinessCard row={readiness} compact />
+      ) : readinessResult.error ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          Chưa đọc được Module Readiness Gate P0-04. Hãy chạy file{" "}
+          <span className="font-mono">
+            database/step43_module_readiness_gate.sql
+          </span>{" "}
+          rồi tải lại trang. Chi tiết: {readinessResult.error.message}
+        </section>
+      ) : null}
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">

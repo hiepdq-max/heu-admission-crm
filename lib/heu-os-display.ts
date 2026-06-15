@@ -426,6 +426,70 @@ export function typeLabel(value: string) {
   return typeLabels[value] ?? labelToken(value);
 }
 
+const readinessLabels: Record<string, string> = {
+  READY: "Đủ điều kiện production",
+  READY_TEMP: "Đủ khung, chờ duyệt chính thức",
+  IN_PROGRESS: "Đang hoàn thiện",
+  BLOCKED: "Chưa đủ điều kiện",
+};
+
+const missingItemLabels: Record<string, string> = {
+  OWNER: "Chưa có owner/phòng phụ trách",
+  WORKFLOW: "Chưa có quy trình",
+  APPROVAL_MATRIX: "Chưa có ma trận duyệt",
+  MASTER_DATA: "Chưa khai báo dữ liệu gốc",
+  RISK_CONTROL: "Chưa khai báo rủi ro/kiểm soát",
+  SOP: "Chưa có SOP",
+  LEGAL_BASIS: "Chưa gắn căn cứ pháp lý",
+  FINAL_CONTROL_STATUS: "Chưa được duyệt trạng thái Đạt chính thức",
+};
+
+const aiGateLabels: Record<string, string> = {
+  AI_LOCKED: "AI bị khóa",
+  AI_REVIEW_ONLY: "AI chỉ được hỗ trợ kiểm tra, chưa tự động hóa",
+  AI_ALLOWED_WITH_HUMAN_REVIEW: "AI được chạy có người duyệt",
+};
+
+export function readinessStatusLabel(value: string) {
+  return readinessLabels[value] ?? value;
+}
+
+export function readinessStatusTone(value: string) {
+  if (value === "READY") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (value === "READY_TEMP") {
+    return "border-sky-200 bg-sky-50 text-sky-700";
+  }
+
+  if (value === "BLOCKED") {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-amber-200 bg-amber-50 text-amber-700";
+}
+
+export function missingItemLabel(value: string) {
+  return missingItemLabels[value] ?? value;
+}
+
+export function aiGateStatusLabel(value: string) {
+  return aiGateLabels[value] ?? value;
+}
+
+export function aiGateStatusTone(value: string) {
+  if (value === "AI_ALLOWED_WITH_HUMAN_REVIEW") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (value === "AI_REVIEW_ONLY") {
+    return "border-sky-200 bg-sky-50 text-sky-700";
+  }
+
+  return "border-rose-200 bg-rose-50 text-rose-700";
+}
+
 export function aiAllowedLabel(value: boolean) {
   return value ? "AI được đọc" : "AI không được đọc";
 }

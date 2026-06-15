@@ -10,6 +10,10 @@ import {
   type HeuOsWorkflowRow,
 } from "@/components/master-control/heu-os-map-overview";
 import {
+  ModuleReadinessOverview,
+  type HeuOsModuleReadinessRow,
+} from "@/components/master-control/module-readiness-overview";
+import {
   MasterControlOverview,
   type DataDictionaryFieldRow,
   type DataDictionaryTableRow,
@@ -117,6 +121,7 @@ export default async function MasterControlPage({
     { data: heuOsApprovals, error: heuOsApprovalsError },
     { data: heuOsMasterData, error: heuOsMasterDataError },
     { data: heuOsRisks, error: heuOsRisksError },
+    { data: moduleReadiness, error: moduleReadinessError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -194,6 +199,13 @@ export default async function MasterControlPage({
       .eq("status", "ACTIVE")
       .order("created_at", { ascending: true })
       .returns<HeuOsRiskRow[]>(),
+    supabase
+      .from("heu_os_module_readiness")
+      .select(
+        "id,module_code,module_name,module_group,owner_department,control_status,has_owner,workflow_count,approval_count,master_data_count,risk_count,sop_count,legal_count,has_workflow,has_approval,has_master_data,has_risk,has_sop,has_legal,readiness_score,readiness_status,missing_items,ai_gate_status",
+      )
+      .order("readiness_score", { ascending: false })
+      .returns<HeuOsModuleReadinessRow[]>(),
   ]);
 
   const error = params?.error
@@ -207,6 +219,10 @@ export default async function MasterControlPage({
       description="Legal Registry, SOP Registry, Data Dictionary và Decision Gate cho HEU OS."
     >
       <div className="space-y-6">
+        <ModuleReadinessOverview
+          rows={moduleReadiness ?? []}
+          loadError={moduleReadinessError?.message}
+        />
         <HeuOsMapOverview
           modules={heuOsModules ?? []}
           workflows={heuOsWorkflows ?? []}
