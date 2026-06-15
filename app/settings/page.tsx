@@ -49,6 +49,7 @@ import {
   type RoleRow,
   type UserProfileRow,
 } from "@/components/settings/user-settings-overview";
+import { UserCreateForm } from "@/components/settings/user-create-form";
 import {
   UserBusinessScopeSettings,
   type BusinessScopeDepartmentRow,
@@ -77,11 +78,18 @@ type SettingsPageProps = {
     hou_location_updated?: string;
     permissions_updated?: string;
     scopes_updated?: string;
+    user_created?: string;
     error?: string;
   }>;
 };
 
 const errorMessages: Record<string, string> = {
+  missing_new_user_data:
+    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+  weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
+  missing_service_role_key:
+    "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
+  invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
   missing_user_or_role: "Thiếu user hoặc role cần cập nhật.",
   missing_user: "Thiếu user cần cập nhật.",
   missing_role: "Thiếu role cần cập nhật quyền.",
@@ -389,6 +397,22 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       }
     >
       <div className="space-y-6">
+        {params?.user_created ? (
+          <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+            Đã tạo tài khoản user mới.
+          </section>
+        ) : null}
+
+        <UserCreateForm
+          roles={roles ?? []}
+          departments={departments ?? []}
+          managers={(users ?? []).map((profile) => ({
+            id: profile.id,
+            full_name: profile.full_name,
+            email: profile.email,
+          }))}
+        />
+
         <UserSettingsOverview
           currentUserId={user.id}
           users={users ?? []}
@@ -446,6 +470,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
           }))}
           userSegmentScopes={userSegmentScopes ?? []}
           userPartnerScopes={userPartnerScopes ?? []}
+          canManageUserProfiles
           loadError={
             userSegmentScopesError?.message ?? userPartnerScopesError?.message
           }

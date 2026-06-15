@@ -94,6 +94,10 @@ function departmentName(departments: DepartmentRow[], departmentId: string | nul
   );
 }
 
+function userName(users: UserProfileRow[], userId: string | null) {
+  return users.find((user) => user.id === userId)?.full_name ?? "Chưa gắn";
+}
+
 export function UserSettingsOverview({
   currentUserId,
   users,
@@ -172,13 +176,14 @@ export function UserSettingsOverview({
                 <th className="px-5 py-3">User</th>
                 <th className="px-5 py-3">Role hiện tại</th>
                 <th className="px-5 py-3">Phòng ban</th>
+                <th className="px-5 py-3">Người quản lý</th>
                 <th className="px-5 py-3">Cập nhật</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200">
               {users.length === 0 ? (
                 <tr>
-                  <td className="px-5 py-6 text-center text-zinc-500" colSpan={4}>
+                  <td className="px-5 py-6 text-center text-zinc-500" colSpan={5}>
                     Chưa có user trong users_profile.
                   </td>
                 </tr>
@@ -210,10 +215,13 @@ export function UserSettingsOverview({
                     <td className="px-5 py-4 text-zinc-700">
                       {departmentName(departments, user.department_id)}
                     </td>
+                    <td className="px-5 py-4 text-zinc-700">
+                      {userName(users, user.manager_id)}
+                    </td>
                     <td className="px-5 py-4">
                       <form
                         action={updateUserProfileAction}
-                        className="grid gap-3 md:grid-cols-[190px_190px_130px_auto]"
+                        className="grid gap-3 md:grid-cols-[170px_170px_180px_130px_auto]"
                       >
                         <input type="hidden" name="user_id" value={user.id} />
                         <select
@@ -238,6 +246,20 @@ export function UserSettingsOverview({
                               {department.name}
                             </option>
                           ))}
+                        </select>
+                        <select
+                          name="manager_id"
+                          className={inputClass}
+                          defaultValue={user.manager_id ?? ""}
+                        >
+                          <option value="">Không gắn quản lý</option>
+                          {users
+                            .filter((manager) => manager.id !== user.id)
+                            .map((manager) => (
+                              <option key={manager.id} value={manager.id}>
+                                {manager.full_name}
+                              </option>
+                            ))}
                         </select>
                         <select
                           name="status"

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { allPermissions } from "@/lib/permissions";
 
 function textValue(formData: FormData, key: string) {
@@ -24,14 +25,22 @@ export async function updateUserProfileAction(formData: FormData) {
   const targetUserId = textValue(formData, "user_id");
   const roleId = textValue(formData, "role_id");
   const departmentId = textValue(formData, "department_id");
+  const managerId = textValue(formData, "manager_id");
   const status = String(formData.get("status") ?? "ACTIVE");
+  const requestedReturnTo = textValue(formData, "return_to");
+  const returnPath =
+    requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
 
   if (!targetUserId || !roleId) {
-    redirect("/settings?error=missing_user_or_role");
+    redirect(`${returnPath}?error=missing_user_or_role`);
   }
 
   if (!["ACTIVE", "INACTIVE"].includes(status)) {
-    redirect("/settings?error=invalid_status");
+    redirect(`${returnPath}?error=invalid_status`);
+  }
+
+  if (managerId && managerId === targetUserId) {
+    redirect(`${returnPath}?error=invalid_manager`);
   }
 
   const { data: currentProfile } = await supabase
@@ -49,7 +58,7 @@ export async function updateUserProfileAction(formData: FormData) {
     : { data: null };
 
   if (currentRole?.code !== "ADMIN") {
-    redirect("/settings?error=not_admin");
+    redirect(`${returnPath}?error=not_admin`);
   }
 
   const { data: nextRole } = await supabase
@@ -59,7 +68,7 @@ export async function updateUserProfileAction(formData: FormData) {
     .maybeSingle();
 
   if (targetUserId === user.id && (status !== "ACTIVE" || nextRole?.code !== "ADMIN")) {
-    redirect("/settings?error=cannot_lock_self");
+    redirect(`${returnPath}?error=cannot_lock_self`);
   }
 
   const { error } = await supabase
@@ -67,16 +76,104 @@ export async function updateUserProfileAction(formData: FormData) {
     .update({
       role_id: roleId,
       department_id: departmentId,
+      manager_id: managerId,
       status,
     })
     .eq("id", targetUserId);
 
   if (error) {
-    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+    redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
   }
 
   revalidatePath("/settings");
-  redirect("/settings?updated=1");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?updated=1`);
+}
+
+export async function createUserAccountAction(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const requestedReturnTo = textValue(formData, "return_to");
+  const returnPath =
+    requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
+  const email = textValue(formData, "email")?.toLowerCase();
+  const fullName = textValue(formData, "full_name");
+  const phone = textValue(formData, "phone");
+  const password = textValue(formData, "password");
+  const roleId = textValue(formData, "role_id");
+  const departmentId = textValue(formData, "department_id");
+  const managerId = textValue(formData, "manager_id");
+
+  const { data: currentRoleCode } = await supabase.rpc(
+    "current_user_role_code",
+  );
+
+  if (currentRoleCode !== "ADMIN") {
+    redirect(`${returnPath}?error=not_admin`);
+  }
+
+  if (!email || !fullName || !password || !roleId) {
+    redirect(`${returnPath}?error=missing_new_user_data`);
+  }
+
+  if (password.length < 8) {
+    redirect(`${returnPath}?error=weak_password`);
+  }
+
+  let adminClient: ReturnType<typeof createAdminClient>;
+
+  try {
+    adminClient = createAdminClient();
+  } catch {
+    redirect(`${returnPath}?error=missing_service_role_key`);
+  }
+
+  const { data: createdUser, error: createError } =
+    await adminClient.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: {
+        full_name: fullName,
+      },
+    });
+
+  if (createError || !createdUser.user) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(
+        createError?.message ?? "Không tạo được tài khoản Auth.",
+      )}`,
+    );
+  }
+
+  const { error: profileError } = await supabase.from("users_profile").upsert(
+    {
+      id: createdUser.user.id,
+      email,
+      full_name: fullName,
+      phone,
+      role_id: roleId,
+      department_id: departmentId,
+      manager_id: managerId,
+      status: "ACTIVE",
+    },
+    { onConflict: "id" },
+  );
+
+  if (profileError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(profileError.message)}`);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?user_created=1`);
 }
 
 export async function updateRolePermissionsAction(formData: FormData) {

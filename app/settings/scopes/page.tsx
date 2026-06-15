@@ -9,11 +9,14 @@ import {
   type UserPartnerScopeRow,
   type UserSegmentScopeRow,
 } from "@/components/settings/user-business-scope-settings";
+import { UserCreateForm } from "@/components/settings/user-create-form";
 import { createClient } from "@/lib/supabase/server";
 
 type ScopePageProps = {
   searchParams?: Promise<{
     scopes_updated?: string;
+    updated?: string;
+    user_created?: string;
     error?: string;
   }>;
 };
@@ -24,8 +27,15 @@ type CurrentProfileRow = {
 };
 
 const errorMessages: Record<string, string> = {
+  missing_new_user_data:
+    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
+  weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
+  missing_service_role_key:
+    "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
+  invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
+  not_admin: "Chỉ ADMIN mới được tạo user hoặc đổi role/phòng ban.",
 };
 
 export default async function ScopeSettingsPage({
@@ -131,6 +141,10 @@ export default async function ScopeSettingsPage({
     : undefined;
   const message = params?.scopes_updated
     ? "Đã cập nhật phạm vi làm việc của user."
+    : params?.updated
+      ? "Đã cập nhật phân công phòng ban/nhiệm vụ."
+      : params?.user_created
+        ? "Đã tạo tài khoản user mới."
     : undefined;
 
   return (
@@ -151,6 +165,19 @@ export default async function ScopeSettingsPage({
         </div>
       ) : null}
 
+      {currentRoleCode === "ADMIN" ? (
+        <UserCreateForm
+          roles={roles ?? []}
+          departments={departments ?? []}
+          managers={(users ?? []).map((profile) => ({
+            id: profile.id,
+            full_name: profile.full_name,
+            email: profile.email,
+          }))}
+          returnPath="/settings/scopes"
+        />
+      ) : null}
+
       <UserBusinessScopeSettings
         users={visibleUsers}
         roles={roles ?? []}
@@ -168,6 +195,7 @@ export default async function ScopeSettingsPage({
         userSegmentScopes={visibleSegmentScopes}
         userPartnerScopes={visiblePartnerScopes}
         returnPath="/settings/scopes"
+        canManageUserProfiles={currentRoleCode === "ADMIN"}
         loadError={
           admissionSegmentsError?.message ??
           userSegmentScopesError?.message ??
