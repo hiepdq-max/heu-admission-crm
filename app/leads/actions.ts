@@ -1,0 +1,159 @@
+"use server";
+
+import { redirect } from "next/navigation";
+
+import { createClient } from "@/lib/supabase/server";
+
+export type LeadFormState = {
+  error?: string;
+};
+
+function textValue(formData: FormData, key: string) {
+  const value = String(formData.get(key) ?? "").trim();
+  return value.length > 0 ? value : null;
+}
+
+function normalizePhone(value: string | null) {
+  return value?.replace(/\D/g, "") || null;
+}
+
+export async function createLeadAction(
+  _previousState: LeadFormState,
+  formData: FormData,
+): Promise<LeadFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const studentName = textValue(formData, "student_name");
+  const studentPhone = textValue(formData, "student_phone");
+  const parentPhone = textValue(formData, "parent_phone");
+  const studentPhoneNorm = normalizePhone(studentPhone);
+  const parentPhoneNorm = normalizePhone(parentPhone);
+
+  if (!studentName) {
+    return { error: "Vui lòng nhập họ tên học sinh." };
+  }
+
+  if (!studentPhone && !parentPhone) {
+    return { error: "Cần nhập ít nhất một số điện thoại học sinh hoặc phụ huynh." };
+  }
+
+  const phonesToCheck = [studentPhoneNorm, parentPhoneNorm].filter(Boolean);
+
+  if (phonesToCheck.length > 0) {
+    const duplicateFilters = phonesToCheck
+      .map(
+        (phone) =>
+          `student_phone_norm.eq.${phone},parent_phone_norm.eq.${phone}`,
+      )
+      .join(",");
+
+    const { data: duplicateLead, error: duplicateError } = await supabase
+      .from("leads")
+      .select("lead_code,student_name")
+      .eq("is_deleted", false)
+      .or(duplicateFilters)
+      .limit(1)
+      .maybeSingle();
+
+    if (duplicateError) {
+      return {
+        error: "Chưa kiểm tra được lead trùng: " + duplicateError.message,
+      };
+    }
+
+    if (duplicateLead) {
+      return {
+        error: `Số điện thoại đã tồn tại ở lead ${duplicateLead.lead_code} - ${duplicateLead.student_name}.`,
+      };
+    }
+  }
+
+  const status = String(formData.get("status") ?? "NEW");
+  const nextFollowupAt = textValue(formData, "next_followup_at");
+  const houProgramId = textValue(formData, "hou_program_id");
+  const houMajorId = textValue(formData, "hou_major_id");
+  const houLocationId = textValue(formData, "hou_location_id");
+  const houStageId = textValue(formData, "hou_stage_id");
+
+  if (status === "FOLLOW_UP" && !nextFollowupAt) {
+    return { error: "Lead FOLLOW_UP phải có ngày hẹn chăm sóc tiếp." };
+  }
+
+  if ((houMajorId || houLocationId || houStageId) && !houProgramId) {
+    return {
+      error:
+        "Nếu chọn ngành, địa điểm hoặc bước xử lý HOU thì cần chọn chương trình HOU.",
+    };
+  }
+
+  const [{ data: houProgram }, { data: houMajor }] = await Promise.all([
+    houProgramId
+      ? supabase
+          .from("hou_programs")
+          .select("program_name")
+          .eq("id", houProgramId)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+    houMajorId
+      ? supabase
+          .from("hou_majors")
+          .select("major_name")
+          .eq("id", houMajorId)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
+
+  const payload = {
+    student_name: studentName,
+    student_phone: studentPhone,
+    student_dob: textValue(formData, "student_dob"),
+    student_gender: textValue(formData, "student_gender"),
+    parent_name: textValue(formData, "parent_name"),
+    parent_phone: parentPhone,
+    parent_relationship: textValue(formData, "parent_relationship"),
+    current_school: textValue(formData, "current_school"),
+    current_grade: textValue(formData, "current_grade"),
+    graduation_year: textValue(formData, "graduation_year")
+      ? Number(textValue(formData, "graduation_year"))
+      : null,
+    interested_program:
+      textValue(formData, "interested_program") ??
+      (houProgram
+        ? "Liên thông đại học"
+        : null),
+    interested_major:
+      textValue(formData, "interested_major") ??
+      (houMajor ? String(houMajor.major_name ?? "") : null),
+    province: textValue(formData, "province"),
+    district: textValue(formData, "district"),
+    ward: textValue(formData, "ward"),
+    source_id: textValue(formData, "source_id"),
+    flow_id: textValue(formData, "flow_id"),
+    campaign_id: textValue(formData, "campaign_id"),
+    partner_id: textValue(formData, "partner_id"),
+    hou_program_id: houProgramId,
+    hou_major_id: houMajorId,
+    hou_location_id: houLocationId,
+    hou_stage_id: houStageId,
+    assigned_to: user.id,
+    status,
+    priority: String(formData.get("priority") ?? "NORMAL"),
+    next_followup_at: nextFollowupAt,
+    note: textValue(formData, "note"),
+  };
+
+  const { error } = await supabase.from("leads").insert(payload);
+
+  if (error) {
+    return { error: "Chưa lưu được lead: " + error.message };
+  }
+
+  redirect("/leads");
+}

@@ -1,0 +1,135 @@
+import { redirect } from "next/navigation";
+
+import { LeadForm } from "@/components/leads/lead-form";
+import { AppShell } from "@/components/layout/app-shell";
+import { createClient } from "@/lib/supabase/server";
+
+type Option = {
+  id: string;
+  label: string;
+};
+
+type MajorOption = Option & {
+  programId: string | null;
+  programLabel: string | null;
+};
+
+function toOptions<T extends Record<string, unknown>>(
+  rows: T[] | null,
+  labelKey: keyof T,
+): Option[] {
+  return (rows ?? []).map((row) => ({
+    id: String(row.id),
+    label: String(row[labelKey] ?? ""),
+  }));
+}
+
+export default async function NewLeadPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const [
+    { data: sourceRows },
+    { data: flowRows },
+    { data: campaignRows },
+    { data: partnerRows },
+    { data: programRows },
+    { data: majorRows },
+    { data: houProgramRows },
+    { data: houMajorRows },
+    { data: houLocationRows },
+    { data: houStageRows },
+  ] = await Promise.all([
+      supabase
+        .from("lead_sources")
+        .select("id,source_name")
+        .eq("status", "ACTIVE")
+        .order("source_name", { ascending: true }),
+      supabase
+        .from("admission_flows")
+        .select("id,flow_name")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("campaigns")
+        .select("id,campaign_name")
+        .eq("is_deleted", false)
+        .order("campaign_name", { ascending: true }),
+      supabase
+        .from("partners")
+        .select("id,partner_name")
+        .eq("is_deleted", false)
+        .order("partner_name", { ascending: true }),
+      supabase
+        .from("admission_programs")
+        .select("id,program_name")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("admission_majors")
+        .select("id,major_name,program_id")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("hou_programs")
+        .select("id,program_name")
+        .eq("status", "ACTIVE")
+        .order("program_name", { ascending: true }),
+      supabase
+        .from("hou_majors")
+        .select("id,major_code,major_name")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("hou_locations")
+        .select("id,location_name")
+        .eq("status", "ACTIVE")
+        .order("location_name", { ascending: true }),
+      supabase
+        .from("hou_admission_stages")
+        .select("id,stage_name")
+        .eq("status", "ACTIVE")
+        .order("sort_order", { ascending: true }),
+    ]);
+
+  const programs = toOptions(programRows, "program_name");
+  const programMap = new Map(programs.map((program) => [program.id, program.label]));
+  const majors: MajorOption[] = (majorRows ?? []).map((row) => ({
+    id: String(row.id),
+    label: String(row.major_name ?? ""),
+    programId: row.program_id ? String(row.program_id) : null,
+    programLabel: row.program_id
+      ? programMap.get(String(row.program_id)) ?? null
+      : null,
+  }));
+
+  return (
+    <AppShell
+      active="leads"
+      title="Tạo lead tuyển sinh"
+      description="Nhập thông tin học sinh/phụ huynh, nguồn lead và lịch chăm sóc ban đầu."
+    >
+      <LeadForm
+        sources={toOptions(sourceRows, "source_name")}
+        flows={toOptions(flowRows, "flow_name")}
+        campaigns={toOptions(campaignRows, "campaign_name")}
+        partners={toOptions(partnerRows, "partner_name")}
+        programs={programs}
+        majors={majors}
+        houPrograms={toOptions(houProgramRows, "program_name")}
+        houMajors={(houMajorRows ?? []).map((row) => ({
+          id: String(row.id),
+          label: `${row.major_code} - ${row.major_name}`,
+        }))}
+        houLocations={toOptions(houLocationRows, "location_name")}
+        houStages={toOptions(houStageRows, "stage_name")}
+      />
+    </AppShell>
+  );
+}
