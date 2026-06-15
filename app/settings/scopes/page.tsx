@@ -10,6 +10,7 @@ import {
   type UserSegmentScopeRow,
 } from "@/components/settings/user-business-scope-settings";
 import { UserCreateForm } from "@/components/settings/user-create-form";
+import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
 import { createClient } from "@/lib/supabase/server";
 
 type ScopePageProps = {
@@ -17,6 +18,7 @@ type ScopePageProps = {
     scopes_updated?: string;
     updated?: string;
     user_created?: string;
+    profile_linked?: string;
     error?: string;
   }>;
 };
@@ -29,6 +31,8 @@ type CurrentProfileRow = {
 const errorMessages: Record<string, string> = {
   missing_new_user_data:
     "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+  missing_auth_link_data:
+    "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
@@ -146,6 +150,8 @@ export default async function ScopeSettingsPage({
       ? "Đã cập nhật phân công phòng ban/nhiệm vụ."
       : params?.user_created
         ? "Đã tạo tài khoản user mới."
+        : params?.profile_linked
+          ? "Đã liên kết Auth user vào CRM."
     : undefined;
 
   return (
@@ -173,19 +179,33 @@ export default async function ScopeSettingsPage({
       ) : null}
 
       {currentRoleCode === "ADMIN" ? (
-        <UserCreateForm
-          roles={roles ?? []}
-          departments={departments ?? []}
-          managers={(users ?? []).map((profile) => ({
-            id: profile.id,
-            full_name: profile.full_name,
-            email: profile.email,
-            role_id: profile.role_id,
-            department_id: profile.department_id,
-          }))}
-          returnPath="/settings/scopes"
-          canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
-        />
+        <>
+          <UserCreateForm
+            roles={roles ?? []}
+            departments={departments ?? []}
+            managers={(users ?? []).map((profile) => ({
+              id: profile.id,
+              full_name: profile.full_name,
+              email: profile.email,
+              role_id: profile.role_id,
+              department_id: profile.department_id,
+            }))}
+            returnPath="/settings/scopes"
+            canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
+          />
+          <UserAuthProfileLinkForm
+            roles={roles ?? []}
+            departments={departments ?? []}
+            managers={(users ?? []).map((profile) => ({
+              id: profile.id,
+              full_name: profile.full_name,
+              email: profile.email,
+              role_id: profile.role_id,
+              department_id: profile.department_id,
+            }))}
+            returnPath="/settings/scopes"
+          />
+        </>
       ) : null}
 
       <UserBusinessScopeSettings

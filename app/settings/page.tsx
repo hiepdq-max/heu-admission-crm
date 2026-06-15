@@ -50,6 +50,7 @@ import {
   type UserProfileRow,
 } from "@/components/settings/user-settings-overview";
 import { UserCreateForm } from "@/components/settings/user-create-form";
+import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
 import {
   UserBusinessScopeSettings,
   type BusinessScopeDepartmentRow,
@@ -79,6 +80,7 @@ type SettingsPageProps = {
     permissions_updated?: string;
     scopes_updated?: string;
     user_created?: string;
+    profile_linked?: string;
     error?: string;
   }>;
 };
@@ -86,6 +88,8 @@ type SettingsPageProps = {
 const errorMessages: Record<string, string> = {
   missing_new_user_data:
     "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+  missing_auth_link_data:
+    "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
@@ -402,6 +406,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             Đã tạo tài khoản user mới.
           </section>
         ) : null}
+        {params?.profile_linked ? (
+          <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+            Đã liên kết Auth user vào CRM.
+          </section>
+        ) : null}
 
         <UserCreateForm
           roles={roles ?? []}
@@ -414,6 +423,17 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             department_id: profile.department_id,
           }))}
           canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
+        />
+        <UserAuthProfileLinkForm
+          roles={roles ?? []}
+          departments={departments ?? []}
+          managers={(users ?? []).map((profile) => ({
+            id: profile.id,
+            full_name: profile.full_name,
+            email: profile.email,
+            role_id: profile.role_id,
+            department_id: profile.department_id,
+          }))}
         />
 
         <UserSettingsOverview

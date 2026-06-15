@@ -176,6 +176,60 @@ export async function createUserAccountAction(formData: FormData) {
   redirect(`${returnPath}?user_created=1`);
 }
 
+export async function linkAuthUserProfileAction(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const requestedReturnTo = textValue(formData, "return_to");
+  const returnPath =
+    requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
+  const email = textValue(formData, "email")?.toLowerCase();
+  const fullName = textValue(formData, "full_name");
+  const phone = textValue(formData, "phone");
+  const roleId = textValue(formData, "role_id");
+  const departmentId = textValue(formData, "department_id");
+  const managerId = textValue(formData, "manager_id");
+
+  const { data: currentRoleCode } = await supabase.rpc(
+    "current_user_role_code",
+  );
+
+  if (currentRoleCode !== "ADMIN") {
+    redirect(`${returnPath}?error=not_admin`);
+  }
+
+  if (!email || !fullName || !roleId) {
+    redirect(`${returnPath}?error=missing_auth_link_data`);
+  }
+
+  const { error } = await supabase.rpc("upsert_user_profile_from_auth", {
+    target_email: email,
+    target_full_name: fullName,
+    target_phone: phone,
+    target_role_id: roleId,
+    target_department_id: departmentId,
+    target_manager_id: managerId,
+  });
+
+  if (error) {
+    const message = error.message.includes("function")
+      ? "Chưa chạy SQL database/step39_user_profile_admin_tools.sql."
+      : error.message;
+
+    redirect(`${returnPath}?error=${encodeURIComponent(message)}`);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?profile_linked=1`);
+}
+
 export async function updateRolePermissionsAction(formData: FormData) {
   const supabase = await createClient();
   const {
