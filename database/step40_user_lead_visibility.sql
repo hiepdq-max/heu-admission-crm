@@ -191,4 +191,4 @@ drop trigger if exists trg_user_lead_visibility_scopes_audit
 on public.user_lead_visibility_scopes;
 create trigger trg_user_lead_visibility_scopes_audit
 after insert or update or delete on public.user_lead_visibility_scopes
-for each row execute function public.audit_changes();
+for each row execute function public.write_audit_log();
