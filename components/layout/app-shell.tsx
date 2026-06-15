@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   ListChecks,
   Megaphone,
+  Route,
   Settings,
   ShieldCheck,
   Users,
@@ -37,6 +38,12 @@ const navigation = [
     icon: FileCheck2,
     key: "master-control",
     permission: "master_control.read",
+  },
+  {
+    label: "Đối tượng TS",
+    href: "/segments",
+    icon: Route,
+    key: "segments",
   },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
@@ -95,15 +102,34 @@ export async function AppShell({
   const { data: currentRoleCode } = user
     ? await supabase.rpc("current_user_role_code")
     : { data: null };
-  const { data: canManageScopes } = user
-    ? await supabase.rpc("has_permission", {
-        permission_name: "scope.manage_department",
-      })
-    : { data: false };
+  const permissionNames = [
+    ...new Set(
+      navigation
+        .map((item) => item.permission)
+        .filter((permission): permission is string => Boolean(permission)),
+    ),
+  ];
+  const permissionResults = user
+    ? await Promise.all(
+        permissionNames.map((permission) =>
+          supabase.rpc("has_permission", {
+            permission_name: permission,
+          }),
+        ),
+      )
+    : [];
+  const permissionMap = new Map(
+    permissionNames.map((permission, index) => [
+      permission,
+      Boolean(permissionResults[index]?.data),
+    ]),
+  );
   const visibleNavigation = navigation.filter(
     (item) =>
       (!item.adminOnly || currentRoleCode === "ADMIN") &&
-      (!item.permission || currentRoleCode === "ADMIN" || canManageScopes),
+      (!item.permission ||
+        currentRoleCode === "ADMIN" ||
+        permissionMap.get(item.permission)),
   );
 
   return (

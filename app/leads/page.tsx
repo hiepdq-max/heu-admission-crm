@@ -37,6 +37,18 @@ type LookupRow = {
   label: string;
 };
 
+type SegmentLookupRow = {
+  id: string;
+  segment_name: string;
+  program_group: string | null;
+};
+
+type LeadsPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
+};
+
 function toLookup<T extends Record<string, unknown>>(
   rows: T[] | null,
   labelKey: keyof T,
@@ -47,7 +59,11 @@ function toLookup<T extends Record<string, unknown>>(
   }));
 }
 
-export default async function LeadsPage() {
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -57,12 +73,21 @@ export default async function LeadsPage() {
     redirect("/login");
   }
 
-  const { data: leads, error: leadsError } = await supabase
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const segmentFilter = firstParam(resolvedSearchParams.segment);
+
+  let leadsQuery = supabase
     .from("leads")
     .select(
       "id,lead_code,student_name,student_phone,parent_name,parent_phone,interested_major,province,district,ward,status,priority,next_followup_at,created_at,source_id,flow_id,admission_segment_id,campaign_id,partner_id,assigned_to,hou_major_id,hou_stage_id",
     )
-    .eq("is_deleted", false)
+    .eq("is_deleted", false);
+
+  if (segmentFilter) {
+    leadsQuery = leadsQuery.eq("admission_segment_id", segmentFilter);
+  }
+
+  const { data: leads, error: leadsError } = await leadsQuery
     .order("created_at", { ascending: false })
     .limit(50)
     .returns<LeadRow[]>();
@@ -79,23 +104,44 @@ export default async function LeadsPage() {
   ] = await Promise.all([
     supabase.from("lead_sources").select("id,source_name"),
     supabase.from("admission_flows").select("id,flow_name"),
-    supabase.from("admission_segments").select("id,segment_name"),
+    supabase
+      .from("admission_segments")
+      .select("id,segment_name,program_group")
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<SegmentLookupRow[]>(),
     supabase.from("campaigns").select("id,campaign_name").eq("is_deleted", false),
     supabase.from("partners").select("id,partner_name").eq("is_deleted", false),
     supabase.from("users_profile").select("id,full_name"),
     supabase.from("hou_majors").select("id,major_code,major_name"),
     supabase.from("hou_admission_stages").select("id,stage_name"),
   ]);
+  const segmentLookups = (segmentRows ?? []).map((segment) => ({
+    id: String(segment.id),
+    label: segment.program_group
+      ? `${segment.program_group} - ${segment.segment_name}`
+      : segment.segment_name,
+  }));
+  const selectedSegment = segmentFilter
+    ? segmentLookups.find((segment) => segment.id === segmentFilter)
+    : null;
+  const refreshHref = segmentFilter
+    ? `/leads?segment=${encodeURIComponent(segmentFilter)}`
+    : "/leads";
 
   return (
     <AppShell
       active="leads"
       title="Lead tuyển sinh"
-      description="Danh sách lead thật đang đọc từ Supabase theo phân quyền hiện tại."
+      description={
+        selectedSegment
+          ? `Đang xem riêng đối tượng: ${selectedSegment.label}.`
+          : "Danh sách lead thật đang đọc từ Supabase theo phân quyền hiện tại."
+      }
       actions={
         <>
           <Button asChild variant="outline">
-            <Link href="/leads">
+            <Link href={refreshHref}>
               <RefreshCcw className="size-4" />
               Tải lại
             </Link>
@@ -122,7 +168,7 @@ export default async function LeadsPage() {
           leads={leads ?? []}
           sources={toLookup(sourceRows, "source_name")}
           flows={toLookup(flowRows, "flow_name")}
-          segments={toLookup(segmentRows, "segment_name")}
+          segments={segmentLookups}
           campaigns={toLookup(campaignRows, "campaign_name")}
           partners={toLookup(partnerRows, "partner_name")}
           users={toLookup(userRows, "full_name")}

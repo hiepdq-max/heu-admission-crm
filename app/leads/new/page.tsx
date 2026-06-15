@@ -22,6 +22,12 @@ type PartnerScopeRow = {
   partner_id: string;
 };
 
+type SegmentOptionRow = {
+  id: string;
+  segment_name: string;
+  program_group: string | null;
+};
+
 function toOptions<T extends Record<string, unknown>>(
   rows: T[] | null,
   labelKey: keyof T,
@@ -92,9 +98,10 @@ export default async function NewLeadPage() {
         .order("partner_name", { ascending: true }),
       supabase
         .from("admission_segments")
-        .select("id,segment_name")
+        .select("id,segment_name,program_group")
         .eq("status", "ACTIVE")
-        .order("sort_order", { ascending: true }),
+        .order("sort_order", { ascending: true })
+        .returns<SegmentOptionRow[]>(),
       supabase
         .from("admission_programs")
         .select("id,program_name")
@@ -147,6 +154,12 @@ export default async function NewLeadPage() {
   );
   const segmentOptions = filterRowsByScope(segmentRows, allowedSegmentIds);
   const partnerOptions = filterRowsByScope(partnerRows, allowedPartnerIds);
+  const segmentSelectOptions = segmentOptions.map((segment) => ({
+    id: String(segment.id),
+    label: segment.program_group
+      ? `${segment.program_group} - ${segment.segment_name}`
+      : segment.segment_name,
+  }));
   const hasSegmentScope = allowedSegmentIds.size > 0;
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = toOptions(programRows, "program_name");
@@ -171,7 +184,7 @@ export default async function NewLeadPage() {
         flows={toOptions(flowRows, "flow_name")}
         campaigns={toOptions(campaignRows, "campaign_name")}
         partners={toOptions(partnerOptions, "partner_name")}
-        segments={toOptions(segmentOptions, "segment_name")}
+        segments={segmentSelectOptions}
         programs={programs}
         majors={majors}
         houPrograms={toOptions(houProgramRows, "program_name")}

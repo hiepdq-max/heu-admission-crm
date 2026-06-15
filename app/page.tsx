@@ -4,7 +4,15 @@ import { Plus, Search } from "lucide-react";
 
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview";
 import { AppShell } from "@/components/layout/app-shell";
+import { AdmissionSegmentOverview } from "@/components/segments/admission-segment-overview";
 import { Button } from "@/components/ui/button";
+import {
+  buildAdmissionSegmentOverview,
+  filterAdmissionSegmentsByScope,
+  type AdmissionSegmentCatalogRow,
+  type AdmissionSegmentLeadStatRow,
+  type AdmissionSegmentScopeRow,
+} from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
 
 type PipelineDefinition = {
@@ -110,6 +118,10 @@ export default async function Home() {
     documentsCheckedTodayResult,
     urgentLeadsResult,
     userRowsResult,
+    currentRoleResult,
+    segmentRowsResult,
+    segmentScopeRowsResult,
+    segmentLeadRowsResult,
     ...pipelineResults
   ] = await Promise.all([
     supabase
@@ -172,6 +184,27 @@ export default async function Home() {
       .limit(5)
       .returns<UrgentLeadRow[]>(),
     supabase.from("users_profile").select("id,full_name"),
+    supabase.rpc("current_user_role_code"),
+    supabase
+      .from("admission_segments")
+      .select(
+        "id,segment_code,segment_name,program_group,admission_object,delivery_context,partner_model,commission_model,contract_model,finance_risk,owner_department,sort_order,status",
+      )
+      .eq("status", "ACTIVE")
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionSegmentCatalogRow[]>(),
+    supabase
+      .from("user_admission_segment_scopes")
+      .select("segment_id")
+      .eq("user_id", user.id)
+      .eq("status", "ACTIVE")
+      .returns<AdmissionSegmentScopeRow[]>(),
+    supabase
+      .from("leads")
+      .select("admission_segment_id,status")
+      .eq("is_deleted", false)
+      .limit(5000)
+      .returns<AdmissionSegmentLeadStatRow[]>(),
     ...pipelineDefinitions.map((item) =>
       supabase
         .from("leads")
@@ -190,6 +223,15 @@ export default async function Home() {
     ...definition,
     count: pipelineResults[index]?.count ?? 0,
   }));
+  const visibleSegmentRows = filterAdmissionSegmentsByScope(
+    segmentRowsResult.data ?? [],
+    segmentScopeRowsResult.data ?? [],
+    currentRoleResult.data === "ADMIN",
+  );
+  const segmentOverviewData = buildAdmissionSegmentOverview(
+    visibleSegmentRows,
+    segmentLeadRowsResult.data ?? [],
+  );
 
   const userMap = new Map(
     (userRowsResult.data ?? []).map((row) => [
@@ -271,6 +313,13 @@ export default async function Home() {
         pipeline={pipeline}
         urgentLeads={urgentLeads}
         activities={activities}
+        segmentOverview={
+          <AdmissionSegmentOverview
+            segments={segmentOverviewData.segments}
+            uncategorizedCount={segmentOverviewData.uncategorizedCount}
+            compact
+          />
+        }
       />
     </AppShell>
   );

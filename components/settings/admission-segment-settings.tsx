@@ -26,7 +26,10 @@ export function AdmissionSegmentSettings({
   loadError,
 }: AdmissionSegmentSettingsProps) {
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+    <section
+      id="segments"
+      className="rounded-lg border border-zinc-200 bg-white shadow-sm"
+    >
       <div className="border-b border-zinc-200 p-5">
         <div className="flex items-center gap-2">
           <Route className="size-4 text-zinc-500" />

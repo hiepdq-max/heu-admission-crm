@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   Activity,
   AlertTriangle,
@@ -38,6 +39,7 @@ type DashboardOverviewProps = {
   pipeline: PipelineItem[];
   urgentLeads: UrgentLead[];
   activities: string[];
+  segmentOverview?: ReactNode;
 };
 
 export function DashboardOverview({
@@ -45,6 +47,7 @@ export function DashboardOverview({
   pipeline,
   urgentLeads,
   activities,
+  segmentOverview,
 }: DashboardOverviewProps) {
   return (
     <>
@@ -64,6 +67,8 @@ export function DashboardOverview({
           </article>
         ))}
       </section>
+
+      {segmentOverview}
 
       <section className="grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
         <div className="rounded-lg border border-zinc-200 bg-white shadow-sm">
