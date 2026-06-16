@@ -879,3 +879,204 @@ export async function updateMasterDataChangeRequestAction(formData: FormData) {
   revalidatePath("/master-control");
   redirect("/master-control?master_data_request_updated=1");
 }
+
+async function requirePermissionMatrixPermission(
+  permission: "request" | "approve" | "revoke" | "manage",
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const rpcName =
+    permission === "manage"
+      ? "can_manage_permission_matrix"
+      : permission === "approve"
+        ? "can_approve_permission_delegation"
+        : permission === "revoke"
+          ? "can_revoke_permission_delegation"
+          : "can_request_permission_delegation";
+  const [{ data: roleCode }, { data: hasPermission }] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc(rpcName),
+  ]);
+
+  if (roleCode !== "ADMIN" && !hasPermission) {
+    redirect("/master-control?error=not_allowed_permission_matrix");
+  }
+
+  return { supabase, user };
+}
+
+export async function updatePermissionRegistryAction(formData: FormData) {
+  const { supabase, user } = await requirePermissionMatrixPermission("manage");
+  const registryId = textValue(formData, "registry_id");
+  const permissionLabel = textValue(formData, "permission_label");
+
+  if (!registryId || !permissionLabel) {
+    redirect("/master-control?error=missing_permission_registry");
+  }
+
+  const { error } = await supabase
+    .from("permission_registry")
+    .update({
+      permission_label: permissionLabel,
+      permission_group: normalizeCode(textValue(formData, "permission_group")) ?? "OTHER",
+      module_code: normalizeCode(textValue(formData, "module_code")),
+      owner_department: textValue(formData, "owner_department"),
+      risk_level: textValue(formData, "risk_level") ?? "MEDIUM",
+      grant_scope: textValue(formData, "grant_scope") ?? "ROLE",
+      requires_scope: boolValue(formData, "requires_scope"),
+      requires_approval: boolValue(formData, "requires_approval"),
+      allow_delegation: boolValue(formData, "allow_delegation"),
+      max_delegation_hours: Number(textValue(formData, "max_delegation_hours") ?? 72),
+      ai_allowed: boolValue(formData, "ai_allowed"),
+      control_note: textValue(formData, "control_note"),
+      control_status: textValue(formData, "control_status") ?? "DAT_TAM_THOI",
+      updated_by: user.id,
+    })
+    .eq("id", registryId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?permission_registry_updated=1");
+}
+
+export async function createPermissionDelegationAction(formData: FormData) {
+  const { supabase, user } = await requirePermissionMatrixPermission("request");
+  const fromUserId = uuidValue(textValue(formData, "from_user_id"));
+  const toUserId = uuidValue(textValue(formData, "to_user_id"));
+  const permissionCode = textValue(formData, "permission_code");
+  const delegationReason = textValue(formData, "delegation_reason");
+  const startsAt = textValue(formData, "starts_at");
+  const endsAt = textValue(formData, "ends_at");
+  const delegationStatus = textValue(formData, "delegation_status") ?? "PENDING";
+
+  if (!fromUserId || !toUserId || !permissionCode || !delegationReason || !endsAt) {
+    redirect("/master-control?error=missing_permission_delegation");
+  }
+
+  if (!["PENDING", "ACTIVE"].includes(delegationStatus)) {
+    redirect("/master-control?error=invalid_permission_delegation_status");
+  }
+
+  const approvalContext =
+    delegationStatus === "ACTIVE"
+      ? await requirePermissionMatrixPermission("approve")
+      : null;
+
+  if (fromUserId === toUserId) {
+    redirect("/master-control?error=invalid_permission_delegation_user");
+  }
+
+  const startDate = startsAt ? new Date(startsAt) : new Date();
+  const endDate = new Date(endsAt);
+
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+    redirect("/master-control?error=invalid_permission_delegation_time");
+  }
+
+  if (endDate <= startDate) {
+    redirect("/master-control?error=invalid_permission_delegation_time");
+  }
+
+  const { data: delegationCode, error: codeError } = await supabase.rpc(
+    "next_permission_delegation_code",
+  );
+
+  if (codeError || !delegationCode) {
+    redirect(
+      `/master-control?error=${encodeURIComponent(
+        codeError?.message ?? "Không tạo được mã ủy quyền.",
+      )}`,
+    );
+  }
+
+  const { error } = await supabase.from("permission_delegations").insert({
+    delegation_code: delegationCode,
+    from_user_id: fromUserId,
+    to_user_id: toUserId,
+    permission_code: permissionCode,
+    delegation_reason: delegationReason,
+    scope_note: textValue(formData, "scope_note"),
+    starts_at: startDate.toISOString(),
+    ends_at: endDate.toISOString(),
+    delegation_status: delegationStatus,
+    requested_by: user.id,
+    approved_by: approvalContext?.user.id ?? null,
+    approved_at: approvalContext ? new Date().toISOString() : null,
+    created_by: user.id,
+    updated_by: user.id,
+  });
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?permission_delegation_created=1");
+}
+
+export async function updatePermissionDelegationAction(formData: FormData) {
+  const delegationId = textValue(formData, "delegation_id");
+  const delegationStatus = textValue(formData, "delegation_status");
+
+  if (!delegationId || !delegationStatus) {
+    redirect("/master-control?error=missing_permission_delegation");
+  }
+
+  if (!["PENDING", "ACTIVE", "REJECTED", "REVOKED", "CANCELLED"].includes(delegationStatus)) {
+    redirect("/master-control?error=invalid_permission_delegation_status");
+  }
+
+  const permission =
+    delegationStatus === "ACTIVE" || delegationStatus === "REJECTED"
+      ? "approve"
+      : delegationStatus === "REVOKED"
+        ? "revoke"
+        : "manage";
+  const { supabase, user } = await requirePermissionMatrixPermission(permission);
+  const now = new Date().toISOString();
+
+  const updatePayload: Record<string, string | null> = {
+    delegation_status: delegationStatus,
+    note: textValue(formData, "note"),
+    updated_by: user.id,
+  };
+
+  if (delegationStatus === "ACTIVE") {
+    updatePayload.approved_by = user.id;
+    updatePayload.approved_at = now;
+    updatePayload.revoked_by = null;
+    updatePayload.revoked_at = null;
+  }
+
+  if (delegationStatus === "REVOKED") {
+    updatePayload.revoked_by = user.id;
+    updatePayload.revoked_at = now;
+  }
+
+  if (delegationStatus === "REJECTED") {
+    updatePayload.approved_by = null;
+    updatePayload.approved_at = null;
+  }
+
+  const { error } = await supabase
+    .from("permission_delegations")
+    .update(updatePayload)
+    .eq("id", delegationId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?permission_delegation_updated=1");
+}

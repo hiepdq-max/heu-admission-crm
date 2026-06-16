@@ -38,6 +38,15 @@ import {
   type HeuOsModuleReadinessRow,
 } from "@/components/master-control/module-readiness-overview";
 import {
+  RolePermissionDelegationMatrix,
+  type PermissionDelegationRow,
+  type PermissionModuleOptionRow,
+  type PermissionRegistryRow,
+  type PermissionUserOptionRow,
+  type RolePermissionDelegationSummaryRow,
+  type UserPermissionMatrixRow,
+} from "@/components/master-control/role-permission-delegation-matrix";
+import {
   MasterControlOverview,
   type DataDictionaryFieldRow,
   type DataDictionaryTableRow,
@@ -65,6 +74,9 @@ type MasterControlPageProps = {
     master_data_updated?: string;
     master_data_request_created?: string;
     master_data_request_updated?: string;
+    permission_registry_updated?: string;
+    permission_delegation_created?: string;
+    permission_delegation_updated?: string;
     error?: string;
   }>;
 };
@@ -91,6 +103,14 @@ const errorMessages: Record<string, string> = {
   invalid_master_data_request_status:
     "Trạng thái yêu cầu thay đổi dữ liệu gốc không hợp lệ.",
   not_allowed_master_data: "Bạn chưa có quyền thao tác dữ liệu gốc.",
+  missing_permission_registry: "Thiếu thông tin registry quyền.",
+  missing_permission_delegation: "Thiếu thông tin ủy quyền.",
+  invalid_permission_delegation_user:
+    "Người ủy quyền và người nhận quyền không được trùng nhau.",
+  invalid_permission_delegation_time:
+    "Thời gian ủy quyền không hợp lệ. Thời điểm kết thúc phải sau thời điểm bắt đầu.",
+  invalid_permission_delegation_status: "Trạng thái ủy quyền không hợp lệ.",
+  not_allowed_permission_matrix: "Bạn chưa có quyền thao tác ma trận quyền.",
 };
 
 function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
@@ -112,6 +132,9 @@ function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
     return "Đã tạo yêu cầu thay đổi dữ liệu gốc.";
   if (params?.master_data_request_updated)
     return "Đã cập nhật yêu cầu thay đổi dữ liệu gốc.";
+  if (params?.permission_registry_updated) return "Đã cập nhật registry quyền.";
+  if (params?.permission_delegation_created) return "Đã tạo ủy quyền.";
+  if (params?.permission_delegation_updated) return "Đã cập nhật ủy quyền.";
   return undefined;
 }
 
@@ -189,6 +212,11 @@ export default async function MasterControlPage({
     { data: masterDataGovernanceRows, error: masterDataGovernanceRowsError },
     { data: masterDataGovernanceSummary, error: masterDataGovernanceSummaryError },
     { data: masterDataChangeRequests, error: masterDataChangeRequestsError },
+    { data: permissionRegistryRows, error: permissionRegistryRowsError },
+    { data: userPermissionRows, error: userPermissionRowsError },
+    { data: permissionDelegationRows, error: permissionDelegationRowsError },
+    { data: permissionDelegationSummary, error: permissionDelegationSummaryError },
+    { data: userOptionRows, error: userOptionRowsError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -333,6 +361,40 @@ export default async function MasterControlPage({
       .order("created_at", { ascending: false })
       .limit(30)
       .returns<MasterDataChangeRequestRow[]>(),
+    supabase
+      .from("permission_registry_status")
+      .select(
+        "id,permission_code,permission_group,permission_label,module_code,module_name,owner_department,risk_level,grant_scope,requires_scope,requires_approval,allow_delegation,max_delegation_hours,ai_allowed,control_note,control_status,role_count,user_count,active_delegation_count,control_flags,registry_status",
+      )
+      .order("permission_group", { ascending: true })
+      .returns<PermissionRegistryRow[]>(),
+    supabase
+      .from("user_permission_matrix_status")
+      .select(
+        "id,email,full_name,status,role_id,role_code,role_name,department_id,department_code,department_name,manager_id,manager_name,role_permission_count,high_risk_permission_count,critical_permission_count,broad_permission_count,segment_scope_count,partner_scope_count,active_delegation_count,expired_delegation_count,control_flags,permission_status",
+      )
+      .order("permission_status", { ascending: true })
+      .returns<UserPermissionMatrixRow[]>(),
+    supabase
+      .from("permission_delegation_status")
+      .select(
+        "id,delegation_code,from_user_id,from_user_name,from_user_email,from_role_code,to_user_id,to_user_name,to_user_email,to_role_code,permission_code,permission_label,permission_group,risk_level,allow_delegation,max_delegation_hours,delegation_reason,scope_note,starts_at,ends_at,delegation_status,requested_by,requested_by_name,approved_by,approved_by_name,approved_at,revoked_by,revoked_by_name,revoked_at,note,created_at,updated_at,effective_status,control_flags",
+      )
+      .order("created_at", { ascending: false })
+      .limit(30)
+      .returns<PermissionDelegationRow[]>(),
+    supabase
+      .from("role_permission_delegation_summary")
+      .select(
+        "permission_count,role_permission_count,user_count,ready_user_count,high_risk_user_count,delegated_user_count,active_delegation_count,expired_delegation_count,permission_needs_fix_count",
+      )
+      .maybeSingle<RolePermissionDelegationSummaryRow>(),
+    supabase
+      .from("users_profile")
+      .select("id,full_name,email")
+      .eq("status", "ACTIVE")
+      .order("full_name", { ascending: true })
+      .returns<PermissionUserOptionRow[]>(),
   ]);
 
   const error = params?.error
@@ -411,6 +473,29 @@ export default async function MasterControlPage({
             masterDataGovernanceRowsError?.message ??
             masterDataGovernanceSummaryError?.message ??
             masterDataChangeRequestsError?.message
+          }
+        />
+        <RolePermissionDelegationMatrix
+          permissions={permissionRegistryRows ?? []}
+          users={userPermissionRows ?? []}
+          delegations={permissionDelegationRows ?? []}
+          summary={permissionDelegationSummary}
+          userOptions={userOptionRows ?? []}
+          moduleOptions={(heuOsModules ?? []).map(
+            (module): PermissionModuleOptionRow => ({
+              module_code: module.module_code,
+              module_name: module.module_name,
+            }),
+          )}
+          canManage={canManage}
+          canApprove={canApprove || canManage}
+          canRevoke={canApprove || canManage}
+          loadError={
+            permissionRegistryRowsError?.message ??
+            userPermissionRowsError?.message ??
+            permissionDelegationRowsError?.message ??
+            permissionDelegationSummaryError?.message ??
+            userOptionRowsError?.message
           }
         />
         <HeuOsMapOverview
