@@ -22,6 +22,7 @@ type LeadImportFormProps = {
   partners: Option[];
   defaultSegmentId?: string;
   hasSegmentScope?: boolean;
+  lockSegmentSelection?: boolean;
 };
 
 const initialState: ImportLeadState = {};
@@ -143,6 +144,7 @@ export function LeadImportForm({
   partners,
   defaultSegmentId = "",
   hasSegmentScope = false,
+  lockSegmentSelection = false,
 }: LeadImportFormProps) {
   const [state, formAction, isPending] = useActionState(
     importLeadsAction,
@@ -178,14 +180,35 @@ export function LeadImportForm({
           </div>
 
           <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <SelectField
-              label="Đối tượng tuyển sinh mặc định"
-              name="default_admission_segment_id"
-              options={segments}
-              placeholder="Chọn đối tượng"
-              defaultValue={defaultSegmentId}
-              required={hasSegmentScope}
-            />
+            {lockSegmentSelection && defaultSegmentId ? (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-zinc-700">
+                  Đối tượng tuyển sinh mặc định
+                </p>
+                <input
+                  type="hidden"
+                  name="default_admission_segment_id"
+                  value={defaultSegmentId}
+                />
+                <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                  {segments.find((segment) => segment.id === defaultSegmentId)
+                    ?.label ?? "Workspace đang chọn"}
+                </div>
+                <p className="text-xs text-zinc-500">
+                  P0-14 khóa import vào đúng workspace này. Nếu CSV có cột đối
+                  tượng khác, dòng đó sẽ bị báo lỗi.
+                </p>
+              </div>
+            ) : (
+              <SelectField
+                label="Đối tượng tuyển sinh mặc định"
+                name="default_admission_segment_id"
+                options={segments}
+                placeholder="Chọn đối tượng"
+                defaultValue={defaultSegmentId}
+                required={hasSegmentScope}
+              />
+            )}
             <SelectField
               label="Nguồn mặc định"
               name="default_source_id"
@@ -266,8 +289,10 @@ export function LeadImportForm({
                 major_code, major_name, interested_program, interested_major,
                 province, ward, legacy_district, source_code, flow_code,
                 flow_name, admission_flow, campaign_code, partner_code, status,
-                priority, note. Cột legacy_district chỉ
-                dùng cho quận/huyện cũ trước 01/07/2025.
+                priority, note. Cột legacy_district chỉ dùng cho quận/huyện cũ
+                trước 01/07/2025. Nếu đang chọn workspace P0-13, cột
+                segment_code/segment_name trong CSV phải khớp workspace đó hoặc
+                bỏ trống.
               </p>
             </aside>
           </div>

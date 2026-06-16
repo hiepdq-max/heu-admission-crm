@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Users } from "lucide-react";
+import { Route, Users } from "lucide-react";
 
 import { LeadImportForm } from "@/components/import/lead-import-form";
 import { AppShell } from "@/components/layout/app-shell";
@@ -16,18 +16,8 @@ type Option = {
   label: string;
 };
 
-type SegmentScopeRow = {
-  segment_id: string;
-};
-
 type PartnerScopeRow = {
   partner_id: string;
-};
-
-type SegmentOptionRow = {
-  id: string;
-  segment_name: string;
-  program_group: string | null;
 };
 
 type ImportPageProps = {
@@ -78,16 +68,60 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
     user.id,
     requestedSegmentParam,
   );
-  const requestedSegmentId = workspace.activeSegmentId ?? requestedSegmentParam;
+  const workspaceReturnTo = withAdmissionSegmentParam(
+    "/import",
+    workspace.activeSegmentId,
+  );
+
+  if (!workspace.activeSegmentId) {
+    return (
+      <AppShell
+        active="import"
+        title="Import dữ liệu"
+        description="P0-14 yêu cầu chọn đúng đối tượng tuyển sinh trước khi import lead."
+        workspaceSegmentId={workspace.activeSegmentId}
+        workspaceReturnTo={workspaceReturnTo}
+        actions={
+          <Button asChild variant="outline">
+            <Link href="/leads">
+              <Users className="size-4" />
+              Xem lead
+            </Link>
+          </Button>
+        }
+      >
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <div className="flex items-start gap-3">
+            <Route className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                Chưa chọn workspace để import
+              </h2>
+              <p className="mt-1">
+                Hãy chọn một đối tượng tuyển sinh ở thanh{" "}
+                <strong>P0-13 · Workspace đang làm việc</strong> rồi bấm{" "}
+                <strong>Áp dụng</strong>. P0-14 không cho import khi chưa biết
+                danh sách này thuộc HOU, TTGDTX, ngắn hạn hay đối tượng khác.
+              </p>
+              {workspace.segmentOptions.length === 0 ? (
+                <p className="mt-2">
+                  Tài khoản này hiện chưa được phân đối tượng tuyển sinh. ADMIN
+                  hoặc trưởng phòng cần phân phạm vi user trước.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      </AppShell>
+    );
+  }
 
   const [
     { data: currentRoleCode },
     { data: sourceRows },
     { data: flowRows },
-    { data: segmentRows },
     { data: campaignRows },
     { data: partnerRows },
-    { data: segmentScopeRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
       supabase.rpc("current_user_role_code"),
@@ -102,12 +136,6 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
         .eq("status", "ACTIVE")
         .order("sort_order", { ascending: true }),
       supabase
-        .from("admission_segments")
-        .select("id,segment_name,program_group")
-        .eq("status", "ACTIVE")
-        .order("sort_order", { ascending: true })
-        .returns<SegmentOptionRow[]>(),
-      supabase
         .from("campaigns")
         .select("id,campaign_name")
         .eq("is_deleted", false)
@@ -118,48 +146,31 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
         .eq("is_deleted", false)
         .order("partner_name", { ascending: true }),
       supabase
-        .from("user_admission_segment_scopes")
-        .select("segment_id")
-        .eq("user_id", user.id)
-        .eq("status", "ACTIVE")
-        .returns<SegmentScopeRow[]>(),
-      supabase
         .from("user_partner_scopes")
         .select("partner_id")
         .eq("user_id", user.id)
         .eq("status", "ACTIVE")
         .returns<PartnerScopeRow[]>(),
     ]);
-  const allowedSegmentIds = new Set(
-    (segmentScopeRows ?? []).map((scope) => scope.segment_id),
-  );
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
   const canUseGlobalScope =
     currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
-  const segmentOptions = filterRowsByScope(
-    segmentRows,
-    allowedSegmentIds,
-    canUseGlobalScope,
-  ).map(
-    (segment) => ({
-      id: String(segment.id),
-      label: segment.program_group
-        ? `${segment.program_group} - ${segment.segment_name}`
-        : segment.segment_name,
-    }),
-  );
+  const segmentOptions = workspace.activeSegment
+    ? [
+        {
+          id: workspace.activeSegment.id,
+          label: workspace.activeSegment.label,
+        },
+      ]
+    : [];
   const partnerOptions = filterRowsByScope(
     partnerRows,
     allowedPartnerIds,
     canUseGlobalScope,
   );
-  const defaultSegmentId = segmentOptions.some(
-    (segment) => segment.id === requestedSegmentId,
-  )
-    ? requestedSegmentId ?? ""
-    : "";
+  const defaultSegmentId = workspace.activeSegmentId;
 
   return (
     <AppShell
@@ -167,10 +178,7 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
       title="Import dữ liệu"
       description="Nhập lead từ CSV, kiểm tra thiếu dữ liệu và bỏ qua số điện thoại trùng."
       workspaceSegmentId={workspace.activeSegmentId}
-      workspaceReturnTo={withAdmissionSegmentParam(
-        "/import",
-        workspace.activeSegmentId,
-      )}
+      workspaceReturnTo={workspaceReturnTo}
       actions={
         <Button asChild variant="outline">
           <Link
@@ -192,7 +200,8 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
         campaigns={toOptions(campaignRows, "campaign_name")}
         partners={toOptions(partnerOptions, "partner_name")}
         defaultSegmentId={defaultSegmentId}
-        hasSegmentScope={!canUseGlobalScope}
+        hasSegmentScope
+        lockSegmentSelection
       />
     </AppShell>
   );

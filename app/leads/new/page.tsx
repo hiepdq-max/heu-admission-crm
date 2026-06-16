@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Route } from "lucide-react";
 
 import { LeadForm } from "@/components/leads/lead-form";
 import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
   getAdmissionWorkspaceContext,
@@ -18,19 +21,8 @@ type MajorOption = Option & {
   programLabel: string | null;
 };
 
-type SegmentScopeRow = {
-  segment_id: string;
-};
-
 type PartnerScopeRow = {
   partner_id: string;
-};
-
-type SegmentOptionRow = {
-  id: string;
-  segment_code: string;
-  segment_name: string;
-  program_group: string | null;
 };
 
 type NewLeadPageProps = {
@@ -81,7 +73,49 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     user.id,
     requestedSegmentParam,
   );
-  const requestedSegmentId = workspace.activeSegmentId ?? requestedSegmentParam;
+  const workspaceReturnTo = withAdmissionSegmentParam(
+    "/leads/new",
+    workspace.activeSegmentId,
+  );
+
+  if (!workspace.activeSegmentId) {
+    return (
+      <AppShell
+        active="leads"
+        title="Tạo lead tuyển sinh"
+        description="P0-14 yêu cầu chọn đúng đối tượng tuyển sinh trước khi nhập lead."
+        workspaceSegmentId={workspace.activeSegmentId}
+        workspaceReturnTo={workspaceReturnTo}
+      >
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <div className="flex items-start gap-3">
+            <Route className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                Chưa chọn workspace để tạo lead
+              </h2>
+              <p className="mt-1">
+                Hãy chọn một đối tượng tuyển sinh ở thanh{" "}
+                <strong>P0-13 · Workspace đang làm việc</strong> rồi bấm{" "}
+                <strong>Áp dụng</strong>. Sau đó quay lại tạo lead. Cách này
+                giúp hệ thống không trộn lead HOU, TTGDTX, ngắn hạn hoặc tuyển
+                sinh tại chỗ.
+              </p>
+              {workspace.segmentOptions.length === 0 ? (
+                <p className="mt-2">
+                  Tài khoản này hiện chưa được phân đối tượng tuyển sinh. ADMIN
+                  hoặc trưởng phòng cần phân phạm vi user trước.
+                </p>
+              ) : null}
+              <Button asChild className="mt-4">
+                <Link href="/leads">Quay lại danh sách lead</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </AppShell>
+    );
+  }
 
   const [
     { data: currentRoleCode },
@@ -89,14 +123,12 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     { data: flowRows },
     { data: campaignRows },
     { data: partnerRows },
-    { data: segmentRows },
     { data: programRows },
     { data: majorRows },
     { data: houProgramRows },
     { data: houMajorRows },
     { data: houLocationRows },
     { data: houStageRows },
-    { data: segmentScopeRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
       supabase.rpc("current_user_role_code"),
@@ -122,12 +154,6 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         .eq("is_deleted", false)
         .eq("status", "ACTIVE")
         .order("partner_name", { ascending: true }),
-      supabase
-        .from("admission_segments")
-        .select("id,segment_code,segment_name,program_group")
-        .eq("status", "ACTIVE")
-        .order("sort_order", { ascending: true })
-        .returns<SegmentOptionRow[]>(),
       supabase
         .from("admission_programs")
         .select("id,program_name")
@@ -159,12 +185,6 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         .eq("status", "ACTIVE")
         .order("sort_order", { ascending: true }),
       supabase
-        .from("user_admission_segment_scopes")
-        .select("segment_id")
-        .eq("user_id", user.id)
-        .eq("status", "ACTIVE")
-        .returns<SegmentScopeRow[]>(),
-      supabase
         .from("user_partner_scopes")
         .select("partner_id")
         .eq("user_id", user.id)
@@ -172,38 +192,27 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         .returns<PartnerScopeRow[]>(),
     ]);
 
-  const allowedSegmentIds = new Set(
-    (segmentScopeRows ?? []).map((scope) => scope.segment_id),
-  );
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
   const canUseGlobalScope =
     currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
-  const segmentOptions = filterRowsByScope(
-    segmentRows,
-    allowedSegmentIds,
-    canUseGlobalScope,
-  );
   const partnerOptions = filterRowsByScope(
     partnerRows,
     allowedPartnerIds,
     canUseGlobalScope,
   );
-  const segmentSelectOptions = segmentOptions.map((segment) => ({
-    id: String(segment.id),
-    label: segment.program_group
-      ? `${segment.program_group} - ${segment.segment_name}`
-      : segment.segment_name,
-    code: segment.segment_code,
-    programGroup: segment.program_group ?? undefined,
-  }));
-  const defaultSegmentId = segmentSelectOptions.some(
-    (segment) => segment.id === requestedSegmentId,
-  )
-    ? requestedSegmentId ?? ""
-    : "";
-  const hasSegmentScope = !canUseGlobalScope;
+  const segmentSelectOptions = workspace.activeSegment
+    ? [
+        {
+          id: workspace.activeSegment.id,
+          label: workspace.activeSegment.label,
+          code: workspace.activeSegment.segmentCode,
+          programGroup: workspace.activeSegment.programGroup ?? undefined,
+        },
+      ]
+    : [];
+  const defaultSegmentId = workspace.activeSegmentId;
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = toOptions(programRows, "program_name");
   const programMap = new Map(programs.map((program) => [program.id, program.label]));
@@ -222,10 +231,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
       title="Tạo lead tuyển sinh"
       description="Nhập thông tin học sinh/phụ huynh, nguồn lead và lịch chăm sóc ban đầu."
       workspaceSegmentId={workspace.activeSegmentId}
-      workspaceReturnTo={withAdmissionSegmentParam(
-        "/leads/new",
-        workspace.activeSegmentId,
-      )}
+      workspaceReturnTo={workspaceReturnTo}
     >
       <LeadForm
         sources={toOptions(sourceRows, "source_name")}
@@ -242,9 +248,11 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         }))}
         houLocations={toOptions(houLocationRows, "location_name")}
         houStages={toOptions(houStageRows, "stage_name")}
-        hasSegmentScope={hasSegmentScope}
+        hasSegmentScope
         hasPartnerScope={hasPartnerScope}
         defaultSegmentId={defaultSegmentId}
+        lockSegmentSelection
+        cancelHref={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}
       />
     </AppShell>
   );

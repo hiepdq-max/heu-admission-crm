@@ -32,7 +32,10 @@ import { StatusUpdateForm } from "@/components/leads/status-update-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { withAdmissionSegmentParam } from "@/lib/workspace";
+import {
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -189,6 +192,20 @@ export default async function LeadDetailPage({ params }: PageProps) {
     .maybeSingle<LeadDetailData>();
 
   if (error || !lead) {
+    notFound();
+  }
+
+  const leadWorkspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    lead.admission_segment_id,
+  );
+  const canOpenLeadWorkspace = lead.admission_segment_id
+    ? leadWorkspace.canSeeAllSegments ||
+      leadWorkspace.visibleSegmentIds.includes(lead.admission_segment_id)
+    : leadWorkspace.canSeeAllSegments;
+
+  if (!canOpenLeadWorkspace) {
     notFound();
   }
 
@@ -488,7 +505,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
       active="leads"
       title="Chi tiết lead"
       description={`${lead.lead_code} - ${lead.student_name}`}
-      workspaceSegmentId={lead.admission_segment_id}
+      workspaceSegmentId={leadWorkspace.activeSegmentId}
       workspaceReturnTo={`/leads/${lead.id}`}
       actions={
         <>

@@ -51,6 +51,10 @@ type SegmentScopeRow = {
   segment_id: string;
 };
 
+type PartnerScopeRow = {
+  partner_id: string;
+};
+
 type ProgramRow = LookupRow & {
   program_code: string;
   program_name: string;
@@ -283,6 +287,13 @@ export async function importLeadsAction(
   const defaultCampaignId = textValue(formData, "default_campaign_id");
   const defaultPartnerId = textValue(formData, "default_partner_id");
 
+  if (!defaultAdmissionSegmentId) {
+    return {
+      error:
+        "P0-14 yêu cầu chọn một đối tượng tuyển sinh trước khi import. Hãy chọn workspace ở thanh P0-13 rồi import lại.",
+    };
+  }
+
   const [
     { data: currentRoleCode },
     { data: sources },
@@ -294,6 +305,7 @@ export async function importLeadsAction(
     { data: majors },
     { data: existingLeads },
     { data: segmentScopeRows },
+    { data: partnerScopeRows },
   ] = await Promise.all([
     supabase.rpc("current_user_role_code"),
     supabase
@@ -337,6 +349,12 @@ export async function importLeadsAction(
       .eq("user_id", user.id)
       .eq("status", "ACTIVE")
       .returns<SegmentScopeRow[]>(),
+    supabase
+      .from("user_partner_scopes")
+      .select("partner_id")
+      .eq("user_id", user.id)
+      .eq("status", "ACTIVE")
+      .returns<PartnerScopeRow[]>(),
   ]);
 
   const sourceMap = mapByManyKeys(sources, ["source_code", "source_name"]);
@@ -354,12 +372,34 @@ export async function importLeadsAction(
   const allowedSegmentIds = new Set(
     (segmentScopeRows ?? []).map((scope) => scope.segment_id),
   );
+  const allowedPartnerIds = new Set(
+    (partnerScopeRows ?? []).map((scope) => scope.partner_id),
+  );
   const validSegmentIds = new Set((segments ?? []).map((segment) => segment.id));
   const requiresSegmentScope =
     currentRoleCode !== "ADMIN" && currentRoleCode !== "BGH";
 
-  if (defaultAdmissionSegmentId && !validSegmentIds.has(defaultAdmissionSegmentId)) {
+  if (!validSegmentIds.has(defaultAdmissionSegmentId)) {
     return { error: "Đối tượng tuyển sinh mặc định không hợp lệ." };
+  }
+
+  const { data: canUseAdmissionWorkspace, error: workspaceError } =
+    await supabase.rpc("can_use_admission_workspace", {
+      target_segment_id: defaultAdmissionSegmentId,
+    });
+
+  if (workspaceError) {
+    return {
+      error:
+        "Chưa kiểm tra được workspace tuyển sinh: " + workspaceError.message,
+    };
+  }
+
+  if (!canUseAdmissionWorkspace) {
+    return {
+      error:
+        "Bạn không được phân quyền import vào đối tượng tuyển sinh này. Hãy chọn đúng workspace hoặc nhờ quản lý cập nhật phạm vi.",
+    };
   }
 
   if (requiresSegmentScope && allowedSegmentIds.size === 0) {
@@ -367,6 +407,22 @@ export async function importLeadsAction(
       error:
         "Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể import lead. Hãy nhờ ADMIN hoặc trưởng phòng phân phạm vi trước.",
     };
+  }
+
+  if (allowedPartnerIds.size > 0) {
+    if (!defaultPartnerId) {
+      return {
+        error:
+          "Tài khoản này đang bị giới hạn theo đối tác/trung tâm, nên cần chọn Đối tác mặc định trước khi import.",
+      };
+    }
+
+    if (!allowedPartnerIds.has(defaultPartnerId)) {
+      return {
+        error:
+          "Đối tác mặc định nằm ngoài phạm vi tài khoản này. Hãy chọn đúng đối tác/trung tâm được phân.",
+      };
+    }
   }
 
   if (
@@ -467,7 +523,7 @@ export async function importLeadsAction(
       return;
     }
 
-    const admissionSegmentId = lookupId(
+    const csvAdmissionSegmentId = lookupId(
       row,
       [
         "admission_segment_id",
@@ -478,17 +534,21 @@ export async function importLeadsAction(
         "doi_tuong_tuyen_sinh",
       ],
       segmentMap,
-      defaultAdmissionSegmentId,
+      null,
     );
+    const admissionSegmentId = defaultAdmissionSegmentId;
 
-    if (requiresSegmentScope && !admissionSegmentId) {
+    if (
+      csvAdmissionSegmentId &&
+      csvAdmissionSegmentId !== defaultAdmissionSegmentId
+    ) {
       errors.push(
-        `Dòng ${rowNumber}: tài khoản này cần chọn đối tượng tuyển sinh khi import.`,
+        `Dòng ${rowNumber}: đối tượng trong CSV khác workspace đang import. Hãy bỏ cột segment hoặc chọn đúng workspace.`,
       );
       return;
     }
 
-    if (admissionSegmentId && !validSegmentIds.has(admissionSegmentId)) {
+    if (!validSegmentIds.has(admissionSegmentId)) {
       errors.push(`Dòng ${rowNumber}: đối tượng tuyển sinh không hợp lệ.`);
       return;
     }
@@ -499,6 +559,27 @@ export async function importLeadsAction(
     ) {
       errors.push(
         `Dòng ${rowNumber}: bạn không có quyền import vào đối tượng tuyển sinh này.`,
+      );
+      return;
+    }
+
+    const partnerId = lookupId(
+      row,
+      ["partner_code", "partner_name", "doi_tac"],
+      partnerMap,
+      defaultPartnerId,
+    );
+
+    if (allowedPartnerIds.size > 0 && !partnerId) {
+      errors.push(
+        `Dòng ${rowNumber}: tài khoản này cần đối tác/trung tâm trong phạm vi được phân.`,
+      );
+      return;
+    }
+
+    if (partnerId && allowedPartnerIds.size > 0 && !allowedPartnerIds.has(partnerId)) {
+      errors.push(
+        `Dòng ${rowNumber}: đối tác/trung tâm nằm ngoài phạm vi tài khoản này.`,
       );
       return;
     }
@@ -556,12 +637,7 @@ export async function importLeadsAction(
         campaignMap,
         defaultCampaignId,
       ),
-      partner_id: lookupId(
-        row,
-        ["partner_code", "partner_name", "doi_tac"],
-        partnerMap,
-        defaultPartnerId,
-      ),
+      partner_id: partnerId,
       assigned_to: user.id,
       status,
       priority,

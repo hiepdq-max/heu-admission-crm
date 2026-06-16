@@ -34,6 +34,8 @@ type LeadFormProps = {
   hasSegmentScope: boolean;
   hasPartnerScope: boolean;
   defaultSegmentId?: string;
+  lockSegmentSelection?: boolean;
+  cancelHref?: string;
 };
 
 const initialState: LeadFormState = {};
@@ -130,6 +132,8 @@ export function LeadForm({
   hasSegmentScope,
   hasPartnerScope,
   defaultSegmentId = "",
+  lockSegmentSelection = false,
+  cancelHref = "/leads",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
     createLeadAction,
@@ -287,39 +291,61 @@ export function LeadForm({
                 ))}
             </select>
           </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="admission_segment_id"
-              className="text-sm font-medium text-zinc-700"
-            >
-              Đối tượng tuyển sinh
-              {hasSegmentScope ? <span className="text-rose-600"> *</span> : null}
-            </label>
-            <select
-              id="admission_segment_id"
-              name="admission_segment_id"
-              className={inputClass}
-              value={selectedSegmentId}
-              required={hasSegmentScope}
-              onChange={(event) => setSelectedSegmentId(event.target.value)}
-            >
-              <option value="">Chọn đối tượng tuyển sinh</option>
-              {segments.map((segment) => (
-                <option key={segment.id} value={segment.id}>
-                  {segment.label}
-                </option>
-              ))}
-            </select>
-            {selectedSegment ? (
-              <p className="rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
-                Đang tạo lead trong: {selectedSegment.label}
+          {lockSegmentSelection && selectedSegment ? (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-zinc-700">
+                Đối tượng tuyển sinh <span className="text-rose-600">*</span>
               </p>
-            ) : hasSegmentScope ? (
+              <input
+                type="hidden"
+                name="admission_segment_id"
+                value={selectedSegment.id}
+              />
+              <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                {selectedSegment.label}
+              </div>
               <p className="text-xs text-zinc-500">
-                Tài khoản này chỉ được tạo lead trong đối tượng đã được phân.
+                P0-14 đang khóa lead theo workspace này để tránh nhập nhầm sang
+                HOU, TTGDTX, ngắn hạn hoặc đối tượng khác.
               </p>
-            ) : null}
-          </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <label
+                htmlFor="admission_segment_id"
+                className="text-sm font-medium text-zinc-700"
+              >
+                Đối tượng tuyển sinh
+                {hasSegmentScope ? (
+                  <span className="text-rose-600"> *</span>
+                ) : null}
+              </label>
+              <select
+                id="admission_segment_id"
+                name="admission_segment_id"
+                className={inputClass}
+                value={selectedSegmentId}
+                required={hasSegmentScope}
+                onChange={(event) => setSelectedSegmentId(event.target.value)}
+              >
+                <option value="">Chọn đối tượng tuyển sinh</option>
+                {segments.map((segment) => (
+                  <option key={segment.id} value={segment.id}>
+                    {segment.label}
+                  </option>
+                ))}
+              </select>
+              {selectedSegment ? (
+                <p className="rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
+                  Đang tạo lead trong: {selectedSegment.label}
+                </p>
+              ) : hasSegmentScope ? (
+                <p className="text-xs text-zinc-500">
+                  Tài khoản này chỉ được tạo lead trong đối tượng đã được phân.
+                </p>
+              ) : null}
+            </div>
+          )}
           <SelectField
             label="Nguồn lead"
             name="source_id"
@@ -469,7 +495,7 @@ export function LeadForm({
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <Button asChild variant="outline">
-          <Link href="/leads">Hủy</Link>
+          <Link href={cancelHref}>Hủy</Link>
         </Button>
         <Button type="submit" disabled={isPending || cannotCreateByScope}>
           {isPending ? (

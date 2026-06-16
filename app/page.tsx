@@ -339,6 +339,7 @@ export default async function Home({ searchParams }: HomePageProps) {
     `${formatNumber(overdueResult.count)} lead đang quá hạn chăm sóc`,
     `${formatNumber(todayFollowupResult.count)} lead cần follow-up trong hôm nay`,
   ];
+  const canWriteInWorkspace = Boolean(workspace.activeSegmentId);
 
   return (
     <AppShell
@@ -367,17 +368,24 @@ export default async function Home({ searchParams }: HomePageProps) {
               Tìm lead
             </Link>
           </Button>
-          <Button asChild>
-            <Link
-              href={withAdmissionSegmentParam(
-                "/leads/new",
-                workspace.activeSegmentId,
-              )}
-            >
+          {canWriteInWorkspace ? (
+            <Button asChild>
+              <Link
+                href={withAdmissionSegmentParam(
+                  "/leads/new",
+                  workspace.activeSegmentId,
+                )}
+              >
+                <Plus className="size-4" />
+                Tạo lead
+              </Link>
+            </Button>
+          ) : (
+            <Button disabled>
               <Plus className="size-4" />
               Tạo lead
-            </Link>
-          </Button>
+            </Button>
+          )}
         </>
       }
     >

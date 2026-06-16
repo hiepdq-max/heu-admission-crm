@@ -122,6 +122,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     workspace.activeSegmentId,
   );
   const importHref = withAdmissionSegmentParam("/import", workspace.activeSegmentId);
+  const canWriteInWorkspace = Boolean(workspace.activeSegmentId);
 
   return (
     <AppShell
@@ -142,21 +143,47 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
               Tải lại
             </Link>
           </Button>
-          <Button asChild variant="outline">
-            <Link href={importHref}>
-              <Upload className="size-4" />
-              Import CSV
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href={createLeadHref}>
-              <Plus className="size-4" />
-              Tạo lead
-            </Link>
-          </Button>
+          {canWriteInWorkspace ? (
+            <>
+              <Button asChild variant="outline">
+                <Link href={importHref}>
+                  <Upload className="size-4" />
+                  Import CSV
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href={createLeadHref}>
+                  <Plus className="size-4" />
+                  Tạo lead
+                </Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" disabled>
+                <Upload className="size-4" />
+                Import CSV
+              </Button>
+              <Button disabled>
+                <Plus className="size-4" />
+                Tạo lead
+              </Button>
+            </>
+          )}
         </>
       }
     >
+      {!canWriteInWorkspace ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <h2 className="font-semibold">P0-14 đang chặn thao tác ghi</h2>
+          <p className="mt-1">
+            Bạn có thể xem danh sách theo quyền hiện tại, nhưng để tạo lead
+            hoặc import CSV thì phải chọn một đối tượng tuyển sinh cụ thể ở
+            thanh <strong>P0-13 · Workspace đang làm việc</strong> rồi bấm{" "}
+            <strong>Áp dụng</strong>.
+          </p>
+        </section>
+      ) : null}
       {leadsError ? (
         <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
           Không đọc được bảng leads: {leadsError.message}

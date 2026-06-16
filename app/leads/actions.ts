@@ -46,6 +46,13 @@ export async function createLeadAction(
     return { error: "Cần nhập ít nhất một số điện thoại học sinh hoặc phụ huynh." };
   }
 
+  if (!admissionSegmentId) {
+    return {
+      error:
+        "P0-14 yêu cầu chọn một đối tượng tuyển sinh trước khi tạo lead. Hãy chọn workspace ở thanh P0-13 rồi tạo lại lead.",
+    };
+  }
+
   const [
     { data: currentRoleCode },
     { data: canWriteAssigned },
@@ -78,6 +85,25 @@ export async function createLeadAction(
       .returns<Array<{ partner_id: string }>>(),
   ]);
 
+  const { data: canUseAdmissionWorkspace, error: workspaceError } =
+    await supabase.rpc("can_use_admission_workspace", {
+      target_segment_id: admissionSegmentId,
+    });
+
+  if (workspaceError) {
+    return {
+      error:
+        "Chưa kiểm tra được workspace tuyển sinh: " + workspaceError.message,
+    };
+  }
+
+  if (!canUseAdmissionWorkspace) {
+    return {
+      error:
+        "Bạn không được phân quyền tạo lead trong đối tượng tuyển sinh này. Hãy chọn đúng workspace hoặc nhờ quản lý cập nhật phạm vi.",
+    };
+  }
+
   if (!canWriteAssigned && !canWriteTeam && !canWriteAll) {
     return {
       error:
@@ -99,13 +125,6 @@ export async function createLeadAction(
       return {
         error:
           "Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể tạo lead. Hãy nhờ ADMIN hoặc trưởng phòng phân phạm vi trước.",
-      };
-    }
-
-    if (!admissionSegmentId) {
-      return {
-        error:
-          "Bạn đang được phân theo đối tượng tuyển sinh, nên cần chọn đúng ô Đối tượng tuyển sinh trước khi lưu lead.",
       };
     }
 
