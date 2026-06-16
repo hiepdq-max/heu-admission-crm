@@ -34,6 +34,20 @@ function uuidValue(value: string | null) {
     : null;
 }
 
+function jsonValue(formData: FormData, key: string) {
+  const value = textValue(formData, key);
+
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value) as unknown;
+  } catch {
+    redirect("/master-control?error=invalid_master_data_json");
+  }
+}
+
 async function requireMasterControlPermission(
   permission: "manage" | "approve" = "manage",
 ) {
@@ -622,4 +636,246 @@ export async function updateEvidenceDocumentAction(formData: FormData) {
 
   revalidatePath("/master-control");
   redirect("/master-control?evidence_updated=1");
+}
+
+async function requireMasterDataPermission(
+  permission: "request" | "check" | "approve" | "manage",
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const rpcName =
+    permission === "manage"
+      ? "can_manage_master_data_governance"
+      : permission === "approve"
+        ? "can_approve_master_data_change"
+        : permission === "check"
+          ? "can_check_master_data_change"
+          : "can_request_master_data_change";
+  const [{ data: roleCode }, { data: hasPermission }] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc(rpcName),
+  ]);
+
+  if (roleCode !== "ADMIN" && !hasPermission) {
+    redirect("/master-control?error=not_allowed_master_data");
+  }
+
+  return { supabase, user };
+}
+
+export async function createMasterDataGovernanceAction(formData: FormData) {
+  const { supabase, user } = await requireMasterDataPermission("manage");
+  const masterCode = normalizeCode(textValue(formData, "master_code"));
+  const masterName = textValue(formData, "master_name");
+  const moduleCode = normalizeCode(textValue(formData, "module_code"));
+  const sourceTable = textValue(formData, "source_table");
+  const ownerDepartment = textValue(formData, "owner_department");
+
+  if (!masterCode || !masterName || !moduleCode || !sourceTable || !ownerDepartment) {
+    redirect("/master-control?error=missing_master_data_governance");
+  }
+
+  const { error } = await supabase.from("master_data_governance").insert({
+    master_code: masterCode,
+    master_name: masterName,
+    module_code: moduleCode,
+    source_table: sourceTable,
+    data_domain: textValue(formData, "data_domain") ?? "OPERATION",
+    owner_department: ownerDepartment,
+    steward_role: textValue(formData, "steward_role"),
+    approval_required: boolValue(formData, "approval_required"),
+    checker_role: textValue(formData, "checker_role"),
+    approver_role: textValue(formData, "approver_role"),
+    sensitivity_level: textValue(formData, "sensitivity_level") ?? "INTERNAL",
+    change_frequency: textValue(formData, "change_frequency") ?? "ON_DEMAND",
+    ai_allowed: boolValue(formData, "ai_allowed"),
+    duplicate_rule: textValue(formData, "duplicate_rule"),
+    effective_date_required: boolValue(formData, "effective_date_required"),
+    audit_required: boolValue(formData, "audit_required"),
+    evidence_required: boolValue(formData, "evidence_required"),
+    scope_rule: textValue(formData, "scope_rule"),
+    control_note: textValue(formData, "control_note"),
+    control_status: textValue(formData, "control_status") ?? "DAT_TAM_THOI",
+    created_by: user.id,
+    updated_by: user.id,
+  });
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?master_data_created=1");
+}
+
+export async function updateMasterDataGovernanceAction(formData: FormData) {
+  const { supabase, user } = await requireMasterDataPermission("manage");
+  const governanceId = textValue(formData, "governance_id");
+  const masterName = textValue(formData, "master_name");
+  const moduleCode = normalizeCode(textValue(formData, "module_code"));
+  const sourceTable = textValue(formData, "source_table");
+  const ownerDepartment = textValue(formData, "owner_department");
+
+  if (!governanceId || !masterName || !moduleCode || !sourceTable || !ownerDepartment) {
+    redirect("/master-control?error=missing_master_data_governance");
+  }
+
+  const { error } = await supabase
+    .from("master_data_governance")
+    .update({
+      master_name: masterName,
+      module_code: moduleCode,
+      source_table: sourceTable,
+      data_domain: textValue(formData, "data_domain") ?? "OPERATION",
+      owner_department: ownerDepartment,
+      steward_role: textValue(formData, "steward_role"),
+      approval_required: boolValue(formData, "approval_required"),
+      checker_role: textValue(formData, "checker_role"),
+      approver_role: textValue(formData, "approver_role"),
+      sensitivity_level: textValue(formData, "sensitivity_level") ?? "INTERNAL",
+      change_frequency: textValue(formData, "change_frequency") ?? "ON_DEMAND",
+      ai_allowed: boolValue(formData, "ai_allowed"),
+      duplicate_rule: textValue(formData, "duplicate_rule"),
+      effective_date_required: boolValue(formData, "effective_date_required"),
+      audit_required: boolValue(formData, "audit_required"),
+      evidence_required: boolValue(formData, "evidence_required"),
+      scope_rule: textValue(formData, "scope_rule"),
+      control_note: textValue(formData, "control_note"),
+      control_status: textValue(formData, "control_status") ?? "DAT_TAM_THOI",
+      updated_by: user.id,
+    })
+    .eq("id", governanceId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?master_data_updated=1");
+}
+
+export async function createMasterDataChangeRequestAction(formData: FormData) {
+  const { supabase, user } = await requireMasterDataPermission("request");
+  const governanceId = textValue(formData, "governance_id");
+  const masterCode = normalizeCode(textValue(formData, "master_code"));
+  const changeTitle = textValue(formData, "change_title");
+
+  if (!governanceId || !masterCode || !changeTitle) {
+    redirect("/master-control?error=missing_master_data_request");
+  }
+
+  const { data: requestCode, error: requestCodeError } = await supabase.rpc(
+    "next_master_data_request_code",
+    { p_master_code: masterCode },
+  );
+
+  if (requestCodeError || !requestCode) {
+    redirect(
+      `/master-control?error=${encodeURIComponent(
+        requestCodeError?.message ?? "Không tạo được mã yêu cầu dữ liệu gốc.",
+      )}`,
+    );
+  }
+
+  const { error } = await supabase.from("master_data_change_requests").insert({
+    request_code: requestCode,
+    governance_id: governanceId,
+    change_type: textValue(formData, "change_type") ?? "UPDATE",
+    target_record_id: uuidValue(textValue(formData, "target_record_id")),
+    target_record_code: normalizeCode(textValue(formData, "target_record_code")),
+    change_title: changeTitle,
+    current_value: jsonValue(formData, "current_value"),
+    proposed_value: jsonValue(formData, "proposed_value"),
+    request_reason: textValue(formData, "request_reason"),
+    evidence_url: textValue(formData, "evidence_url"),
+    request_status: textValue(formData, "request_status") ?? "PENDING_CHECK",
+    requested_by: user.id,
+    created_by: user.id,
+    updated_by: user.id,
+  });
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?master_data_request_created=1");
+}
+
+export async function updateMasterDataChangeRequestAction(formData: FormData) {
+  const requestId = textValue(formData, "request_id");
+  const requestStatus = textValue(formData, "request_status");
+
+  if (!requestId || !requestStatus) {
+    redirect("/master-control?error=missing_master_data_request");
+  }
+
+  if (
+    ![
+      "PENDING_CHECK",
+      "CHECKED",
+      "APPROVED",
+      "REJECTED",
+      "NEEDS_FIX",
+      "APPLIED",
+      "CANCELLED",
+    ].includes(requestStatus)
+  ) {
+    redirect("/master-control?error=invalid_master_data_request_status");
+  }
+
+  const permission =
+    requestStatus === "APPROVED" || requestStatus === "REJECTED"
+      ? "approve"
+      : requestStatus === "APPLIED"
+        ? "manage"
+        : "check";
+  const { supabase, user } = await requireMasterDataPermission(permission);
+  const now = new Date().toISOString();
+
+  const updatePayload: Record<string, string | null> = {
+    request_status: requestStatus,
+    rejection_reason: textValue(formData, "rejection_reason"),
+    evidence_url: textValue(formData, "evidence_url"),
+    updated_by: user.id,
+  };
+
+  if (["CHECKED", "NEEDS_FIX"].includes(requestStatus)) {
+    updatePayload.checked_by = user.id;
+    updatePayload.checked_at = now;
+  }
+
+  if (requestStatus === "APPROVED") {
+    updatePayload.approved_by = user.id;
+    updatePayload.approved_at = now;
+  }
+
+  if (requestStatus === "REJECTED") {
+    updatePayload.approved_by = null;
+    updatePayload.approved_at = null;
+  }
+
+  if (requestStatus === "APPLIED") {
+    updatePayload.applied_by = user.id;
+    updatePayload.applied_at = now;
+  }
+
+  const { error } = await supabase
+    .from("master_data_change_requests")
+    .update(updatePayload)
+    .eq("id", requestId);
+
+  if (error) {
+    redirect(`/master-control?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/master-control");
+  redirect("/master-control?master_data_request_updated=1");
 }

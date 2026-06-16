@@ -27,6 +27,13 @@ import {
   type HeuOsWorkflowRow,
 } from "@/components/master-control/heu-os-map-overview";
 import {
+  MasterDataGovernance,
+  type MasterDataChangeRequestRow,
+  type MasterDataGovernanceRow,
+  type MasterDataGovernanceSummaryRow,
+  type MasterDataModuleOptionRow,
+} from "@/components/master-control/master-data-governance";
+import {
   ModuleReadinessOverview,
   type HeuOsModuleReadinessRow,
 } from "@/components/master-control/module-readiness-overview";
@@ -54,6 +61,10 @@ type MasterControlPageProps = {
     workflow_request_updated?: string;
     evidence_created?: string;
     evidence_updated?: string;
+    master_data_created?: string;
+    master_data_updated?: string;
+    master_data_request_created?: string;
+    master_data_request_updated?: string;
     error?: string;
   }>;
 };
@@ -73,6 +84,13 @@ const errorMessages: Record<string, string> = {
   invalid_evidence_url: "Link minh chứng cần bắt đầu bằng http:// hoặc https://.",
   invalid_evidence_status: "Trạng thái minh chứng không hợp lệ.",
   not_allowed_evidence: "Bạn chưa có quyền tạo hoặc kiểm minh chứng.",
+  missing_master_data_governance: "Thiếu thông tin dữ liệu gốc.",
+  missing_master_data_request: "Thiếu thông tin yêu cầu thay đổi dữ liệu gốc.",
+  invalid_master_data_json:
+    "Giá trị hiện tại/đề xuất cần là JSON hợp lệ, ví dụ {\"name\":\"ABC\"}.",
+  invalid_master_data_request_status:
+    "Trạng thái yêu cầu thay đổi dữ liệu gốc không hợp lệ.",
+  not_allowed_master_data: "Bạn chưa có quyền thao tác dữ liệu gốc.",
 };
 
 function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
@@ -88,6 +106,12 @@ function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
   if (params?.workflow_request_updated) return "Đã cập nhật workflow request.";
   if (params?.evidence_created) return "Đã thêm minh chứng.";
   if (params?.evidence_updated) return "Đã cập nhật minh chứng.";
+  if (params?.master_data_created) return "Đã đăng ký dữ liệu gốc.";
+  if (params?.master_data_updated) return "Đã cập nhật governance dữ liệu gốc.";
+  if (params?.master_data_request_created)
+    return "Đã tạo yêu cầu thay đổi dữ liệu gốc.";
+  if (params?.master_data_request_updated)
+    return "Đã cập nhật yêu cầu thay đổi dữ liệu gốc.";
   return undefined;
 }
 
@@ -162,6 +186,9 @@ export default async function MasterControlPage({
     { data: workflowRequestSummary, error: workflowRequestSummaryError },
     { data: evidenceRows, error: evidenceRowsError },
     { data: evidenceSummary, error: evidenceSummaryError },
+    { data: masterDataGovernanceRows, error: masterDataGovernanceRowsError },
+    { data: masterDataGovernanceSummary, error: masterDataGovernanceSummaryError },
+    { data: masterDataChangeRequests, error: masterDataChangeRequestsError },
   ] = await Promise.all([
     supabase
       .from("legal_registry")
@@ -285,6 +312,27 @@ export default async function MasterControlPage({
         "evidence_count,ready_count,waiting_check_count,needs_fix_count,blocked_count,sensitive_count",
       )
       .maybeSingle<EvidenceDocumentSummaryRow>(),
+    supabase
+      .from("master_data_governance_status")
+      .select(
+        "id,master_code,master_name,module_code,module_name,source_table,data_domain,owner_department,steward_role,approval_required,checker_role,approver_role,sensitivity_level,change_frequency,ai_allowed,duplicate_rule,effective_date_required,audit_required,evidence_required,scope_rule,control_note,control_status,created_by,created_by_name,updated_by,updated_by_name,created_at,updated_at,open_request_count,approved_request_count,needs_fix_request_count,control_flags,governance_status",
+      )
+      .order("governance_status", { ascending: true })
+      .returns<MasterDataGovernanceRow[]>(),
+    supabase
+      .from("master_data_governance_summary")
+      .select(
+        "master_count,ready_count,temp_ready_count,needs_evidence_count,needs_fix_count,blocked_count,ai_allowed_count,open_request_count",
+      )
+      .maybeSingle<MasterDataGovernanceSummaryRow>(),
+    supabase
+      .from("master_data_change_request_status")
+      .select(
+        "id,request_code,governance_id,master_code,master_name,source_table,change_type,target_record_id,target_record_code,change_title,current_value,proposed_value,request_reason,evidence_url,request_status,requested_by,requested_by_name,checked_by,checked_by_name,checked_at,approved_by,approved_by_name,approved_at,applied_by,applied_by_name,applied_at,rejection_reason,created_at,updated_at,request_flags,request_control_status",
+      )
+      .order("created_at", { ascending: false })
+      .limit(30)
+      .returns<MasterDataChangeRequestRow[]>(),
   ]);
 
   const error = params?.error
@@ -345,6 +393,25 @@ export default async function MasterControlPage({
           canCreate={canManage}
           canCheck={canCheck || canManage}
           loadError={evidenceRowsError?.message ?? evidenceSummaryError?.message}
+        />
+        <MasterDataGovernance
+          rows={masterDataGovernanceRows ?? []}
+          requests={masterDataChangeRequests ?? []}
+          summary={masterDataGovernanceSummary}
+          moduleOptions={(heuOsModules ?? []).map(
+            (module): MasterDataModuleOptionRow => ({
+              module_code: module.module_code,
+              module_name: module.module_name,
+            }),
+          )}
+          canManage={canManage}
+          canCheck={canCheck || canManage}
+          canApprove={canApprove}
+          loadError={
+            masterDataGovernanceRowsError?.message ??
+            masterDataGovernanceSummaryError?.message ??
+            masterDataChangeRequestsError?.message
+          }
         />
         <HeuOsMapOverview
           modules={heuOsModules ?? []}
