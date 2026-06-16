@@ -1,23 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useMemo, useState } from "react";
-import { Loader2, Save } from "lucide-react";
+import { useActionState, useMemo, useState, type ReactNode } from "react";
+import { AlertTriangle, Loader2, Save } from "lucide-react";
 
 import { createLeadAction, type LeadFormState } from "@/app/leads/actions";
 import { Button } from "@/components/ui/button";
+import type { LeadDynamicField } from "@/lib/admission-dynamic-fields";
 
 type Option = {
   id: string;
   label: string;
+};
+
+type SegmentOption = Option & {
   code?: string;
   programGroup?: string;
 };
 
 type MajorOption = Option & {
+  code?: string;
   programId: string | null;
   programLabel: string | null;
-  programCode?: string | null;
+  programCode: string | null;
 };
 
 type LeadFormProps = {
@@ -25,7 +30,7 @@ type LeadFormProps = {
   flows: Option[];
   campaigns: Option[];
   partners: Option[];
-  segments: Option[];
+  segments: SegmentOption[];
   programs: Option[];
   majors: MajorOption[];
   houPrograms: Option[];
@@ -34,8 +39,10 @@ type LeadFormProps = {
   houStages: Option[];
   hasSegmentScope: boolean;
   hasPartnerScope: boolean;
-  defaultSegmentId?: string;
+  defaultSegmentId: string | null;
   lockSegmentSelection?: boolean;
+  dynamicFields: LeadDynamicField[];
+  dynamicConfigError?: string;
   cancelHref?: string;
 };
 
@@ -43,78 +50,108 @@ const initialState: LeadFormState = {};
 
 const inputClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
-
 const textareaClass =
-  "min-h-24 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
+  "min-h-28 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
-function Field({
-  label,
-  name,
-  type = "text",
-  required,
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-}) {
-  return (
-    <div className="space-y-2">
-      <label htmlFor={name} className="text-sm font-medium text-zinc-700">
-        {label}
-        {required ? <span className="text-rose-600"> *</span> : null}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className={inputClass}
-      />
-    </div>
-  );
+const genderOptions = [
+  { id: "Nam", label: "Nam" },
+  { id: "Nữ", label: "Nữ" },
+  { id: "Khác", label: "Khác" },
+];
+
+const statusOptions = [
+  { id: "NEW", label: "Lead mới" },
+  { id: "ASSIGNED", label: "Đã phân tư vấn" },
+  { id: "CONTACTED", label: "Đã liên hệ" },
+  { id: "INTERESTED", label: "Có quan tâm" },
+  { id: "FOLLOW_UP", label: "Chăm sóc tiếp" },
+  { id: "DOCUMENT_PENDING", label: "Chờ hồ sơ" },
+  { id: "DOCUMENT_SUBMITTED", label: "Đã nộp hồ sơ" },
+  { id: "ELIGIBLE", label: "Đủ điều kiện" },
+  { id: "ENROLLED", label: "Đã nhập học" },
+  { id: "LOST", label: "Không đăng ký" },
+];
+
+const priorityOptions = [
+  { id: "LOW", label: "Thấp" },
+  { id: "NORMAL", label: "Bình thường" },
+  { id: "HIGH", label: "Cao" },
+  { id: "URGENT", label: "Khẩn cấp" },
+];
+
+function fieldValue(state: LeadFormState, name: string, fallback = "") {
+  return state.fields?.[name] ?? fallback;
 }
 
-function SelectField({
-  label,
-  name,
-  options,
-  placeholder = "Chọn",
-  required,
-  helpText,
+function fieldError(state: LeadFormState, name: string) {
+  return state.fieldErrors?.[name];
+}
+
+function classForField(
+  state: LeadFormState,
+  name: string,
+  baseClass = inputClass,
+) {
+  return fieldError(state, name)
+    ? baseClass
+        .replace("border-zinc-300", "border-rose-300")
+        .replace("focus:border-zinc-500", "focus:border-rose-500")
+    : baseClass;
+}
+
+function RequiredMark({ required }: { required?: boolean }) {
+  if (!required) {
+    return null;
+  }
+
+  return <span className="text-rose-600"> *</span>;
+}
+
+function FieldError({ state, name }: { state: LeadFormState; name: string }) {
+  const message = fieldError(state, name);
+
+  if (!message) {
+    return null;
+  }
+
+  return <p className="text-xs font-medium text-rose-600">{message}</p>;
+}
+
+function FieldHelp({ value }: { value?: string | null }) {
+  if (!value) {
+    return null;
+  }
+
+  return <p className="text-xs leading-5 text-zinc-500">{value}</p>;
+}
+
+function Section({
+  title,
+  description,
+  children,
+  visible = true,
 }: {
-  label: string;
-  name: string;
-  options: Option[];
-  placeholder?: string;
-  required?: boolean;
-  helpText?: string;
+  title: string;
+  description?: string;
+  children: ReactNode;
+  visible?: boolean;
 }) {
+  if (!visible) {
+    return null;
+  }
+
   return (
-    <div className="space-y-2">
-      <label htmlFor={name} className="text-sm font-medium text-zinc-700">
-        {label}
-        {required ? <span className="text-rose-600"> *</span> : null}
-      </label>
-      <select
-        id={name}
-        name={name}
-        className={inputClass}
-        defaultValue=""
-        required={required}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {helpText ? <p className="text-xs text-zinc-500">{helpText}</p> : null}
-    </div>
+    <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <div>
+        <h2 className="text-lg font-semibold">{title}</h2>
+        {description ? (
+          <p className="mt-1 text-sm leading-6 text-zinc-500">{description}</p>
+        ) : null}
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {children}
+      </div>
+    </section>
   );
 }
 
@@ -132,129 +169,384 @@ export function LeadForm({
   houStages,
   hasSegmentScope,
   hasPartnerScope,
-  defaultSegmentId = "",
+  defaultSegmentId,
   lockSegmentSelection = false,
+  dynamicFields,
+  dynamicConfigError,
   cancelHref = "/leads",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
     createLeadAction,
     initialState,
   );
-  const [selectedSegmentId, setSelectedSegmentId] = useState(defaultSegmentId);
-  const selectedSegment = useMemo(
-    () => segments.find((segment) => segment.id === selectedSegmentId),
-    [segments, selectedSegmentId],
+  const fieldMap = useMemo(
+    () => new Map(dynamicFields.map((field) => [field.form_name, field])),
+    [dynamicFields],
   );
-  const [selectedProgramId, setSelectedProgramId] = useState(
-    programs.length === 1 ? programs[0].id : "",
-  );
-  const selectedProgram = useMemo(
-    () => programs.find((program) => program.id === selectedProgramId),
-    [programs, selectedProgramId],
+  const usesDynamicConfig = dynamicFields.length > 0;
+  const activeSegment = segments.find((segment) => segment.id === defaultSegmentId);
+  const initialProgramId =
+    fieldValue(state, "interested_program_id") ||
+    (programs.length === 1 ? programs[0].id : "");
+  const [selectedProgramId, setSelectedProgramId] = useState(initialProgramId);
+  const [selectedMajorId, setSelectedMajorId] = useState(
+    fieldValue(state, "interested_major_id"),
   );
   const visibleMajors = useMemo(() => {
-    if (selectedProgramId) {
-      return majors.filter((major) => major.programId === selectedProgramId);
+    if (!selectedProgramId) {
+      return majors;
     }
 
-    return majors;
+    return majors.filter(
+      (major) => !major.programId || major.programId === selectedProgramId,
+    );
   }, [majors, selectedProgramId]);
-  const isHouSegment = selectedSegment?.code === "UNIVERSITY_TRANSFER_HOU";
-  const cannotCreateByScope = hasSegmentScope && segments.length === 0;
+  const selectedProgram = programs.find((program) => program.id === selectedProgramId);
+  const selectedMajor = majors.find((major) => major.id === selectedMajorId);
+  const customFields = dynamicFields.filter((field) => field.is_custom);
+
+  const fieldConfig = (name: string) => fieldMap.get(name);
+  const showField = (name: string) => !usesDynamicConfig || fieldMap.has(name);
+  const labelFor = (name: string, fallback: string) =>
+    fieldConfig(name)?.field_label ?? fallback;
+  const requiredFor = (name: string, fallback = false) =>
+    fieldConfig(name)?.is_required ?? fallback;
+  const placeholderFor = (name: string, fallback = "") =>
+    fieldConfig(name)?.placeholder ?? fallback;
+  const helpFor = (name: string) => fieldConfig(name)?.help_text;
+
+  function renderTextInput({
+    name,
+    label,
+    type = "text",
+    placeholder,
+    required,
+    alwaysVisible = false,
+  }: {
+    name: string;
+    label: string;
+    type?: string;
+    placeholder?: string;
+    required?: boolean;
+    alwaysVisible?: boolean;
+  }) {
+    if (!alwaysVisible && !showField(name)) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-2">
+        <label htmlFor={name} className="text-sm font-medium text-zinc-700">
+          {labelFor(name, label)}
+          <RequiredMark required={requiredFor(name, required)} />
+        </label>
+        <input
+          id={name}
+          name={name}
+          type={type}
+          className={classForField(state, name)}
+          defaultValue={fieldValue(state, name)}
+          placeholder={placeholderFor(name, placeholder)}
+        />
+        <FieldHelp value={helpFor(name)} />
+        <FieldError state={state} name={name} />
+      </div>
+    );
+  }
+
+  function renderSelectInput({
+    name,
+    label,
+    options,
+    placeholder = "Chọn",
+    required,
+    alwaysVisible = false,
+  }: {
+    name: string;
+    label: string;
+    options: Option[];
+    placeholder?: string;
+    required?: boolean;
+    alwaysVisible?: boolean;
+  }) {
+    if (!alwaysVisible && !showField(name)) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-2">
+        <label htmlFor={name} className="text-sm font-medium text-zinc-700">
+          {labelFor(name, label)}
+          <RequiredMark required={requiredFor(name, required)} />
+        </label>
+        <select
+          id={name}
+          name={name}
+          className={classForField(state, name)}
+          defaultValue={fieldValue(state, name)}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <FieldHelp value={helpFor(name)} />
+        <FieldError state={state} name={name} />
+      </div>
+    );
+  }
+
+  function renderTextareaInput({
+    name,
+    label,
+    alwaysVisible = false,
+  }: {
+    name: string;
+    label: string;
+    alwaysVisible?: boolean;
+  }) {
+    if (!alwaysVisible && !showField(name)) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-2 md:col-span-2 xl:col-span-3">
+        <label htmlFor={name} className="text-sm font-medium text-zinc-700">
+          {labelFor(name, label)}
+          <RequiredMark required={requiredFor(name)} />
+        </label>
+        <textarea
+          id={name}
+          name={name}
+          className={classForField(state, name, textareaClass)}
+          defaultValue={fieldValue(state, name)}
+          placeholder={placeholderFor(name)}
+        />
+        <FieldHelp value={helpFor(name)} />
+        <FieldError state={state} name={name} />
+      </div>
+    );
+  }
+
+  function renderCustomField(field: LeadDynamicField) {
+    const isCheckbox = field.field_type === "CHECKBOX";
+    const value = fieldValue(state, field.form_name);
+
+    if (isCheckbox) {
+      return (
+        <div className="space-y-2 rounded-md border border-zinc-200 bg-zinc-50 p-3">
+          <label
+            htmlFor={field.form_name}
+            className="flex items-start gap-3 text-sm font-medium text-zinc-700"
+          >
+            <input
+              id={field.form_name}
+              name={field.form_name}
+              type="checkbox"
+              className="mt-1 size-4 rounded border-zinc-300"
+              defaultChecked={value === "on" || value === "true"}
+            />
+            <span>
+              {field.field_label}
+              <RequiredMark required={field.is_required} />
+            </span>
+          </label>
+          <FieldHelp value={field.help_text} />
+          <FieldError state={state} name={field.form_name} />
+        </div>
+      );
+    }
+
+    const inputType =
+      field.field_type === "DATE"
+        ? "date"
+        : field.field_type === "DATETIME"
+          ? "datetime-local"
+          : field.field_type === "NUMBER" || field.field_type === "MONEY"
+            ? "number"
+            : field.field_type === "EMAIL"
+              ? "email"
+              : field.field_type === "PHONE"
+                ? "tel"
+                : field.field_type === "FILE_URL"
+                  ? "url"
+                  : "text";
+
+    if (field.field_type === "TEXTAREA") {
+      return (
+        <div className="space-y-2 md:col-span-2 xl:col-span-3">
+          <label
+            htmlFor={field.form_name}
+            className="text-sm font-medium text-zinc-700"
+          >
+            {field.field_label}
+            <RequiredMark required={field.is_required} />
+          </label>
+          <textarea
+            id={field.form_name}
+            name={field.form_name}
+            className={classForField(state, field.form_name, textareaClass)}
+            defaultValue={value}
+            placeholder={field.placeholder ?? undefined}
+          />
+          <FieldHelp value={field.help_text} />
+          <FieldError state={state} name={field.form_name} />
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <label
+          htmlFor={field.form_name}
+          className="text-sm font-medium text-zinc-700"
+        >
+          {field.field_label}
+          <RequiredMark required={field.is_required} />
+        </label>
+        <input
+          id={field.form_name}
+          name={field.form_name}
+          type={inputType}
+          className={classForField(state, field.form_name)}
+          defaultValue={value}
+          placeholder={field.placeholder ?? undefined}
+        />
+        <FieldHelp value={field.help_text} />
+        <FieldError state={state} name={field.form_name} />
+      </div>
+    );
+  }
+
+  const hasHouSection =
+    activeSegment?.code === "UNIVERSITY_TRANSFER_HOU" ||
+    ["hou_program_id", "hou_major_id", "hou_location_id", "hou_stage_id", "hou_first_term_tuition_confirmed"].some(
+      (name) => showField(name) && usesDynamicConfig,
+    );
 
   return (
     <form action={formAction} className="space-y-6">
       {state.error ? (
-        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm leading-6 text-rose-700">
           {state.error}
         </div>
       ) : null}
 
-      {cannotCreateByScope ? (
-        <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm leading-6 text-rose-700">
-          Tài khoản này chưa được phân đối tượng tuyển sinh nên chưa thể tạo
-          lead. Hãy nhờ ADMIN hoặc trưởng phòng vào Phạm vi user để phân đúng
-          đối tượng trước.
+      {dynamicConfigError ? (
+        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+          <p>
+            Chưa đọc được cấu hình form P0-17 nên hệ thống đang dùng form dự
+            phòng. Chi tiết: {dynamicConfigError}
+          </p>
+        </div>
+      ) : null}
+
+      {!usesDynamicConfig && !dynamicConfigError ? (
+        <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+          <p>
+            Đối tượng tuyển sinh này chưa có field active ở P0-17. Form vẫn cho
+            nhập theo mẫu dự phòng, nhưng nên cấu hình field trước khi vận hành
+            thật.
+          </p>
         </div>
       ) : null}
 
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold">Thông tin học sinh</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <Field
-            label="Họ tên học sinh"
-            name="student_name"
-            required
-            placeholder="Nguyễn Văn A"
-          />
-          <Field
-            label="Số điện thoại học sinh"
-            name="student_phone"
-            placeholder="09xxxxxxxx"
-          />
-          <Field label="Ngày sinh" name="student_dob" type="date" />
-          <div className="space-y-2">
-            <label
-              htmlFor="student_gender"
-              className="text-sm font-medium text-zinc-700"
-            >
-              Giới tính
-            </label>
-            <select
-              id="student_gender"
-              name="student_gender"
-              className={inputClass}
-              defaultValue=""
-            >
-              <option value="">Chưa chọn</option>
-              <option value="MALE">Nam</option>
-              <option value="FEMALE">Nữ</option>
-              <option value="OTHER">Khác</option>
-            </select>
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold">Workspace tuyển sinh</h2>
+            <p className="mt-1 text-sm leading-6 text-zinc-500">
+              Lead được tạo trong đúng đối tượng tuyển sinh đang chọn. Danh sách
+              hệ/ngành, HOU, đối tác và field bắt buộc sẽ đi theo lựa chọn này.
+            </p>
           </div>
-          <Field label="Trường hiện tại" name="current_school" />
-          <Field label="Lớp hiện tại" name="current_grade" placeholder="9" />
-          <Field
-            label="Năm tốt nghiệp"
-            name="graduation_year"
-            type="number"
-            placeholder="2026"
-          />
+          <div className="lg:min-w-[360px]">
+            {lockSegmentSelection ? (
+              <>
+                <input
+                  type="hidden"
+                  name="admission_segment_id"
+                  value={defaultSegmentId ?? ""}
+                />
+                <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-700">
+                  {activeSegment?.label ?? "Chưa chọn đối tượng tuyển sinh"}
+                </div>
+              </>
+            ) : (
+              <select
+                name="admission_segment_id"
+                className={classForField(state, "admission_segment_id")}
+                defaultValue={defaultSegmentId ?? ""}
+              >
+                <option value="">Chọn đối tượng tuyển sinh</option>
+                {segments.map((segment) => (
+                  <option key={segment.id} value={segment.id}>
+                    {segment.label}
+                  </option>
+                ))}
+              </select>
+            )}
+            <FieldError state={state} name="admission_segment_id" />
+            {!hasSegmentScope ? (
+              <p className="mt-2 text-xs leading-5 text-amber-700">
+                Tài khoản chưa có phạm vi đối tượng tuyển sinh riêng. ADMIN/BGH
+                vẫn có thể thấy toàn bộ; nhân viên cần được phân phạm vi trước.
+              </p>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold">Thông tin phụ huynh</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <Field label="Họ tên phụ huynh" name="parent_name" />
-          <Field
-            label="Số điện thoại phụ huynh"
-            name="parent_phone"
-            placeholder="09xxxxxxxx"
-          />
-          <Field
-            label="Quan hệ"
-            name="parent_relationship"
-            placeholder="Bố / Mẹ / Người giám hộ"
-          />
-        </div>
-      </section>
+      <Section title="Thông tin học sinh" description="Thông tin định danh ban đầu của người học.">
+        {renderTextInput({ name: "student_name", label: "Họ tên học sinh", required: true })}
+        {renderTextInput({ name: "student_phone", label: "SĐT học sinh", type: "tel" })}
+        {renderTextInput({ name: "student_dob", label: "Ngày sinh", type: "date" })}
+        {renderSelectInput({
+          name: "student_gender",
+          label: "Giới tính",
+          options: genderOptions,
+        })}
+        {renderTextInput({ name: "current_school", label: "Trường hiện tại" })}
+        {renderTextInput({ name: "current_grade", label: "Lớp hiện tại" })}
+        {renderTextInput({
+          name: "graduation_year",
+          label: "Năm tốt nghiệp",
+          type: "number",
+        })}
+      </Section>
 
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold">Nhu cầu và nguồn lead</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <Section title="Phụ huynh / người giám hộ">
+        {renderTextInput({ name: "parent_name", label: "Họ tên phụ huynh" })}
+        {renderTextInput({ name: "parent_phone", label: "SĐT phụ huynh", type: "tel" })}
+        {renderTextInput({ name: "parent_relationship", label: "Quan hệ" })}
+      </Section>
+
+      <Section
+        title="Nhu cầu tuyển sinh"
+        description="Hệ đào tạo và ngành được lọc theo đúng đối tượng tuyển sinh đang làm việc."
+      >
+        {showField("interested_program_id") ? (
           <div className="space-y-2">
             <label
-              htmlFor="interested_program"
+              htmlFor="interested_program_id"
               className="text-sm font-medium text-zinc-700"
             >
-              Hệ đào tạo quan tâm
+              {labelFor("interested_program_id", "Hệ đào tạo")}
+              <RequiredMark required={requiredFor("interested_program_id", true)} />
             </label>
             <select
-              id="interested_program"
-              className={inputClass}
+              id="interested_program_id"
+              name="interested_program_id"
+              className={classForField(state, "interested_program_id")}
               value={selectedProgramId}
-              onChange={(event) => setSelectedProgramId(event.target.value)}
+              onChange={(event) => {
+                setSelectedProgramId(event.target.value);
+                setSelectedMajorId("");
+              }}
             >
               <option value="">Chọn hệ đào tạo</option>
               {programs.map((program) => (
@@ -268,245 +560,162 @@ export function LeadForm({
               name="interested_program"
               value={selectedProgram?.label ?? ""}
             />
-            <p className="text-xs text-zinc-500">
-              Chọn hệ nào thì ô ngành bên cạnh chỉ hiện ngành thuộc hệ đó.
-            </p>
+            <FieldHelp value={helpFor("interested_program_id")} />
+            <FieldError state={state} name="interested_program_id" />
           </div>
+        ) : null}
+
+        {showField("interested_major_id") ? (
           <div className="space-y-2">
             <label
-              htmlFor="interested_major"
+              htmlFor="interested_major_id"
               className="text-sm font-medium text-zinc-700"
             >
-              Ngành quan tâm
+              {labelFor("interested_major_id", "Ngành quan tâm")}
+              <RequiredMark required={requiredFor("interested_major_id", true)} />
             </label>
             <select
-              id="interested_major"
-              name="interested_major"
-              className={inputClass}
-              defaultValue=""
+              id="interested_major_id"
+              name="interested_major_id"
+              className={classForField(state, "interested_major_id")}
+              value={selectedMajorId}
+              onChange={(event) => setSelectedMajorId(event.target.value)}
             >
               <option value="">
-                {visibleMajors.length === 0
-                  ? "Chưa có ngành phù hợp"
-                  : "Chưa chọn"}
+                {selectedProgramId ? "Chọn ngành" : "Chọn hệ đào tạo trước"}
               </option>
               {visibleMajors.map((major) => (
-                <option key={major.id} value={major.label}>
+                <option key={major.id} value={major.id}>
                   {major.label}
                 </option>
               ))}
             </select>
-            <p className="text-xs text-zinc-500">
-              Danh sách ngành đã được lọc theo hệ/đối tượng tuyển sinh.
-            </p>
-          </div>
-          {lockSegmentSelection && selectedSegment ? (
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-zinc-700">
-                Đối tượng tuyển sinh <span className="text-rose-600">*</span>
-              </p>
-              <input
-                type="hidden"
-                name="admission_segment_id"
-                value={selectedSegment.id}
-              />
-              <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
-                {selectedSegment.label}
-              </div>
-              <p className="text-xs text-zinc-500">
-                P0-14 đang khóa lead theo workspace này để tránh nhập nhầm sang
-                HOU, TTGDTX, ngắn hạn hoặc đối tượng khác.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <label
-                htmlFor="admission_segment_id"
-                className="text-sm font-medium text-zinc-700"
-              >
-                Đối tượng tuyển sinh
-                {hasSegmentScope ? (
-                  <span className="text-rose-600"> *</span>
-                ) : null}
-              </label>
-              <select
-                id="admission_segment_id"
-                name="admission_segment_id"
-                className={inputClass}
-                value={selectedSegmentId}
-                required={hasSegmentScope}
-                onChange={(event) => setSelectedSegmentId(event.target.value)}
-              >
-                <option value="">Chọn đối tượng tuyển sinh</option>
-                {segments.map((segment) => (
-                  <option key={segment.id} value={segment.id}>
-                    {segment.label}
-                  </option>
-                ))}
-              </select>
-              {selectedSegment ? (
-                <p className="rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
-                  Đang tạo lead trong: {selectedSegment.label}
-                </p>
-              ) : hasSegmentScope ? (
-                <p className="text-xs text-zinc-500">
-                  Tài khoản này chỉ được tạo lead trong đối tượng đã được phân.
-                </p>
-              ) : null}
-            </div>
-          )}
-          <SelectField
-            label="Nguồn lead"
-            name="source_id"
-            options={sources}
-            placeholder="Chọn nguồn lead"
-          />
-          <SelectField
-            label="Luồng tuyển sinh"
-            name="flow_id"
-            options={flows}
-            placeholder="Chọn luồng tuyển sinh"
-          />
-          <SelectField
-            label="Chiến dịch"
-            name="campaign_id"
-            options={campaigns}
-            placeholder="Không gắn chiến dịch"
-          />
-          <SelectField
-            label="Đối tác / CTV"
-            name="partner_id"
-            options={partners}
-            placeholder="Không gắn đối tác"
-            required={hasPartnerScope}
-            helpText={
-              hasPartnerScope
-                ? "Tài khoản này đang bị giới hạn theo đối tác/trung tâm được phân."
-                : undefined
-            }
-          />
-          <Field
-            label="Tỉnh/thành"
-            name="province"
-            placeholder="Hà Nội"
-          />
-          <Field
-            label="Xã/phường/đặc khu"
-            name="ward"
-            placeholder="Phường/Xã hiện tại"
-          />
-          <Field
-            label="Quận/huyện cũ"
-            name="district"
-            placeholder="Chỉ nhập nếu là dữ liệu trước 01/07/2025"
-          />
-        </div>
-      </section>
-
-      {isHouSegment ? (
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold">Theo dõi HOU nếu là lead liên thông đại học</h2>
-        <p className="mt-1 text-sm text-zinc-500">
-          Chỉ chọn phần này khi lead thuộc chương trình Đại học từ xa HOU. Nếu
-          chưa chắc, có thể bỏ trống và cập nhật sau trong chi tiết lead.
-        </p>
-        {houPrograms.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-            Chưa đọc được dữ liệu HOU. Hãy kiểm tra lại bước 35A trên trang Cấu
-            hình trước khi gắn HOU cho lead.
+            <input
+              type="hidden"
+              name="interested_major"
+              value={selectedMajor?.label ?? ""}
+            />
+            <FieldHelp value={helpFor("interested_major_id")} />
+            <FieldError state={state} name="interested_major_id" />
           </div>
         ) : null}
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <SelectField
-            label="Chương trình HOU"
-            name="hou_program_id"
-            options={houPrograms}
-            placeholder="Không gắn HOU"
-          />
-          <SelectField
-            label="Ngành HOU"
-            name="hou_major_id"
-            options={houMajors}
-            placeholder="Chưa chọn ngành HOU"
-          />
-          <SelectField
-            label="Địa điểm HOU"
-            name="hou_location_id"
-            options={houLocations}
-            placeholder="Chưa chọn địa điểm"
-          />
-          <SelectField
-            label="Bước xử lý HOU"
-            name="hou_stage_id"
-            options={houStages}
-            placeholder="Chưa chọn bước"
-          />
-        </div>
-      </section>
-      ) : null}
 
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold">Trạng thái chăm sóc</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-2">
-            <label htmlFor="status" className="text-sm font-medium text-zinc-700">
-              Trạng thái
-            </label>
-            <select
-              id="status"
-              name="status"
-              className={inputClass}
-              defaultValue="NEW"
-            >
-              <option value="NEW">Lead mới</option>
-              <option value="CONTACTED">Đã liên hệ</option>
-              <option value="INTERESTED">Có quan tâm</option>
-              <option value="FOLLOW_UP">Cần chăm sóc tiếp</option>
-            </select>
-          </div>
-          <div className="space-y-2">
+        {renderSelectInput({ name: "source_id", label: "Nguồn lead", options: sources })}
+        {renderSelectInput({ name: "flow_id", label: "Luồng tuyển sinh", options: flows })}
+        {renderSelectInput({
+          name: "campaign_id",
+          label: "Chiến dịch",
+          options: campaigns,
+        })}
+        {renderSelectInput({
+          name: "partner_id",
+          label: "Đối tác / CTV / Trung tâm",
+          options: partners,
+          required: hasPartnerScope,
+          placeholder: hasPartnerScope
+            ? "Chọn đúng đối tác được phân"
+            : "Không chọn nếu tuyển sinh trực tiếp",
+        })}
+        {renderTextInput({ name: "province", label: "Tỉnh/thành phố" })}
+        {renderTextInput({ name: "ward", label: "Xã/phường" })}
+        {renderTextInput({ name: "district", label: "Quận/huyện cũ nếu có" })}
+      </Section>
+
+      <Section
+        title="Thông tin HOU"
+        description="Chỉ dùng cho đối tượng liên thông đại học HOU."
+        visible={hasHouSection}
+      >
+        {renderSelectInput({
+          name: "hou_program_id",
+          label: "Chương trình HOU",
+          options: houPrograms,
+        })}
+        {renderSelectInput({
+          name: "hou_major_id",
+          label: "Ngành HOU",
+          options: houMajors,
+        })}
+        {renderSelectInput({
+          name: "hou_location_id",
+          label: "Địa điểm học HOU",
+          options: houLocations,
+        })}
+        {renderSelectInput({
+          name: "hou_stage_id",
+          label: "Bước xử lý HOU",
+          options: houStages,
+        })}
+        {showField("hou_first_term_tuition_confirmed") ? (
+          <div className="space-y-2 rounded-md border border-zinc-200 bg-zinc-50 p-3">
             <label
-              htmlFor="priority"
-              className="text-sm font-medium text-zinc-700"
+              htmlFor="hou_first_term_tuition_confirmed"
+              className="flex items-start gap-3 text-sm font-medium text-zinc-700"
             >
-              Ưu tiên
+              <input
+                id="hou_first_term_tuition_confirmed"
+                name="hou_first_term_tuition_confirmed"
+                type="checkbox"
+                className="mt-1 size-4 rounded border-zinc-300"
+                defaultChecked={
+                  fieldValue(state, "hou_first_term_tuition_confirmed") === "on"
+                }
+              />
+              <span>
+                {labelFor(
+                  "hou_first_term_tuition_confirmed",
+                  "Đã xác nhận học phí kỳ đầu",
+                )}
+                <RequiredMark
+                  required={requiredFor("hou_first_term_tuition_confirmed")}
+                />
+              </span>
             </label>
-            <select
-              id="priority"
-              name="priority"
-              className={inputClass}
-              defaultValue="NORMAL"
-            >
-              <option value="LOW">Thấp</option>
-              <option value="NORMAL">Bình thường</option>
-              <option value="HIGH">Cao</option>
-              <option value="URGENT">Khẩn cấp</option>
-            </select>
+            <FieldHelp value={helpFor("hou_first_term_tuition_confirmed")} />
+            <FieldError state={state} name="hou_first_term_tuition_confirmed" />
           </div>
-          <Field
-            label="Ngày hẹn chăm sóc tiếp"
-            name="next_followup_at"
-            type="datetime-local"
-          />
-        </div>
-        <div className="mt-4 space-y-2">
-          <label htmlFor="note" className="text-sm font-medium text-zinc-700">
-            Ghi chú
-          </label>
-          <textarea
-            id="note"
-            name="note"
-            className={textareaClass}
-            placeholder="Ghi nhanh nhu cầu, kết quả trao đổi hoặc việc cần làm tiếp theo."
-          />
-        </div>
-      </section>
+        ) : null}
+      </Section>
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <Section
+        title="Thông tin bổ sung theo P0-17"
+        description="Các field tùy biến do nhà trường bật riêng cho từng đối tượng tuyển sinh."
+        visible={customFields.length > 0}
+      >
+        {customFields.map((field) => (
+          <div key={field.id}>{renderCustomField(field)}</div>
+        ))}
+      </Section>
+
+      <Section title="Trạng thái chăm sóc">
+        {renderSelectInput({
+          name: "status",
+          label: "Trạng thái ban đầu",
+          options: statusOptions,
+          placeholder: "Chọn trạng thái",
+          alwaysVisible: true,
+        })}
+        {renderSelectInput({
+          name: "priority",
+          label: "Mức ưu tiên",
+          options: priorityOptions,
+          placeholder: "Chọn mức ưu tiên",
+          alwaysVisible: true,
+        })}
+        {renderTextInput({
+          name: "next_followup_at",
+          label: "Ngày hẹn chăm sóc tiếp",
+          type: "datetime-local",
+          alwaysVisible: true,
+        })}
+        {renderTextareaInput({ name: "note", label: "Ghi chú tư vấn" })}
+      </Section>
+
+      <div className="flex flex-col-reverse gap-3 border-t border-zinc-200 pt-5 sm:flex-row sm:justify-end">
         <Button asChild variant="outline">
           <Link href={cancelHref}>Hủy</Link>
         </Button>
-        <Button type="submit" disabled={isPending || cannotCreateByScope}>
+        <Button type="submit" disabled={isPending}>
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (

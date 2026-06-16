@@ -5,6 +5,10 @@ import { Route } from "lucide-react";
 import { LeadForm } from "@/components/leads/lead-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import {
+  buildLeadDynamicFields,
+  getAdmissionLeadFormFieldConfigs,
+} from "@/lib/admission-dynamic-fields";
 import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -125,6 +129,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     { data: houLocationRows },
     { data: houStageRows },
     { data: partnerScopeRows },
+    fieldConfigResult,
   ] = await Promise.all([
       supabase.rpc("current_user_role_code"),
       supabase
@@ -176,6 +181,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         .eq("user_id", user.id)
         .eq("status", "ACTIVE")
         .returns<PartnerScopeRow[]>(),
+      getAdmissionLeadFormFieldConfigs(supabase, workspace.activeSegmentId),
     ]);
 
   const allowedPartnerIds = new Set(
@@ -202,6 +208,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = programMajorOptions.programs;
   const majors = programMajorOptions.majors;
+  const dynamicFields = buildLeadDynamicFields(fieldConfigResult.data);
 
   return (
     <AppShell
@@ -230,6 +237,8 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         hasPartnerScope={hasPartnerScope}
         defaultSegmentId={defaultSegmentId}
         lockSegmentSelection
+        dynamicFields={dynamicFields}
+        dynamicConfigError={fieldConfigResult.error?.message}
         cancelHref={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}
       />
     </AppShell>

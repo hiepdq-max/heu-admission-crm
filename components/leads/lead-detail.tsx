@@ -47,6 +47,15 @@ type LeadDetailData = {
   hou_enrollment_recorded_at: string | null;
 };
 
+export type LeadCustomFieldValueRow = {
+  id: string;
+  field_key: string;
+  field_label: string;
+  field_type: string;
+  field_value: string | null;
+  created_at: string;
+};
+
 type LeadDetailProps = {
   lead: LeadDetailData;
   sourceName: string | null;
@@ -63,6 +72,8 @@ type LeadDetailProps = {
   houStageName: string | null;
   activityCount: number;
   documentCount: number;
+  customFields: LeadCustomFieldValueRow[];
+  customFieldsLoadError?: string;
 };
 
 const statusLabels: Record<string, string> = {
@@ -125,6 +136,18 @@ function InfoItem({
   );
 }
 
+function formatCustomFieldValue(field: LeadCustomFieldValueRow) {
+  if (!field.field_value) {
+    return "Chưa nhập";
+  }
+
+  if (field.field_type === "CHECKBOX") {
+    return field.field_value === "true" ? "Đã tích chọn" : "Chưa tích chọn";
+  }
+
+  return field.field_value;
+}
+
 function formatAddress(lead: Pick<LeadDetailData, "province" | "ward" | "district">) {
   const currentAddress = [lead.ward, lead.province].filter(Boolean).join(" / ");
 
@@ -164,6 +187,8 @@ export function LeadDetail({
   houStageName,
   activityCount,
   documentCount,
+  customFields,
+  customFieldsLoadError,
 }: LeadDetailProps) {
   return (
     <div className="space-y-6">
@@ -261,6 +286,29 @@ export function LeadDetail({
                 />
               </div>
             </section>
+
+            {customFieldsLoadError ? (
+              <section className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+                Chưa đọc được thông tin tùy biến P0-18: {customFieldsLoadError}
+              </section>
+            ) : null}
+
+            {customFields.length > 0 ? (
+              <section>
+                <h3 className="text-base font-semibold">
+                  Thông tin tùy biến theo P0-17/P0-18
+                </h3>
+                <div className="mt-4 grid gap-4 rounded-md border border-zinc-200 p-4 md:grid-cols-2 xl:grid-cols-3">
+                  {customFields.map((field) => (
+                    <InfoItem
+                      key={field.id}
+                      label={field.field_label}
+                      value={formatCustomFieldValue(field)}
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
             <section>
               <h3 className="text-base font-semibold">Theo dõi HOU</h3>

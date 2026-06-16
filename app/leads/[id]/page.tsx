@@ -23,7 +23,10 @@ import {
 } from "@/components/leads/hou-evidence-files";
 import { HouLeadForm } from "@/components/leads/hou-lead-form";
 import { HouLeadWorkspace } from "@/components/leads/hou-lead-workspace";
-import { LeadDetail } from "@/components/leads/lead-detail";
+import {
+  LeadDetail,
+  type LeadCustomFieldValueRow,
+} from "@/components/leads/lead-detail";
 import {
   LeadHandoverPanel,
   type LeadHandoverRow,
@@ -230,6 +233,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
     activityCountResult,
     documentCountResult,
     handoversResult,
+    customFieldValuesResult,
   ] = await Promise.all([
     getLookupLabel("lead_sources", lead.source_id, "source_name"),
     getLookupLabel("admission_flows", lead.flow_id, "flow_name"),
@@ -315,6 +319,12 @@ export default async function LeadDetailPage({ params }: PageProps) {
       .eq("status", "ACTIVE")
       .order("created_at", { ascending: false })
       .returns<LeadHandoverDataRow[]>(),
+    supabase
+      .from("lead_custom_field_values_readable")
+      .select("id,field_key,field_label,field_type,field_value,created_at")
+      .eq("lead_id", lead.id)
+      .order("field_label", { ascending: true })
+      .returns<LeadCustomFieldValueRow[]>(),
   ]);
 
   const houPrograms = toLookup(houProgramRowsResult.data, "program_name");
@@ -543,6 +553,8 @@ export default async function LeadDetailPage({ params }: PageProps) {
         houStageName={houStageName}
         activityCount={activityCountResult.count ?? 0}
         documentCount={documentCountResult.count ?? 0}
+        customFields={customFieldValuesResult.data ?? []}
+        customFieldsLoadError={customFieldValuesResult.error?.message}
       />
       <HouLeadWorkspace
         leadCode={lead.lead_code}
