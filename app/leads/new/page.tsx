@@ -208,6 +208,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = programMajorOptions.programs;
   const majors = programMajorOptions.majors;
+  const catalogControl = programMajorOptions.catalogControl;
   const dynamicFields = buildLeadDynamicFields(fieldConfigResult.data);
 
   return (
@@ -239,6 +240,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         lockSegmentSelection
         dynamicFields={dynamicFields}
         dynamicConfigError={fieldConfigResult.error?.message}
+        catalogControl={catalogControl}
         cancelHref={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}
       />
     </AppShell>

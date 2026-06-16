@@ -25,6 +25,16 @@ type MajorOption = Option & {
   programCode: string | null;
 };
 
+type CatalogControlInfo = {
+  catalogGroupCode: string | null;
+  allowedProgramCodes: string[];
+  allowedMajorPolicy: string | null;
+  controlStatus: string | null;
+  programCount: number;
+  majorCount: number;
+  error: string | null;
+};
+
 type LeadFormProps = {
   sources: Option[];
   flows: Option[];
@@ -43,6 +53,7 @@ type LeadFormProps = {
   lockSegmentSelection?: boolean;
   dynamicFields: LeadDynamicField[];
   dynamicConfigError?: string;
+  catalogControl?: CatalogControlInfo | null;
   cancelHref?: string;
 };
 
@@ -173,6 +184,7 @@ export function LeadForm({
   lockSegmentSelection = false,
   dynamicFields,
   dynamicConfigError,
+  catalogControl,
   cancelHref = "/leads",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
@@ -204,6 +216,18 @@ export function LeadForm({
   const selectedProgram = programs.find((program) => program.id === selectedProgramId);
   const selectedMajor = majors.find((major) => major.id === selectedMajorId);
   const customFields = dynamicFields.filter((field) => field.is_custom);
+  const catalogProgramCodes =
+    catalogControl?.allowedProgramCodes.length
+      ? catalogControl.allowedProgramCodes.join(", ")
+      : "Theo rule hiện có";
+  const catalogGroupLabel =
+    catalogControl?.catalogGroupCode === "TRUNG_CAP"
+      ? "Trung cấp"
+      : catalogControl?.catalogGroupCode === "NGAN_HAN"
+        ? "Ngắn hạn"
+        : catalogControl?.catalogGroupCode === "LIEN_THONG_DAI_HOC"
+          ? "Liên thông đại học"
+          : catalogControl?.catalogGroupCode || "Chưa khóa catalog";
 
   const fieldConfig = (name: string) => fieldMap.get(name);
   const showField = (name: string) => !usesDynamicConfig || fieldMap.has(name);
@@ -499,6 +523,35 @@ export function LeadForm({
             ) : null}
           </div>
         </div>
+        {catalogControl ? (
+          <div className="mt-4 border-t border-zinc-100 pt-4 text-sm leading-6 text-zinc-600">
+            <p className="font-medium text-zinc-900">
+              P0-20 · Catalog tuyển sinh: {catalogGroupLabel}
+            </p>
+            <p className="mt-1">
+              Hệ được phép: {catalogProgramCodes}. Form hiện có{" "}
+              <strong>{catalogControl.programCount}</strong> hệ và{" "}
+              <strong>{catalogControl.majorCount}</strong> ngành/khoá đúng phạm vi.
+            </p>
+            <p className="mt-1 text-xs text-zinc-500">
+              Chính sách ngành: {catalogControl.allowedMajorPolicy ?? "Chưa cấu hình"} ·
+              trạng thái kiểm soát: {catalogControl.controlStatus ?? "Chưa có"}.
+            </p>
+            {catalogControl.error ? (
+              <p className="mt-2 text-xs font-medium text-amber-700">
+                Chưa đọc được bảng P0-20. Nếu chưa chạy SQL step60 thì đây là bình
+                thường; sau khi chạy SQL, tải lại trang để app dùng catalog chính thức.
+                Chi tiết: {catalogControl.error}
+              </p>
+            ) : null}
+            {!catalogControl.error && catalogControl.majorCount === 0 ? (
+              <p className="mt-2 text-xs font-medium text-amber-700">
+                Catalog này chưa có ngành/khoá active để chọn. Cần bổ sung danh mục
+                ngành/khoá trước khi vận hành thật cho đối tượng này.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <Section title="Thông tin học sinh" description="Thông tin định danh ban đầu của người học.">

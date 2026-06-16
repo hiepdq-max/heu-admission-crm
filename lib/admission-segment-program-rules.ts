@@ -17,6 +17,16 @@ export type AdmissionMajorOption = {
   programCode: string | null;
 };
 
+export type AdmissionCatalogControlInfo = {
+  catalogGroupCode: string | null;
+  allowedProgramCodes: string[];
+  allowedMajorPolicy: string | null;
+  controlStatus: string | null;
+  programCount: number;
+  majorCount: number;
+  error: string | null;
+};
+
 type SegmentRow = {
   id: string;
   segment_code: string;
@@ -42,6 +52,13 @@ type SegmentProgramRuleRow = {
   program_id: string | null;
   major_id: string | null;
   sort_order: number | null;
+};
+
+type SegmentCatalogControlRow = {
+  catalog_group_code: string | null;
+  allowed_program_codes: string[] | null;
+  allowed_major_policy: string | null;
+  control_status: string | null;
 };
 
 function fallbackProgramCodes(segment: SegmentRow | null) {
@@ -131,8 +148,25 @@ export async function getAllowedProgramMajorOptions(
   const majorById = new Map(majorRows.map((major) => [major.id, major]));
 
   let ruleRows: SegmentProgramRuleRow[] = [];
+  let catalogControl: SegmentCatalogControlRow | null = null;
+  let catalogControlError: string | null = null;
 
   if (segmentId) {
+    const { data: control, error: controlError } = await supabase
+      .from("admission_segment_catalog_controls")
+      .select(
+        "catalog_group_code,allowed_program_codes,allowed_major_policy,control_status",
+      )
+      .eq("segment_id", segmentId)
+      .eq("status", "ACTIVE")
+      .maybeSingle<SegmentCatalogControlRow>();
+
+    if (controlError) {
+      catalogControlError = controlError.message;
+    } else {
+      catalogControl = control;
+    }
+
     const { data: rules, error: rulesError } = await supabase
       .from("admission_segment_program_rules")
       .select("program_id,major_id,sort_order")
@@ -148,25 +182,51 @@ export async function getAllowedProgramMajorOptions(
 
   const allowedProgramIds = new Set<string>();
   const allowedMajorIds = new Set<string>();
+  const configuredProgramCodes = new Set(
+    (catalogControl?.allowed_program_codes ?? []).filter(Boolean),
+  );
+  const isProgramAllowedByCatalog = (programId: string | null) => {
+    if (!programId || configuredProgramCodes.size === 0) {
+      return true;
+    }
+
+    const program = programById.get(programId);
+
+    return program ? configuredProgramCodes.has(program.program_code) : false;
+  };
+  const addProgramByCode = (programCode: string) => {
+    const program = programByCode.get(programCode);
+
+    if (program) {
+      allowedProgramIds.add(program.id);
+    }
+  };
 
   if (ruleRows.length > 0) {
     for (const rule of ruleRows) {
-      if (rule.program_id) {
+      if (rule.program_id && isProgramAllowedByCatalog(rule.program_id)) {
         allowedProgramIds.add(rule.program_id);
       }
 
       if (rule.major_id) {
         const major = majorById.get(rule.major_id);
-        allowedMajorIds.add(rule.major_id);
 
-        if (major?.program_id) {
+        if (major && isProgramAllowedByCatalog(major.program_id)) {
+          allowedMajorIds.add(rule.major_id);
+        }
+
+        if (major?.program_id && isProgramAllowedByCatalog(major.program_id)) {
           allowedProgramIds.add(major.program_id);
         }
       }
     }
 
     for (const rule of ruleRows) {
-      if (rule.program_id && !rule.major_id) {
+      if (
+        rule.program_id &&
+        !rule.major_id &&
+        isProgramAllowedByCatalog(rule.program_id)
+      ) {
         for (const major of majorRows) {
           if (major.program_id === rule.program_id) {
             allowedMajorIds.add(major.id);
@@ -175,12 +235,13 @@ export async function getAllowedProgramMajorOptions(
       }
     }
   } else if (segmentId) {
-    for (const programCode of fallbackProgramCodes(segment)) {
-      const program = programByCode.get(programCode);
+    const programCodes =
+      configuredProgramCodes.size > 0
+        ? [...configuredProgramCodes]
+        : fallbackProgramCodes(segment);
 
-      if (program) {
-        allowedProgramIds.add(program.id);
-      }
+    for (const programCode of programCodes) {
+      addProgramByCode(programCode);
     }
 
     for (const major of majorRows) {
@@ -198,6 +259,22 @@ export async function getAllowedProgramMajorOptions(
     }
   }
 
+  if (configuredProgramCodes.size > 0) {
+    for (const programId of [...allowedProgramIds]) {
+      if (!isProgramAllowedByCatalog(programId)) {
+        allowedProgramIds.delete(programId);
+      }
+    }
+
+    for (const majorId of [...allowedMajorIds]) {
+      const major = majorById.get(majorId);
+
+      if (!major || !isProgramAllowedByCatalog(major.program_id)) {
+        allowedMajorIds.delete(majorId);
+      }
+    }
+  }
+
   const allowedPrograms = programRows
     .filter((program) => allowedProgramIds.has(program.id))
     .sort(bySortAndLabel((program) => program.program_name))
@@ -210,6 +287,17 @@ export async function getAllowedProgramMajorOptions(
   return {
     programs: allowedPrograms,
     majors: allowedMajors,
+    catalogControl: segmentId
+      ? {
+          catalogGroupCode: catalogControl?.catalog_group_code ?? null,
+          allowedProgramCodes: [...configuredProgramCodes],
+          allowedMajorPolicy: catalogControl?.allowed_major_policy ?? null,
+          controlStatus: catalogControl?.control_status ?? null,
+          programCount: allowedPrograms.length,
+          majorCount: allowedMajors.length,
+          error: catalogControlError,
+        }
+      : null,
   };
 }
 
