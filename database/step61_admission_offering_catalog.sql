@@ -393,9 +393,10 @@ update public.admission_segment_program_rules r
 set status = 'INACTIVE',
     updated_at = now(),
     note = concat(coalesce(r.note, ''), ' | P0-21 replaced broad rule by explicit offering rules.')
-from public.admission_segments s
-join public.admission_programs p on p.id = r.program_id
+from public.admission_segments s,
+     public.admission_programs p
 where r.segment_id = s.id
+  and p.id = r.program_id
   and r.major_id is null
   and r.status = 'ACTIVE'
   and (
