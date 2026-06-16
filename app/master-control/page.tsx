@@ -43,6 +43,11 @@ import {
   type HeuOsModuleReadinessRow,
 } from "@/components/master-control/module-readiness-overview";
 import {
+  ProcessOwnershipMatrix,
+  type ProcessOwnershipRow,
+  type ProcessOwnershipSummaryRow,
+} from "@/components/master-control/process-ownership-matrix";
+import {
   RolePermissionDelegationMatrix,
   type PermissionDelegationRow,
   type PermissionModuleOptionRow,
@@ -223,6 +228,8 @@ export default async function MasterControlPage({
     { data: userPermissionRows, error: userPermissionRowsError },
     { data: permissionDelegationRows, error: permissionDelegationRowsError },
     { data: permissionDelegationSummary, error: permissionDelegationSummaryError },
+    { data: processOwnershipRows, error: processOwnershipRowsError },
+    { data: processOwnershipSummary, error: processOwnershipSummaryError },
     { data: userOptionRows, error: userOptionRowsError },
   ] = await Promise.all([
     supabase
@@ -410,6 +417,20 @@ export default async function MasterControlPage({
       )
       .maybeSingle<RolePermissionDelegationSummaryRow>(),
     supabase
+      .from("process_ownership_matrix_status")
+      .select(
+        "id,ownership_code,process_name,module_code,module_name,workflow_code,workflow_name,entity_type,source_table,owner_department,maker_role,checker_role,approver_role,viewer_scope,handover_from_department,handover_to_department,required_evidence,audit_rule,sla_hours,risk_level,control_status,control_flags,ownership_status",
+      )
+      .order("ownership_status", { ascending: true })
+      .order("risk_level", { ascending: false })
+      .returns<ProcessOwnershipRow[]>(),
+    supabase
+      .from("process_ownership_matrix_summary")
+      .select(
+        "process_count,ready_count,temp_ready_count,needs_fix_count,blocked_count,high_risk_count,missing_approver_count",
+      )
+      .maybeSingle<ProcessOwnershipSummaryRow>(),
+    supabase
       .from("users_profile")
       .select("id,full_name,email")
       .eq("status", "ACTIVE")
@@ -521,6 +542,14 @@ export default async function MasterControlPage({
             permissionDelegationRowsError?.message ??
             permissionDelegationSummaryError?.message ??
             userOptionRowsError?.message
+          }
+        />
+        <ProcessOwnershipMatrix
+          rows={processOwnershipRows ?? []}
+          summary={processOwnershipSummary}
+          loadError={
+            processOwnershipRowsError?.message ??
+            processOwnershipSummaryError?.message
           }
         />
         <HeuOsMapOverview
