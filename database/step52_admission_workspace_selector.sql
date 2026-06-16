@@ -24,6 +24,27 @@ where status = 'ACTIVE';
 
 alter table public.user_admission_workspace_preferences enable row level security;
 
+create or replace function public.can_use_admission_workspace(target_segment_id uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    public.is_admin()
+    or public.current_user_role_code() = 'BGH'
+    or exists (
+      select 1
+      from public.user_admission_segment_scopes scope
+      where scope.user_id = auth.uid()
+        and scope.segment_id = target_segment_id
+        and scope.status = 'ACTIVE'
+    )
+$$;
+
+grant execute on function public.can_use_admission_workspace(uuid) to authenticated;
+
 drop policy if exists "user_admission_workspace_preferences_select"
 on public.user_admission_workspace_preferences;
 create policy "user_admission_workspace_preferences_select"
@@ -66,27 +87,6 @@ on public.user_admission_workspace_preferences;
 create trigger trg_user_admission_workspace_preferences_audit
 after insert or update or delete on public.user_admission_workspace_preferences
 for each row execute function public.write_audit_log();
-
-create or replace function public.can_use_admission_workspace(target_segment_id uuid)
-returns boolean
-language sql
-stable
-security definer
-set search_path = public
-as $$
-  select
-    public.is_admin()
-    or public.current_user_role_code() = 'BGH'
-    or exists (
-      select 1
-      from public.user_admission_segment_scopes scope
-      where scope.user_id = auth.uid()
-        and scope.segment_id = target_segment_id
-        and scope.status = 'ACTIVE'
-    )
-$$;
-
-grant execute on function public.can_use_admission_workspace(uuid) to authenticated;
 
 create or replace view public.current_user_admission_workspaces
 with (security_invoker = true)
