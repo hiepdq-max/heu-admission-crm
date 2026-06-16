@@ -27,6 +27,11 @@ import {
   type HeuOsWorkflowRow,
 } from "@/components/master-control/heu-os-map-overview";
 import {
+  HeuOsVisualNavigationMap,
+  type HeuOsNavigationNodeRow,
+  type HeuOsNavigationSummaryRow,
+} from "@/components/master-control/heu-os-visual-navigation-map";
+import {
   MasterDataGovernance,
   type MasterDataChangeRequestRow,
   type MasterDataGovernanceRow,
@@ -203,6 +208,8 @@ export default async function MasterControlPage({
     { data: heuOsMasterData, error: heuOsMasterDataError },
     { data: heuOsRisks, error: heuOsRisksError },
     { data: moduleReadiness, error: moduleReadinessError },
+    { data: navigationRows, error: navigationRowsError },
+    { data: navigationSummary, error: navigationSummaryError },
     { data: approvalGateRows, error: approvalGateRowsError },
     { data: approvalGateSummary, error: approvalGateSummaryError },
     { data: workflowRequestRows, error: workflowRequestRowsError },
@@ -301,6 +308,19 @@ export default async function MasterControlPage({
       )
       .order("readiness_score", { ascending: false })
       .returns<HeuOsModuleReadinessRow[]>(),
+    supabase
+      .from("heu_os_visual_navigation_status")
+      .select(
+        "id,node_code,node_name,node_group,module_code,href,summary,owner_department,primary_action,sort_order,is_core,requires_attention_rule,control_status,module_name,module_group,readiness_score,readiness_status,missing_items,ai_gate_status,attention_count,visual_status",
+      )
+      .order("sort_order", { ascending: true })
+      .returns<HeuOsNavigationNodeRow[]>(),
+    supabase
+      .from("heu_os_visual_navigation_summary")
+      .select(
+        "node_count,ready_count,temp_ready_count,needs_fix_count,blocked_count,core_count",
+      )
+      .maybeSingle<HeuOsNavigationSummaryRow>(),
     supabase
       .from("approval_gate_enforcement_status")
       .select(
@@ -408,6 +428,11 @@ export default async function MasterControlPage({
       description="Legal Registry, SOP Registry, Data Dictionary và Decision Gate cho HEU OS."
     >
       <div className="space-y-6">
+        <HeuOsVisualNavigationMap
+          rows={navigationRows ?? []}
+          summary={navigationSummary}
+          loadError={navigationRowsError?.message ?? navigationSummaryError?.message}
+        />
         <ModuleReadinessOverview
           rows={moduleReadiness ?? []}
           loadError={moduleReadinessError?.message}
