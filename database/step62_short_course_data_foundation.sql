@@ -1047,9 +1047,9 @@ insert into public.short_governance_rules (
 ) values
   (
     'SHORT_ATTENDANCE_REQUIRED_FOR_BHXH',
-    'CÃ³ Ä‘iá»ƒm danh má»›i xá»­ lÃ½ BHXH/chÃ­nh sÃ¡ch',
+    'Có điểm danh mới xử lý BHXH/chính sách',
     'BHXH',
-    'KhÃ´ng táº¡o há»“ sÆ¡ BHXH/chÃ­nh sÃ¡ch há»— trá»£ náº¿u lá»›p chÆ°a cÃ³ buá»•i há»c hoáº·c há»c viÃªn chÆ°a cÃ³ dá»¯ liá»‡u Ä‘iá»ƒm danh há»£p lá»‡.',
+    'Không tạo hồ sơ BHXH/chính sách hỗ trợ nếu lớp chưa có buổi học hoặc học viên chưa có dữ liệu điểm danh hợp lệ.',
     'BLOCK',
     'short_attendance_records',
     'BHXH_POLICY_CASE',
@@ -1062,9 +1062,9 @@ insert into public.short_governance_rules (
   ),
   (
     'SHORT_PAYMENT_REQUIRES_INVOICE_AND_APPROVAL',
-    'Thanh toÃ¡n pháº£i cÃ³ phiáº¿u thu/cÃ´ng ná»£ vÃ  quyá»n xÃ¡c nháº­n',
+    'Thanh toán phải có phiếu thu/công nợ và quyền xác nhận',
     'FINANCE',
-    'KhÃ´ng ghi nháº­n thanh toÃ¡n náº¿u chÆ°a cÃ³ invoice hoáº·c ngÆ°á»i xÃ¡c nháº­n khÃ´ng cÃ³ quyá»n tÃ i chÃ­nh.',
+    'Không ghi nhận thanh toán nếu chưa có invoice hoặc người xác nhận không có quyền tài chính.',
     'APPROVAL_REQUIRED',
     'short_finance_invoices',
     'SHORT_PAYMENT',
@@ -1077,9 +1077,9 @@ insert into public.short_governance_rules (
   ),
   (
     'SHORT_LOCKED_DATA_NO_DIRECT_EDIT',
-    'Dá»¯ liá»‡u Ä‘Ã£ khÃ³a khÃ´ng sá»­a trá»±c tiáº¿p',
+    'Dữ liệu đã khóa không sửa trực tiếp',
     'DATA_LOCK',
-    'Há»c viÃªn, lá»›p, Ä‘iá»ƒm danh hoáº·c tÃ i chÃ­nh Ä‘Ã£ khÃ³a pháº£i má»Ÿ yÃªu cáº§u duyá»‡t trÆ°á»›c khi sá»­a.',
+    'Học viên, lớp, điểm danh hoặc tài chính đã khóa phải mở yêu cầu duyệt trước khi sửa.',
     'APPROVAL_REQUIRED',
     'short_student_master,short_class_master,short_attendance_sessions,short_finance_invoices',
     'DATA_CORRECTION',
@@ -1117,12 +1117,12 @@ insert into public.heu_os_modules (
   control_status
 ) values (
   'M11_SHORT_COURSE_ERP',
-  'ERP ngáº¯n háº¡n',
+  'ERP ngắn hạn',
   'CORE_OPERATION',
-  'Quáº£n lÃ½ há»c viÃªn ngáº¯n háº¡n, lá»›p, Ä‘iá»ƒm danh, BHXH/chÃ­nh sÃ¡ch, cÃ´ng ná»£ vÃ  thanh toÃ¡n.',
+  'Quản lý học viên ngắn hạn, lớp, điểm danh, BHXH/chính sách, công nợ và thanh toán.',
   'DAO_TAO + TUYEN_SINH + CTHSSV + KHTC',
-  'Student ID vÃ  Class ID lÃ  xÆ°Æ¡ng sá»‘ng; Ä‘iá»ƒm danh lÃ  nguá»“n dá»¯ liá»‡u gá»‘c; thanh toÃ¡n pháº£i qua governance.',
-  'AI chá»‰ há»— trá»£ phÃ¡t hiá»‡n thiáº¿u Ä‘iá»ƒm danh, sai cÃ´ng ná»£, rá»§i ro BHXH/thanh toÃ¡n; khÃ´ng tá»± duyá»‡t.',
+  'Student ID và Class ID là xương sống; điểm danh là nguồn dữ liệu gốc; thanh toán phải qua governance.',
+  'AI chỉ hỗ trợ phát hiện thiếu điểm danh, sai công nợ, rủi ro BHXH/thanh toán; không tự duyệt.',
   110,
   'DAT_TAM_THOI'
 ) on conflict (module_code) do update set
@@ -1153,16 +1153,16 @@ insert into public.heu_os_workflows (
   control_status
 ) values (
   'WF_P1_01_SHORT_DATA_FOUNDATION',
-  'P1-01 XÆ°Æ¡ng sá»‘ng dá»¯ liá»‡u ERP ngáº¯n háº¡n',
+  'P1-01 Xương sống dữ liệu ERP ngắn hạn',
   'M11_SHORT_COURSE_ERP',
-  'Lead ngáº¯n háº¡n Ä‘á»§ Ä‘iá»u kiá»‡n hoáº·c lá»›p ngáº¯n háº¡n Ä‘Æ°á»£c má»Ÿ.',
+  'Lead ngắn hạn đủ điều kiện hoặc lớp ngắn hạn được mở.',
   'TUYEN_SINH/DAO_TAO',
   'DAO_TAO + CTHSSV + KHTC + IT_DATA',
   'PHAP_CHE + KHTC + TRUONG_PHONG',
   'BGH',
-  'CÃ³ báº£ng dá»¯ liá»‡u chuáº©n Ä‘á»ƒ váº­n hÃ nh Student, Class, Enrollment, Attendance, BHXH, Finance vÃ  Payment.',
-  'Lead Ä‘á»§ Ä‘iá»u kiá»‡n chuyá»ƒn sang short_student_master; lá»›p dÃ¹ng short_class_master; tiá»n dÃ¹ng short_finance_invoices/short_payments.',
-  'Má»i báº£ng P1-01 cÃ³ trigger audit; dá»¯ liá»‡u Ä‘Ã£ khÃ³a pháº£i má»Ÿ approval request trÆ°á»›c khi sá»­a.',
+  'Có bảng dữ liệu chuẩn để vận hành Student, Class, Enrollment, Attendance, BHXH, Finance và Payment.',
+  'Lead đủ điều kiện chuyển sang short_student_master; lớp dùng short_class_master; tiền dùng short_finance_invoices/short_payments.',
+  'Mọi bảng P1-01 có trigger audit; dữ liệu đã khóa phải mở approval request trước khi sửa.',
   601,
   'DAT_TAM_THOI'
 ) on conflict (workflow_code) do update set
@@ -1198,13 +1198,13 @@ insert into public.heu_os_approval_matrix (
     'APPROVE_SHORT_STUDENT_MASTER',
     'M11_SHORT_COURSE_ERP',
     'WF_P1_01_SHORT_DATA_FOUNDATION',
-    'Duyá»‡t chuyá»ƒn lead ngáº¯n háº¡n thÃ nh há»c viÃªn',
+    'Duyệt chuyển lead ngắn hạn thành học viên',
     'DEPARTMENT',
     'TUYEN_SINH/CTHSSV',
     'TRUONG_PHONG_TUYEN_SINH + CTHSSV_LEAD',
     'BGH',
-    'Lead ngáº¯n háº¡n, ngÃ nh/khoÃ¡, há»“ sÆ¡ tá»‘i thiá»ƒu vÃ  tráº¡ng thÃ¡i Ä‘á»§ Ä‘iá»u kiá»‡n.',
-    'Cháº·n náº¿u lead khÃ´ng thuá»™c workspace ngáº¯n háº¡n, thiáº¿u offering hoáº·c trÃ¹ng student_code.',
+    'Lead ngắn hạn, ngành/khoá, hồ sơ tối thiểu và trạng thái đủ điều kiện.',
+    'Chặn nếu lead không thuộc workspace ngắn hạn, thiếu offering hoặc trùng student_code.',
     48,
     'DAT_TAM_THOI'
   ),
@@ -1212,13 +1212,13 @@ insert into public.heu_os_approval_matrix (
     'APPROVE_SHORT_ATTENDANCE_LOCK',
     'M11_SHORT_COURSE_ERP',
     'WF_P1_01_SHORT_DATA_FOUNDATION',
-    'Duyá»‡t khÃ³a Ä‘iá»ƒm danh lá»›p ngáº¯n háº¡n',
+    'Duyệt khóa điểm danh lớp ngắn hạn',
     'DEPARTMENT',
     'DAO_TAO',
     'DAO_TAO + CTHSSV',
     'BGH',
-    'Danh sÃ¡ch buá»•i há»c, Ä‘iá»ƒm danh tá»«ng há»c viÃªn vÃ  minh chá»©ng náº¿u cÃ³.',
-    'Cháº·n xá»­ lÃ½ BHXH/chÃ­nh sÃ¡ch náº¿u Ä‘iá»ƒm danh chÆ°a khÃ³a hoáº·c thiáº¿u dá»¯ liá»‡u.',
+    'Danh sách buổi học, điểm danh từng học viên và minh chứng nếu có.',
+    'Chặn xử lý BHXH/chính sách nếu điểm danh chưa khóa hoặc thiếu dữ liệu.',
     24,
     'DAT_TAM_THOI'
   ),
@@ -1226,13 +1226,13 @@ insert into public.heu_os_approval_matrix (
     'APPROVE_SHORT_PAYMENT_VERIFY',
     'M11_SHORT_COURSE_ERP',
     'WF_P1_01_SHORT_DATA_FOUNDATION',
-    'Duyá»‡t xÃ¡c nháº­n thanh toÃ¡n ngáº¯n háº¡n',
+    'Duyệt xác nhận thanh toán ngắn hạn',
     'FINANCE',
     'KHTC',
     'ACCOUNTING_LEAD',
     'BGH',
-    'Invoice, chá»©ng tá»« thanh toÃ¡n, ngÆ°á»i ná»™p, sá»‘ tiá»n vÃ  Ä‘á»‘i soÃ¡t ngÃ¢n hÃ ng/quá»¹.',
-    'Cháº·n náº¿u chÆ°a cÃ³ invoice, thiáº¿u chá»©ng tá»« hoáº·c user khÃ´ng cÃ³ quyá»n xÃ¡c nháº­n.',
+    'Invoice, chứng từ thanh toán, người nộp, số tiền và đối soát ngân hàng/quỹ.',
+    'Chặn nếu chưa có invoice, thiếu chứng từ hoặc user không có quyền xác nhận.',
     24,
     'DAT_TAM_THOI'
   )
@@ -1266,7 +1266,7 @@ insert into public.heu_os_master_data_map (
 ) values
   (
     'MD_P1_01_SHORT_STUDENT_MASTER',
-    'Student Master ngáº¯n háº¡n',
+    'Student Master ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'short_student_master',
     'MASTER',
@@ -1274,12 +1274,12 @@ insert into public.heu_os_master_data_map (
     'HEU_OS',
     'CONFIDENTIAL',
     true,
-    'Student ID lÃ  Ä‘á»‹nh danh xuyÃªn há»‡ thá»‘ng; khÃ´ng sá»­a dá»¯ liá»‡u Ä‘Ã£ khÃ³a náº¿u chÆ°a cÃ³ approval.',
+    'Student ID là định danh xuyên hệ thống; không sửa dữ liệu đã khóa nếu chưa có approval.',
     'DAT_TAM_THOI'
   ),
   (
     'MD_P1_01_SHORT_CLASS_MASTER',
-    'Class Master ngáº¯n háº¡n',
+    'Class Master ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'short_class_master',
     'MASTER',
@@ -1287,12 +1287,12 @@ insert into public.heu_os_master_data_map (
     'HEU_OS',
     'INTERNAL',
     true,
-    'Class ID lÃ  trung tÃ¢m cho Ä‘iá»ƒm danh, BHXH, tÃ i chÃ­nh vÃ  dashboard.',
+    'Class ID là trung tâm cho điểm danh, BHXH, tài chính và dashboard.',
     'DAT_TAM_THOI'
   ),
   (
     'MD_P1_01_SHORT_ENROLLMENT',
-    'Ghi danh há»c viÃªn ngáº¯n háº¡n',
+    'Ghi danh học viên ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'short_enrollments',
     'TRANSACTION',
@@ -1300,12 +1300,12 @@ insert into public.heu_os_master_data_map (
     'HEU_OS',
     'CONFIDENTIAL',
     true,
-    'Enrollment ná»‘i Student, Class, Offering vÃ  tráº¡ng thÃ¡i tÃ i chÃ­nh/BHXH.',
+    'Enrollment nối Student, Class, Offering và trạng thái tài chính/BHXH.',
     'DAT_TAM_THOI'
   ),
   (
     'MD_P1_01_SHORT_ATTENDANCE',
-    'Äiá»ƒm danh ngáº¯n háº¡n',
+    'Điểm danh ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'short_attendance_sessions,short_attendance_records',
     'TRANSACTION',
@@ -1313,12 +1313,12 @@ insert into public.heu_os_master_data_map (
     'HEU_OS',
     'CONFIDENTIAL',
     true,
-    'Attendance lÃ  nguá»“n dá»¯ liá»‡u gá»‘c; khÃ´ng cÃ³ attendance thÃ¬ khÃ´ng xá»­ lÃ½ BHXH/chÃ­nh sÃ¡ch.',
+    'Attendance là nguồn dữ liệu gốc; không có attendance thì không xử lý BHXH/chính sách.',
     'DAT_TAM_THOI'
   ),
   (
     'MD_P1_01_SHORT_FINANCE_PAYMENT',
-    'CÃ´ng ná»£ vÃ  thanh toÃ¡n ngáº¯n háº¡n',
+    'Công nợ và thanh toán ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'short_finance_invoices,short_payments',
     'TRANSACTION',
@@ -1326,7 +1326,7 @@ insert into public.heu_os_master_data_map (
     'HEU_OS',
     'RESTRICTED',
     true,
-    'Thanh toÃ¡n pháº£i cÃ³ invoice, chá»©ng tá»« vÃ  ngÆ°á»i xÃ¡c nháº­n Ä‘Ãºng quyá»n.',
+    'Thanh toán phải có invoice, chứng từ và người xác nhận đúng quyền.',
     'DAT_TAM_THOI'
   )
 on conflict (data_code) do update set
@@ -1358,41 +1358,41 @@ insert into public.heu_os_risk_controls (
 ) values
   (
     'RISK_P1_01_SHORT_STUDENT_DUPLICATE',
-    'TrÃ¹ng há»c viÃªn ngáº¯n háº¡n',
+    'Trùng học viên ngắn hạn',
     'M11_SHORT_COURSE_ERP',
     'DATA_QUALITY',
     'HIGH',
     'CTHSSV + IT_DATA',
-    'Má»™t ngÆ°á»i há»c bá»‹ táº¡o nhiá»u Student ID lÃ m sai Ä‘iá»ƒm danh, cÃ´ng ná»£, BHXH vÃ  dashboard.',
-    'Kiá»ƒm tra lead_id, sá»‘ Ä‘iá»‡n thoáº¡i, CCCD vÃ  student_code trÆ°á»›c khi chuyá»ƒn lead thÃ nh student.',
-    'Náº¿u nghi trÃ¹ng pháº£i táº¡o risk alert vÃ  trÆ°á»Ÿng bá»™ pháº­n duyá»‡t xá»­ lÃ½ merge/sá»­a.',
-    'Sá»‘ há»c viÃªn cÃ³ cÃ¹ng SÄT/CCCD; sá»‘ risk duplicate cÃ²n má»Ÿ.',
+    'Một người học bị tạo nhiều Student ID làm sai điểm danh, công nợ, BHXH và dashboard.',
+    'Kiểm tra lead_id, số điện thoại, CCCD và student_code trước khi chuyển lead thành student.',
+    'Nếu nghi trùng phải tạo risk alert và trưởng bộ phận duyệt xử lý merge/sửa.',
+    'Số học viên có cùng SĐT/CCCD; số risk duplicate còn mở.',
     'DAT_TAM_THOI'
   ),
   (
     'RISK_P1_01_SHORT_ATTENDANCE_MISSING',
-    'Thiáº¿u Ä‘iá»ƒm danh nhÆ°ng xá»­ lÃ½ BHXH/tÃ i chÃ­nh',
+    'Thiếu điểm danh nhưng xử lý BHXH/tài chính',
     'M11_SHORT_COURSE_ERP',
     'COMPLIANCE',
     'CRITICAL',
     'DAO_TAO + KHTC',
-    'Náº¿u khÃ´ng cÃ³ Ä‘iá»ƒm danh mÃ  váº«n xá»­ lÃ½ BHXH/chÃ­nh sÃ¡ch hoáº·c thanh toÃ¡n liÃªn quan thÃ¬ sai nguá»“n dá»¯ liá»‡u gá»‘c.',
-    'short_governance_rules cháº·n quy trÃ¬nh BHXH/chÃ­nh sÃ¡ch khi chÆ°a cÃ³ attendance há»£p lá»‡.',
-    'BÃ¡o BGH/KHTC náº¿u phÃ¡t hiá»‡n há»“ sÆ¡ BHXH/chÃ­nh sÃ¡ch thiáº¿u attendance.',
-    'Sá»‘ há»“ sÆ¡ BHXH/chÃ­nh sÃ¡ch thiáº¿u attendance; sá»‘ lá»›p chÆ°a khÃ³a Ä‘iá»ƒm danh.',
+    'Nếu không có điểm danh mà vẫn xử lý BHXH/chính sách hoặc thanh toán liên quan thì sai nguồn dữ liệu gốc.',
+    'short_governance_rules chặn quy trình BHXH/chính sách khi chưa có attendance hợp lệ.',
+    'Báo BGH/KHTC nếu phát hiện hồ sơ BHXH/chính sách thiếu attendance.',
+    'Số hồ sơ BHXH/chính sách thiếu attendance; số lớp chưa khóa điểm danh.',
     'DAT_TAM_THOI'
   ),
   (
     'RISK_P1_01_SHORT_PAYMENT_WITHOUT_APPROVAL',
-    'Thanh toÃ¡n ngáº¯n háº¡n thiáº¿u chá»©ng tá»«/quyá»n duyá»‡t',
+    'Thanh toán ngắn hạn thiếu chứng từ/quyền duyệt',
     'M11_SHORT_COURSE_ERP',
     'FINANCE_CONTROL',
     'CRITICAL',
     'KHTC',
-    'Ghi nháº­n thanh toÃ¡n khi chÆ°a cÃ³ invoice/chá»©ng tá»«/ngÆ°á»i xÃ¡c nháº­n Ä‘Ãºng quyá»n lÃ m sai cÃ´ng ná»£ vÃ  káº¿ toÃ¡n.',
-    'short_payments pháº£i gáº¯n invoice, sá»‘ tiá»n dÆ°Æ¡ng, chá»©ng tá»« náº¿u cÃ³ vÃ  verified_by Ä‘Ãºng quyá»n.',
-    'Káº¿ toÃ¡n trÆ°á»Ÿng/BGH xá»­ lÃ½ náº¿u cÃ³ thanh toÃ¡n bá»‹ nghi sai.',
-    'Sá»‘ payment PENDING/REJECTED; sá»‘ invoice cÃ²n balance.',
+    'Ghi nhận thanh toán khi chưa có invoice/chứng từ/người xác nhận đúng quyền làm sai công nợ và kế toán.',
+    'short_payments phải gắn invoice, số tiền dương, chứng từ nếu có và verified_by đúng quyền.',
+    'Kế toán trưởng/BGH xử lý nếu có thanh toán bị nghi sai.',
+    'Số payment PENDING/REJECTED; số invoice còn balance.',
     'DAT_TAM_THOI'
   )
 on conflict (risk_code) do update set
@@ -1420,16 +1420,16 @@ insert into public.data_dictionary_tables (
   ai_allowed,
   control_status
 ) values
-  ('short_student_master', 'Student Master ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'MASTER', 'CTHSSV + DAO_TAO', 'Äá»‹nh danh há»c viÃªn ngáº¯n háº¡n xuyÃªn há»‡ thá»‘ng.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
-  ('short_class_master', 'Class Master ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'MASTER', 'DAO_TAO', 'Quáº£n lÃ½ lá»›p, lá»‹ch, giáº£ng viÃªn, Ä‘á»‹a Ä‘iá»ƒm vÃ  tráº¡ng thÃ¡i lá»›p.', 'INTERNAL', true, 'DAT_TAM_THOI'),
-  ('short_enrollments', 'Ghi danh ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO + CTHSSV', 'Ná»‘i há»c viÃªn vá»›i lá»›p/khoÃ¡ vÃ  tráº¡ng thÃ¡i váº­n hÃ nh.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
-  ('short_attendance_sessions', 'Buá»•i Ä‘iá»ƒm danh ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO', 'Danh sÃ¡ch buá»•i há»c lÃ m gá»‘c cho attendance.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
-  ('short_attendance_records', 'DÃ²ng Ä‘iá»ƒm danh ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO', 'Nguá»“n dá»¯ liá»‡u gá»‘c cho BHXH/chÃ­nh sÃ¡ch/cáº£nh bÃ¡o bá» há»c.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
-  ('short_bhxh_policy_cases', 'Há»“ sÆ¡ BHXH/chÃ­nh sÃ¡ch ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC + DAO_TAO', 'Theo dÃµi Ä‘iá»u kiá»‡n/chá»©ng tá»« chÃ­nh sÃ¡ch há»— trá»£ náº¿u cÃ³.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
-  ('short_finance_invoices', 'CÃ´ng ná»£ ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC', 'Theo dÃµi pháº£i thu, giáº£m trá»«, Ä‘Ã£ thu vÃ  cÃ²n pháº£i thu.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
-  ('short_payments', 'Thanh toÃ¡n ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC', 'Ghi nháº­n chá»©ng tá»« thanh toÃ¡n Ä‘Ã£/Ä‘ang xÃ¡c nháº­n.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
-  ('short_governance_rules', 'Rule governance ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'CONFIG', 'PHAP_CHE + IT_DATA', 'Quy táº¯c cháº·n/cáº£nh bÃ¡o cho váº­n hÃ nh ngáº¯n háº¡n.', 'INTERNAL', true, 'DAT_TAM_THOI'),
-  ('short_risk_alerts', 'Cáº£nh bÃ¡o rá»§i ro ngáº¯n háº¡n', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO + KHTC + AUDIT', 'Theo dÃµi cáº£nh bÃ¡o váº­n hÃ nh, tÃ i chÃ­nh, BHXH vÃ  dá»¯ liá»‡u.', 'INTERNAL', true, 'DAT_TAM_THOI')
+  ('short_student_master', 'Student Master ngắn hạn', 'M11_SHORT_COURSE_ERP', 'MASTER', 'CTHSSV + DAO_TAO', 'Định danh học viên ngắn hạn xuyên hệ thống.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
+  ('short_class_master', 'Class Master ngắn hạn', 'M11_SHORT_COURSE_ERP', 'MASTER', 'DAO_TAO', 'Quản lý lớp, lịch, giảng viên, địa điểm và trạng thái lớp.', 'INTERNAL', true, 'DAT_TAM_THOI'),
+  ('short_enrollments', 'Ghi danh ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO + CTHSSV', 'Nối học viên với lớp/khoá và trạng thái vận hành.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
+  ('short_attendance_sessions', 'Buổi điểm danh ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO', 'Danh sách buổi học làm gốc cho attendance.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
+  ('short_attendance_records', 'Dòng điểm danh ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO', 'Nguồn dữ liệu gốc cho BHXH/chính sách/cảnh báo bỏ học.', 'CONFIDENTIAL', true, 'DAT_TAM_THOI'),
+  ('short_bhxh_policy_cases', 'Hồ sơ BHXH/chính sách ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC + DAO_TAO', 'Theo dõi điều kiện/chứng từ chính sách hỗ trợ nếu có.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
+  ('short_finance_invoices', 'Công nợ ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC', 'Theo dõi phải thu, giảm trừ, đã thu và còn phải thu.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
+  ('short_payments', 'Thanh toán ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'KHTC', 'Ghi nhận chứng từ thanh toán đã/đang xác nhận.', 'RESTRICTED', true, 'DAT_TAM_THOI'),
+  ('short_governance_rules', 'Rule governance ngắn hạn', 'M11_SHORT_COURSE_ERP', 'CONFIG', 'PHAP_CHE + IT_DATA', 'Quy tắc chặn/cảnh báo cho vận hành ngắn hạn.', 'INTERNAL', true, 'DAT_TAM_THOI'),
+  ('short_risk_alerts', 'Cảnh báo rủi ro ngắn hạn', 'M11_SHORT_COURSE_ERP', 'TRANSACTION', 'DAO_TAO + KHTC + AUDIT', 'Theo dõi cảnh báo vận hành, tài chính, BHXH và dữ liệu.', 'INTERNAL', true, 'DAT_TAM_THOI')
 on conflict (table_code) do update set
   table_name = excluded.table_name,
   module_code = excluded.module_code,
@@ -1463,7 +1463,7 @@ insert into public.process_ownership_matrix (
   status
 ) values (
   'OWN_P1_01_SHORT_COURSE_DATA_FOUNDATION',
-  'XÃ¢y xÆ°Æ¡ng sá»‘ng dá»¯ liá»‡u váº­n hÃ nh ngáº¯n háº¡n',
+  'Xây xương sống dữ liệu vận hành ngắn hạn',
   'M11_SHORT_COURSE_ERP',
   'WF_P1_01_SHORT_DATA_FOUNDATION',
   'DATA_FOUNDATION',
@@ -1475,8 +1475,8 @@ insert into public.process_ownership_matrix (
   'ROLE_AND_SCOPE',
   'TUYEN_SINH',
   'DAO_TAO + CTHSSV + KHTC',
-  'Catalog P0-21, lead Ä‘á»§ Ä‘iá»u kiá»‡n, há»“ sÆ¡/lá»›p/há»c phÃ­/chá»©ng tá»« náº¿u cÃ³.',
-  'Má»i báº£ng P1-01 cÃ³ audit trigger; dá»¯ liá»‡u Ä‘Ã£ khÃ³a khÃ´ng sá»­a trá»±c tiáº¿p.',
+  'Catalog P0-21, lead đủ điều kiện, hồ sơ/lớp/học phí/chứng từ nếu có.',
+  'Mọi bảng P1-01 có audit trigger; dữ liệu đã khóa không sửa trực tiếp.',
   72,
   'CRITICAL',
   'DAT_TAM_THOI',
@@ -1515,13 +1515,13 @@ insert into public.decision_gates (
   record_status
 ) values (
   'GATE_P1_01_SHORT_DATA_FOUNDATION_READY',
-  'P1-01 XÆ°Æ¡ng sá»‘ng dá»¯ liá»‡u ngáº¯n háº¡n sáºµn sÃ ng',
+  'P1-01 Xương sống dữ liệu ngắn hạn sẵn sàng',
   'DATA',
   'SHORT_COURSE_ERP',
   'P1_01_SHORT_DATA_FOUNDATION',
   'DAO_TAO + CTHSSV + KHTC + IT_DATA',
-  'Kiá»ƒm tra Ä‘á»§ báº£ng, RLS, audit trigger, data dictionary, ownership vÃ  governance rule.',
-  'BGH duyá»‡t trÆ°á»›c khi má»Ÿ P1-02 Lead -> Student tá»± Ä‘á»™ng hoáº·c AI agent can thiá»‡p.',
+  'Kiểm tra đủ bảng, RLS, audit trigger, data dictionary, ownership và governance rule.',
+  'BGH duyệt trước khi mở P1-02 Lead -> Student tự động hoặc AI agent can thiệp.',
   'PENDING',
   'ACTIVE'::public.record_status
 ) on conflict (gate_code) do update set
@@ -1551,16 +1551,16 @@ insert into public.heu_os_navigation_nodes (
   control_status
 ) values (
   'NAV_P1_01_SHORT_COURSE_ERP',
-  'ERP ngáº¯n háº¡n',
+  'ERP ngắn hạn',
   'OPERATION',
   'M11_SHORT_COURSE_ERP',
   '/master-control/modules/M11_SHORT_COURSE_ERP',
-  'XÆ°Æ¡ng sá»‘ng dá»¯ liá»‡u há»c viÃªn, lá»›p, Ä‘iá»ƒm danh, BHXH/chÃ­nh sÃ¡ch, cÃ´ng ná»£ vÃ  thanh toÃ¡n ngáº¯n háº¡n.',
+  'Xương sống dữ liệu học viên, lớp, điểm danh, BHXH/chính sách, công nợ và thanh toán ngắn hạn.',
   'DAO_TAO + CTHSSV + KHTC',
   'Xem readiness P1-01',
   212,
   true,
-  'Cáº§n chÃº Ã½ náº¿u chÆ°a cÃ³ class/enrollment/attendance hoáº·c payment thiáº¿u invoice/approval.',
+  'Cần chú ý nếu chưa có class/enrollment/attendance hoặc payment thiếu invoice/approval.',
   'DAT_TAM_THOI'
 ) on conflict (node_code) do update set
   node_name = excluded.node_name,
