@@ -223,14 +223,6 @@ export async function AppShell({
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {actions}
-              {workspace ? (
-                <AdmissionWorkspaceSwitcher
-                  options={workspace.segmentOptions}
-                  activeSegmentId={workspace.activeSegmentId}
-                  canSeeAllSegments={workspace.canSeeAllSegments}
-                  returnTo={workspaceReturnTo}
-                />
-              ) : null}
               {userEmail ? (
                 <form action={logoutAction} className="flex items-center gap-2">
                   <span className="hidden max-w-48 truncate text-sm text-zinc-500 sm:inline">
@@ -248,6 +240,35 @@ export async function AppShell({
               )}
             </div>
           </header>
+
+          {workspace ? (
+            <div className="border-b border-zinc-200 bg-white px-4 py-3 lg:px-8">
+              <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <p className="text-xs font-medium uppercase text-zinc-500">
+                    P0-13 · Workspace đang làm việc
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-zinc-900">
+                    {workspace.activeSegment
+                      ? workspace.activeSegment.label
+                      : workspace.canSeeAllSegments
+                        ? "Tất cả đối tượng tuyển sinh"
+                        : "Chưa chọn đối tượng tuyển sinh"}
+                  </p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    Lead, Pipeline, Lịch tư vấn và Báo cáo sẽ đi theo lựa chọn
+                    này.
+                  </p>
+                </div>
+                <AdmissionWorkspaceSwitcher
+                  options={workspace.segmentOptions}
+                  activeSegmentId={workspace.activeSegmentId}
+                  canSeeAllSegments={workspace.canSeeAllSegments}
+                  returnTo={workspaceReturnTo}
+                />
+              </div>
+            </div>
+          ) : null}
 
           <div className="space-y-6 p-4 lg:p-8">{children}</div>
         </section>
