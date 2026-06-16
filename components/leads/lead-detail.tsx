@@ -1,5 +1,7 @@
 import {
+  AlertTriangle,
   CalendarClock,
+  CheckCircle2,
   ClipboardCheck,
   CreditCard,
   FileClock,
@@ -56,6 +58,35 @@ export type LeadCustomFieldValueRow = {
   created_at: string;
 };
 
+export type MajorLegalTuitionGateRow = {
+  id: string;
+  nganh_id: string;
+  admission_major_id: string | null;
+  major_code: string;
+  ten_nganh_tu_van: string | null;
+  ten_nganh_phap_ly: string | null;
+  trinh_do: string | null;
+  ma_nganh_nghe: string | null;
+  khoa_phu_trach: string | null;
+  program_code: string | null;
+  program_name: string | null;
+  legal_status: string;
+  tuition_status: string;
+  enrollment_gate: string;
+  handover_gate: string;
+  finance_gate: string;
+  legal_ref: string | null;
+  tuition_policy_ref: string | null;
+  issue_summary: string | null;
+  required_action: string | null;
+  owner_department: string;
+  checker_department: string;
+  approver_role: string;
+  control_status: string;
+  status: string;
+  updated_at: string;
+};
+
 type LeadDetailProps = {
   lead: LeadDetailData;
   sourceName: string | null;
@@ -74,6 +105,8 @@ type LeadDetailProps = {
   documentCount: number;
   customFields: LeadCustomFieldValueRow[];
   customFieldsLoadError?: string;
+  majorGate: MajorLegalTuitionGateRow | null;
+  majorGateLoadError?: string;
 };
 
 const statusLabels: Record<string, string> = {
@@ -96,6 +129,22 @@ const priorityLabels: Record<string, string> = {
   NORMAL: "Bình thường",
   HIGH: "Cao",
   URGENT: "Khẩn cấp",
+};
+
+const gateValueLabels: Record<string, string> = {
+  PENDING: "Chờ đối chiếu pháp lý",
+  VERIFIED: "Đã đủ pháp lý",
+  BLOCKED: "Bị chặn",
+  CONFIGURED: "Đã có học phí",
+  ALLOW_ENROLLMENT: "Cho nhập học",
+  WARN_BEFORE_ENROLLMENT: "Cảnh báo trước nhập học",
+  BLOCK_ENROLLMENT: "Chặn nhập học",
+  ALLOW_HANDOVER: "Cho bàn giao",
+  WARN_BEFORE_HANDOVER: "Cảnh báo trước bàn giao",
+  BLOCK_HANDOVER: "Chặn bàn giao",
+  ALLOW_FINANCE: "Cho kế toán",
+  WARN_BEFORE_FINANCE: "Cảnh báo trước kế toán",
+  BLOCK_FINANCE: "Chặn kế toán",
 };
 
 function formatDate(value: string | null) {
@@ -133,6 +182,148 @@ function InfoItem({
         {value || "Chưa nhập"}
       </p>
     </div>
+  );
+}
+
+function gateBadgeClass(value: string) {
+  if (
+    value === "VERIFIED" ||
+    value === "CONFIGURED" ||
+    value.startsWith("ALLOW_")
+  ) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (value === "BLOCKED" || value.startsWith("BLOCK_")) {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-amber-200 bg-amber-50 text-amber-800";
+}
+
+function GateBadge({ value }: { value: string }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-medium ${gateBadgeClass(value)}`}
+    >
+      {gateValueLabels[value] ?? value}
+    </span>
+  );
+}
+
+function MajorGatePanel({
+  gate,
+  loadError,
+  interestedMajor,
+}: {
+  gate: MajorLegalTuitionGateRow | null;
+  loadError?: string;
+  interestedMajor: string | null;
+}) {
+  if (loadError) {
+    return (
+      <section className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+          <div>
+            <h3 className="font-semibold">P0-19 · Chưa đọc được gate ngành</h3>
+            <p className="mt-1">
+              Hãy chạy SQL{" "}
+              <span className="font-mono">
+                database/step59_major_legal_tuition_gate.sql
+              </span>
+              . Chi tiết: {loadError}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!gate) {
+    return (
+      <section className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+          <div>
+            <h3 className="font-semibold">
+              P0-19 · Chưa map ngành với gate pháp lý/học phí
+            </h3>
+            <p className="mt-1">
+              Ngành đang chọn: {interestedMajor ?? "Chưa chọn ngành"}. Lead vẫn
+              có thể tư vấn, nhưng chưa nên chốt nhập học hoặc bàn giao liên
+              phòng cho tới khi ngành được khai báo trong P0-19.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const isReady =
+    gate.legal_status === "VERIFIED" &&
+    gate.tuition_status === "CONFIGURED" &&
+    gate.enrollment_gate === "ALLOW_ENROLLMENT" &&
+    gate.handover_gate === "ALLOW_HANDOVER" &&
+    gate.finance_gate === "ALLOW_FINANCE";
+
+  return (
+    <section
+      className={`rounded-md border p-4 ${
+        isReady
+          ? "border-emerald-200 bg-emerald-50"
+          : "border-amber-200 bg-amber-50"
+      }`}
+    >
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex items-start gap-3">
+          {isReady ? (
+            <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-emerald-600" />
+          ) : (
+            <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-700" />
+          )}
+          <div>
+            <h3 className="text-base font-semibold">
+              P0-19 · Gate pháp lý + học phí ngành
+            </h3>
+            <p className="mt-1 text-sm leading-6 text-zinc-700">
+              {gate.ten_nganh_tu_van ?? interestedMajor ?? gate.major_code}
+              {gate.ten_nganh_phap_ly
+                ? ` · Pháp lý: ${gate.ten_nganh_phap_ly}`
+                : ""}
+            </p>
+            <p className="mt-1 text-sm leading-6 text-zinc-600">
+              {gate.issue_summary ??
+                "Gate này dùng để chặn chốt nhập học/bàn giao khi ngành chưa đủ căn cứ."}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 lg:max-w-[520px] lg:justify-end">
+          <GateBadge value={gate.legal_status} />
+          <GateBadge value={gate.tuition_status} />
+          <GateBadge value={gate.enrollment_gate} />
+          <GateBadge value={gate.handover_gate} />
+          <GateBadge value={gate.finance_gate} />
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 rounded-md border border-white/70 bg-white/70 p-4 md:grid-cols-2 xl:grid-cols-4">
+        <InfoItem label="Căn cứ pháp lý" value={gate.legal_ref} />
+        <InfoItem label="Chính sách học phí" value={gate.tuition_policy_ref} />
+        <InfoItem label="Owner" value={gate.owner_department} />
+        <InfoItem
+          label="Checker / Approver"
+          value={`${gate.checker_department} · ${gate.approver_role}`}
+        />
+      </div>
+
+      {gate.required_action ? (
+        <p className="mt-3 text-sm leading-6 text-zinc-700">
+          Việc cần làm: {gate.required_action}
+        </p>
+      ) : null}
+    </section>
   );
 }
 
@@ -189,6 +380,8 @@ export function LeadDetail({
   documentCount,
   customFields,
   customFieldsLoadError,
+  majorGate,
+  majorGateLoadError,
 }: LeadDetailProps) {
   return (
     <div className="space-y-6">
@@ -286,6 +479,12 @@ export function LeadDetail({
                 />
               </div>
             </section>
+
+            <MajorGatePanel
+              gate={majorGate}
+              loadError={majorGateLoadError}
+              interestedMajor={lead.interested_major}
+            />
 
             {customFieldsLoadError ? (
               <section className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">

@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 
 type FormFields = Record<string, string>;
 type FieldErrors = Record<string, string>;
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
 export type ActivityFormState = {
   error?: string;
@@ -118,6 +119,171 @@ type LeadConditionTemplateRow = {
   is_required_default: boolean;
   status: string;
 };
+
+type LeadMajorGateLeadRow = {
+  interested_major: string | null;
+};
+
+type MajorGateForActionRow = {
+  nganh_id: string;
+  major_code: string;
+  ten_nganh_tu_van: string | null;
+  ten_nganh_phap_ly: string | null;
+  legal_status: string;
+  tuition_status: string;
+  enrollment_gate: string;
+  handover_gate: string;
+  finance_gate: string;
+  required_action: string | null;
+  control_status: string;
+};
+
+type MajorGateCheckResult = {
+  leadMajor: string | null;
+  gate: MajorGateForActionRow | null;
+  error?: string;
+};
+
+function normalizeMajorForGate(value: string | null | undefined) {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function majorGateMatches(row: MajorGateForActionRow, leadMajor: string) {
+  const normalizedLeadMajor = normalizeMajorForGate(leadMajor);
+
+  return [
+    row.nganh_id,
+    row.major_code,
+    row.ten_nganh_tu_van,
+    row.ten_nganh_phap_ly,
+  ].some((value) => normalizeMajorForGate(value) === normalizedLeadMajor);
+}
+
+async function readMajorGateForLead(
+  supabase: SupabaseServerClient,
+  leadId: string,
+): Promise<MajorGateCheckResult> {
+  const { data: lead, error: leadError } = await supabase
+    .from("leads")
+    .select("interested_major")
+    .eq("id", leadId)
+    .eq("is_deleted", false)
+    .maybeSingle<LeadMajorGateLeadRow>();
+
+  if (leadError || !lead) {
+    return {
+      leadMajor: null,
+      gate: null,
+      error:
+        "Chưa đọc được ngành quan tâm của lead: " +
+        (leadError?.message ?? "không thấy lead"),
+    };
+  }
+
+  if (!lead.interested_major) {
+    return { leadMajor: null, gate: null };
+  }
+
+  const { data: gates, error: gateError } = await supabase
+    .from("major_legal_tuition_gate_readable")
+    .select(
+      "nganh_id,major_code,ten_nganh_tu_van,ten_nganh_phap_ly,legal_status,tuition_status,enrollment_gate,handover_gate,finance_gate,required_action,control_status",
+    )
+    .eq("status", "ACTIVE")
+    .returns<MajorGateForActionRow[]>();
+
+  if (gateError) {
+    return {
+      leadMajor: lead.interested_major,
+      gate: null,
+      error:
+        "Chưa đọc được P0-19 Major Legal & Tuition Gate. Hãy chạy SQL step59. Chi tiết: " +
+        gateError.message,
+    };
+  }
+
+  return {
+    leadMajor: lead.interested_major,
+    gate: (gates ?? []).find((gate) => majorGateMatches(gate, lead.interested_major!)) ?? null,
+  };
+}
+
+function majorGateBlockingMessage(
+  result: MajorGateCheckResult,
+  targets: Array<"enrollment" | "handover" | "finance">,
+) {
+  if (result.error) {
+    return "P0-19 chưa kiểm tra được gate ngành. " + result.error;
+  }
+
+  if (!result.leadMajor) {
+    return "P0-19: Lead chưa chọn ngành quan tâm nên chưa được chốt nhập học hoặc bàn giao.";
+  }
+
+  if (!result.gate) {
+    return `P0-19: Ngành "${result.leadMajor}" chưa được map với gate pháp lý/học phí. Hãy cấu hình ngành trong P0-19 trước khi chốt hoặc bàn giao.`;
+  }
+
+  const reasons: string[] = [];
+
+  if (result.gate.control_status === "CHUA_DU_DIEU_KIEN") {
+    reasons.push("ngành đang ở trạng thái chưa đủ điều kiện");
+  }
+
+  if (result.gate.legal_status !== "VERIFIED") {
+    reasons.push("chưa xác nhận đủ căn cứ pháp lý");
+  }
+
+  if (result.gate.tuition_status !== "CONFIGURED") {
+    reasons.push("chưa cấu hình chính sách học phí");
+  }
+
+  if (
+    targets.includes("enrollment") &&
+    result.gate.enrollment_gate !== "ALLOW_ENROLLMENT"
+  ) {
+    reasons.push("gate nhập học chưa được mở");
+  }
+
+  if (
+    targets.includes("handover") &&
+    result.gate.handover_gate !== "ALLOW_HANDOVER"
+  ) {
+    reasons.push("gate bàn giao liên phòng chưa được mở");
+  }
+
+  if (targets.includes("finance") && result.gate.finance_gate !== "ALLOW_FINANCE") {
+    reasons.push("gate kế toán/học phí chưa được mở");
+  }
+
+  if (reasons.length === 0) {
+    return null;
+  }
+
+  return `P0-19 đang chặn thao tác với ngành "${result.leadMajor}": ${reasons.join(", ")}. ${
+    result.gate.required_action ?? "Hãy hoàn thiện căn cứ pháp lý và học phí trước khi tiếp tục."
+  }`;
+}
+
+async function logMajorGateBlock(
+  supabase: SupabaseServerClient,
+  leadId: string,
+  userId: string,
+  message: string,
+) {
+  await supabase.from("lead_activities").insert({
+    lead_id: leadId,
+    activity_type: "NOTE",
+    activity_result: "P0_19_BLOCKED",
+    content: message,
+    created_by: userId,
+  });
+}
 
 export async function createLeadActivityAction(
   _previousState: ActivityFormState,
@@ -429,6 +595,19 @@ export async function updateLeadStatusAction(
     return formError("Trạng thái LOST phải có lý do mất lead.", fields, {
       lost_reason: "Chọn lý do mất lead cho trạng thái LOST.",
     });
+  }
+
+  if (["ELIGIBLE", "ENROLLED"].includes(status)) {
+    const gateCheck = await readMajorGateForLead(supabase, leadId);
+    const gateMessage = majorGateBlockingMessage(gateCheck, ["enrollment"]);
+
+    if (gateMessage) {
+      await logMajorGateBlock(supabase, leadId, user.id, gateMessage);
+
+      return formError(gateMessage, fields, {
+        status: "P0-19 chưa cho phép chuyển sang trạng thái này.",
+      });
+    }
   }
 
   const payload: {
@@ -1371,6 +1550,19 @@ export async function createLeadHandoverAction(
   }
 
   const config = handoverConfig[handoverType];
+  const gateTargets: Array<"handover" | "finance"> =
+    config.toDepartment === "ACCOUNTING" ? ["handover", "finance"] : ["handover"];
+  const gateCheck = await readMajorGateForLead(supabase, leadId);
+  const gateMessage = majorGateBlockingMessage(gateCheck, gateTargets);
+
+  if (gateMessage) {
+    await logMajorGateBlock(supabase, leadId, user.id, gateMessage);
+
+    return formError(gateMessage, fields, {
+      handover_type: "P0-19 chưa cho phép tạo bàn giao này.",
+    });
+  }
+
   const { error } = await supabase.from("lead_handovers").insert({
     lead_id: leadId,
     handover_type: handoverType,
@@ -1479,6 +1671,24 @@ export async function updateLeadHandoverAction(
         (readError?.message ?? "không thấy bàn giao"),
       fields,
     );
+  }
+
+  if (handoverStatus === "ACCEPTED") {
+    const config = handoverConfig[handover.handover_type];
+    const gateTargets: Array<"handover" | "finance"> =
+      config?.toDepartment === "ACCOUNTING"
+        ? ["handover", "finance"]
+        : ["handover"];
+    const gateCheck = await readMajorGateForLead(supabase, leadId);
+    const gateMessage = majorGateBlockingMessage(gateCheck, gateTargets);
+
+    if (gateMessage) {
+      await logMajorGateBlock(supabase, leadId, user.id, gateMessage);
+
+      return formError(gateMessage, fields, {
+        handover_status: "P0-19 chưa cho phép nhận bàn giao này.",
+      });
+    }
   }
 
   const { error } = await supabase

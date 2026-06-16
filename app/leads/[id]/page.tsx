@@ -26,6 +26,7 @@ import { HouLeadWorkspace } from "@/components/leads/hou-lead-workspace";
 import {
   LeadDetail,
   type LeadCustomFieldValueRow,
+  type MajorLegalTuitionGateRow,
 } from "@/components/leads/lead-detail";
 import {
   LeadHandoverPanel,
@@ -174,6 +175,37 @@ async function getLookupLabel(
   return String((data as unknown as Record<string, unknown>)[labelColumn] ?? "");
 }
 
+function normalizeMajorLabel(value: string | null | undefined) {
+  return (value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function findMajorGateForLead(
+  rows: MajorLegalTuitionGateRow[],
+  interestedMajor: string | null,
+) {
+  const normalizedMajor = normalizeMajorLabel(interestedMajor);
+
+  if (!normalizedMajor) {
+    return null;
+  }
+
+  return (
+    rows.find((row) =>
+      [
+        row.nganh_id,
+        row.major_code,
+        row.ten_nganh_tu_van,
+        row.ten_nganh_phap_ly,
+      ].some((value) => normalizeMajorLabel(value) === normalizedMajor),
+    ) ?? null
+  );
+}
+
 export default async function LeadDetailPage({ params }: PageProps) {
   const { id } = await params;
   const supabase = await createClient();
@@ -234,6 +266,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
     documentCountResult,
     handoversResult,
     customFieldValuesResult,
+    majorGateRowsResult,
   ] = await Promise.all([
     getLookupLabel("lead_sources", lead.source_id, "source_name"),
     getLookupLabel("admission_flows", lead.flow_id, "flow_name"),
@@ -325,6 +358,13 @@ export default async function LeadDetailPage({ params }: PageProps) {
       .eq("lead_id", lead.id)
       .order("field_label", { ascending: true })
       .returns<LeadCustomFieldValueRow[]>(),
+    supabase
+      .from("major_legal_tuition_gate_readable")
+      .select(
+        "id,nganh_id,admission_major_id,major_code,ten_nganh_tu_van,ten_nganh_phap_ly,trinh_do,ma_nganh_nghe,khoa_phu_trach,program_code,program_name,legal_status,tuition_status,enrollment_gate,handover_gate,finance_gate,legal_ref,tuition_policy_ref,issue_summary,required_action,owner_department,checker_department,approver_role,control_status,status,updated_at",
+      )
+      .eq("status", "ACTIVE")
+      .returns<MajorLegalTuitionGateRow[]>(),
   ]);
 
   const houPrograms = toLookup(houProgramRowsResult.data, "program_name");
@@ -509,6 +549,10 @@ export default async function LeadDetailPage({ params }: PageProps) {
       )
     : null;
   const latestHouCommissionClaim = houCommissionClaims[0] ?? null;
+  const currentMajorGate = findMajorGateForLead(
+    majorGateRowsResult.data ?? [],
+    lead.interested_major,
+  );
 
   return (
     <AppShell
@@ -555,6 +599,8 @@ export default async function LeadDetailPage({ params }: PageProps) {
         documentCount={documentCountResult.count ?? 0}
         customFields={customFieldValuesResult.data ?? []}
         customFieldsLoadError={customFieldValuesResult.error?.message}
+        majorGate={currentMajorGate}
+        majorGateLoadError={majorGateRowsResult.error?.message}
       />
       <HouLeadWorkspace
         leadCode={lead.lead_code}
