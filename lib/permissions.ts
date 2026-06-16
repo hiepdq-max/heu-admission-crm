@@ -34,6 +34,18 @@ export const permissionGroups: PermissionGroup[] = [
         description: "Quản lý danh mục và các cấu hình nghiệp vụ.",
       },
       {
+        code: "admission_config.read",
+        label: "Xem cấu hình tuyển sinh động",
+        description:
+          "Xem rule đối tượng tuyển sinh, hệ/ngành, field form lead và điều kiện.",
+      },
+      {
+        code: "admission_config.manage",
+        label: "Quản lý cấu hình tuyển sinh động",
+        description:
+          "Thêm/sửa rule hệ-ngành, field form lead và điều kiện bắt buộc theo từng đối tượng.",
+      },
+      {
         code: "scope.manage_department",
         label: "Phân phạm vi trong phòng",
         description:

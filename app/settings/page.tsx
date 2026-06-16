@@ -25,6 +25,14 @@ import {
   type AdmissionProgramRow,
 } from "@/components/settings/program-major-settings";
 import {
+  AdmissionDynamicConfigSettings,
+  type AdmissionConditionRuleConfigRow,
+  type AdmissionDynamicConfigOverviewRow,
+  type AdmissionDynamicConfigSummaryRow,
+  type AdmissionFormFieldConfigRow,
+  type AdmissionProgramRuleConfigRow,
+} from "@/components/settings/admission-dynamic-config-settings";
+import {
   HouFoundationSettings,
   type HouAdmissionStageRow,
   type HouFinancialPolicyRow,
@@ -78,6 +86,8 @@ type SettingsPageProps = {
     major_updated?: string;
     hou_location_created?: string;
     hou_location_updated?: string;
+    admission_config_created?: string;
+    admission_config_updated?: string;
     permissions_updated?: string;
     scopes_updated?: string;
     user_created?: string;
@@ -121,6 +131,14 @@ const errorMessages: Record<string, string> = {
   missing_hou_location_data: "Thiếu mã, tên hoặc địa chỉ địa điểm HOU.",
   duplicate_hou_location_code:
     "Mã địa điểm HOU này đã tồn tại. Hãy sửa địa điểm hiện có hoặc dùng mã khác.",
+  missing_admission_program_rule:
+    "Thiếu đối tượng tuyển sinh hoặc hệ đào tạo cần gắn.",
+  missing_admission_field_config:
+    "Thiếu đối tượng tuyển sinh, mã field hoặc nhãn hiển thị field.",
+  missing_admission_condition_config:
+    "Thiếu đối tượng tuyển sinh, mã điều kiện hoặc tên điều kiện.",
+  not_allowed_admission_config:
+    "Bạn chưa có quyền quản lý cấu hình tuyển sinh động.",
   invalid_status: "Trạng thái user không hợp lệ.",
   not_admin: "Chỉ ADMIN mới được cập nhật phân quyền.",
   cannot_lock_self:
@@ -162,6 +180,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     { data: userLeadVisibilityScopes, error: userLeadVisibilityScopesError },
     { data: programs, error: programsError },
     { data: majors, error: majorsError },
+    { data: dynamicConfigSummary, error: dynamicConfigSummaryError },
+    { data: dynamicConfigOverview, error: dynamicConfigOverviewError },
+    { data: admissionProgramRules, error: admissionProgramRulesError },
+    { data: admissionFormFields, error: admissionFormFieldsError },
+    { data: admissionConditionRules, error: admissionConditionRulesError },
     { data: houPrograms, error: houProgramsError },
     { data: houLocations, error: houLocationsError },
     { data: houMajors, error: houMajorsError },
@@ -252,6 +275,44 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       .select("id,major_code,major_name,program_id,sort_order,status")
       .order("sort_order", { ascending: true })
       .returns<AdmissionMajorRow[]>(),
+    supabase
+      .from("admission_dynamic_config_summary")
+      .select(
+        "segment_count,ready_count,needs_fix_count,blocked_count,program_rule_count,visible_field_count,required_condition_count",
+      )
+      .returns<AdmissionDynamicConfigSummaryRow[]>(),
+    supabase
+      .from("admission_dynamic_config_status")
+      .select(
+        "segment_id,segment_code,segment_name,program_group,owner_department,program_rule_count,program_count,major_rule_count,field_count,visible_field_count,required_field_count,condition_count,required_condition_count,control_flags,config_status",
+      )
+      .order("program_group", { ascending: true })
+      .order("segment_name", { ascending: true })
+      .returns<AdmissionDynamicConfigOverviewRow[]>(),
+    supabase
+      .from("admission_segment_program_rule_status")
+      .select(
+        "id,segment_id,segment_code,segment_name,program_group,program_id,program_code,program_name,major_id,major_code,major_name,is_default,is_required,sort_order,note,status",
+      )
+      .order("segment_name", { ascending: true })
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionProgramRuleConfigRow[]>(),
+    supabase
+      .from("admission_form_field_config_status")
+      .select(
+        "id,segment_id,segment_code,segment_name,field_key,field_label,field_group,field_type,is_visible,is_required,option_source,placeholder,help_text,validation_rule,sort_order,status,control_flags,field_status",
+      )
+      .order("segment_name", { ascending: true })
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionFormFieldConfigRow[]>(),
+    supabase
+      .from("admission_condition_rule_config_status")
+      .select(
+        "id,segment_id,segment_code,segment_name,condition_code,condition_name,condition_group,is_required,blocking_level,evidence_required,owner_department,checker_role,approver_role,rule_note,sort_order,status,control_flags,rule_status",
+      )
+      .order("segment_name", { ascending: true })
+      .order("sort_order", { ascending: true })
+      .returns<AdmissionConditionRuleConfigRow[]>(),
     supabase
       .from("hou_programs")
       .select(
@@ -422,6 +483,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             Đã liên kết Auth user vào CRM.
           </section>
         ) : null}
+        {params?.admission_config_created || params?.admission_config_updated ? (
+          <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+            Đã lưu cấu hình tuyển sinh động P0-17.
+          </section>
+        ) : null}
 
         <UserCreateForm
           roles={roles ?? []}
@@ -517,6 +583,23 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
           programs={programs ?? []}
           majors={majors ?? []}
           loadError={programsError?.message ?? majorsError?.message}
+        />
+        <AdmissionDynamicConfigSettings
+          overview={dynamicConfigOverview ?? []}
+          summary={dynamicConfigSummary?.[0]}
+          programRules={admissionProgramRules ?? []}
+          formFields={admissionFormFields ?? []}
+          conditionRules={admissionConditionRules ?? []}
+          segments={admissionSegments ?? []}
+          programs={programs ?? []}
+          majors={majors ?? []}
+          loadError={
+            dynamicConfigSummaryError?.message ??
+            dynamicConfigOverviewError?.message ??
+            admissionProgramRulesError?.message ??
+            admissionFormFieldsError?.message ??
+            admissionConditionRulesError?.message
+          }
         />
         <HouFoundationSettings
           programs={houPrograms ?? []}

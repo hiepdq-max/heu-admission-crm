@@ -466,9 +466,59 @@ function normalizeMasterCode(value: string | null) {
     .replace(/^_+|_+$/g, "");
 }
 
+function normalizeFieldKey(value: string | null) {
+  return value
+    ?.trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
 function numberValue(formData: FormData, key: string) {
   const value = Number(formData.get(key));
   return Number.isFinite(value) ? value : 0;
+}
+
+async function requireAdmissionConfigManage(returnPath = "/settings") {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const [
+    { data: currentRoleCode },
+    { data: canManageSettings },
+    { data: canManageAdmissionConfig },
+  ] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc("has_permission", { permission_name: "settings.manage" }),
+    supabase.rpc("has_permission", {
+      permission_name: "admission_config.manage",
+    }),
+  ]);
+
+  if (
+    currentRoleCode !== "ADMIN" &&
+    !canManageSettings &&
+    !canManageAdmissionConfig
+  ) {
+    redirect(`${returnPath}?error=not_allowed_admission_config`);
+  }
+
+  return { supabase, user };
+}
+
+function revalidateAdmissionConfigPaths() {
+  revalidatePath("/settings");
+  revalidatePath("/leads");
+  revalidatePath("/leads/new");
+  revalidatePath("/import");
+  revalidatePath("/pipeline");
+  revalidatePath("/reports");
 }
 
 export async function createChecklistItemAction(formData: FormData) {
@@ -1015,4 +1065,256 @@ export async function updateHouLocationAction(formData: FormData) {
   revalidatePath("/settings");
   revalidatePath("/leads/new");
   redirect("/settings?hou_location_updated=1");
+}
+
+export async function createAdmissionProgramRuleAction(formData: FormData) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const segmentId = textValue(formData, "segment_id");
+  const programId = textValue(formData, "program_id");
+  const majorId = textValue(formData, "major_id");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!segmentId || !programId) {
+    redirect("/settings?error=missing_admission_program_rule");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase.from("admission_segment_program_rules").upsert(
+    {
+      segment_id: segmentId,
+      program_id: programId,
+      major_id: majorId,
+      is_default: formData.get("is_default") === "on",
+      is_required: formData.get("is_required") === "on",
+      sort_order: numberValue(formData, "sort_order"),
+      note: textValue(formData, "note"),
+      status,
+      created_by: user.id,
+      updated_by: user.id,
+    },
+    { onConflict: "segment_id,program_id,major_id" },
+  );
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_created=1");
+}
+
+export async function updateAdmissionProgramRuleAction(formData: FormData) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const ruleId = textValue(formData, "rule_id");
+  const segmentId = textValue(formData, "segment_id");
+  const programId = textValue(formData, "program_id");
+  const majorId = textValue(formData, "major_id");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!ruleId || !segmentId || !programId) {
+    redirect("/settings?error=missing_admission_program_rule");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase
+    .from("admission_segment_program_rules")
+    .update({
+      segment_id: segmentId,
+      program_id: programId,
+      major_id: majorId,
+      is_default: formData.get("is_default") === "on",
+      is_required: formData.get("is_required") === "on",
+      sort_order: numberValue(formData, "sort_order"),
+      note: textValue(formData, "note"),
+      status,
+      updated_by: user.id,
+    })
+    .eq("id", ruleId);
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_updated=1");
+}
+
+export async function createAdmissionFormFieldConfigAction(formData: FormData) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const segmentId = textValue(formData, "segment_id");
+  const fieldKey = normalizeFieldKey(textValue(formData, "field_key"));
+  const fieldLabel = textValue(formData, "field_label");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!segmentId || !fieldKey || !fieldLabel) {
+    redirect("/settings?error=missing_admission_field_config");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase.from("admission_form_field_configs").upsert(
+    {
+      segment_id: segmentId,
+      field_key: fieldKey,
+      field_label: fieldLabel,
+      field_group: normalizeMasterCode(textValue(formData, "field_group")) ?? "LEAD",
+      field_type: String(formData.get("field_type") ?? "TEXT"),
+      is_visible: formData.get("is_visible") === "on",
+      is_required: formData.get("is_required") === "on",
+      option_source: String(formData.get("option_source") ?? "NONE"),
+      placeholder: textValue(formData, "placeholder"),
+      help_text: textValue(formData, "help_text"),
+      validation_rule: textValue(formData, "validation_rule"),
+      sort_order: numberValue(formData, "sort_order"),
+      status,
+      created_by: user.id,
+      updated_by: user.id,
+    },
+    { onConflict: "segment_id,field_key" },
+  );
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_created=1");
+}
+
+export async function updateAdmissionFormFieldConfigAction(formData: FormData) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const fieldId = textValue(formData, "field_id");
+  const fieldLabel = textValue(formData, "field_label");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!fieldId || !fieldLabel) {
+    redirect("/settings?error=missing_admission_field_config");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase
+    .from("admission_form_field_configs")
+    .update({
+      field_label: fieldLabel,
+      field_group: normalizeMasterCode(textValue(formData, "field_group")) ?? "LEAD",
+      field_type: String(formData.get("field_type") ?? "TEXT"),
+      is_visible: formData.get("is_visible") === "on",
+      is_required: formData.get("is_required") === "on",
+      option_source: String(formData.get("option_source") ?? "NONE"),
+      placeholder: textValue(formData, "placeholder"),
+      help_text: textValue(formData, "help_text"),
+      validation_rule: textValue(formData, "validation_rule"),
+      sort_order: numberValue(formData, "sort_order"),
+      status,
+      updated_by: user.id,
+    })
+    .eq("id", fieldId);
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_updated=1");
+}
+
+export async function createAdmissionConditionRuleConfigAction(
+  formData: FormData,
+) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const segmentId = textValue(formData, "segment_id");
+  const conditionCode = normalizeMasterCode(textValue(formData, "condition_code"));
+  const conditionName = textValue(formData, "condition_name");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!segmentId || !conditionCode || !conditionName) {
+    redirect("/settings?error=missing_admission_condition_config");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase
+    .from("admission_condition_rule_configs")
+    .upsert(
+      {
+        segment_id: segmentId,
+        condition_code: conditionCode,
+        condition_name: conditionName,
+        condition_group: String(formData.get("condition_group") ?? "ADMISSION"),
+        is_required: formData.get("is_required") === "on",
+        blocking_level: String(formData.get("blocking_level") ?? "WARN"),
+        evidence_required: formData.get("evidence_required") === "on",
+        owner_department: textValue(formData, "owner_department"),
+        checker_role: textValue(formData, "checker_role"),
+        approver_role: textValue(formData, "approver_role"),
+        rule_note: textValue(formData, "rule_note"),
+        sort_order: numberValue(formData, "sort_order"),
+        status,
+        created_by: user.id,
+        updated_by: user.id,
+      },
+      { onConflict: "segment_id,condition_code" },
+    );
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_created=1");
+}
+
+export async function updateAdmissionConditionRuleConfigAction(
+  formData: FormData,
+) {
+  const { supabase, user } = await requireAdmissionConfigManage();
+  const ruleId = textValue(formData, "rule_id");
+  const conditionName = textValue(formData, "condition_name");
+  const status = String(formData.get("status") ?? "ACTIVE");
+
+  if (!ruleId || !conditionName) {
+    redirect("/settings?error=missing_admission_condition_config");
+  }
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    redirect("/settings?error=invalid_status");
+  }
+
+  const { error } = await supabase
+    .from("admission_condition_rule_configs")
+    .update({
+      condition_name: conditionName,
+      condition_group: String(formData.get("condition_group") ?? "ADMISSION"),
+      is_required: formData.get("is_required") === "on",
+      blocking_level: String(formData.get("blocking_level") ?? "WARN"),
+      evidence_required: formData.get("evidence_required") === "on",
+      owner_department: textValue(formData, "owner_department"),
+      checker_role: textValue(formData, "checker_role"),
+      approver_role: textValue(formData, "approver_role"),
+      rule_note: textValue(formData, "rule_note"),
+      sort_order: numberValue(formData, "sort_order"),
+      status,
+      updated_by: user.id,
+    })
+    .eq("id", ruleId);
+
+  if (error) {
+    redirect(`/settings?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidateAdmissionConfigPaths();
+  redirect("/settings?admission_config_updated=1");
 }
