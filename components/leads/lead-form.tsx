@@ -159,7 +159,6 @@ export function LeadForm({
 
     return majors;
   }, [majors, selectedProgramId]);
-  const shouldLockProgram = programs.length === 1;
   const isHouSegment = selectedSegment?.code === "UNIVERSITY_TRANSFER_HOU";
   const cannotCreateByScope = hasSegmentScope && segments.length === 0;
 
@@ -244,51 +243,35 @@ export function LeadForm({
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
         <h2 className="text-base font-semibold">Nhu cầu và nguồn lead</h2>
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {shouldLockProgram && selectedProgram ? (
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-zinc-700">
-                Hệ đào tạo quan tâm
-              </p>
-              <input
-                type="hidden"
-                name="interested_program"
-                value={selectedProgram.label}
-              />
-              <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
-                {selectedProgram.label}
-              </div>
-              <p className="text-xs text-zinc-500">
-                P0-15 tự khóa theo đối tượng tuyển sinh đang chọn.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <label
-                htmlFor="interested_program"
-                className="text-sm font-medium text-zinc-700"
-              >
-                Hệ đào tạo quan tâm
-              </label>
-              <select
-                id="interested_program"
-                className={inputClass}
-                value={selectedProgramId}
-                onChange={(event) => setSelectedProgramId(event.target.value)}
-              >
-                <option value="">Chưa chọn</option>
-                {programs.map((program) => (
-                  <option key={program.id} value={program.id}>
-                    {program.label}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="hidden"
-                name="interested_program"
-                value={selectedProgram?.label ?? ""}
-              />
-            </div>
-          )}
+          <div className="space-y-2">
+            <label
+              htmlFor="interested_program"
+              className="text-sm font-medium text-zinc-700"
+            >
+              Hệ đào tạo quan tâm
+            </label>
+            <select
+              id="interested_program"
+              className={inputClass}
+              value={selectedProgramId}
+              onChange={(event) => setSelectedProgramId(event.target.value)}
+            >
+              <option value="">Chọn hệ đào tạo</option>
+              {programs.map((program) => (
+                <option key={program.id} value={program.id}>
+                  {program.label}
+                </option>
+              ))}
+            </select>
+            <input
+              type="hidden"
+              name="interested_program"
+              value={selectedProgram?.label ?? ""}
+            />
+            <p className="text-xs text-zinc-500">
+              Chọn hệ nào thì ô ngành bên cạnh chỉ hiện ngành thuộc hệ đó.
+            </p>
+          </div>
           <div className="space-y-2">
             <label
               htmlFor="interested_major"
