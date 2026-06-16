@@ -148,8 +148,12 @@ export function filterAdmissionSegmentsByScope(
   scopes: AdmissionSegmentScopeRow[],
   canSeeAllSegments: boolean,
 ) {
-  if (canSeeAllSegments || scopes.length === 0) {
+  if (canSeeAllSegments) {
     return segments;
+  }
+
+  if (scopes.length === 0) {
+    return [];
   }
 
   const allowedIds = new Set(scopes.map((scope) => scope.segment_id));

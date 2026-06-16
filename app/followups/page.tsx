@@ -5,6 +5,13 @@ import { FollowupBoard } from "@/components/followups/followup-board";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type FollowupLead = {
   id: string;
@@ -23,6 +30,12 @@ type FollowupLead = {
 type UserLookup = {
   id: string;
   label: string;
+};
+
+type FollowupsPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 function toLookup<T extends Record<string, unknown>>(
@@ -45,7 +58,7 @@ function startOfTomorrow() {
   return new Date(today.getTime() + 24 * 60 * 60 * 1000);
 }
 
-export default async function FollowupsPage() {
+export default async function FollowupsPage({ searchParams }: FollowupsPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -55,15 +68,27 @@ export default async function FollowupsPage() {
     redirect("/login");
   }
 
-  const { data: leads, error } = await supabase
-    .from("leads")
-    .select(
-      "id,lead_code,student_name,student_phone,parent_name,parent_phone,status,priority,interested_major,next_followup_at,assigned_to",
-    )
-    .eq("is_deleted", false)
-    .not("next_followup_at", "is", null)
-    .neq("status", "ENROLLED")
-    .neq("status", "LOST")
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+
+  const { data: leads, error } = await applyAdmissionSegmentIds(
+    supabase
+      .from("leads")
+      .select(
+        "id,lead_code,student_name,student_phone,parent_name,parent_phone,status,priority,interested_major,next_followup_at,assigned_to",
+      )
+      .eq("is_deleted", false)
+      .not("next_followup_at", "is", null)
+      .neq("status", "ENROLLED")
+      .neq("status", "LOST"),
+    segmentFilterIds,
+  )
     .order("next_followup_at", { ascending: true })
     .returns<FollowupLead[]>();
 
@@ -94,10 +119,24 @@ export default async function FollowupsPage() {
     <AppShell
       active="followups"
       title="Lịch tư vấn"
-      description="Các lead cần chăm sóc theo lịch hẹn, chia theo quá hạn, hôm nay và sắp tới."
+      description={
+        workspace.activeSegment
+          ? `Lịch tư vấn riêng cho: ${workspace.activeSegment.label}.`
+          : "Các lead cần chăm sóc theo lịch hẹn, chia theo quá hạn, hôm nay và sắp tới."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/followups",
+        workspace.activeSegmentId,
+      )}
       actions={
         <Button asChild variant="outline">
-          <a href="/followups">
+          <a
+            href={withAdmissionSegmentParam(
+              "/followups",
+              workspace.activeSegmentId,
+            )}
+          >
             <RefreshCcw className="size-4" />
             Tải lại
           </a>

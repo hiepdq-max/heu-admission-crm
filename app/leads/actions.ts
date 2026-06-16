@@ -255,5 +255,9 @@ export async function createLeadAction(
     return { error: "Chưa lưu được lead: " + error.message };
   }
 
-  redirect("/leads");
+  redirect(
+    admissionSegmentId
+      ? `/leads?segment=${encodeURIComponent(admissionSegmentId)}`
+      : "/leads",
+  );
 }

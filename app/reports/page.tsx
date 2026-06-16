@@ -5,6 +5,13 @@ import { AppShell } from "@/components/layout/app-shell";
 import { ReportsOverview } from "@/components/reports/reports-overview";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type LeadReportRow = {
   id: string;
@@ -16,6 +23,12 @@ type LeadReportRow = {
   interested_major: string | null;
   next_followup_at: string | null;
   created_at: string;
+};
+
+type ReportsPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 const statusLabels: Record<string, string> = {
@@ -100,7 +113,7 @@ function startOfToday() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
-export default async function ReportsPage() {
+export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -110,18 +123,30 @@ export default async function ReportsPage() {
     redirect("/login");
   }
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+
   const [
     { data: leads },
     { data: sourceRows },
     { data: flowRows },
     { data: userRows },
   ] = await Promise.all([
-      supabase
-        .from("leads")
-        .select(
-          "id,status,source_id,flow_id,assigned_to,lost_reason,interested_major,next_followup_at,created_at",
-        )
-        .eq("is_deleted", false)
+      applyAdmissionSegmentIds(
+        supabase
+          .from("leads")
+          .select(
+            "id,status,source_id,flow_id,assigned_to,lost_reason,interested_major,next_followup_at,created_at",
+          )
+          .eq("is_deleted", false),
+        segmentFilterIds,
+      )
         .order("created_at", { ascending: false })
         .limit(5000)
         .returns<LeadReportRow[]>(),
@@ -224,10 +249,24 @@ export default async function ReportsPage() {
     <AppShell
       active="reports"
       title="Báo cáo tuyển sinh"
-      description="Tổng hợp hiệu quả nguồn lead, tư vấn viên, ngành, địa bàn và chuyển đổi từ dữ liệu Supabase."
+      description={
+        workspace.activeSegment
+          ? `Báo cáo riêng cho: ${workspace.activeSegment.label}.`
+          : "Tổng hợp hiệu quả nguồn lead, tư vấn viên, ngành, địa bàn và chuyển đổi từ dữ liệu Supabase."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/reports",
+        workspace.activeSegmentId,
+      )}
       actions={
         <Button asChild variant="outline">
-          <a href="/reports">
+          <a
+            href={withAdmissionSegmentParam(
+              "/reports",
+              workspace.activeSegmentId,
+            )}
+          >
             <RefreshCcw className="size-4" />
             Tải lại
           </a>

@@ -6,6 +6,13 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PipelineBoard } from "@/components/pipeline/pipeline-board";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type PipelineLead = {
   id: string;
@@ -20,6 +27,12 @@ type PipelineLead = {
   flow_id: string | null;
   assigned_to: string | null;
   is_duplicate: boolean;
+};
+
+type PipelinePageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 const columns = [
@@ -95,7 +108,7 @@ function toLookup<T extends Record<string, unknown>>(
   }));
 }
 
-export default async function PipelinePage() {
+export default async function PipelinePage({ searchParams }: PipelinePageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -105,13 +118,25 @@ export default async function PipelinePage() {
     redirect("/login");
   }
 
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+
   const [{ data: leads, error }, { data: flows }, { data: users }] = await Promise.all([
-    supabase
-      .from("leads")
-      .select(
-        "id,lead_code,student_name,student_phone,parent_phone,status,priority,interested_major,next_followup_at,flow_id,assigned_to,is_duplicate",
-      )
-      .eq("is_deleted", false)
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select(
+          "id,lead_code,student_name,student_phone,parent_phone,status,priority,interested_major,next_followup_at,flow_id,assigned_to,is_duplicate",
+        )
+        .eq("is_deleted", false),
+      segmentFilterIds,
+    )
       .order("updated_at", { ascending: false })
       .limit(500)
       .returns<PipelineLead[]>(),
@@ -123,10 +148,24 @@ export default async function PipelinePage() {
     <AppShell
       active="pipeline"
       title="Pipeline tuyển sinh"
-      description="Kanban lead theo trạng thái tuyển sinh, đọc trực tiếp từ Supabase."
+      description={
+        workspace.activeSegment
+          ? `Kanban riêng cho: ${workspace.activeSegment.label}.`
+          : "Kanban lead theo trạng thái tuyển sinh, đọc trực tiếp từ Supabase."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/pipeline",
+        workspace.activeSegmentId,
+      )}
       actions={
         <Button asChild variant="outline">
-          <Link href="/pipeline">
+          <Link
+            href={withAdmissionSegmentParam(
+              "/pipeline",
+              workspace.activeSegmentId,
+            )}
+          >
             <RefreshCcw className="size-4" />
             Tải lại
           </Link>

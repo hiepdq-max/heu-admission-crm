@@ -32,6 +32,7 @@ import { StatusUpdateForm } from "@/components/leads/status-update-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -487,10 +488,17 @@ export default async function LeadDetailPage({ params }: PageProps) {
       active="leads"
       title="Chi tiết lead"
       description={`${lead.lead_code} - ${lead.student_name}`}
+      workspaceSegmentId={lead.admission_segment_id}
+      workspaceReturnTo={`/leads/${lead.id}`}
       actions={
         <>
           <Button asChild variant="outline">
-            <Link href="/leads">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/leads",
+                lead.admission_segment_id,
+              )}
+            >
               <ArrowLeft className="size-4" />
               Danh sách lead
             </Link>

@@ -6,6 +6,10 @@ import { LeadImportForm } from "@/components/import/lead-import-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type Option = {
   id: string;
@@ -68,7 +72,13 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
     redirect("/login");
   }
   const resolvedSearchParams = searchParams ? await searchParams : {};
-  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const requestedSegmentParam = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentParam,
+  );
+  const requestedSegmentId = workspace.activeSegmentId ?? requestedSegmentParam;
 
   const [
     { data: currentRoleCode },
@@ -156,9 +166,19 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
       active="import"
       title="Import dữ liệu"
       description="Nhập lead từ CSV, kiểm tra thiếu dữ liệu và bỏ qua số điện thoại trùng."
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/import",
+        workspace.activeSegmentId,
+      )}
       actions={
         <Button asChild variant="outline">
-          <Link href="/leads">
+          <Link
+            href={withAdmissionSegmentParam(
+              "/leads",
+              workspace.activeSegmentId,
+            )}
+          >
             <Users className="size-4" />
             Xem lead
           </Link>

@@ -14,6 +14,13 @@ import {
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type PipelineDefinition = {
   status: string;
@@ -33,6 +40,12 @@ type UrgentLeadRow = {
   next_followup_at: string;
   assigned_to: string | null;
   note: string | null;
+};
+
+type HomePageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 const pipelineDefinitions: PipelineDefinition[] = [
@@ -93,7 +106,7 @@ function formatDue(value: string) {
   }).format(due);
 }
 
-export default async function Home() {
+export default async function Home({ searchParams }: HomePageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -102,6 +115,15 @@ export default async function Home() {
   if (!user) {
     redirect("/login");
   }
+
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
 
   const todayStart = startOfToday().toISOString();
   const tomorrowStart = startOfTomorrow().toISOString();
@@ -124,44 +146,62 @@ export default async function Home() {
     segmentLeadRowsResult,
     ...pipelineResults
   ] = await Promise.all([
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false),
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false)
-      .gte("created_at", todayStart),
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false)
-      .not("next_followup_at", "is", null)
-      .neq("status", "ENROLLED")
-      .neq("status", "LOST"),
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false)
-      .not("next_followup_at", "is", null)
-      .lt("next_followup_at", now)
-      .neq("status", "ENROLLED")
-      .neq("status", "LOST"),
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false)
-      .eq("status", "ENROLLED"),
-    supabase
-      .from("leads")
-      .select("id", { count: "exact", head: true })
-      .eq("is_deleted", false)
-      .not("next_followup_at", "is", null)
-      .gte("next_followup_at", todayStart)
-      .lt("next_followup_at", tomorrowStart)
-      .neq("status", "ENROLLED")
-      .neq("status", "LOST"),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false),
+      segmentFilterIds,
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false)
+        .gte("created_at", todayStart),
+      segmentFilterIds,
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false)
+        .not("next_followup_at", "is", null)
+        .neq("status", "ENROLLED")
+        .neq("status", "LOST"),
+      segmentFilterIds,
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false)
+        .not("next_followup_at", "is", null)
+        .lt("next_followup_at", now)
+        .neq("status", "ENROLLED")
+        .neq("status", "LOST"),
+      segmentFilterIds,
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false)
+        .eq("status", "ENROLLED"),
+      segmentFilterIds,
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false)
+        .not("next_followup_at", "is", null)
+        .gte("next_followup_at", todayStart)
+        .lt("next_followup_at", tomorrowStart)
+        .neq("status", "ENROLLED")
+        .neq("status", "LOST"),
+      segmentFilterIds,
+    ),
     supabase
       .from("lead_activities")
       .select("id", { count: "exact", head: true })
@@ -171,15 +211,18 @@ export default async function Home() {
       .select("id", { count: "exact", head: true })
       .eq("status", "CHECKED")
       .gte("checked_at", todayStart),
-    supabase
-      .from("leads")
-      .select(
-        "id,lead_code,student_name,student_phone,parent_phone,status,priority,interested_major,next_followup_at,assigned_to,note",
-      )
-      .eq("is_deleted", false)
-      .not("next_followup_at", "is", null)
-      .neq("status", "ENROLLED")
-      .neq("status", "LOST")
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select(
+          "id,lead_code,student_name,student_phone,parent_phone,status,priority,interested_major,next_followup_at,assigned_to,note",
+        )
+        .eq("is_deleted", false)
+        .not("next_followup_at", "is", null)
+        .neq("status", "ENROLLED")
+        .neq("status", "LOST"),
+      segmentFilterIds,
+    )
       .order("next_followup_at", { ascending: true })
       .limit(5)
       .returns<UrgentLeadRow[]>(),
@@ -199,18 +242,24 @@ export default async function Home() {
       .eq("user_id", user.id)
       .eq("status", "ACTIVE")
       .returns<AdmissionSegmentScopeRow[]>(),
-    supabase
-      .from("leads")
-      .select("admission_segment_id,status")
-      .eq("is_deleted", false)
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select("admission_segment_id,status")
+        .eq("is_deleted", false),
+      segmentFilterIds,
+    )
       .limit(5000)
       .returns<AdmissionSegmentLeadStatRow[]>(),
     ...pipelineDefinitions.map((item) =>
-      supabase
-        .from("leads")
-        .select("id", { count: "exact", head: true })
-        .eq("is_deleted", false)
-        .eq("status", item.status),
+      applyAdmissionSegmentIds(
+        supabase
+          .from("leads")
+          .select("id", { count: "exact", head: true })
+          .eq("is_deleted", false)
+          .eq("status", item.status),
+        segmentFilterIds,
+      ),
     ),
   ]);
 
@@ -223,11 +272,16 @@ export default async function Home() {
     ...definition,
     count: pipelineResults[index]?.count ?? 0,
   }));
-  const visibleSegmentRows = filterAdmissionSegmentsByScope(
+  const visibleSegmentRowsBase = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
     segmentScopeRowsResult.data ?? [],
-    currentRoleResult.data === "ADMIN",
+    currentRoleResult.data === "ADMIN" || currentRoleResult.data === "BGH",
   );
+  const visibleSegmentRows = workspace.activeSegmentId
+    ? visibleSegmentRowsBase.filter(
+        (segment) => segment.id === workspace.activeSegmentId,
+      )
+    : visibleSegmentRowsBase;
   const segmentOverviewData = buildAdmissionSegmentOverview(
     visibleSegmentRows,
     segmentLeadRowsResult.data ?? [],
@@ -290,17 +344,36 @@ export default async function Home() {
     <AppShell
       active="dashboard"
       title="Dashboard tuyển sinh"
-      description="Theo dõi lead, follow-up, hồ sơ và chuyển đổi nhập học từ dữ liệu Supabase."
+      description={
+        workspace.activeSegment
+          ? `Đang xem dashboard riêng cho: ${workspace.activeSegment.label}.`
+          : "Theo dõi lead, follow-up, hồ sơ và chuyển đổi nhập học từ dữ liệu Supabase."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/",
+        workspace.activeSegmentId,
+      )}
       actions={
         <>
           <Button asChild variant="outline">
-            <Link href="/leads">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/leads",
+                workspace.activeSegmentId,
+              )}
+            >
               <Search className="size-4" />
               Tìm lead
             </Link>
           </Button>
           <Button asChild>
-            <Link href="/leads/new">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/leads/new",
+                workspace.activeSegmentId,
+              )}
+            >
               <Plus className="size-4" />
               Tạo lead
             </Link>

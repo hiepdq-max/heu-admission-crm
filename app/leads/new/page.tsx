@@ -3,6 +3,10 @@ import { redirect } from "next/navigation";
 import { LeadForm } from "@/components/leads/lead-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { createClient } from "@/lib/supabase/server";
+import {
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type Option = {
   id: string;
@@ -71,7 +75,13 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     redirect("/login");
   }
   const resolvedSearchParams = searchParams ? await searchParams : {};
-  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const requestedSegmentParam = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentParam,
+  );
+  const requestedSegmentId = workspace.activeSegmentId ?? requestedSegmentParam;
 
   const [
     { data: currentRoleCode },
@@ -211,6 +221,11 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
       active="leads"
       title="Tạo lead tuyển sinh"
       description="Nhập thông tin học sinh/phụ huynh, nguồn lead và lịch chăm sóc ban đầu."
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/leads/new",
+        workspace.activeSegmentId,
+      )}
     >
       <LeadForm
         sources={toOptions(sourceRows, "source_name")}

@@ -72,7 +72,7 @@ function canOpenSegment(
   roleCode: string | null,
   scopes: AdmissionSegmentScopeRow[],
 ) {
-  if (roleCode === "ADMIN" || scopes.length === 0) {
+  if (roleCode === "ADMIN" || roleCode === "BGH") {
     return true;
   }
 
@@ -207,6 +207,8 @@ export default async function SegmentDetailPage({ params }: PageProps) {
       active="segments"
       title={segment.segment_name}
       description={`Khu làm việc riêng cho ${segment.program_group}. Lead bên dưới chỉ thuộc đối tượng này.`}
+      workspaceSegmentId={id}
+      workspaceReturnTo={`/segments/${id}`}
       actions={
         <>
           <Button asChild variant="outline">

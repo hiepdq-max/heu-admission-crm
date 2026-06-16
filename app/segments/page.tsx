@@ -15,6 +15,10 @@ import {
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
+import {
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 export default async function SegmentsPage() {
   const supabase = await createClient();
@@ -25,6 +29,8 @@ export default async function SegmentsPage() {
   if (!user) {
     redirect("/login");
   }
+
+  const workspace = await getAdmissionWorkspaceContext(supabase, user.id);
 
   const [
     currentRoleResult,
@@ -66,7 +72,7 @@ export default async function SegmentsPage() {
   const visibleSegmentRows = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
     segmentScopeRowsResult.data ?? [],
-    currentRoleResult.data === "ADMIN",
+    currentRoleResult.data === "ADMIN" || currentRoleResult.data === "BGH",
   );
   const overview = buildAdmissionSegmentOverview(
     visibleSegmentRows,
@@ -82,6 +88,8 @@ export default async function SegmentsPage() {
       active="segments"
       title="Đối tượng tuyển sinh"
       description="Tách riêng từng nhóm tuyển sinh để phân quyền, hồ sơ, COM, hợp đồng và báo cáo không bị lẫn."
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo="/segments"
       actions={
         <>
           <Button asChild variant="outline">
@@ -97,7 +105,12 @@ export default async function SegmentsPage() {
             </Link>
           </Button>
           <Button asChild>
-            <Link href="/leads/new">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/leads/new",
+                workspace.activeSegmentId,
+              )}
+            >
               <Plus className="size-4" />
               Tạo lead
             </Link>

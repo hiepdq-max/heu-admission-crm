@@ -19,8 +19,13 @@ import {
 } from "lucide-react";
 
 import { logoutAction } from "@/app/login/actions";
+import { AdmissionWorkspaceSwitcher } from "@/components/layout/admission-workspace-switcher";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type AppShellProps = {
   active: string;
@@ -28,6 +33,8 @@ type AppShellProps = {
   description: string;
   children: React.ReactNode;
   actions?: React.ReactNode;
+  workspaceSegmentId?: string | null;
+  workspaceReturnTo?: string;
 };
 
 const navigation = [
@@ -87,18 +94,50 @@ const navigation = [
   },
 ];
 
+const segmentAwareNavigationKeys = new Set([
+  "dashboard",
+  "leads",
+  "pipeline",
+  "documents",
+  "followups",
+  "hou",
+  "reports",
+  "import",
+]);
+
+function workspaceHref(key: string, href: string, activeSegmentId: string | null) {
+  if (!activeSegmentId) {
+    return href;
+  }
+
+  if (key === "segments") {
+    return `/segments/${activeSegmentId}`;
+  }
+
+  if (segmentAwareNavigationKeys.has(key)) {
+    return withAdmissionSegmentParam(href, activeSegmentId);
+  }
+
+  return href;
+}
+
 export async function AppShell({
   active,
   title,
   description,
   actions,
   children,
+  workspaceSegmentId,
+  workspaceReturnTo = "/segments",
 }: AppShellProps) {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   const userEmail = user?.email ?? null;
+  const workspace = user
+    ? await getAdmissionWorkspaceContext(supabase, user.id, workspaceSegmentId)
+    : null;
   const { data: currentRoleCode } = user
     ? await supabase.rpc("current_user_role_code")
     : { data: null };
@@ -160,7 +199,13 @@ export async function AppShell({
                     isActive ? "" : "text-zinc-600"
                   }`}
                 >
-                  <Link href={item.href}>
+                  <Link
+                    href={workspaceHref(
+                      item.key,
+                      item.href,
+                      workspace?.activeSegmentId ?? null,
+                    )}
+                  >
                     <Icon className="size-4" />
                     {item.label}
                   </Link>
@@ -178,6 +223,14 @@ export async function AppShell({
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {actions}
+              {workspace ? (
+                <AdmissionWorkspaceSwitcher
+                  options={workspace.segmentOptions}
+                  activeSegmentId={workspace.activeSegmentId}
+                  canSeeAllSegments={workspace.canSeeAllSegments}
+                  returnTo={workspaceReturnTo}
+                />
+              ) : null}
               {userEmail ? (
                 <form action={logoutAction} className="flex items-center gap-2">
                   <span className="hidden max-w-48 truncate text-sm text-zinc-500 sm:inline">
