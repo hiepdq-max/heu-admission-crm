@@ -17,6 +17,7 @@ type Option = {
 type MajorOption = Option & {
   programId: string | null;
   programLabel: string | null;
+  programCode?: string | null;
 };
 
 type LeadFormProps = {
@@ -144,6 +145,21 @@ export function LeadForm({
     () => segments.find((segment) => segment.id === selectedSegmentId),
     [segments, selectedSegmentId],
   );
+  const [selectedProgramId, setSelectedProgramId] = useState(
+    programs.length === 1 ? programs[0].id : "",
+  );
+  const selectedProgram = useMemo(
+    () => programs.find((program) => program.id === selectedProgramId),
+    [programs, selectedProgramId],
+  );
+  const visibleMajors = useMemo(() => {
+    if (selectedProgramId) {
+      return majors.filter((major) => major.programId === selectedProgramId);
+    }
+
+    return majors;
+  }, [majors, selectedProgramId]);
+  const shouldLockProgram = programs.length === 1;
   const isHouSegment = selectedSegment?.code === "UNIVERSITY_TRANSFER_HOU";
   const cannotCreateByScope = hasSegmentScope && segments.length === 0;
 
@@ -228,27 +244,51 @@ export function LeadForm({
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
         <h2 className="text-base font-semibold">Nhu cầu và nguồn lead</h2>
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-2">
-            <label
-              htmlFor="interested_program"
-              className="text-sm font-medium text-zinc-700"
-            >
-              Hệ đào tạo quan tâm
-            </label>
-            <select
-              id="interested_program"
-              name="interested_program"
-              className={inputClass}
-              defaultValue=""
-            >
-              <option value="">Chưa chọn</option>
-              {programs.map((program) => (
-                <option key={program.id} value={program.label}>
-                  {program.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          {shouldLockProgram && selectedProgram ? (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-zinc-700">
+                Hệ đào tạo quan tâm
+              </p>
+              <input
+                type="hidden"
+                name="interested_program"
+                value={selectedProgram.label}
+              />
+              <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700">
+                {selectedProgram.label}
+              </div>
+              <p className="text-xs text-zinc-500">
+                P0-15 tự khóa theo đối tượng tuyển sinh đang chọn.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <label
+                htmlFor="interested_program"
+                className="text-sm font-medium text-zinc-700"
+              >
+                Hệ đào tạo quan tâm
+              </label>
+              <select
+                id="interested_program"
+                className={inputClass}
+                value={selectedProgramId}
+                onChange={(event) => setSelectedProgramId(event.target.value)}
+              >
+                <option value="">Chưa chọn</option>
+                {programs.map((program) => (
+                  <option key={program.id} value={program.id}>
+                    {program.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="hidden"
+                name="interested_program"
+                value={selectedProgram?.label ?? ""}
+              />
+            </div>
+          )}
           <div className="space-y-2">
             <label
               htmlFor="interested_major"
@@ -262,34 +302,20 @@ export function LeadForm({
               className={inputClass}
               defaultValue=""
             >
-              <option value="">Chưa chọn</option>
-              {programs.map((program) => {
-                const programMajors = majors.filter(
-                  (major) => major.programId === program.id,
-                );
-
-                if (programMajors.length === 0) {
-                  return null;
-                }
-
-                return (
-                  <optgroup key={program.id} label={program.label}>
-                    {programMajors.map((major) => (
-                      <option key={major.id} value={major.label}>
-                        {major.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                );
-              })}
-              {majors
-                .filter((major) => !major.programId)
-                .map((major) => (
-                  <option key={major.id} value={major.label}>
-                    {major.label}
-                  </option>
-                ))}
+              <option value="">
+                {visibleMajors.length === 0
+                  ? "Chưa có ngành phù hợp"
+                  : "Chưa chọn"}
+              </option>
+              {visibleMajors.map((major) => (
+                <option key={major.id} value={major.label}>
+                  {major.label}
+                </option>
+              ))}
             </select>
+            <p className="text-xs text-zinc-500">
+              Danh sách ngành đã được lọc theo hệ/đối tượng tuyển sinh.
+            </p>
           </div>
           {lockSegmentSelection && selectedSegment ? (
             <div className="space-y-2">

@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import {
+  getAllowedProgramMajorOptions,
+  normalizedOptionLabel,
+} from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 
 export type ImportLeadResult = {
@@ -53,16 +57,6 @@ type SegmentScopeRow = {
 
 type PartnerScopeRow = {
   partner_id: string;
-};
-
-type ProgramRow = LookupRow & {
-  program_code: string;
-  program_name: string;
-};
-
-type MajorRow = LookupRow & {
-  major_code: string;
-  major_name: string;
 };
 
 type CsvRow = Record<string, string>;
@@ -301,8 +295,7 @@ export async function importLeadsAction(
     { data: segments },
     { data: campaigns },
     { data: partners },
-    { data: programs },
-    { data: majors },
+    allowedCatalog,
     { data: existingLeads },
     { data: segmentScopeRows },
     { data: partnerScopeRows },
@@ -331,14 +324,7 @@ export async function importLeadsAction(
       .select("id,partner_code,partner_name")
       .eq("is_deleted", false)
       .returns<PartnerRow[]>(),
-    supabase
-      .from("admission_programs")
-      .select("id,program_code,program_name")
-      .returns<ProgramRow[]>(),
-    supabase
-      .from("admission_majors")
-      .select("id,major_code,major_name")
-      .returns<MajorRow[]>(),
+    getAllowedProgramMajorOptions(supabase, defaultAdmissionSegmentId),
     supabase
       .from("leads")
       .select("lead_code,student_name,student_phone_norm,parent_phone_norm")
@@ -439,15 +425,21 @@ export async function importLeadsAction(
   const programNameMap = new Map<string, string>();
   const majorNameMap = new Map<string, string>();
 
-  for (const program of programs ?? []) {
-    programNameMap.set(normalizeKey(program.program_code), program.program_name);
-    programNameMap.set(normalizeKey(program.program_name), program.program_name);
+  for (const program of allowedCatalog.programs) {
+    programNameMap.set(normalizeKey(program.code), program.label);
+    programNameMap.set(normalizeKey(program.label), program.label);
+    programNameMap.set(normalizedOptionLabel(program.label), program.label);
   }
 
-  for (const major of majors ?? []) {
-    majorNameMap.set(normalizeKey(major.major_code), major.major_name);
-    majorNameMap.set(normalizeKey(major.major_name), major.major_name);
+  for (const major of allowedCatalog.majors) {
+    majorNameMap.set(normalizeKey(major.code), major.label);
+    majorNameMap.set(normalizeKey(major.label), major.label);
+    majorNameMap.set(normalizedOptionLabel(major.label), major.label);
   }
+  const defaultProgramLabel =
+    allowedCatalog.programs.length === 1
+      ? allowedCatalog.programs[0]?.label ?? null
+      : null;
   const existingPhones = new Set<string>();
 
   for (const lead of existingLeads ?? []) {
@@ -584,6 +576,40 @@ export async function importLeadsAction(
       return;
     }
 
+    const rawProgram = cell(row, [
+      "program_code",
+      "program_name",
+      "interested_program",
+      "he_quan_tam",
+    ]);
+    const interestedProgram = rawProgram
+      ? programNameMap.get(normalizeKey(rawProgram)) ?? null
+      : defaultProgramLabel;
+
+    if (rawProgram && !interestedProgram) {
+      errors.push(
+        `Dòng ${rowNumber}: hệ đào tạo không thuộc đối tượng tuyển sinh đang import.`,
+      );
+      return;
+    }
+
+    const rawMajor = cell(row, [
+      "major_code",
+      "major_name",
+      "interested_major",
+      "nganh_quan_tam",
+    ]);
+    const interestedMajor = rawMajor
+      ? majorNameMap.get(normalizeKey(rawMajor)) ?? null
+      : null;
+
+    if (rawMajor && !interestedMajor) {
+      errors.push(
+        `Dòng ${rowNumber}: ngành không thuộc hệ/đối tượng tuyển sinh đang import.`,
+      );
+      return;
+    }
+
     payloads.push({
       student_name: studentName,
       student_phone: studentPhone,
@@ -595,26 +621,8 @@ export async function importLeadsAction(
       current_school: cell(row, ["current_school", "truong_hien_tai"]),
       current_grade: cell(row, ["current_grade", "lop_hien_tai"]),
       graduation_year: parseYear(cell(row, ["graduation_year", "nam_tot_nghiep"])),
-      interested_program: (() => {
-        const rawProgram = cell(row, [
-          "program_code",
-          "program_name",
-          "interested_program",
-          "he_quan_tam",
-        ]);
-        return rawProgram
-          ? programNameMap.get(normalizeKey(rawProgram)) ?? rawProgram
-          : null;
-      })(),
-      interested_major: (() => {
-        const rawMajor = cell(row, [
-          "major_code",
-          "major_name",
-          "interested_major",
-          "nganh_quan_tam",
-        ]);
-        return rawMajor ? majorNameMap.get(normalizeKey(rawMajor)) ?? rawMajor : null;
-      })(),
+      interested_program: interestedProgram,
+      interested_major: interestedMajor,
       province: cell(row, ["province", "tinh_thanh"]),
       district: cell(row, ["legacy_district", "district", "quan_huyen_cu", "quan_huyen"]),
       ward: cell(row, ["ward", "xa_phuong_dac_khu", "xa_phuong"]),

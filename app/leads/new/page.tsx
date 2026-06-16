@@ -5,6 +5,7 @@ import { Route } from "lucide-react";
 import { LeadForm } from "@/components/leads/lead-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 import {
   getAdmissionWorkspaceContext,
@@ -14,11 +15,6 @@ import {
 type Option = {
   id: string;
   label: string;
-};
-
-type MajorOption = Option & {
-  programId: string | null;
-  programLabel: string | null;
 };
 
 type PartnerScopeRow = {
@@ -123,8 +119,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     { data: flowRows },
     { data: campaignRows },
     { data: partnerRows },
-    { data: programRows },
-    { data: majorRows },
+    programMajorOptions,
     { data: houProgramRows },
     { data: houMajorRows },
     { data: houLocationRows },
@@ -154,16 +149,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         .eq("is_deleted", false)
         .eq("status", "ACTIVE")
         .order("partner_name", { ascending: true }),
-      supabase
-        .from("admission_programs")
-        .select("id,program_name")
-        .eq("status", "ACTIVE")
-        .order("sort_order", { ascending: true }),
-      supabase
-        .from("admission_majors")
-        .select("id,major_name,program_id")
-        .eq("status", "ACTIVE")
-        .order("sort_order", { ascending: true }),
+      getAllowedProgramMajorOptions(supabase, workspace.activeSegmentId),
       supabase
         .from("hou_programs")
         .select("id,program_name")
@@ -214,16 +200,8 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     : [];
   const defaultSegmentId = workspace.activeSegmentId;
   const hasPartnerScope = allowedPartnerIds.size > 0;
-  const programs = toOptions(programRows, "program_name");
-  const programMap = new Map(programs.map((program) => [program.id, program.label]));
-  const majors: MajorOption[] = (majorRows ?? []).map((row) => ({
-    id: String(row.id),
-    label: String(row.major_name ?? ""),
-    programId: row.program_id ? String(row.program_id) : null,
-    programLabel: row.program_id
-      ? programMap.get(String(row.program_id)) ?? null
-      : null,
-  }));
+  const programs = programMajorOptions.programs;
+  const majors = programMajorOptions.majors;
 
   return (
     <AppShell

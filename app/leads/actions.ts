@@ -2,6 +2,10 @@
 
 import { redirect } from "next/navigation";
 
+import {
+  getAllowedProgramMajorOptions,
+  normalizedOptionLabel,
+} from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 
 export type LeadFormState = {
@@ -37,6 +41,8 @@ export async function createLeadAction(
   const parentPhoneNorm = normalizePhone(parentPhone);
   const admissionSegmentId = textValue(formData, "admission_segment_id");
   const partnerId = textValue(formData, "partner_id");
+  const interestedProgram = textValue(formData, "interested_program");
+  const interestedMajor = textValue(formData, "interested_major");
 
   if (!studentName) {
     return { error: "Vui lòng nhập họ tên học sinh." };
@@ -101,6 +107,41 @@ export async function createLeadAction(
     return {
       error:
         "Bạn không được phân quyền tạo lead trong đối tượng tuyển sinh này. Hãy chọn đúng workspace hoặc nhờ quản lý cập nhật phạm vi.",
+    };
+  }
+
+  const allowedCatalog = await getAllowedProgramMajorOptions(
+    supabase,
+    admissionSegmentId,
+  );
+  const allowedProgramLabels = new Set(
+    allowedCatalog.programs.map((program) =>
+      normalizedOptionLabel(program.label),
+    ),
+  );
+  const allowedMajorLabels = new Set(
+    allowedCatalog.majors.map((major) => normalizedOptionLabel(major.label)),
+  );
+
+  if (
+    interestedProgram &&
+    allowedProgramLabels.size > 0 &&
+    !allowedProgramLabels.has(normalizedOptionLabel(interestedProgram))
+  ) {
+    return {
+      error:
+        "Hệ đào tạo đã chọn không thuộc đối tượng tuyển sinh hiện tại. Ví dụ 9+ chỉ được chọn hệ Trung cấp.",
+    };
+  }
+
+  if (
+    interestedMajor &&
+    allowedMajorLabels.size > 0 &&
+    !allowedMajorLabels.has(normalizedOptionLabel(interestedMajor))
+  ) {
+    return {
+      error:
+        "Ngành đã chọn không thuộc hệ/đối tượng tuyển sinh hiện tại. Hãy chọn lại đúng danh sách ngành được hệ thống lọc.",
     };
   }
 
@@ -231,14 +272,9 @@ export async function createLeadAction(
     graduation_year: textValue(formData, "graduation_year")
       ? Number(textValue(formData, "graduation_year"))
       : null,
-    interested_program:
-      textValue(formData, "interested_program") ??
-      (houProgram
-        ? "Liên thông đại học"
-        : null),
+    interested_program: interestedProgram ?? (houProgram ? "Liên thông đại học" : null),
     interested_major:
-      textValue(formData, "interested_major") ??
-      (houMajor ? String(houMajor.major_name ?? "") : null),
+      interestedMajor ?? (houMajor ? String(houMajor.major_name ?? "") : null),
     province: textValue(formData, "province"),
     district: textValue(formData, "district"),
     ward: textValue(formData, "ward"),
