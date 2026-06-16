@@ -27,6 +27,15 @@ export type AdmissionCatalogControlInfo = {
   error: string | null;
 };
 
+export type AdmissionOfferingCatalogInfo = {
+  offeringCount: number;
+  needsControlCount: number;
+  enrollmentReadyCount: number;
+  financeReadyCount: number;
+  controlStatuses: string[];
+  error: string | null;
+};
+
 type SegmentRow = {
   id: string;
   segment_code: string;
@@ -59,6 +68,12 @@ type SegmentCatalogControlRow = {
   allowed_program_codes: string[] | null;
   allowed_major_policy: string | null;
   control_status: string | null;
+};
+
+type OfferingCatalogRow = {
+  control_status: string | null;
+  is_enrollment_ready: boolean | null;
+  is_finance_ready: boolean | null;
 };
 
 function fallbackProgramCodes(segment: SegmentRow | null) {
@@ -150,6 +165,8 @@ export async function getAllowedProgramMajorOptions(
   let ruleRows: SegmentProgramRuleRow[] = [];
   let catalogControl: SegmentCatalogControlRow | null = null;
   let catalogControlError: string | null = null;
+  let offeringRows: OfferingCatalogRow[] = [];
+  let offeringCatalogError: string | null = null;
 
   if (segmentId) {
     const { data: control, error: controlError } = await supabase
@@ -165,6 +182,21 @@ export async function getAllowedProgramMajorOptions(
       catalogControlError = controlError.message;
     } else {
       catalogControl = control;
+    }
+
+    if (segment?.segment_code) {
+      const { data: offerings, error: offeringsError } = await supabase
+        .from("admission_offering_catalog")
+        .select("control_status,is_enrollment_ready,is_finance_ready")
+        .contains("allowed_segment_codes", [segment.segment_code])
+        .eq("status", "ACTIVE")
+        .returns<OfferingCatalogRow[]>();
+
+      if (offeringsError) {
+        offeringCatalogError = offeringsError.message;
+      } else {
+        offeringRows = offerings ?? [];
+      }
     }
 
     const { data: rules, error: rulesError } = await supabase
@@ -296,6 +328,30 @@ export async function getAllowedProgramMajorOptions(
           programCount: allowedPrograms.length,
           majorCount: allowedMajors.length,
           error: catalogControlError,
+        }
+      : null,
+    offeringCatalog: segmentId
+      ? {
+          offeringCount: offeringRows.length,
+          needsControlCount: offeringRows.filter((offering) =>
+            ["CAN_SUA", "CHUA_DU_DIEU_KIEN"].includes(
+              offering.control_status ?? "",
+            ),
+          ).length,
+          enrollmentReadyCount: offeringRows.filter(
+            (offering) => offering.is_enrollment_ready === true,
+          ).length,
+          financeReadyCount: offeringRows.filter(
+            (offering) => offering.is_finance_ready === true,
+          ).length,
+          controlStatuses: [
+            ...new Set(
+              offeringRows
+                .map((offering) => offering.control_status)
+                .filter((value): value is string => Boolean(value)),
+            ),
+          ],
+          error: offeringCatalogError,
         }
       : null,
   };

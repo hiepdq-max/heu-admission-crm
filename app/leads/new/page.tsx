@@ -209,6 +209,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const programs = programMajorOptions.programs;
   const majors = programMajorOptions.majors;
   const catalogControl = programMajorOptions.catalogControl;
+  const offeringCatalog = programMajorOptions.offeringCatalog;
   const dynamicFields = buildLeadDynamicFields(fieldConfigResult.data);
 
   return (
@@ -241,6 +242,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         dynamicFields={dynamicFields}
         dynamicConfigError={fieldConfigResult.error?.message}
         catalogControl={catalogControl}
+        offeringCatalog={offeringCatalog}
         cancelHref={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}
       />
     </AppShell>

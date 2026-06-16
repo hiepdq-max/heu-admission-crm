@@ -35,6 +35,15 @@ type CatalogControlInfo = {
   error: string | null;
 };
 
+type OfferingCatalogInfo = {
+  offeringCount: number;
+  needsControlCount: number;
+  enrollmentReadyCount: number;
+  financeReadyCount: number;
+  controlStatuses: string[];
+  error: string | null;
+};
+
 type LeadFormProps = {
   sources: Option[];
   flows: Option[];
@@ -54,6 +63,7 @@ type LeadFormProps = {
   dynamicFields: LeadDynamicField[];
   dynamicConfigError?: string;
   catalogControl?: CatalogControlInfo | null;
+  offeringCatalog?: OfferingCatalogInfo | null;
   cancelHref?: string;
 };
 
@@ -185,6 +195,7 @@ export function LeadForm({
   dynamicFields,
   dynamicConfigError,
   catalogControl,
+  offeringCatalog,
   cancelHref = "/leads",
 }: LeadFormProps) {
   const [state, formAction, isPending] = useActionState(
@@ -228,6 +239,9 @@ export function LeadForm({
         : catalogControl?.catalogGroupCode === "LIEN_THONG_DAI_HOC"
           ? "Liên thông đại học"
           : catalogControl?.catalogGroupCode || "Chưa khóa catalog";
+  const offeringControlStatuses = offeringCatalog?.controlStatuses.length
+    ? offeringCatalog.controlStatuses.join(", ")
+    : "Chưa có";
 
   const fieldConfig = (name: string) => fieldMap.get(name);
   const showField = (name: string) => !usesDynamicConfig || fieldMap.has(name);
@@ -548,6 +562,30 @@ export function LeadForm({
               <p className="mt-2 text-xs font-medium text-amber-700">
                 Catalog này chưa có ngành/khoá active để chọn. Cần bổ sung danh mục
                 ngành/khoá trước khi vận hành thật cho đối tượng này.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+        {offeringCatalog ? (
+          <div className="mt-3 rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm leading-6 text-zinc-600">
+            <p className="font-medium text-zinc-900">
+              P0-21 · Danh mục ngành/khoá chi tiết
+            </p>
+            <p className="mt-1">
+              Workspace này có <strong>{offeringCatalog.offeringCount}</strong>{" "}
+              ngành/khoá chi tiết. Sẵn sàng nhập học:{" "}
+              <strong>{offeringCatalog.enrollmentReadyCount}</strong>; sẵn sàng tài
+              chính: <strong>{offeringCatalog.financeReadyCount}</strong>.
+            </p>
+            <p className="mt-1 text-xs text-zinc-500">
+              Trạng thái kiểm soát: {offeringControlStatuses}. Mục cần rà soát:{" "}
+              {offeringCatalog.needsControlCount}.
+            </p>
+            {offeringCatalog.error ? (
+              <p className="mt-2 text-xs font-medium text-amber-700">
+                Chưa đọc được bảng P0-21. Nếu chưa chạy SQL step61 thì đây là bình
+                thường; sau khi chạy SQL, tải lại trang để xem danh mục chi tiết.
+                Chi tiết: {offeringCatalog.error}
               </p>
             ) : null}
           </div>
