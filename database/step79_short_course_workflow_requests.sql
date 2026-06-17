@@ -482,7 +482,7 @@ insert into public.process_ownership_matrix (
   'NHAN_VIEN_DUOC_PHAN_QUYEN',
   'TRUONG_PHONG/LEAD/AUDIT',
   'BGH/NGUOI_DUOC_UY_QUYEN',
-  'ROLE_AND_ADMISSION_WORKSPACE',
+  'ROLE_AND_SCOPE',
   'P1_14_ACTION_CENTER_OR_OWNER_MODULE',
   'OWNER_MODULE_FOR_EXECUTION',
   'Phiếu xử lý, link minh chứng nếu nghiệp vụ yêu cầu, và màn hình nguồn từ Action Center.',
