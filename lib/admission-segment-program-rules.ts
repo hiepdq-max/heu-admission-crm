@@ -17,6 +17,17 @@ export type AdmissionMajorOption = {
   programCode: string | null;
 };
 
+export type AdmissionOfferingOption = {
+  id: string;
+  label: string;
+  code: string;
+  programId: string | null;
+  majorId: string | null;
+  isEnrollmentReady: boolean | null;
+  isFinanceReady: boolean | null;
+  controlStatus: string | null;
+};
+
 export type AdmissionCatalogControlInfo = {
   catalogGroupCode: string | null;
   allowedProgramCodes: string[];
@@ -71,6 +82,11 @@ type SegmentCatalogControlRow = {
 };
 
 type OfferingCatalogRow = {
+  id: string;
+  offering_code: string;
+  offering_name: string;
+  program_id: string | null;
+  admission_major_id: string | null;
   control_status: string | null;
   is_enrollment_ready: boolean | null;
   is_finance_ready: boolean | null;
@@ -187,7 +203,9 @@ export async function getAllowedProgramMajorOptions(
     if (segment?.segment_code) {
       const { data: offerings, error: offeringsError } = await supabase
         .from("admission_offering_catalog")
-        .select("control_status,is_enrollment_ready,is_finance_ready")
+        .select(
+          "id,offering_code,offering_name,program_id,admission_major_id,control_status,is_enrollment_ready,is_finance_ready",
+        )
         .contains("allowed_segment_codes", [segment.segment_code])
         .eq("status", "ACTIVE")
         .returns<OfferingCatalogRow[]>();
@@ -315,10 +333,34 @@ export async function getAllowedProgramMajorOptions(
     .filter((major) => allowedMajorIds.has(major.id))
     .sort(bySortAndLabel((major) => major.major_name))
     .map((major) => toMajorOption(major, programById));
+  const allowedOfferings = offeringRows
+    .filter((offering) => {
+      const programAllowed =
+        !offering.program_id || allowedProgramIds.has(offering.program_id);
+      const majorAllowed =
+        !offering.admission_major_id ||
+        allowedMajorIds.has(offering.admission_major_id);
+
+      return programAllowed && majorAllowed;
+    })
+    .sort((a, b) => a.offering_name.localeCompare(b.offering_name, "vi"))
+    .map(
+      (offering): AdmissionOfferingOption => ({
+        id: offering.id,
+        label: offering.offering_name,
+        code: offering.offering_code,
+        programId: offering.program_id,
+        majorId: offering.admission_major_id,
+        isEnrollmentReady: offering.is_enrollment_ready,
+        isFinanceReady: offering.is_finance_ready,
+        controlStatus: offering.control_status,
+      }),
+    );
 
   return {
     programs: allowedPrograms,
     majors: allowedMajors,
+    offerings: allowedOfferings,
     catalogControl: segmentId
       ? {
           catalogGroupCode: catalogControl?.catalog_group_code ?? null,

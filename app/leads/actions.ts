@@ -254,8 +254,12 @@ export async function createLeadAction(
     allowedCatalog.programs.map((program) => [program.id, program]),
   );
   const majorById = new Map(allowedCatalog.majors.map((major) => [major.id, major]));
+  const offeringById = new Map(
+    allowedCatalog.offerings.map((offering) => [offering.id, offering]),
+  );
   const interestedProgramId = textValue(formData, "interested_program_id");
   const interestedMajorId = textValue(formData, "interested_major_id");
+  const admissionOfferingId = textValue(formData, "admission_offering_id");
   const submittedProgramLabel = textValue(formData, "interested_program");
   const submittedMajorLabel = textValue(formData, "interested_major");
   let interestedProgram = submittedProgramLabel;
@@ -341,6 +345,44 @@ export async function createLeadAction(
       fieldErrors,
       "interested_major_id",
       "Ngành đã chọn không thuộc hệ/đối tượng tuyển sinh hiện tại.",
+    );
+  }
+
+  if (admissionOfferingId) {
+    const selectedOffering = offeringById.get(admissionOfferingId);
+
+    if (!selectedOffering) {
+      addFieldError(
+        fieldErrors,
+        "admission_offering_id",
+        "Ngành/khoá chi tiết đã chọn không thuộc đối tượng tuyển sinh hiện tại.",
+      );
+    } else if (
+      interestedProgramId &&
+      selectedOffering.programId &&
+      selectedOffering.programId !== interestedProgramId
+    ) {
+      addFieldError(
+        fieldErrors,
+        "admission_offering_id",
+        "Ngành/khoá chi tiết không thuộc hệ đào tạo đã chọn.",
+      );
+    } else if (
+      interestedMajorId &&
+      selectedOffering.majorId &&
+      selectedOffering.majorId !== interestedMajorId
+    ) {
+      addFieldError(
+        fieldErrors,
+        "admission_offering_id",
+        "Ngành/khoá chi tiết không thuộc ngành đã chọn.",
+      );
+    }
+  } else if (allowedCatalog.offerings.length > 0) {
+    addFieldError(
+      fieldErrors,
+      "admission_offering_id",
+      "Cần chọn ngành/khoá chi tiết để P1-02 chuyển lead sang học viên đúng dữ liệu.",
     );
   }
 
@@ -539,6 +581,9 @@ export async function createLeadAction(
     source_id: textValue(formData, "source_id"),
     flow_id: textValue(formData, "flow_id"),
     admission_segment_id: admissionSegmentId,
+    admission_program_id: interestedProgramId,
+    admission_major_id: interestedMajorId,
+    admission_offering_id: admissionOfferingId,
     campaign_id: textValue(formData, "campaign_id"),
     partner_id: partnerId,
     hou_program_id: houProgramId,

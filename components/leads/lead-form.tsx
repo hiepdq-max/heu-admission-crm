@@ -25,6 +25,15 @@ type MajorOption = Option & {
   programCode: string | null;
 };
 
+type OfferingOption = Option & {
+  code?: string;
+  programId: string | null;
+  majorId: string | null;
+  isEnrollmentReady: boolean | null;
+  isFinanceReady: boolean | null;
+  controlStatus: string | null;
+};
+
 type CatalogControlInfo = {
   catalogGroupCode: string | null;
   allowedProgramCodes: string[];
@@ -52,6 +61,7 @@ type LeadFormProps = {
   segments: SegmentOption[];
   programs: Option[];
   majors: MajorOption[];
+  offerings: OfferingOption[];
   houPrograms: Option[];
   houMajors: Option[];
   houLocations: Option[];
@@ -184,6 +194,7 @@ export function LeadForm({
   segments,
   programs,
   majors,
+  offerings,
   houPrograms,
   houMajors,
   houLocations,
@@ -215,6 +226,9 @@ export function LeadForm({
   const [selectedMajorId, setSelectedMajorId] = useState(
     fieldValue(state, "interested_major_id"),
   );
+  const [selectedOfferingId, setSelectedOfferingId] = useState(
+    fieldValue(state, "admission_offering_id"),
+  );
   const visibleMajors = useMemo(() => {
     if (!selectedProgramId) {
       return majors;
@@ -224,6 +238,19 @@ export function LeadForm({
       (major) => !major.programId || major.programId === selectedProgramId,
     );
   }, [majors, selectedProgramId]);
+  const visibleOfferings = useMemo(() => {
+    return offerings.filter((offering) => {
+      if (selectedMajorId && offering.majorId) {
+        return offering.majorId === selectedMajorId;
+      }
+
+      if (selectedProgramId && offering.programId) {
+        return offering.programId === selectedProgramId;
+      }
+
+      return true;
+    });
+  }, [offerings, selectedMajorId, selectedProgramId]);
   const selectedProgram = programs.find((program) => program.id === selectedProgramId);
   const selectedMajor = majors.find((major) => major.id === selectedMajorId);
   const customFields = dynamicFields.filter((field) => field.is_custom);
@@ -637,6 +664,7 @@ export function LeadForm({
               onChange={(event) => {
                 setSelectedProgramId(event.target.value);
                 setSelectedMajorId("");
+                setSelectedOfferingId("");
               }}
             >
               <option value="">Chọn hệ đào tạo</option>
@@ -670,7 +698,10 @@ export function LeadForm({
               name="interested_major_id"
               className={classForField(state, "interested_major_id")}
               value={selectedMajorId}
-              onChange={(event) => setSelectedMajorId(event.target.value)}
+              onChange={(event) => {
+                setSelectedMajorId(event.target.value);
+                setSelectedOfferingId("");
+              }}
             >
               <option value="">
                 {selectedProgramId ? "Chọn ngành" : "Chọn hệ đào tạo trước"}
@@ -688,6 +719,41 @@ export function LeadForm({
             />
             <FieldHelp value={helpFor("interested_major_id")} />
             <FieldError state={state} name="interested_major_id" />
+          </div>
+        ) : null}
+
+        {offerings.length > 0 ? (
+          <div className="space-y-2">
+            <label
+              htmlFor="admission_offering_id"
+              className="text-sm font-medium text-zinc-700"
+            >
+              Ngành/khoá chi tiết
+              <RequiredMark required />
+            </label>
+            <select
+              id="admission_offering_id"
+              name="admission_offering_id"
+              className={classForField(state, "admission_offering_id")}
+              value={selectedOfferingId}
+              onChange={(event) => setSelectedOfferingId(event.target.value)}
+            >
+              <option value="">
+                {selectedMajorId
+                  ? "Chọn ngành/khoá chi tiết"
+                  : "Chọn hệ/ngành trước"}
+              </option>
+              {visibleOfferings.map((offering) => (
+                <option key={offering.id} value={offering.id}>
+                  {offering.label}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs leading-5 text-zinc-500">
+              P1-02 dùng lựa chọn này để chuyển lead sang hồ sơ học viên đúng
+              ngành/khoá, không đoán theo chữ tự nhập.
+            </p>
+            <FieldError state={state} name="admission_offering_id" />
           </div>
         ) : null}
 

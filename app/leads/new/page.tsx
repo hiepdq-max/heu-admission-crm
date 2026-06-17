@@ -208,6 +208,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const hasPartnerScope = allowedPartnerIds.size > 0;
   const programs = programMajorOptions.programs;
   const majors = programMajorOptions.majors;
+  const offerings = programMajorOptions.offerings;
   const catalogControl = programMajorOptions.catalogControl;
   const offeringCatalog = programMajorOptions.offeringCatalog;
   const dynamicFields = buildLeadDynamicFields(fieldConfigResult.data);
@@ -228,6 +229,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         segments={segmentSelectOptions}
         programs={programs}
         majors={majors}
+        offerings={offerings}
         houPrograms={toOptions(houProgramRows, "program_name")}
         houMajors={(houMajorRows ?? []).map((row) => ({
           id: String(row.id),
