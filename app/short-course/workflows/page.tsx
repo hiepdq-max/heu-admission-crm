@@ -95,6 +95,12 @@ type Summary = {
   overdue: number;
 };
 
+type StatusAction = {
+  value: string;
+  label: string;
+  note: string;
+};
+
 const inputClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
@@ -176,6 +182,8 @@ const requestTypes = [
 const errorMessages: Record<string, string> = {
   missing_workflow_request: "Thiếu thông tin phiếu xử lý.",
   invalid_workflow_request_status: "Trạng thái phiếu xử lý không hợp lệ.",
+  invalid_workflow_transition:
+    "Luồng trạng thái không hợp lệ. Hệ thống chỉ cho đi đúng bước: tạo, kiểm, duyệt hoặc trả về bổ sung.",
   not_allowed_workflow_request:
     "Tài khoản chưa có quyền tạo, kiểm hoặc duyệt phiếu xử lý.",
   workspace_not_allowed:
@@ -279,6 +287,318 @@ function RequestStatusSelect({
       {canApprove ? <option value="APPROVED">Duyệt</option> : null}
       {canApprove ? <option value="REJECTED">Từ chối</option> : null}
     </select>
+  );
+}
+
+function requestStatusActions({
+  row,
+  canCreate,
+  canCheck,
+  canApprove,
+}: {
+  row: WorkflowRequestRow;
+  canCreate: boolean;
+  canCheck: boolean;
+  canApprove: boolean;
+}): StatusAction[] {
+  if (row.request_status === "DRAFT" || row.request_status === "NEEDS_FIX") {
+    return canCreate
+      ? [
+          {
+            value: "PENDING_CHECK",
+            label: "Gửi kiểm",
+            note: "Dùng khi người tạo đã bổ sung xong thông tin.",
+          },
+          {
+            value: "CANCELLED",
+            label: "Hủy phiếu",
+            note: "Dùng khi việc không còn cần xử lý.",
+          },
+        ]
+      : [];
+  }
+
+  if (row.request_status === "PENDING_CHECK") {
+    return canCheck
+      ? [
+          {
+            value: "CHECKED",
+            label: "Đã kiểm, chuyển duyệt",
+            note: "Dùng khi thông tin đủ để trình duyệt.",
+          },
+          {
+            value: "NEEDS_FIX",
+            label: "Trả về bổ sung",
+            note: "Dùng khi thiếu minh chứng hoặc thiếu ghi chú.",
+          },
+          {
+            value: "CANCELLED",
+            label: "Hủy phiếu",
+            note: "Dùng khi phiếu tạo sai hoặc không còn cần xử lý.",
+          },
+        ]
+      : [];
+  }
+
+  if (row.request_status === "CHECKED") {
+    return canApprove
+      ? [
+          {
+            value: "APPROVED",
+            label: "Duyệt",
+            note: "Dùng khi đồng ý cho xử lý nghiệp vụ tiếp theo.",
+          },
+          {
+            value: "REJECTED",
+            label: "Từ chối",
+            note: "Dùng khi không chấp thuận yêu cầu.",
+          },
+        ]
+      : [];
+  }
+
+  return [];
+}
+
+function sourceHrefForRequest(
+  row: WorkflowRequestRow,
+  activeSegmentId: string | null,
+) {
+  if (!row.entity_id) {
+    return null;
+  }
+
+  const typeMap: Record<string, string> = {
+    SHORT_STUDENT: "students",
+    SHORT_CLASS: "classes",
+    SHORT_ENROLLMENT: "enrollments",
+    SHORT_ATTENDANCE: "attendance",
+    SHORT_BHXH: "bhxh",
+    SHORT_FINANCE: "invoices",
+    SHORT_PAYMENT: "payments",
+    SHORT_RISK: "risks",
+  };
+  const drilldownType = typeMap[row.entity_type];
+
+  if (!drilldownType) {
+    return null;
+  }
+
+  return withAdmissionSegmentParam(
+    `/short-course/drilldown?type=${drilldownType}&entityId=${row.entity_id}`,
+    activeSegmentId,
+  );
+}
+
+function WorkflowRequestCards({
+  rows,
+  canCreate,
+  canCheck,
+  canApprove,
+  activeSegmentId,
+}: {
+  rows: WorkflowRequestRow[];
+  canCreate: boolean;
+  canCheck: boolean;
+  canApprove: boolean;
+  activeSegmentId: string | null;
+}) {
+  if (rows.length === 0) {
+    return (
+      <div className="p-8 text-center text-sm leading-6 text-zinc-500">
+        Chưa có phiếu xử lý ngắn hạn trong phạm vi đang chọn.
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-4 p-5">
+      {rows.map((row) => {
+        const actions = requestStatusActions({
+          row,
+          canCreate,
+          canCheck,
+          canApprove,
+        });
+        const sourceHref = sourceHrefForRequest(row, activeSegmentId);
+        const noteFieldName =
+          row.request_status === "CHECKED"
+            ? "approver_note"
+            : row.request_status === "DRAFT" ||
+                row.request_status === "NEEDS_FIX"
+              ? "maker_note"
+              : "checker_note";
+
+        return (
+          <article
+            key={row.id}
+            className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+          >
+            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+              <div className="min-w-0 space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`rounded-md border px-2 py-1 text-xs font-medium ${
+                      statusTones[row.request_status] ??
+                      "border-zinc-200 bg-zinc-50 text-zinc-700"
+                    }`}
+                  >
+                    {statusLabels[row.request_status] ?? row.request_status}
+                  </span>
+                  {row.is_overdue ? (
+                    <span className="rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-medium text-rose-700">
+                      Quá hạn
+                    </span>
+                  ) : null}
+                  <span className="font-mono text-xs text-zinc-500">
+                    {row.request_code}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold text-zinc-950">
+                    {row.request_title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-zinc-600">
+                    {row.request_note ?? "Chưa có ghi chú đề nghị."}
+                  </p>
+                </div>
+
+                <div className="grid gap-3 text-sm text-zinc-600 md:grid-cols-2 xl:grid-cols-4">
+                  <div className="rounded-md bg-zinc-50 p-3">
+                    <p className="text-xs uppercase text-zinc-500">Nghiệp vụ</p>
+                    <p className="mt-1 font-medium text-zinc-800">
+                      {row.decision_name}
+                    </p>
+                    <p className="mt-1 font-mono text-xs text-zinc-500">
+                      {row.approval_code}
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-zinc-50 p-3">
+                    <p className="text-xs uppercase text-zinc-500">Đối tượng</p>
+                    <p className="mt-1 font-medium text-zinc-800">
+                      {row.entity_type}
+                    </p>
+                    <p className="mt-1 text-xs text-zinc-500">
+                      {row.entity_code ?? row.entity_id ?? "Chưa gắn mã"}
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-zinc-50 p-3">
+                    <p className="text-xs uppercase text-zinc-500">Người xử lý</p>
+                    <p className="mt-1">Tạo: {row.requested_by_name ?? "Chưa rõ"}</p>
+                    <p>Kiểm: {row.checked_by_name ?? "Chưa kiểm"}</p>
+                    <p>
+                      Duyệt:{" "}
+                      {row.approved_by_name ??
+                        row.rejected_by_name ??
+                        "Chưa duyệt"}
+                    </p>
+                  </div>
+                  <div className="rounded-md bg-zinc-50 p-3">
+                    <p className="text-xs uppercase text-zinc-500">Thời gian</p>
+                    <p className="mt-1">Tạo: {formatDateTime(row.created_at)}</p>
+                    <p>Hạn: {formatDateTime(row.due_at)}</p>
+                    <p>Cập nhật: {formatDateTime(row.updated_at)}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <RequestFlags flags={row.request_flags} />
+                  {row.segment_label ? (
+                    <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs text-zinc-600">
+                      {row.segment_label}
+                    </span>
+                  ) : null}
+                  {sourceHref ? (
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={sourceHref}>
+                        Mở dữ liệu nguồn
+                        <ArrowRight className="size-4" />
+                      </Link>
+                    </Button>
+                  ) : null}
+                  {row.evidence_url ? (
+                    <Button asChild variant="outline" size="sm">
+                      <a href={row.evidence_url}>Mở minh chứng</a>
+                    </Button>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="w-full shrink-0 xl:w-[360px]">
+                {actions.length > 0 ? (
+                  <form
+                    action={updateShortCourseWorkflowRequestAction}
+                    className="grid gap-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4"
+                  >
+                    <input
+                      type="hidden"
+                      name="return_to"
+                      value="/short-course/workflows"
+                    />
+                    <input
+                      type="hidden"
+                      name="admission_segment_id"
+                      value={activeSegmentId ?? ""}
+                    />
+                    <input type="hidden" name="request_id" value={row.id} />
+                    <label className="grid gap-1">
+                      <span className="text-sm font-medium text-zinc-700">
+                        Hành động tiếp theo
+                      </span>
+                      <select
+                        name="request_status"
+                        className={inputClass}
+                        defaultValue={actions[0]?.value}
+                      >
+                        {actions.map((action) => (
+                          <option key={action.value} value={action.value}>
+                            {action.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <p className="text-xs leading-5 text-zinc-500">
+                      {actions[0]?.note}
+                    </p>
+                    <input
+                      name="evidence_url"
+                      className={inputClass}
+                      defaultValue={row.evidence_url ?? ""}
+                      placeholder="Link minh chứng"
+                    />
+                    <textarea
+                      name={noteFieldName}
+                      className={textareaClass}
+                      defaultValue={
+                        noteFieldName === "approver_note"
+                          ? row.approver_note ?? ""
+                          : noteFieldName === "maker_note"
+                            ? row.maker_note ?? ""
+                            : row.checker_note ?? ""
+                      }
+                      placeholder="Ghi chú xử lý"
+                    />
+                    <Button type="submit" size="sm">
+                      <Save className="size-4" />
+                      Lưu xử lý
+                    </Button>
+                  </form>
+                ) : (
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm leading-6 text-zinc-500">
+                    {["APPROVED", "REJECTED", "CANCELLED"].includes(
+                      row.request_status,
+                    )
+                      ? "Phiếu đã kết thúc."
+                      : "Tài khoản hiện tại chưa có quyền xử lý bước này."}
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
   );
 }
 
@@ -688,7 +1008,15 @@ export default async function ShortCourseWorkflowPage({
             </p>
           </div>
 
-          <div className="overflow-x-auto">
+          <WorkflowRequestCards
+            rows={rows}
+            canCreate={canCreate}
+            canCheck={canCheck}
+            canApprove={canApprove}
+            activeSegmentId={activeSegmentId}
+          />
+
+          <div className="hidden">
             <table className="w-full min-w-[1280px] text-sm">
               <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
                 <tr>

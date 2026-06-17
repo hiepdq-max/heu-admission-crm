@@ -208,9 +208,56 @@ export async function updateShortCourseWorkflowRequestAction(
     redirectError(formData, "invalid_workflow_request_status");
   }
 
+  const nextStatus = requestStatus as string;
+
+  const readClient = await createClient();
+  const {
+    data: { user: signedInUser },
+  } = await readClient.auth.getUser();
+
+  if (!signedInUser) {
+    redirect("/login");
+  }
+
+  const { data: existingRequest, error: existingRequestError } =
+    await readClient
+      .from("approval_requests")
+      .select("request_status,requested_by")
+      .eq("id", requestId)
+      .maybeSingle<{ request_status: string; requested_by: string | null }>();
+
+  if (existingRequestError || !existingRequest) {
+    redirectError(
+      formData,
+      existingRequestError?.message ?? "missing_workflow_request",
+    );
+  }
+
+  const currentRequest = existingRequest as {
+    request_status: string;
+    requested_by: string | null;
+  };
+
+  const transitionMap: Record<string, string[]> = {
+    DRAFT: ["PENDING_CHECK", "CANCELLED"],
+    NEEDS_FIX: ["PENDING_CHECK", "CANCELLED"],
+    PENDING_CHECK: ["CHECKED", "NEEDS_FIX", "CANCELLED"],
+    CHECKED: ["APPROVED", "REJECTED"],
+  };
+
+  if (
+    !transitionMap[currentRequest.request_status]?.includes(nextStatus)
+  ) {
+    redirectError(formData, "invalid_workflow_transition");
+  }
+
   const requiredPermission =
-    requestStatus === "APPROVED" || requestStatus === "REJECTED"
+    nextStatus === "APPROVED" || nextStatus === "REJECTED"
       ? "approve"
+      : nextStatus === "PENDING_CHECK" ||
+          (nextStatus === "CANCELLED" &&
+            ["DRAFT", "NEEDS_FIX"].includes(currentRequest.request_status))
+        ? "create"
       : "check";
   const { supabase, user } = await requireWorkflowPermission(
     formData,
@@ -218,33 +265,37 @@ export async function updateShortCourseWorkflowRequestAction(
   );
   const now = new Date().toISOString();
   const updatePayload: Record<string, string | null> = {
-    request_status: requestStatus,
+    request_status: nextStatus,
     checker_note: textValue(formData, "checker_note"),
     approver_note: textValue(formData, "approver_note"),
     evidence_url: textValue(formData, "evidence_url"),
     updated_by: user.id,
   };
 
-  if (requestStatus === "CHECKED") {
+  if (nextStatus === "CHECKED") {
     updatePayload.checked_by = user.id;
     updatePayload.checked_at = now;
   }
 
-  if (requestStatus === "APPROVED") {
+  if (nextStatus === "PENDING_CHECK") {
+    updatePayload.maker_note = textValue(formData, "maker_note");
+  }
+
+  if (nextStatus === "APPROVED") {
     updatePayload.approved_by = user.id;
     updatePayload.approved_at = now;
     updatePayload.rejected_by = null;
     updatePayload.rejected_at = null;
   }
 
-  if (requestStatus === "REJECTED") {
+  if (nextStatus === "REJECTED") {
     updatePayload.rejected_by = user.id;
     updatePayload.rejected_at = now;
     updatePayload.approved_by = null;
     updatePayload.approved_at = null;
   }
 
-  if (requestStatus === "NEEDS_FIX") {
+  if (nextStatus === "NEEDS_FIX") {
     updatePayload.checked_by = user.id;
     updatePayload.checked_at = now;
   }
