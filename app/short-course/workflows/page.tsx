@@ -652,6 +652,9 @@ export default async function ShortCourseWorkflowPage({
     activeSegmentId,
   );
   const sourceHref = safePath(firstParam(params?.sourceHref));
+  const focusedEntityType = firstParam(params?.entityType) ?? null;
+  const focusedEntityId = firstParam(params?.entityId) ?? null;
+  const focusedEntityCode = firstParam(params?.entityCode) ?? null;
 
   const [
     { data: roleCode },
@@ -696,8 +699,25 @@ export default async function ShortCourseWorkflowPage({
   const canCreate = roleCode === "ADMIN" || Boolean(canCreateWorkflow);
   const canCheck = roleCode === "ADMIN" || Boolean(canCheckWorkflow);
   const canApprove = roleCode === "ADMIN" || Boolean(canApproveWorkflow);
-  const rows = workflowRows ?? [];
+  const rows = (workflowRows ?? []).filter((row) => {
+    if (focusedEntityType && row.entity_type !== focusedEntityType) {
+      return false;
+    }
+
+    if (focusedEntityId && row.entity_id !== focusedEntityId) {
+      return false;
+    }
+
+    if (focusedEntityCode && row.entity_code !== focusedEntityCode) {
+      return false;
+    }
+
+    return true;
+  });
   const summary = summarize(rows);
+  const isFocusedEntity = Boolean(
+    focusedEntityType || focusedEntityId || focusedEntityCode,
+  );
   const defaultApprovalCode =
     approvalOptions?.find(
       (approval) =>
@@ -760,6 +780,18 @@ export default async function ShortCourseWorkflowPage({
       <div className="space-y-6">
         {message ? <Message message={message} /> : null}
         {error ? <Message message={error} tone="error" /> : null}
+        {isFocusedEntity ? (
+          <Message
+            tone="warning"
+            message={`Đang tập trung vào đối tượng: ${[
+              focusedEntityType,
+              focusedEntityCode,
+              focusedEntityId,
+            ]
+              .filter(Boolean)
+              .join(" · ")}. Nếu chưa có phiếu, hãy kiểm tra form bên dưới rồi bấm tạo phiếu xử lý.`}
+          />
+        ) : null}
         {workflowRowsError ? (
           <Message
             tone="warning"

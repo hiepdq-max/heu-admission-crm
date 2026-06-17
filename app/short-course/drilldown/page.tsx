@@ -8,6 +8,7 @@ import {
   ClipboardCheck,
   FileSearch,
   GraduationCap,
+  GitPullRequestArrow,
   ListChecks,
   RefreshCcw,
   Search,
@@ -167,10 +168,26 @@ type DrilldownRow = {
   updatedAt: string | null;
   badges: string[];
   amount?: number | string | null;
+  workflow?: WorkflowSummary | null;
   actions?: Array<{
     label: string;
     href: string;
   }>;
+};
+
+type WorkflowSummary = {
+  request_code: string;
+  request_status: string;
+  updated_at: string | null;
+};
+
+type WorkflowRequestLiteRow = {
+  entity_type: string;
+  entity_id: string | null;
+  entity_code: string | null;
+  request_code: string;
+  request_status: string;
+  updated_at: string | null;
 };
 
 const drilldownConfig: Record<
@@ -261,6 +278,16 @@ const statusTone: Record<string, string> = {
   CANCELLED: "border-zinc-200 bg-zinc-50 text-zinc-500",
 };
 
+const workflowStatusLabels: Record<string, string> = {
+  DRAFT: "Nháp",
+  PENDING_CHECK: "Chờ kiểm",
+  CHECKED: "Đã kiểm",
+  APPROVED: "Đã duyệt",
+  REJECTED: "Từ chối",
+  NEEDS_FIX: "Cần bổ sung",
+  CANCELLED: "Đã hủy",
+};
+
 function normalizeType(value: string | null | undefined): DrilldownType {
   if (value && value in drilldownConfig) {
     return value as DrilldownType;
@@ -340,6 +367,111 @@ function matchesStatus(row: DrilldownRow, status: string | null) {
 function detailHref(type: DrilldownType, id: string, segmentId: string | null) {
   return withAdmissionSegmentParam(
     `/short-course/drilldown?type=${type}&entityId=${id}`,
+    segmentId,
+  );
+}
+
+function workflowEntityType(type: DrilldownType) {
+  const typeMap: Record<DrilldownType, string> = {
+    students: "SHORT_STUDENT",
+    classes: "SHORT_CLASS",
+    enrollments: "SHORT_ENROLLMENT",
+    attendance: "SHORT_ATTENDANCE",
+    bhxh: "SHORT_BHXH",
+    invoices: "SHORT_FINANCE",
+    payments: "SHORT_PAYMENT",
+    risks: "SHORT_RISK",
+  };
+
+  return typeMap[type];
+}
+
+function workflowLookupKey(entityType: string, value: string | null) {
+  return value ? `${entityType}:${value}` : null;
+}
+
+function buildWorkflowLookup(rows: WorkflowRequestLiteRow[]) {
+  const lookup = new Map<string, WorkflowSummary>();
+
+  for (const row of rows) {
+    const summary = {
+      request_code: row.request_code,
+      request_status: row.request_status,
+      updated_at: row.updated_at,
+    };
+    const idKey = workflowLookupKey(row.entity_type, row.entity_id);
+    const codeKey = workflowLookupKey(row.entity_type, row.entity_code);
+
+    if (idKey && !lookup.has(idKey)) {
+      lookup.set(idKey, summary);
+    }
+
+    if (codeKey && !lookup.has(codeKey)) {
+      lookup.set(codeKey, summary);
+    }
+  }
+
+  return lookup;
+}
+
+async function loadWorkflowRequests(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  activeSegmentId: string | null,
+) {
+  let query = supabase
+    .from("short_course_workflow_request_status")
+    .select(
+      "entity_type,entity_id,entity_code,request_code,request_status,updated_at",
+    )
+    .in("entity_type", [
+      "SHORT_STUDENT",
+      "SHORT_CLASS",
+      "SHORT_ENROLLMENT",
+      "SHORT_ATTENDANCE",
+      "SHORT_BHXH",
+      "SHORT_FINANCE",
+      "SHORT_PAYMENT",
+      "SHORT_RISK",
+    ]);
+
+  if (activeSegmentId) {
+    query = query.or(
+      `admission_segment_id.eq.${activeSegmentId},admission_segment_id.is.null`,
+    );
+  }
+
+  const { data, error } = await query
+    .order("updated_at", { ascending: false })
+    .limit(1000)
+    .returns<WorkflowRequestLiteRow[]>();
+
+  return {
+    rows: data ?? [],
+    error,
+  };
+}
+
+function workflowRequestHref(
+  type: DrilldownType,
+  row: DrilldownRow,
+  segmentId: string | null,
+) {
+  const entityType = workflowEntityType(type);
+  const params = new URLSearchParams({
+    entityType,
+    entityId: row.id,
+    entityCode: row.code,
+    title: `Xử lý ${row.title}`,
+    note: [
+      row.subtitle,
+      `Owner: ${row.owner}`,
+      `Trạng thái hiện tại: ${row.statusLabel ?? row.status ?? "Chưa rõ"}`,
+    ].join("\n"),
+    sourceHref: detailHref(type, row.id, segmentId),
+  });
+
+  return withAdmissionSegmentParam(
+    `/short-course/workflows?${params.toString()}`,
     segmentId,
   );
 }
@@ -494,6 +626,19 @@ function DrilldownTable({ rows }: { rows: DrilldownRow[] }) {
                     ) : (
                       <span className="text-zinc-400">Chưa rõ</span>
                     )}
+                    <div className="mt-2">
+                      {row.workflow ? (
+                        <span className="inline-flex rounded-md border border-violet-200 bg-violet-50 px-2 py-1 text-xs text-violet-700">
+                          {row.workflow.request_code} ·{" "}
+                          {workflowStatusLabels[row.workflow.request_status] ??
+                            row.workflow.request_status}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-zinc-400">
+                          Chưa có phiếu xử lý
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-5 py-4 text-zinc-600">{row.owner}</td>
                   <td className="px-5 py-4 text-zinc-500">
@@ -510,6 +655,9 @@ function DrilldownTable({ rows }: { rows: DrilldownRow[] }) {
                             size="sm"
                           >
                             <Link href={action.href}>
+                              {action.label === "Phiếu xử lý" ? (
+                                <GitPullRequestArrow className="size-4" />
+                              ) : null}
                               {action.label}
                               <ArrowRight className="size-4" />
                             </Link>
@@ -1059,6 +1207,10 @@ export default async function ShortCourseDrilldownPage({
       break;
   }
 
+  const workflowResult = await loadWorkflowRequests(supabase, activeSegmentId);
+  const workflowLookup = buildWorkflowLookup(workflowResult.rows);
+  const activeWorkflowEntityType = workflowEntityType(activeType);
+
   const filteredRows = result.rows
     .filter((row) => matchesSearch(row, normalizedQuery))
     .filter((row) => matchesStatus(row, status))
@@ -1073,7 +1225,25 @@ export default async function ShortCourseDrilldownPage({
                 href: detailHref(activeType, row.id, activeSegmentId),
               },
             ],
-    }));
+    }))
+    .map((row) => {
+      const workflow =
+        workflowLookup.get(`${activeWorkflowEntityType}:${row.id}`) ??
+        workflowLookup.get(`${activeWorkflowEntityType}:${row.code}`) ??
+        null;
+
+      return {
+        ...row,
+        workflow,
+        actions: [
+          {
+            label: "Phiếu xử lý",
+            href: workflowRequestHref(activeType, row, activeSegmentId),
+          },
+          ...(row.actions ?? []),
+        ],
+      };
+    });
 
   return (
     <AppShell
@@ -1154,6 +1324,21 @@ export default async function ShortCourseDrilldownPage({
             Bỏ lọc
           </Link>
         </div>
+      ) : null}
+
+      {workflowResult.error ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <div className="flex items-start gap-3">
+            <ShieldAlert className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">Chưa đọc được trạng thái phiếu xử lý</h2>
+              <p className="mt-1">
+                Dữ liệu nghiệp vụ vẫn hiển thị, nhưng chưa gắn được trạng thái
+                workflow P1-15/P1-17. Chi tiết: {workflowResult.error.message}
+              </p>
+            </div>
+          </div>
+        </section>
       ) : null}
 
       {result.error ? (
