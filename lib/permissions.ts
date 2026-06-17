@@ -56,6 +56,12 @@ export const permissionGroups: PermissionGroup[] = [
         label: "Xem audit log",
         description: "Xem lịch sử thao tác nhạy cảm.",
       },
+      {
+        code: "heu_os.search.read",
+        label: "Tìm kiếm HEU OS",
+        description:
+          "Tìm module, quy trình, lead, học viên, lớp và cảnh báo trong phạm vi được phép.",
+      },
     ],
   },
   {

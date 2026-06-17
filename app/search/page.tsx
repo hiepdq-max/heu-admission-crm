@@ -1,0 +1,349 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import {
+  ArrowRight,
+  Database,
+  FileSearch,
+  ListChecks,
+  Search,
+  ShieldAlert,
+} from "lucide-react";
+
+import { AppShell } from "@/components/layout/app-shell";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
+import {
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
+
+type SearchPageProps = {
+  searchParams?: Promise<{
+    q?: string | string[];
+    segment?: string | string[];
+  }>;
+};
+
+type SearchResultRow = {
+  result_rank: number;
+  result_type: string;
+  result_label: string;
+  result_code: string | null;
+  result_summary: string | null;
+  href: string | null;
+  module_code: string | null;
+  source_table: string | null;
+  entity_id: string | null;
+  segment_id: string | null;
+  segment_label: string | null;
+  owner_department: string | null;
+  status_label: string | null;
+  risk_level: string | null;
+  updated_at: string | null;
+};
+
+const typeLabels: Record<string, string> = {
+  NAVIGATION: "Điều hướng",
+  MODULE: "Module",
+  WORKFLOW: "Quy trình",
+  APPROVAL: "Điểm duyệt",
+  MASTER_DATA: "Dữ liệu gốc",
+  RISK: "Rủi ro",
+  ADMISSION_OBJECT: "Đối tượng tuyển sinh",
+  LEAD: "Lead",
+  SHORT_STUDENT: "Học viên ngắn hạn",
+  SHORT_CLASS: "Lớp ngắn hạn",
+  EXCEPTION: "Exception",
+};
+
+const typeTones: Record<string, string> = {
+  NAVIGATION: "border-sky-200 bg-sky-50 text-sky-700",
+  MODULE: "border-zinc-200 bg-zinc-50 text-zinc-700",
+  WORKFLOW: "border-cyan-200 bg-cyan-50 text-cyan-700",
+  APPROVAL: "border-violet-200 bg-violet-50 text-violet-700",
+  MASTER_DATA: "border-indigo-200 bg-indigo-50 text-indigo-700",
+  RISK: "border-rose-200 bg-rose-50 text-rose-700",
+  ADMISSION_OBJECT: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  LEAD: "border-amber-200 bg-amber-50 text-amber-700",
+  SHORT_STUDENT: "border-teal-200 bg-teal-50 text-teal-700",
+  SHORT_CLASS: "border-lime-200 bg-lime-50 text-lime-700",
+  EXCEPTION: "border-orange-200 bg-orange-50 text-orange-700",
+};
+
+function isFunctionMissing(message: string) {
+  return (
+    message.includes("search_heu_os") ||
+    message.includes("Could not find the function") ||
+    message.includes("function public.search_heu_os")
+  );
+}
+
+function formatUpdatedAt(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return new Intl.DateTimeFormat("vi-VN", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+
+function safeHref(value: string | null) {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/";
+  }
+
+  return value;
+}
+
+function SearchForm({
+  query,
+  segmentId,
+}: {
+  query: string;
+  segmentId: string | null;
+}) {
+  return (
+    <form
+      action="/search"
+      method="get"
+      className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+    >
+      {segmentId ? <input type="hidden" name="segment" value={segmentId} /> : null}
+      <label className="text-sm font-medium text-zinc-700" htmlFor="heu-search">
+        Từ khóa
+      </label>
+      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+        <div className="flex min-h-10 flex-1 items-center gap-2 rounded-lg border border-zinc-300 bg-white px-3">
+          <Search className="size-4 shrink-0 text-zinc-500" />
+          <input
+            id="heu-search"
+            name="q"
+            type="search"
+            defaultValue={query}
+            placeholder="VD: P1-10, BHXH, tên học viên, số điện thoại..."
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400"
+          />
+        </div>
+        <Button type="submit" className="h-10">
+          <FileSearch className="size-4" />
+          Tìm kiếm
+        </Button>
+      </div>
+      <p className="mt-2 text-xs leading-5 text-zinc-500">
+        Search chỉ đọc dữ liệu trong phạm vi tài khoản của bạn. Nếu không thấy
+        kết quả, có thể bạn chưa được phân quyền hoặc từ khóa chưa khớp.
+      </p>
+    </form>
+  );
+}
+
+function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
+  const suggestions = ["P1-10", "P1-11", "BHXH", "điểm danh", "công nợ", "ngắn hạn"];
+
+  return (
+    <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <div className="flex items-start gap-3">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100">
+          <Database className="size-5 text-zinc-600" />
+        </div>
+        <div>
+          <h2 className="font-semibold">Có thể thử tìm</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {suggestions.map((item) => (
+              <Link
+                key={item}
+                href={withAdmissionSegmentParam(
+                  `/search?q=${encodeURIComponent(item)}`,
+                  segmentId,
+                )}
+                className="rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SearchResultCard({ row }: { row: SearchResultRow }) {
+  const label = typeLabels[row.result_type] ?? row.result_type;
+  const tone =
+    typeTones[row.result_type] ?? "border-zinc-200 bg-zinc-50 text-zinc-700";
+  const updatedAt = formatUpdatedAt(row.updated_at);
+
+  return (
+    <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`rounded-md border px-2 py-1 text-xs ${tone}`}>
+              {label}
+            </span>
+            {row.result_code ? (
+              <span className="font-mono text-xs text-zinc-500">
+                {row.result_code}
+              </span>
+            ) : null}
+            {row.risk_level ? (
+              <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600">
+                {row.risk_level}
+              </span>
+            ) : null}
+          </div>
+          <h2 className="mt-3 text-base font-semibold text-zinc-950">
+            {row.result_label}
+          </h2>
+          {row.result_summary ? (
+            <p className="mt-2 line-clamp-3 text-sm leading-6 text-zinc-600">
+              {row.result_summary}
+            </p>
+          ) : null}
+          <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
+            {row.module_code ? <span>Module: {row.module_code}</span> : null}
+            {row.segment_label ? <span>Đối tượng: {row.segment_label}</span> : null}
+            {row.owner_department ? <span>Owner: {row.owner_department}</span> : null}
+            {row.status_label ? <span>Trạng thái: {row.status_label}</span> : null}
+            {updatedAt ? <span>Cập nhật: {updatedAt}</span> : null}
+          </div>
+        </div>
+        <Button asChild variant="outline" className="sm:shrink-0">
+          <Link href={safeHref(row.href)}>
+            Mở
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+      </div>
+    </article>
+  );
+}
+
+export default async function HeuOsSearchPage({ searchParams }: SearchPageProps) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const query = (firstParam(resolvedSearchParams.q) ?? "").trim();
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+
+  let results: SearchResultRow[] = [];
+  let loadError: string | null = null;
+
+  if (query.length >= 2) {
+    const { data, error } = await supabase.rpc("search_heu_os", {
+      p_query: query,
+      p_limit: 50,
+    });
+
+    if (error) {
+      loadError = error.message;
+    } else {
+      results = Array.isArray(data) ? (data as SearchResultRow[]) : [];
+    }
+  }
+
+  return (
+    <AppShell
+      active="search"
+      title="Tìm kiếm HEU OS"
+      description={
+        workspace.activeSegment
+          ? `Đang tìm trong phạm vi: ${workspace.activeSegment.label}.`
+          : "Tìm module, quy trình, lead, học viên, lớp và cảnh báo trong phạm vi được phép."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/search",
+        workspace.activeSegmentId,
+      )}
+    >
+      <SearchForm query={query} segmentId={workspace.activeSegmentId} />
+
+      {loadError ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <div className="flex items-start gap-3">
+            <ShieldAlert className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                {isFunctionMissing(loadError)
+                  ? "Chưa chạy SQL P1-11"
+                  : "Chưa đọc được Search Engine"}
+              </h2>
+              <p className="mt-1">
+                {isFunctionMissing(loadError)
+                  ? "Hãy chạy file database/step75_heu_os_search_engine.sql trong Supabase SQL Editor, sau đó tải lại trang."
+                  : loadError}
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : query.length === 0 ? (
+        <SearchSuggestions segmentId={workspace.activeSegmentId} />
+      ) : query.length < 2 ? (
+        <section className="rounded-lg border border-zinc-200 bg-white p-5 text-sm text-zinc-500 shadow-sm">
+          Nhập ít nhất 2 ký tự để tìm kiếm.
+        </section>
+      ) : results.length === 0 ? (
+        <section className="rounded-lg border border-zinc-200 bg-white p-5 text-sm leading-6 text-zinc-500 shadow-sm">
+          Không tìm thấy kết quả phù hợp với từ khóa{" "}
+          <span className="font-semibold text-zinc-900">{query}</span>. Hãy thử
+          mã module như <span className="font-mono">P1-10</span>, tên học viên,
+          số điện thoại hoặc từ khóa nghiệp vụ.
+        </section>
+      ) : (
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-zinc-500">
+              Tìm thấy{" "}
+              <span className="font-semibold text-zinc-900">
+                {results.length}
+              </span>{" "}
+              kết quả cho “{query}”.
+            </p>
+            <span className="rounded-md bg-zinc-200 px-2 py-1 text-xs text-zinc-600">
+              P1-11
+            </span>
+          </div>
+          {results.map((row) => (
+            <SearchResultCard
+              key={`${row.result_type}-${row.result_code ?? row.entity_id}`}
+              row={row}
+            />
+          ))}
+        </section>
+      )}
+
+      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100">
+            <ListChecks className="size-5 text-zinc-600" />
+          </div>
+          <div>
+            <h2 className="font-semibold">Nguyên tắc P1-11</h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-600">
+              Search chỉ giúp tìm và mở đúng nơi xử lý. Nó không thay đổi dữ
+              liệu, không duyệt hồ sơ, không xác nhận tài chính và không vượt
+              quyền người dùng.
+            </p>
+          </div>
+        </div>
+      </section>
+    </AppShell>
+  );
+}

@@ -11,6 +11,7 @@ import {
   ListChecks,
   Megaphone,
   Route,
+  Search,
   Settings,
   ShieldCheck,
   Users,
@@ -39,6 +40,12 @@ type AppShellProps = {
 
 const navigation = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard, key: "dashboard" },
+  {
+    label: "Tìm kiếm",
+    href: "/search",
+    icon: Search,
+    key: "search",
+  },
   {
     label: "Master Control",
     href: "/master-control",
@@ -96,6 +103,7 @@ const navigation = [
 
 const segmentAwareNavigationKeys = new Set([
   "dashboard",
+  "search",
   "leads",
   "pipeline",
   "documents",
@@ -222,6 +230,34 @@ export async function AppShell({
               <p className="mt-1 text-sm text-zinc-500">{description}</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
+              {userEmail ? (
+                <form
+                  action="/search"
+                  method="get"
+                  className="flex h-8 min-w-0 items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2"
+                >
+                  {workspace?.activeSegmentId ? (
+                    <input
+                      type="hidden"
+                      name="segment"
+                      value={workspace.activeSegmentId}
+                    />
+                  ) : null}
+                  <Search className="size-4 shrink-0 text-zinc-500" />
+                  <input
+                    name="q"
+                    type="search"
+                    placeholder="Tìm HEU OS"
+                    className="h-7 w-28 min-w-0 bg-transparent text-sm outline-none placeholder:text-zinc-400 sm:w-40"
+                  />
+                  <button
+                    type="submit"
+                    className="rounded-md px-1.5 py-1 text-xs font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                  >
+                    Tìm
+                  </button>
+                </form>
+              ) : null}
               {actions}
               {userEmail ? (
                 <form action={logoutAction} className="flex items-center gap-2">
