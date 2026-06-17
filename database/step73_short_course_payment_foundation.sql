@@ -1209,10 +1209,10 @@ create or replace view public.short_course_data_foundation_summary
 with (security_invoker = true)
 as
 select
-  (select count(*)::int from public.short_student_master where record_status = 'ACTIVE') as student_count,
-  (select count(*)::int from public.short_student_master where record_status = 'ACTIVE' and student_status in ('STAGING', 'ACTIVE')) as active_student_count,
-  (select count(*)::int from public.short_class_master where record_status = 'ACTIVE') as class_count,
-  (select count(*)::int from public.short_class_master where record_status = 'ACTIVE' and class_status in ('PLANNED', 'OPEN', 'IN_PROGRESS')) as open_class_count,
+  (select count(*)::int from public.short_student_master where status = 'ACTIVE'::public.record_status) as student_count,
+  (select count(*)::int from public.short_student_master where status = 'ACTIVE'::public.record_status and student_status in ('STAGING', 'ACTIVE')) as active_student_count,
+  (select count(*)::int from public.short_class_master where status = 'ACTIVE'::public.record_status) as class_count,
+  (select count(*)::int from public.short_class_master where status = 'ACTIVE'::public.record_status and class_status in ('PLANNED', 'OPEN', 'IN_PROGRESS')) as open_class_count,
   (select count(*)::int from public.short_enrollments where record_status = 'ACTIVE') as enrollment_count,
   (select count(*)::int from public.short_enrollments where record_status = 'ACTIVE' and enrollment_status in ('ENROLLED', 'STUDYING')) as active_enrollment_count,
   (select count(*)::int from public.short_attendance_sessions where record_status = 'ACTIVE') as attendance_session_count,
