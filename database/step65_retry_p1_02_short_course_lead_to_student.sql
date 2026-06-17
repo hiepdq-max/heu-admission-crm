@@ -1,5 +1,5 @@
--- Step 64 - P1-02 Short Course Lead -> Student conversion.
--- Run after step63_fix_p1_01_vietnamese_encoding.sql.
+-- Step 65 - Retry P1-02 Short Course Lead -> Student conversion.
+-- Run after step64 failed with min(uuid), or after step63 if step64 was not run.
 --
 -- Purpose:
 -- - Store real program/major/offering IDs on leads, not only display text.
