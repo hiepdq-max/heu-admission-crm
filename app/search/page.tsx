@@ -171,7 +171,42 @@ function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
   );
 }
 
-function SearchResultCard({ row }: { row: SearchResultRow }) {
+function resultHref(row: SearchResultRow, activeSegmentId: string | null) {
+  const segmentId = row.segment_id ?? activeSegmentId;
+
+  if (row.result_type === "SHORT_STUDENT" && row.entity_id) {
+    return withAdmissionSegmentParam(
+      `/short-course/drilldown?type=students&entityId=${row.entity_id}`,
+      segmentId,
+    );
+  }
+
+  if (row.result_type === "SHORT_CLASS" && row.entity_id) {
+    return withAdmissionSegmentParam(
+      `/short-course/drilldown?type=classes&entityId=${row.entity_id}`,
+      segmentId,
+    );
+  }
+
+  if (row.result_type === "EXCEPTION") {
+    const query = row.result_code ?? row.result_label;
+
+    return withAdmissionSegmentParam(
+      `/short-course/drilldown?type=risks&q=${encodeURIComponent(query)}`,
+      segmentId,
+    );
+  }
+
+  return withAdmissionSegmentParam(safeHref(row.href), segmentId);
+}
+
+function SearchResultCard({
+  row,
+  activeSegmentId,
+}: {
+  row: SearchResultRow;
+  activeSegmentId: string | null;
+}) {
   const label = typeLabels[row.result_type] ?? row.result_type;
   const tone =
     typeTones[row.result_type] ?? "border-zinc-200 bg-zinc-50 text-zinc-700";
@@ -213,7 +248,7 @@ function SearchResultCard({ row }: { row: SearchResultRow }) {
           </div>
         </div>
         <Button asChild variant="outline" className="sm:shrink-0">
-          <Link href={safeHref(row.href)}>
+          <Link href={resultHref(row, activeSegmentId)}>
             Mở
             <ArrowRight className="size-4" />
           </Link>
@@ -324,6 +359,7 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
             <SearchResultCard
               key={`${row.result_type}-${row.result_code ?? row.entity_id}`}
               row={row}
+              activeSegmentId={workspace.activeSegmentId}
             />
           ))}
         </section>

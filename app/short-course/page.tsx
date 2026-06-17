@@ -129,7 +129,15 @@ function compactErrorMessages(
   return messages.join(" | ") || null;
 }
 
-function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
+function buildKpis(
+  summary: ShortCourseSummaryRow,
+  activeSegmentId: string | null,
+): ShortCourseKpiRow[] {
+  const drilldownHref = (type: string, extra = "") =>
+    withAdmissionSegmentParam(
+      `/short-course/drilldown?type=${type}${extra}`,
+      activeSegmentId,
+    );
   const openRiskCount = numericValue(summary.open_risk_count);
   const criticalRiskCount = numericValue(summary.dashboard_critical_exception_count);
   const financeOpenBalance = numericValue(summary.finance_open_balance_vnd);
@@ -146,6 +154,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: "LOW",
       owner_department: "CTHSSV + DAO_TAO",
       metric_note: "Đọc trực tiếp từ Student Master trong phạm vi đang chọn.",
+      href: drilldownHref("students"),
     },
     {
       metric_code: "OPEN_CLASSES",
@@ -155,6 +164,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: "LOW",
       owner_department: "DAO_TAO",
       metric_note: "Lớp OPEN hoặc IN_PROGRESS.",
+      href: drilldownHref("classes"),
     },
     {
       metric_code: "OPEN_EXCEPTIONS",
@@ -164,6 +174,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: openRiskCount > 0 ? "HIGH" : "LOW",
       owner_department: "BGH + IT_DATA + AUDIT",
       metric_note: "Risk alert chưa RESOLVED/DISMISSED.",
+      href: drilldownHref("risks"),
     },
     {
       metric_code: "CRITICAL_EXCEPTIONS",
@@ -173,6 +184,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: criticalRiskCount > 0 ? "CRITICAL" : "LOW",
       owner_department: "BGH + AUDIT",
       metric_note: "Cần xử lý trước khi tự động hóa.",
+      href: drilldownHref("risks", "&status=CRITICAL"),
     },
     {
       metric_code: "FINANCE_OPEN_BALANCE",
@@ -182,6 +194,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: financeOpenBalance > 0 ? "MEDIUM" : "LOW",
       owner_department: "KHTC",
       metric_note: "Tổng số tiền còn phải thu theo invoice chưa hủy/hoàn.",
+      href: drilldownHref("invoices"),
     },
     {
       metric_code: "PAYMENT_PENDING",
@@ -191,6 +204,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: paymentPendingCount > 0 ? "MEDIUM" : "LOW",
       owner_department: "KHTC",
       metric_note: "Payment PENDING cần kế toán đối soát.",
+      href: drilldownHref("payments", "&status=PENDING"),
     },
     {
       metric_code: "BHXH_NEEDS_FIX",
@@ -200,6 +214,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: bhxhNeedsFixCount > 0 ? "HIGH" : "LOW",
       owner_department: "CTHSSV + PHAP_CHE",
       metric_note: "Case bị NEEDS_FIX/REJECTED cần bổ sung chứng cứ.",
+      href: drilldownHref("bhxh"),
     },
     {
       metric_code: "ATTENDANCE_NEEDS_FIX",
@@ -209,6 +224,7 @@ function buildKpis(summary: ShortCourseSummaryRow): ShortCourseKpiRow[] {
       severity: attendanceNeedsFixCount > 0 ? "HIGH" : "LOW",
       owner_department: "DAO_TAO",
       metric_note: "Buổi học đã mở nhưng chưa khóa/duyệt.",
+      href: drilldownHref("attendance"),
     },
   ];
 }
@@ -599,7 +615,7 @@ export default async function ShortCoursePage({
     dashboard_high_exception_count: highRiskCount,
   };
 
-  const kpis = buildKpis(summary);
+  const kpis = buildKpis(summary, activeSegmentId);
   const exceptionSummary = buildExceptionSummary(riskRows);
   const exceptions = buildExceptionRows(riskRows);
   const coreErrors = [

@@ -21,6 +21,7 @@ export type ShortCourseKpiRow = {
   severity: string;
   owner_department: string | null;
   metric_note: string | null;
+  href?: string | null;
 };
 
 export type ShortCourseSummaryRow = {
@@ -197,6 +198,14 @@ function KpiCard({ row }: { row: ShortCourseKpiRow }) {
         <p className="mt-4 text-xs text-zinc-500">
           Owner: {row.owner_department}
         </p>
+      ) : null}
+      {row.href ? (
+        <Button asChild variant="outline" size="sm" className="mt-4">
+          <Link href={row.href}>
+            Xem chi tiết
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
       ) : null}
     </article>
   );
