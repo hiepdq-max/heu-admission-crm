@@ -98,6 +98,7 @@ type ShortCourseDashboardProps = {
   exceptionSummary: ShortCourseExceptionSummaryRow[];
   exceptions: ShortCourseExceptionRow[];
   loadError?: string | null;
+  warning?: string | null;
 };
 
 const severityTone: Record<string, string> = {
@@ -375,6 +376,7 @@ export function ShortCourseDashboard({
   exceptionSummary,
   exceptions,
   loadError,
+  warning,
 }: ShortCourseDashboardProps) {
   if (loadError) {
     return (
@@ -396,6 +398,24 @@ export function ShortCourseDashboard({
 
   return (
     <div className="space-y-6">
+      {warning ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+          <div className="flex items-start gap-3">
+            <ShieldAlert className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                Dashboard đang đọc ở chế độ nhẹ
+              </h2>
+              <p className="mt-1">{warning}</p>
+              <p className="mt-2">
+                Số liệu chính vẫn đọc từ bảng gốc. Phần exception nặng sẽ được
+                tối ưu tiếp để tránh timeout khi dữ liệu lớn.
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.length === 0 ? (
           <article className="rounded-lg border border-zinc-200 bg-white p-5 text-sm text-zinc-500 shadow-sm sm:col-span-2 xl:col-span-4">
