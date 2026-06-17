@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Bot,
+  BookOpenCheck,
   CalendarClock,
   ClipboardCheck,
   Database,
@@ -59,6 +60,13 @@ const navigation = [
     icon: Route,
     key: "segments",
   },
+  {
+    label: "Ngắn hạn ERP",
+    href: "/short-course",
+    icon: BookOpenCheck,
+    key: "short-course",
+    permission: "short_course.dashboard.read",
+  },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
   { label: "Pipeline", href: "/pipeline", icon: ListChecks, key: "pipeline" },
@@ -104,6 +112,7 @@ const navigation = [
 const segmentAwareNavigationKeys = new Set([
   "dashboard",
   "search",
+  "short-course",
   "leads",
   "pipeline",
   "documents",
