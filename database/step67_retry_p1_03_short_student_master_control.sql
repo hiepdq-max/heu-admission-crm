@@ -1,5 +1,6 @@
--- Step 66 - P1-03 Short Course Student Master control.
--- Run after step65_retry_p1_02_short_course_lead_to_student.sql.
+-- Step 67 - Retry P1-03 Short Course Student Master control.
+-- Run after step66 failed with missing short_governance_rules.rule_group,
+-- or after step65_retry_p1_02_short_course_lead_to_student.sql if step66 was not run.
 --
 -- Purpose:
 -- - Upgrade short_student_master from a storage table into a controlled Student Master.
