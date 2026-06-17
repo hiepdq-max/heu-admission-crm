@@ -9,7 +9,6 @@
 insert into public.role_permissions (role_id, permission)
 select r.id, 'heu_os.search.read'
 from public.roles r
-where r.status = 'ACTIVE'
 on conflict (role_id, permission) do nothing;
 
 insert into public.permission_registry (
