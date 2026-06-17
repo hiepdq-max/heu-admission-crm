@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FileSearch, RefreshCcw } from "lucide-react";
+import { FileSearch, ListChecks, RefreshCcw } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import {
@@ -653,6 +653,17 @@ export default async function ShortCoursePage({
             <Link href={refreshHref}>
               <RefreshCcw className="size-4" />
               Tải lại
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/short-course/actions",
+                activeSegmentId,
+              )}
+            >
+              <ListChecks className="size-4" />
+              Trung tâm việc
             </Link>
           </Button>
           <Button asChild variant="outline">
