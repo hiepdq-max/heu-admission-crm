@@ -8,6 +8,7 @@ import {
   ClipboardCheck,
   FileSearch,
   GraduationCap,
+  GitPullRequestArrow,
   ListChecks,
   RefreshCcw,
   Search,
@@ -259,6 +260,27 @@ function actionCenterHref(
 ) {
   return withAdmissionSegmentParam(
     `/short-course/actions${extraSearchParams}`,
+    segmentId,
+  );
+}
+
+function workflowRequestHref(task: ActionTask, segmentId: string | null) {
+  const params = new URLSearchParams({
+    entityType: `SHORT_${task.group}`,
+    entityCode: task.taskCode,
+    title: task.title,
+    note: [
+      task.reason,
+      `Owner: ${task.owner}`,
+      `Nguồn dữ liệu: ${task.source}`,
+      `Trạng thái hiện tại: ${task.status}`,
+    ].join("\n"),
+    taskCode: task.taskCode,
+    sourceHref: task.actionHref,
+  });
+
+  return withAdmissionSegmentParam(
+    `/short-course/workflows?${params.toString()}`,
     segmentId,
   );
 }
@@ -744,7 +766,13 @@ function PriorityLinks({
   );
 }
 
-function ActionTaskList({ tasks }: { tasks: ActionTask[] }) {
+function ActionTaskList({
+  tasks,
+  segmentId,
+}: {
+  tasks: ActionTask[];
+  segmentId: string | null;
+}) {
   return (
     <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
       <div className="border-b border-zinc-200 p-5">
@@ -801,12 +829,20 @@ function ActionTaskList({ tasks }: { tasks: ActionTask[] }) {
                       </div>
                     </div>
                   </div>
-                  <Button asChild variant="outline" className="lg:shrink-0">
-                    <Link href={task.actionHref}>
-                      {task.actionLabel}
-                      <ArrowRight className="size-4" />
-                    </Link>
-                  </Button>
+                  <div className="flex flex-wrap gap-2 lg:shrink-0 lg:justify-end">
+                    <Button asChild variant="outline">
+                      <Link href={workflowRequestHref(task, segmentId)}>
+                        <GitPullRequestArrow className="size-4" />
+                        Tạo phiếu
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <Link href={task.actionHref}>
+                        {task.actionLabel}
+                        <ArrowRight className="size-4" />
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </article>
             );
@@ -1013,6 +1049,17 @@ export default async function ShortCourseActionCenterPage({
             </Link>
           </Button>
           <Button asChild variant="outline">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/short-course/workflows",
+                activeSegmentId,
+              )}
+            >
+              <GitPullRequestArrow className="size-4" />
+              Phiếu xử lý
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
             <Link href="/search?q=P1-14">
               <FileSearch className="size-4" />
               Tìm P1-14
@@ -1063,7 +1110,7 @@ export default async function ShortCourseActionCenterPage({
         owners={owners}
         segmentId={activeSegmentId}
       />
-      <ActionTaskList tasks={filteredTasks} />
+      <ActionTaskList tasks={filteredTasks} segmentId={activeSegmentId} />
     </AppShell>
   );
 }

@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FileSearch, ListChecks, RefreshCcw } from "lucide-react";
+import {
+  FileSearch,
+  GitPullRequestArrow,
+  ListChecks,
+  RefreshCcw,
+} from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import {
@@ -664,6 +669,17 @@ export default async function ShortCoursePage({
             >
               <ListChecks className="size-4" />
               Trung tâm việc
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/short-course/workflows",
+                activeSegmentId,
+              )}
+            >
+              <GitPullRequestArrow className="size-4" />
+              Phiếu xử lý
             </Link>
           </Button>
           <Button asChild variant="outline">
