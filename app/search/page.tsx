@@ -79,6 +79,13 @@ function isFunctionMissing(message: string) {
   );
 }
 
+function normalizeSearchInput(value: string) {
+  return value
+    .replace(/[*%]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function formatUpdatedAt(value: string | null) {
   if (!value) {
     return null;
@@ -141,7 +148,15 @@ function SearchForm({
 }
 
 function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
-  const suggestions = ["P1-10", "P1-11", "BHXH", "điểm danh", "công nợ", "ngắn hạn"];
+  const suggestions = [
+    "P1-18",
+    "P1-10",
+    "P1-11",
+    "BHXH",
+    "điểm danh",
+    "công nợ",
+    "ngắn hạn",
+  ];
 
   return (
     <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
@@ -270,6 +285,7 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const query = (firstParam(resolvedSearchParams.q) ?? "").trim();
+  const effectiveQuery = normalizeSearchInput(query);
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
   const workspace = await getAdmissionWorkspaceContext(
     supabase,
@@ -280,9 +296,9 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
   let results: SearchResultRow[] = [];
   let loadError: string | null = null;
 
-  if (query.length >= 2) {
+  if (effectiveQuery.length >= 2) {
     const { data, error } = await supabase.rpc("search_heu_os", {
-      p_query: query,
+      p_query: effectiveQuery,
       p_limit: 50,
     });
 
@@ -330,16 +346,25 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
         </section>
       ) : query.length === 0 ? (
         <SearchSuggestions segmentId={workspace.activeSegmentId} />
-      ) : query.length < 2 ? (
+      ) : effectiveQuery.length < 2 ? (
         <section className="rounded-lg border border-zinc-200 bg-white p-5 text-sm text-zinc-500 shadow-sm">
           Nhập ít nhất 2 ký tự để tìm kiếm.
         </section>
       ) : results.length === 0 ? (
         <section className="rounded-lg border border-zinc-200 bg-white p-5 text-sm leading-6 text-zinc-500 shadow-sm">
           Không tìm thấy kết quả phù hợp với từ khóa{" "}
-          <span className="font-semibold text-zinc-900">{query}</span>. Hãy thử
-          mã module như <span className="font-mono">P1-10</span>, tên học viên,
-          số điện thoại hoặc từ khóa nghiệp vụ.
+          <span className="font-semibold text-zinc-900">{query}</span>
+          {effectiveQuery !== query ? (
+            <>
+              {" "}
+              sau khi hệ thống hiểu thành{" "}
+              <span className="font-semibold text-zinc-900">
+                {effectiveQuery}
+              </span>
+            </>
+          ) : null}
+          . Hãy thử mã module như <span className="font-mono">P1-18</span>, tên
+          học viên, số điện thoại hoặc từ khóa nghiệp vụ.
         </section>
       ) : (
         <section className="space-y-3">
@@ -349,7 +374,9 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
               <span className="font-semibold text-zinc-900">
                 {results.length}
               </span>{" "}
-              kết quả cho “{query}”.
+              kết quả cho “{effectiveQuery}”
+              {effectiveQuery !== query ? ` từ từ khóa anh nhập “${query}”` : ""}
+              .
             </p>
             <span className="rounded-md bg-zinc-200 px-2 py-1 text-xs text-zinc-600">
               P1-11
