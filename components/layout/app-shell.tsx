@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Users,
   BarChart3,
+  Handshake,
   LogOut,
 } from "lucide-react";
 
@@ -66,6 +67,13 @@ const navigation = [
     icon: BookOpenCheck,
     key: "short-course",
     permission: "short_course.dashboard.read",
+  },
+  {
+    label: "TTGDTX",
+    href: "/ttgdtx",
+    icon: Handshake,
+    key: "ttgdtx",
+    permission: "ttgdtx.contract.read",
   },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
