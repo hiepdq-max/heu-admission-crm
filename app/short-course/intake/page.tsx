@@ -66,6 +66,23 @@ type LeadReadinessRow = {
   control_flags: string[] | null;
   readiness_status: string | null;
   can_convert: boolean | null;
+  is_fallback?: boolean;
+};
+
+type RawShortLeadRow = {
+  id: string;
+  lead_code: string;
+  student_name: string;
+  student_phone: string | null;
+  parent_phone: string | null;
+  status: string | null;
+  admission_segment_id: string | null;
+  admission_program_id: string | null;
+  admission_major_id: string | null;
+  admission_offering_id: string | null;
+  interested_program: string | null;
+  interested_major: string | null;
+  created_at: string | null;
 };
 
 type ClassReadinessRow = {
@@ -122,7 +139,65 @@ function formatDate(value: string | null | undefined) {
 }
 
 function compactFlags(flags: string[] | null | undefined) {
-  return flags && flags.length > 0 ? flags.join(", ") : "Không có lỗi";
+  const flagLabels: Record<string, string> = {
+    NOT_SHORT_COURSE_WORKSPACE: "Không thuộc đối tượng ngắn hạn",
+    LEAD_NOT_ELIGIBLE:
+      "Lead chưa đủ trạng thái để chuyển. Cần Đã nộp hồ sơ, Đủ điều kiện hoặc Đã nhập học.",
+    NO_PHONE: "Thiếu số điện thoại học viên/phụ huynh",
+    NO_PROGRAM_ID: "Thiếu hệ đào tạo",
+    NO_MAJOR_ID: "Thiếu ngành/khoá",
+    MULTIPLE_OFFERINGS_NEED_SELECT: "Có nhiều khoá phù hợp, cần chọn đúng khoá",
+    NO_OFFERING: "Chưa gắn khoá/ngành chi tiết",
+    OFFERING_NOT_ENROLLMENT_READY:
+      "Khoá/ngành chưa mở cổng nhập học. Cần kiểm tra pháp lý/học phí.",
+    OFFERING_NEEDS_CONTROL: "Khoá/ngành chưa đạt trạng thái kiểm soát",
+    ALREADY_CONVERTED: "Lead này đã được chuyển thành học viên",
+    DUPLICATE_STUDENT_PHONE: "Trùng số điện thoại với học viên đã có",
+    P1_02_VIEW_NOT_RETURNED:
+      "Lead chưa qua bảng kiểm P1-02; hãy kiểm tra trạng thái, hệ/ngành và khoá chi tiết.",
+  };
+
+  return flags && flags.length > 0
+    ? flags.map((flag) => flagLabels[flag] ?? flag).join(", ")
+    : "Không có lỗi";
+}
+
+function formatLeadStatus(status: string | null | undefined) {
+  const labels: Record<string, string> = {
+    NEW: "Lead mới",
+    ASSIGNED: "Đã phân tư vấn",
+    CONTACTED: "Đã liên hệ",
+    INTERESTED: "Có quan tâm",
+    FOLLOW_UP: "Chăm sóc tiếp",
+    DOCUMENT_PENDING: "Chờ hồ sơ",
+    DOCUMENT_SUBMITTED: "Đã nộp hồ sơ",
+    ELIGIBLE: "Đủ điều kiện",
+    ENROLLED: "Đã nhập học",
+    LOST: "Không đăng ký",
+  };
+
+  return status ? (labels[status] ?? status) : "Chưa rõ trạng thái";
+}
+
+function formatReadinessStatus(status: string | null | undefined) {
+  const labels: Record<string, string> = {
+    READY: "Đủ điều kiện chuyển",
+    READY_TO_CONVERT: "Đủ điều kiện chuyển",
+    BLOCKED: "Chưa đủ điều kiện",
+    NEEDS_APPROVAL: "Cần mở cổng kiểm soát",
+    CONVERTED: "Đã chuyển",
+    CHUA_DU_DIEU_KIEN: "Chưa đủ điều kiện",
+  };
+
+  return status ? (labels[status] ?? status) : "Chưa kiểm tra";
+}
+
+function canConvertLead(lead: LeadReadinessRow) {
+  return (
+    Boolean(lead.can_convert) &&
+    (lead.readiness_status === "READY" ||
+      lead.readiness_status === "READY_TO_CONVERT")
+  );
 }
 
 function messageFromParams(params: Awaited<IntakePageProps["searchParams"]>) {
@@ -209,7 +284,13 @@ export default async function ShortCourseIntakePage({
   const refreshHref = returnTo;
   const message = messageFromParams(resolvedSearchParams);
 
-  const [offeringsResult, leadsResult, classesResult, enrollmentsResult] =
+  const [
+    offeringsResult,
+    leadsResult,
+    rawLeadsResult,
+    classesResult,
+    enrollmentsResult,
+  ] =
     await Promise.all([
       supabase
         .from("admission_offering_catalog")
@@ -231,6 +312,18 @@ export default async function ShortCourseIntakePage({
             .limit(20)
             .returns<LeadReadinessRow[]>()
         : Promise.resolve({ data: [] as LeadReadinessRow[], error: null }),
+      activeSegmentId
+        ? supabase
+            .from("leads")
+            .select(
+              "id,lead_code,student_name,student_phone,parent_phone,status,admission_segment_id,admission_program_id,admission_major_id,admission_offering_id,interested_program,interested_major,created_at",
+            )
+            .eq("is_deleted", false)
+            .eq("admission_segment_id", activeSegmentId)
+            .order("created_at", { ascending: false })
+            .limit(20)
+            .returns<RawShortLeadRow[]>()
+        : Promise.resolve({ data: [] as RawShortLeadRow[], error: null }),
       activeSegmentId
         ? supabase
             .from("short_class_master_readiness")
@@ -264,11 +357,39 @@ export default async function ShortCourseIntakePage({
     return (offering.allowed_segment_codes ?? []).includes(activeSegmentCode);
   });
   const leadRows = leadsResult.data ?? [];
+  const rawLeadRows = rawLeadsResult.data ?? [];
+  const readinessLeadIds = new Set(leadRows.map((lead) => lead.lead_id));
+  const fallbackLeadRows: LeadReadinessRow[] = rawLeadRows
+    .filter((lead) => !readinessLeadIds.has(lead.id))
+    .map((lead) => ({
+      lead_id: lead.id,
+      lead_code: lead.lead_code,
+      student_name: lead.student_name,
+      student_phone: lead.student_phone ?? lead.parent_phone,
+      lead_status: lead.status,
+      admission_segment_id: lead.admission_segment_id,
+      segment_code: null,
+      segment_name: null,
+      program_name: lead.interested_program,
+      major_name: lead.interested_major,
+      resolved_offering_id: lead.admission_offering_id,
+      offering_code: null,
+      offering_name: null,
+      matching_offering_count: null,
+      existing_student_id: null,
+      duplicate_student_id: null,
+      control_flags: ["P1_02_VIEW_NOT_RETURNED"],
+      readiness_status: "CHUA_DU_DIEU_KIEN",
+      can_convert: false,
+      is_fallback: true,
+    }));
+  const displayLeadRows = [...leadRows, ...fallbackLeadRows];
   const classRows = classesResult.data ?? [];
   const enrollmentRows = enrollmentsResult.data ?? [];
   const loadError =
     offeringsResult.error?.message ??
     leadsResult.error?.message ??
+    rawLeadsResult.error?.message ??
     classesResult.error?.message ??
     enrollmentsResult.error?.message ??
     null;
@@ -500,7 +621,7 @@ export default async function ShortCourseIntakePage({
           </div>
 
           <div className="divide-y divide-zinc-200">
-            {leadRows.length === 0 ? (
+            {displayLeadRows.length === 0 ? (
               <div className="p-6">
                 <p className="text-sm text-zinc-500">
                   Chưa có lead ngắn hạn phù hợp trong đối tượng đang chọn. Cần
@@ -520,10 +641,8 @@ export default async function ShortCourseIntakePage({
                 </Button>
               </div>
             ) : (
-              leadRows.map((lead) => {
-                const canConvert =
-                  Boolean(lead.can_convert) &&
-                  lead.readiness_status === "READY_TO_CONVERT";
+              displayLeadRows.map((lead) => {
+                const canConvert = canConvertLead(lead);
 
                 return (
                   <form
@@ -541,7 +660,7 @@ export default async function ShortCourseIntakePage({
                       <p className="font-semibold">{lead.student_name}</p>
                       <p className="mt-1 text-sm text-zinc-500">
                         {lead.lead_code} · {lead.student_phone ?? "Chưa có SĐT"} ·{" "}
-                        {lead.lead_status ?? "Chưa rõ trạng thái"}
+                        {formatLeadStatus(lead.lead_status)}
                       </p>
                       <p className="mt-2 text-sm text-zinc-600">
                         {lead.program_name ?? "Chưa rõ hệ"} ·{" "}
@@ -555,9 +674,16 @@ export default async function ShortCourseIntakePage({
                             : "bg-amber-50 text-amber-700"
                         }`}
                       >
-                        {lead.readiness_status ?? "Chưa kiểm tra"} ·{" "}
+                        {formatReadinessStatus(lead.readiness_status)} ·{" "}
                         {compactFlags(lead.control_flags)}
                       </p>
+                      {lead.is_fallback ? (
+                        <p className="mt-2 text-xs leading-5 text-zinc-500">
+                          Lead này đã có trong CRM nhưng chưa đi qua đủ bảng kiểm
+                          chuyển học viên. Hãy mở lead để kiểm tra trạng thái,
+                          hệ/ngành/khoá trước khi chuyển.
+                        </p>
+                      ) : null}
                     </div>
 
                     <div className="space-y-3">
@@ -586,10 +712,15 @@ export default async function ShortCourseIntakePage({
                     </div>
 
                     <div className="flex items-end">
-                      <Button type="submit" disabled={!canConvert}>
-                        <UserRoundPlus className="size-4" />
-                        Chuyển
-                      </Button>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button type="submit" disabled={!canConvert}>
+                          <UserRoundPlus className="size-4" />
+                          Chuyển
+                        </Button>
+                        <Button asChild variant="outline">
+                          <Link href={`/leads/${lead.lead_id}`}>Mở lead</Link>
+                        </Button>
+                      </div>
                     </div>
                   </form>
                 );
