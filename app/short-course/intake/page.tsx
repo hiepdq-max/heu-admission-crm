@@ -39,6 +39,8 @@ type OfferingRow = {
   id: string;
   offering_code: string;
   offering_name: string;
+  program_id: string | null;
+  admission_major_id: string | null;
   allowed_segment_codes: string[] | null;
   is_enrollment_ready: boolean | null;
   is_finance_ready: boolean | null;
@@ -55,8 +57,10 @@ type LeadReadinessRow = {
   admission_segment_id: string | null;
   segment_code: string | null;
   segment_name: string | null;
+  admission_major_id: string | null;
   program_name: string | null;
   major_name: string | null;
+  admission_offering_id: string | null;
   resolved_offering_id: string | null;
   offering_code: string | null;
   offering_name: string | null;
@@ -200,6 +204,31 @@ function canConvertLead(lead: LeadReadinessRow) {
   );
 }
 
+function offeringOptionsForLead(
+  lead: LeadReadinessRow,
+  availableOfferings: OfferingRow[],
+) {
+  if (lead.resolved_offering_id) {
+    return availableOfferings.filter(
+      (offering) => offering.id === lead.resolved_offering_id,
+    );
+  }
+
+  if (lead.admission_offering_id) {
+    return availableOfferings.filter(
+      (offering) => offering.id === lead.admission_offering_id,
+    );
+  }
+
+  if (lead.admission_major_id) {
+    return availableOfferings.filter(
+      (offering) => offering.admission_major_id === lead.admission_major_id,
+    );
+  }
+
+  return [];
+}
+
 function messageFromParams(params: Awaited<IntakePageProps["searchParams"]>) {
   const error = firstParam(params?.error);
 
@@ -295,7 +324,7 @@ export default async function ShortCourseIntakePage({
       supabase
         .from("admission_offering_catalog")
         .select(
-          "id,offering_code,offering_name,allowed_segment_codes,is_enrollment_ready,is_finance_ready,control_status,status",
+          "id,offering_code,offering_name,program_id,admission_major_id,allowed_segment_codes,is_enrollment_ready,is_finance_ready,control_status,status",
         )
         .eq("status", "ACTIVE")
         .order("offering_name", { ascending: true })
@@ -305,7 +334,7 @@ export default async function ShortCourseIntakePage({
         ? supabase
             .from("short_course_lead_to_student_readiness")
             .select(
-              "lead_id,lead_code,student_name,student_phone,lead_status,admission_segment_id,segment_code,segment_name,program_name,major_name,resolved_offering_id,offering_code,offering_name,matching_offering_count,existing_student_id,duplicate_student_id,control_flags,readiness_status,can_convert",
+              "lead_id,lead_code,student_name,student_phone,lead_status,admission_segment_id,segment_code,segment_name,admission_major_id,program_name,major_name,admission_offering_id,resolved_offering_id,offering_code,offering_name,matching_offering_count,existing_student_id,duplicate_student_id,control_flags,readiness_status,can_convert",
             )
             .eq("admission_segment_id", activeSegmentId)
             .order("student_name", { ascending: true })
@@ -370,8 +399,10 @@ export default async function ShortCourseIntakePage({
       admission_segment_id: lead.admission_segment_id,
       segment_code: null,
       segment_name: null,
+      admission_major_id: lead.admission_major_id,
       program_name: lead.interested_program,
       major_name: lead.interested_major,
+      admission_offering_id: lead.admission_offering_id,
       resolved_offering_id: lead.admission_offering_id,
       offering_code: null,
       offering_name: null,
@@ -642,7 +673,8 @@ export default async function ShortCourseIntakePage({
               </div>
             ) : (
               displayLeadRows.map((lead) => {
-                const canConvert = canConvertLead(lead);
+                const leadOfferings = offeringOptionsForLead(lead, offerings);
+                const canConvert = canConvertLead(lead) && leadOfferings.length > 0;
 
                 return (
                   <form
@@ -695,15 +727,28 @@ export default async function ShortCourseIntakePage({
                           name="target_offering_id"
                           className={fieldClass}
                           defaultValue={lead.resolved_offering_id ?? ""}
+                          disabled={leadOfferings.length === 0}
                         >
-                          <option value="">Để hệ thống tự chọn nếu đủ rõ</option>
-                          {offerings.map((offering) => (
+                          {leadOfferings.length === 0 ? (
+                            <option value="">
+                              Chưa có khoá hợp lệ đúng ngành của lead
+                            </option>
+                          ) : (
+                            <option value="">Để hệ thống tự chọn nếu đủ rõ</option>
+                          )}
+                          {leadOfferings.map((offering) => (
                             <option key={offering.id} value={offering.id}>
                               {offering.offering_name} · {offering.offering_code}
                             </option>
                           ))}
                         </select>
                       </label>
+                      {leadOfferings.length === 0 ? (
+                        <p className="text-xs leading-5 text-amber-700">
+                          Chưa có khoá/ngành trong catalog khớp với ngành của lead.
+                          Cần kiểm tra P0-17/P0-19 trước khi chuyển.
+                        </p>
+                      ) : null}
                       <textarea
                         name="conversion_note"
                         className={textAreaClass}
