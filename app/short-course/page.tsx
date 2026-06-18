@@ -5,6 +5,7 @@ import {
   GitPullRequestArrow,
   ListChecks,
   RefreshCcw,
+  UserRoundPlus,
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
@@ -669,6 +670,17 @@ export default async function ShortCoursePage({
             >
               <ListChecks className="size-4" />
               Trung tâm việc
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link
+              href={withAdmissionSegmentParam(
+                "/short-course/intake",
+                activeSegmentId,
+              )}
+            >
+              <UserRoundPlus className="size-4" />
+              Nhập liệu P1-20
             </Link>
           </Button>
           <Button asChild variant="outline">
