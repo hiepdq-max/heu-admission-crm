@@ -42,8 +42,6 @@ type OfferingRow = {
   allowed_segment_codes: string[] | null;
   is_enrollment_ready: boolean | null;
   is_finance_ready: boolean | null;
-  legal_status: string | null;
-  tuition_policy_status: string | null;
   control_status: string | null;
   status: string | null;
 };
@@ -216,7 +214,7 @@ export default async function ShortCourseIntakePage({
       supabase
         .from("admission_offering_catalog")
         .select(
-          "id,offering_code,offering_name,allowed_segment_codes,is_enrollment_ready,is_finance_ready,legal_status,tuition_policy_status,control_status,status",
+          "id,offering_code,offering_name,allowed_segment_codes,is_enrollment_ready,is_finance_ready,control_status,status",
         )
         .eq("status", "ACTIVE")
         .order("offering_name", { ascending: true })
