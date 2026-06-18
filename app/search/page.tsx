@@ -86,6 +86,14 @@ function normalizeSearchInput(value: string) {
     .trim();
 }
 
+function isScopedSearchMissing(message: string) {
+  return (
+    message.includes("p_segment_id") ||
+    message.includes("Could not choose the best candidate function") ||
+    message.includes("Could not find the function")
+  );
+}
+
 function formatUpdatedAt(value: string | null) {
   if (!value) {
     return null;
@@ -300,10 +308,33 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
     const { data, error } = await supabase.rpc("search_heu_os", {
       p_query: effectiveQuery,
       p_limit: 50,
+      p_segment_id: workspace.activeSegmentId,
     });
 
     if (error) {
-      loadError = error.message;
+      if (isScopedSearchMissing(error.message)) {
+        const fallback = await supabase.rpc("search_heu_os", {
+          p_query: effectiveQuery,
+          p_limit: 50,
+        });
+
+        if (fallback.error) {
+          loadError = fallback.error.message;
+        } else {
+          const fallbackRows = Array.isArray(fallback.data)
+            ? (fallback.data as SearchResultRow[])
+            : [];
+
+          results = fallbackRows.filter(
+            (row) =>
+              !workspace.activeSegmentId ||
+              !row.segment_id ||
+              row.segment_id === workspace.activeSegmentId,
+          );
+        }
+      } else {
+        loadError = error.message;
+      }
     } else {
       results = Array.isArray(data) ? (data as SearchResultRow[]) : [];
     }
