@@ -501,8 +501,23 @@ export default async function ShortCourseIntakePage({
 
           <div className="divide-y divide-zinc-200">
             {leadRows.length === 0 ? (
-              <div className="p-6 text-sm text-zinc-500">
-                Chưa có lead ngắn hạn phù hợp trong đối tượng đang chọn.
+              <div className="p-6">
+                <p className="text-sm text-zinc-500">
+                  Chưa có lead ngắn hạn phù hợp trong đối tượng đang chọn. Cần
+                  tạo lead trước, sau đó quay lại đây để chuyển lead thành học
+                  viên.
+                </p>
+                <Button asChild className="mt-4">
+                  <Link
+                    href={withAdmissionSegmentParam(
+                      "/leads/new",
+                      activeSegmentId,
+                    )}
+                  >
+                    <UserRoundPlus className="size-4" />
+                    Tạo lead ngắn hạn
+                  </Link>
+                </Button>
               </div>
             ) : (
               leadRows.map((lead) => {
