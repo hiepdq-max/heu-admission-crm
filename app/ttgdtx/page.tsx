@@ -7,6 +7,7 @@ import {
   Handshake,
   RefreshCcw,
   ShieldCheck,
+  WalletCards,
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
@@ -203,6 +204,12 @@ export default async function TtgdtxPage() {
             <Link href="/partners">
               <Handshake className="size-4" />
               Đối tác
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/tuition">
+              <WalletCards className="size-4" />
+              P2-02 học phí
             </Link>
           </Button>
           <Button asChild variant="outline">
