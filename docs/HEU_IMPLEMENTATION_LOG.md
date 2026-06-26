@@ -323,3 +323,26 @@
 - Step108 is a migration candidate only and was not run in production.
 - P2-18 is read-only and points users back to the source step when values do not match.
 - Dashboard findings are not business approval; source transaction/audit records remain the evidence of record.
+
+## 2026-06-27 - P0-11 Role Permission Soft Revoke Slice
+
+### Scope
+
+- Continued hardening with Step109 role-permission soft revoke controls.
+- Kept role permission replacement as `INACTIVE` plus upsert `ACTIVE`; no Settings action should physically delete role permissions.
+- Kept user segment/partner scope replacement as `INACTIVE` plus upsert `ACTIVE` to preserve audit history.
+
+### Files Updated/Added
+
+- `app/settings/actions.ts`
+- `app/settings/page.tsx`
+- `database/step109_role_permission_soft_revoke_p0_11.sql`
+- `docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step109 is a migration candidate only and was not run in production.
+- Production remains blocked until backup, restore dry-run, ADMIN lockout test and audit evidence are complete.
+- Settings UI now warns if Step109 has not been run before editing role permissions.

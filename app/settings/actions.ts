@@ -14,6 +14,22 @@ function textValue(formData: FormData, key: string) {
 
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
 
+function isMissingRolePermissionSoftRevokeMigration(message: string) {
+  const normalizedMessage = message.toLowerCase();
+
+  return (
+    normalizedMessage.includes("role_permissions") &&
+    (normalizedMessage.includes("status") ||
+      normalizedMessage.includes("assigned_by") ||
+      normalizedMessage.includes("revoked_by") ||
+      normalizedMessage.includes("revoked_at")) &&
+    (normalizedMessage.includes("could not find") ||
+      normalizedMessage.includes("does not exist") ||
+      normalizedMessage.includes("schema cache") ||
+      normalizedMessage.includes("column"))
+  );
+}
+
 export async function updateUserProfileAction(formData: FormData) {
   const supabase = await createClient();
   const {
@@ -279,26 +295,48 @@ export async function updateRolePermissionsAction(formData: FormData) {
     selectedPermissions.add("users.manage");
   }
 
-  const { error: deleteError } = await supabase
-    .from("role_permissions")
-    .delete()
-    .eq("role_id", roleId);
+  const permissionUpdateAt = new Date().toISOString();
+  const permissionUpdateNote = `[${permissionUpdateAt}] Role permissions updated from settings by ${user.id}.`;
 
-  if (deleteError) {
-    redirect(`/settings?error=${encodeURIComponent(deleteError.message)}`);
+  const { error: revokeError } = await supabase
+    .from("role_permissions")
+    .update({
+      status: "INACTIVE",
+      revoked_by: user.id,
+      revoked_at: permissionUpdateAt,
+      note: permissionUpdateNote,
+    })
+    .eq("role_id", roleId)
+    .neq("status", "INACTIVE");
+
+  if (revokeError) {
+    if (isMissingRolePermissionSoftRevokeMigration(revokeError.message)) {
+      redirect("/settings?error=role_permission_soft_revoke_migration_required");
+    }
+
+    redirect(`/settings?error=${encodeURIComponent(revokeError.message)}`);
   }
 
   const rows = [...selectedPermissions].map((permission) => ({
     role_id: roleId,
     permission,
+    status: "ACTIVE",
+    assigned_by: user.id,
+    revoked_by: null,
+    revoked_at: null,
+    note: permissionUpdateNote,
   }));
 
   if (rows.length > 0) {
     const { error: insertError } = await supabase
       .from("role_permissions")
-      .insert(rows);
+      .upsert(rows, { onConflict: "role_id,permission" });
 
     if (insertError) {
+      if (isMissingRolePermissionSoftRevokeMigration(insertError.message)) {
+        redirect("/settings?error=role_permission_soft_revoke_migration_required");
+      }
+
       redirect(`/settings?error=${encodeURIComponent(insertError.message)}`);
     }
   }
@@ -352,42 +390,64 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
     redirect(`${returnPath}?error=lead_visibility_all_admin_only`);
   }
 
-  const segmentIds = formData
-    .getAll("segment_ids")
-    .map((value) => String(value))
-    .filter(Boolean);
-  const partnerIds = formData
-    .getAll("partner_ids")
-    .map((value) => String(value))
-    .filter(Boolean);
+  const segmentIds = Array.from(
+    new Set(
+      formData
+        .getAll("segment_ids")
+        .map((value) => String(value))
+        .filter(Boolean),
+    ),
+  );
+  const partnerIds = Array.from(
+    new Set(
+      formData
+        .getAll("partner_ids")
+        .map((value) => String(value))
+        .filter(Boolean),
+    ),
+  );
+  const scopeUpdateNote = `[${new Date().toISOString()}] Updated from settings scope form by ${user.id}.`;
 
-  const { error: segmentDeleteError } = await supabase
+  const { error: segmentArchiveError } = await supabase
     .from("user_admission_segment_scopes")
-    .delete()
-    .eq("user_id", targetUserId);
+    .update({
+      status: "INACTIVE",
+      assigned_by: user.id,
+      note: scopeUpdateNote,
+    })
+    .eq("user_id", targetUserId)
+    .neq("status", "INACTIVE");
 
-  if (segmentDeleteError) {
-    redirect(`${returnPath}?error=${encodeURIComponent(segmentDeleteError.message)}`);
+  if (segmentArchiveError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(segmentArchiveError.message)}`);
   }
 
-  const { error: partnerDeleteError } = await supabase
+  const { error: partnerArchiveError } = await supabase
     .from("user_partner_scopes")
-    .delete()
-    .eq("user_id", targetUserId);
+    .update({
+      status: "INACTIVE",
+      assigned_by: user.id,
+      note: scopeUpdateNote,
+    })
+    .eq("user_id", targetUserId)
+    .neq("status", "INACTIVE");
 
-  if (partnerDeleteError) {
-    redirect(`${returnPath}?error=${encodeURIComponent(partnerDeleteError.message)}`);
+  if (partnerArchiveError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(partnerArchiveError.message)}`);
   }
 
   if (segmentIds.length > 0) {
     const { error: segmentInsertError } = await supabase
       .from("user_admission_segment_scopes")
-      .insert(
+      .upsert(
         segmentIds.map((segmentId) => ({
           user_id: targetUserId,
           segment_id: segmentId,
           assigned_by: user.id,
+          status: "ACTIVE",
+          note: scopeUpdateNote,
         })),
+        { onConflict: "user_id,segment_id" },
       );
 
     if (segmentInsertError) {
@@ -400,12 +460,15 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
   if (partnerIds.length > 0) {
     const { error: partnerInsertError } = await supabase
       .from("user_partner_scopes")
-      .insert(
+      .upsert(
         partnerIds.map((partnerId) => ({
           user_id: targetUserId,
           partner_id: partnerId,
           assigned_by: user.id,
+          status: "ACTIVE",
+          note: scopeUpdateNote,
         })),
+        { onConflict: "user_id,partner_id" },
       );
 
     if (partnerInsertError) {

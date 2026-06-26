@@ -12,6 +12,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-04 | Keep generated logs out of commits | IT/Data | OPEN | `.gitignore`/manual review |
 | P0-05 | Record every phase in `HEU_IMPLEMENTATION_LOG.md` | Codex + IT/Data | IN_PROGRESS | Log before conclusion |
 | P0-06 | Freeze code edits until inventory/backlog is current | Codex + IT/Data | PASS_LOCAL | Current P0 docs updated after `28b8e7d` |
+| P0-11 | Role permission soft revoke | IT/Data + ADMIN | PASS_LOCAL | Step109 is migration candidate only; settings uses INACTIVE/upsert instead of hard delete |
 
 ## P1 - Data Foundation
 

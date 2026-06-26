@@ -114,6 +114,8 @@ const errorMessages: Record<string, string> = {
   lead_visibility_all_admin_only:
     "Chỉ ADMIN mới được gán quyền xem lead toàn hệ thống.",
   missing_checklist_data: "Thiếu mã hoặc tên giấy tờ hồ sơ.",
+  role_permission_soft_revoke_migration_required:
+    "Cần chạy migration step109_role_permission_soft_revoke_p0_11.sql trước khi cập nhật ma trận quyền để tránh xóa cứng role_permissions.",
   duplicate_checklist_code:
     "Mã giấy tờ này đã tồn tại. Hãy sửa dòng giấy tờ hiện có hoặc dùng mã khác.",
   missing_source_data: "Thiếu mã nguồn, tên nguồn hoặc nhóm nguồn lead.",
@@ -144,6 +146,53 @@ const errorMessages: Record<string, string> = {
   cannot_lock_self:
     "Không thể tự hạ role ADMIN hoặc khóa chính tài khoản đang đăng nhập.",
 };
+
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+type RolePermissionStatusRow = RolePermissionRow & {
+  status?: string | null;
+};
+
+function isMissingRolePermissionStatusColumn(message: string) {
+  const normalizedMessage = message.toLowerCase();
+
+  return (
+    normalizedMessage.includes("role_permissions") &&
+    normalizedMessage.includes("status") &&
+    (normalizedMessage.includes("could not find") ||
+      normalizedMessage.includes("does not exist") ||
+      normalizedMessage.includes("schema cache") ||
+      normalizedMessage.includes("column"))
+  );
+}
+
+async function loadRolePermissions(supabase: SupabaseServerClient) {
+  const activeResult = await supabase
+    .from("role_permissions")
+    .select("role_id,permission,status")
+    .eq("status", "ACTIVE")
+    .order("permission", { ascending: true })
+    .returns<RolePermissionStatusRow[]>();
+
+  if (!activeResult.error) {
+    return {
+      data: (activeResult.data ?? []).map((permission) => ({
+        role_id: permission.role_id,
+        permission: permission.permission,
+      })),
+      error: null,
+    };
+  }
+
+  if (!isMissingRolePermissionStatusColumn(activeResult.error.message)) {
+    return activeResult;
+  }
+
+  return supabase
+    .from("role_permissions")
+    .select("role_id,permission")
+    .order("permission", { ascending: true })
+    .returns<RolePermissionRow[]>();
+}
 
 export default async function SettingsPage({ searchParams }: SettingsPageProps) {
   const supabase = await createClient();
@@ -209,11 +258,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       .select("id,code,name,status")
       .order("code", { ascending: true })
       .returns<DepartmentRow[]>(),
-    supabase
-      .from("role_permissions")
-      .select("role_id,permission")
-      .order("permission", { ascending: true })
-      .returns<RolePermissionRow[]>(),
+    loadRolePermissions(supabase),
     supabase
       .from("enrollment_checklists")
       .select(
