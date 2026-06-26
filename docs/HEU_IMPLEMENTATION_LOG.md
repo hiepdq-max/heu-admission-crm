@@ -58,3 +58,22 @@
 - Product code must stay generic for many TTGDTX centers/partners.
 - Docs and database evidence metadata may mention Phu Xuyen only as a reference/control case.
 - Do not rename Step110 source codes in production without a dedicated migration and rollback note.
+
+## 2026-06-26 - P0 Recheck Before Further Code Work
+
+### Scope
+
+- Re-ran repo/branch/status/framework checks at HEAD `28b8e7d`.
+- Updated P0 inventory and backlog before any further app/database code edits.
+- Confirmed the working tree remains dirty and must be split by scope.
+
+### Files Updated
+
+- `docs/HEU_CODEX_RESUME_INVENTORY_20260626.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Pause new code edits until P0 classification is accepted.
+- Next safe P0 work is grouping the remaining dirty files and deciding the next docs/audit-only commit scope.

@@ -9,7 +9,7 @@ Mode: safe resume inventory. No production migration was run. No deploy was run.
 | Workspace | `D:\Web app HEU\heu-admission-crm` |
 | Repository | `heu-admission-crm` |
 | Branch | `hardening/ttgdtx-9plus-pilot` |
-| Current commit | `ed3165e` |
+| Current commit | `28b8e7d` |
 | Package manager | npm, `package-lock.json` present |
 | Framework | Next.js 16 App Router, React 19, TypeScript, Supabase |
 | Runtime note | Use `npm.cmd` on this Windows shell |
@@ -17,6 +17,7 @@ Mode: safe resume inventory. No production migration was run. No deploy was run.
 ## 2. Safety Position
 
 - Current branch is not `main` or `master`.
+- Latest P0 recheck: 2026-06-26, after commit `28b8e7d chore(ttgdtx): guard generic source evidence`.
 - Working tree is dirty and must not be force-cleaned.
 - Existing user/Codex work must not be reverted.
 - Production migration is not approved in this inventory.
@@ -46,10 +47,9 @@ Mode: safe resume inventory. No production migration was run. No deploy was run.
   - `app/ttgdtx/receivables`
   - `app/ttgdtx/reconciliation`
   - `app/ttgdtx/simulation`
-  - `app/ttgdtx/source-control`
 - TTGDTX SQL candidates: `database/step90` through `database/step110`
 - TTGDTX runbooks and evidence-control docs under `docs`
-- Audit scripts under `scripts`
+- Audit scripts under `scripts`, except `scripts/audit-ttgdtx-generic-source-evidence.mjs` is now committed in `28b8e7d`
 
 ## 4. Existing App Modules
 
@@ -84,8 +84,7 @@ Mode: safe resume inventory. No production migration was run. No deploy was run.
 ## 7. Recommended Next Work
 
 1. Keep the scope frozen around TTGDTX/9+ Pilot.
-2. Create/update system backlog, tech risk register and implementation log.
-3. Define HEU data model V1, data dictionary V1 and role-permission matrix V1 before expanding automation.
-4. Treat TTGDTX Phu Xuyen as a test lens for generic center/partner workflows.
-5. Next small build target: normalize TTGDTX source-control wording and docs so source packs are generic, with Phu Xuyen as a reference case only.
-
+2. Do not change more app/database code until the remaining dirty worktree is grouped for review.
+3. Review and commit next by safe group: TTGDTX UI routes, TTGDTX SQL candidates, CRM shared changes, docs/runbooks, audit scripts.
+4. Keep Phu Xuyen as a test lens for generic center/partner workflows only.
+5. Next P0 target: classify the remaining untracked `scripts/*` and `package.json` audit-script changes before touching finance code.
