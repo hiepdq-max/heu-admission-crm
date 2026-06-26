@@ -302,3 +302,24 @@
 - Step107 is a migration candidate only and was not run in production.
 - P2-17 records payment evidence only after P2-16 APPROVED and keeps audit history.
 - Duplicate voucher numbers, missing payout evidence, wrong request status and overpayment are blocked before insert.
+
+## 2026-06-26 - P2-18 TTGDTX Accounting Dashboard Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with a read-only accounting dashboard across P2-01 through P2-17.
+- Added partner, control, summary, exception and recent-movement rollups for finance review.
+- Kept P2-18 as an operating dashboard only; it does not create, approve or execute money movement.
+
+### Files Updated/Added
+
+- `app/ttgdtx/accounting-dashboard/page.tsx`
+- `database/step108_ttgdtx_accounting_dashboard_p2_18.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step108 is a migration candidate only and was not run in production.
+- P2-18 is read-only and points users back to the source step when values do not match.
+- Dashboard findings are not business approval; source transaction/audit records remain the evidence of record.
