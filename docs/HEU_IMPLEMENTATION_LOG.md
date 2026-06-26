@@ -189,3 +189,25 @@
 - Each P2-10 payment now carries `invoice_required`, `invoice_issuer`, `invoice_status`, invoice number/date/evidence or waiver reason.
 - UI requires the operator to classify invoice/receipt status before saving a collection voucher.
 - P2-10 still does not approve partner payment; P2-15/P2-17 must continue to gate partner invoice and BBNT separately.
+
+## 2026-06-26 - P2-13 TTGDTX Reconciliation Invoice Gate Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot by hardening P2-13 reconciliation after P2-10 invoice control.
+- Added a block so P2-13 does not pull P2-10 payments whose collection invoice/receipt decision is unresolved.
+- Corrected P2-13 summary aliases used by the UI.
+
+### Files Updated/Added
+
+- `app/ttgdtx/reconciliation/page.tsx`
+- `app/ttgdtx/reconciliation/actions.ts`
+- `database/step101_ttgdtx_reconciliation_p2_13.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step101 is a migration candidate only and was not run in production.
+- P2-13 remains a reconciliation batch step only; it does not approve or pay TTGDTX.
+- Payments with `NEEDS_INVOICE_DECISION` stay visible but cannot enter an active reconciliation batch.

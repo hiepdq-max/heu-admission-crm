@@ -38,7 +38,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-09 | Department workload board | Department leads + BGH + Audit | PASS_LOCAL | Step95 is migration candidate only; board is read/control, not source edit |
 | P2-12 | TTGDTX master/dropdown control | Tuyen sinh + Phap Che + IT/Data | IN_PROGRESS | Step99 is migration candidate only; no production run from Codex |
 | P2-10 | Tuition collection | KHTC | PASS_LOCAL | Step96 is migration candidate only; invoice/receipt decision captured per payment |
-| P2-13 | Reconciliation | KHTC + Audit | BUILT_INTERNAL | Lock after approval |
+| P2-13 | Reconciliation | KHTC + Audit | PASS_LOCAL | Step101 is migration candidate only; blocks payments with unresolved invoice/receipt decision |
 | P2-15 | Partner payment request | KHTC + Phap Che | BUILT_INTERNAL | BBNT/invoice evidence |
 | P2-17 | Partner payout | KHTC + BGH | BUILT_INTERNAL | No duplicate payout, approval only |
 | P2-18 | Accounting dashboard | KHTC + BGH | BUILT_INTERNAL | Authorized-user UAT |
