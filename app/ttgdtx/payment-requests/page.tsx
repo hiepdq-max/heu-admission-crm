@@ -362,6 +362,12 @@ export default async function TtgdtxPaymentRequestsPage({
             </Link>
           </Button>
           <Button asChild variant="outline">
+            <Link href="/ttgdtx/payment-requests/review">
+              <ShieldCheck className="size-4" />
+              Kiểm/duyệt (P2-16)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
             <Link href="/ttgdtx/payment-requests">
               <RefreshCcw className="size-4" />
               Tải lại

@@ -255,3 +255,26 @@
 - Step105 is a migration candidate only and was not run in production.
 - P2-15 requires a locked P2-14 batch, no duplicate request, no unresolved collection invoice lines, and a BBNT/partner-invoice dossier link.
 - P2-16 approval and P2-17 payout remain separate high-risk slices.
+
+## 2026-06-26 - P2-16 TTGDTX Payment Request Approval Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with P2-16 check/approve/return/reject controls for P2-15 partner payment requests.
+- Kept P2-16 as an approval-status step only; it does not execute payout and does not replace accounting vouchers.
+- Hardened P2-16 so APPROVE requires a prior CHECK state and approval views use security-invoker behavior.
+
+### Files Updated/Added
+
+- `app/ttgdtx/payment-requests/review/page.tsx`
+- `app/ttgdtx/payment-requests/review/actions.ts`
+- `app/ttgdtx/payment-requests/page.tsx`
+- `database/step106_ttgdtx_payment_request_approval_p2_16.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step106 is a migration candidate only and was not run in production.
+- P2-16 can check, approve, return or reject a P2-15 request, but payment execution remains P2-17.
+- P2-16 approval requires the request to be CHECKED first; SUBMITTED requests can be checked or returned/rejected, not directly approved.
