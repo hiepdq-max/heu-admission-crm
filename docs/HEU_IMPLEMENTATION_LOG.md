@@ -167,3 +167,25 @@
 - Step92, Step93, Step94 and Step95 are migration candidates only and were not run in production.
 - Server action `updateTtgdtxImportIssueTaskAction` now allowlists P2-08 workflow actions before calling the database RPC.
 - P2-06 through P2-09 are committed as the controlled intake/error-workload layer before P2-10 tuition collection and P2-17 payout execution.
+
+## 2026-06-26 - P2-10 TTGDTX Tuition Collection Invoice Control Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with P2-10 tuition collection controls.
+- Added a per-payment invoice/receipt decision instead of a global yes/no answer.
+- Kept Step96 as a migration candidate only; no production migration was run.
+
+### Files Updated/Added
+
+- `app/ttgdtx/payments/page.tsx`
+- `app/ttgdtx/payments/actions.ts`
+- `database/step96_ttgdtx_tuition_collection_p2_10.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Each P2-10 payment now carries `invoice_required`, `invoice_issuer`, `invoice_status`, invoice number/date/evidence or waiver reason.
+- UI requires the operator to classify invoice/receipt status before saving a collection voucher.
+- P2-10 still does not approve partner payment; P2-15/P2-17 must continue to gate partner invoice and BBNT separately.
