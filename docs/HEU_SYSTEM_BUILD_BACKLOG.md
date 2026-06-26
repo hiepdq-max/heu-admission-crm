@@ -33,6 +33,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-03 | Student receivables | KHTC | BUILT_INTERNAL | No duplicate receivable test |
 | P2-05 | Receivable gate | KHTC + IT/Data | BUILT_INTERNAL | Gate before posting |
 | P2-06 | Import staging/control | IT/Data + KHTC | BUILT_INTERNAL | Source file registry and validation |
+| P2-12 | TTGDTX master/dropdown control | Tuyen sinh + Phap Che + IT/Data | IN_PROGRESS | Step99 is migration candidate only; no production run from Codex |
 | P2-10 | Tuition collection | KHTC | BUILT_INTERNAL | Invoice/receipt decision required |
 | P2-13 | Reconciliation | KHTC + Audit | BUILT_INTERNAL | Lock after approval |
 | P2-15 | Partner payment request | KHTC + Phap Che | BUILT_INTERNAL | BBNT/invoice evidence |
@@ -72,7 +73,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P6-02 | TTGDTX cascade audit | IT/Data | PASS_LOCAL | No `on delete cascade` in Step90-Step110 |
 | P6-03 | TTGDTX audit-log coverage | IT/Data | PASS_LOCAL | New TTGDTX write tables need triggers |
 | P6-04 | Role-scope UAT | IT/Data + Process owners | OPEN | Signed UAT required |
-| P6-05 | Package TTGDTX local audit scripts | IT/Data | IN_PROGRESS | npm scripts must point to committed local guards |
+| P6-05 | Package TTGDTX local audit scripts | IT/Data | PASS_LOCAL | npm scripts must point to committed local guards |
 
 ## P7 - AI Agent Layer
 

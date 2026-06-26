@@ -98,3 +98,24 @@
 - This change does not run production migration.
 - These scripts are local static guards only; they do not read secrets or call Supabase production.
 - Keep committing P2 support controls separately from finance migrations and UI routes.
+
+## 2026-06-26 - P2-12 TTGDTX Master Dropdown Slice
+
+### Scope
+
+- Continued P2 TTGDTX/9+ Pilot with the Data Master layer before finance posting.
+- Reviewed `app/ttgdtx/master/page.tsx` and `database/step99_ttgdtx_master_dropdown_p2_12.sql`.
+- Kept P2-12 as master/dropdown/readiness control: no receivable creation, no tuition collection and no partner payout.
+
+### Files Updated/Added
+
+- `app/ttgdtx/master/page.tsx`
+- `database/step99_ttgdtx_master_dropdown_p2_12.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step99 is a migration candidate only and was not run in production.
+- UI copy now tells operators to apply Step99 only in an approved environment with backup/approval.
+- P2-12 is committed separately from high-risk finance flows P2-10, P2-13 and P2-17.
