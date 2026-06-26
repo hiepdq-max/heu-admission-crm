@@ -140,3 +140,30 @@
 - Step91 is a migration candidate only and was not run in production.
 - P2-05 route now checks the dedicated `ttgdtx.receivable.gate.read` permission while also accepting existing `ttgdtx.receivable.read` for P2-03 readers.
 - This slice is committed before P2-03/P2-10 finance posting flows.
+
+## 2026-06-26 - P2-06/P2-09 TTGDTX Import Control Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with the data-intake control path before any real tuition collection or partner payment work.
+- Reviewed and packaged P2-06 import staging, P2-07 issue routing, P2-08 issue resolution and P2-09 department workload screens.
+- Kept the slice as staging/control only: it does not create real receivables, confirm cash collection, issue invoices or approve partner payout.
+
+### Files Updated/Added
+
+- `app/ttgdtx/import/page.tsx`
+- `app/ttgdtx/import/issues/page.tsx`
+- `app/ttgdtx/import/issues/actions.ts`
+- `app/ttgdtx/import/workload/page.tsx`
+- `database/step92_ttgdtx_tuition_import_control_p2_06.sql`
+- `database/step93_ttgdtx_import_issue_routing_p2_07.sql`
+- `database/step94_ttgdtx_import_issue_resolution_p2_08.sql`
+- `database/step95_ttgdtx_department_workload_p2_09.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step92, Step93, Step94 and Step95 are migration candidates only and were not run in production.
+- Server action `updateTtgdtxImportIssueTaskAction` now allowlists P2-08 workflow actions before calling the database RPC.
+- P2-06 through P2-09 are committed as the controlled intake/error-workload layer before P2-10 tuition collection and P2-17 payout execution.
