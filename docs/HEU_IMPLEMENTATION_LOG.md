@@ -211,3 +211,25 @@
 - Step101 is a migration candidate only and was not run in production.
 - P2-13 remains a reconciliation batch step only; it does not approve or pay TTGDTX.
 - Payments with `NEEDS_INVOICE_DECISION` stay visible but cannot enter an active reconciliation batch.
+
+## 2026-06-26 - P2-14 TTGDTX Reconciliation Review Lock Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with review, approve and lock controls for P2-13 reconciliation batches.
+- Hardened P2-14 so review/approve/lock cannot proceed if any batch line still has unresolved P2-10 invoice/receipt status.
+- Added server-side action allowlist for P2-14 workflow actions.
+
+### Files Updated/Added
+
+- `app/ttgdtx/reconciliation/review/page.tsx`
+- `app/ttgdtx/reconciliation/review/actions.ts`
+- `database/step104_ttgdtx_reconciliation_approval_p2_14.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step104 is a migration candidate only and was not run in production.
+- P2-14 can review, approve, lock or cancel a reconciliation batch, but still does not create partner payment requests and does not pay TTGDTX.
+- A locked P2-14 batch is the controlled input for P2-15/P2-17; BBNT and partner invoice gates remain separate.
