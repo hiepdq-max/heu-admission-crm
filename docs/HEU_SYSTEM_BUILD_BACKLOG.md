@@ -31,7 +31,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-01 | Contract/partner master | Phap Che + KHTC | BUILT_INTERNAL | Human approval for legal records |
 | P2-02 | Tuition policy master | KHTC | BUILT_INTERNAL | Approved policy version |
 | P2-03 | Student receivables | KHTC | BUILT_INTERNAL | No duplicate receivable test |
-| P2-05 | Receivable gate | KHTC + IT/Data | BUILT_INTERNAL | Gate before posting |
+| P2-05 | Receivable gate | KHTC + IT/Data | IN_PROGRESS | Gate before posting; Step91 is migration candidate only |
 | P2-06 | Import staging/control | IT/Data + KHTC | BUILT_INTERNAL | Source file registry and validation |
 | P2-12 | TTGDTX master/dropdown control | Tuyen sinh + Phap Che + IT/Data | IN_PROGRESS | Step99 is migration candidate only; no production run from Codex |
 | P2-10 | Tuition collection | KHTC | BUILT_INTERNAL | Invoice/receipt decision required |

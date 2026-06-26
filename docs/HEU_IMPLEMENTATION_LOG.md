@@ -119,3 +119,24 @@
 - Step99 is a migration candidate only and was not run in production.
 - UI copy now tells operators to apply Step99 only in an approved environment with backup/approval.
 - P2-12 is committed separately from high-risk finance flows P2-10, P2-13 and P2-17.
+
+## 2026-06-26 - P2-05 TTGDTX Receivable Gate Slice
+
+### Scope
+
+- Continued P2 TTGDTX/9+ Pilot with the gate layer before receivable posting.
+- Reviewed `app/ttgdtx/gate/page.tsx` and `database/step91_ttgdtx_receivable_gate_p2_05.sql`.
+- Kept P2-05 read-only/check-only: it does not create receivables, collect tuition or approve partner payment.
+
+### Files Updated/Added
+
+- `app/ttgdtx/gate/page.tsx`
+- `database/step91_ttgdtx_receivable_gate_p2_05.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step91 is a migration candidate only and was not run in production.
+- P2-05 route now checks the dedicated `ttgdtx.receivable.gate.read` permission while also accepting existing `ttgdtx.receivable.read` for P2-03 readers.
+- This slice is committed before P2-03/P2-10 finance posting flows.
