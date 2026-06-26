@@ -233,3 +233,25 @@
 - Step104 is a migration candidate only and was not run in production.
 - P2-14 can review, approve, lock or cancel a reconciliation batch, but still does not create partner payment requests and does not pay TTGDTX.
 - A locked P2-14 batch is the controlled input for P2-15/P2-17; BBNT and partner invoice gates remain separate.
+
+## 2026-06-26 - P2-15 TTGDTX Partner Payment Request Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with P2-15 partner payment request creation from locked P2-14 reconciliation batches.
+- Kept P2-15 as a request/dossier step only; it does not approve or execute payout.
+- Hardened the candidate view and creation function to reject batches with unresolved P2-10 collection invoice/receipt decisions.
+
+### Files Updated/Added
+
+- `app/ttgdtx/payment-requests/page.tsx`
+- `app/ttgdtx/payment-requests/actions.ts`
+- `database/step105_ttgdtx_partner_payment_request_p2_15.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step105 is a migration candidate only and was not run in production.
+- P2-15 requires a locked P2-14 batch, no duplicate request, no unresolved collection invoice lines, and a BBNT/partner-invoice dossier link.
+- P2-16 approval and P2-17 payout remain separate high-risk slices.

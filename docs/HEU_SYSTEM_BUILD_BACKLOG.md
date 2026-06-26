@@ -40,7 +40,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-10 | Tuition collection | KHTC | PASS_LOCAL | Step96 is migration candidate only; invoice/receipt decision captured per payment |
 | P2-13 | Reconciliation | KHTC + Audit | PASS_LOCAL | Step101 is migration candidate only; blocks payments with unresolved invoice/receipt decision |
 | P2-14 | Reconciliation review/lock | KHTC + Audit + BGH | PASS_LOCAL | Step104 is migration candidate only; cannot review/approve/lock unresolved invoice/receipt lines |
-| P2-15 | Partner payment request | KHTC + Phap Che | BUILT_INTERNAL | BBNT/invoice evidence |
+| P2-15 | Partner payment request | KHTC + Phap Che | PASS_LOCAL | Step105 is migration candidate only; BBNT/partner invoice dossier required, no unresolved collection invoice lines |
 | P2-17 | Partner payout | KHTC + BGH | BUILT_INTERNAL | No duplicate payout, approval only |
 | P2-18 | Accounting dashboard | KHTC + BGH | BUILT_INTERNAL | Authorized-user UAT |
 | P2-19 | Real-data evidence metadata | IT/Data + Audit | BUILT_INTERNAL | Metadata only, no raw sensitive import |
