@@ -77,3 +77,24 @@
 
 - Pause new code edits until P0 classification is accepted.
 - Next safe P0 work is grouping the remaining dirty files and deciding the next docs/audit-only commit scope.
+
+## 2026-06-26 - P2 TTGDTX Local Audit Script Packaging
+
+### Scope
+
+- Continued P2 TTGDTX/9+ Pilot with a small non-production code slice.
+- Packaged local audit scripts that support TTGDTX hardening and release gates.
+- Added npm entry for the generic source/evidence guard.
+
+### Files Updated
+
+- `package.json`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- This change does not run production migration.
+- These scripts are local static guards only; they do not read secrets or call Supabase production.
+- Keep committing P2 support controls separately from finance migrations and UI routes.

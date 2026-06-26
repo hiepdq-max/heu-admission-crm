@@ -72,6 +72,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P6-02 | TTGDTX cascade audit | IT/Data | PASS_LOCAL | No `on delete cascade` in Step90-Step110 |
 | P6-03 | TTGDTX audit-log coverage | IT/Data | PASS_LOCAL | New TTGDTX write tables need triggers |
 | P6-04 | Role-scope UAT | IT/Data + Process owners | OPEN | Signed UAT required |
+| P6-05 | Package TTGDTX local audit scripts | IT/Data | IN_PROGRESS | npm scripts must point to committed local guards |
 
 ## P7 - AI Agent Layer
 

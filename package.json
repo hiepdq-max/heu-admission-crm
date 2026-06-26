@@ -6,7 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
+    "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",
+    "audit:ttgdtx-audit-log": "node scripts/audit-ttgdtx-audit-log-coverage.mjs",
+    "audit:ttgdtx-cascade": "node scripts/audit-ttgdtx-cascade-risk.mjs",
+    "audit:ttgdtx-dashboard-access": "node scripts/audit-ttgdtx-dashboard-access.mjs",
+    "audit:ttgdtx-data-fetch-gate": "node scripts/audit-ttgdtx-data-fetch-gate.mjs",
+    "audit:ttgdtx-generic-source-evidence": "node scripts/audit-ttgdtx-generic-source-evidence.mjs",
+    "audit:ttgdtx-role-scope-access": "node scripts/audit-ttgdtx-role-scope-access.mjs",
+    "audit:ttgdtx-uat-readiness": "node scripts/audit-ttgdtx-uat-readiness.mjs",
+    "audit:ttgdtx-release-gates": "node scripts/audit-ttgdtx-release-gates.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
