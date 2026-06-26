@@ -14,6 +14,7 @@
 | R-008 | Dashboard may be trusted before workflow/data controls are ready | HIGH | Reporting | Dashboard after workflow/data master; label internal-test state | ACTIVE |
 | R-009 | AI could be mistaken for approver | HIGH | Governance | AI drafts/checks only; human approval fields required | ACTIVE |
 | R-010 | Step110 production run may still reveal legacy DB object issue `relation "a"` | MEDIUM | Database | Use debug SQL if V006 still fails | WATCH |
+| R-011 | Center-specific evidence literals can leak into product code | HIGH | Product design | `scripts/audit-ttgdtx-generic-source-evidence.mjs` scans `app`, `components`, `lib` | ACTIVE |
 
 ## Risk Acceptance Rule
 
@@ -30,4 +31,3 @@ No CRITICAL or HIGH risk is considered accepted unless the responsible HEU owner
 - `npm.cmd run audit:ttgdtx-role-scope-access`
 - `npm.cmd run audit:ttgdtx-uat-readiness`
 - `npm.cmd run audit:ttgdtx-release-gates`
-

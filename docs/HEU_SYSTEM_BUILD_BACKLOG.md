@@ -21,6 +21,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P1-03 | Define `HEU_ROLE_PERMISSION_MATRIX_V1.md` | IT/Data + BGH | IN_PROGRESS | Role and scope before finance access |
 | P1-04 | Map existing SQL objects to master names | IT/Data | OPEN | No production schema change yet |
 | P1-05 | Build anonymized real-like UAT pack for Phu-Xuyen-like cases | KHTC + IT/Data + Audit | OPEN | No raw PII/bank data |
+| P1-06 | Keep TTGDTX source/evidence model generic across centers | IT/Data | IN_PROGRESS | Product code must not hard-code a reference center |
 
 ## P2 - TTGDTX/9+ Pilot
 
@@ -78,4 +79,3 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P7-01 | AI assistant policy | BGH + IT/Data | OPEN | AI drafts/checks only |
 | P7-02 | AI task checklist generator | IT/Data | LATER | Workflow/logs first |
 | P7-03 | AI risk suggestion board | Audit + IT/Data | LATER | No autonomous approval |
-

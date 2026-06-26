@@ -32,3 +32,29 @@
 
 - Run local audit scripts.
 - Run lint/build if documentation and any code changes require it.
+
+## 2026-06-26 - TTGDTX Generic Source Evidence Guard
+
+### Scope
+
+- Rechecked Phu-Xuyen-specific references after confirming it is a real-world reference case only.
+- Generalized source-control UI wording so P2-19 is presented as metadata for real/anonymized source packs, not for one fixed center.
+- Added a local guard to prevent hard-coded reference-center names in product code.
+
+### Files Added
+
+- `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
+- `scripts/audit-ttgdtx-generic-source-evidence.mjs`
+
+### Files Updated
+
+- `app/ttgdtx/source-control/page.tsx`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_TECH_RISK_REGISTER.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Product code must stay generic for many TTGDTX centers/partners.
+- Docs and database evidence metadata may mention Phu Xuyen only as a reference/control case.
+- Do not rename Step110 source codes in production without a dedicated migration and rollback note.
