@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import {
   AlertTriangle,
   ArrowLeft,
+  Banknote,
   CheckCircle2,
   FileSearch,
   RefreshCcw,
@@ -327,6 +328,12 @@ export default async function PaymentRequestReviewPage({
             <Link href="/ttgdtx/reconciliation/review">
               <ShieldCheck className="size-4" />
               P2-14 duyệt kỳ
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/payment-requests/pay">
+              <Banknote className="size-4" />
+              P2-17 ghi nhận chi
             </Link>
           </Button>
           <Button asChild variant="outline">

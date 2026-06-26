@@ -278,3 +278,27 @@
 - Step106 is a migration candidate only and was not run in production.
 - P2-16 can check, approve, return or reject a P2-15 request, but payment execution remains P2-17.
 - P2-16 approval requires the request to be CHECKED first; SUBMITTED requests can be checked or returned/rejected, not directly approved.
+
+## 2026-06-26 - P2-17 TTGDTX Payment Execution Record Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with P2-17 disbursement-record controls for approved P2-15/P2-16 requests.
+- Kept P2-17 as a system record of payment evidence; it does not initiate bank transfer from the application.
+- Hardened the payout record path with required voucher number, evidence URL, no duplicate voucher and no overpayment.
+
+### Files Updated/Added
+
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `app/ttgdtx/payment-requests/pay/actions.ts`
+- `app/ttgdtx/payment-requests/pay/payment-submit-button.tsx`
+- `app/ttgdtx/payment-requests/review/page.tsx`
+- `database/step107_ttgdtx_payment_execution_p2_17.sql`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step107 is a migration candidate only and was not run in production.
+- P2-17 records payment evidence only after P2-16 APPROVED and keeps audit history.
+- Duplicate voucher numbers, missing payout evidence, wrong request status and overpayment are blocked before insert.
