@@ -55,6 +55,13 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`
 - `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`
 - `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`
+- `docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md`
+- `docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md`
+- `docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md`
+- `docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md`
+- `docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md`
+- `docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md`
+- `docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md`
 - `docs/HEU_DATA_MODEL_V1.md`
 - `docs/HEU_DATA_DICTIONARY_V1.md`
 - `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`
@@ -120,6 +127,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-lead-lifecycle-standard`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
+  - `npm.cmd run audit:heu-p0-register-pack`
   - `npm.cmd run audit:heu-production-blocker-source`
   - `npm.cmd run audit:heu-production-evidence-binder`
   - `npm.cmd run audit:heu-role-scope-uat-pack`

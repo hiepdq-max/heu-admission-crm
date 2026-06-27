@@ -92,7 +92,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P0-05 implementation log audit guard[\s\S]*55 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*56 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -109,6 +109,7 @@ for (const heading of [
   "Finance Desk Read-Only Guard Packaging",
   "Finance Desk UAT Runbook Packaging",
   "Finance Desk Process Finder Link",
+  "P0 Register Pack Foundation",
 ]) {
   requireText(
     log,
@@ -171,6 +172,13 @@ requireText(
   log,
   /Finance Desk Process Finder Link[\s\S]*HEU Finance Desk \(P5-03\)[\s\S]*TTGDTX process-label map[\s\S]*\/finance-desk[\s\S]*process-label and release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not grant production\s+access, execute UAT, approve finance action, run production migration, accept\s+evidence or mark production GO/i,
   "Finance Desk process finder log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /P0 Register Pack Foundation[\s\S]*HEU P0 register pack as DRAFT_CONTROL documents[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*Data\s+Master, minimum data dictionary, SOP-to-data mapping, report views, AI agent\s+scope and risk\/signoff boundaries[\s\S]*audit:heu-p0-register-pack[\s\S]*This is register packaging only[\s\S]*does not execute UAT, approve migration,\s+approve finance action or mark production GO/i,
+  "P0 register pack foundation log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

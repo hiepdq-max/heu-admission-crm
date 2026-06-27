@@ -74,6 +74,20 @@
   access, execute UAT, approve finance action, run production migration, accept
   evidence or mark production GO.
 
+## 2026-06-27 - P0 Register Pack Foundation
+
+- Added the HEU P0 register pack as DRAFT_CONTROL documents, starting with
+  `HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md` and covering Data
+  Master, minimum data dictionary, SOP-to-data mapping, report views, AI agent
+  scope and risk/signoff boundaries.
+- Added `scripts/audit-heu-p0-register-pack.mjs` and
+  `audit:heu-p0-register-pack` so the register pack stays connected to AGENTS,
+  backlog, production checklist, current-state inventory and release gates.
+- Kept the pack as a control foundation for ERP/AI OS scaling; it does not
+  rename schema, move Drive evidence, run migration or authorize production.
+- This is register packaging only. It does not execute UAT, approve migration,
+  approve finance action or mark production GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

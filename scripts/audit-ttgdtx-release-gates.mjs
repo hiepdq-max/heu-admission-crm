@@ -55,6 +55,13 @@ const requiredFiles = [
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_MODEL_V1.md",
   "docs/HEU_DATA_DICTIONARY_V1.md",
   "docs/GIT_CLEANUP_ANALYSIS.md",
@@ -135,6 +142,7 @@ const requiredFiles = [
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-lead-lifecycle-standard.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
+  "scripts/audit-heu-p0-register-pack.mjs",
   "scripts/audit-heu-production-blocker-source.mjs",
   "scripts/audit-heu-production-evidence-binder.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
@@ -184,6 +192,7 @@ const requiredScripts = [
   "audit:heu-lead-handover-policy",
   "audit:heu-lead-lifecycle-standard",
   "audit:heu-non-ttgdtx-cascade-review",
+  "audit:heu-p0-register-pack",
   "audit:heu-production-blocker-source",
   "audit:heu-production-evidence-binder",
   "audit:heu-role-scope-uat-pack",
@@ -368,8 +377,56 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
+);
+
+requireText(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  /Status:\s*DRAFT_CONTROL[\s\S]*No new level-1 folder is allowed[\s\S]*Folder Registry, File Registry,\s*Version Log, Audit Log and Signoff Register[\s\S]*Codex\/AI may draft, check and implement local safe controls[\s\S]*must not\s+approve production, approve migration, accept UAT, approve finance action/i,
+  "P0 root control action register boundary",
+);
+
+requireText(
+  "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
+  /Data Master comes before workflow, dashboard, automation and AI[\s\S]*STUDENT_MASTER \/ HOC_SINH_MASTER[\s\S]*REPORT_VIEW_REGISTER[\s\S]*SIGNOFF_REGISTER[\s\S]*does not rename, drop, alter or create production schema/i,
+  "P0 data master register boundary",
+);
+
+requireText(
+  "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
+  /AI is never approver[\s\S]*Money is recognized only after HEU receives and reconciles it[\s\S]*Do not commit or paste raw CCCD[\s\S]*does not approve real\s+data import, production dashboard use, AI production use or finance posting/i,
+  "P0 minimum data dictionary boundary",
+);
+
+requireText(
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  /Event -> Legal Check -> Regulation -> SOP[\s\S]*Report View -> Dashboard -> Audit[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*does not approve any SOP as officially issued/i,
+  "P0 SOP-to-data mapping boundary",
+);
+
+requireText(
+  "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
+  /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*RV_AI_ALLOWED_CONTEXT[\s\S]*does not approve production\s+dashboard use or replace signed dashboard UAT/i,
+  "P0 report view register boundary",
+);
+
+requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /AI may draft, check, summarize and warn[\s\S]*AI must not\s+approve, pay, post finance records, delete data or mark production GO[\s\S]*Signed UAT proving AI cannot approve, pay, release, delete or go-live/i,
+  "P0 AI agent scope register boundary",
+);
+
+requireText(
+  "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
+  /PASS_LOCAL means local packaging or static audit passed[\s\S]*does not mean:[\s\S]*production ready[\s\S]*owner GO granted[\s\S]*Human signer only[\s\S]*does not approve production/i,
+  "P0 risk control signoff register boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0 Register Pack Foundation[\s\S]*HEU P0 register pack as DRAFT_CONTROL documents[\s\S]*audit:heu-p0-register-pack[\s\S]*This is register packaging only[\s\S]*does not execute UAT, approve migration,\s+approve finance action or mark production GO/i,
+  "P0 register pack implementation log entry",
 );
 
 requireText(

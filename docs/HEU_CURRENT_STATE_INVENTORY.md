@@ -51,10 +51,11 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
+| `npm.cmd run audit:heu-p0-register-pack` | PASS |
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go/No-Go control paragraph alignment; 55 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go/No-Go control paragraph alignment; 56 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -92,6 +93,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
 | Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO/NO-GO exist | Signed browser UAT pending |
 | Finance Desk / KHTC cockpit | P5-03 read-only cockpit exists at `/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter and `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` acceptance matrix | Signed browser UAT pending |
+| P0 register pack | Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents | PASS_LOCAL; official owner signoff and Drive registry still required |
 | Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |
