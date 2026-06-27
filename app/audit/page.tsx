@@ -8,6 +8,7 @@ import {
 } from "@/components/audit/audit-log-table";
 import { ControlledEvidenceRedactionGuard } from "@/components/audit/controlled-evidence-redaction-guard";
 import { HardDeleteBoundaryGuard } from "@/components/audit/hard-delete-boundary-guard";
+import { HardDeleteConversionDecisionQueue } from "@/components/audit/hard-delete-conversion-decision-queue";
 import { HardDeleteWaiverEvidenceChecklist } from "@/components/audit/hard-delete-waiver-evidence-checklist";
 import { TtgdtxAuditLogUatEvidenceChecklist } from "@/components/audit/ttgdtx-audit-log-uat-evidence-checklist";
 import { TtgdtxAuditTrailGuard } from "@/components/audit/ttgdtx-audit-trail-guard";
@@ -97,6 +98,7 @@ export default async function AuditPage() {
           <TtgdtxAuditTrailGuard />
           <TtgdtxAuditLogUatEvidenceChecklist />
           <HardDeleteBoundaryGuard />
+          <HardDeleteConversionDecisionQueue />
           <HardDeleteWaiverEvidenceChecklist />
           <AuditLogTable
             logs={auditRows}

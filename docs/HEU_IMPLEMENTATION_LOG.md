@@ -2076,3 +2076,15 @@
 - Added `audit:ttgdtx-payout-execution-readiness` and release-gate coverage.
   P2-17 remains IN_PROGRESS until signed payout UAT proves the duplicate,
   overpay, evidence and P2-19 blocker cases with controlled evidence.
+## 2026-06-27 - P6-06 Hard-Delete Conversion Decision Queue
+
+- Added `components/audit/hard-delete-conversion-decision-queue.tsx` and
+  mounted it on `/audit` between the hard-delete boundary guard and the waiver
+  evidence checklist.
+- The queue groups the 44 non-TTGDTX/base cascade findings into HDQ-01 through
+  HDQ-05 owner decision lanes: base/CRM, HOU finance/evidence, workspace/scope,
+  master/control configuration and legal/tuition/short-course operations.
+- Added `audit:hard-delete-conversion-decision-queue` and release-gate coverage.
+  P6-06 remains IN_PROGRESS for production until protected rows are converted
+  to restrict/archive/status transitions or waived in writing by accountable
+  owners.

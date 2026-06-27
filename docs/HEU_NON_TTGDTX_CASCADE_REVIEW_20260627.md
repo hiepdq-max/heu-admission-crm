@@ -98,3 +98,23 @@ Do not attach raw student PII, CCCD, bank data, payment data, passwords, OTPs,
 service-role keys or production credentials in Git/Codex/chat. Conversion or
 written waiver evidence remains required before P6-06 can be accepted for
 production readiness.
+
+## 8. Decision Queue Evidence
+
+The app exposes `components/audit/hard-delete-conversion-decision-queue.tsx`
+on `/audit` between the hard-delete boundary guard and the waiver evidence
+checklist. The queue is PASS_LOCAL only and covers HDQ-01 through HDQ-05:
+
+- HDQ-01: Base identity and CRM lead children.
+- HDQ-02: HOU finance and evidence.
+- HDQ-03: Workspace and scope helpers.
+- HDQ-04: Master, control and dynamic configuration.
+- HDQ-05: Legal, tuition and short-course operations.
+
+Expected local outcomes are `RESTRICT_OR_ARCHIVE` for protected rows and
+`SOFT_REVOKE_OR_WAIVER` only for proven derived helper rows with owner reason,
+rollback note and written approval.
+
+`npm.cmd run audit:hard-delete-conversion-decision-queue` must pass before
+handoff. This does not approve production deletion, cascade execution, waiver,
+conversion migration, cleanup, rollback success or production GO.

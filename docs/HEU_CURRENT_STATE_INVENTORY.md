@@ -47,9 +47,10 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
+| `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the P2-17 payout execution readiness full sweep; 52 audit scripts passed |
+| Full `audit:*` suite | PASS after the P6-06 hard-delete decision queue full sweep; 53 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -86,7 +87,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack and scope UI guard exist | Multi-account signed UAT pending |
 | Audit log | Static coverage audit passes | Signed audit-log UAT pending |
-| Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings | Conversion or written waiver pending |
+| Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue | Conversion or written waiver pending |
 | Controlled evidence | Redaction/intake pack and audit guard exist | Real evidence must stay outside Git/Codex/chat |
 | AI helper layer | Task checklist and risk board are read-only | Advisory only; no autonomous approval |
 

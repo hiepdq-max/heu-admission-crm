@@ -80,6 +80,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/audit/controlled-evidence-redaction-guard.tsx",
   "components/audit/hard-delete-boundary-guard.tsx",
+  "components/audit/hard-delete-conversion-decision-queue.tsx",
   "components/audit/hard-delete-waiver-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
@@ -129,6 +130,7 @@ const requiredFiles = [
   "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-heu-vietnamese-text-encoding.mjs",
   "scripts/audit-hard-delete-boundary-guard.mjs",
+  "scripts/audit-hard-delete-conversion-decision-queue.mjs",
   "scripts/audit-ttgdtx-account-control-scope-decision.mjs",
   "scripts/audit-ttgdtx-audit-trail-guard.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
@@ -176,6 +178,7 @@ const requiredScripts = [
   "audit:heu-vietnamese-text-encoding",
   "audit:hard-delete",
   "audit:hard-delete-boundary-guard",
+  "audit:hard-delete-conversion-decision-queue",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
   "audit:ttgdtx-account-control-scope-decision",
@@ -514,7 +517,7 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
   "P6-06 non-TTGDTX cascade review local-only boundary",
 );
 
@@ -532,8 +535,14 @@ requireText(
 
 requireText(
   "app/audit/page.tsx",
-  /<HardDeleteBoundaryGuard\s*\/>[\s\S]*<HardDeleteWaiverEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
-  "audit page mounts hard-delete boundary guard and evidence checklist",
+  /<HardDeleteBoundaryGuard\s*\/>[\s\S]*<HardDeleteConversionDecisionQueue\s*\/>[\s\S]*<HardDeleteWaiverEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
+  "audit page mounts hard-delete boundary guard, decision queue and evidence checklist",
+);
+
+requireText(
+  "components/audit/hard-delete-conversion-decision-queue.tsx",
+  /(?=[\s\S]*data-hard-delete-conversion-decision-queue="P6-06")(?=[\s\S]*P6-06 hard-delete conversion decision queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*44 non-TTGDTX\/base cascade findings)(?=[\s\S]*HDQ-01)(?=[\s\S]*HDQ-05)(?=[\s\S]*Base identity and CRM lead children)(?=[\s\S]*HOU finance and evidence)(?=[\s\S]*Workspace and scope helpers)(?=[\s\S]*Master, control and dynamic configuration)(?=[\s\S]*Legal, tuition and short-course operations)(?=[\s\S]*RESTRICT_OR_ARCHIVE)(?=[\s\S]*SOFT_REVOKE_OR_WAIVER)(?=[\s\S]*does not\s+approve production deletion, cascade execution, waiver, conversion\s+migration, cleanup, rollback success or production GO)/i,
+  "P6-06 hard-delete conversion decision queue",
 );
 
 requireText(

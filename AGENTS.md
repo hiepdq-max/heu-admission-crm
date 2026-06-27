@@ -122,6 +122,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-vietnamese-text-encoding`
   - `npm.cmd run audit:hard-delete`
   - `npm.cmd run audit:hard-delete-boundary-guard`
+  - `npm.cmd run audit:hard-delete-conversion-decision-queue`
   - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`
   - `npm.cmd run audit:ttgdtx-account-control-scope-decision`
