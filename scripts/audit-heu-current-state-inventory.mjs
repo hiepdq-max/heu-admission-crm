@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder and P5-02 Master Control action queue sweep[\s\S]*53 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker and internal UAT run closure tracker sweeps[\s\S]*53 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -91,7 +91,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, execution queue, owner GO\/NO-GO checklist and owner acceptance matrix[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, execution queue, owner GO\/NO-GO checklist and owner acceptance matrix[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(
@@ -131,7 +131,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix and acceptance matrix exist[\s\S]*Multi-account signed UAT pending/i,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix and internal UAT run closure tracker exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );
 requireText(
