@@ -1,5 +1,16 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-10 Quick Finder Invoice Prompt
+
+- Updated `components/ttgdtx/ttgdtx-process-quick-finder.tsx` so the TTGDTX
+  landing quick finder placeholder includes `xuat hoa don` and routes natural
+  invoice/chung-tu questions toward Thu hoc phi (P2-10).
+- Updated `scripts/audit-ttgdtx-process-labels.mjs` and release-gate audits so
+  the quick finder keeps this invoice-search prompt.
+- This is navigation/discovery packaging only. It does not approve invoice
+  issuance, legal/tax interpretation, finance posting, UAT acceptance, owner
+  waiver or production GO.
+
 ## 2026-06-28 - P2-10 Natural Invoice Search Fallback
 
 - Updated `lib/ttgdtx-process-labels.ts` with natural P2-10 search terms for

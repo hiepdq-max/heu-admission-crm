@@ -473,6 +473,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-10 Quick Finder Invoice Prompt[\s\S]*ttgdtx-process-quick-finder\.tsx[\s\S]*placeholder includes `xuat hoa don`[\s\S]*invoice\/chung-tu questions toward Thu hoc phi \(P2-10\)[\s\S]*audit-ttgdtx-process-labels\.mjs[\s\S]*release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not approve invoice\s+issuance, legal\/tax interpretation, finance posting, UAT acceptance, owner\s+waiver or production GO/i,
+  "P2-10 quick finder invoice prompt log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /P2-10 Natural Invoice Search Fallback[\s\S]*ttgdtx-process-labels\.ts[\s\S]*thu tien co hoa don khong[\s\S]*thu tien co xuat hoa don khong[\s\S]*xuat hoa\s+don[\s\S]*co can hoa don[\s\S]*app\/search\/page\.tsx[\s\S]*merges local TTGDTX process-label\s+matches before remote search results[\s\S]*Thu hoc phi \(P2-10\)[\s\S]*invoice\/chung-tu questions[\s\S]*TTGDTX_PROCESS_CODE_MAP_20260625\.md[\s\S]*audit-ttgdtx-process-labels\.mjs[\s\S]*release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not approve invoice\s+issuance, legal\/tax interpretation, finance posting, UAT acceptance, owner\s+waiver or production GO/i,
   "P2-10 natural invoice search fallback log entry",
 );
@@ -1429,6 +1435,12 @@ requireText(
   "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
   /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*"P5-03")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
   "TTGDTX process quick finder local-only display",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
+  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Finance Desk, xuat hoa don, P2-10"/i,
+  "TTGDTX quick finder invoice-search placeholder",
 );
 
 requireText(

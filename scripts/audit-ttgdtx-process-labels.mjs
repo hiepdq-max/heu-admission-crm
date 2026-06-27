@@ -125,7 +125,7 @@ requireText(
 );
 requireText(
   quickFinder,
-  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Finance Desk, Thu hoc phi, P2-10"/i,
+  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Finance Desk, xuat hoa don, P2-10"/i,
   "quick finder search form",
   quickFinderPath,
 );

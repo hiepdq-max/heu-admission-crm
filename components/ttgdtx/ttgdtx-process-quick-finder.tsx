@@ -60,7 +60,7 @@ export function TtgdtxProcessQuickFinder() {
               id="ttgdtx-process-search"
               name="q"
               className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400"
-              placeholder="Finance Desk, Thu hoc phi, P2-10"
+              placeholder="Finance Desk, xuat hoa don, P2-10"
               type="search"
             />
           </div>
