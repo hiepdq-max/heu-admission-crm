@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-13 Shared Source P0-03 P3 Gate Proof
+
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` so P0-13 shared blocker
+  source coverage cites the P0-03 restore smoke-check proof for P0-19/P3 gate
+  preservation alongside the operator run sheet and owner sign-off/UAT handoff
+  path.
+- Updated `scripts/audit-heu-production-blocker-source.mjs` so backlog,
+  checklist, current-state and shared P0-15 source checks fail if the restore
+  proof drops out of the shared blocker-source path.
+- This is P0-13 source-alignment packaging only. It does not execute backup,
+  restore, migration dry-run, UAT, evidence acceptance, finance action, owner
+  waiver or production GO.
+
 ## 2026-06-28 - P0-15 Final Handoff P0-03 P3 Gate Proof
 
 - Updated `AGENTS.md`, `lib/production-readiness.ts`,

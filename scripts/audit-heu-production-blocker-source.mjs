@@ -81,7 +81,7 @@ requireText(
 
 requireText(
   source,
-  /P0-03[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result and smoke-check evidence[\s\S]*Complete the operator run sheet, then attach backup ID, restore target, preflight\/postflight output and smoke-check evidence outside Git[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, smoke-check result and operator\/checker names/i,
+  /P0-03[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result and smoke-check evidence[\s\S]*Complete the operator run sheet, then attach backup ID, restore target, preflight\/postflight output and smoke-check evidence outside Git[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names/i,
   "P0-03 operator run sheet source coverage",
   sourcePath,
 );
@@ -95,7 +95,7 @@ requireText(
 
 requireText(
   source,
-  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-14 split into P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-14 split into P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "P0-15 final handoff split evidence source coverage",
   sourcePath,
 );
@@ -181,21 +181,21 @@ requireText(
 
 requireText(
   backlog,
-  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
+  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "P0-13 shared blocker source backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
+  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "production checklist shared blocker source row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS/i,
+  /npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "current-state shared blocker source audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
