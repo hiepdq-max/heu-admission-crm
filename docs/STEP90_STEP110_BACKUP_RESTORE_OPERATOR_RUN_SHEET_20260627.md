@@ -35,7 +35,21 @@ human IT_DATA operator and Audit checker to fill outside Codex/chat.
 | Controlled evidence folder | |
 | Initial decision | BACKUP_RESTORE_RUN_READY / STOP / BLOCKED |
 
-## 3. Step Checklist
+## 3. Target Identity Lock
+
+The target identity lock must be complete before any backup/restore dry-run
+starts. Decision: TARGET_LOCK_READY / STOP / BLOCKED.
+
+| Case | Required action | Evidence to attach outside Git | Stop condition |
+|---|---|---|---|
+| P0-03-TARGET-01 | Record execution authority | Approved execution window, operator, checker and owner approval reference | Missing execution window, operator/checker pair or approval reference |
+| P0-03-TARGET-02 | Mark production as source-only | Production project/ref recorded with no write, delete, restore or migration command against it | Any command could write to production |
+| P0-03-TARGET-03 | Prove restore target isolation | Restore target project/ref, URL and label separate from production | Source and restore target cannot be distinguished |
+| P0-03-TARGET-04 | Prove app banner points to restore target | App environment banner or redacted connection proof | App could still be connected to production |
+| P0-03-TARGET-05 | Lock SQL editor and CLI profile | SQL editor, Supabase project selector and CLI profile proof | Browser tab, SQL editor tab or CLI profile could point to production |
+| P0-03-TARGET-06 | Confirm controlled evidence folder | Controlled folder, redaction owner and evidence naming pattern | Raw exports, credentials, bank data, vouchers or personal data could enter Git/Codex/chat |
+
+## 4. Step Checklist
 
 | Case | Required action | Evidence to attach outside Git | Decision |
 |---|---|---|---|
@@ -46,7 +60,7 @@ human IT_DATA operator and Audit checker to fill outside Codex/chat.
 | P0-03-RUN-05 | Apply Step90-Step110 only on restore target | APPLY/SKIP/WAIVE decision, operator, result and evidence note for each step | READY / STOP / BLOCKED |
 | P0-03-RUN-06 | Close with postflight, smoke-check and owner review | Postflight checks, smoke-check matrix, exception log and owner GO/NO-GO note | READY / STOP / BLOCKED |
 
-## 4. Immediate Stop Conditions
+## 5. Immediate Stop Conditions
 
 Keep the run STOP/BLOCKED if any condition is true:
 
@@ -58,7 +72,7 @@ Keep the run STOP/BLOCKED if any condition is true:
 6. Any raw sensitive evidence is exposed in Git/Codex/chat.
 7. Any required owner asks for more evidence.
 
-## 5. Required Cross-References
+## 6. Required Cross-References
 
 | Artifact | Use |
 |---|---|
@@ -67,7 +81,7 @@ Keep the run STOP/BLOCKED if any condition is true:
 | `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md` | Migration-order boundary |
 | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` | Final owner GO/NO-GO |
 
-## 6. Local Preflight
+## 7. Local Preflight
 
 Run before owner review:
 

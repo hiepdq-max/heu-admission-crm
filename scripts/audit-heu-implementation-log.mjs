@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-03 Backup\/Restore Target Identity Lock[\s\S]*supabase-backup-restore-guard\.tsx[\s\S]*execution authority, production source-only status, isolated restore\s+target, app banner, SQL editor\/CLI profile and controlled evidence folder[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*P0-03-TARGET-01 through P0-03-TARGET-06[\s\S]*TARGET_LOCK_READY \/ STOP \/\s+BLOCKED[\s\S]*backlog, production checklist and current-state inventory[\s\S]*backup\/restore, current-state, implementation-log and release-gate\s+audits[\s\S]*This is target-lock packaging only[\s\S]*does not execute backup, restore,\s+migration dry-run, rollback, UAT acceptance, evidence acceptance, finance\s+action, owner waiver or production GO/i,
+  "P0-03 backup/restore target identity lock log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX Governance UAT Execution Readiness[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*P6-04\/P6-03 governance UAT execution\s+readiness section before the UAT run closure tracker[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*route,\s+runbook, owner, local guard command and stop conditions[\s\S]*P6-04\s+role\/workspace UAT[\s\S]*P6-03 audit-log traceability UAT[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*BLOCKED_PENDING_SIGNED_GOVERNANCE_UAT[\s\S]*P6-04 must run\s+before P6-03[\s\S]*synthetic accounts, controlled evidence,\s+redaction and owner signatures outside Git\/Codex\/chat[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*UAT readiness, production readiness, current-state, implementation\s+log and release-gate audits[\s\S]*This is UAT execution-readiness packaging only[\s\S]*does not execute UAT,\s+create synthetic accounts, grant access, collect evidence, accept audit\s+traceability, approve finance action, waive evidence or mark production GO/i,
   "TTGDTX governance UAT execution readiness log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

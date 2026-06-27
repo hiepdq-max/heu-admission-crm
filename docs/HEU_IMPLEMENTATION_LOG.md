@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-03 Backup/Restore Target Identity Lock
+
+- Added a PASS_LOCAL target identity lock to
+  `components/settings/supabase-backup-restore-guard.tsx` so operators must
+  confirm execution authority, production source-only status, isolated restore
+  target, app banner, SQL editor/CLI profile and controlled evidence folder
+  before any backup/restore dry-run.
+- Updated `docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md`
+  and `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+  with P0-03-TARGET-01 through P0-03-TARGET-06 and TARGET_LOCK_READY / STOP /
+  BLOCKED.
+- Updated backlog, production checklist and current-state inventory so P0-03
+  cannot be represented without the target identity lock.
+- Extended backup/restore, current-state, implementation-log and release-gate
+  audits so this target-lock control remains required.
+- This is target-lock packaging only. It does not execute backup, restore,
+  migration dry-run, rollback, UAT acceptance, evidence acceptance, finance
+  action, owner waiver or production GO.
+
 ## 2026-06-28 - TTGDTX Governance UAT Execution Readiness
 
 - Updated `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx` so the TTGDTX

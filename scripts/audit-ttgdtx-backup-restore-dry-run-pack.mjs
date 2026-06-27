@@ -109,9 +109,21 @@ requireText(
 );
 
 requireText(
+  pack,
+  /(?=[\s\S]*P0-03 Target Identity Lock)(?=[\s\S]*data-p003-backup-restore-target-identity-lock="P0-03")(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*Execution authority recorded)(?=[\s\S]*Production source is source-only)(?=[\s\S]*Restore target is isolated)(?=[\s\S]*App banner points to restore target)(?=[\s\S]*SQL editor and CLI profile locked)(?=[\s\S]*Controlled evidence folder confirmed)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*PASS_LOCAL proves only that the target-lock checklist exists)/i,
+  "target identity lock evidence-pack reference",
+);
+
+requireText(
   operatorRunSheet,
   /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not execute backup, restore, migration, rollback, UAT\s+acceptance, owner waiver or production GO)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*P0-03-RUN-01)(?=[\s\S]*P0-03-RUN-06)(?=[\s\S]*BACKUP_RESTORE_RUN_READY \/ STOP \/ BLOCKED)(?=[\s\S]*Immediate Stop Conditions)(?=[\s\S]*npm\.cmd run audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*does not prove an actual backup, restore, migration\s+dry-run, rollback proof, UAT pass, owner sign-off or production GO)/i,
   "operator run sheet local-only boundary",
+  operatorRunSheetPath,
+);
+requireText(
+  operatorRunSheet,
+  /(?=[\s\S]*Target Identity Lock)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*Mark production as source-only)(?=[\s\S]*Prove restore target isolation)(?=[\s\S]*Prove app banner points to restore target)(?=[\s\S]*Lock SQL editor and CLI profile)(?=[\s\S]*Confirm controlled evidence folder)/i,
+  "operator run sheet target identity lock",
   operatorRunSheetPath,
 );
 
@@ -119,6 +131,12 @@ requireText(
   component,
   /(?=[\s\S]*data-supabase-backup-restore-guard="P0-03")(?=[\s\S]*P0-03 Supabase backup\/restore dry-run)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until real backup evidence, restore\s+evidence, migration preflight\/postflight results and owner\s+sign-off exist)(?=[\s\S]*PASS_LOCAL does not mean backup was executed,\s+restore was executed, UAT passed, production migration is\s+approved, or production GO is approved)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data)(?=[\s\S]*Backup ID \/ snapshot ID)(?=[\s\S]*Restore target project\/ref)(?=[\s\S]*App connection checked against restore target)(?=[\s\S]*Human sign-off)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*npm\.cmd run build)/i,
   "P0-03 Supabase backup/restore UI guard",
+  componentPath,
+);
+requireText(
+  component,
+  /(?=[\s\S]*data-p003-backup-restore-target-identity-lock="P0-03")(?=[\s\S]*P0-03 backup\/restore target identity lock)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*Execution authority recorded)(?=[\s\S]*Production source is source-only)(?=[\s\S]*Restore target is isolated)(?=[\s\S]*App banner points to restore target)(?=[\s\S]*SQL editor and CLI profile locked)(?=[\s\S]*Controlled evidence folder confirmed)(?=[\s\S]*PASS_LOCAL proves only that the target-lock checklist exists)/i,
+  "P0-03 backup/restore target identity lock",
   componentPath,
 );
 requireText(
@@ -172,7 +190,7 @@ requireText(
 
 requireText(
   checklist,
-  /STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*backup\/restore closure decision manifest/i,
+  /STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore target identity lock[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*backup\/restore closure decision manifest/i,
   "production checklist evidence-pack reference",
   checklistPath,
 );
@@ -203,7 +221,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*backup\/restore closure decision manifest[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
+if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore target identity lock[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*backup\/restore closure decision manifest[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
   fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
 }
 

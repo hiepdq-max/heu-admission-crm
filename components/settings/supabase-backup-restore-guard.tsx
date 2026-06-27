@@ -8,6 +8,63 @@ const evidenceItems = [
   "Human sign-off",
 ];
 
+const targetIdentityLockItems = [
+  {
+    caseId: "P0-03-TARGET-01",
+    title: "Execution authority recorded",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "Approved execution window, operator, checker and owner approval reference are captured before any backup/restore command.",
+    stopCondition:
+      "Stop if the execution window, operator/checker pair or approval reference is missing.",
+  },
+  {
+    caseId: "P0-03-TARGET-02",
+    title: "Production source is source-only",
+    owner: "IT_DATA",
+    evidence:
+      "Production project/ref is recorded as source-only with no migration, write, delete or restore command planned against it.",
+    stopCondition:
+      "Stop if any command could write to production or if the production project/ref is ambiguous.",
+  },
+  {
+    caseId: "P0-03-TARGET-03",
+    title: "Restore target is isolated",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "Restore target project/ref, URL and label prove the dry-run target is separate from production.",
+    stopCondition:
+      "Stop if source and restore target cannot be distinguished in screenshots or notes.",
+  },
+  {
+    caseId: "P0-03-TARGET-04",
+    title: "App banner points to restore target",
+    owner: "IT_DATA",
+    evidence:
+      "App environment banner or redacted connection proof shows the app is connected to the restore target.",
+    stopCondition:
+      "Stop if the app could still be connected to production.",
+  },
+  {
+    caseId: "P0-03-TARGET-05",
+    title: "SQL editor and CLI profile locked",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "SQL editor, Supabase project selector and CLI profile proof show commands run only against the restore target.",
+    stopCondition:
+      "Stop if any browser tab, SQL editor tab or CLI profile could point to production.",
+  },
+  {
+    caseId: "P0-03-TARGET-06",
+    title: "Controlled evidence folder confirmed",
+    owner: "Audit + IT_DATA",
+    evidence:
+      "Controlled folder, redaction owner and evidence naming pattern are confirmed before screenshots or command output are stored.",
+    stopCondition:
+      "Stop if raw exports, credentials, bank data, vouchers or personal data could enter Git/Codex/chat.",
+  },
+];
+
 const evidenceManifestItems = [
   {
     caseId: "P0-03-EVID-01",
@@ -340,6 +397,60 @@ export function SupabaseBackupRestoreGuard() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sky-950"
+        data-p003-backup-restore-target-identity-lock="P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P0-03 backup/restore target identity lock: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Complete this lock before any human backup/restore dry-run. Any
+              ambiguous browser tab, SQL editor, CLI profile, connection string,
+              app banner or evidence folder keeps production NO-GO.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-sky-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              TARGET_LOCK_READY / STOP / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {targetIdentityLockItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-sky-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.evidence}</p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-sky-200 bg-white px-3 py-2 text-sky-900">
+          PASS_LOCAL proves only that the target-lock checklist exists. It does
+          not execute backup, restore, migration, rollback, UAT acceptance or
+          production GO.
         </div>
       </div>
 

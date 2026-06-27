@@ -248,7 +248,29 @@ The same page exposes
 EVIDENCE_INDEX_READY / NO_GO / BLOCKED so the operator/checker can confirm
 P0-03-EVID-01 through P0-03-EVID-06 before owner review.
 
-## 15. Restore Smoke-Check Acceptance Matrix
+## 15. P0-03 Target Identity Lock
+
+The Supabase check page also exposes
+`data-p003-backup-restore-target-identity-lock="P0-03"`. Complete this lock
+before any human backup/restore dry-run. Any ambiguous browser tab, SQL editor,
+CLI profile, connection string, app banner or evidence folder keeps production
+NO-GO.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P0-03-TARGET-01 | Execution authority recorded | Approved execution window, operator, checker and owner approval reference | Missing execution window, operator/checker pair or approval reference |
+| P0-03-TARGET-02 | Production source is source-only | Production project/ref recorded as source-only with no migration, write, delete or restore command planned against it | Any command could write to production or production project/ref is ambiguous |
+| P0-03-TARGET-03 | Restore target is isolated | Restore target project/ref, URL and label prove separation from production | Source and restore target cannot be distinguished in screenshots or notes |
+| P0-03-TARGET-04 | App banner points to restore target | App environment banner or redacted connection proof | App could still be connected to production |
+| P0-03-TARGET-05 | SQL editor and CLI profile locked | SQL editor, Supabase project selector and CLI profile proof show commands run only against the restore target | Browser tab, SQL editor tab or CLI profile could point to production |
+| P0-03-TARGET-06 | Controlled evidence folder confirmed | Controlled folder, redaction owner and evidence naming pattern | Raw exports, credentials, bank data, vouchers or personal data could enter Git/Codex/chat |
+
+Target-lock decision: TARGET_LOCK_READY / STOP / BLOCKED.
+
+PASS_LOCAL proves only that the target-lock checklist exists. It does not
+execute backup, restore, migration, rollback, UAT acceptance or production GO.
+
+## 16. Restore Smoke-Check Acceptance Matrix
 
 The Supabase check page also exposes
 `data-p003-restore-smoke-check-acceptance-matrix="P0-03"`. A restore dry-run is
@@ -272,7 +294,7 @@ proof, migration approval or production GO. Attach only redacted evidence
 references; keep raw exports, credentials, bank data, vouchers and personal data
 outside Git/Codex/chat.
 
-## 16. P0-03 Backup/Restore Closure Decision Manifest
+## 17. P0-03 Backup/Restore Closure Decision Manifest
 
 The Supabase check page also exposes
 `data-p003-backup-restore-closure-decision-manifest="P0-03"`. Use this

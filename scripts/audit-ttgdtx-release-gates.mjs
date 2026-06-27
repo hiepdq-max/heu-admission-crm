@@ -340,9 +340,21 @@ requireText(
 );
 
 requireText(
+  "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  /(?=[\s\S]*P0-03 Target Identity Lock)(?=[\s\S]*data-p003-backup-restore-target-identity-lock="P0-03")(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*PASS_LOCAL proves only that the target-lock checklist exists)/i,
+  "backup/restore target identity lock evidence pack reference",
+);
+
+requireText(
   "components/settings/supabase-backup-restore-guard.tsx",
   /(?=[\s\S]*data-supabase-backup-restore-guard="P0-03")(?=[\s\S]*P0-03 Supabase backup\/restore dry-run)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until real backup evidence, restore\s+evidence, migration preflight\/postflight results and owner\s+sign-off exist)(?=[\s\S]*PASS_LOCAL does not mean backup was executed,\s+restore was executed, UAT passed, production migration is\s+approved, or production GO is approved)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data)(?=[\s\S]*Backup ID \/ snapshot ID)(?=[\s\S]*Restore target project\/ref)(?=[\s\S]*App connection checked against restore target)(?=[\s\S]*Human sign-off)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*npm\.cmd run build)/i,
   "P0-03 Supabase backup/restore UI guard",
+);
+
+requireText(
+  "components/settings/supabase-backup-restore-guard.tsx",
+  /(?=[\s\S]*data-p003-backup-restore-target-identity-lock="P0-03")(?=[\s\S]*P0-03 backup\/restore target identity lock)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*Execution authority recorded)(?=[\s\S]*Production source is source-only)(?=[\s\S]*Restore target is isolated)(?=[\s\S]*App banner points to restore target)(?=[\s\S]*SQL editor and CLI profile locked)(?=[\s\S]*Controlled evidence folder confirmed)(?=[\s\S]*PASS_LOCAL proves only that the target-lock checklist exists)/i,
+  "P0-03 backup/restore target identity lock",
 );
 
 requireText(
