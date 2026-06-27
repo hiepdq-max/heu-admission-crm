@@ -2736,3 +2736,15 @@
 - This is shared-source wording control only. It does not collect evidence,
   execute UAT, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-03 Backup Restore Evidence Manifest
+
+- Added a P0-03 external evidence manifest to the backup/restore dry-run pack
+  and Supabase backup/restore guard so operators must track backup, restore,
+  command, migration dry-run, smoke-check/UAT and final sign-off references by
+  controlled evidence ID.
+- Extended `audit:ttgdtx-backup-restore-dry-run-pack` and
+  `audit:ttgdtx-release-gates` so the manifest, no-secret boundary and
+  EVIDENCE_INDEX_READY / NO_GO / BLOCKED decision cannot be skipped.
+- This is P0-03 evidence-index packaging only. It does not execute backup,
+  restore, migration, UAT, rollback, owner waiver or production GO.

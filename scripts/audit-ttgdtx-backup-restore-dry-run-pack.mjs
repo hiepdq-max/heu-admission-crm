@@ -85,6 +85,11 @@ requireText(pack, /Human Sign-Off[\s\S]*IT_DATA[\s\S]*KHTC[\s\S]*Phap Che[\s\S]*
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i, "PASS_LOCAL local-only boundary");
 requireText(
   pack,
+  /(?=[\s\S]*P0-03 External Evidence Manifest)(?=[\s\S]*P0-03-EVID-01)(?=[\s\S]*P0-03-EVID-06)(?=[\s\S]*Backup reference)(?=[\s\S]*Restore target reference)(?=[\s\S]*Preflight\/postflight command reference)(?=[\s\S]*Migration dry-run step reference)(?=[\s\S]*Smoke-check and UAT reference)(?=[\s\S]*Final sign-off reference)(?=[\s\S]*EVIDENCE_INDEX_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing evidence ID, uncontrolled storage, raw sensitive attachment or unsigned\s+owner decision keeps production NO-GO)/i,
+  "external evidence manifest",
+);
+requireText(
+  pack,
   /(?=[\s\S]*Restore Smoke-Check Acceptance Matrix)(?=[\s\S]*data-p003-restore-smoke-check-acceptance-matrix="P0-03")(?=[\s\S]*P0-03-SMOKE-01)(?=[\s\S]*P0-03-SMOKE-06)(?=[\s\S]*Restore target identity)(?=[\s\S]*Core master records readable)(?=[\s\S]*Finance guard behavior preserved)(?=[\s\S]*Role and workspace scope preserved)(?=[\s\S]*Audit trace preserved)(?=[\s\S]*Dashboard source reconciliation preserved)(?=[\s\S]*RESTORE_SMOKE_CHECK_PASS \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass, rollback\s+proof, migration approval or production GO)/i,
   "restore smoke-check acceptance matrix",
 );
@@ -112,6 +117,13 @@ requireText(
   component,
   /(?=[\s\S]*data-p003-backup-restore-evidence-checklist="P0-03")(?=[\s\S]*P0-03 backup\/restore execution evidence checklist)(?=[\s\S]*PASS_LOCAL\s+only)(?=[\s\S]*P0-03-01)(?=[\s\S]*P0-03-06)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md)(?=[\s\S]*Actual backup, restore dry-run, migration preflight\/postflight,\s+data smoke-check, signed UAT and owner GO\/NO-GO evidence are still\s+required)(?=[\s\S]*PASS_LOCAL does not prove backup was executed, restore was executed,\s+migration is safe, UAT passed, rollback is proven or production GO is\s+approved)(?=[\s\S]*secrets, passwords, OTPs, service-role keys,\s+bank credentials, raw student PII, raw CCCD, raw phone numbers or raw\s+payment data)/i,
   "P0-03 backup/restore execution evidence checklist",
+  componentPath,
+);
+
+requireText(
+  component,
+  /(?=[\s\S]*data-p003-backup-restore-evidence-manifest="P0-03")(?=[\s\S]*P0-03 backup\/restore external evidence manifest)(?=[\s\S]*PASS_LOCAL\s+only)(?=[\s\S]*P0-03-EVID-01)(?=[\s\S]*P0-03-EVID-06)(?=[\s\S]*EVIDENCE_INDEX_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Backup reference)(?=[\s\S]*Restore target reference)(?=[\s\S]*Preflight\/postflight command reference)(?=[\s\S]*Migration dry-run step reference)(?=[\s\S]*Smoke-check and UAT reference)(?=[\s\S]*Final sign-off reference)(?=[\s\S]*PASS_LOCAL only means the manifest structure exists)(?=[\s\S]*Missing evidence\s+ID, uncontrolled storage, raw sensitive attachment or unsigned owner\s+decision keeps production NO-GO)/i,
+  "P0-03 backup/restore external evidence manifest",
   componentPath,
 );
 

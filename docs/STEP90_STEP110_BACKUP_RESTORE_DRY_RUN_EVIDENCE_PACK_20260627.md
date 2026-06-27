@@ -196,7 +196,27 @@ production migration is approved, or production GO is approved. Actual
 production readiness still requires completed evidence, owner review and signed
 human Go/No-Go.
 
-## 13. P0-03 UI Execution Checklist
+## 13. P0-03 External Evidence Manifest
+
+Every artifact below must be recorded as a controlled external reference. Do not
+paste raw dumps, credentials, connection strings, bank data, vouchers, raw PII or
+raw payment data into Git/Codex/chat.
+
+| Case | Required reference | Owner/checker | Minimum fields |
+|---|---|---|---|
+| P0-03-EVID-01 | Backup reference | IT_DATA + Audit | Controlled reference ID, backup/snapshot ID, timestamp range, operator and checker |
+| P0-03-EVID-02 | Restore target reference | IT_DATA + Audit | Restore project/ref, isolated target proof, connection banner and checker confirmation |
+| P0-03-EVID-03 | Preflight/postflight command reference | IT_DATA + Audit | Command list, preflight result, postflight result and controlled evidence note |
+| P0-03-EVID-04 | Migration dry-run step reference | IT_DATA + KHTC + PHAP_CHE | Step90-Step110 APPLY/SKIP/WAIVE result, exception ID and owner decision when required |
+| P0-03-EVID-05 | Smoke-check and UAT reference | KHTC + TRUONG_PHONG + Audit | Restore smoke-check matrix, UAT evidence index and unresolved exception status |
+| P0-03-EVID-06 | Final sign-off reference | BGH + IT_DATA + KHTC + PHAP_CHE + Audit | Signed GO/NO-GO note with redacted evidence IDs and no raw dump, secret or PII |
+
+Final manifest decision: EVIDENCE_INDEX_READY / NO_GO / BLOCKED.
+
+Missing evidence ID, uncontrolled storage, raw sensitive attachment or unsigned
+owner decision keeps production NO-GO.
+
+## 14. P0-03 UI Execution Checklist
 
 The Supabase check page exposes a backup/restore execution evidence checklist in
 `components/settings/supabase-backup-restore-guard.tsx`. The checklist is
@@ -217,7 +237,12 @@ raw student PII, raw CCCD, raw phone numbers or raw payment data in
 Git/Codex/chat. Actual backup, restore dry-run, signed UAT and owner GO/NO-GO
 evidence remain required before production migration can be considered.
 
-## 14. Restore Smoke-Check Acceptance Matrix
+The same page exposes
+`data-p003-backup-restore-evidence-manifest="P0-03"` and the decision value
+EVIDENCE_INDEX_READY / NO_GO / BLOCKED so the operator/checker can confirm
+P0-03-EVID-01 through P0-03-EVID-06 before owner review.
+
+## 15. Restore Smoke-Check Acceptance Matrix
 
 The Supabase check page also exposes
 `data-p003-restore-smoke-check-acceptance-matrix="P0-03"`. A restore dry-run is

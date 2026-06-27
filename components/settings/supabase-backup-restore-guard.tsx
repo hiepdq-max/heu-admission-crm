@@ -8,6 +8,51 @@ const evidenceItems = [
   "Human sign-off",
 ];
 
+const evidenceManifestItems = [
+  {
+    caseId: "P0-03-EVID-01",
+    title: "Backup reference",
+    owner: "IT_DATA + Audit",
+    required:
+      "Controlled reference ID, backup/snapshot ID, timestamp range, operator and checker.",
+  },
+  {
+    caseId: "P0-03-EVID-02",
+    title: "Restore target reference",
+    owner: "IT_DATA",
+    required:
+      "Restore project/ref, isolated target proof, connection banner and checker confirmation.",
+  },
+  {
+    caseId: "P0-03-EVID-03",
+    title: "Preflight/postflight command reference",
+    owner: "IT_DATA + Audit",
+    required:
+      "Command list, preflight result, postflight result and controlled evidence note.",
+  },
+  {
+    caseId: "P0-03-EVID-04",
+    title: "Migration dry-run step reference",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    required:
+      "Step90-Step110 APPLY/SKIP/WAIVE result, exception ID and owner decision when required.",
+  },
+  {
+    caseId: "P0-03-EVID-05",
+    title: "Smoke-check and UAT reference",
+    owner: "KHTC + TRUONG_PHONG + Audit",
+    required:
+      "Restore smoke-check matrix, UAT evidence index and unresolved exception status.",
+  },
+  {
+    caseId: "P0-03-EVID-06",
+    title: "Final sign-off reference",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    required:
+      "Signed GO/NO-GO note with redacted evidence IDs and no raw dump, secret or PII.",
+  },
+];
+
 const executionChecklist = [
   {
     caseId: "P0-03-01",
@@ -345,6 +390,59 @@ export function SupabaseBackupRestoreGuard() {
           approved. Do not paste secrets, passwords, OTPs, service-role keys,
           bank credentials, raw student PII, raw CCCD, raw phone numbers or raw
           payment data.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-950"
+        data-p003-backup-restore-evidence-manifest="P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P0-03 backup/restore external evidence manifest: PASS_LOCAL
+                only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use redacted reference IDs for every backup, restore, command,
+              dry-run, smoke-check, UAT and final sign-off artifact. Raw dumps,
+              credentials, bank data, vouchers and PII stay outside
+              Git/Codex/chat.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-emerald-200 bg-white px-3 py-2">
+            Manifest decision:
+            <span className="mt-1 block font-mono text-xs">
+              EVIDENCE_INDEX_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {evidenceManifestItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-emerald-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.required}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-emerald-200 bg-white px-3 py-2 text-emerald-900">
+          PASS_LOCAL only means the manifest structure exists. Missing evidence
+          ID, uncontrolled storage, raw sensitive attachment or unsigned owner
+          decision keeps production NO-GO.
         </div>
       </div>
 
