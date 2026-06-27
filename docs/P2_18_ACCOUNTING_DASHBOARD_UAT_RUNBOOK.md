@@ -55,6 +55,9 @@ Before signed browser UAT, the repo must keep local guard evidence green:
 
 - `components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx` shows the P2-18
   read-only, source-comparison and role-scope guard on the dashboard.
+- `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx` shows the
+  required redacted evidence set for P2-18-01 through P2-18-08 and references
+  `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`.
 - `app/ttgdtx/accounting-dashboard/page.tsx` mounts the guard and only queries
   dashboard views after `canOpen` is true.
 - `scripts/audit-ttgdtx-dashboard-access.mjs` confirms contract-only permission

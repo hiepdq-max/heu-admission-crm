@@ -79,6 +79,7 @@ const requiredFiles = [
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
+  "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
@@ -341,14 +342,26 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
+  "P2-18 dashboard UAT evidence checklist",
+);
+
+requireText(
   "app/ttgdtx/accounting-dashboard/page.tsx",
   /TtgdtxDashboardReadonlyGuard[\s\S]*<TtgdtxDashboardReadonlyGuard \/>/,
   "P2-18 dashboard read-only guard mount",
 );
 
 requireText(
+  "app/ttgdtx/accounting-dashboard/page.tsx",
+  /<TtgdtxDashboardReadonlyGuard\s*\/>[\s\S]*<TtgdtxDashboardUatEvidenceChecklist\s*\/>/,
+  "P2-18 dashboard UAT evidence checklist mount",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /P2-18 accounting dashboard[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-dashboard-readonly-guard[\s\S]*signed UAT evidence/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
 );
 

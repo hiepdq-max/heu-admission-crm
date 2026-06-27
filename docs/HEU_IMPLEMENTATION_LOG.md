@@ -1657,3 +1657,37 @@
 - TTGDTX production execution queue is PASS_LOCAL after local audits pass.
 - It is read-only and does not approve UAT, finance action, migration or
   production GO.
+
+## 2026-06-27 - P2-18 Dashboard UAT Evidence Checklist
+
+### Scope
+
+- Continued P2-18 production-readiness hardening with a small dashboard page
+  slice.
+- Added `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx` below
+  the read-only guard on `/ttgdtx/accounting-dashboard`.
+- The checklist lists required redacted evidence for P2-18-01 through
+  P2-18-08, including source comparison, control-board variance, role denial,
+  exception routing, movement rows and no-write verification.
+- It references the controlled evidence redaction pack and repeats that raw
+  student PII, CCCD, bank accounts, vouchers, passwords, OTPs and service-role
+  keys stay outside Git/Codex/chat.
+- Extended dashboard and release-gate audits so the checklist, production
+  checklist, backlog and runbook stay aligned.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx`
+- `app/ttgdtx/accounting-dashboard/page.tsx`
+- `scripts/audit-ttgdtx-dashboard-readonly-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P2-18 UAT evidence checklist is PASS_LOCAL after local audits pass.
+- Signed browser UAT and owner approval are still required before P2-18 can be
+  marked production-ready.

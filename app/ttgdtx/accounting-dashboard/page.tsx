@@ -16,6 +16,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxDashboardReadonlyGuard } from "@/components/ttgdtx/ttgdtx-dashboard-readonly-guard";
+import { TtgdtxDashboardUatEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -504,6 +505,7 @@ export default async function TtgdtxAccountingDashboardPage() {
         <TtgdtxOperatingControlStrip currentCode="P2-18" />
 
         <TtgdtxDashboardReadonlyGuard />
+        <TtgdtxDashboardUatEvidenceChecklist />
 
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900">
           <div className="flex gap-3">

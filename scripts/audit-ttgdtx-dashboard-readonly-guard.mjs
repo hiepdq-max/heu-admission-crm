@@ -25,6 +25,7 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx";
+const evidenceChecklistPath = "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx";
 const pagePath = "app/ttgdtx/accounting-dashboard/page.tsx";
 const runbookPath = "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md";
 const planPath = "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md";
@@ -33,6 +34,7 @@ const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 
 for (const file of [
   componentPath,
+  evidenceChecklistPath,
   pagePath,
   runbookPath,
   planPath,
@@ -49,6 +51,7 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const evidenceChecklist = read(evidenceChecklistPath);
 const page = read(pagePath);
 const runbook = read(runbookPath);
 const plan = read(planPath);
@@ -72,6 +75,13 @@ requireText(
   componentPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*raw student PII, CCCD,\s+bank accounts, vouchers, passwords, OTPs and service-role keys\s+stay outside Git\/Codex\/chat)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-02)(?=[\s\S]*P2-18-03)(?=[\s\S]*P2-18-04\/P2-18-05)(?=[\s\S]*P2-18-06\/P2-18-07)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
+  "P2-18 UAT evidence checklist",
+  evidenceChecklistPath,
+);
+
 for (const uatCase of [
   "P2-18-01",
   "P2-18-02",
@@ -90,6 +100,13 @@ requireText(
   page,
   /TtgdtxDashboardReadonlyGuard[\s\S]*<TtgdtxDashboardReadonlyGuard \/>/,
   "P2-18 page mounts read-only guard",
+  pagePath,
+);
+
+requireText(
+  page,
+  /<TtgdtxDashboardReadonlyGuard\s*\/>[\s\S]*<TtgdtxDashboardUatEvidenceChecklist\s*\/>/,
+  "P2-18 page mounts UAT evidence checklist after read-only guard",
   pagePath,
 );
 
@@ -156,6 +173,7 @@ requireText(
 
 for (const needle of [
   componentPath,
+  evidenceChecklistPath,
   "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
   "audit:ttgdtx-dashboard-readonly-guard",
 ]) {
