@@ -13,6 +13,11 @@ const step98Path = path.join(
   "database",
   "step98_ttgdtx_source_control_p2_11.sql",
 );
+const step99Path = path.join(
+  repoRoot,
+  "database",
+  "step99_ttgdtx_master_dropdown_p2_12.sql",
+);
 const failures = [];
 
 function fail(message) {
@@ -94,6 +99,7 @@ for (const filePath of pageFiles) {
 
 const step90Sql = readFileSync(step90Path, "utf8");
 const step98Sql = readFileSync(step98Path, "utf8");
+const step99Sql = readFileSync(step99Path, "utf8");
 
 if (!/Migration candidate only\. Do not run production migration from Codex\/chat\./i.test(step90Sql)) {
   fail("database/step90_ttgdtx_student_receivables.sql: missing production migration boundary");
@@ -210,6 +216,58 @@ if (
 ) {
   fail(
     "database/step98_ttgdtx_source_control_p2_11.sql: source check update policy must require manage permission and business scope",
+  );
+}
+
+if (!/Migration candidate only\. Do not run production migration from Codex\/chat\./i.test(step99Sql)) {
+  fail("database/step99_ttgdtx_master_dropdown_p2_12.sql: missing production migration boundary");
+}
+
+if (/on delete set null/i.test(step99Sql)) {
+  fail(
+    "database/step99_ttgdtx_master_dropdown_p2_12.sql: master source evidence links must not be nulled on delete",
+  );
+}
+
+if (
+  !/create or replace function public\.can_read_ttgdtx_master[\s\S]*\(\s*\(\s*public\.has_permission\('ttgdtx\.master\.read'\)[\s\S]*public\.has_permission\('ttgdtx\.master\.manage'\)[\s\S]*public\.has_permission\('ttgdtx\.master\.approve'\)[\s\S]*\)\s*and public\.can_access_business_scope\(target_segment_id, target_partner_id\)/i.test(
+    step99Sql,
+  )
+) {
+  fail(
+    "database/step99_ttgdtx_master_dropdown_p2_12.sql: P2-12 read access must require both master permission and business scope",
+  );
+}
+
+if (/create policy "ttgdtx_center_master_manage"[\s\S]*for all/i.test(step99Sql)) {
+  fail(
+    'database/step99_ttgdtx_master_dropdown_p2_12.sql: P2-12 must not use a broad "for all" manage policy',
+  );
+}
+
+if (/create policy "ttgdtx_center_master_[^"]+"[\s\S]*for delete/i.test(step99Sql)) {
+  fail(
+    "database/step99_ttgdtx_master_dropdown_p2_12.sql: P2-12 must not expose direct delete policy",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_center_master_insert"[\s\S]*for insert[\s\S]*public\.can_manage_ttgdtx_master\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, partner_id\)/i.test(
+    step99Sql,
+  )
+) {
+  fail(
+    "database/step99_ttgdtx_master_dropdown_p2_12.sql: center master insert policy must require manage permission and business scope",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_center_master_update"[\s\S]*for update[\s\S]*public\.can_manage_ttgdtx_master\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, partner_id\)/i.test(
+    step99Sql,
+  )
+) {
+  fail(
+    "database/step99_ttgdtx_master_dropdown_p2_12.sql: center master update policy must require manage permission and business scope",
   );
 }
 

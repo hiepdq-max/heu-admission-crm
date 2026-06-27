@@ -1,6 +1,6 @@
 -- Step 99 - P2-12 TTGDTX Master Dropdown Control.
 -- Run after step98_ttgdtx_source_control_p2_11.sql.
--- Migration candidate only. Do not run in production from Codex/chat.
+-- Migration candidate only. Do not run production migration from Codex/chat.
 -- Production requires backup evidence, restore dry-run, migration order approval
 -- and business Go/No-Go sign-off.
 -- Rollback note:
@@ -12,6 +12,8 @@
 -- - Create a controlled TTGDTX master list for selection/dropdown.
 -- - Users must choose a TTGDTX from master data, not type free text.
 -- - P2-12 does not create receivables, does not collect tuition and does not pay partners.
+
+begin;
 
 insert into public.role_permissions (role_id, permission)
 select r.id, p.permission
@@ -131,7 +133,7 @@ create table if not exists public.ttgdtx_center_master (
   contact_name text,
   phone text,
   email text,
-  source_document_id uuid references public.ttgdtx_source_documents(id) on delete set null,
+  source_document_id uuid references public.ttgdtx_source_documents(id) on delete restrict,
   source_version text,
   approved_document_url text,
   effective_from date not null default current_date,
@@ -178,6 +180,15 @@ where record_status = 'ACTIVE';
 create index if not exists idx_ttgdtx_center_master_partner
 on public.ttgdtx_center_master(partner_id, admission_segment_id)
 where record_status = 'ACTIVE';
+
+alter table public.ttgdtx_center_master
+  drop constraint if exists ttgdtx_center_master_source_document_id_fkey;
+
+alter table public.ttgdtx_center_master
+  add constraint ttgdtx_center_master_source_document_id_fkey
+  foreign key (source_document_id)
+  references public.ttgdtx_source_documents(id)
+  on delete restrict;
 
 create or replace function public.validate_ttgdtx_center_master()
 returns trigger
@@ -270,26 +281,15 @@ as $$
   select
     public.is_admin()
     or public.current_user_role_code() = 'BGH'
-    or public.has_permission('ttgdtx.master.manage')
-    or public.has_permission('ttgdtx.master.approve')
     or (
-      public.has_permission('ttgdtx.master.read')
-      and (
-        exists (
-          select 1
-          from public.user_partner_scopes ups
-          where ups.user_id = auth.uid()
-            and ups.partner_id = target_partner_id
-            and ups.status = 'ACTIVE'
-        )
-        or exists (
-          select 1
-          from public.user_admission_segment_scopes us
-          where us.user_id = auth.uid()
-            and us.segment_id = target_segment_id
-            and us.status = 'ACTIVE'
-        )
+      (
+        public.has_permission('ttgdtx.master.read')
+        or public.has_permission('ttgdtx.master.manage')
+        or public.has_permission('ttgdtx.master.approve')
+        or public.has_permission('partners.manage')
+        or public.has_permission('settings.manage')
       )
+      and public.can_access_business_scope(target_segment_id, target_partner_id)
     )
 $$;
 
@@ -335,11 +335,31 @@ using (public.can_read_ttgdtx_master(partner_id, admission_segment_id));
 drop policy if exists "ttgdtx_center_master_manage"
 on public.ttgdtx_center_master;
 
-create policy "ttgdtx_center_master_manage"
-on public.ttgdtx_center_master for all
+drop policy if exists "ttgdtx_center_master_insert"
+on public.ttgdtx_center_master;
+
+create policy "ttgdtx_center_master_insert"
+on public.ttgdtx_center_master for insert
 to authenticated
-using (public.can_manage_ttgdtx_master())
-with check (public.can_manage_ttgdtx_master());
+with check (
+  public.can_manage_ttgdtx_master()
+  and public.can_access_business_scope(admission_segment_id, partner_id)
+);
+
+drop policy if exists "ttgdtx_center_master_update"
+on public.ttgdtx_center_master;
+
+create policy "ttgdtx_center_master_update"
+on public.ttgdtx_center_master for update
+to authenticated
+using (
+  public.can_manage_ttgdtx_master()
+  and public.can_access_business_scope(admission_segment_id, partner_id)
+)
+with check (
+  public.can_manage_ttgdtx_master()
+  and public.can_access_business_scope(admission_segment_id, partner_id)
+);
 
 with ttgdtx_segment as (
   select id
@@ -795,3 +815,5 @@ on conflict (node_code) do update set
   requires_attention_rule = excluded.requires_attention_rule,
   control_status = excluded.control_status,
   updated_at = now();
+
+commit;

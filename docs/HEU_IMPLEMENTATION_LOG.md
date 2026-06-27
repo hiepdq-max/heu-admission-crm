@@ -477,3 +477,26 @@
 - Step98 remains a migration candidate only and was not run in production.
 - P2-11 is source/control metadata only. It does not create receivables, collect tuition, reconcile money, approve payment requests or record payouts.
 - Production still requires backup evidence, restore dry-run, signed UAT and business Go/No-Go.
+
+## 2026-06-27 - P2-12 TTGDTX Master Dropdown Runtime Guard
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot with the controlled center master/dropdown layer.
+- Hardened Step99 before production use: read access now requires master permission plus business scope, and write access is split into insert/update only.
+- Kept source-document evidence links restrict-protected so dropdown master evidence cannot be silently detached by deleting a source document.
+- Added a UAT runbook for P2-12 master/dropdown verification.
+
+### Files Updated/Added
+
+- `database/step99_ttgdtx_master_dropdown_p2_12.sql`
+- `scripts/audit-ttgdtx-role-scope-access.mjs`
+- `docs/P2_12_MASTER_DROPDOWN_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step99 remains a migration candidate only and was not run in production.
+- P2-12 controls dropdown/master data only. It does not create receivables, collect tuition, reconcile money, approve payment requests or record payouts.
+- Production still requires backup evidence, restore dry-run, signed UAT and business Go/No-Go.
