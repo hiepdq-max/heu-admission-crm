@@ -1981,3 +1981,11 @@
   stays local-only, server-side-checked and finance-gated.
 - P3-01 is PASS_LOCAL only. Signed role/workflow UAT remains required before
   production CRM use or any finance reliance.
+## 2026-06-27 - Current State Inventory P3-01 Sync
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M05 and the TTGDTX control
+  state include the new P3-01 lead lifecycle guard.
+- Added `audit:heu-lead-lifecycle-standard` to current audit evidence and kept
+  the full `audit:*` suite marked as last full pass, not a fresh claim.
+- Extended `audit:heu-current-state-inventory` so the inventory fails if P3-01
+  disappears from the current-state, UAT priority or evidence view.

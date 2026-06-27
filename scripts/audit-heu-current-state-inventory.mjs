@@ -28,6 +28,7 @@ function requireText(contents, pattern, label, file = inventoryPath) {
 for (const file of [
   inventoryPath,
   "docs/GIT_CLEANUP_ANALYSIS.md",
+  "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "AGENTS.md",
@@ -59,6 +60,21 @@ requireText(
 );
 requireText(
   inventory,
+  /npm\.cmd run audit:heu-lead-lifecycle-standard[\s\S]*PASS/i,
+  "P3-01 lead lifecycle audit evidence",
+);
+requireText(
+  inventory,
+  /M05 Tuyen sinh CRM[\s\S]*P3-01 lifecycle guard[\s\S]*P3-02 handover policy[\s\S]*finance-gated/i,
+  "M05 P3-01/P3-02 current module state",
+);
+requireText(
+  inventory,
+  /Lead lifecycle\/handover[\s\S]*P3-01 lifecycle standard[\s\S]*P3-02 handover policy[\s\S]*PASS_LOCAL[\s\S]*signed role\/workflow UAT pending/i,
+  "P3-01/P3-02 control state",
+);
+requireText(
+  inventory,
   /P7-01\/P7-02\/P7-03 are PASS_LOCAL; autonomous AI remains locked/i,
   "AI remains advisory-only",
 );
@@ -66,6 +82,11 @@ requireText(
   inventory,
   /Current stage:\s*Stage D - internal controlled test only[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed/i,
   "production NO-GO blocker list",
+);
+requireText(
+  inventory,
+  /P3-01\/P3-02[\s\S]*still require signed evidence[\s\S]*Execute P3-01\/P3-02 lead lifecycle and handover UAT/i,
+  "P3-01/P3-02 signed UAT priority",
 );
 requireText(
   inventory,

@@ -41,7 +41,8 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run lint` | PASS at last verification |
 | `npm.cmd run audit:ttgdtx-release-gates` | PASS |
 | `npm.cmd run audit:heu-git-hygiene` | PASS |
-| Full `audit:*` suite | PASS after the P7-03 slice; rerun before handoff |
+| `npm.cmd run audit:heu-lead-lifecycle-standard` | PASS |
+| Full `audit:*` suite | Last full PASS after the P7-03 slice; rerun before final handoff |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -54,7 +55,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
-| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | Lead routes exist; handover remains finance-gated |
+| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard and P3-02 handover policy exist; handover remains finance-gated |
 | M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy exists; production UAT pending |
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
@@ -71,6 +72,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Backup/restore | Evidence pack and UI guard exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard and UAT checklist exist | Signed legal/finance UAT still required |
+| Lead lifecycle/handover | P3-01 lifecycle standard and P3-02 handover policy exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier and duplicate guards | Signed payout UAT pending |
 | Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |
@@ -87,7 +89,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Git hygiene drift | MEDIUM | P0-02/P0-04 are PASS_LOCAL; keep `audit:heu-git-hygiene` green and verify exact ahead count live |
 | Production backup/restore not executed | CRITICAL | Real backup ID, restore target and smoke-check evidence are still missing |
 | Migration order unsigned | CRITICAL | Step90-Step110 approval must be signed by IT_DATA, KHTC and PHAP_CHE |
-| Signed UAT missing | CRITICAL | P0-19, P2-17, P2-18, P6-03 and P6-04 still require signed evidence |
+| Signed UAT missing | CRITICAL | P3-01/P3-02, P0-19, P2-17, P2-18, P6-03 and P6-04 still require signed evidence |
 | Hard-delete/cascade residual risk | HIGH | Non-TTGDTX/base cascade findings need conversion or written waiver |
 | Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, keys and vouchers must stay outside Git/Codex/chat |
 | AI misuse | MEDIUM | AI remains advisory-only; prompt/output logging and role-scoped AI data are not enabled |
@@ -112,13 +114,14 @@ Production is still NO-GO because:
 1. Execute backup/restore dry-run and attach controlled evidence outside Git.
 2. Sign Step90-Step110 migration order after backup/restore evidence is accepted.
 3. Execute P0-19 legal/finance UAT and sign results.
-4. Execute P2-17 duplicate payout UAT and sign results.
-5. Execute P2-18 dashboard UAT with authorized, out-of-scope and contract-only users.
-6. Execute P6-04 role/workspace UAT and P6-03 audit-log UAT.
-7. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
-8. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
+4. Execute P3-01/P3-02 lead lifecycle and handover UAT with scoped users.
+5. Execute P2-17 duplicate payout UAT and sign results.
+6. Execute P2-18 dashboard UAT with authorized, out-of-scope and contract-only users.
+7. Execute P6-04 role/workspace UAT and P6-03 audit-log UAT.
+8. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
+9. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
    `npm.cmd run lint` green before owner review.
-9. Record final owner GO/NO-GO outside Codex/chat.
+10. Record final owner GO/NO-GO outside Codex/chat.
 
 ## 9. Current Conclusion
 
