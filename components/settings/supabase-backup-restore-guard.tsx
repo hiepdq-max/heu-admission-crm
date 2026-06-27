@@ -149,6 +149,57 @@ const restoreSmokeCheckItems = [
   },
 ];
 
+const backupRestoreClosureItems = [
+  {
+    caseId: "P0-03-CLOSE-01",
+    title: "Execution authority and target isolation confirmed",
+    evidence:
+      "Approved execution window, operator/checker names, production project/ref and isolated restore target project/ref are recorded.",
+    blocker:
+      "Block closure if any command, screenshot or browser tab could point to production.",
+  },
+  {
+    caseId: "P0-03-CLOSE-02",
+    title: "Backup and restore proof accepted",
+    evidence:
+      "Backup/snapshot ID, restore completion, controlled evidence reference and checker confirmation exist outside Git/Codex/chat.",
+    blocker:
+      "Block closure if backup ID, restore evidence, controlled storage or checker confirmation is missing.",
+  },
+  {
+    caseId: "P0-03-CLOSE-03",
+    title: "Preflight and postflight checks pass",
+    evidence:
+      "Required audit scripts, lint and build pass before and after the dry-run on the isolated restore target.",
+    blocker:
+      "Block closure if any required check fails, is skipped without written waiver or was run against the wrong target.",
+  },
+  {
+    caseId: "P0-03-CLOSE-04",
+    title: "Smoke-check and UAT index accepted",
+    evidence:
+      "Restore smoke-check matrix, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete.",
+    blocker:
+      "Block closure if smoke-check, UAT evidence or source reconciliation is missing or unresolved.",
+  },
+  {
+    caseId: "P0-03-CLOSE-05",
+    title: "Exceptions and waivers controlled",
+    evidence:
+      "Every HIGH/BLOCKER exception is fixed or has a written owner waiver with impact, rollback and expiry.",
+    blocker:
+      "Block closure if exception handling is oral, broad, ownerless or hides finance/legal/audit risk.",
+  },
+  {
+    caseId: "P0-03-CLOSE-06",
+    title: "Human closure decision recorded",
+    evidence:
+      "IT_DATA, Audit, KHTC, PHAP_CHE and BGH record GO, NO_GO or BLOCKED before migration order review.",
+    blocker:
+      "Block closure if PASS_LOCAL is treated as backup executed, restore executed, UAT accepted, migration approved, rollback proven or production GO.",
+  },
+];
+
 const operatorRunSheetItems = [
   {
     caseId: "P0-03-RUN-01",
@@ -499,6 +550,59 @@ export function SupabaseBackupRestoreGuard() {
           rollback proof, migration approval or production GO. Attach only
           redacted evidence references; keep raw exports, credentials, bank data,
           vouchers and personal data outside Git/Codex/chat.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-rose-200 bg-rose-50 p-4 text-rose-950"
+        data-p003-backup-restore-closure-decision-manifest="P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P0-03 backup/restore closure decision manifest: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this manifest after the operator run sheet, external evidence
+              manifest and restore smoke-check matrix are complete. It prepares
+              a human closure decision; it does not execute backup, restore,
+              migration, rollback, UAT acceptance or production GO.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-rose-200 bg-white px-3 py-2">
+            Closure decision:
+            <span className="mt-1 block font-mono text-xs">
+              P0_03_CLOSURE_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {backupRestoreClosureItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-rose-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.evidence}</p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.blocker}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-rose-200 bg-white px-3 py-2 text-rose-900">
+          PASS_LOCAL keeps P0-03 at evidence-structure readiness only. Missing
+          target proof, backup/restore evidence, postflight result,
+          smoke-check/UAT index, exception decision or human sign-off keeps
+          production NO-GO.
         </div>
       </div>
     </section>

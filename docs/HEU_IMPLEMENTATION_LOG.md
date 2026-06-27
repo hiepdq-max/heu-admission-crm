@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-03 Backup/Restore Closure Decision Manifest
+
+- Added a PASS_LOCAL P0-03 backup/restore closure decision manifest to
+  `components/settings/supabase-backup-restore-guard.tsx`.
+- Updated `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so backup/restore closure is explicit
+  after operator run sheet, external evidence manifest and restore smoke-check
+  matrix.
+- Extended backup/restore, current-state and release-gate audits to require the
+  closure manifest before handoff.
+- This is evidence-structure packaging only. It does not execute backup,
+  restore, migration, rollback, UAT acceptance, owner waiver or production GO.
+
 ## 2026-06-28 - P6-06 Hard-Delete Closure Decision Manifest
 
 - Added a PASS_LOCAL P6-06 hard-delete/cascade closure decision manifest to

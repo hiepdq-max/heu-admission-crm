@@ -264,3 +264,27 @@ PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass, rollback
 proof, migration approval or production GO. Attach only redacted evidence
 references; keep raw exports, credentials, bank data, vouchers and personal data
 outside Git/Codex/chat.
+
+## 16. P0-03 Backup/Restore Closure Decision Manifest
+
+The Supabase check page also exposes
+`data-p003-backup-restore-closure-decision-manifest="P0-03"`. Use this
+manifest after the operator run sheet, external evidence manifest and restore
+smoke-check matrix are complete. It prepares a human closure decision; it does
+not execute backup, restore, migration, rollback, UAT acceptance or production
+GO.
+
+| Case | Decision gate | Required proof | Stop condition |
+|---|---|---|---|
+| P0-03-CLOSE-01 | Execution authority and target isolation confirmed | Approved execution window, operator/checker names, production project/ref and isolated restore target project/ref are recorded | Any command, screenshot or browser tab could point to production |
+| P0-03-CLOSE-02 | Backup and restore proof accepted | Backup/snapshot ID, restore completion, controlled evidence reference and checker confirmation exist outside Git/Codex/chat | Backup ID, restore evidence, controlled storage or checker confirmation is missing |
+| P0-03-CLOSE-03 | Preflight and postflight checks pass | Required audit scripts, lint and build pass before and after the dry-run on the isolated restore target | Any required check fails, is skipped without written waiver or was run against the wrong target |
+| P0-03-CLOSE-04 | Smoke-check and UAT index accepted | Restore smoke-check matrix, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete | Smoke-check, UAT evidence or source reconciliation is missing or unresolved |
+| P0-03-CLOSE-05 | Exceptions and waivers controlled | Every HIGH/BLOCKER exception is fixed or has a written owner waiver with impact, rollback and expiry | Exception handling is oral, broad, ownerless or hides finance/legal/audit risk |
+| P0-03-CLOSE-06 | Human closure decision recorded | IT_DATA, Audit, KHTC, PHAP_CHE and BGH record GO, NO_GO or BLOCKED before migration order review | PASS_LOCAL is treated as backup executed, restore executed, UAT accepted, migration approved, rollback proven or production GO |
+
+Closure decision: P0_03_CLOSURE_READY / NO_GO / BLOCKED.
+
+PASS_LOCAL keeps P0-03 at evidence-structure readiness only. Missing target
+proof, backup/restore evidence, postflight result, smoke-check/UAT index,
+exception decision or human sign-off keeps production NO-GO.
