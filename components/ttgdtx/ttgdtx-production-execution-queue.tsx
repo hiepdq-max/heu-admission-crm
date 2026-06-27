@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 import {
   PRODUCTION_EXECUTION_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
+  PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
   PRODUCTION_INFRA_READINESS_STEPS,
   PRODUCTION_RISK_CLOSURE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
@@ -167,6 +168,57 @@ export function TtgdtxProductionExecutionQueue() {
                 className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-emerald-700 hover:text-emerald-950"
               >
                 Open gate route
+                <ArrowRight className="size-3" />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-violet-200 bg-white p-4"
+        data-ttgdtx-governance-assurance-plan="P6-04_P6-03"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-violet-950">
+              Governance assurance plan: P6-04 + P6-03
+            </h3>
+            <p className="mt-1 leading-6 text-violet-900">
+              Prove role/workspace scope and audit-log traceability before
+              owner review. Any role leak, missing trace row or unsigned
+              governance UAT keeps production NO-GO.
+            </p>
+          </div>
+          <span className="rounded-md border border-violet-200 bg-violet-50 px-3 py-2 text-xs font-semibold uppercase text-violet-800">
+            scope and trace required
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_GOVERNANCE_ASSURANCE_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-violet-300 bg-violet-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-violet-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Runbook: {step.runbook}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-600">
+                Guard: {step.auditCommand}
+              </p>
+              <Link
+                href={step.route}
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-violet-700 hover:text-violet-950"
+              >
+                Open governance route
                 <ArrowRight className="size-3" />
               </Link>
             </article>

@@ -74,8 +74,8 @@ const packageJson = JSON.parse(read("package.json"));
 
 requireText(
   source,
-  /export const PRODUCTION_BLOCKERS[\s\S]*export const SAFE_ITERATION_STEPS[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*export const PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS[\s\S]*export const PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
-  "shared blocker, safe iteration, UAT launch, risk closure, infra readiness, gate-handover and execution-step exports",
+  /export const PRODUCTION_BLOCKERS[\s\S]*export const SAFE_ITERATION_STEPS[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*export const PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS[\s\S]*export const PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
+  "shared blocker, safe iteration, UAT launch, risk closure, infra readiness, gate-handover, governance assurance and execution-step exports",
   sourcePath,
 );
 
@@ -111,6 +111,13 @@ requireText(
   source,
   /(?=[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*P0-19)(?=[\s\S]*Legal and finance gate UAT)(?=[\s\S]*\/ttgdtx\/gate)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*Lead lifecycle and handover UAT)(?=[\s\S]*\/leads)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)(?=[\s\S]*bypass P0-19\/P2-05\/P2-03 finance gates)/i,
   "P0-19/P3 gate-handover shared source coverage",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*P6-04)(?=[\s\S]*Role and workspace scope UAT)(?=[\s\S]*\/settings\/scopes)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*audit:heu-role-scope-uat-pack)(?=[\s\S]*P6-03)(?=[\s\S]*Audit-log traceability UAT)(?=[\s\S]*\/audit)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)/i,
+  "P6-04/P6-03 governance assurance shared source coverage",
   sourcePath,
 );
 
@@ -190,8 +197,8 @@ requireText(
 
 requireText(
   executionQueue,
-  /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*PRODUCTION_INFRA_READINESS_STEPS[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
-  "execution queue imports shared execution, gate-handover, infra readiness, risk closure, UAT launch and safe iteration sources",
+  /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*PRODUCTION_INFRA_READINESS_STEPS[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
+  "execution queue imports shared execution, gate-handover, governance assurance, infra readiness, risk closure, UAT launch and safe iteration sources",
   executionQueuePath,
 );
 
@@ -221,6 +228,10 @@ if (/const\s+infraReadinessSteps\s*=/.test(executionQueue)) {
 
 if (/const\s+gateHandoverSteps\s*=/.test(executionQueue)) {
   fail(`${executionQueuePath}: must not keep a local gateHandoverSteps array`);
+}
+
+if (/const\s+governanceAssuranceSteps\s*=/.test(executionQueue)) {
+  fail(`${executionQueuePath}: must not keep a local governanceAssuranceSteps array`);
 }
 
 if (/const\s+safeIterationSteps\s*=/.test(blockerSummary)) {

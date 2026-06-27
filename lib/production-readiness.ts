@@ -60,6 +60,16 @@ export type ProductionGateHandoverStep = {
   auditCommand: string;
 };
 
+export type ProductionGovernanceAssuranceStep = {
+  code: string;
+  title: string;
+  owner: string;
+  route: string;
+  runbook: string;
+  evidence: string;
+  auditCommand: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -270,6 +280,29 @@ export const PRODUCTION_GATE_HANDOVER_STEPS: ProductionGateHandoverStep[] = [
     evidence:
       "Signed lifecycle and handover UAT proving handover cannot create finance facts or bypass P0-19/P2-05/P2-03 finance gates.",
     auditCommand: "npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack",
+  },
+];
+
+export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS: ProductionGovernanceAssuranceStep[] = [
+  {
+    code: "P6-04",
+    title: "Role and workspace scope UAT",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    route: "/settings/scopes",
+    runbook: "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
+    evidence:
+      "Synthetic-account route matrix proving ADMIN, BGH, KHTC, TUYEN_SINH, PHAP_CHE, AUDIT and out-of-scope users see only allowed workspaces.",
+    auditCommand: "npm.cmd run audit:heu-role-scope-uat-pack",
+  },
+  {
+    code: "P6-03",
+    title: "Audit-log traceability UAT",
+    owner: "Audit + IT_DATA + KHTC",
+    route: "/audit",
+    runbook: "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
+    evidence:
+      "Trace rows for create, update, check, approve, pay and source-control events with actor, entity, time and redacted evidence reference.",
+    auditCommand: "npm.cmd run audit:ttgdtx-audit-trail-guard",
   },
 ];
 
