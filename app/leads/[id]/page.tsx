@@ -33,8 +33,10 @@ import {
   type LeadHandoverRow,
 } from "@/components/leads/lead-handover-panel";
 import { StatusUpdateForm } from "@/components/leads/status-update-form";
+import { TtgdtxLeadQuickFixForm } from "@/components/leads/ttgdtx-lead-quick-fix-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 import {
   getAdmissionWorkspaceContext,
@@ -74,6 +76,9 @@ type LeadDetailData = {
   source_id: string | null;
   flow_id: string | null;
   admission_segment_id: string | null;
+  admission_program_id: string | null;
+  admission_major_id: string | null;
+  admission_offering_id: string | null;
   campaign_id: string | null;
   partner_id: string | null;
   assigned_to: string | null;
@@ -114,6 +119,24 @@ type UserLookupRow = {
 type RoleLookupRow = {
   id: string;
   code: string;
+};
+
+type SegmentMetaRow = {
+  id: string;
+  segment_code: string;
+  segment_name: string;
+};
+
+type TtgdtxCenterDropdownRow = {
+  partner_id: string;
+  center_name: string;
+  center_code: string;
+  display_label: string;
+  selection_status: string;
+};
+
+type PartnerScopeRow = {
+  partner_id: string;
 };
 
 type ChecklistRow = {
@@ -220,7 +243,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
   const { data: lead, error } = await supabase
     .from("leads")
     .select(
-      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_by,created_at,updated_at,source_id,flow_id,admission_segment_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
+      "id,lead_code,student_name,student_phone,student_dob,student_gender,parent_name,parent_phone,parent_relationship,current_school,current_grade,graduation_year,interested_program,interested_major,province,district,ward,status,priority,lost_reason,next_followup_at,note,created_by,created_at,updated_at,source_id,flow_id,admission_segment_id,admission_program_id,admission_major_id,admission_offering_id,campaign_id,partner_id,assigned_to,hou_program_id,hou_major_id,hou_location_id,hou_admin_class_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
     )
     .eq("id", id)
     .eq("is_deleted", false)
@@ -248,6 +271,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
     sourceName,
     flowName,
     segmentName,
+    segmentMetaResult,
     campaignName,
     partnerName,
     ownerName,
@@ -271,6 +295,13 @@ export default async function LeadDetailPage({ params }: PageProps) {
     getLookupLabel("lead_sources", lead.source_id, "source_name"),
     getLookupLabel("admission_flows", lead.flow_id, "flow_name"),
     getLookupLabel("admission_segments", lead.admission_segment_id, "segment_name"),
+    lead.admission_segment_id
+      ? supabase
+          .from("admission_segments")
+          .select("id,segment_code,segment_name")
+          .eq("id", lead.admission_segment_id)
+          .maybeSingle<SegmentMetaRow>()
+      : Promise.resolve({ data: null, error: null }),
     getLookupLabel("campaigns", lead.campaign_id, "campaign_name"),
     getLookupLabel("partners", lead.partner_id, "partner_name"),
     getLookupLabel("users_profile", lead.assigned_to, "full_name"),
@@ -553,6 +584,72 @@ export default async function LeadDetailPage({ params }: PageProps) {
     majorGateRowsResult.data ?? [],
     lead.interested_major,
   );
+  const segmentMeta = segmentMetaResult.data ?? null;
+  const isTtgdtxQuickFixLead =
+    segmentMeta?.segment_code === "TC9_TTGDTX_LINKED";
+  let ttgdtxQuickFixOptions: {
+    partners: LookupRow[];
+    programs: LookupRow[];
+    majors: Array<LookupRow & { programId: string | null; programLabel: string | null }>;
+    offerings: Array<LookupRow & { programId: string | null; majorId: string | null }>;
+  } | null = null;
+
+  if (isTtgdtxQuickFixLead) {
+    const [ttgdtxCenterRowsResult, partnerScopeRowsResult, programMajorOptions] =
+      await Promise.all([
+        supabase
+          .from("ttgdtx_center_dropdown_options")
+          .select("partner_id,center_name,center_code,display_label,selection_status")
+          .order("center_name", { ascending: true })
+          .returns<TtgdtxCenterDropdownRow[]>(),
+        supabase
+          .from("user_partner_scopes")
+          .select("partner_id")
+          .eq("user_id", user.id)
+          .eq("status", "ACTIVE")
+          .returns<PartnerScopeRow[]>(),
+        getAllowedProgramMajorOptions(supabase, lead.admission_segment_id),
+      ]);
+    const allowedPartnerIds = new Set(
+      (partnerScopeRowsResult.data ?? []).map((scope) => scope.partner_id),
+    );
+    const canUseAllPartners =
+      currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
+    const allTtgdtxPartners = ttgdtxCenterRowsResult.data ?? [];
+    const ttgdtxPartners = canUseAllPartners
+      ? allTtgdtxPartners
+      : allTtgdtxPartners.filter((partner) =>
+          allowedPartnerIds.has(String(partner.partner_id)),
+        );
+
+    ttgdtxQuickFixOptions = {
+      partners: ttgdtxPartners.map((partner) => ({
+        id: String(partner.partner_id),
+        label:
+          partner.display_label ||
+          `${partner.center_name} · ${partner.center_code}`,
+      })),
+      programs: programMajorOptions.programs.map((program) => ({
+        id: program.id,
+        label: program.label,
+      })),
+      majors: programMajorOptions.majors.map((major) => ({
+        id: major.id,
+        label: major.label,
+        programId: major.programId,
+        programLabel: major.programLabel,
+      })),
+      offerings: programMajorOptions.offerings.map((offering) => ({
+        id: offering.id,
+        label: offering.label,
+        programId: offering.programId,
+        majorId: offering.majorId,
+      })),
+    };
+  }
+  const editLeadHref = isTtgdtxQuickFixLead
+    ? `/leads/${lead.id}?fix=ttgdtx-gate#p2-05-fix`
+    : "#lead-status";
 
   return (
     <AppShell
@@ -574,9 +671,11 @@ export default async function LeadDetailPage({ params }: PageProps) {
               Danh sách lead
             </Link>
           </Button>
-          <Button variant="outline">
-            <Pencil className="size-4" />
-            Sửa lead
+          <Button asChild variant="outline">
+            <Link href={editLeadHref}>
+              <Pencil className="size-4" />
+              Sửa lead
+            </Link>
           </Button>
         </>
       }
@@ -602,6 +701,23 @@ export default async function LeadDetailPage({ params }: PageProps) {
         majorGate={currentMajorGate}
         majorGateLoadError={majorGateRowsResult.error?.message}
       />
+      {ttgdtxQuickFixOptions ? (
+        <div id="p2-05-fix" className="scroll-mt-24">
+          <TtgdtxLeadQuickFixForm
+            leadId={lead.id}
+            currentStatus={lead.status}
+            currentPartnerId={lead.partner_id}
+            currentProgramId={lead.admission_program_id}
+            currentMajorId={lead.admission_major_id}
+            currentOfferingId={lead.admission_offering_id}
+            documentCount={documentCountResult.count ?? 0}
+            partners={ttgdtxQuickFixOptions.partners}
+            programs={ttgdtxQuickFixOptions.programs}
+            majors={ttgdtxQuickFixOptions.majors}
+            offerings={ttgdtxQuickFixOptions.offerings}
+          />
+        </div>
+      ) : null}
       <HouLeadWorkspace
         leadCode={lead.lead_code}
         studentName={lead.student_name}

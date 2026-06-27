@@ -56,7 +56,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 |---|---|---|---|---|
 | P3-01 | Lead lifecycle standard | Tuyen sinh | EXISTING_PARTIAL | No raw form dump into AI |
 | P3-02 | Lead-to-student handover | Tuyen sinh + CTHSSV + Dao tao | OPEN | Handover checklist |
-| P3-03 | Finance handover trigger | Tuyen sinh + KHTC | OPEN | Receivable creation gate |
+| P3-03 | Finance handover trigger | Tuyen sinh + KHTC | PASS_LOCAL | TTGDTX lead quick-fix is scoped, permissioned and audited; P2-03 remains final receivable gate |
 
 ## P4 - Finance/Receivable
 

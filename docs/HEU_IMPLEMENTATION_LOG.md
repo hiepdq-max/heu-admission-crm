@@ -552,3 +552,31 @@
 - Step102 and Step103 are retained only as retired/no-op migration history.
 - Step101 remains the source of truth for P2-13 batch creation.
 - Production still requires signed UAT and business Go/No-Go before reconciliation/payment workflows are trusted.
+
+## 2026-06-27 - TTGDTX Lead Quick-Fix Safety
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot with the lead detail bridge into P2-05/P2-03.
+- Added a guarded quick-fix form for TTGDTX-linked leads to set partner, program, major and optional offering from controlled options.
+- Added static audit coverage to prevent scope bypass, non-TTGDTX partner selection, self-promotion to ELIGIBLE/ENROLLED and missing activity audit.
+- Preserved P2-03 as the final receivable creation gate.
+
+### Files Updated/Added
+
+- `app/leads/[id]/actions.ts`
+- `app/leads/[id]/page.tsx`
+- `components/leads/lead-detail.tsx`
+- `components/leads/ttgdtx-lead-quick-fix-form.tsx`
+- `scripts/audit-ttgdtx-lead-quick-fix-safety.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- The quick-fix is metadata repair only and does not create receivables, collect money, reconcile, approve or pay.
+- It cannot self-promote a lead to ELIGIBLE/ENROLLED and cannot mark DOCUMENT_SUBMITTED without document evidence.
+- Production still requires signed role/scope UAT and business Go/No-Go.

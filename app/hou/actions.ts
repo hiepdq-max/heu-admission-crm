@@ -504,14 +504,32 @@ export async function createHouCommissionPaymentBatchAction(
     .insert(paymentLines);
 
   if (insertLinesError) {
-    await supabase
+    const rollbackNote = [
+      "[SYSTEM_CANCELLED_AFTER_PAYMENT_LINE_ERROR]",
+      "Payment batch was created, but payment lines could not be generated.",
+      "The batch was soft-cancelled instead of hard-deleted to preserve finance/audit trace.",
+      `Line error: ${insertLinesError.message}`,
+      note ? `Original note: ${note}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const { error: cancelBatchError } = await supabase
       .from("hou_commission_payment_batches")
-      .delete()
+      .update({
+        status: "CANCELLED",
+        note: rollbackNote,
+        updated_at: new Date().toISOString(),
+      })
       .eq("id", batch.id);
 
     return paymentFormError(
       "Đã tạo kỳ nhưng chưa tạo được dòng thanh toán, hệ thống đã hoàn tác kỳ. Chi tiết: " +
-        insertLinesError.message,
+        insertLinesError.message +
+        (cancelBatchError
+          ? ". Luu y: chua cap nhat duoc trang thai CANCELLED: " +
+            cancelBatchError.message
+          : ""),
       fields,
     );
   }

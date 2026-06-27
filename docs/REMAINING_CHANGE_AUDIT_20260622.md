@@ -8,7 +8,7 @@
 | Current status | Dirty working tree with committed docs + `.gitignore` checkpoint, remaining code and SQL changes not committed |
 | Modified tracked files | 5 |
 | Untracked app/component groups | 11 |
-| Untracked SQL step90-step108 | 19 |
+| Untracked SQL step90-step110 | 21 |
 | Migration run | No migration run |
 | Production use | No production use |
 | Data deletion | No data deletion |
@@ -27,7 +27,11 @@ Scope includes the current uncommitted TTGDTX 9+ pilot changes after the docs an
 
 Mandatory note:
 
-`app/leads/[id]/actions.ts` still contains a `.delete()` pattern with `hou_commission_claims`. Before production, this must be replaced by soft-delete/status transition or proven to be an audited business rollback path.
+2026-06-25 update: the `.delete()` rollback path in `app/leads/[id]/actions.ts`
+was replaced with a soft-cancel flow. If HOU COM claim line generation fails,
+the claim is now updated to `claim_status = 'CANCELLED'`, an explanatory note is
+stored, and a `lead_activities` audit event is written. Keep the file in REVIEW
+because it still belongs to G7 and depends on G2/G3 gate stability.
 
 ## 3. Untracked App/Component Analysis
 
@@ -62,14 +66,15 @@ Do not run migration at this time.
 | step98 | `database/step98_ttgdtx_source_control_p2_11.sql` | Source control TTGDTX va danh muc nguon | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G2 |
 | step99 | `database/step99_ttgdtx_master_dropdown_p2_12.sql` | Dropdown master TTGDTX/program/major | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G2 |
 | step100 | `database/step100_ttgdtx_pilot_open_p2_01_p2_02_p0_19.sql` | Mo pilot P2-01/P2-02/P0-19 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G2 |
-| step101 | `database/step101_ttgdtx_reconciliation_p2_13.sql` | Doi soat thu hoc phi TTGDTX | REVIEW | UNKNOWN | REVIEW | YES | YES | G4 |
+| step101 | `database/step101_ttgdtx_reconciliation_p2_13.sql` | Doi soat thu hoc phi TTGDTX | SQL_DELETE_RESOLVED; CASCADE_REVIEW | UNKNOWN | REVIEW | YES | YES | G4 |
 | step102 | `database/step102_fix_p2_13_partner_status.sql` | Fix trang thai partner cho P2-13 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G4 |
-| step103 | `database/step103_fix_p2_13_reconciliation_line_columns.sql` | Fix cot dong doi soat P2-13 | REVIEW | UNKNOWN | REVIEW | YES | YES | G4 |
+| step103 | `database/step103_fix_p2_13_reconciliation_line_columns.sql` | Fix cot dong doi soat P2-13 | SQL_DELETE_RESOLVED; CASCADE_REVIEW | UNKNOWN | REVIEW | YES | YES | G4 |
 | step104 | `database/step104_ttgdtx_reconciliation_approval_p2_14.sql` | Ra soat/duyet/khoa ky doi soat P2-14 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G4 |
-| step105 | `database/step105_ttgdtx_partner_payment_request_p2_15.sql` | Tao de nghi chi TTGDTX P2-15 | REVIEW | UNKNOWN | REVIEW | YES | YES | G5 |
+| step105 | `database/step105_ttgdtx_partner_payment_request_p2_15.sql` | Tao de nghi chi TTGDTX P2-15 | SQL_DELETE_RESOLVED; CASCADE_REVIEW | UNKNOWN | REVIEW | YES | YES | G5 |
 | step106 | `database/step106_ttgdtx_payment_request_approval_p2_16.sql` | Kiem/duyet de nghi chi TTGDTX P2-16 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G5 |
 | step107 | `database/step107_ttgdtx_payment_execution_p2_17.sql` | Thuc hien chi TTGDTX P2-17 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G5 |
 | step108 | `database/step108_ttgdtx_accounting_dashboard_p2_18.sql` | Dashboard ke toan TTGDTX P2-18 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G6 |
+| step110 | `database/step110_ttgdtx_real_data_evidence_metadata_p2_19.sql` | Metadata minh chung du lieu that va redaction P2-19 | UNKNOWN | UNKNOWN | REVIEW | YES | YES | G2/G3 |
 
 ## 5. Hard Delete / Cascade Findings
 
@@ -77,13 +82,16 @@ The following items require review before production:
 
 | Item | Review reason |
 |---|---|
-| `step101` | Reconciliation migration must be checked for hard delete/cascade patterns and re-run safety |
-| `step103` | Reconciliation line column fix must be checked for destructive column/data behavior |
-| `step105` | Partner payment request migration must be checked for delete/cascade behavior and payment audit safety |
-| `step92` | Import control migration must be checked for cleanup/delete behavior |
-| `step93` | Issue routing migration must be checked for cleanup/delete behavior |
+| `step101` | RESOLVED 2026-06-25 for SQL hard delete and TTGDTX cascade; still review re-run safety |
+| `step103` | RESOLVED 2026-06-25 for SQL hard delete; still review destructive column/schema behavior and cascade safety |
+| `step105` | RESOLVED 2026-06-25 for SQL hard delete and TTGDTX cascade; still review payment audit safety |
+| `step92` | RESOLVED 2026-06-25 for TTGDTX cascade; import control migration still needs UAT |
+| `step93` | RESOLVED 2026-06-25 for TTGDTX cascade; issue routing migration still needs UAT |
 | `step94` | Issue resolution migration must be checked for cleanup/delete behavior |
-| `.delete()` in `app/leads/[id]/actions.ts` | Must be converted to soft-delete/status transition or documented as audited rollback |
+| `.delete()` in `app/leads/[id]/actions.ts` | RESOLVED 2026-06-25: converted to soft-cancel/status transition with activity audit note |
+| `.delete()` in `app/hou/actions.ts` | RESOLVED 2026-06-25: HOU payment batch rollback now soft-cancels the batch with audit-friendly note |
+| scope `.delete()` in `app/settings/actions.ts` | RESOLVED 2026-06-25: user segment/partner scopes now update old rows to `INACTIVE` and upsert selected rows to `ACTIVE` |
+| role permission `.delete()` in `app/settings/actions.ts` | RESOLVED 2026-06-25 in app code; guarded by `npm.cmd run audit:permission-soft-revoke`; requires step109 soft revoke UAT before production permission updates are allowed |
 
 ## 6. Proposed Commit Plan
 
@@ -103,10 +111,11 @@ Do not commit all remaining changes in one commit.
 ## 7. Blockers
 
 - Missing automated tests
-- Missing rollback migration
-- Hard delete/cascade review required
+- Audit-log static guard added via `npm.cmd run audit:ttgdtx-audit-log`; UAT evidence still required
+- Backup/rollback dry-run runbook drafted; restore evidence and owner sign-off still required
+- Hard delete/cascade review required; app-level business `.delete()`, permission soft-revoke guard and TTGDTX step90-step110 cascade patterns are resolved, but step109 UAT, step110 real-data metadata UAT, non-TTGDTX cascade review and production approval remain unapproved
 - `DAT_TAM_THOI` / pilot markers remain
-- Permission/audit check required
+- Permission static guard added via `npm.cmd run audit:ttgdtx-role-scope-access`; TTGDTX data-fetch guard added via `npm.cmd run audit:ttgdtx-data-fetch-gate`; multi-account UAT evidence still required
 - Real data not allowed
 - Migration not allowed
 

@@ -53,6 +53,7 @@ const requiredFiles = [
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
+  "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
 ];
 
 for (const file of requiredFiles) {
@@ -68,6 +69,7 @@ const requiredScripts = [
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
+  "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-reconciliation-repair-safety",
   "audit:ttgdtx-role-scope-access",
@@ -182,6 +184,12 @@ requireText(
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   /Step102 and Step103 are retired/i,
   "Step102/Step103 retired boundary",
+);
+
+requireText(
+  "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
+  /quick-fix cannot self-promote/i,
+  "TTGDTX lead quick-fix self-promotion boundary",
 );
 
 if (failures.length > 0) {

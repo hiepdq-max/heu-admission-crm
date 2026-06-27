@@ -176,9 +176,9 @@ function InfoItem({
   value: string | number | null | undefined;
 }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-xs font-medium uppercase text-zinc-500">{label}</p>
-      <p className="mt-1 text-sm font-medium text-zinc-800">
+      <p className="mt-1 text-sm font-medium text-zinc-800 break-words [overflow-wrap:anywhere]">
         {value || "Chưa nhập"}
       </p>
     </div>

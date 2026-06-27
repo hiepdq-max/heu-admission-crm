@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 
 type FormFields = Record<string, string>;
@@ -31,6 +32,13 @@ export type ConditionFormState = {
 };
 
 export type StatusFormState = {
+  error?: string;
+  success?: string;
+  fields?: FormFields;
+  fieldErrors?: FieldErrors;
+};
+
+export type TtgdtxLeadQuickFixFormState = {
   error?: string;
   success?: string;
   fields?: FormFields;
@@ -97,6 +105,16 @@ function formError(
     fields,
     fieldErrors,
   };
+}
+
+function addFieldError(
+  fieldErrors: FieldErrors,
+  fieldName: string,
+  message: string,
+) {
+  if (!fieldErrors[fieldName]) {
+    fieldErrors[fieldName] = message;
+  }
 }
 
 function partnerTypeToPayeeType(partnerType: string | null) {
@@ -654,6 +672,387 @@ export async function updateLeadStatusAction(
   revalidatePath("/");
 
   return { success: "Đã cập nhật trạng thái lead." };
+}
+
+export async function updateTtgdtxLeadQuickFixAction(
+  _previousState: TtgdtxLeadQuickFixFormState,
+  formData: FormData,
+): Promise<TtgdtxLeadQuickFixFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const leadId = textValue(formData, "lead_id");
+  const status = textValue(formData, "status");
+  const partnerId = textValue(formData, "partner_id");
+  const admissionProgramId = textValue(formData, "admission_program_id");
+  const admissionMajorId = textValue(formData, "admission_major_id");
+  const admissionOfferingId = textValue(formData, "admission_offering_id");
+  const note = textValue(formData, "note");
+  const fields = submittedFields(formData, [
+    "status",
+    "partner_id",
+    "admission_program_id",
+    "admission_major_id",
+    "admission_offering_id",
+    "note",
+  ]);
+  const fieldErrors: FieldErrors = {};
+
+  if (!leadId) {
+    return formError("Thiếu lead_id, chưa thể sửa điều kiện P2-05.", fields);
+  }
+
+  const { data: lead, error: leadError } = await supabase
+    .from("leads")
+    .select("id,status,admission_segment_id")
+    .eq("id", leadId)
+    .eq("is_deleted", false)
+    .maybeSingle<{
+      id: string;
+      status: string;
+      admission_segment_id: string | null;
+    }>();
+
+  if (leadError || !lead) {
+    return formError(
+      "Không tìm thấy lead hoặc chưa đọc được lead: " +
+        (leadError?.message ?? "lead không tồn tại"),
+      fields,
+    );
+  }
+
+  if (!lead.admission_segment_id) {
+    return formError(
+      "Lead chưa gắn đối tượng tuyển sinh nên chưa thể chạy P2-05.",
+      fields,
+      {
+        admission_program_id: "Cần gắn đối tượng Trung cấp 9+ liên kết TTGDTX.",
+      },
+    );
+  }
+
+  const { data: segment, error: segmentError } = await supabase
+    .from("admission_segments")
+    .select("id,segment_code")
+    .eq("id", lead.admission_segment_id)
+    .maybeSingle<{ id: string; segment_code: string }>();
+
+  if (segmentError || !segment) {
+    return formError(
+      "Chưa kiểm tra được đối tượng tuyển sinh của lead: " +
+        (segmentError?.message ?? "không tìm thấy đối tượng"),
+      fields,
+    );
+  }
+
+  if (segment.segment_code !== "TC9_TTGDTX_LINKED") {
+    return formError(
+      "P2-05 chỉ dùng cho đối tượng Trung cấp 9+ liên kết TTGDTX.",
+      fields,
+    );
+  }
+
+  const readyStatuses = new Set(["DOCUMENT_SUBMITTED", "ELIGIBLE", "ENROLLED"]);
+  const isKeepingCurrentStatus = status === lead.status;
+
+  if (!status) {
+    addFieldError(
+      fieldErrors,
+      "status",
+      "P2-05 cần trạng thái Đã nộp hồ sơ, Đủ điều kiện hoặc Đã nhập học.",
+    );
+  } else if (!readyStatuses.has(status) && !isKeepingCurrentStatus) {
+    addFieldError(
+      fieldErrors,
+      "status",
+      "Chỉ được giữ trạng thái hiện tại hoặc chuyển sang Đã nộp hồ sơ khi đã có hồ sơ.",
+    );
+  }
+
+  if (
+    status &&
+    ["ELIGIBLE", "ENROLLED"].includes(status) &&
+    lead.status !== status
+  ) {
+    addFieldError(
+      fieldErrors,
+      "status",
+      "Form sửa nhanh không tự chuyển lên Đủ điều kiện/Đã nhập học. Hãy chọn Đã nộp hồ sơ hoặc dùng khối cập nhật trạng thái sau khi đủ gate.",
+    );
+  }
+
+  if (!partnerId) {
+    addFieldError(fieldErrors, "partner_id", "Chọn đúng TTGDTX/đối tác liên kết.");
+  }
+
+  if (!admissionProgramId) {
+    addFieldError(
+      fieldErrors,
+      "admission_program_id",
+      "Chọn hệ/chương trình Trung cấp phù hợp.",
+    );
+  }
+
+  if (!admissionMajorId) {
+    addFieldError(
+      fieldErrors,
+      "admission_major_id",
+      "Chọn ngành/nghề chuẩn theo danh mục được phép.",
+    );
+  }
+
+  const [{ data: canWriteLead, error: canWriteError }, catalogResult] =
+    await Promise.all([
+      partnerId
+        ? supabase.rpc("can_write_admission_workspace_lead", {
+            lead_segment_id: lead.admission_segment_id,
+            lead_partner_id: partnerId,
+          })
+        : Promise.resolve({ data: false, error: null }),
+      getAllowedProgramMajorOptions(supabase, lead.admission_segment_id),
+    ]);
+
+  if (canWriteError) {
+    return formError(
+      "Chưa kiểm tra được quyền sửa lead: " + canWriteError.message,
+      fields,
+    );
+  }
+
+  if (partnerId && !canWriteLead) {
+    addFieldError(
+      fieldErrors,
+      "partner_id",
+      "Tài khoản hiện tại chưa được phân quyền làm việc với TTGDTX này.",
+    );
+  }
+
+  const { data: partner, error: partnerError } = partnerId
+    ? await supabase
+        .from("partners")
+        .select("id,partner_name,partner_type")
+        .eq("id", partnerId)
+        .eq("is_deleted", false)
+        .eq("status", "ACTIVE")
+        .maybeSingle<{
+          id: string;
+          partner_name: string;
+          partner_type: string | null;
+        }>()
+    : { data: null, error: null };
+
+  if (partnerError) {
+    return formError(
+      "Chưa kiểm tra được TTGDTX/đối tác: " + partnerError.message,
+      fields,
+    );
+  }
+
+  if (partnerId && (!partner || partner.partner_type !== "TTGDTX")) {
+    addFieldError(
+      fieldErrors,
+      "partner_id",
+      "Đối tác được chọn phải là loại TTGDTX đang ACTIVE.",
+    );
+  }
+
+  if (partnerId && partner?.partner_type === "TTGDTX") {
+    const { data: centerOption, error: centerOptionError } = await supabase
+      .from("ttgdtx_center_dropdown_options")
+      .select("partner_id,display_label,selection_status")
+      .eq("partner_id", partnerId)
+      .maybeSingle<{
+        partner_id: string;
+        display_label: string;
+        selection_status: string;
+      }>();
+
+    if (centerOptionError) {
+      return formError(
+        "Chưa kiểm tra được danh mục TTGDTX P2-12: " +
+          centerOptionError.message,
+        fields,
+      );
+    }
+
+    if (!centerOption) {
+      addFieldError(
+        fieldErrors,
+        "partner_id",
+        "TTGDTX này chưa nằm trong danh mục P2-12 hoặc chưa được mở chọn.",
+      );
+    }
+  }
+
+  const programById = new Map(
+    catalogResult.programs.map((program) => [program.id, program]),
+  );
+  const majorById = new Map(
+    catalogResult.majors.map((major) => [major.id, major]),
+  );
+  const offeringById = new Map(
+    catalogResult.offerings.map((offering) => [offering.id, offering]),
+  );
+  const selectedProgram = admissionProgramId
+    ? programById.get(admissionProgramId)
+    : undefined;
+  const selectedMajor = admissionMajorId
+    ? majorById.get(admissionMajorId)
+    : undefined;
+  const selectedOffering = admissionOfferingId
+    ? offeringById.get(admissionOfferingId)
+    : undefined;
+
+  if (admissionProgramId && !selectedProgram) {
+    addFieldError(
+      fieldErrors,
+      "admission_program_id",
+      "Hệ/chương trình này không thuộc phạm vi Trung cấp 9+ liên kết TTGDTX.",
+    );
+  }
+
+  if (admissionMajorId && !selectedMajor) {
+    addFieldError(
+      fieldErrors,
+      "admission_major_id",
+      "Ngành/nghề này không thuộc danh mục được phép của workspace TTGDTX.",
+    );
+  }
+
+  if (
+    selectedProgram &&
+    selectedMajor?.programId &&
+    selectedMajor.programId !== selectedProgram.id
+  ) {
+    addFieldError(
+      fieldErrors,
+      "admission_major_id",
+      "Ngành/nghề không thuộc hệ/chương trình đã chọn.",
+    );
+  }
+
+  if (admissionOfferingId && !selectedOffering) {
+    addFieldError(
+      fieldErrors,
+      "admission_offering_id",
+      "Ngành/khóa chi tiết không thuộc phạm vi được phép.",
+    );
+  }
+
+  if (
+    selectedOffering?.programId &&
+    selectedProgram &&
+    selectedOffering.programId !== selectedProgram.id
+  ) {
+    addFieldError(
+      fieldErrors,
+      "admission_offering_id",
+      "Ngành/khóa chi tiết không cùng hệ/chương trình.",
+    );
+  }
+
+  if (
+    selectedOffering?.majorId &&
+    selectedMajor &&
+    selectedOffering.majorId !== selectedMajor.id
+  ) {
+    addFieldError(
+      fieldErrors,
+      "admission_offering_id",
+      "Ngành/khóa chi tiết không cùng ngành/nghề.",
+    );
+  }
+
+  if (Object.keys(fieldErrors).length > 0) {
+    return formError(
+      "Một số thông tin P2-05 chưa đúng. Hãy sửa đúng ô được báo đỏ, các ô đúng giữ nguyên.",
+      fields,
+      fieldErrors,
+    );
+  }
+
+  let shouldUpdateStatus = Boolean(
+    status && status !== lead.status && readyStatuses.has(status),
+  );
+  let skippedStatusMessage: string | null = null;
+
+  if (shouldUpdateStatus && status === "DOCUMENT_SUBMITTED") {
+    const { count: leadDocumentCount, error: documentCountError } =
+      await supabase
+        .from("lead_documents")
+        .select("id", { count: "exact", head: true })
+        .eq("lead_id", leadId);
+
+    if (documentCountError) {
+      return formError(
+        "Chưa kiểm tra được hồ sơ của lead: " + documentCountError.message,
+        fields,
+      );
+    }
+
+    if ((leadDocumentCount ?? 0) === 0) {
+      shouldUpdateStatus = false;
+      skippedStatusMessage =
+        "Đã lưu TTGDTX/ngành, nhưng chưa chuyển sang Đã nộp hồ sơ vì lead chưa có hồ sơ nào. Hãy vào tab Hồ sơ thêm ít nhất 1 giấy tờ rồi cập nhật trạng thái.";
+    }
+  }
+
+  const updatePayload: Record<string, string | null> = {
+    partner_id: partnerId,
+    admission_program_id: selectedProgram?.id ?? null,
+    admission_major_id: selectedMajor?.id ?? null,
+    admission_offering_id: selectedOffering?.id ?? null,
+    interested_program: selectedProgram?.label ?? null,
+    interested_major: selectedMajor?.label ?? null,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (shouldUpdateStatus && status) {
+    updatePayload.status = status;
+  }
+
+  const { error: updateError } = await supabase
+    .from("leads")
+    .update(updatePayload)
+    .eq("id", leadId)
+    .eq("is_deleted", false);
+
+  if (updateError) {
+    return formError(
+      "Chưa lưu được thông tin P2-05: " + updateError.message,
+      fields,
+    );
+  }
+
+  await supabase.from("lead_activities").insert({
+    lead_id: leadId,
+    activity_type: "NOTE",
+    activity_result: "P2_05_TTGDTX_QUICK_FIX",
+    content:
+      note ||
+      skippedStatusMessage ||
+      "Đã cập nhật nhanh điều kiện P2-05: trạng thái, TTGDTX và hệ/ngành chuẩn.",
+    created_by: user.id,
+  });
+
+  revalidatePath(`/leads/${leadId}`);
+  revalidatePath("/leads");
+  revalidatePath("/ttgdtx/gate");
+  revalidatePath("/ttgdtx/receivables");
+  revalidatePath("/ttgdtx/simulation");
+  revalidatePath("/ttgdtx/master");
+
+  return {
+    success:
+      skippedStatusMessage ??
+      "Đã lưu phần thiếu cho P2-05. Quay lại P2-05 để kiểm tra nút tạo công nợ.",
+  };
 }
 
 export async function updateLeadHouAction(
@@ -1298,12 +1697,44 @@ export async function createHouCommissionClaimAction(
     .insert(claimLines);
 
   if (claimLinesError) {
-    await supabase.from("hou_commission_claims").delete().eq("id", claim.id);
+    const rollbackNote = [
+      "[SYSTEM_CANCELLED_AFTER_LINE_ERROR]",
+      "Claim was created, but claim lines could not be generated.",
+      "The claim was soft-cancelled instead of hard-deleted to preserve finance/audit trace.",
+      `Line error: ${claimLinesError.message}`,
+      note ? `Original note: ${note}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const { error: cancelClaimError } = await supabase
+      .from("hou_commission_claims")
+      .update({
+        claim_status: "CANCELLED",
+        note: rollbackNote,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", claim.id)
+      .neq("claim_status", "PAID");
+
+    await supabase.from("lead_activities").insert({
+      lead_id: leadId,
+      activity_type: "PAYMENT",
+      activity_result: "HOU_COM_CLAIM_CANCELLED_AFTER_LINE_ERROR",
+      content: cancelClaimError
+        ? `Claim ${claim.id} tao loi dong COM va chua huy mem duoc: ${cancelClaimError.message}. Loi dong COM: ${claimLinesError.message}`
+        : `Claim ${claim.id} da duoc huy mem do loi sinh dong COM: ${claimLinesError.message}`,
+      created_by: user.id,
+    });
 
     return {
       error:
-        "Da tao claim nhung chua sinh duoc dong COM, he thong da hoan tac claim. Chi tiet: " +
-        claimLinesError.message,
+        "Da tao claim nhung chua sinh duoc dong COM. He thong da huy mem claim de giu audit trail thay vi xoa ban ghi. Chi tiet: " +
+        claimLinesError.message +
+        (cancelClaimError
+          ? ". Luu y: chua cap nhat duoc trang thai CANCELLED: " +
+            cancelClaimError.message
+          : ""),
       fields,
     };
   }
