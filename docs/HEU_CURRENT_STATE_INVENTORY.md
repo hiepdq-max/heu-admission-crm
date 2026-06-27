@@ -97,7 +97,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |
-| Controlled evidence | Redaction/intake pack, audit guard, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof and P0-09 owner sign-off/UAT handoff proof | Real evidence must stay outside Git/Codex/chat |
+| Controlled evidence | Redaction/intake pack, audit guard, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff proof | Real evidence must stay outside Git/Codex/chat |
 | Final handoff coverage | `AGENTS.md` final handoff summary requires live git state, local check results, Stage D/NO-GO, the P0-03 operator run sheet evidence path, P0-09 owner sign-off/UAT handoff evidence path, P0-13 blocker source and P0-14 evidence binder | PASS_LOCAL; cannot override production NO-GO |
 | AI helper layer | Task checklist and risk board are read-only | Advisory only; no autonomous approval |
 

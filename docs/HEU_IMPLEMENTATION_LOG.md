@@ -2687,3 +2687,15 @@
 - This is evidence-binder clarity only. It does not execute UAT, collect
   evidence, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-14 Evidence Split Checklist Alignment
+
+- Updated the production checklist, system backlog and current-state inventory
+  so P0-14 explicitly lists separate P6-04 role/workspace proof, P6-03
+  audit-log proof and P6-06 hard-delete/cascade conversion-or-waiver proof.
+- Extended `audit:heu-production-evidence-binder` and
+  `audit:heu-current-state-inventory` so checklist/inventory wording cannot
+  drift behind the split P0-14 evidence binder source.
+- This is checklist and inventory alignment only. It does not collect evidence,
+  execute UAT, approve a waiver, approve migration, approve finance action or
+  mark production GO.

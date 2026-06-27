@@ -175,14 +175,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "P0-14 production evidence binder backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "production checklist evidence binder row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
@@ -203,7 +203,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "current-state production evidence binder audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
