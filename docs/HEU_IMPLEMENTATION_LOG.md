@@ -2699,3 +2699,15 @@
 - This is checklist and inventory alignment only. It does not collect evidence,
   execute UAT, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-10 P6 Evidence Redaction Alignment
+
+- Updated the controlled evidence redaction pack so P6-04 role/workspace UAT,
+  P6-03 audit-log trace evidence and P6-06 hard-delete/cascade
+  conversion-or-narrow-waiver evidence carry explicit process codes and owner
+  groups.
+- Extended `audit:heu-controlled-evidence-redaction-pack` so the redaction pack
+  cannot drift behind the P0-14 split evidence binder.
+- This is redaction/intake alignment only. It does not collect evidence,
+  execute UAT, approve a waiver, approve migration, approve finance action or
+  mark production GO.

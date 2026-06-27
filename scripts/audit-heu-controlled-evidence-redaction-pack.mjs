@@ -73,7 +73,16 @@ requireText(pack, /PUBLIC_CONTROL[\s\S]*CONTROLLED_REDACTED[\s\S]*CONTROLLED_SEN
 requireText(pack, /Mask CCCD\/passport\/private identifiers as `\*{8}1234`/i, "CCCD masking rule");
 requireText(pack, /Mask bank accounts as `\*{12}1234`/i, "bank account masking rule");
 requireText(pack, /Intake Workflow[\s\S]*Receive evidence[\s\S]*Classify[\s\S]*Redact[\s\S]*Review[\s\S]*Reference[\s\S]*Sign/i, "intake workflow");
-requireText(pack, /Evidence Types Requiring This Pack[\s\S]*Supabase backup and restore proof[\s\S]*P2-17 payout evidence[\s\S]*P2-18 dashboard comparison evidence[\s\S]*Final production owner Go\/No-Go pack/i, "covered evidence types");
+requireText(
+  pack,
+  /Evidence Types Requiring This Pack[\s\S]*Supabase backup and restore proof[\s\S]*P2-17 payout evidence[\s\S]*P2-18 dashboard comparison evidence[\s\S]*P6-04 role\/workspace browser UAT screenshots[\s\S]*P6-03 audit-log UAT trace evidence[\s\S]*P6-06 hard-delete\/cascade conversion or narrow waiver evidence[\s\S]*Final production owner Go\/No-Go pack/i,
+  "covered evidence types",
+);
+requireText(
+  pack,
+  /P6-04 role\/workspace browser UAT screenshots[\s\S]*IT_DATA \+ TRUONG_PHONG \+ Audit[\s\S]*P6-03 audit-log UAT trace evidence[\s\S]*Audit \+ IT_DATA \+ KHTC[\s\S]*P6-06 hard-delete\/cascade conversion or narrow waiver evidence[\s\S]*IT_DATA \+ Audit \+ affected business owner/i,
+  "P6 evidence redaction owner split",
+);
 requireText(pack, /Stop Conditions[\s\S]*password, OTP, reset link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
 requireText(pack, /Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*audit:ttgdtx-release-gates[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build/i, "local preflight commands");
 requireText(pack, /Passing these checks proves only that local documentation and gates are aligned/i, "PASS_LOCAL local-only statement");

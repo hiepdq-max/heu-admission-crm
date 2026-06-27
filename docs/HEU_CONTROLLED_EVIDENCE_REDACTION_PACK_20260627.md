@@ -72,9 +72,9 @@ browser note:
 | P0-19 legal/finance UAT evidence | PHAP_CHE + KHTC |
 | P2-17 payout evidence and duplicate-click proof | KHTC + Audit |
 | P2-18 dashboard comparison evidence | KHTC + BGH + IT_DATA |
-| Role/workspace browser UAT screenshots | IT_DATA + Audit |
-| Audit-log UAT evidence | Audit + IT_DATA |
-| Hard-delete/cascade waiver or conversion evidence | IT_DATA + Audit |
+| P6-04 role/workspace browser UAT screenshots | IT_DATA + TRUONG_PHONG + Audit |
+| P6-03 audit-log UAT trace evidence | Audit + IT_DATA + KHTC |
+| P6-06 hard-delete/cascade conversion or narrow waiver evidence | IT_DATA + Audit + affected business owner |
 | Final production owner Go/No-Go pack | BGH + IT_DATA + KHTC + PHAP_CHE + Audit |
 
 ## 6. Stop Conditions
