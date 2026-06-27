@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus, RefreshCcw, Upload } from "lucide-react";
 
+import { LeadLifecycleGuard } from "@/components/leads/lead-lifecycle-guard";
 import { LeadList } from "@/components/leads/lead-list";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -184,6 +185,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
           </p>
         </section>
       ) : null}
+      <LeadLifecycleGuard />
       {leadsError ? (
         <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
           Không đọc được bảng leads: {leadsError.message}

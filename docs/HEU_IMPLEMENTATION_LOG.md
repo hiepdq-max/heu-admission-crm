@@ -1970,3 +1970,14 @@
   their checks.
 - This keeps current-state and Git-hygiene verification in the standard operating
   loop before any future handoff.
+## 2026-06-27 - P3-01 Lead Lifecycle Standard
+
+- Added `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`, `lib/lead-lifecycle.ts`
+  and a visible read-only lifecycle guard on `/leads`.
+- The guard standardizes lead statuses from `NEW` through `ENROLLED`, `LOST` and
+  `DUPLICATE`, keeps "No raw form dump into AI" visible, and states that P3-02
+  plus P2-05/P2-03 remain the finance gates.
+- Added `audit:heu-lead-lifecycle-standard` and release-gate coverage so P3-01
+  stays local-only, server-side-checked and finance-gated.
+- P3-01 is PASS_LOCAL only. Signed role/workflow UAT remains required before
+  production CRM use or any finance reliance.

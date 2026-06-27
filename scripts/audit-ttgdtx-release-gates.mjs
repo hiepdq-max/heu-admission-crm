@@ -69,6 +69,7 @@ const requiredFiles = [
   "docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md",
   "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
   "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
+  "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
@@ -97,8 +98,10 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
+  "components/leads/lead-lifecycle-guard.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
+  "lib/lead-lifecycle.ts",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -111,6 +114,7 @@ const requiredFiles = [
   "scripts/audit-heu-git-hygiene.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
+  "scripts/audit-heu-lead-lifecycle-standard.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
@@ -149,6 +153,7 @@ const requiredScripts = [
   "audit:heu-data-foundation",
   "audit:heu-git-hygiene",
   "audit:heu-lead-handover-policy",
+  "audit:heu-lead-lifecycle-standard",
   "audit:heu-non-ttgdtx-cascade-review",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
@@ -809,6 +814,12 @@ requireText(
   "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
   /P4-01 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production finance operation, real-data import, revenue\s+recognition or payout execution[\s\S]*Signed finance UAT must still prove/i,
   "P4-01 receivable/payment lifecycle local-only boundary",
+);
+
+requireText(
+  "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
+  /(?=[\s\S]*P3-01 is PASS_LOCAL)(?=[\s\S]*No raw form dump into AI)(?=[\s\S]*P3-02 prepares lead-to-student handover)(?=[\s\S]*P2-05 remains the receivable gate)(?=[\s\S]*P2-03 remains the final student receivable creation control)/i,
+  "P3-01 lead lifecycle PASS_LOCAL and finance-gate boundary",
 );
 
 requireText(

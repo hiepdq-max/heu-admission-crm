@@ -17,7 +17,8 @@ scope is the TTGDTX 9+ pilot hardening chain only:
 10. P2-17 payout execution.
 11. P2-18 accounting dashboard.
 12. P2-19 source/evidence metadata for anonymized UAT design review only.
-13. P3-02 lead-to-student handover guard for the TTGDTX-linked pilot path.
+13. P3-01 lead lifecycle standard for the TTGDTX-linked pilot path.
+14. P3-02 lead-to-student handover guard for the TTGDTX-linked pilot path.
 
 Production remains NO-GO until the production checklist says otherwise.
 
@@ -77,6 +78,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
 - `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`
 - `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
+- `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`
 - `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
 - `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
@@ -109,6 +111,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-data-foundation`
   - `npm.cmd run audit:heu-git-hygiene`
   - `npm.cmd run audit:heu-lead-handover-policy`
+  - `npm.cmd run audit:heu-lead-lifecycle-standard`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
   - `npm.cmd run audit:heu-role-scope-uat-pack`
   - `npm.cmd run audit:heu-sql-object-master-map`
