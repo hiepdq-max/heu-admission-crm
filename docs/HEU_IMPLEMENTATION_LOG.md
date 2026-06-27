@@ -2649,3 +2649,16 @@
 - This is audit-output clarity only. It does not change finance calculation,
   collect evidence, execute UAT, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P6 Execution Queue Split
+
+- Split the shared `PRODUCTION_EXECUTION_STEPS` queue so P6-03 audit-log
+  traceability and P6-06 hard-delete/cascade conversion-or-waiver are separate
+  operator actions instead of one combined audit/hard-delete step.
+- Updated the TTGDTX execution queue, Master Control blocker summary, current
+  state inventory and audits `audit:heu-production-blocker-source`,
+  `audit:ttgdtx-production-readiness-guard`, `audit:heu-bgh-dashboard-spec`
+  and `audit:ttgdtx-release-gates`.
+- This is execution-queue clarity only. It does not collect audit evidence,
+  convert cascade paths, approve a waiver, execute UAT, approve migration,
+  approve finance action or mark production GO.

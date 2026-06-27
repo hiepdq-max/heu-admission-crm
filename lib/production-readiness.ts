@@ -165,11 +165,19 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     href: "/ttgdtx/accounting-dashboard",
   },
   {
-    code: "P6-03/P6-06",
-    title: "Close audit-log and hard-delete risks",
-    owner: "IT_DATA + Audit",
+    code: "P6-03",
+    title: "Prove audit-log traceability",
+    owner: "Audit + IT_DATA + KHTC",
     proof:
-      "Attach traceability rows for finance actions and conversion or written waiver for remaining cascade risks.",
+      "Attach traceability rows for create, update, check, approve, pay and source-control events before owner review.",
+    href: "/audit",
+  },
+  {
+    code: "P6-06",
+    title: "Close hard-delete and cascade risks",
+    owner: "IT_DATA + Audit + business owners",
+    proof:
+      "Convert protected cascade paths to restrict/archive/status patterns or attach narrow written waiver for derived-only rows.",
     href: "/audit",
   },
   {

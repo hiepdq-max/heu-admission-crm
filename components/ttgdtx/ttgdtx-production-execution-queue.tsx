@@ -18,10 +18,11 @@ export function TtgdtxProductionExecutionQueue() {
             </h2>
             <p className="mt-2 leading-6 text-indigo-900">
               Execute in this order: redaction, backup/restore, migration order,
-              role UAT, P0-19, P2-17, P2-18, audit/hard-delete, P0-14
-              evidence binder, P0-15 final handoff summary, then final owner
-              Go/No-Go. Do not skip ahead; every item needs controlled evidence
-              and human owner sign-off.
+              role UAT, P0-19, P2-17, P2-18, audit-log traceability,
+              hard-delete conversion/waiver, P0-14 evidence binder, P0-15
+              final handoff summary, then final owner Go/No-Go. Do not skip
+              ahead; every item needs controlled evidence and human owner
+              sign-off.
             </p>
           </div>
         </div>
