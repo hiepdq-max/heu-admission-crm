@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-15 Final Handoff P6-06 Register Reference
+
+- Updated `AGENTS.md` so final handoff summaries must cite
+  `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` alongside the
+  P6-06 hard-delete/cascade proof paths.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-15 final handoff coverage carries
+  the detailed P6-06 register reference.
+- Extended final-handoff, current-state, implementation-log and release-gate
+  audits so the register reference is required before handoff.
+- This is final-handoff packaging only. It does not approve production
+  deletion, cascade execution, waiver, conversion migration, evidence
+  acceptance, owner GO/NO-GO or production GO.
+
 ## 2026-06-28 - P0-09 Owner Signoff P6-06 Register Alignment
 
 - Updated `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` so the
