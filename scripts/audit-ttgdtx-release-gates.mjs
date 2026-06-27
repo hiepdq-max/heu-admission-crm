@@ -1276,8 +1276,14 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-p019-gate-decision-manifest="P0-19")(?=[\s\S]*P0-19 legal\/finance gate decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-19-DEC-01)(?=[\s\S]*P0-19-DEC-06)(?=[\s\S]*Legal authority accepted)(?=[\s\S]*Tuition and invoice policy aligned)(?=[\s\S]*Finance gate blocks then allows)(?=[\s\S]*Step100 and exceptions controlled)(?=[\s\S]*Redacted evidence and owner signatures complete)(?=[\s\S]*Human gate decision recorded)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing gate decision ID, unsigned owner evidence, unresolved\s+invoice\/chung-tu basis, uncontrolled exception or raw sensitive\s+evidence keeps P0-19 NO-GO)/i,
+  "P0-19 legal/finance gate decision manifest",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P0-19 legal\/finance gate ready)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-p019-gate-guard\.tsx)(?=[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx)(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*P0-19 acceptance matrix)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*signed legal\/finance UAT still required)/i,
+  /(?=[\s\S]*P0-19 legal\/finance gate ready)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-p019-gate-guard\.tsx)(?=[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx)(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*P0-19 acceptance matrix)(?=[\s\S]*P0-19 gate decision manifest)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*signed legal\/finance UAT still required)/i,
   "P0-19 guard checklist row",
 );
 

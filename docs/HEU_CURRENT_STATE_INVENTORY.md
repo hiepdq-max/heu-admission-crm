@@ -64,7 +64,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Module | Scope | Current status | Evidence |
 |---|---|---|---|
-| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate and acceptance matrix are packaged; signed UAT still required |
+| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate, acceptance matrix and gate decision manifest are packaged; signed UAT still required |
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
@@ -86,7 +86,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup/restore closure decision manifest exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
-| Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
+| Legal/finance gate | P0-19 guard, UAT checklist, waiver/exception register, acceptance matrix and gate decision manifest exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |

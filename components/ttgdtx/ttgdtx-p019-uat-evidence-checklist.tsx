@@ -22,6 +22,13 @@ type ExceptionItem = {
   stopCondition: string;
 };
 
+type GateDecisionItem = {
+  caseId: string;
+  decisionGate: string;
+  requiredEvidence: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "P0-19-01",
@@ -154,6 +161,57 @@ const exceptionItems: ExceptionItem[] = [
       "Negative/positive gate evidence, risk owner decision, audit note and controlled reference ID.",
     stopCondition:
       "Stop if P2-03 can create receivable while P0-19 is missing, blocked, unsigned or based only on pilot data.",
+  },
+];
+
+const gateDecisionItems: GateDecisionItem[] = [
+  {
+    caseId: "P0-19-DEC-01",
+    decisionGate: "Legal authority accepted",
+    requiredEvidence:
+      "Current contract/legal basis identifies center, program/major, scope, effective period and approving legal owner.",
+    stopCondition:
+      "Stop if legal authority is expired, assumed from pilot notes, missing owner signature or not scoped to the center/program.",
+  },
+  {
+    caseId: "P0-19-DEC-02",
+    decisionGate: "Tuition and invoice policy aligned",
+    requiredEvidence:
+      "Tuition amount, term, due rule, payer model, invoice/chung-tu responsibility and waiver basis match the legal authority.",
+    stopCondition:
+      "Stop if tuition, payer, invoice/chung-tu responsibility or waiver basis is unresolved.",
+  },
+  {
+    caseId: "P0-19-DEC-03",
+    decisionGate: "Finance gate blocks then allows",
+    requiredEvidence:
+      "Negative evidence blocks P2-05/P2-03 before readiness; positive evidence allows only after P0-19, P2-01, P2-02 and P2-05 pass.",
+    stopCondition:
+      "Stop if P2-03 can create receivable while the gate is missing, blocked, unsigned or based only on sandbox data.",
+  },
+  {
+    caseId: "P0-19-DEC-04",
+    decisionGate: "Step100 and exceptions controlled",
+    requiredEvidence:
+      "Any Step100 sandbox use or legal/tuition/finance exception has written owner decision, scope, expiry and NO-GO boundary.",
+    stopCondition:
+      "Stop if Step100 or any exception is treated as production legal, tuition, finance, revenue or payout authority.",
+  },
+  {
+    caseId: "P0-19-DEC-05",
+    decisionGate: "Redacted evidence and owner signatures complete",
+    requiredEvidence:
+      "PHAP_CHE, KHTC, BGH and Audit sign redacted controlled evidence references outside Git/Codex/chat.",
+    stopCondition:
+      "Stop if private contract bodies, raw student PII, CCCD, bank data, credentials, raw vouchers or raw payment data appear.",
+  },
+  {
+    caseId: "P0-19-DEC-06",
+    decisionGate: "Human gate decision recorded",
+    requiredEvidence:
+      "The gate record states P0_19_GATE_READY, NO_GO or BLOCKED before any P2-03 production reliance.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as legal approval, finance approval, UAT acceptance, receivable approval, revenue recognition or production GO.",
   },
 ];
 
@@ -334,6 +392,62 @@ export function TtgdtxP019UatEvidenceChecklist() {
           Do not attach private contract bodies, raw student PII, CCCD, bank
           data, credentials, passwords, OTPs, service-role keys, raw vouchers or
           raw payment data. Missing owner signature keeps production NO-GO.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-cyan-200 bg-white p-4"
+        data-ttgdtx-p019-gate-decision-manifest="P0-19"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold text-cyan-950">
+              <ClipboardCheck className="size-4 shrink-0 text-cyan-700" />
+              <span>
+                P0-19 legal/finance gate decision manifest: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6 text-cyan-900">
+              Use this manifest after the UAT checklist, waiver/exception
+              register and acceptance matrix are complete. It prepares a human
+              legal/finance gate decision; it does not approve receivable
+              creation, revenue recognition, finance action or production GO.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-950">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P0_19_GATE_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {gateDecisionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-cyan-300 bg-cyan-50/70 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.decisionGate}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required evidence: {item.requiredEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+          Missing gate decision ID, unsigned owner evidence, unresolved
+          invoice/chung-tu basis, uncontrolled exception or raw sensitive
+          evidence keeps P0-19 NO-GO.
         </div>
       </div>
     </section>

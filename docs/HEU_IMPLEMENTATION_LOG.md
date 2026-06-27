@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-19 Legal Finance Gate Decision Manifest
+
+- Added a PASS_LOCAL P0-19 legal/finance gate decision manifest to
+  `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx`.
+- Updated `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the legal/finance gate decision is
+  visible after the UAT checklist, waiver/exception register and acceptance
+  matrix.
+- Extended P0-19, current-state and release-gate audits to require the gate
+  decision manifest before handoff.
+- This is gate-decision packaging only. It does not accept legal evidence,
+  approve finance action, create receivable authority, recognize revenue, accept
+  UAT, approve owner waiver or mark production GO.
+
 ## 2026-06-28 - P0-03 Backup/Restore Closure Decision Manifest
 
 - Added a PASS_LOCAL P0-03 backup/restore closure decision manifest to

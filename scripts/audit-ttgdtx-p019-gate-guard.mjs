@@ -99,6 +99,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-p019-gate-decision-manifest="P0-19")(?=[\s\S]*P0-19 legal\/finance gate decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-19-DEC-01)(?=[\s\S]*P0-19-DEC-06)(?=[\s\S]*Legal authority accepted)(?=[\s\S]*Tuition and invoice policy aligned)(?=[\s\S]*Finance gate blocks then allows)(?=[\s\S]*Step100 and exceptions controlled)(?=[\s\S]*Redacted evidence and owner signatures complete)(?=[\s\S]*Human gate decision recorded)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing gate decision ID, unsigned owner evidence, unresolved\s+invoice\/chung-tu basis, uncontrolled exception or raw sensitive\s+evidence keeps P0-19 NO-GO)/i,
+  "P0-19 gate decision manifest",
+  evidenceChecklistPath,
+);
+
 for (const [file, contents] of [
   [gatePagePath, gatePage],
   [receivablesPagePath, receivablesPage],
@@ -131,14 +138,21 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*P0-19 Gate Decision Manifest)(?=[\s\S]*data-ttgdtx-p019-gate-decision-manifest="P0-19")(?=[\s\S]*P0-19-DEC-01)(?=[\s\S]*P0-19-DEC-06)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing gate decision ID, unsigned owner evidence, unresolved invoice\/chung-tu\s+basis, uncontrolled exception or raw sensitive evidence keeps P0-19 NO-GO)/i,
+  "P0-19 gate decision manifest in runbook",
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+);
+
+requireText(
   checklist,
-  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
   "P0-19 checklist row remains signed-UAT gated",
   checklistPath,
 );
 requireText(
   backlog,
-  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*audit:ttgdtx-p019-gate-guard/i,
+  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard/i,
   "P2-00 backlog guard evidence",
   backlogPath,
 );
