@@ -403,3 +403,26 @@
 
 - Production remains NO-GO until backup/restore dry-run, synthetic multi-account UAT and human sign-off are attached.
 - Codex/AI output remains advisory; it does not approve go-live, payments or finance/legal decisions.
+
+## 2026-06-27 - TTGDTX Operating Spine Control Docs Slice
+
+### Scope
+
+- Packaged the operating-spine documents referenced by the production checklist.
+- Added release-gate checks for the linked operating review, operating control matrix, process-code map and Codex operating playbook.
+- Kept business labels user-facing first and P2 codes as audit/search support, not as the main mental model for staff.
+
+### Files Updated/Added
+
+- `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`
+- `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md`
+- `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`
+- `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
+- `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- TTGDTX remains one linked operating spine, not separate isolated finance pages.
+- AI/Codex still cannot approve production, finance actions, account freeze/release, collateral release or go-live.

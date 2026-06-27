@@ -47,6 +47,10 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
+  "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
+  "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
+  "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
 ];
 
 for (const file of requiredFiles) {
@@ -138,6 +142,30 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /\|\s*Rollback plan\s*\|\s*IT_DATA\s*\|\s*IN_PROGRESS\s*\|/i,
   "rollback plan IN_PROGRESS status",
+);
+
+requireText(
+  "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
+  /Production\s+remains\s+NO-GO/i,
+  "linked operating NO-GO boundary",
+);
+
+requireText(
+  "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
+  /Do not let AI approve/i,
+  "operating matrix AI approval boundary",
+);
+
+requireText(
+  "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
+  /business name first/i,
+  "business-name-first process label rule",
+);
+
+requireText(
+  "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
+  /Khong gui mat khau, OTP, API key/i,
+  "Codex no-secret operating rule",
 );
 
 if (failures.length > 0) {

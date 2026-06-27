@@ -28,7 +28,7 @@ Executed on 2026-06-25 from `D:\Web app HEU\heu-admission-crm`.
 | `npm.cmd run audit:ttgdtx-dashboard-access` | PASS | Dashboard-access audit passed |
 | `npm.cmd run audit:ttgdtx-uat-readiness` | PASS AFTER SETUP | Added to guard this UAT evidence pack |
 | `npm.cmd run audit:ttgdtx-step110-safety` | PASS | Step110 metadata-only, view-order and debug guards passed |
-| `npm.cmd run audit:ttgdtx-release-gates` | PASS | Checked 12 files and 11 npm scripts |
+| `npm.cmd run audit:ttgdtx-release-gates` | PASS | Checked 16 files and 11 npm scripts |
 | `npm.cmd run lint` | PASS | ESLint completed without error |
 | `npm.cmd run build` | PASS | Next.js build completed; 47/47 pages generated |
 
