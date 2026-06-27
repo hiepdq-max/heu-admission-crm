@@ -1,10 +1,17 @@
-import { ClipboardCheck, FileCheck2, ShieldAlert } from "lucide-react";
+import { ClipboardCheck, FileCheck2, ListChecks, ShieldAlert } from "lucide-react";
 
 type EvidenceItem = {
   caseId: string;
   title: string;
   owner: string;
   evidence: string;
+};
+
+type OwnerGoNoGoAcceptanceItem = {
+  caseId: string;
+  title: string;
+  minimum: string;
+  stopCondition: string;
 };
 
 const evidenceItems: EvidenceItem[] = [
@@ -49,6 +56,57 @@ const evidenceItems: EvidenceItem[] = [
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
     evidence:
       "Final signed owner decision references only controlled redacted evidence and keeps NO-GO if any stop condition remains.",
+  },
+];
+
+const ownerGoNoGoAcceptanceItems: OwnerGoNoGoAcceptanceItem[] = [
+  {
+    caseId: "P0-09-ACCEPT-01",
+    title: "Evidence pack completeness and redaction",
+    minimum:
+      "Every required evidence item has a controlled external location, owner initials, result and no raw sensitive data in Git/Codex/chat.",
+    stopCondition:
+      "Any evidence is missing, stored in an uncontrolled location or contains raw sensitive data.",
+  },
+  {
+    caseId: "P0-09-ACCEPT-02",
+    title: "Backup/restore and migration readiness",
+    minimum:
+      "Backup ID, restore target, smoke-check, preflight/postflight and signed Step90-Step110 migration order are accepted.",
+    stopCondition:
+      "Restore proof is missing, app connection to restore target is not proven or migration order is unsigned.",
+  },
+  {
+    caseId: "P0-09-ACCEPT-03",
+    title: "Finance, legal and UAT blockers closed",
+    minimum:
+      "P0-19, P2-17, P2-18, role/workspace, audit-log and hard-delete/cascade evidence or written waiver are signed.",
+    stopCondition:
+      "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete.",
+  },
+  {
+    caseId: "P0-09-ACCEPT-04",
+    title: "Owner decision quorum and accountability",
+    minimum:
+      "BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, evidence ref, signature and date.",
+    stopCondition:
+      "Any owner is missing, approval is oral-only, role is ambiguous, waiver is hidden or one owner asks for more evidence.",
+  },
+  {
+    caseId: "P0-09-ACCEPT-05",
+    title: "Production boundary and AI/Codex limitation",
+    minimum:
+      "Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat.",
+    stopCondition:
+      "PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production.",
+  },
+  {
+    caseId: "P0-09-ACCEPT-06",
+    title: "Final outcome stays NO-GO until every stop condition is closed",
+    minimum:
+      "All stop conditions in the sign-off pack are explicitly closed, otherwise the final decision remains NO-GO.",
+    stopCondition:
+      "Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains.",
   },
 ];
 
@@ -105,6 +163,50 @@ export function TtgdtxOwnerGoNoGoEvidenceChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-ttgdtx-owner-go-no-go-acceptance-matrix="P0-09"
+        className="mt-5 rounded-md border border-sky-200 bg-white p-4"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <ListChecks className="mt-0.5 size-4 shrink-0 text-sky-700" />
+            <div>
+              <h3 className="font-semibold text-sky-950">
+                P0-09 owner GO/NO-GO acceptance matrix: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-sky-900">
+                Use this matrix to decide whether the pack is ready for owner
+                review. It does not approve production; missing evidence or
+                any open stop condition keeps the result NO-GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 font-mono text-xs text-sky-950">
+            P0_09_ACCEPT / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {ownerGoNoGoAcceptanceItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Minimum: {item.minimum}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

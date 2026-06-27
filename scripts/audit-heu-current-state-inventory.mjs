@@ -91,7 +91,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Backup\/restore[\s\S]*Evidence pack, UI guard and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, execution queue, owner GO\/NO-GO checklist and owner acceptance matrix[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(

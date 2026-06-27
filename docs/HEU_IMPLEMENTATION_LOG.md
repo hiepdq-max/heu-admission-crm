@@ -2234,3 +2234,18 @@
   `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
 - P6-06 remains IN_PROGRESS for production until every required conversion or
   written waiver is signed outside Codex/chat.
+
+## 2026-06-27 - P0-09 Owner GO/NO-GO Acceptance Matrix
+
+- Added a PASS_LOCAL P0-09 owner GO/NO-GO acceptance matrix to
+  `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx`.
+- The matrix requires complete redacted evidence, accepted backup/restore and
+  migration readiness, closed finance/legal/UAT blockers, explicit owner quorum,
+  Codex/AI advisory-only wording and a final NO-GO outcome when any stop
+  condition remains open.
+- Updated `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`, the
+  production checklist, backlog, current-state inventory,
+  `audit:ttgdtx-production-owner-signoff-pack`, `audit:ttgdtx-release-gates`
+  and `audit:heu-current-state-inventory`.
+- P0-09 remains IN_PROGRESS for production until the required owners sign the
+  final GO/NO-GO decision outside Codex/chat.

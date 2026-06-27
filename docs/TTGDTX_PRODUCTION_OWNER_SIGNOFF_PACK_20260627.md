@@ -92,7 +92,24 @@ statements, vouchers or raw payment data into Git/Codex/chat. PASS_LOCAL does
 not approve backup, restore, migration, legal waiver, finance action, UAT
 acceptance, payout, dashboard reliance or production GO.
 
-## 6. Stop Conditions
+## 6. P0-09 Owner GO/NO-GO Acceptance Matrix
+
+Decision value: `P0_09_ACCEPT / NO_GO / BLOCKED`.
+
+The matrix below decides only whether the sign-off pack is ready for owner
+review. It does not approve production. If any stop condition is open, the
+final owner decision remains NO-GO.
+
+| Case | Acceptance test | Minimum required evidence | Stop condition |
+|---|---|---|---|
+| P0-09-ACCEPT-01 | Evidence pack completeness and redaction | Every required evidence item has a controlled external location, owner initials, result and no raw sensitive data in Git/Codex/chat | Any evidence is missing, stored in an uncontrolled location or contains raw sensitive data |
+| P0-09-ACCEPT-02 | Backup/restore and migration readiness | Backup ID, restore target, smoke-check, preflight/postflight and signed Step90-Step110 migration order are accepted | Restore proof is missing, app connection to restore target is not proven or migration order is unsigned |
+| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P2-17, P2-18, role/workspace, audit-log and hard-delete/cascade evidence or written waiver are signed | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete |
+| P0-09-ACCEPT-04 | Owner decision quorum and accountability | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, evidence ref, signature and date | Any owner is missing, approval is oral-only, role is ambiguous, waiver is hidden or one owner asks for more evidence |
+| P0-09-ACCEPT-05 | Production boundary and AI/Codex limitation | Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat | PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production |
+| P0-09-ACCEPT-06 | Final outcome stays NO-GO until every stop condition is closed | All stop conditions in this sign-off pack are explicitly closed, otherwise the final decision remains NO-GO | Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains |
+
+## 7. Stop Conditions
 
 Keep production NO-GO if any condition below is true:
 
@@ -109,7 +126,7 @@ Keep production NO-GO if any condition below is true:
    or UAT screenshots.
 10. Any owner asks for more evidence.
 
-## 7. Final Decision Record
+## 8. Final Decision Record
 
 | Owner group | Name / role | Decision | Signature / evidence ref | Date |
 |---|---|---|---|---|
@@ -121,4 +138,5 @@ Keep production NO-GO if any condition below is true:
 | TRUONG_PHONG / process owner |  | GO / NO-GO |  |  |
 
 Final production recommendation remains NO-GO until every required owner signs
-GO and no stop condition remains open.
+GO, P0-09-ACCEPT-01 through P0-09-ACCEPT-06 are accepted and no stop condition
+remains open.

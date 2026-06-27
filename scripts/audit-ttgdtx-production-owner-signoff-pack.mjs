@@ -121,7 +121,13 @@ requireText(
 
 requireText(
   pack,
-  /Final production recommendation remains NO-GO until every required owner signs\s+GO and no stop condition remains open/i,
+  /(?=[\s\S]*P0-09 Owner GO\/NO-GO Acceptance Matrix)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*Codex\/AI is advisory only)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
+  "P0-09 owner GO/NO-GO acceptance matrix",
+);
+
+requireText(
+  pack,
+  /Final production recommendation remains NO-GO until every required owner signs\s+GO, P0-09-ACCEPT-01 through P0-09-ACCEPT-06 are accepted and no stop condition\s+remains open/i,
   "final NO-GO until all owners sign",
 );
 
@@ -129,6 +135,13 @@ requireText(
   ownerChecklist,
   /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, OTPs, service-role\s+keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,\s+raw bank account numbers, bank statements, vouchers or raw payment\s+data)/i,
   "P0-09 owner GO/NO-GO evidence checklist",
+  ownerChecklistPath,
+);
+
+requireText(
+  ownerChecklist,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-acceptance-matrix="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*Evidence pack completeness and redaction)(?=[\s\S]*Backup\/restore and migration readiness)(?=[\s\S]*Finance, legal and UAT blockers closed)(?=[\s\S]*Owner decision quorum and accountability)(?=[\s\S]*Production boundary and AI\/Codex limitation)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
+  "P0-09 owner GO/NO-GO acceptance matrix",
   ownerChecklistPath,
 );
 
@@ -141,14 +154,14 @@ requireText(
 
 requireText(
   checklist,
-  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "production checklist final owner sign-off row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
   backlogPath,
 );
