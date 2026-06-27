@@ -17,6 +17,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
+import { FinanceDeskUatEvidenceChecklist } from "@/components/finance/finance-desk-uat-evidence-checklist";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -529,6 +530,7 @@ export default async function FinanceDeskPage() {
       <div className="space-y-6">
         <FinanceDeskReadOnlyBoundary />
         <FinanceDeskRelianceDecisionManifest />
+        <FinanceDeskUatEvidenceChecklist />
 
         {!canOpen ? (
           <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">

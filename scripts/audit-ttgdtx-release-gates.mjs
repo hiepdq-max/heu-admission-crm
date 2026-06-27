@@ -101,6 +101,7 @@ const requiredFiles = [
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ai/ai-risk-suggestion-board.tsx",
   "components/ai/ai-task-checklist-generator.tsx",
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
   "components/master-control/production-readiness-blocker-summary.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
@@ -604,6 +605,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Finance Desk UAT Evidence Checklist[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*\/finance-desk[\s\S]*P5-03\s+browser UAT cases[\s\S]*no-secret evidence rules[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit-heu-finance-desk\.mjs[\s\S]*release-gate audits[\s\S]*This is UAT packaging only[\s\S]*does not execute UAT, collect evidence,\s+approve finance action, approve dashboard reliance, run production migration\s+or mark production GO/i,
+  "Finance Desk UAT evidence checklist log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /P5-03 Finance Desk Reliance Decision Manifest[\s\S]*\/finance-desk[\s\S]*KHTC,\s+BGH, IT_DATA and AUDIT[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Finance Desk, current-state, implementation-log and release-gate\s+audits[\s\S]*This is cockpit-reliance packaging only[\s\S]*does not approve finance action,\s+statutory accounting, voucher posting, bank transfer, UAT acceptance,\s+dashboard production reliance, owner waiver or production GO/i,
   "Finance Desk reliance decision manifest log entry",
 );
@@ -618,6 +625,18 @@ requireText(
   "app/finance-desk/page.tsx",
   /(?=[\s\S]*const financeDeskRelianceItems[\s\S]*P5-03-REL-01[\s\S]*P5-03-REL-06)(?=[\s\S]*function FinanceDeskRelianceDecisionManifest\(\)[\s\S]*data-finance-desk-reliance-decision-manifest="P5-03"[\s\S]*P5-03 Finance Desk reliance decision manifest: PASS_LOCAL only[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve\s+finance action, statutory accounting, voucher posting, bank\s+transfer, UAT acceptance, dashboard production reliance, owner\s+waiver or production GO)/i,
   "Finance Desk reliance decision manifest route",
+);
+
+requireText(
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03")(?=[\s\S]*P5-03 Finance Desk UAT evidence checklist: PASS_LOCAL only)(?=[\s\S]*P5-03-UAT-01)(?=[\s\S]*P5-03-UAT-09)(?=[\s\S]*data-finance-desk-acceptance-matrix="P5-03")(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*Signed browser UAT is still required)(?=[\s\S]*service-role keys stay\s+outside Git\/Codex\/chat)(?=[\s\S]*PASS_LOCAL does not mean Finance Desk UAT passed)/i,
+  "Finance Desk UAT evidence checklist component",
+);
+
+requireText(
+  "app/finance-desk/page.tsx",
+  /import \{ FinanceDeskUatEvidenceChecklist \}[\s\S]*<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*<FinanceDeskUatEvidenceChecklist \/>[\s\S]*!canOpen/i,
+  "Finance Desk UAT evidence checklist mounted before access states",
 );
 
 requireText(
@@ -654,6 +673,24 @@ requireText(
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   /Status:\s*PASS_LOCAL_TEMPLATE[\s\S]*P5-03-UAT-01[\s\S]*P5-03-UAT-09[\s\S]*P5-03-ACCEPT-01[\s\S]*P5-03-ACCEPT-06[\s\S]*Final result remains NO-GO until all required owners sign/i,
   "Finance Desk UAT runbook matrix",
+);
+
+requireText(
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  /finance-desk-uat-evidence-checklist\.tsx[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03"[\s\S]*P5-03-UAT-01 through\s+P5-03-UAT-09[\s\S]*data-finance-desk-acceptance-matrix="P5-03"[\s\S]*P5-03-ACCEPT-01 through P5-03-ACCEPT-06/i,
+  "Finance Desk UAT checklist component reference",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P5-03[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*UAT evidence checklist[\s\S]*P5-03 reliance decision manifest/i,
+  "P5-03 Finance Desk UAT checklist backlog reference",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /HEU Finance Desk read-only cockpit[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 UAT acceptance matrix/i,
+  "Finance Desk production checklist UAT evidence checklist reference",
 );
 
 requireText(

@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Finance Desk UAT Evidence Checklist
+
+- Added `components/finance/finance-desk-uat-evidence-checklist.tsx` and
+  mounted it on `/finance-desk` before the no-access/data-error states so P5-03
+  browser UAT cases, acceptance criteria and no-secret evidence rules are
+  visible inside the cockpit.
+- Updated `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Finance Desk UAT evidence
+  checklist is part of the P5-03 readiness package.
+- Updated `scripts/audit-heu-finance-desk.mjs` and release-gate audits so the
+  page, component, runbook and readiness docs must stay aligned.
+- This is UAT packaging only. It does not execute UAT, collect evidence,
+  approve finance action, approve dashboard reliance, run production migration
+  or mark production GO.
+
 ## 2026-06-28 - Current State User Account Security Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` and

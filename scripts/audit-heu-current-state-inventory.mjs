@@ -135,7 +135,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
+  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, UAT evidence checklist, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "P5-03 Finance Desk current control state",
 );
 requireText(

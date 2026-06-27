@@ -40,6 +40,13 @@ npm.cmd run audit:ttgdtx-release-gates
 Do not run `database/step111_heu_finance_desk.sql` on production from
 Codex/chat. Step111 is a migration candidate only.
 
+The `/finance-desk` page mounts
+`components/finance/finance-desk-uat-evidence-checklist.tsx` with
+`data-finance-desk-uat-evidence-checklist="P5-03"`, P5-03-UAT-01 through
+P5-03-UAT-09, `data-finance-desk-acceptance-matrix="P5-03"` and
+P5-03-ACCEPT-01 through P5-03-ACCEPT-06 so the browser UAT evidence pack is
+visible inside the cockpit before any owner reliance decision.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |

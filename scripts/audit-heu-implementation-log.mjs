@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - Finance Desk UAT Evidence Checklist[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*\/finance-desk[\s\S]*P5-03\s+browser UAT cases[\s\S]*acceptance criteria[\s\S]*no-secret evidence rules[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*audit-heu-finance-desk\.mjs[\s\S]*release-gate audits[\s\S]*This is UAT packaging only[\s\S]*does not execute UAT, collect evidence,\s+approve finance action, approve dashboard reliance, run production migration\s+or mark production GO/i,
+  "Finance Desk UAT evidence checklist log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /(?=[\s\S]*## 2026-06-28 - Current State User Account Security Alignment)(?=[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md)(?=[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md)(?=[\s\S]*M02\/role-workspace scope)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58-audit-script count)(?=[\s\S]*audit-heu-current-state-inventory\.mjs)(?=[\s\S]*audit-heu-implementation-log\.mjs)(?=[\s\S]*release-gate audits)(?=[\s\S]*current-state\/backlog alignment only)(?=[\s\S]*does not create accounts)(?=[\s\S]*send passwords)(?=[\s\S]*approve role scope)(?=[\s\S]*mark production GO)/i,
   "current-state user-account security alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
