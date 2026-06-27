@@ -2363,3 +2363,14 @@
   to require the refreshed current-state wording.
 - This is inventory/audit alignment only. It does not execute UAT, approve
   production, attach real evidence or change the owner GO/NO-GO boundary.
+
+## 2026-06-27 - Backlog Alignment After UAT Closure Template
+
+- Updated P0-08 and P6-04 in `docs/HEU_SYSTEM_BUILD_BACKLOG.md` so the
+  production-readiness guard and role-scope UAT backlog both point to the UAT
+  execution closure template.
+- Updated the production checklist and audits
+  `audit:ttgdtx-production-readiness-guard`,
+  `audit:heu-role-scope-uat-pack` and `audit:ttgdtx-release-gates`.
+- This keeps the backlog operationally aligned only. Signed UAT and owner
+  evidence remain required outside Codex/chat.

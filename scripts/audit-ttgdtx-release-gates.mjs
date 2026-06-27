@@ -670,7 +670,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*role-scope evidence checklist, route matrix and acceptance matrix)(?=[\s\S]*signed UAT still required)/i,
+  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix and UAT execution closure template)(?=[\s\S]*signed UAT still required)/i,
   "P6-04 production checklist acceptance matrix row",
 );
 
