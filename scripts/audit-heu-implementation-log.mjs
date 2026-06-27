@@ -77,6 +77,13 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /highest priority blockers[\s\S]*Keep P0-05 implementation log audit green[\s\S]*safe build slice[\s\S]*scope, checks and local-only boundary[\s\S]*before commit/i,
+  "priority blocker list includes P0-05 implementation-log guard",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
   inventory,
   /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P0-05 implementation log audit guard[\s\S]*54 audit scripts passed/i,
   "current-state implementation-log audit evidence",
@@ -88,6 +95,7 @@ for (const heading of [
   "P0-15 Final Handoff Summary Guard",
   "P5-02 Execution Queue Evidence Closure Alignment",
   "P0-05 Implementation Log Audit Guard",
+  "Production Priority Blocker List Alignment",
 ]) {
   requireText(
     log,
@@ -101,6 +109,13 @@ requireText(
   log,
   /P0-05 Implementation Log Audit Guard[\s\S]*audit:heu-implementation-log[\s\S]*P0-05 backlog[\s\S]*production checklist[\s\S]*current-state\s+inventory[\s\S]*This is governance-log alignment only[\s\S]*does not execute UAT, accept real\s+evidence, approve migration, approve finance action or mark production GO/i,
   "P0-05 log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Production Priority Blocker List Alignment[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*P0-05\s+implementation-log audit[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is checklist-priority alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
+  "priority blocker list alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

@@ -109,6 +109,13 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /highest priority blockers[\s\S]*Run P0-15 final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*owner GO\/NO-GO/i,
+  "priority blocker list includes P0-15 final handoff",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
   inventory,
   /npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*Final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*cannot override production NO-GO/i,
   "current-state final handoff coverage audit evidence",

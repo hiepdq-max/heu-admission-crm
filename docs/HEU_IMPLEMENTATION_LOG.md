@@ -2490,3 +2490,15 @@
   local-only boundary before commit.
 - This is governance-log alignment only. It does not execute UAT, accept real
   evidence, approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - Production Priority Blocker List Alignment
+
+- Updated the production checklist priority blocker list so operators must
+  close P0-14 evidence binder, run P0-15 final handoff coverage and keep P0-05
+  implementation-log audit green before role tests and owner GO/NO-GO.
+- Extended `audit:heu-production-evidence-binder`,
+  `audit:heu-final-handoff-coverage`, `audit:heu-implementation-log` and
+  `audit:ttgdtx-release-gates` to keep the priority list aligned with the
+  execution queue.
+- This is checklist-priority alignment only. It does not collect evidence,
+  execute UAT, approve migration, approve finance action or mark production GO.

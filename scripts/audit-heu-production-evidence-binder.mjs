@@ -159,6 +159,13 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
+  "priority blocker list includes P0-14 evidence binder closure",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
   inventory,
   /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "current-state production evidence binder audit evidence",

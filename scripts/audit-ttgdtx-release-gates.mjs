@@ -373,6 +373,18 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Production Priority Blocker List Alignment[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*P0-05\s+implementation-log audit[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is checklist-priority alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
+  "production priority blocker list alignment log entry",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*Run P0-15 final handoff coverage[\s\S]*Keep P0-05 implementation log audit green[\s\S]*Complete role\/workspace permission tests/i,
+  "priority blocker list includes P0-14/P0-15/P0-05 before role tests",
+);
+
+requireText(
   "AGENTS.md",
   /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT\s+handoff evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14\s+production evidence binder[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
   "P0-15 final handoff summary guard",

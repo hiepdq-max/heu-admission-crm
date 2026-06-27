@@ -116,4 +116,7 @@ production, the highest priority blockers are:
 9. Validate P2-10 invoice policy matrix and invoice/chung-tu UAT evidence checklist in signed KHTC/Phap Che browser UAT; keep `npm.cmd run audit:ttgdtx-invoice-policy` green.
 10. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
 11. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
-12. Complete role/workspace permission tests.
+12. Close P0-14 production evidence binder: confirm controlled evidence locations, redaction class, owner sign-off path and no forbidden content before owner review.
+13. Run P0-15 final handoff coverage and record live git state, local check results, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths before owner GO/NO-GO.
+14. Keep P0-05 implementation log audit green so every safe build slice records scope, checks and local-only boundary before commit.
+15. Complete role/workspace permission tests.
