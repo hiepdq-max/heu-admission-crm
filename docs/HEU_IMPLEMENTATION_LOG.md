@@ -1230,3 +1230,34 @@
 
 - TTGDTX audit trail guard is PASS_LOCAL.
 - Production remains NO-GO until signed UAT proves actual audit rows for create, update, approve and pay events.
+
+## 2026-06-27 - Step90-Step110 Migration Order Sign-Off Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small migration-order control slice.
+- Added a local sign-off guard for Step90-Step110 so backup, restore dry-run,
+  Step97 conditional review, Step100 formal pilot waiver, Step109 access UAT,
+  Step110 privacy review and signed owner approval stay explicit.
+- Added a local audit that checks the guard document, migration order audit,
+  production checklist, backlog, AGENTS handoff list and release-gate audit.
+- Kept migration order IN_PROGRESS because signed approval and real
+  backup/restore evidence are still required before production.
+
+### Files Updated/Added
+
+- `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md`
+- `scripts/audit-ttgdtx-migration-order-guard.mjs`
+- `docs/MIGRATION_ORDER_AUDIT.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step90-Step110 migration-order guard is PASS_LOCAL only after local audits
+  pass.
+- Production remains NO-GO; do not run production migration from Codex/chat.

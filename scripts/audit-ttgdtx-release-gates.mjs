@@ -45,6 +45,7 @@ const requiredFiles = [
   "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
   "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
@@ -96,6 +97,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-invoice-policy.mjs",
+  "scripts/audit-ttgdtx-migration-order-guard.mjs",
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
@@ -134,6 +136,7 @@ const requiredScripts = [
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-invoice-policy",
   "audit:ttgdtx-lead-quick-fix-safety",
+  "audit:ttgdtx-migration-order-guard",
   "audit:ttgdtx-operating-control-ui",
   "audit:ttgdtx-payment-dossier-checklist",
   "audit:ttgdtx-pilot-open-safety",
@@ -201,6 +204,24 @@ requireText(
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i,
   "backup/restore evidence pack secret boundary",
+);
+
+requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i,
+  "migration-order guard local-only boundary",
+);
+
+requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  /Step100[\s\S]*formally approved as pilot\s+waiver/i,
+  "migration-order Step100 waiver boundary",
+);
+
+requireText(
+  "docs/MIGRATION_ORDER_AUDIT.md",
+  /Local Sign-Off Guard Evidence[\s\S]*audit:ttgdtx-migration-order-guard/i,
+  "migration-order local sign-off guard evidence",
 );
 
 requireText(

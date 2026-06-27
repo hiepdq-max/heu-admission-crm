@@ -144,11 +144,25 @@ The following files need explicit review or waiver before production use:
 - step110_ttgdtx_real_data_evidence_metadata_p2_19.sql
 - Any payment, payout, reconciliation, cascade or rollback-sensitive step until backup, idempotency and rollback evidence are attached.
 
-## 9. Rollback Gap
+## 9. Local Sign-Off Guard Evidence
+
+Local sign-off guard evidence now exists at
+`docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md` and is checked
+by `npm.cmd run audit:ttgdtx-migration-order-guard`.
+
+This guard keeps Step90-Step110 production execution blocked until backup and
+restore dry-run evidence, signed migration-order approval, Step97 conditional
+review, Step100 pilot-waiver approval or exclusion, Step109 role-permission UAT,
+Step110 privacy review and payment/reconciliation UAT evidence exist.
+
+PASS_LOCAL on this guard does not approve production migration. Do not run
+production migration from Codex/chat.
+
+## 10. Rollback Gap
 
 Rollback is not yet proven in this audit. A draft runbook now exists at `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`, but production migration remains blocked until backup evidence, restore procedure and dry-run rollback evidence are attached.
 
-## 10. Current Conclusion
+## 11. Current Conclusion
 
 Do not run Step90-Step110 on production until:
 

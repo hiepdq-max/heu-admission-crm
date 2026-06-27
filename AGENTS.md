@@ -70,6 +70,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md`
 - `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
 - `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+- `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md`
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
 - `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
@@ -121,6 +122,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-generic-source-evidence`
   - `npm.cmd run audit:ttgdtx-invoice-policy`
   - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
+  - `npm.cmd run audit:ttgdtx-migration-order-guard`
   - `npm.cmd run audit:ttgdtx-operating-control-ui`
   - `npm.cmd run audit:ttgdtx-payment-dossier-checklist`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
