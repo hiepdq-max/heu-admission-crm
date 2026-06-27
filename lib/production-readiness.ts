@@ -215,10 +215,11 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Controlled Drive/evidence folder outside Git, referenced by redacted evidence id only.",
     requiredProof:
-      "Operator run sheet, backup ID, restore target, preflight/postflight result, smoke-check result and operator/checker names.",
+      "Operator run sheet, backup ID, restore target, preflight/postflight result, restore smoke-check result proving P0-19 and P3-01/P3-02 gate preservation, and operator/checker names.",
     forbiddenContent:
       "No service-role key, database URL, password, OTP, raw dump, private connection string or raw backup file.",
-    signoff: "IT_DATA and Audit accept restore evidence before migration order sign-off.",
+    signoff:
+      "IT_DATA and Audit accept restore evidence, including P0-19/P3 gate preservation, before migration order sign-off.",
   },
   {
     caseId: "P0-14-02",

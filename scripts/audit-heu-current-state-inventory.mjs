@@ -91,7 +91,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(
@@ -146,7 +146,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof with P3-01\/P3-02 runbook evidence[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
+  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof with P3-01\/P3-02 runbook evidence[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
   "P0-14 controlled evidence binder closure tracker state",
 );
 requireText(

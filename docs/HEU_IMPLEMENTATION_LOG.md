@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-14 Evidence Binder P0-03 P3 Gate Proof
+
+- Updated `lib/production-readiness.ts` so P0-14-01 backup/restore evidence
+  now requires restore smoke-check proof that P0-19 and P3-01/P3-02 gate
+  preservation survived the restore dry-run.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P0-14 evidence binder requires
+  the P0-03 restore smoke-check proof for P0-19/P3 gate preservation before
+  owner review.
+- Extended production-evidence, current-state and release-gate audits so the
+  binder cannot fall back to generic backup/restore proof.
+- This is evidence-binder packaging only. It does not execute backup, restore,
+  migration dry-run, UAT, evidence acceptance, finance action, owner waiver or
+  production GO.
+
 ## 2026-06-28 - P0-03 Restore Smoke-Check P0-19 P3 Gate Coverage
 
 - Updated `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`

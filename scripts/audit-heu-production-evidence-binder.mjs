@@ -115,7 +115,7 @@ requireText(
 
 requireText(
   source,
-  /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, smoke-check result and operator\/checker names/i,
+  /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names[\s\S]*P0-19\/P3 gate preservation/i,
   "P0-14-01 backup/restore operator run sheet proof",
   sourcePath,
 );
@@ -175,14 +175,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "P0-14 production evidence binder backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "production checklist evidence binder row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
@@ -196,14 +196,14 @@ requireText(
 
 requireText(
   checklist,
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
   "priority blocker list includes P0-14 evidence binder closure",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Backup\/restore[\s\S]*restore smoke-check acceptance matrix with P0-19\/P3 gate preservation[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "current-state production evidence binder audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
