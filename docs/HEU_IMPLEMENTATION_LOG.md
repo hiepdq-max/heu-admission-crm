@@ -678,3 +678,26 @@
 - P1-05 is PASS_LOCAL as a synthetic UAT pack.
 - The pack does not approve real-data import, production migration or production Go-Live.
 - Signed UAT evidence remains required before any production readiness claim.
+
+## 2026-06-27 - Bank Receipt Batch Policy Guard
+
+### Scope
+
+- Continued TTGDTX/9+ hardening with P4-03 bank statement handling policy.
+- Defined required staging fields, duplicate fingerprint rule and stop conditions.
+- Connected the policy to the synthetic UAT pack duplicate bank receipt case.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P4-03 is PASS_LOCAL as a policy/design guard.
+- No raw bank statement, account number or production bank evidence is committed.
+- Production bank import/evidence handling still requires signed UAT and business Go/No-Go.

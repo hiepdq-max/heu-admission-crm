@@ -35,6 +35,7 @@ browser screenshots.
 4. Execute the related runbooks:
    - `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`
    - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
+   - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
    - `docs/P2_03_RECEIVABLE_UAT_RUNBOOK.md`
    - `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
    - `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
