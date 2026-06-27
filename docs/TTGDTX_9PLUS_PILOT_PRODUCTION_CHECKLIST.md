@@ -82,14 +82,15 @@ approval.
 | No AI approval | BGH + IT_DATA | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `components/ai/ai-task-checklist-generator.tsx`; `components/ai/ai-risk-suggestion-board.tsx`; `npm.cmd run audit:heu-ai-policy`; `/ai-assistant` is advisory/read-only and cannot approve, pay, recognize revenue, freeze/release or mark go-live | YES | AI self-approves finance or go-live |
 | Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; `docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md`; `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`; `components/settings/supabase-backup-restore-guard.tsx`; restore procedure; operator run sheet; external evidence manifest; restore smoke-check acceptance matrix; backup/restore closure decision manifest; tested dry-run; `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
 | Internal UAT sign-off | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`; `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` records preflight/build, unauthenticated browser smoke pass and internal UAT run closure tracker; `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` defines synthetic account setup; `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` defines the route/account matrix; `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`; `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx`; UAT run closure tracker; `components/ttgdtx/ttgdtx-production-execution-queue.tsx`; `npm.cmd run audit:ttgdtx-production-readiness-guard`; signed multi-account UAT still required | YES | Real pilot starts before enough testing |
-| Final owner Go/No-Go sign-off | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | IN_PROGRESS | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`; `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`; `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx`; owner GO/NO-GO acceptance matrix; owner GO/NO-GO decision manifest; `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`; `npm.cmd run audit:heu-controlled-evidence-redaction-pack`; signed final GO/NO-GO decision still required | YES | Production starts without accountable owner approval |
+| Final owner Go/No-Go sign-off | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | IN_PROGRESS | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`; `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md`; signed P3-01/P3-02 lifecycle and handover UAT; `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`; `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx`; owner GO/NO-GO acceptance matrix; owner GO/NO-GO decision manifest; `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`; `npm.cmd run audit:heu-controlled-evidence-redaction-pack`; signed final GO/NO-GO decision still required | YES | Production starts without accountable owner approval |
 
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled
 evidence redaction, migration order, permission, audit, hard-delete, rollback,
-P2-17 payout, P2-18 dashboard, P0-14 production evidence binder, P0-15 final
-handoff coverage, P0-16 register pack, final UAT sign-off, final owner
+P3-01/P3-02 lead lifecycle/handover UAT, P2-17 payout, P2-18 dashboard,
+P0-14 production evidence binder, P0-15 final handoff coverage, P0-16 register
+pack, final UAT sign-off, final owner
 Go/No-Go sign-off and final owner decision manifest.
 PASS_LOCAL controls only prove local packaging. Production remains NO-GO until
 controlled external evidence and required owner signatures exist.
@@ -115,14 +116,15 @@ production, the highest priority blockers are:
 2. Close remaining hard-delete/cascade findings or obtain written waiver.
 3. Execute `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md` and confirm P2-17 cannot pay twice.
 4. Finalize Step90-Step110 migration order and backup/rollback dry-run evidence.
-5. Execute anonymized Phu-Xuyen-like UAT cases from `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json` and attach signed evidence.
-6. Validate the account-control deferral and collateral separation decision from `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md` in signed UAT.
-7. Validate operating-control UI and gate behavior in signed UAT using `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`.
-8. Validate user-friendly labels/search in browser UAT using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
-9. Validate P2-10 invoice policy matrix, invoice/chung-tu UAT evidence checklist and invoice/chung-tu decision manifest in signed KHTC/Phap Che browser UAT; keep `npm.cmd run audit:ttgdtx-invoice-policy` green.
-10. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
-11. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
-12. Close P0-14 production evidence binder: confirm controlled evidence locations, redaction class, owner sign-off path and no forbidden content before owner review.
-13. Run P0-15 final handoff coverage and record live git state, local check results, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, with P0-14 split into P6-04/P6-03/P6-06 proof paths and `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, before owner GO/NO-GO.
-14. Keep P0-05 implementation log audit green so every safe build slice records scope, checks and local-only boundary before commit.
-15. Complete role/workspace permission tests.
+5. Execute `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` and sign P3-01/P3-02 lifecycle/handover UAT before owner GO/NO-GO.
+6. Execute anonymized Phu-Xuyen-like UAT cases from `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json` and attach signed evidence.
+7. Validate the account-control deferral and collateral separation decision from `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md` in signed UAT.
+8. Validate operating-control UI and gate behavior in signed UAT using `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`.
+9. Validate user-friendly labels/search in browser UAT using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
+10. Validate P2-10 invoice policy matrix, invoice/chung-tu UAT evidence checklist and invoice/chung-tu decision manifest in signed KHTC/Phap Che browser UAT; keep `npm.cmd run audit:ttgdtx-invoice-policy` green.
+11. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
+12. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
+13. Close P0-14 production evidence binder: confirm controlled evidence locations, redaction class, owner sign-off path and no forbidden content before owner review.
+14. Run P0-15 final handoff coverage and record live git state, local check results, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, with P0-14 split into P6-04/P6-03/P6-06 proof paths and `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, before owner GO/NO-GO.
+15. Keep P0-05 implementation log audit green so every safe build slice records scope, checks and local-only boundary before commit.
+16. Complete role/workspace permission tests.
