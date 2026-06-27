@@ -1,4 +1,9 @@
-import { AlertTriangle, FileCheck2, ShieldCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  FileCheck2,
+  ListChecks,
+  ShieldCheck,
+} from "lucide-react";
 
 type PaymentDossierStep = "P2-15" | "P2-17";
 
@@ -7,6 +12,13 @@ type DossierItem = {
   owner: string;
   evidence: string;
   blocks: string;
+};
+
+type DossierAcceptanceItem = {
+  caseId: string;
+  title: string;
+  minimum: string;
+  stopCondition: string;
 };
 
 const sharedDossierItems: DossierItem[] = [
@@ -66,6 +78,57 @@ const stepLabels: Record<PaymentDossierStep, string> = {
   "P2-17": "Chi tiền",
 };
 
+const dossierAcceptanceItems: DossierAcceptanceItem[] = [
+  {
+    caseId: "P2-DOSSIER-ACCEPT-01",
+    title: "Locked reconciliation period accepted",
+    minimum:
+      "P2-14 period is locked, accepted amount and source line count are recorded, and no unresolved reconciliation variance remains.",
+    stopCondition:
+      "Period is unlocked, accepted amount is unclear, source line count is missing or variance remains unresolved.",
+  },
+  {
+    caseId: "P2-DOSSIER-ACCEPT-02",
+    title: "BBNT accepted-period proof complete",
+    minimum:
+      "Signed/sealed BBNT matches center, period, accepted learners/service basis and controlled evidence reference.",
+    stopCondition:
+      "BBNT is missing, mismatched to center/period, unsigned, unsealed where required or stored in an uncontrolled location.",
+  },
+  {
+    caseId: "P2-DOSSIER-ACCEPT-03",
+    title: "Partner invoice or waiver controlled",
+    minimum:
+      "Partner invoice evidence passes P2-19, or a written PHAP_CHE/KHTC waiver has owner, reason, expiry/review date and controlled reference.",
+    stopCondition:
+      "Partner invoice is missing, failed, unchecked or waived orally without written owner authority.",
+  },
+  {
+    caseId: "P2-DOSSIER-ACCEPT-04",
+    title: "Payment amount basis reconciles",
+    minimum:
+      "Formula basis, accepted count, rate, requested amount and remaining payable are reconciled before request approval or payout evidence.",
+    stopCondition:
+      "Requested or payout amount exceeds formula, accepted period, approved request or remaining payable.",
+  },
+  {
+    caseId: "P2-DOSSIER-ACCEPT-05",
+    title: "P2-19 source-control checks pass",
+    minimum:
+      "P2_19_ACCEPTANCE_BEFORE_PAYOUT and P2_19_PARTNER_INVOICE_BEFORE_PAYOUT are PASS or formally BLOCKED with owner note.",
+    stopCondition:
+      "Any P2-19 check is FAIL, NOT_CHECKED, missing or manually bypassed.",
+  },
+  {
+    caseId: "P2-DOSSIER-ACCEPT-06",
+    title: "Signed UAT and production boundary",
+    minimum:
+      "KHTC, PHAP_CHE, BGH and Audit sign the dossier UAT evidence before production reliance.",
+    stopCondition:
+      "PASS_LOCAL is treated as payment approval, payout approval, UAT acceptance, bank transfer instruction or production GO.",
+  },
+];
+
 export function TtgdtxPaymentDossierChecklist({
   currentStep,
 }: {
@@ -122,6 +185,51 @@ export function TtgdtxPaymentDossierChecklist({
             </div>
           </div>
         ))}
+      </div>
+
+      <div
+        data-ttgdtx-payment-dossier-acceptance-matrix={currentStep}
+        className="mt-5 rounded-md border border-blue-200 bg-blue-50 p-4"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <ListChecks className="mt-0.5 size-4 shrink-0 text-blue-700" />
+            <div>
+              <h3 className="font-semibold text-blue-950">
+                {currentStep} payment dossier acceptance matrix: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-blue-900">
+                Matrix nay tach viec du ho so BBNT/hoa don doi tac/can cu tinh
+                tien khoi viec phe duyet thanh toan. No chi xac dinh ho so co
+                du dieu kien dua cho nguoi co tham quyen xem xet hay phai
+                BLOCKED.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-blue-200 bg-white px-3 py-2 font-mono text-xs text-blue-950">
+            PAYMENT_DOSSIER_ACCEPT / FAIL / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {dossierAcceptanceItems.map((item) => (
+            <article
+              key={`${currentStep}-${item.caseId}`}
+              className="rounded-md border border-blue-200 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-blue-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Minimum: {item.minimum}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

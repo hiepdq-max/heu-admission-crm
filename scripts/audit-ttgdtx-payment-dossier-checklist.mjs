@@ -80,6 +80,13 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-payment-dossier-acceptance-matrix=\{currentStep\})(?=[\s\S]*payment dossier acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PAYMENT_DOSSIER_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-DOSSIER-ACCEPT-01)(?=[\s\S]*P2-DOSSIER-ACCEPT-06)(?=[\s\S]*Locked reconciliation period accepted)(?=[\s\S]*BBNT accepted-period proof complete)(?=[\s\S]*Partner invoice or waiver controlled)(?=[\s\S]*Payment amount basis reconciles)(?=[\s\S]*P2-19 source-control checks pass)(?=[\s\S]*Signed UAT and production boundary)(?=[\s\S]*PASS_LOCAL is treated as payment approval, payout approval, UAT acceptance, bank transfer instruction or production GO)/i,
+  "P2-15/P2-17 payment dossier acceptance matrix",
+  componentPath,
+);
+
+requireText(
   p215Page,
   /TtgdtxPaymentDossierChecklist[\s\S]*currentStep="P2-15"/,
   "P2-15 page mounts dossier checklist",
@@ -109,21 +116,21 @@ requireText(
 
 requireText(
   checklist,
-  /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
+  /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*payment dossier acceptance matrix[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
   "BBNT evidence gate PASS_LOCAL checklist row",
   checklistPath,
 );
 
 requireText(
   checklist,
-  /P2-15 note\/evidence completeness[\s\S]*PASS_LOCAL[\s\S]*TtgdtxPaymentDossierChecklist[\s\S]*signed UAT/i,
+  /P2-15 note\/evidence completeness[\s\S]*PASS_LOCAL[\s\S]*TtgdtxPaymentDossierChecklist[\s\S]*payment dossier acceptance matrix[\s\S]*signed UAT/i,
   "P2-15 dossier completeness PASS_LOCAL row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-15[\s\S]*ttgdtx-payment-dossier-checklist/i,
+  /P2-15[\s\S]*ttgdtx-payment-dossier-checklist[\s\S]*payment dossier acceptance matrix/i,
   "P2-15 backlog dossier checklist evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );

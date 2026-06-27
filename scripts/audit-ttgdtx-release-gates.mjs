@@ -1175,6 +1175,12 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-payment-dossier-acceptance-matrix=\{currentStep\})(?=[\s\S]*payment dossier acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PAYMENT_DOSSIER_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-DOSSIER-ACCEPT-01)(?=[\s\S]*P2-DOSSIER-ACCEPT-06)(?=[\s\S]*Locked reconciliation period accepted)(?=[\s\S]*BBNT accepted-period proof complete)(?=[\s\S]*Partner invoice or waiver controlled)(?=[\s\S]*Payment amount basis reconciles)(?=[\s\S]*P2-19 source-control checks pass)(?=[\s\S]*Signed UAT and production boundary)/i,
+  "P2-15/P2-17 payment dossier acceptance matrix",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   /BBNT[\s\S]*Partner invoice evidence[\s\S]*duplicate payout/i,
   "P2-15/P2-17 payment dossier gate metadata",
 );
@@ -1193,7 +1199,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
+  /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*payment dossier acceptance matrix[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
   "payment dossier checklist PASS_LOCAL checklist row",
 );
 

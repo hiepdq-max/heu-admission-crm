@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-15 P2-17 Payment Dossier Acceptance Matrix
+
+- Added a PASS_LOCAL payment dossier acceptance matrix to
+  `components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx` for P2-15 and
+  P2-17.
+- Updated `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so BBNT, partner invoice/waiver,
+  amount basis and P2-19 checks are explicit before payment request or payout
+  reliance.
+- Extended payment-dossier, current-state and release-gate audits to require
+  the acceptance matrix before handoff.
+- This is payment-dossier readiness packaging only. It does not approve a
+  payment request, payout, bank transfer, UAT acceptance, finance action or
+  production GO.
+
 ## 2026-06-28 - P2-10 Invoice Decision Manifest
 
 - Added a PASS_LOCAL P2-10 invoice/chung-tu decision manifest to
