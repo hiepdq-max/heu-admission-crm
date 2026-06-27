@@ -37,6 +37,11 @@ and human sign-off are attached to the production checklist.
 
 ## 4. Backup Evidence Template
 
+Use `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+as the controlled evidence pack when the dry-run is executed. The table below
+is the minimum summary; the evidence pack carries the detailed backup, restore,
+preflight, postflight, UAT, exception and sign-off records.
+
 Record this before any production migration is considered:
 
 | Field | Value |

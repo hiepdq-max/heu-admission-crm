@@ -67,6 +67,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
 - `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
 - `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
 - `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
@@ -106,6 +107,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:permission-soft-revoke`
   - `npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan`
   - `npm.cmd run audit:ttgdtx-audit-log`
+  - `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`
   - `npm.cmd run audit:ttgdtx-cascade`
   - `npm.cmd run audit:ttgdtx-dashboard-access`
   - `npm.cmd run audit:ttgdtx-data-fetch-gate`

@@ -1,0 +1,114 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+const repoRoot = process.cwd();
+const packPath = "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md";
+const runbookPath = "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md";
+const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
+const failures = [];
+
+function fail(message) {
+  failures.push(message);
+}
+
+function exists(relativePath) {
+  return existsSync(path.join(repoRoot, relativePath));
+}
+
+function read(relativePath) {
+  return readFileSync(path.join(repoRoot, relativePath), "utf8");
+}
+
+function requireFile(relativePath) {
+  if (!exists(relativePath)) {
+    fail(`Missing required file: ${relativePath}`);
+  }
+}
+
+function requireText(contents, pattern, label, file = packPath) {
+  if (!pattern.test(contents)) {
+    fail(`${file}: missing ${label}`);
+  }
+}
+
+const requiredFiles = [
+  packPath,
+  runbookPath,
+  checklistPath,
+  "docs/MIGRATION_ORDER_AUDIT.md",
+  "docs/HARD_DELETE_AUDIT.md",
+  "docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md",
+  "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
+  "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
+  "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
+];
+
+for (const file of requiredFiles) {
+  requireFile(file);
+}
+
+const pack = exists(packPath) ? read(packPath) : "";
+const runbook = exists(runbookPath) ? read(runbookPath) : "";
+const checklist = exists(checklistPath) ? read(checklistPath) : "";
+const packageJson = JSON.parse(read("package.json"));
+
+requireText(pack, /Backup\/Restore Dry-Run Evidence Pack/i, "pack title");
+requireText(pack, /This document does not approve\s+production migration/i, "non-approval mode statement");
+requireText(pack, /Production remains NO-GO until this pack is completed/i, "NO-GO completion boundary");
+requireText(pack, /Do not run production migration from Codex\/chat/i, "Codex/chat production migration boundary");
+requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i, "secret and PII boundary");
+requireText(pack, /Backup Evidence Record[\s\S]*Backup ID \/ snapshot ID[\s\S]*Backup operator[\s\S]*Backup checker[\s\S]*Backup result/i, "backup evidence fields");
+requireText(pack, /Restore Evidence Record[\s\S]*Restore target project\/ref[\s\S]*App connection checked against restore target[\s\S]*Restore result/i, "restore evidence fields");
+requireText(pack, /Static Preflight And Postflight Evidence[\s\S]*audit:ttgdtx-release-gates[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack[\s\S]*npm\.cmd run build/i, "preflight and postflight command set");
+requireText(pack, /Migration Execution Record[\s\S]*Step90[\s\S]*Step110/i, "Step90 through Step110 migration record");
+requireText(pack, /Data Smoke-Check Evidence[\s\S]*Receivable duplicate guard[\s\S]*Payout cannot exceed approved amount[\s\S]*Dashboard views are read-only and role-scoped/i, "data smoke-check coverage");
+requireText(pack, /UAT Evidence Index[\s\S]*P2-17 duplicate payout UAT[\s\S]*P2-18 accounting dashboard UAT[\s\S]*Step109 role permission UAT[\s\S]*TTGDTX audit-log UAT/i, "UAT evidence index");
+requireText(pack, /Exception Log[\s\S]*HIGH or BLOCKER exception keeps production NO-GO/i, "exception NO-GO rule");
+requireText(pack, /Human Sign-Off[\s\S]*IT_DATA[\s\S]*KHTC[\s\S]*Phap Che[\s\S]*Audit[\s\S]*BGH/i, "human sign-off matrix");
+requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i, "PASS_LOCAL local-only boundary");
+
+requireText(
+  runbook,
+  /STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md/i,
+  "evidence pack reference",
+  runbookPath,
+);
+
+requireText(
+  checklist,
+  /STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md/i,
+  "production checklist evidence-pack reference",
+  checklistPath,
+);
+
+if (!packageJson.scripts?.["audit:ttgdtx-backup-restore-dry-run-pack"]) {
+  fail("package.json: missing audit:ttgdtx-backup-restore-dry-run-pack script");
+}
+
+const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
+if (!releaseGateAudit.includes(packPath) || !releaseGateAudit.includes("audit:ttgdtx-backup-restore-dry-run-pack")) {
+  fail("scripts/audit-ttgdtx-release-gates.mjs: missing backup/restore evidence pack coverage.");
+}
+
+const agents = read("AGENTS.md");
+if (!agents.includes(packPath)) {
+  fail("AGENTS.md: missing backup/restore evidence pack in required reading.");
+}
+if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
+  fail("AGENTS.md: missing backup/restore evidence-pack audit in final checks.");
+}
+
+const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
+if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
+  fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
+}
+
+if (failures.length > 0) {
+  console.error("TTGDTX backup/restore dry-run evidence-pack audit failed.");
+  for (const failure of failures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log("TTGDTX backup/restore dry-run evidence-pack audit passed. Template is local-only; production remains NO-GO.");

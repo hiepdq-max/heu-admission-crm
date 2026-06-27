@@ -43,6 +43,7 @@ const requiredFiles = [
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
@@ -76,6 +77,7 @@ const requiredFiles = [
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
+  "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
@@ -101,6 +103,7 @@ const requiredScripts = [
   "audit:permission-soft-revoke",
   "audit:ttgdtx-accounting-dashboard-uat-plan",
   "audit:ttgdtx-audit-log",
+  "audit:ttgdtx-backup-restore-dry-run-pack",
   "audit:ttgdtx-cascade",
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-data-fetch-gate",
@@ -157,6 +160,18 @@ requireText(
   "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Do not run production migration from Codex\/chat/i,
   "Codex/chat production migration boundary",
+);
+
+requireText(
+  "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i,
+  "backup/restore evidence pack local-only boundary",
+);
+
+requireText(
+  "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i,
+  "backup/restore evidence pack secret boundary",
 );
 
 requireText(

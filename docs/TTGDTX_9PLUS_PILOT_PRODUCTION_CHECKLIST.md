@@ -42,7 +42,7 @@ approval.
 | Keep safety branch for hardening | IT_DATA | DONE | Branch `hardening/ttgdtx-9plus-pilot` | NO | Pilot changes mix with unstable main work |
 | Review dirty Git state | IT_DATA | IN_PROGRESS | GIT_CLEANUP_ANALYSIS.md | YES | Wrong files or temporary SQL committed |
 | Exclude runtime logs from commit | IT_DATA | PASS_LOCAL | `.gitignore` covers `.log`, `dev-server*.log`, `next-dev*.log`, `.env`, `.env.local`, `.env.*.local`; `git ls-files -o --exclude-standard` currently empty | NO | Logs or local noise committed |
-| Supabase backup before production migration | IT_DATA | NOT_STARTED | Backup ID, timestamp, restore note | YES | Cannot recover after failed migration |
+| Supabase backup before production migration | IT_DATA | NOT_STARTED | Backup ID, timestamp, restore note, and `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md` completed with controlled evidence outside Git when sensitive | YES | Cannot recover after failed migration |
 | Approve Step90-Step110 migration order | IT_DATA + KHTC + PHAP_CHE | IN_PROGRESS | `docs/MIGRATION_ORDER_AUDIT.md` signed off | YES | Wrong order can damage finance data |
 | P2-01 TTGDTX contract active | PHAP_CHE + BGH | DONE | Contract row, status, scope, effective date | YES | Finance action without effective contract |
 | P2-02 tuition policy ready | KHTC | DONE | Tuition policy READY for TTGDTX/major/year | YES | Wrong tuition receivable |
@@ -71,7 +71,7 @@ approval.
 | Hard delete review | IT_DATA + AUDIT | IN_PROGRESS | `docs/HARD_DELETE_AUDIT.md` reviewed; `npm.cmd run audit:hard-delete` and `npm.cmd run audit:ttgdtx-cascade` pass; non-TTGDTX cascade review remains | YES | Loss of evidence, history or legal record |
 | Error routing P2-07/P2-08 | KHTC + IT_DATA + AUDIT | DONE | Issue routing/resolution records | NO | Import errors do not reach the right owner |
 | No AI approval | BGH + IT_DATA | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; `/ai-assistant` is advisory/read-only and cannot approve, pay, recognize revenue, freeze/release or mark go-live | YES | AI self-approves finance or go-live |
-| Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; restore procedure; tested dry-run; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
+| Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`; restore procedure; tested dry-run; `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
 | Internal UAT sign-off | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` records preflight/build and unauthenticated browser smoke pass; `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` defines synthetic account setup; `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` defines the route/account matrix; signed multi-account UAT still required | YES | Real pilot starts before enough testing |
 
 ## 6. P0 Go/No-Go Controls

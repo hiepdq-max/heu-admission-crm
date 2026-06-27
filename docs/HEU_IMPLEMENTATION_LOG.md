@@ -962,3 +962,29 @@
 - P5-02 is PASS_LOCAL as a dashboard specification and control boundary.
 - No production BGH dashboard implementation, finance action, production GO or signed-UAT replacement is approved.
 - Future dashboard UI must stay read-only and link to scoped source workflows.
+
+## 2026-06-27 - Backup/Restore Dry-Run Evidence Pack
+
+### Scope
+
+- Continued P0-03 production-readiness governance with a backup/restore dry-run evidence pack.
+- Added a controlled template for backup ID, restore target, preflight/postflight commands, Step90-Step110 execution, smoke checks, UAT evidence, exception logging and human sign-off.
+- Linked the evidence pack into the runbook, production checklist and release-gate audit.
+- Kept actual backup execution, restore execution, UAT pass, production migration approval and production GO outside Codex authority.
+
+### Files Updated/Added
+
+- `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+- `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P0-03 has a PASS_LOCAL evidence-pack template and local audit coverage, but remains IN_PROGRESS because real backup/restore evidence and human Go/No-Go are not complete.
+- Production remains NO-GO.
