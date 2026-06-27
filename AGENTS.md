@@ -80,6 +80,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - Preserve user or previous-agent changes. Never reset, checkout, or delete
   unrelated work unless explicitly asked.
 - Before any final handoff, run:
+  - `npm.cmd run audit:heu-backlog-codes`
   - `npm.cmd run audit:hard-delete`
   - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`

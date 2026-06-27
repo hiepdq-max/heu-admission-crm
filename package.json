@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "audit:heu-backlog-codes": "node scripts/audit-heu-backlog-codes.mjs",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",

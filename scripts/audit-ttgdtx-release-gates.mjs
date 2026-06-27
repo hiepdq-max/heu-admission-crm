@@ -55,6 +55,7 @@ const requiredFiles = [
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "lib/vnd-money.ts",
+  "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
 
@@ -64,6 +65,7 @@ for (const file of requiredFiles) {
 
 const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
+  "audit:heu-backlog-codes",
   "audit:hard-delete",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",

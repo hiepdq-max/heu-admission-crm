@@ -609,3 +609,24 @@
 
 - This is PASS_LOCAL only; it does not mark P2-10/P2-17 production-ready.
 - Production still requires signed finance UAT, duplicate receipt/payout tests and business Go/No-Go.
+
+## 2026-06-27 - Backlog Code Guard
+
+### Scope
+
+- Fixed a duplicate backlog code introduced while adding the VND money normalization row.
+- Added a local audit to keep `docs/HEU_SYSTEM_BUILD_BACKLOG.md` task codes unique.
+- Added the backlog-code audit to package scripts and the TTGDTX release gate.
+
+### Files Updated/Added
+
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-heu-backlog-codes.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- This is a coordination guard only. It does not change production migration status.

@@ -66,7 +66,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P4-02 | Invoice/receipt policy matrix | KHTC + Phap Che | PASS_LOCAL | Captured in P2-10 as required/not required/pending/waived; needs human legal sign-off |
 | P4-03 | Bank statement handling policy | KHTC + IT/Data | OPEN | No raw bank data in repo/chat |
 | P4-04 | VND money input/display normalization | IT/Data + KHTC | PASS_LOCAL | `lib/vnd-money.ts`; `npm.cmd run audit:vnd-money-format`; P2-10/P2-17 display `1.000.000 đ` |
-| P4-04 | Period lock and adjustment policy | KHTC + Audit | OPEN | Human approval |
+| P4-05 | Period lock and adjustment policy | KHTC + Audit | OPEN | Human approval |
 
 ## P5 - Dashboard/BGH
 
