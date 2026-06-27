@@ -84,3 +84,24 @@ Do not attach private contract bodies, raw student PII, CCCD, bank data,
 passwords, OTPs, service-role keys or production credentials in Git/Codex/chat.
 Signed legal/finance UAT remains required before P0-19 can be accepted for
 production receivable use.
+
+## P0-19 Acceptance Matrix
+
+The app also exposes `data-ttgdtx-p019-acceptance-matrix="P0-19"`. P0-19 can
+support P2-03 receivable creation only when each row below is accepted with
+redacted evidence. Any stop condition keeps production NO-GO.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P0-19-ACCEPT-01 | Legal authority is current and scoped | Contract/legal reference identifies center, program/major, effective period, training scope and approving owner | Legal scope, effective period, center or major is unclear, expired or only assumed from a pilot note |
+| P0-19-ACCEPT-02 | Tuition policy matches legal authority | P2-02 tuition policy version, amount, term, due rule and payer model match the accepted legal basis | Tuition amount, term, due date rule, invoice/chung-tu responsibility or waiver basis is unresolved |
+| P0-19-ACCEPT-03 | Finance gate result is explicit | P0-19 gate status shows `ALLOW_FINANCE` only after legal and tuition checks pass, with actor/time trace | P2-03 can create receivable while gate is missing, blocked, waived or not signed |
+| P0-19-ACCEPT-04 | Step100 remains sandbox/UAT only | Evidence proves Step100 uses explicit session flag and is not used as production legal, tuition or finance authority | Step100 output is treated as production approval, legal acceptance, tuition approval or revenue authority |
+| P0-19-ACCEPT-05 | Receivable path is blocked then allowed | One negative case blocks P2-05/P2-03 before P0-19 readiness and one positive case allows after all prerequisites pass | Only a positive screenshot exists or no blocked-path proof is attached |
+| P0-19-ACCEPT-06 | Owners sign redacted evidence | PHAP_CHE, KHTC, BGH and Audit sign redacted evidence references outside Codex/chat | PASS_LOCAL is treated as legal, finance, UAT, revenue or production approval |
+
+Decision value: P0_19_ACCEPT / FAIL / BLOCKED.
+
+Do not attach private contract bodies, raw student PII, CCCD, bank data,
+credentials, passwords, OTPs, service-role keys, raw vouchers or raw payment
+data. Missing owner signature keeps production NO-GO.

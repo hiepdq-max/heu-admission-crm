@@ -2128,3 +2128,17 @@
 - P0-03 remains IN_PROGRESS/NO-GO for production until real backup, restore,
   smoke-check, UAT and owner sign-off evidence are collected outside
   Git/Codex/chat.
+
+## 2026-06-27 - P0-19 Legal/Finance Acceptance Matrix
+
+- Added a PASS_LOCAL P0-19 acceptance matrix to
+  `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx`.
+- The matrix requires current scoped legal authority, matching tuition policy,
+  explicit finance gate status, Step100 sandbox-only proof, blocked/allowed
+  receivable-path evidence and owner signatures before P0-19 can support P2-03
+  receivable creation.
+- Updated `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`, the production
+  checklist, backlog, current-state inventory, `audit:ttgdtx-p019-gate-guard`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P0-19 remains IN_PROGRESS for production until PHAP_CHE, KHTC, BGH and Audit
+  sign redacted legal/finance UAT evidence outside Codex/chat.

@@ -59,7 +59,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Module | Scope | Current status | Evidence |
 |---|---|---|---|
-| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate is packaged; signed UAT still required |
+| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate and acceptance matrix are packaged; signed UAT still required |
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
@@ -79,7 +79,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Production readiness guard | TTGDTX landing guard, execution queue, owner GO/NO-GO checklist | PASS_LOCAL, NO-GO |
 | Backup/restore | Evidence pack, UI guard and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
-| Legal/finance gate | P0-19 guard and UAT checklist exist | Signed legal/finance UAT still required |
+| Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard and P3-02 handover policy exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |

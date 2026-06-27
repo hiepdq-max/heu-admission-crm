@@ -86,6 +86,12 @@ requireText(
   "P0-19 UAT evidence checklist",
   evidenceChecklistPath,
 );
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-p019-acceptance-matrix="P0-19")(?=[\s\S]*P0-19 legal\/finance acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*legal\s+authority)(?=[\s\S]*tuition policy)(?=[\s\S]*finance gate status)(?=[\s\S]*Step100 sandbox\s+boundary)(?=[\s\S]*blocked\/allowed receivable path)(?=[\s\S]*owner sign-off)(?=[\s\S]*P0-19-ACCEPT-01)(?=[\s\S]*P0-19-ACCEPT-06)(?=[\s\S]*P0_19_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*Missing owner signature keeps production NO-GO)/i,
+  "P0-19 legal/finance acceptance matrix",
+  evidenceChecklistPath,
+);
 
 for (const [file, contents] of [
   [gatePagePath, gatePage],
@@ -105,16 +111,22 @@ requireText(
   "Step100 production boundary in runbook",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
 );
+requireText(
+  runbook,
+  /(?=[\s\S]*P0-19 Acceptance Matrix)(?=[\s\S]*data-ttgdtx-p019-acceptance-matrix="P0-19")(?=[\s\S]*P0-19-ACCEPT-01)(?=[\s\S]*P0-19-ACCEPT-06)(?=[\s\S]*P0_19_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL is treated as legal, finance, UAT, revenue or production approval)(?=[\s\S]*Missing owner signature keeps production NO-GO)/i,
+  "P0-19 acceptance matrix in runbook",
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+);
 
 requireText(
   checklist,
-  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 acceptance matrix[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
   "P0-19 checklist row remains signed-UAT gated",
   checklistPath,
 );
 requireText(
   backlog,
-  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-p019-gate-guard/i,
+  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 acceptance matrix[\s\S]*audit:ttgdtx-p019-gate-guard/i,
   "P2-00 backlog guard evidence",
   backlogPath,
 );

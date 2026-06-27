@@ -91,6 +91,11 @@ requireText(
 );
 requireText(
   inventory,
+  /M01 Legal[\s\S]*P0-19 legal\/finance gate and acceptance matrix are packaged; signed UAT still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist and acceptance matrix exist[\s\S]*Signed legal\/finance UAT still required/i,
+  "P0-19 legal/finance acceptance matrix control state",
+);
+requireText(
+  inventory,
   /Contract\/tuition master[\s\S]*P2-01\/P2-02 master guard exists[\s\S]*PASS_LOCAL[\s\S]*signed legal\/finance\/KHTC UAT pending/i,
   "P2-01/P2-02 control state",
 );
