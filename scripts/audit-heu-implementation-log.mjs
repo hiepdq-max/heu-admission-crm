@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - Current State P0-09 P3 Evidence Alignment[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*Stage D\/NO-GO snapshot[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path includes\s+the P3-01\/P3-02 lifecycle and handover UAT requirement[\s\S]*current-state audit[\s\S]*missing P3 UAT evidence in the owner\s+signoff path, controlled evidence path, final handoff path or production\s+NO-GO blocker list fails locally[\s\S]*This is current-state inventory alignment only[\s\S]*does not execute UAT,\s+attach real evidence, approve migration, approve finance action, accept\s+handover, waive owner sign-off or mark production GO/i,
+  "current-state P0-09 P3 evidence alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-09 Owner Signoff P3 UAT Alignment[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*P0-19, P2-17, P2-18 and P6-06 evidence[\s\S]*missing P3 UAT, unsigned\s+P3 handover or any P3 bypass of P0-19\/P2-05\/P2-03 finance gates keeps\s+production NO-GO[\s\S]*This is owner-signoff P3 UAT alignment only[\s\S]*does not execute UAT, accept\s+handover, create receivable, approve finance action, accept evidence, waive\s+owner sign-off or mark production GO/i,
   "P0-09 owner signoff P3 UAT alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

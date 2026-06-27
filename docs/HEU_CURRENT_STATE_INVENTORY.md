@@ -52,11 +52,12 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack` | PASS |
+| `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` | PASS |
 | `npm.cmd run audit:heu-p0-register-pack` | PASS |
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 57 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 57 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -82,7 +83,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Area | Current evidence | Readiness |
 |---|---|---|
-| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path | PASS_LOCAL, NO-GO |
+| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01/P3-02 UAT requirement | PASS_LOCAL, NO-GO |
 | Production blocker shared source | `lib/production-readiness.ts` feeds the Master Control blocker summary and TTGDTX execution queue, including the P0-03 operator run sheet evidence path and P0-09 owner sign-off/UAT handoff evidence path | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup/restore closure decision manifest exist | Template ready; real backup/restore evidence missing |
@@ -99,8 +100,8 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix, audit-log evidence acceptance matrix and audit traceability decision manifest pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings, locks P6-06-FIND-001 through P6-06-FIND-044 in `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, and exposes a conversion/waiver decision queue, hard-delete/cascade acceptance matrix and closure decision manifest | Conversion or written waiver pending |
-| Controlled evidence | Redaction/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff proof | Real evidence must stay outside Git/Codex/chat |
-| Final handoff coverage | `AGENTS.md` final handoff summary requires live git state, local check results, Stage D/NO-GO, the P0-03 operator run sheet evidence path, P0-09 owner sign-off/UAT handoff evidence path, P0-13 blocker source and P0-14 evidence binder, including separate P6-04 role/workspace, P6-03 audit-log and P6-06 hard-delete/cascade proof paths with `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | PASS_LOCAL; cannot override production NO-GO |
+| Controlled evidence | Redaction/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff proof with P3-01/P3-02 runbook evidence | Real evidence must stay outside Git/Codex/chat |
+| Final handoff coverage | `AGENTS.md` final handoff summary requires live git state, local check results, Stage D/NO-GO, the P0-03 operator run sheet evidence path, P0-09 owner sign-off/UAT handoff evidence path with P3-01/P3-02 UAT requirement, P0-13 blocker source and P0-14 evidence binder, including separate P6-04 role/workspace, P6-03 audit-log and P6-06 hard-delete/cascade proof paths with `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | PASS_LOCAL; cannot override production NO-GO |
 | AI helper layer | Task checklist and risk board are read-only | Advisory only; no autonomous approval |
 
 ## 6. Risk Findings
@@ -124,6 +125,7 @@ Production is still NO-GO because:
 - No real production backup/restore dry-run evidence has been attached.
 - Step90-Step110 production migration order is not signed.
 - P0-19 legal/finance UAT is not signed.
+- P3-01/P3-02 lifecycle and handover UAT is not signed.
 - P2-17 duplicate payout UAT is not signed.
 - P2-18 dashboard browser UAT is not signed.
 - P5-03 Finance Desk browser UAT is not signed.

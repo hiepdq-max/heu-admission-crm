@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*57 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*57 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -91,7 +91,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(
@@ -146,12 +146,12 @@ requireText(
 );
 requireText(
   inventory,
-  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
+  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof with P3-01\/P3-02 runbook evidence[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
   "P0-14 controlled evidence binder closure tracker state",
 );
 requireText(
   inventory,
-  /Final handoff coverage[\s\S]*AGENTS\.md[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*PASS_LOCAL; cannot override production NO-GO/i,
+  /Final handoff coverage[\s\S]*AGENTS\.md[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*PASS_LOCAL; cannot override production NO-GO/i,
   "P0-15 final handoff summary guard state",
 );
 requireText(
@@ -171,7 +171,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Current stage:\s*Stage D - internal controlled test only[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*P2-18 dashboard browser UAT is not signed[\s\S]*P5-03 Finance Desk browser UAT is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed/i,
+  /Current stage:\s*Stage D - internal controlled test only[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed[\s\S]*P2-18 dashboard browser UAT is not signed[\s\S]*P5-03 Finance Desk browser UAT is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed/i,
   "production NO-GO blocker list",
 );
 requireText(
