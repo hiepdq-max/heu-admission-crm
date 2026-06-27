@@ -92,7 +92,25 @@ Use `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` as the account setup guide.
 Use `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` as the route/account execution
 matrix.
 
-## 5. Current Decision
+## 5. Internal UAT Run Closure Tracker
+
+Result: BLOCKED_PENDING_MULTI_ACCOUNT_UAT.
+
+Completion rule: the UAT result can move to `UAT_PASS` only when every row below
+has `PASS`, a redacted evidence reference, reviewer name and owner sign-off.
+Any missing account, route result, negative-test result, redaction proof or
+owner signature keeps production NO-GO.
+
+| Closure item | Required result | Current status | Evidence/reference | Owner |
+|---|---|---|---|---|
+| UAT-CLOSE-01 Synthetic accounts prepared | PASS/BLOCKED | PENDING | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` plus Supabase Auth screenshot/reference, redacted | IT_DATA |
+| UAT-CLOSE-02 Route matrix executed | PASS/BLOCKED | PENDING | `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` route/account results, redacted | IT_DATA + process owners |
+| UAT-CLOSE-03 Finance and dashboard negative tests pass | PASS/BLOCKED | PENDING | Out-of-scope and non-finance denial screenshots/references, redacted | KHTC + BGH + IT_DATA |
+| UAT-CLOSE-04 Execution log completed | PASS/BLOCKED | PENDING | This log records account, route, result, evidence reference and reviewer | IT_DATA + Audit |
+| UAT-CLOSE-05 Sensitive evidence controlled | PASS/BLOCKED | PENDING | No passwords, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git/Codex/chat | IT_DATA + Audit |
+| UAT-CLOSE-06 Owners sign UAT result | PASS/BLOCKED | PENDING | BGH, KHTC, PHAP_CHE and IT_DATA sign PASS, FAIL or BLOCKED outside Codex/chat | Required owners |
+
+## 6. Current Decision
 
 Result: PARTIAL PASS.
 

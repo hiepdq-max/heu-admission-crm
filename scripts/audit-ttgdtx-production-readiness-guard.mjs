@@ -129,7 +129,7 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );

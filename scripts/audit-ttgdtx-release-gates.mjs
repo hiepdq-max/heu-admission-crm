@@ -790,8 +790,14 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "internal UAT readiness guard checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*Internal UAT Run Closure Tracker)(?=[\s\S]*BLOCKED_PENDING_MULTI_ACCOUNT_UAT)(?=[\s\S]*UAT_PASS)(?=[\s\S]*UAT-CLOSE-01 Synthetic accounts prepared)(?=[\s\S]*UAT-CLOSE-06 Owners sign UAT result)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof or\s+owner signature keeps production NO-GO)/i,
+  "internal UAT execution-log closure tracker",
 );
 
 requireText(

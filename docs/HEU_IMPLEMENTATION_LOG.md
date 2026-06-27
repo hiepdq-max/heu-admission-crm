@@ -2342,3 +2342,14 @@
 - This closes a packaging gap only. Production remains NO-GO until the
   multi-account UAT run is actually executed with redacted evidence and signed
   by the required owners outside Codex/chat.
+
+## 2026-06-27 - UAT Execution Log Closure Template
+
+- Added an internal UAT run closure tracker to
+  `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` so real browser testing can log
+  UAT-CLOSE-01 through UAT-CLOSE-06 without storing secrets or raw evidence.
+- Updated the production checklist, `audit:ttgdtx-uat-readiness`,
+  `audit:ttgdtx-production-readiness-guard` and `audit:ttgdtx-release-gates`.
+- The execution log remains PARTIAL PASS/BLOCKED until synthetic-account route
+  testing, negative tests, redacted evidence and required owner signatures are
+  complete outside Codex/chat.

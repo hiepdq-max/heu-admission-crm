@@ -139,6 +139,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*Internal UAT Run Closure Tracker)(?=[\s\S]*BLOCKED_PENDING_MULTI_ACCOUNT_UAT)(?=[\s\S]*UAT_PASS)(?=[\s\S]*UAT-CLOSE-01 Synthetic accounts prepared)(?=[\s\S]*UAT-CLOSE-06 Owners sign UAT result)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof or\s+owner signature keeps production NO-GO)(?=[\s\S]*No passwords, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git\/Codex\/chat)/i,
+  "internal UAT run closure tracker remains blocked until signed evidence",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /No real passwords, OTPs, service keys, bank credentials/i,
   "no secret or real credential rule",
 );
