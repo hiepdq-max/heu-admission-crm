@@ -63,6 +63,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
 - `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
+- `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
 - `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`
 - `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
@@ -90,6 +91,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-ai-policy`
   - `npm.cmd run audit:heu-backlog-codes`
   - `npm.cmd run audit:heu-lead-handover-policy`
+  - `npm.cmd run audit:heu-role-scope-uat-pack`
   - `npm.cmd run audit:hard-delete`
   - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`

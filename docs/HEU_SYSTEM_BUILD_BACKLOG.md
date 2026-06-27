@@ -82,7 +82,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P6-01 | Static hard-delete audit | IT/Data | PASS_LOCAL | Keep audit script green |
 | P6-02 | TTGDTX cascade audit | IT/Data | PASS_LOCAL | No `on delete cascade` in Step90-Step110 |
 | P6-03 | TTGDTX audit-log coverage | IT/Data | PASS_LOCAL | New TTGDTX write tables need triggers |
-| P6-04 | Role-scope UAT | IT/Data + Process owners | OPEN | Signed UAT required |
+| P6-04 | Role-scope UAT | IT/Data + Process owners | PASS_LOCAL | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`; `npm.cmd run audit:heu-role-scope-uat-pack`; signed UAT still required |
 | P6-05 | Package TTGDTX local audit scripts | IT/Data | PASS_LOCAL | npm scripts must point to committed local guards |
 
 ## P7 - AI Agent Layer

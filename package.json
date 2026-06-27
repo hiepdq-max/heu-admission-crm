@@ -10,6 +10,7 @@
     "audit:heu-ai-policy": "node scripts/audit-heu-ai-policy.mjs",
     "audit:heu-backlog-codes": "node scripts/audit-heu-backlog-codes.mjs",
     "audit:heu-lead-handover-policy": "node scripts/audit-heu-lead-handover-policy.mjs",
+    "audit:heu-role-scope-uat-pack": "node scripts/audit-heu-role-scope-uat-pack.mjs",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",

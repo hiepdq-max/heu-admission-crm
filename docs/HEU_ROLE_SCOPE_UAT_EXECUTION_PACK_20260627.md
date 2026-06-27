@@ -1,0 +1,117 @@
+# HEU Role-Scope UAT Execution Pack 2026-06-27
+
+Status: DRAFT_CONTROL
+Scope: P6-04 role-scope UAT, with TTGDTX 9+ as the first controlled pilot path
+Production status: NO-GO until signed UAT evidence exists
+
+## 1. Purpose
+
+Package the minimum role and workspace-scope UAT required before HEU can claim
+that users only see the records and workflows they are allowed to operate. This
+pack extends `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md` and does not replace the
+route-level static audits.
+
+P6-04 is about security, privacy and operating ownership. It is not a feature
+launch and it does not approve production access.
+
+## 2. Safety Boundary
+
+Use synthetic, redacted or approved UAT data only.
+
+Do not paste passwords, OTPs, reset links, API keys, service-role keys, CCCD,
+private phone numbers, bank accounts, bank statements, vouchers or raw student
+identity data into Git, Codex/chat, screenshots or public issue trackers.
+
+Use account labels such as `UAT_KHTC_TTGDTX_OPERATOR` instead of real account
+credentials.
+
+## 3. Required Static Preflight
+
+Run these commands before browser UAT:
+
+```powershell
+npm.cmd run audit:permission-soft-revoke
+npm.cmd run audit:ttgdtx-role-scope-access
+npm.cmd run audit:ttgdtx-data-fetch-gate
+npm.cmd run audit:ttgdtx-dashboard-access
+npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan
+npm.cmd run audit:heu-role-scope-uat-pack
+npm.cmd run audit:ttgdtx-release-gates
+```
+
+All commands must pass before signed role-scope UAT.
+
+## 4. Role Matrix
+
+| Account label | Primary ownership | Must be allowed | Must be blocked |
+|---|---|---|---|
+| `UAT_ADMIN` | IT/Data control | Admin control views | Nothing beyond approved admin UAT scope; no production GO |
+| `UAT_BGH` | Executive view | Read dashboards and approved summary views | Daily entry, payment execution, hidden source evidence |
+| `UAT_KHTC_TTGDTX_OPERATOR` | Finance operation | TTGDTX finance pages inside assigned segment/scope | Admission-only records outside finance scope and hard delete |
+| `UAT_TUYEN_SINH_TTGDTX` | Lead operation | Scoped leads and handover context | Finance dashboard totals, payment approval and payout execution |
+| `UAT_CTHSSV` | Student/profile handover | Scoped handover/student-profile tasks | Finance write actions and partner payout evidence |
+| `UAT_DAO_TAO` | Program/class operation | Scoped class/program readiness views | Receivable creation, tuition collection and payment execution |
+| `UAT_PHAP_CHE` | Legal/source control | Contract/source/legal evidence views in scope | Finance dashboard totals unless separately approved |
+| `UAT_AUDIT` | Audit/risk review | Audit logs, evidence checks and read-only risk views | Money movement and data ownership changes |
+| `UAT_OUT_OF_SCOPE_STAFF` | Negative control | Login and empty/blocked state only | Any unrestricted TTGDTX finance, lead, source or dashboard data |
+
+## 5. Route Families To Test
+
+At minimum, browser UAT must cover:
+
+1. Login and blocked unauthenticated routes.
+2. Lead list/detail for assigned, team and out-of-scope lead visibility.
+3. TTGDTX contract/source pages.
+4. TTGDTX receivable, collection, reconciliation and payment pages.
+5. TTGDTX accounting dashboard.
+6. Master/settings pages for admin-only or delegated admin behavior.
+7. Audit log pages for read-only traceability.
+
+Use `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` and
+`docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md` for detailed
+TTGDTX route cases.
+
+## 6. Evidence Template
+
+| Field | Required value |
+|---|---|
+| Evidence id | Stable id such as `P6-04-SCOPE-001` |
+| Account label | Synthetic label only |
+| Role code | Role under test |
+| Segment/partner scope | UAT scope label, not private production data |
+| Route family | Lead, TTGDTX finance, source, dashboard, settings or audit |
+| Expected result | ALLOWED, BLOCKED or EMPTY_SCOPED_STATE |
+| Actual result | Browser result |
+| Screenshot/evidence | Sanitized evidence link |
+| Data exposure check | PASS/FAIL for out-of-scope and sensitive data |
+| Human sign-off | IT/Data plus process owner note |
+
+## 7. Stop Conditions
+
+Stop UAT and fix before continuing if:
+
+1. A user sees unrestricted data outside assigned segment, partner, team or role.
+2. A page queries sensitive data before auth, permission and scope checks.
+3. UI hiding is the only control and the server action still permits the write.
+4. A non-admin receives broad lead visibility `ALL` without approved control.
+5. Finance, evidence, approval, payment, lead or audit rows can be hard-deleted.
+6. AI can approve, pay, release, delete, mark revenue or mark production GO.
+7. Real secrets or raw sensitive data appear in UAT evidence.
+
+## 8. Sign-Off Rule
+
+P6-04 can support production readiness only when:
+
+1. Static preflight passes.
+2. Browser UAT covers positive and negative accounts.
+3. Out-of-scope denial evidence is captured.
+4. Process owners sign their scope results.
+5. IT/Data confirms no server-side bypass.
+6. Audit confirms evidence is redacted and traceable.
+
+## 9. Current Result
+
+P6-04 is PASS_LOCAL as an execution pack and static guard package only. It does
+not approve production access, production migration, broad account grants or
+real-data UAT. Signed role-scope UAT evidence is still required before HEU can
+claim production-ready access control.

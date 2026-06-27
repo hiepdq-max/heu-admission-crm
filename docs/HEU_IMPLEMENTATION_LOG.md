@@ -807,3 +807,29 @@
 - P5-01 is PASS_LOCAL as a UAT plan and static guard package.
 - P2-18 remains IN_PROGRESS and production remains NO-GO.
 - Signed UAT evidence is still required before dashboard data can support a production Go decision.
+
+## 2026-06-27 - Role-Scope UAT Execution Pack
+
+### Scope
+
+- Continued HEU security/governance hardening with P6-04 role-scope UAT.
+- Added a role matrix covering ADMIN, BGH, KHTC, Tuyen Sinh, CTHSSV, Dao Tao, Phap Che, Audit and out-of-scope users.
+- Defined route families, evidence fields and stop conditions for data exposure, server-side bypass, broad lead access, hard delete and AI approval risk.
+- Kept role/workspace permission production checklist IN_PROGRESS until signed UAT evidence exists.
+
+### Files Updated/Added
+
+- `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
+- `scripts/audit-heu-role-scope-uat-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-04 is PASS_LOCAL as an execution pack and static guard package.
+- It does not approve production access, real-data UAT or broad permissions.
+- Signed role-scope UAT evidence remains required before production readiness.
