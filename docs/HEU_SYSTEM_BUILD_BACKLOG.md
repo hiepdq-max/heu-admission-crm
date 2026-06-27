@@ -22,7 +22,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P1-02 | Define `HEU_DATA_DICTIONARY_V1.md` | IT/Data | IN_PROGRESS | Stable business codes |
 | P1-03 | Define `HEU_ROLE_PERMISSION_MATRIX_V1.md` | IT/Data + BGH | IN_PROGRESS | Role and scope before finance access |
 | P1-04 | Map existing SQL objects to master names | IT/Data | OPEN | No production schema change yet |
-| P1-05 | Build anonymized real-like UAT pack for Phu-Xuyen-like cases | KHTC + IT/Data + Audit | OPEN | No raw PII/bank data |
+| P1-05 | Build anonymized real-like UAT pack for Phu-Xuyen-like cases | KHTC + IT/Data + Audit | PASS_LOCAL | `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`; `npm.cmd run audit:ttgdtx-synthetic-uat-pack`; no raw PII/bank data |
 | P1-06 | Keep TTGDTX source/evidence model generic across centers | IT/Data | IN_PROGRESS | Product code must not hard-code a reference center |
 
 ## P2 - TTGDTX/9+ Pilot

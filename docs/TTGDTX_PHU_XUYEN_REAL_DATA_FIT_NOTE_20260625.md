@@ -248,6 +248,10 @@ Priority order for the next implementation slice:
    - One BBNT and partner invoice gate before payment request.
    - Student dropout/zero-amount/total-row cases.
 
+Synthetic pack now exists for this requirement:
+`fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`.
+Run `npm.cmd run audit:ttgdtx-synthetic-uat-pack` before using or editing it.
+
 ## 8. Definition Of Done For Real-Data Readiness
 
 Real-data readiness is DONE only when:

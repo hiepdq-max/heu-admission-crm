@@ -54,8 +54,11 @@ const requiredFiles = [
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
+  "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
+  "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
+  "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
 
@@ -79,6 +82,7 @@ const requiredScripts = [
   "audit:ttgdtx-reconciliation-repair-safety",
   "audit:ttgdtx-role-scope-access",
   "audit:ttgdtx-step110-safety",
+  "audit:ttgdtx-synthetic-uat-pack",
   "audit:ttgdtx-uat-readiness",
   "audit:ttgdtx-release-gates",
 ];

@@ -1,0 +1,357 @@
+{
+  "pack_id": "TTGDTX_SYNTHETIC_REAL_LIKE_UAT_20260627",
+  "status": "DRAFT_CONTROL",
+  "mode": "UAT_STAGING_ONLY",
+  "data_classification": "synthetic_no_real_pii_no_real_bank_data",
+  "production_use": "NO_GO",
+  "purpose": "Exercise TTGDTX 9+ real-like finance, evidence and control cases without using real student, parent, bank, staff or partner private data.",
+  "privacy_rules": [
+    "Do not replace synthetic names with real names in this file.",
+    "Do not add phone numbers, CCCD, personal addresses, OTPs, passwords, API keys or bank account numbers.",
+    "Use evidence placeholder URLs only. Attach real evidence only in the approved UAT evidence storage with access control.",
+    "This pack is for import/UAT design review only and must not be posted to production."
+  ],
+  "synthetic_scope": {
+    "segment_code": "TC9_TTGDTX_LINKED",
+    "center_code": "UAT_CENTER_ALPHA",
+    "center_name": "Synthetic TTGDTX Center Alpha",
+    "cohorts": ["K23", "K24"],
+    "majors": ["UAT_MAJOR_IT", "UAT_MAJOR_ACCOUNTING"],
+    "academic_years": ["2023-2024", "2024-2025"]
+  },
+  "contract_appendices": [
+    {
+      "case_id": "UAT-K23-APPENDIX-HK1",
+      "cohort": "K23",
+      "contract_code": "UAT-HDLK-K23-001",
+      "appendix_code": "UAT-PL-K23-HK1",
+      "effective_from": "2023-09-01",
+      "effective_to": "2024-01-31",
+      "payment_profile": {
+        "collection_model": "HEU_COLLECTS",
+        "tuition_policy_code": "UAT-TUITION-K23-HK1",
+        "student_tuition_vnd": 12000000,
+        "invoice_issue_rule": "AFTER_COLLECTION_CONFIRMED"
+      },
+      "expected_controls": [
+        "P2-01 contract must be ACTIVE before P2-03 receivable creation.",
+        "P2-02 tuition policy must be READY before P2-03 receivable creation.",
+        "P0-19 legal/finance gate must be ALLOW_FINANCE before posting."
+      ]
+    },
+    {
+      "case_id": "UAT-K24-SUPPORT-FEE-HK1",
+      "cohort": "K24",
+      "contract_code": "UAT-HDLK-K24-001",
+      "appendix_code": "UAT-PL-K24-HK1-SUPPORT",
+      "effective_from": "2024-09-01",
+      "effective_to": "2025-01-31",
+      "payment_profile": {
+        "collection_model": "SPLIT_COLLECTION",
+        "tuition_policy_code": "UAT-TUITION-K24-HK1",
+        "student_tuition_vnd": 13500000,
+        "support_fee_formula": {
+          "formula_code": "ACCEPTED_STUDENT_MONTHS",
+          "eligible_students": 42,
+          "months": 5,
+          "monthly_support_fee_vnd": 150000,
+          "expected_partner_payable_vnd": 31500000
+        },
+        "invoice_issue_rule": "MANUAL_APPROVAL_ONLY"
+      },
+      "expected_controls": [
+        "P2-15 payment request amount must be traceable to accepted student-period evidence.",
+        "P2-17 payout must not use manually typed amount alone.",
+        "P2-19 BBNT and partner invoice checks must pass before payout."
+      ]
+    }
+  ],
+  "tuition_workbook_sections": [
+    {
+      "section_code": "POLICY_MATRIX",
+      "description": "Tuition policy section from a mixed workbook.",
+      "rows": [
+        {
+          "row_type": "DETAIL",
+          "policy_code": "UAT-TUITION-K23-HK1",
+          "cohort": "K23",
+          "term_label": "HK1",
+          "major_code": "UAT_MAJOR_IT",
+          "tuition_amount_vnd": 12000000,
+          "due_date": "2023-10-15",
+          "expected_status": "READY"
+        },
+        {
+          "row_type": "DETAIL",
+          "policy_code": "UAT-TUITION-K24-HK1",
+          "cohort": "K24",
+          "term_label": "HK1",
+          "major_code": "UAT_MAJOR_ACCOUNTING",
+          "tuition_amount_vnd": 13500000,
+          "due_date": "2024-10-15",
+          "expected_status": "READY"
+        }
+      ]
+    },
+    {
+      "section_code": "STUDENT_COLLECTION_LINES",
+      "description": "Student-level rows including normal, dropout, zero-amount and duplicate-fingerprint cases.",
+      "rows": [
+        {
+          "row_type": "DETAIL",
+          "synthetic_student_code": "UAT-STU-001",
+          "student_alias": "Synthetic Student 001",
+          "cohort": "K23",
+          "class_code": "UAT-K23-A",
+          "major_code": "UAT_MAJOR_IT",
+          "term_label": "HK1",
+          "receivable_amount_vnd": 12000000,
+          "collected_amount_vnd": 12000000,
+          "student_status": "ACTIVE",
+          "expected_control": "Receivable and collection can proceed if invoice decision is resolved."
+        },
+        {
+          "row_type": "DETAIL",
+          "synthetic_student_code": "UAT-STU-002",
+          "student_alias": "Synthetic Student 002",
+          "cohort": "K23",
+          "class_code": "UAT-K23-A",
+          "major_code": "UAT_MAJOR_IT",
+          "term_label": "HK1",
+          "receivable_amount_vnd": 12000000,
+          "collected_amount_vnd": 6000000,
+          "student_status": "PARTIAL_COLLECTION",
+          "expected_control": "Balance remains open and dashboard shows partial collection."
+        },
+        {
+          "row_type": "DETAIL",
+          "synthetic_student_code": "UAT-STU-003",
+          "student_alias": "Synthetic Student 003",
+          "cohort": "K24",
+          "class_code": "UAT-K24-B",
+          "major_code": "UAT_MAJOR_ACCOUNTING",
+          "term_label": "HK1",
+          "receivable_amount_vnd": 13500000,
+          "collected_amount_vnd": 0,
+          "student_status": "DROPOUT_BEFORE_COLLECTION",
+          "expected_control": "No silent deletion. Requires waiver/cancel/adjustment evidence."
+        },
+        {
+          "row_type": "DETAIL",
+          "synthetic_student_code": "UAT-STU-004",
+          "student_alias": "Synthetic Student 004",
+          "cohort": "K24",
+          "class_code": "UAT-K24-B",
+          "major_code": "UAT_MAJOR_ACCOUNTING",
+          "term_label": "HK1",
+          "receivable_amount_vnd": 0,
+          "collected_amount_vnd": 0,
+          "student_status": "ZERO_AMOUNT_OBSERVATION",
+          "expected_control": "Zero amount is staged as an observation, not auto-deleted."
+        },
+        {
+          "row_type": "TOTAL",
+          "synthetic_student_code": "SECTION_TOTAL",
+          "student_alias": "Workbook Total Row",
+          "cohort": "ALL",
+          "class_code": "ALL",
+          "major_code": "ALL",
+          "term_label": "HK1",
+          "receivable_amount_vnd": 37500000,
+          "collected_amount_vnd": 18000000,
+          "student_status": "TOTAL_ROW",
+          "expected_control": "Total rows are used for section checks only and must not create a student receivable."
+        }
+      ]
+    },
+    {
+      "section_code": "CLASS_TOTALS",
+      "description": "Class totals for reconciliation against student detail rows.",
+      "rows": [
+        {
+          "row_type": "TOTAL",
+          "class_code": "UAT-K23-A",
+          "cohort": "K23",
+          "student_count": 2,
+          "receivable_total_vnd": 24000000,
+          "collected_total_vnd": 18000000
+        },
+        {
+          "row_type": "TOTAL",
+          "class_code": "UAT-K24-B",
+          "cohort": "K24",
+          "student_count": 2,
+          "receivable_total_vnd": 13500000,
+          "collected_total_vnd": 0
+        }
+      ]
+    },
+    {
+      "section_code": "COLLECTION_REQUESTS",
+      "description": "Collection-request style summary embedded in the same workbook.",
+      "rows": [
+        {
+          "row_type": "DETAIL",
+          "request_code": "UAT-REQ-COLLECT-K23-HK1",
+          "cohort": "K23",
+          "term_label": "HK1",
+          "requested_collection_vnd": 24000000,
+          "expected_control": "Import must stage as request metadata, not duplicate student collection rows."
+        }
+      ]
+    }
+  ],
+  "bank_receipt_batch": {
+    "batch_code": "UAT-BANK-BATCH-001",
+    "statement_date": "2026-06-27",
+    "bank_reference_token": "SYNTHETIC_BANK_REF_ONLY",
+    "lines": [
+      {
+        "line_no": 1,
+        "transaction_token": "SYN-BANK-TXN-001",
+        "transaction_date": "2026-06-24",
+        "amount_vnd": 12000000,
+        "payer_alias": "Synthetic Payer 001",
+        "beneficiary_alias": "HEU Synthetic Collection Account",
+        "fingerprint": "SYN-BANK-TXN-001|2026-06-24|12000000|UAT-STU-001",
+        "expected_control": "First receipt can be staged."
+      },
+      {
+        "line_no": 2,
+        "transaction_token": "SYN-BANK-TXN-002",
+        "transaction_date": "2026-06-25",
+        "amount_vnd": 6000000,
+        "payer_alias": "Synthetic Payer 002",
+        "beneficiary_alias": "HEU Synthetic Collection Account",
+        "fingerprint": "SYN-BANK-TXN-002|2026-06-25|6000000|UAT-STU-002",
+        "expected_control": "Partial receipt can be staged."
+      },
+      {
+        "line_no": 3,
+        "transaction_token": "SYN-BANK-TXN-001-DUPLICATE",
+        "transaction_date": "2026-06-24",
+        "amount_vnd": 12000000,
+        "payer_alias": "Synthetic Payer 001 Duplicate",
+        "beneficiary_alias": "HEU Synthetic Collection Account",
+        "fingerprint": "SYN-BANK-TXN-001|2026-06-24|12000000|UAT-STU-001",
+        "expected_control": "Duplicate fingerprint must be blocked before receipt posting."
+      }
+    ]
+  },
+  "collection_invoice_cases": [
+    {
+      "case_id": "UAT-INVOICE-REQUIRED",
+      "collection_model": "HEU_COLLECTS",
+      "payer_type": "STUDENT_OR_PARENT",
+      "invoice_required": "REQUIRED",
+      "invoice_issuer": "HEU",
+      "invoice_status": "ISSUED",
+      "expected_control": "Collection is resolved only when invoice number/date/evidence is present."
+    },
+    {
+      "case_id": "UAT-INVOICE-NOT-REQUIRED",
+      "collection_model": "TTGDTX_COLLECTS",
+      "payer_type": "CENTER",
+      "invoice_required": "NOT_REQUIRED",
+      "invoice_issuer": null,
+      "invoice_status": "NOT_REQUIRED",
+      "expected_control": "Waiver basis must be auditable."
+    },
+    {
+      "case_id": "UAT-INVOICE-PENDING",
+      "collection_model": "SPLIT_COLLECTION",
+      "payer_type": "MIXED",
+      "invoice_required": "PENDING_POLICY",
+      "invoice_issuer": null,
+      "invoice_status": "PENDING",
+      "expected_control": "P2-13 reconciliation must block unresolved invoice decisions."
+    }
+  ],
+  "account_control_cases": [
+    {
+      "case_id": "UAT-TUITION-ACCOUNT-FREEZE",
+      "control_type": "TUITION_ACCOUNT_FREEZE",
+      "affected_scope": "K23_HK1_COLLECTION",
+      "request_source": "KHTC_SYNTHETIC_NOTICE",
+      "expected_control": "Freeze notice is metadata-only and must not expose bank account numbers."
+    },
+    {
+      "case_id": "UAT-TUITION-ACCOUNT-RELEASE",
+      "control_type": "TUITION_ACCOUNT_RELEASE",
+      "affected_scope": "K23_HK1_COLLECTION",
+      "request_source": "KHTC_SYNTHETIC_RELEASE_REQUEST",
+      "expected_control": "Release is allowed only after reconciliation and required approvals."
+    },
+    {
+      "case_id": "UAT-COLLATERAL-RELEASE-SEPARATE",
+      "control_type": "COLLATERAL_RELEASE",
+      "affected_scope": "LEGAL_FINANCE_RESTRICTED_REGISTER",
+      "request_source": "PHAP_CHE_SYNTHETIC_SCOPE_DECISION",
+      "expected_control": "Collateral release remains separate from tuition-account release."
+    }
+  ],
+  "acceptance_and_partner_invoice_cases": [
+    {
+      "case_id": "UAT-BBNT-K24-HK1",
+      "evidence_type": "BIEN_BAN_NGHIEM_THU",
+      "cohort": "K24",
+      "term_label": "HK1",
+      "accepted_student_count": 42,
+      "formula_amount_vnd": 31500000,
+      "evidence_url_placeholder": "https://example.invalid/heu-uat/bbnt-k24-hk1",
+      "expected_control": "P2-15 payment request must reference accepted-period evidence."
+    },
+    {
+      "case_id": "UAT-PARTNER-INVOICE-K24-HK1",
+      "evidence_type": "PARTNER_INVOICE",
+      "cohort": "K24",
+      "term_label": "HK1",
+      "invoice_status": "ISSUED",
+      "invoice_amount_vnd": 31500000,
+      "evidence_url_placeholder": "https://example.invalid/heu-uat/partner-invoice-k24-hk1",
+      "expected_control": "P2-17 payout must block if partner invoice evidence is missing where required."
+    }
+  ],
+  "expected_test_case_map": [
+    {
+      "test_id": "T9-I-01",
+      "pack_case": "tuition_workbook_sections",
+      "expected_result": "Sections are staged separately before posting."
+    },
+    {
+      "test_id": "T9-C-01",
+      "pack_case": "UAT-INVOICE-PENDING",
+      "expected_result": "Unresolved invoice decision blocks reconciliation."
+    },
+    {
+      "test_id": "T9-C-02",
+      "pack_case": "SYN-BANK-TXN-001 duplicate fingerprint",
+      "expected_result": "Duplicate receipt fingerprint is blocked."
+    },
+    {
+      "test_id": "T9-PAY-01",
+      "pack_case": "UAT-BBNT-K24-HK1",
+      "expected_result": "Missing BBNT blocks payment request."
+    },
+    {
+      "test_id": "T9-PAY-02",
+      "pack_case": "UAT-PARTNER-INVOICE-K24-HK1",
+      "expected_result": "Missing partner invoice blocks payout."
+    },
+    {
+      "test_id": "T9-PAY-03",
+      "pack_case": "P2-17 duplicate submit",
+      "expected_result": "Only one disbursement exists for one voucher/fingerprint."
+    },
+    {
+      "test_id": "T9-D-01",
+      "pack_case": "dashboard totals from synthetic pack",
+      "expected_result": "Authorized dashboard shows totals without exposing private data."
+    },
+    {
+      "test_id": "T9-D-02",
+      "pack_case": "UAT_OUT_OF_SCOPE",
+      "expected_result": "Out-of-scope account cannot see dashboard finance data."
+    }
+  ]
+}

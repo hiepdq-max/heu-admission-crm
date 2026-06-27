@@ -43,7 +43,7 @@ approval.
 | Approve Step90-Step110 migration order | IT_DATA + KHTC + PHAP_CHE | IN_PROGRESS | `docs/MIGRATION_ORDER_AUDIT.md` signed off | YES | Wrong order can damage finance data |
 | P2-01 TTGDTX contract active | PHAP_CHE + BGH | DONE | Contract row, status, scope, effective date | YES | Finance action without effective contract |
 | P2-02 tuition policy ready | KHTC | DONE | Tuition policy READY for TTGDTX/major/year | YES | Wrong tuition receivable |
-| Real-data fit and redaction review | KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`; anonymized UAT source pack; no raw PII/bank data in repo or logs | YES | Design passes sample data but fails real workbook/PDF/appendix structure |
+| Real-data fit and redaction review | KHTC + PHAP_CHE + IT_DATA | PASS_LOCAL | `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`; `docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md`; `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`; `npm.cmd run audit:ttgdtx-synthetic-uat-pack`; signed UAT still required | YES | Design passes sample data but fails real workbook/PDF/appendix structure |
 | Account-control workflow for phong toa/giai toa | KHTC + CTHSSV + IT_DATA | IN_PROGRESS | `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`; workflow/UAT evidence before real operation | YES | Bank/account control happens outside the system without communication, approval or audit trail |
 | BBNT evidence gate before partner payment | KHTC + PHAP_CHE + BGH | IN_PROGRESS | Step105 P2-15 and Step107 P2-17 block on P2-19 BBNT/partner-invoice checks; still needs BBNT evidence link, accepted-period summary, partner invoice evidence and signed UAT | YES | Partner payment is requested or paid without nghiệm thu basis |
 | Collateral giai-chap separation | PHAP_CHE + KHTC + BGH | IN_PROGRESS | Restricted legal-finance register or written scope decision | YES | Collateral release is confused with tuition-account release or exposed to wrong roles |
@@ -94,7 +94,7 @@ production, the highest priority blockers are:
 2. Close remaining hard-delete/cascade findings or obtain written waiver.
 3. Execute `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md` and confirm P2-17 cannot pay twice.
 4. Finalize Step90-Step110 migration order and backup/rollback dry-run evidence.
-5. Complete anonymized Phu Xuyen-like import/UAT cases from `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`.
+5. Execute anonymized Phu-Xuyen-like UAT cases from `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json` and attach signed evidence.
 6. Implement or explicitly defer the account-control workflow from `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`.
 7. Reflect `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md` in UI helper text and gate logic.
 8. Finish user-friendly labels/search for process names using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.

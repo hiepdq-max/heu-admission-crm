@@ -136,7 +136,7 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | Hard delete patterns | HIGH | Static hard-delete and TTGDTX cascade audits pass; non-TTGDTX/base cascade review still needs approval |
 | Logs untracked | MEDIUM | dev-server logs không nên commit |
 | P2-18 dashboard authorized UAT pending | HIGH | Route/build/static access guard pass; browser redirects to login without a signed-in test user |
-| Real workbook/PDF/appendix complexity | HIGH | Phu Xuyen source pack shows multi-section Excel, bank receipt batches, scanned PDFs and contract appendices; see `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md` |
+| Real workbook/PDF/appendix complexity | HIGH | Synthetic real-like UAT pack added and audited; signed UAT still must prove multi-section workbook, bank receipt batch, BBNT, invoice and account-control behavior |
 | Finance flow đã test một lần nhưng chưa có full automated tests | HIGH | VND money format audit passes; duplicate receivable/receipt/reconciliation/payout tests still need expansion |
 | AI policy chưa được enforcement toàn hệ | MEDIUM | AI phải chỉ hỗ trợ, không phê duyệt |
 | Permission scope cần test nhiều vai trò | HIGH | Cần test admin, kế toán, tuyển sinh, CTHSSV, đối tác |
@@ -165,7 +165,7 @@ Not production-ready because:
 7. Add tests for no duplicate receivable, no duplicate receipt, no duplicate reconciliation and no duplicate payout.
 8. Execute `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md` by role and workspace.
 9. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance input forms.
-10. Build anonymized Phu Xuyen-like UAT cases for multi-section workbook, bank receipt PDF batch, K23 appendix and K24 support-fee formula.
+10. Execute anonymized Phu-Xuyen-like UAT pack for multi-section workbook, bank receipt batch, K23 appendix and K24 support-fee formula.
 11. Prepare internal pilot sign-off.
 
 ## 9. Current Conclusion

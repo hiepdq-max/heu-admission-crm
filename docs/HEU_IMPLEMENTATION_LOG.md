@@ -649,3 +649,32 @@
 
 - P0-04 is PASS_LOCAL for the current repo state.
 - Future generated logs/env files must remain untracked and outside commits.
+
+## 2026-06-27 - Synthetic Real-Like TTGDTX UAT Pack
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot with P1-05 real-like UAT preparation.
+- Added a synthetic source pack for Phu-Xuyen-like operating shapes without real PII or bank data.
+- Covered K23 appendix, K24 support-fee formula, multi-section tuition workbook, bank receipt batch with duplicate fingerprint, invoice required/not-required/pending, account freeze/release, collateral release separation, BBNT and partner invoice gates.
+- Added a local audit to verify pack coverage and reject obvious secrets, phone/CCCD-like values and raw bank-account-like strings.
+
+### Files Updated/Added
+
+- `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`
+- `docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md`
+- `scripts/audit-ttgdtx-synthetic-uat-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_CURRENT_STATE_INVENTORY.md`
+- `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P1-05 is PASS_LOCAL as a synthetic UAT pack.
+- The pack does not approve real-data import, production migration or production Go-Live.
+- Signed UAT evidence remains required before any production readiness claim.
