@@ -17,6 +17,7 @@ scope is the TTGDTX 9+ pilot hardening chain only:
 10. P2-17 payout execution.
 11. P2-18 accounting dashboard.
 12. P2-19 source/evidence metadata for anonymized UAT design review only.
+13. P3-02 lead-to-student handover guard for the TTGDTX-linked pilot path.
 
 Production remains NO-GO until the production checklist says otherwise.
 
@@ -63,6 +64,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
 - `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`
+- `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
 - `docs/STEP110_P2_19_UAT_RUNBOOK.md`
 - `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
@@ -86,6 +88,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - Before any final handoff, run:
   - `npm.cmd run audit:heu-ai-policy`
   - `npm.cmd run audit:heu-backlog-codes`
+  - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:hard-delete`
   - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`

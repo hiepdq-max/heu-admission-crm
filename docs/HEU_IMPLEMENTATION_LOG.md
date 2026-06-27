@@ -755,3 +755,29 @@
 - P4-05 is PASS_LOCAL as a policy/control guard.
 - It does not approve production finance operation or production migration.
 - Signed UAT must still prove locked-period behavior and adjustment evidence.
+
+## 2026-06-27 - Lead-To-Student Handover Policy Guard
+
+### Scope
+
+- Continued the HEU operating-system hardening with P3-02 lead-to-student handover.
+- Defined the controlled handover packet from Tuyen Sinh to CTHSSV, Dao Tao and KHTC.
+- Kept finance movement behind P2-05/P2-03/P4 controls and production NO-GO.
+- Added a local audit for privacy, role/scope, accept/reject audit and AI advisory-only boundaries.
+
+### Files Updated/Added
+
+- `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
+- `scripts/audit-heu-lead-handover-policy.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P3-02 is PASS_LOCAL as a policy/control guard.
+- No production handover, enrollment approval, receivable, collection or migration is approved.
+- Signed UAT must still prove role scope, accept/reject behavior, evidence redaction and audit logging.

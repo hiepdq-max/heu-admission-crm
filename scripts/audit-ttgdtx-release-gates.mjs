@@ -54,6 +54,7 @@ const requiredFiles = [
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
   "docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md",
   "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
+  "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
@@ -62,6 +63,7 @@ const requiredFiles = [
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-ai-policy.mjs",
+  "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-vnd-money-format.mjs",
@@ -75,6 +77,7 @@ const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
   "audit:heu-ai-policy",
   "audit:heu-backlog-codes",
+  "audit:heu-lead-handover-policy",
   "audit:hard-delete",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
@@ -206,6 +209,12 @@ requireText(
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   /quick-fix cannot self-promote/i,
   "TTGDTX lead quick-fix self-promotion boundary",
+);
+
+requireText(
+  "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
+  /(?=[\s\S]*P3-02 is PASS_LOCAL)(?=[\s\S]*P2-05 remains the receivable gate)(?=[\s\S]*P2-03 remains the final\s+student receivable creation control)/i,
+  "P3-02 handover PASS_LOCAL and finance-gate boundary",
 );
 
 if (failures.length > 0) {

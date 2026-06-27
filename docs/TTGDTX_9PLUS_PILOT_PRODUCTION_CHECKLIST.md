@@ -48,6 +48,7 @@ approval.
 | BBNT evidence gate before partner payment | KHTC + PHAP_CHE + BGH | IN_PROGRESS | Step105 P2-15 and Step107 P2-17 block on P2-19 BBNT/partner-invoice checks; still needs BBNT evidence link, accepted-period summary, partner invoice evidence and signed UAT | YES | Partner payment is requested or paid without nghiệm thu basis |
 | Collateral giai-chap separation | PHAP_CHE + KHTC + BGH | IN_PROGRESS | Restricted legal-finance register or written scope decision | YES | Collateral release is confused with tuition-account release or exposed to wrong roles |
 | P0-19 legal/finance gate ready | PHAP_CHE + KHTC | IN_PROGRESS | Legal and tuition gate evidence | YES | Receivable created without enough legal/finance basis |
+| Lead-to-student handover guard | TUYEN_SINH + CTHSSV + DAO_TAO + KHTC | PASS_LOCAL | `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`; `npm.cmd run audit:heu-lead-handover-policy`; no raw PII in repo/chat; P2-05/P2-03 remain final finance gates; signed UAT still required | YES | Lead becomes student/finance record without checklist, scope control or audit |
 | P2-05 gate shows only eligible leads | TUYEN_SINH + KHTC | DONE | Screenshot/gate counts and pass/fail reasons | NO | Receivable created for ineligible lead |
 | P2-03 receivable creation | KHTC | DONE | Receivable ID, student, amount, due date, audit log | YES | Missing or duplicate receivable |
 | Thu học phí (P2-10) | KHTC | DONE | Receipt/voucher number, amount, date, evidence link | YES | Duplicate receipt or wrong amount |
