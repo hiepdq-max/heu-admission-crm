@@ -454,3 +454,26 @@
 - P2-03 creates receivable facts only; it does not confirm cash collection, issue final invoice, reconcile, approve or pay.
 - P2-04 is read-only simulation and only points users to the next safe operating step.
 - Production remains NO-GO until signed UAT and backup/restore evidence are attached.
+
+## 2026-06-27 - P2-11 TTGDTX Source Control Runtime Guard
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot with the source/legal/evidence control layer.
+- Hardened Step98 before production use: read access now requires source permission plus business scope, and write access is split into insert/update only.
+- Kept source-document evidence links restrict-protected so checklist evidence cannot be silently detached by deleting a source document.
+- Added a UAT runbook for P2-11 source-control verification.
+
+### Files Updated/Added
+
+- `database/step98_ttgdtx_source_control_p2_11.sql`
+- `scripts/audit-ttgdtx-role-scope-access.mjs`
+- `docs/P2_11_SOURCE_CONTROL_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step98 remains a migration candidate only and was not run in production.
+- P2-11 is source/control metadata only. It does not create receivables, collect tuition, reconcile money, approve payment requests or record payouts.
+- Production still requires backup evidence, restore dry-run, signed UAT and business Go/No-Go.

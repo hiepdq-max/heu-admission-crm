@@ -8,6 +8,11 @@ const step90Path = path.join(
   "database",
   "step90_ttgdtx_student_receivables.sql",
 );
+const step98Path = path.join(
+  repoRoot,
+  "database",
+  "step98_ttgdtx_source_control_p2_11.sql",
+);
 const failures = [];
 
 function fail(message) {
@@ -88,6 +93,7 @@ for (const filePath of pageFiles) {
 }
 
 const step90Sql = readFileSync(step90Path, "utf8");
+const step98Sql = readFileSync(step98Path, "utf8");
 
 if (!/Migration candidate only\. Do not run production migration from Codex\/chat\./i.test(step90Sql)) {
   fail("database/step90_ttgdtx_student_receivables.sql: missing production migration boundary");
@@ -132,6 +138,78 @@ if (
 ) {
   fail(
     "database/step90_ttgdtx_student_receivables.sql: P2-03 update policy must require manage permission and business scope",
+  );
+}
+
+if (!/Migration candidate only\. Do not run production migration from Codex\/chat\./i.test(step98Sql)) {
+  fail("database/step98_ttgdtx_source_control_p2_11.sql: missing production migration boundary");
+}
+
+if (/on delete set null/i.test(step98Sql)) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: source evidence links must not be nulled on delete",
+  );
+}
+
+if (
+  !/create or replace function public\.can_read_ttgdtx_source_control[\s\S]*\(\s*\(\s*public\.has_permission\('ttgdtx\.source\.read'\)[\s\S]*public\.has_permission\('ttgdtx\.source\.manage'\)[\s\S]*public\.has_permission\('ttgdtx\.source\.approve'\)[\s\S]*\)\s*and public\.can_access_business_scope\(target_segment_id, null::uuid\)/i.test(
+    step98Sql,
+  )
+) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: P2-11 read access must require both source permission and business scope",
+  );
+}
+
+if (/create policy "ttgdtx_source_(?:documents|checks)_manage"[\s\S]*for all/i.test(step98Sql)) {
+  fail(
+    'database/step98_ttgdtx_source_control_p2_11.sql: P2-11 must not use a broad "for all" manage policy',
+  );
+}
+
+if (/create policy "ttgdtx_source_(?:documents|checks)_[^"]+"[\s\S]*for delete/i.test(step98Sql)) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: P2-11 must not expose direct delete policy",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_source_documents_insert"[\s\S]*for insert[\s\S]*public\.can_manage_ttgdtx_source_control\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, null::uuid\)/i.test(
+    step98Sql,
+  )
+) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: source document insert policy must require manage permission and business scope",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_source_documents_update"[\s\S]*for update[\s\S]*public\.can_manage_ttgdtx_source_control\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, null::uuid\)/i.test(
+    step98Sql,
+  )
+) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: source document update policy must require manage permission and business scope",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_source_checks_insert"[\s\S]*for insert[\s\S]*public\.can_manage_ttgdtx_source_control\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, null::uuid\)/i.test(
+    step98Sql,
+  )
+) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: source check insert policy must require manage permission and business scope",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_source_checks_update"[\s\S]*for update[\s\S]*public\.can_manage_ttgdtx_source_control\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, null::uuid\)/i.test(
+    step98Sql,
+  )
+) {
+  fail(
+    "database/step98_ttgdtx_source_control_p2_11.sql: source check update policy must require manage permission and business scope",
   );
 }
 
