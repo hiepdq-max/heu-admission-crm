@@ -92,7 +92,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P0-05 implementation log audit guard[\s\S]*54 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P0-05 implementation log audit guard[\s\S]*55 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -105,6 +105,8 @@ for (const heading of [
   "Production Priority Blocker List Alignment",
   "P0 Go No-Go Control Paragraph Alignment",
   "Current State Inventory P0 Control Alignment",
+  "VND Audit Output Vietnamese Clarity",
+  "Finance Desk Read-Only Guard Packaging",
 ]) {
   requireText(
     log,
@@ -139,6 +141,20 @@ requireText(
   log,
   /Current State Inventory P0 Control Alignment[\s\S]*current-state inventory[\s\S]*P0\s+Go\/No-Go control paragraph alignment[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is current-state inventory alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
   "current-state inventory P0 control alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /VND Audit Output Vietnamese Clarity[\s\S]*xong\/xanh[\s\S]*1\.000\.000 đ[\s\S]*audit:vnd-money-format[\s\S]*This is audit-output clarity only[\s\S]*does not change finance calculation,\s+collect evidence, execute UAT, approve migration, approve finance action or\s+mark production GO/i,
+  "VND audit output clarity log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Finance Desk Read-Only Guard Packaging[\s\S]*\/finance-desk[\s\S]*P5-03[\s\S]*lib\/vnd-money\.ts[\s\S]*audit:heu-finance-desk[\s\S]*authentication, permission\/workspace scope,\s+read-only data sources, safe internal links and no write actions[\s\S]*This is PASS_LOCAL packaging only[\s\S]*does not execute UAT, approve finance\s+action, run production migration, accept evidence or mark production GO/i,
+  "Finance Desk read-only guard packaging log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

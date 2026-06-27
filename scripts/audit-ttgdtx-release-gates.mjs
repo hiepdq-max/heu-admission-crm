@@ -61,6 +61,7 @@ const requiredFiles = [
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
   "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
+  "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
@@ -112,6 +113,8 @@ const requiredFiles = [
   "components/leads/lead-lifecycle-guard.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
+  "app/finance-desk/page.tsx",
+  "database/step111_heu_finance_desk.sql",
   "lib/lead-lifecycle.ts",
   "lib/production-readiness.ts",
   "lib/ttgdtx-invoice-policy.ts",
@@ -123,6 +126,7 @@ const requiredFiles = [
   "scripts/audit-heu-controlled-evidence-redaction-pack.mjs",
   "scripts/audit-heu-current-state-inventory.mjs",
   "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-finance-desk.mjs",
   "scripts/audit-heu-final-handoff-coverage.mjs",
   "scripts/audit-heu-git-hygiene.mjs",
   "scripts/audit-heu-implementation-log.mjs",
@@ -172,6 +176,7 @@ const requiredScripts = [
   "audit:heu-controlled-evidence-redaction-pack",
   "audit:heu-current-state-inventory",
   "audit:heu-data-foundation",
+  "audit:heu-finance-desk",
   "audit:heu-final-handoff-coverage",
   "audit:heu-git-hygiene",
   "audit:heu-implementation-log",
@@ -362,7 +367,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -400,6 +405,42 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /Current State Inventory P0 Control Alignment[\s\S]*current-state inventory[\s\S]*P0\s+Go\/No-Go control paragraph alignment[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is current-state inventory alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
   "current-state inventory P0 control alignment log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Finance Desk Read-Only Guard Packaging[\s\S]*\/finance-desk[\s\S]*P5-03[\s\S]*lib\/vnd-money\.ts[\s\S]*audit:heu-finance-desk[\s\S]*This is PASS_LOCAL packaging only[\s\S]*does not execute UAT, approve finance\s+action, run production migration, accept evidence or mark production GO/i,
+  "Finance Desk read-only guard packaging log entry",
+);
+
+requireText(
+  "app/finance-desk/page.tsx",
+  /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard khong tu phe duyet)(?=[\s\S]*khong khoi tao lenh chuyen tien)/i,
+  "Finance Desk read-only scoped route",
+);
+
+requireText(
+  "database/step111_heu_finance_desk.sql",
+  /Step 111 - HEU Finance Desk[\s\S]*Migration candidate only\. Do not run production migration from Codex\/chat[\s\S]*finance_desk\.read[\s\S]*enable row level security[\s\S]*can_read_finance_desk[\s\S]*write_audit_log[\s\S]*commit;/i,
+  "Step111 Finance Desk migration candidate boundary",
+);
+
+requireText(
+  "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
+  /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*not statutory accounting software[\s\S]*All finance mutations still happen in the source P2 screens[\s\S]*Finance Desk does not approve payment[\s\S]*AI may summarize, validate and warn only/i,
+  "Finance Desk MVP spec boundary",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*audit:heu-finance-desk[\s\S]*signed finance\/dashboard UAT still required/i,
+  "P5-03 Finance Desk backlog row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*audit:heu-finance-desk[\s\S]*does not approve finance action, production migration, UAT acceptance or owner GO/i,
+  "Finance Desk production checklist row",
 );
 
 requireText(

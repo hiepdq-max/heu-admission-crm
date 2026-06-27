@@ -19,6 +19,7 @@ import {
   BarChart3,
   Handshake,
   LogOut,
+  WalletCards,
 } from "lucide-react";
 
 import { logoutAction } from "@/app/login/actions";
@@ -75,6 +76,13 @@ const navigation = [
     key: "ttgdtx",
     permission: "ttgdtx.contract.read",
   },
+  {
+    label: "Finance Desk",
+    href: "/finance-desk",
+    icon: WalletCards,
+    key: "finance-desk",
+    permission: "finance_desk.read",
+  },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
   { label: "Pipeline", href: "/pipeline", icon: ListChecks, key: "pipeline" },
@@ -121,6 +129,7 @@ const segmentAwareNavigationKeys = new Set([
   "dashboard",
   "search",
   "short-course",
+  "finance-desk",
   "leads",
   "pipeline",
   "documents",

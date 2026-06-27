@@ -1,5 +1,51 @@
 # HEU Implementation Log
 
+## 2026-06-27 - HEU Finance Desk MVP Shell
+
+### Scope
+
+- Added the compact `HEU Finance Desk` route for KHTC to review tuition debt,
+  Excel import status, source/link readiness, reconciliation and center payment
+  controls from one workbench.
+- Added Step111 as a migration candidate for Finance Desk permissions, code
+  policy, document-link registry, RLS, audit triggers and read-only rollup
+  views.
+- Added the Finance Desk MVP module specification with code patterns,
+  operating flow, permissions, acceptance checks and production boundaries.
+
+### Files Added
+
+- `app/finance-desk/page.tsx`
+- `database/step111_heu_finance_desk.sql`
+- `docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md`
+
+### Files Updated
+
+- `components/layout/app-shell.tsx`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Finance Desk is a KHTC operating workbench over the existing TTGDTX P2 chain,
+  not a replacement for statutory accounting software.
+- Raw evidence links and sensitive workbook contents stay outside Git/Codex/chat;
+  Step111 stores controlled metadata/status only.
+- Step111 is a migration candidate only and was not run in production.
+  Production remains NO-GO until controlled external evidence, signed UAT,
+  migration approval and owner Go/No-Go exist.
+
+## 2026-06-27 - Finance Desk Read-Only Guard Packaging
+
+- Packaged `/finance-desk` as the P5-03 KHTC cockpit over read-only TTGDTX
+  import, source and accounting dashboard views.
+- Kept money display on the shared `lib/vnd-money.ts` formatter and added
+  `audit:heu-finance-desk` to verify authentication, permission/workspace scope,
+  read-only data sources, safe internal links and no write actions.
+- Updated backlog, production checklist, current-state inventory, AGENTS and
+  release gates so the new route is controlled by the normal handoff/audit path.
+- This is PASS_LOCAL packaging only. It does not execute UAT, approve finance
+  action, run production migration, accept evidence or mark production GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

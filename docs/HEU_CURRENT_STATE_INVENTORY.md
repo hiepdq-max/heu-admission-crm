@@ -45,6 +45,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-bgh-dashboard-spec` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-standard` | PASS |
 | `npm.cmd run audit:ttgdtx-contract-tuition-master-guard` | PASS |
+| `npm.cmd run audit:heu-finance-desk` | PASS |
 | `npm.cmd run audit:heu-vietnamese-text-encoding` | PASS |
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
@@ -53,7 +54,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go/No-Go control paragraph alignment; 54 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go/No-Go control paragraph alignment; 55 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -70,8 +71,8 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy and P3-02 acceptance matrix exist; production UAT pending |
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
-| M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard and P2-03 through P2-18 pilot flow are packaged; signed finance/legal UAT still required |
-| M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 read-only guard, source reconciliation, dashboard acceptance matrix and P5-02 action queue are read-only, UAT-gated and include P0-14/P0-15 before owner GO/NO-GO |
+| M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard, P2-03 through P2-18 pilot flow and P5-03 Finance Desk read-only cockpit are packaged; signed finance/legal UAT still required |
+| M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, P5-02 action queue and P5-03 Finance Desk read-only cockpit are UAT-gated and include P0-14/P0-15 before owner GO/NO-GO |
 | M11 AI Agent | Advisory/checklist/risk assistant | Advisory only | P7-01/P7-02/P7-03 are PASS_LOCAL; autonomous AI remains locked |
 | M12 Audit/Risk | Audit log, issue routing, risk alerts | Strong internal | P6 audit guards and hard-delete/cascade reviews pass locally |
 
@@ -90,6 +91,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
 | Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO/NO-GO exist | Signed browser UAT pending |
+| Finance Desk / KHTC cockpit | P5-03 read-only cockpit exists at `/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views and shared VND formatter | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |
