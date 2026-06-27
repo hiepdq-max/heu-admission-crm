@@ -1,0 +1,125 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+const repoRoot = process.cwd();
+const packPath = "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md";
+const ownerPackPath = "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md";
+const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
+const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
+const failures = [];
+
+function fail(message) {
+  failures.push(message);
+}
+
+function exists(relativePath) {
+  return existsSync(path.join(repoRoot, relativePath));
+}
+
+function read(relativePath) {
+  return readFileSync(path.join(repoRoot, relativePath), "utf8");
+}
+
+function requireFile(relativePath) {
+  if (!exists(relativePath)) {
+    fail(`Missing required file: ${relativePath}`);
+  }
+}
+
+function requireText(contents, pattern, label, file = packPath) {
+  if (!pattern.test(contents)) {
+    fail(`${file}: missing ${label}`);
+  }
+}
+
+for (const file of [
+  packPath,
+  ownerPackPath,
+  checklistPath,
+  backlogPath,
+  "AGENTS.md",
+  "package.json",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+]) {
+  requireFile(file);
+}
+
+const pack = exists(packPath) ? read(packPath) : "";
+const ownerPack = exists(ownerPackPath) ? read(ownerPackPath) : "";
+const checklist = exists(checklistPath) ? read(checklistPath) : "";
+const backlog = exists(backlogPath) ? read(backlogPath) : "";
+const agents = exists("AGENTS.md") ? read("AGENTS.md") : "";
+const releaseGateAudit = exists("scripts/audit-ttgdtx-release-gates.mjs")
+  ? read("scripts/audit-ttgdtx-release-gates.mjs")
+  : "";
+const packageJson = exists("package.json")
+  ? JSON.parse(read("package.json"))
+  : { scripts: {} };
+
+requireText(pack, /Controlled Evidence Redaction Pack/i, "pack title");
+requireText(pack, /Status:\s*PASS_LOCAL_PACK/i, "PASS_LOCAL_PACK status");
+requireText(pack, /This document does not approve\s+production, UAT pass, backup completion, migration, finance action or owner\s+Go\/No-Go/i, "non-approval boundary");
+requireText(pack, /Production remains NO-GO until required evidence is collected/i, "production NO-GO boundary");
+requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, API keys, private\s+keys, bank credentials, reset links, raw student PII, raw CCCD, raw phone\s+numbers, raw bank account numbers, bank statements, vouchers or raw payment\s+data/i, "secret and sensitive-data boundary");
+requireText(pack, /Do not store raw controlled evidence in Git/i, "no raw evidence in Git rule");
+requireText(pack, /Store sensitive backup\/UAT\/bank\/source evidence outside Git/i, "controlled evidence location rule");
+requireText(pack, /PUBLIC_CONTROL[\s\S]*CONTROLLED_REDACTED[\s\S]*CONTROLLED_SENSITIVE[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX/i, "evidence classification levels");
+requireText(pack, /Mask CCCD\/passport\/private identifiers as `\*{8}1234`/i, "CCCD masking rule");
+requireText(pack, /Mask bank accounts as `\*{12}1234`/i, "bank account masking rule");
+requireText(pack, /Intake Workflow[\s\S]*Receive evidence[\s\S]*Classify[\s\S]*Redact[\s\S]*Review[\s\S]*Reference[\s\S]*Sign/i, "intake workflow");
+requireText(pack, /Evidence Types Requiring This Pack[\s\S]*Supabase backup and restore proof[\s\S]*P2-17 payout evidence[\s\S]*P2-18 dashboard comparison evidence[\s\S]*Final production owner Go\/No-Go pack/i, "covered evidence types");
+requireText(pack, /Stop Conditions[\s\S]*password, OTP, reset link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
+requireText(pack, /Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*audit:ttgdtx-release-gates[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build/i, "local preflight commands");
+requireText(pack, /Passing these checks proves only that local documentation and gates are aligned/i, "PASS_LOCAL local-only statement");
+
+requireText(
+  ownerPack,
+  /HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack/i,
+  "owner sign-off pack redaction-pack reference",
+  ownerPackPath,
+);
+
+requireText(
+  checklist,
+  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  "production checklist redaction row",
+  checklistPath,
+);
+
+requireText(
+  backlog,
+  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  "backlog P0-10 redaction row",
+  backlogPath,
+);
+
+if (!packageJson.scripts?.["audit:heu-controlled-evidence-redaction-pack"]) {
+  fail("package.json: missing audit:heu-controlled-evidence-redaction-pack script");
+}
+
+if (!agents.includes(packPath)) {
+  fail("AGENTS.md: missing controlled evidence redaction pack in required reading.");
+}
+
+if (!agents.includes("npm.cmd run audit:heu-controlled-evidence-redaction-pack")) {
+  fail("AGENTS.md: missing controlled evidence redaction audit in final checks.");
+}
+
+if (
+  !releaseGateAudit.includes(packPath) ||
+  !releaseGateAudit.includes("audit:heu-controlled-evidence-redaction-pack")
+) {
+  fail("scripts/audit-ttgdtx-release-gates.mjs: missing redaction-pack coverage.");
+}
+
+if (failures.length > 0) {
+  console.error("HEU controlled evidence redaction-pack audit failed.");
+  for (const failure of failures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log(
+  "HEU controlled evidence redaction-pack audit passed. Raw sensitive evidence remains outside Git/Codex.",
+);

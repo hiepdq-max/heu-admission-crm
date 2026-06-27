@@ -47,6 +47,7 @@ for (const file of [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
   "AGENTS.md",
   "package.json",
   "scripts/audit-ttgdtx-release-gates.mjs",
@@ -72,6 +73,7 @@ requireText(pack, /Do not run production migration from Codex\/chat/i, "Codex/ch
 requireText(pack, /Do not mark production GO from Codex\/chat/i, "Codex/chat GO boundary");
 requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i, "secret and PII boundary");
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, owner waiver is approved, finance action is\s+approved, or production GO is approved/i, "PASS_LOCAL non-approval boundary");
+requireText(pack, /HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*Raw evidence stays outside Git/i, "controlled evidence redaction reference");
 
 for (const required of [
   "Production backup and restore dry-run",
@@ -83,6 +85,7 @@ for (const required of [
   "Audit log completeness",
   "Hard-delete/cascade risk",
   "Internal multi-account UAT",
+  "Controlled evidence redaction",
 ]) {
   requireText(pack, new RegExp(required.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${required} decision`);
 }
@@ -95,6 +98,12 @@ requireText(
   pack,
   /Required Local Preflight[\s\S]*audit:ttgdtx-release-gates[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build[\s\S]*git status --short --branch/i,
   "required local preflight commands",
+);
+
+requireText(
+  pack,
+  /Required Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack/i,
+  "redaction-pack local preflight command",
 );
 
 requireText(
@@ -125,6 +134,10 @@ requireText(
 
 if (!packageJson.scripts?.["audit:ttgdtx-production-owner-signoff-pack"]) {
   fail("package.json: missing audit:ttgdtx-production-owner-signoff-pack script");
+}
+
+if (!packageJson.scripts?.["audit:heu-controlled-evidence-redaction-pack"]) {
+  fail("package.json: missing audit:heu-controlled-evidence-redaction-pack script");
 }
 
 if (!agents.includes(packPath)) {

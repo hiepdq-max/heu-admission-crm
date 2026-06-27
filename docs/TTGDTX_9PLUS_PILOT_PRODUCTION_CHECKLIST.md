@@ -43,6 +43,7 @@ approval.
 | Review dirty Git state | IT_DATA | IN_PROGRESS | `docs/GIT_CLEANUP_ANALYSIS.md` current snapshot records clean local worktree on `hardening/ttgdtx-9plus-pilot` before the addendum, branch ahead origin by 58, and small-scope commit rule; final owner review/push still required | YES | Wrong files or temporary SQL committed |
 | Exclude runtime logs from commit | IT_DATA | PASS_LOCAL | `.gitignore` covers `.log`, `dev-server*.log`, `next-dev*.log`, `.env`, `.env.local`, `.env.*.local`; `git ls-files -o --exclude-standard` currently empty | NO | Logs or local noise committed |
 | Supabase backup before production migration | IT_DATA | NOT_STARTED | Backup ID, timestamp, restore note, `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`, `components/settings/supabase-backup-restore-guard.tsx`, and controlled evidence outside Git when sensitive | YES | Cannot recover after failed migration |
+| Controlled evidence redaction/intake | IT_DATA + Audit | PASS_LOCAL | `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; `npm.cmd run audit:heu-controlled-evidence-redaction-pack`; raw evidence stays outside Git; only redacted copies or non-secret evidence references may enter docs/Codex/chat | YES | Secrets, PII, bank data or raw payment evidence leaks into Git/Codex/chat |
 | Approve Step90-Step110 migration order | IT_DATA + KHTC + PHAP_CHE | IN_PROGRESS | `docs/MIGRATION_ORDER_AUDIT.md`; `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md`; `npm.cmd run audit:ttgdtx-migration-order-guard`; signed approval still required before production | YES | Wrong order can damage finance data |
 | P2-01 TTGDTX contract active | PHAP_CHE + BGH | DONE | Contract row, status, scope, effective date | YES | Finance action without effective contract |
 | P2-02 tuition policy ready | KHTC | DONE | Tuition policy READY for TTGDTX/major/year | YES | Wrong tuition receivable |
@@ -73,13 +74,13 @@ approval.
 | No AI approval | BGH + IT_DATA | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; `/ai-assistant` is advisory/read-only and cannot approve, pay, recognize revenue, freeze/release or mark go-live | YES | AI self-approves finance or go-live |
 | Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`; `components/settings/supabase-backup-restore-guard.tsx`; restore procedure; tested dry-run; `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
 | Internal UAT sign-off | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` records preflight/build and unauthenticated browser smoke pass; `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` defines synthetic account setup; `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` defines the route/account matrix; `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`; `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx`; `npm.cmd run audit:ttgdtx-production-readiness-guard`; signed multi-account UAT still required | YES | Real pilot starts before enough testing |
-| Final owner Go/No-Go sign-off | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | IN_PROGRESS | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`; signed final GO/NO-GO decision still required | YES | Production starts without accountable owner approval |
+| Final owner Go/No-Go sign-off | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | IN_PROGRESS | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`; `npm.cmd run audit:heu-controlled-evidence-redaction-pack`; signed final GO/NO-GO decision still required | YES | Production starts without accountable owner approval |
 
 ## 6. P0 Go/No-Go Controls
 
-P0 controls include backup, migration order, permission, audit, hard-delete,
-rollback, P2-17 payout, P2-18 dashboard, final UAT sign-off and final owner
-Go/No-Go sign-off.
+P0 controls include backup, controlled evidence redaction, migration order,
+permission, audit, hard-delete, rollback, P2-17 payout, P2-18 dashboard, final
+UAT sign-off and final owner Go/No-Go sign-off.
 
 ## 7. Evidence Required
 

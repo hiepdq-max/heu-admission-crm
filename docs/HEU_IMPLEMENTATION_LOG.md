@@ -1561,3 +1561,38 @@
 
 - Owner sign-off pack is PASS_LOCAL after local audits pass.
 - Signed final GO/NO-GO decision remains required before production readiness.
+
+## 2026-06-27 - Controlled Evidence Redaction Pack
+
+### Scope
+
+- Continued production-readiness hardening with a cross-cutting evidence
+  intake and redaction slice.
+- Added `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md` to define
+  evidence classes, no-secret boundaries, redaction rules, intake workflow,
+  stop conditions and local preflight commands.
+- Added `audit:heu-controlled-evidence-redaction-pack` and release-gate
+  coverage so owner sign-off, checklist, backlog and AGENTS handoff cannot
+  drift away from the redaction control.
+- Kept raw backup, UAT, bank, voucher, CCCD, student PII and payment evidence
+  outside Git/Codex/chat; only redacted copies or non-secret references may
+  enter tracked docs.
+
+### Files Updated/Added
+
+- `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`
+- `scripts/audit-heu-controlled-evidence-redaction-pack.mjs`
+- `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+- `package.json`
+- `AGENTS.md`
+
+### Decision
+
+- Controlled evidence redaction pack is PASS_LOCAL after local audits pass.
+- Production remains NO-GO until controlled evidence is actually collected,
+  reviewed, signed and approved by the required human owners.

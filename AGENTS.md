@@ -52,6 +52,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/HEU_TECH_DECISION_001_FREEZE_AND_HARDEN_TTGDTX_9PLUS.md`
 - `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`
 - `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`
+- `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`
 - `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`
 - `docs/HEU_DATA_MODEL_V1.md`
 - `docs/HEU_DATA_DICTIONARY_V1.md`
@@ -103,6 +104,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-ai-policy`
   - `npm.cmd run audit:heu-backlog-codes`
   - `npm.cmd run audit:heu-bgh-dashboard-spec`
+  - `npm.cmd run audit:heu-controlled-evidence-redaction-pack`
   - `npm.cmd run audit:heu-data-foundation`
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`

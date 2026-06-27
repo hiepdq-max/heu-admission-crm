@@ -18,6 +18,9 @@ advisory only.
   pack, Codex/chat, screenshots or browser notes.
 - Store sensitive backup/UAT evidence outside Git in the controlled evidence
   location selected by IT_DATA and Audit.
+- Apply `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md` and
+  `npm.cmd run audit:heu-controlled-evidence-redaction-pack` before owner
+  review. Raw evidence stays outside Git.
 
 PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,
 production migration is approved, owner waiver is approved, finance action is
@@ -36,6 +39,7 @@ approved, or production GO is approved.
 | Audit log completeness | Audit + IT_DATA + KHTC | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`, audit rows for create, update, check, approve, pay and source-control events | NO-GO |
 | Hard-delete/cascade risk | IT_DATA + Audit + affected business owner | `docs/HARD_DELETE_AUDIT.md`, `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`, conversion evidence or written waiver | NO-GO |
 | Internal multi-account UAT | BGH + KHTC + PHAP_CHE + IT_DATA | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`, `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`, `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | NO-GO |
+| Controlled evidence redaction | IT_DATA + Audit | `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`, redacted evidence references and controlled storage location outside Git | NO-GO |
 
 ## 3. Required Local Preflight
 
@@ -43,6 +47,7 @@ Run these local checks before owner review:
 
 ```powershell
 npm.cmd run audit:ttgdtx-release-gates
+npm.cmd run audit:heu-controlled-evidence-redaction-pack
 npm.cmd run audit:ttgdtx-production-owner-signoff-pack
 npm.cmd run lint
 npm.cmd run build

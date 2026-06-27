@@ -60,6 +60,7 @@ const requiredFiles = [
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
+  "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
@@ -91,6 +92,7 @@ const requiredFiles = [
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-bgh-dashboard-spec.mjs",
+  "scripts/audit-heu-controlled-evidence-redaction-pack.mjs",
   "scripts/audit-heu-data-foundation.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
@@ -127,6 +129,7 @@ const requiredScripts = [
   "audit:heu-ai-policy",
   "audit:heu-backlog-codes",
   "audit:heu-bgh-dashboard-spec",
+  "audit:heu-controlled-evidence-redaction-pack",
   "audit:heu-data-foundation",
   "audit:heu-lead-handover-policy",
   "audit:heu-non-ttgdtx-cascade-review",
@@ -264,9 +267,27 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_PACK)(?=[\s\S]*This document does not approve\s+production, UAT pass, backup completion, migration, finance action or owner\s+Go\/No-Go)(?=[\s\S]*Production remains NO-GO until required evidence is collected)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API keys, private\s+keys, bank credentials, reset links, raw student PII, raw CCCD, raw phone\s+numbers, raw bank account numbers, bank statements, vouchers or raw payment\s+data)(?=[\s\S]*Do not store raw controlled evidence in Git)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*Receive evidence)(?=[\s\S]*Classify)(?=[\s\S]*Redact)(?=[\s\S]*Review)(?=[\s\S]*Reference)(?=[\s\S]*Sign)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)/i,
+  "controlled evidence redaction pack",
+);
+
+requireText(
+  "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  /HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*Raw evidence stays outside Git/i,
+  "owner sign-off pack references controlled evidence redaction",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "final owner Go/No-Go sign-off checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  "controlled evidence redaction checklist row",
 );
 
 requireText(
