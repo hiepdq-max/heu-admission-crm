@@ -81,6 +81,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
+  "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
@@ -214,6 +215,18 @@ requireText(
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i,
   "backup/restore evidence pack secret boundary",
+);
+
+requireText(
+  "components/settings/supabase-backup-restore-guard.tsx",
+  /(?=[\s\S]*data-supabase-backup-restore-guard="P0-03")(?=[\s\S]*P0-03 Supabase backup\/restore dry-run)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until real backup evidence, restore\s+evidence, migration preflight\/postflight results and owner\s+sign-off exist)(?=[\s\S]*PASS_LOCAL does not mean backup was executed,\s+restore was executed, UAT passed, production migration is\s+approved, or production GO is approved)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data)(?=[\s\S]*Backup ID \/ snapshot ID)(?=[\s\S]*Restore target project\/ref)(?=[\s\S]*App connection checked against restore target)(?=[\s\S]*Human sign-off)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*npm\.cmd run build)/i,
+  "P0-03 Supabase backup/restore UI guard",
+);
+
+requireText(
+  "app/settings/supabase-check/page.tsx",
+  /SupabaseBackupRestoreGuard[\s\S]*<SupabaseBackupRestoreGuard \/>[\s\S]*SupabaseCheck/i,
+  "Supabase check page mounts backup/restore guard",
 );
 
 requireText(

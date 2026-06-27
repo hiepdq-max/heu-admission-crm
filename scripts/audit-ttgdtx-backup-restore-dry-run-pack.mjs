@@ -5,6 +5,8 @@ const repoRoot = process.cwd();
 const packPath = "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md";
 const runbookPath = "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
+const componentPath = "components/settings/supabase-backup-restore-guard.tsx";
+const pagePath = "app/settings/supabase-check/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -35,6 +37,8 @@ const requiredFiles = [
   packPath,
   runbookPath,
   checklistPath,
+  componentPath,
+  pagePath,
   "docs/MIGRATION_ORDER_AUDIT.md",
   "docs/HARD_DELETE_AUDIT.md",
   "docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md",
@@ -50,6 +54,8 @@ for (const file of requiredFiles) {
 const pack = exists(packPath) ? read(packPath) : "";
 const runbook = exists(runbookPath) ? read(runbookPath) : "";
 const checklist = exists(checklistPath) ? read(checklistPath) : "";
+const component = exists(componentPath) ? read(componentPath) : "";
+const page = exists(pagePath) ? read(pagePath) : "";
 const packageJson = JSON.parse(read("package.json"));
 
 requireText(pack, /Backup\/Restore Dry-Run Evidence Pack/i, "pack title");
@@ -68,6 +74,20 @@ requireText(pack, /Human Sign-Off[\s\S]*IT_DATA[\s\S]*KHTC[\s\S]*Phap Che[\s\S]*
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i, "PASS_LOCAL local-only boundary");
 
 requireText(
+  component,
+  /(?=[\s\S]*data-supabase-backup-restore-guard="P0-03")(?=[\s\S]*P0-03 Supabase backup\/restore dry-run)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until real backup evidence, restore\s+evidence, migration preflight\/postflight results and owner\s+sign-off exist)(?=[\s\S]*PASS_LOCAL does not mean backup was executed,\s+restore was executed, UAT passed, production migration is\s+approved, or production GO is approved)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data)(?=[\s\S]*Backup ID \/ snapshot ID)(?=[\s\S]*Restore target project\/ref)(?=[\s\S]*App connection checked against restore target)(?=[\s\S]*Human sign-off)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*npm\.cmd run build)/i,
+  "P0-03 Supabase backup/restore UI guard",
+  componentPath,
+);
+
+requireText(
+  page,
+  /SupabaseBackupRestoreGuard[\s\S]*<SupabaseBackupRestoreGuard \/>[\s\S]*SupabaseCheck/i,
+  "Supabase check page mounts backup/restore guard before SupabaseCheck",
+  pagePath,
+);
+
+requireText(
   runbook,
   /STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md/i,
   "evidence pack reference",
@@ -76,7 +96,7 @@ requireText(
 
 requireText(
   checklist,
-  /STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md/i,
+  /STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx/i,
   "production checklist evidence-pack reference",
   checklistPath,
 );
@@ -86,7 +106,11 @@ if (!packageJson.scripts?.["audit:ttgdtx-backup-restore-dry-run-pack"]) {
 }
 
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
-if (!releaseGateAudit.includes(packPath) || !releaseGateAudit.includes("audit:ttgdtx-backup-restore-dry-run-pack")) {
+if (
+  !releaseGateAudit.includes(packPath) ||
+  !releaseGateAudit.includes(componentPath) ||
+  !releaseGateAudit.includes("audit:ttgdtx-backup-restore-dry-run-pack")
+) {
   fail("scripts/audit-ttgdtx-release-gates.mjs: missing backup/restore evidence pack coverage.");
 }
 
@@ -99,7 +123,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
+if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
   fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
 }
 

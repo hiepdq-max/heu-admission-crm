@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { SupabaseBackupRestoreGuard } from "@/components/settings/supabase-backup-restore-guard";
 import { SupabaseCheck } from "@/components/settings/supabase-check";
 import { createClient } from "@/lib/supabase/server";
 
@@ -28,7 +29,10 @@ export default async function SupabaseCheckPage() {
       title="Kiểm tra Supabase"
       description="Xác nhận app đã đọc được biến môi trường và gọi được database."
     >
-      <SupabaseCheck />
+      <div className="space-y-6">
+        <SupabaseBackupRestoreGuard />
+        <SupabaseCheck />
+      </div>
     </AppShell>
   );
 }

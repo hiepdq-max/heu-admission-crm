@@ -1465,3 +1465,36 @@
 ### Decision
 
 - Git cleanup status is current for local review, but production remains NO-GO.
+
+## 2026-06-27 - Supabase Backup Restore UI Guard
+
+### Scope
+
+- Continued P0-03 production-readiness governance with a small Supabase check
+  page slice.
+- Added a visible P0-03 backup/restore dry-run guard for ADMIN users on
+  `/settings/supabase-check`.
+- The guard states PASS_LOCAL only, production remains NO-GO until real backup
+  evidence, restore evidence, preflight/postflight results and owner sign-off
+  exist, and no production migration may be run from Codex/chat.
+- It also repeats the no-secret boundary for passwords, OTPs, service-role keys,
+  bank credentials, raw student PII, raw CCCD, raw phone numbers and raw
+  payment data.
+- Extended backup/restore and release-gate audits so the UI guard, checklist
+  and backlog stay aligned.
+
+### Files Updated/Added
+
+- `components/settings/supabase-backup-restore-guard.tsx`
+- `app/settings/supabase-check/page.tsx`
+- `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Supabase backup/restore UI guard is PASS_LOCAL after local audits pass.
+- Actual backup/restore evidence and owner sign-off remain required before
+  production readiness.
