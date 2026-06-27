@@ -2711,3 +2711,15 @@
 - This is redaction/intake alignment only. It does not collect evidence,
   execute UAT, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-15 Final Handoff P6 Evidence Split
+
+- Updated the final handoff guard so every handoff summary must state that
+  P0-14 evidence binder includes separate P6-04 role/workspace, P6-03
+  audit-log and P6-06 hard-delete/cascade proof paths.
+- Aligned `AGENTS.md`, the production checklist, system backlog,
+  current-state inventory, `audit:heu-final-handoff-coverage`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`.
+- This is final-handoff wording control only. It does not collect evidence,
+  execute UAT, approve a waiver, approve migration, approve finance action or
+  mark production GO.

@@ -533,7 +533,7 @@ requireText(
 
 requireText(
   "AGENTS.md",
-  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT\s+handoff evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14\s+production evidence binder[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
+  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT\s+handoff evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14\s+production evidence binder[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
   "P0-15 final handoff summary guard",
 );
 
