@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P6-06 Cascade Finding Register
+
+- Added `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` to lock
+  P6-06-FIND-001 through P6-06-FIND-044 to current SQL locations, child tables,
+  parent references, owner lanes and required dispositions.
+- Updated `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P6-06 conversion/waiver review uses
+  the detailed finding register.
+- Extended non-TTGDTX cascade, current-state, implementation-log and release
+  gate audits to require the finding register before handoff.
+- This is finding-register packaging only. It does not approve production
+  deletion, cascade execution, waiver, conversion migration, data cleanup,
+  rollback success or production GO.
+
 ## 2026-06-28 - P3-02 Lead Handover Decision Manifest
 
 - Added a PASS_LOCAL handover decision manifest to

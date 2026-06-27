@@ -3,6 +3,8 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const reviewPath = "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md";
+const registerPath =
+  "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md";
 const expectedScanCount = 44;
 const failures = [];
 
@@ -74,6 +76,7 @@ for (const filePath of sqlFiles) {
 }
 
 const review = read(reviewPath);
+const register = read(registerPath);
 
 if (findings.length !== expectedScanCount) {
   fail(`Expected ${expectedScanCount} non-TTGDTX/base cascade findings, found ${findings.length}. Update ${reviewPath} after review.`);
@@ -88,9 +91,39 @@ requireText(review, /Pure derived join rows may be waived only when they do not 
 requireText(review, /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i, "PASS_LOCAL non-approval boundary");
 requireText(
   review,
+  /HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P6-06-FIND-001 through P6-06-FIND-044[\s\S]*current SQL\s+locations, child tables, parent references, owner lanes and required\s+dispositions[\s\S]*PASS_LOCAL only[\s\S]*does not approve production deletion,\s+cascade execution, waiver, conversion migration, cleanup, rollback success or\s+production GO/i,
+  "P6-06 finding register reference",
+);
+requireText(
+  review,
   /(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06 Closure Decision Manifest)(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
   "P6-06 hard-delete/cascade acceptance matrix",
 );
+
+requireText(register, /Status:\s*PASS_LOCAL_REGISTER/i, "PASS_LOCAL_REGISTER status", registerPath);
+requireText(register, /Current scan count:\s*44/i, "register current scan count", registerPath);
+requireText(register, /P6-06-FIND-001/i, "first register finding ID", registerPath);
+requireText(register, /P6-06-FIND-044/i, "last register finding ID", registerPath);
+requireText(
+  register,
+  /child tables, parent references and owner lanes/i,
+  "register maps child tables, parent references and owner lanes",
+  registerPath,
+);
+requireText(register, /P6-06 remains IN_PROGRESS/i, "register closure rule", registerPath);
+requireText(
+  register,
+  /does not approve production migration, data\s+deletion, cascade execution, waiver, conversion migration, cleanup, rollback\s+success or production GO/i,
+  "register local-only non-approval boundary",
+  registerPath,
+);
+
+for (const finding of findings) {
+  const location = `${finding.file}:${finding.line}`;
+  if (!register.includes(`\`${location}\``)) {
+    fail(`${registerPath}: missing current cascade finding location ${location}`);
+  }
+}
 
 const files = new Set(findings.map((finding) => finding.file));
 for (const file of files) {
@@ -123,6 +156,9 @@ requireText(
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 if (!releaseGateAudit.includes(reviewPath) || !releaseGateAudit.includes("audit:heu-non-ttgdtx-cascade-review")) {
   fail("scripts/audit-ttgdtx-release-gates.mjs: missing non-TTGDTX cascade review coverage.");
+}
+if (!releaseGateAudit.includes(registerPath)) {
+  fail(`scripts/audit-ttgdtx-release-gates.mjs: missing ${registerPath} coverage.`);
 }
 
 if (failures.length > 0) {

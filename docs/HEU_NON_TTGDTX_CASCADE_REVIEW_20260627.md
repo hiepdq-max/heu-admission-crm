@@ -54,6 +54,21 @@ because that chain is already guarded by `npm.cmd run audit:ttgdtx-cascade`.
 | Master/control and dynamic configuration | `database/step41_master_control.sql`, `database/step44_admission_segment_operating_os.sql`, `database/step49_master_data_governance.sql`, `database/step54_admission_object_field_schema.sql`, `database/step56_dynamic_admission_configuration.sql`, `database/step57_dynamic_lead_form_enforcement.sql`, `database/step60_admission_catalog_workspace_gate.sql` | Deleting a master row can remove configuration, form, gate or governance history | Convert to restrict/archive unless proven derived-only |
 | Legal/tuition and short-course operations | `database/step59_major_legal_tuition_gate.sql`, `database/step62_short_course_data_foundation.sql` | Legal/tuition gate and attendance/enrollment evidence can be removed | Convert to restrict/archive before production use |
 
+## 3A. Finding Register
+
+The detailed finding register is maintained in
+`docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`.
+
+That register locks P6-06-FIND-001 through P6-06-FIND-044 to the current SQL
+locations, child tables, parent references, owner lanes and required
+dispositions. It is PASS_LOCAL only and does not approve production deletion,
+cascade execution, waiver, conversion migration, cleanup, rollback success or
+production GO.
+
+Any future change to the non-TTGDTX/base cascade surface must update the
+finding register and rerun `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
+before owner review.
+
 ## 4. Production Rules
 
 - Do not run production migration from Codex/chat.
