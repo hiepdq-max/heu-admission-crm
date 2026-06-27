@@ -49,6 +49,8 @@ Before signed UAT, the repo must keep local audit-trail evidence green:
 
 - `components/audit/ttgdtx-audit-trail-guard.tsx` shows the required TTGDTX
   entity groups on `/audit`.
+- `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx` lists
+  AUD-01 through AUD-06 evidence expected from the signed UAT session.
 - `app/audit/page.tsx` mounts the guard and only reads `audit_logs`.
 - `npm.cmd run audit:ttgdtx-audit-log` verifies Step90-Step110 tables have
   `write_audit_log()` triggers where the steps create TTGDTX tables.

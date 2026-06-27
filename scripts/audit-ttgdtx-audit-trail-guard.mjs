@@ -25,12 +25,15 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/audit/ttgdtx-audit-trail-guard.tsx";
+const evidenceChecklistPath =
+  "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx";
 const pagePath = "app/audit/page.tsx";
 const runbookPath = "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 
 for (const file of [
   componentPath,
+  evidenceChecklistPath,
   pagePath,
   runbookPath,
   checklistPath,
@@ -44,6 +47,7 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const evidenceChecklist = read(evidenceChecklistPath);
 const page = read(pagePath);
 const runbook = read(runbookPath);
 const checklist = read(checklistPath);
@@ -63,6 +67,12 @@ requireText(
   /(?=[\s\S]*data-ttgdtx-audit-log-uat-boundary="P6-03")(?=[\s\S]*P6-03 audit-log UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed audit-log UAT evidence is still required)(?=[\s\S]*NO-GO until signed\s+audit-log evidence exists)(?=[\s\S]*create)(?=[\s\S]*update)(?=[\s\S]*check)(?=[\s\S]*approve)(?=[\s\S]*pay)(?=[\s\S]*source-control)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank accounts)(?=[\s\S]*raw student identity data)/i,
   "P6-03 audit-log UAT boundary and no-secret warning",
   componentPath,
+);
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-audit-log-uat-evidence-checklist="P6-03")(?=[\s\S]*P6-03 audit-log UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed audit-log UAT is still required before P6-03 can move from\s+IN_PROGRESS)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*AUD-01)(?=[\s\S]*AUD-06)(?=[\s\S]*passwords, OTPs, service-role keys, raw\s+student identity data, CCCD, bank accounts and raw payment data)(?=[\s\S]*Audit, KHTC, IT_DATA, PHAP_CHE and BGH must sign the evidence outside\s+Codex\/chat)/i,
+  "P6-03 audit-log UAT evidence checklist",
+  evidenceChecklistPath,
 );
 
 for (const entity of [
@@ -85,8 +95,8 @@ for (const uatCase of ["AUD-01", "AUD-02", "AUD-03", "AUD-04", "AUD-05", "AUD-06
 
 requireText(
   page,
-  /TtgdtxAuditTrailGuard[\s\S]*<TtgdtxAuditTrailGuard \/>/,
-  "audit page mounts TTGDTX audit trail guard",
+  /<TtgdtxAuditTrailGuard\s*\/>[\s\S]*<TtgdtxAuditLogUatEvidenceChecklist\s*\/>/,
+  "audit page mounts TTGDTX audit trail guard and UAT evidence checklist",
   pagePath,
 );
 
@@ -103,14 +113,14 @@ if (/\.(insert|update|delete|upsert|rpc)\(/.test(page)) {
 
 requireText(
   runbook,
-  /Local Audit Trail Guard Evidence[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*does not replace signed UAT/i,
+  /Local Audit Trail Guard Evidence[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*does not replace signed UAT/i,
   "runbook local audit trail guard evidence section",
   runbookPath,
 );
 
 requireText(
   checklist,
-  /Audit log completeness[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*P6-03 audit-log UAT boundary[\s\S]*signed UAT/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps audit log IN_PROGRESS with guard evidence",
   checklistPath,
 );
@@ -128,6 +138,7 @@ requireText(
 
 for (const needle of [
   componentPath,
+  evidenceChecklistPath,
   "scripts/audit-ttgdtx-audit-trail-guard.mjs",
   "audit:ttgdtx-audit-trail-guard",
 ]) {

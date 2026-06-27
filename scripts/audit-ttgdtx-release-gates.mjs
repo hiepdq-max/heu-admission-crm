@@ -76,6 +76,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/audit/controlled-evidence-redaction-guard.tsx",
   "components/audit/hard-delete-boundary-guard.tsx",
+  "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
@@ -321,13 +322,19 @@ requireText(
 
 requireText(
   "app/audit/page.tsx",
-  /TtgdtxAuditTrailGuard[\s\S]*<TtgdtxAuditTrailGuard \/>[\s\S]*AuditLogTable/i,
-  "audit page mounts TTGDTX audit trail guard",
+  /<TtgdtxAuditTrailGuard\s*\/>[\s\S]*<TtgdtxAuditLogUatEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
+  "audit page mounts TTGDTX audit trail guard and UAT evidence checklist",
+);
+
+requireText(
+  "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-audit-log-uat-evidence-checklist="P6-03")(?=[\s\S]*P6-03 audit-log UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed audit-log UAT is still required before P6-03 can move from\s+IN_PROGRESS)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*AUD-01)(?=[\s\S]*AUD-06)(?=[\s\S]*passwords, OTPs, service-role keys, raw\s+student identity data, CCCD, bank accounts and raw payment data)(?=[\s\S]*Audit, KHTC, IT_DATA, PHAP_CHE and BGH must sign the evidence outside\s+Codex\/chat)/i,
+  "P6-03 audit-log UAT evidence checklist",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Audit log completeness[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*signed UAT/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*signed UAT)/i,
   "audit log completeness guard checklist row",
 );
 

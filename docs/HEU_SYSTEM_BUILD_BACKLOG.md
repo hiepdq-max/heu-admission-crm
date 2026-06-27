@@ -84,7 +84,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 |---|---|---|---|---|
 | P6-01 | Static hard-delete audit | IT/Data | PASS_LOCAL | Keep audit script green |
 | P6-02 | TTGDTX cascade audit | IT/Data | PASS_LOCAL | No `on delete cascade` in Step90-Step110 |
-| P6-03 | TTGDTX audit-log coverage | IT/Data | PASS_LOCAL | New TTGDTX write tables need triggers; `components/audit/ttgdtx-audit-trail-guard.tsx`; `npm.cmd run audit:ttgdtx-audit-log`; `npm.cmd run audit:ttgdtx-audit-trail-guard`; signed UAT still required |
+| P6-03 | TTGDTX audit-log coverage | IT/Data | PASS_LOCAL | New TTGDTX write tables need triggers; `components/audit/ttgdtx-audit-trail-guard.tsx`; `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx`; `npm.cmd run audit:ttgdtx-audit-log`; `npm.cmd run audit:ttgdtx-audit-trail-guard`; signed UAT still required |
 | P6-04 | Role-scope UAT | IT/Data + Process owners | PASS_LOCAL | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`; `components/settings/user-scope-enforcement-panel.tsx`; `npm.cmd run audit:heu-role-scope-uat-pack`; signed UAT still required |
 | P6-05 | Package TTGDTX local audit scripts | IT/Data | PASS_LOCAL | npm scripts must point to committed local guards |
 | P6-06 | Non-TTGDTX/base cascade review | IT/Data + Audit | PASS_LOCAL | `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`; `components/audit/hard-delete-boundary-guard.tsx`; `npm.cmd run audit:heu-non-ttgdtx-cascade-review`; `npm.cmd run audit:hard-delete-boundary-guard`; conversion or written waiver still required before production |
