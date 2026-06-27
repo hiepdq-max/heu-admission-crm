@@ -1,5 +1,7 @@
 import { CheckCircle2, ClipboardCheck, ShieldAlert } from "lucide-react";
 
+import { PRODUCTION_GOVERNANCE_ASSURANCE_STEPS } from "@/lib/production-readiness";
+
 const uatClosureItems = [
   {
     caseId: "UAT-CLOSE-01",
@@ -122,6 +124,60 @@ export function TtgdtxUatSignoffGuard() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-indigo-200 bg-white p-4"
+        data-ttgdtx-governance-uat-execution-readiness="P6-04_P6-03"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-indigo-950">
+              Governance UAT execution readiness: P6-04 + P6-03
+            </h3>
+            <p className="mt-2 leading-6 text-indigo-900">
+              Run P6-04 role/workspace UAT first, then P6-03 audit-log
+              traceability sampling. Each run needs a synthetic account,
+              controlled evidence reference, redaction check, reviewer and
+              owner signature before the internal UAT result can move from
+              BLOCKED.
+            </p>
+          </div>
+          <div className="rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 font-mono text-xs text-indigo-950">
+            P6_04_SCOPE_UAT / P6_03_TRACE_UAT
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_GOVERNANCE_ASSURANCE_STEPS.map((step) => (
+            <article
+              key={`${step.code}-uat-readiness`}
+              className="border-l-2 border-indigo-300 bg-indigo-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-indigo-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                <span className="font-medium">Route:</span> {step.route}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                <span className="font-medium">Runbook:</span> {step.runbook}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                <span className="font-medium">Owner:</span> {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop if evidence is unsigned, role scope leaks, audit trace is
+                missing, redaction fails or the result is stored in
+                Git/Codex/chat.
+              </p>
+              <p className="mt-2 text-xs font-medium text-indigo-800">
+                Guard: {step.auditCommand}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 

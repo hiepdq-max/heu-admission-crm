@@ -105,7 +105,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue with safe iteration loop, P0-03\/Step90-Step110 infra readiness plan, P0-19\/P3-01\/P3-02 gate-handover readiness plan, P6-04\/P6-03 governance assurance plan, P2-18\/P5-03 UAT launch plan, P6-06\/P2-17 risk closure plan, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, governance UAT execution readiness for P6-04\/P6-03, UAT execution closure template, UAT operator handoff, execution queue with safe iteration loop, P0-03\/Step90-Step110 infra readiness plan, P0-19\/P3-01\/P3-02 gate-handover readiness plan, P6-04\/P6-03 governance assurance plan, P2-18\/P5-03 UAT launch plan, P6-06\/P2-17 risk closure plan, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(
@@ -170,13 +170,13 @@ requireText(
 );
 requireText(
   inventory,
-  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, governance UAT execution readiness, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );
 requireText(
   inventory,
-  /Audit log[\s\S]*Static coverage, audit trace acceptance matrix, audit-log evidence acceptance matrix and audit traceability decision manifest pass locally[\s\S]*Signed audit-log UAT pending/i,
-  "P6-03 audit trace acceptance matrix control state",
+  /Audit log[\s\S]*Static coverage, audit trace acceptance matrix, audit-log evidence acceptance matrix, audit traceability decision manifest and governance UAT execution readiness pass locally[\s\S]*Signed audit-log UAT pending/i,
+  "P6-03 audit-log governance UAT execution readiness state",
 );
 requireText(
   inventory,

@@ -110,6 +110,23 @@ owner signature keeps production NO-GO.
 | UAT-CLOSE-05 Sensitive evidence controlled | PASS/BLOCKED | PENDING | No passwords, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git/Codex/chat | IT_DATA + Audit |
 | UAT-CLOSE-06 Owners sign UAT result | PASS/BLOCKED | PENDING | BGH, KHTC, PHAP_CHE and IT_DATA sign PASS, FAIL or BLOCKED outside Codex/chat | Required owners |
 
+## 5.1 Governance UAT Execution Readiness
+
+Result: BLOCKED_PENDING_SIGNED_GOVERNANCE_UAT.
+
+Run P6-04 before P6-03 so role/workspace access is proven before audit-log
+traceability evidence is sampled. Both runs must use synthetic accounts,
+controlled evidence references, redaction checks and owner signatures outside
+Git/Codex/chat.
+
+| Governance UAT | Current status | Route | Runbook | Guard | Minimum proof | Owner | Stop condition |
+|---|---|---|---|---|---|---|---|
+| P6-04 role/workspace UAT | PENDING | `/settings/scopes` | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md` | `npm.cmd run audit:heu-role-scope-uat-pack` | Synthetic-account route matrix, blocked out-of-scope cases, controlled evidence reference, reviewer and owner signature | IT_DATA + TRUONG_PHONG + Audit | Role leak, unsigned evidence, missing redaction proof, server-side bypass or broad access keeps production NO-GO |
+| P6-03 audit-log traceability UAT | PENDING | `/audit` | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md` | `npm.cmd run audit:ttgdtx-audit-trail-guard` | Trace rows for create, update, check, approve, pay and source-control events tied to actor, entity, time and controlled evidence reference | Audit + IT_DATA + KHTC | Missing trace row, generic payload, broken workflow chain, unsigned evidence or raw audit export keeps production NO-GO |
+
+PASS_LOCAL does not execute these UAT runs, accept evidence, grant access,
+approve finance action, waive audit traceability or mark production GO.
+
 ## 6. Current Decision
 
 Result: PARTIAL PASS.

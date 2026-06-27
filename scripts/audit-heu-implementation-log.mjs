@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX Governance UAT Execution Readiness[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*P6-04\/P6-03 governance UAT execution\s+readiness section before the UAT run closure tracker[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*route,\s+runbook, owner, local guard command and stop conditions[\s\S]*P6-04\s+role\/workspace UAT[\s\S]*P6-03 audit-log traceability UAT[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*BLOCKED_PENDING_SIGNED_GOVERNANCE_UAT[\s\S]*P6-04 must run\s+before P6-03[\s\S]*synthetic accounts, controlled evidence,\s+redaction and owner signatures outside Git\/Codex\/chat[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*UAT readiness, production readiness, current-state, implementation\s+log and release-gate audits[\s\S]*This is UAT execution-readiness packaging only[\s\S]*does not execute UAT,\s+create synthetic accounts, grant access, collect evidence, accept audit\s+traceability, approve finance action, waive evidence or mark production GO/i,
+  "TTGDTX governance UAT execution readiness log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX P0-14 Governance Evidence Checkpoint[\s\S]*ttgdtx-production-evidence-binder\.tsx[\s\S]*P0-14 governance evidence checkpoint[\s\S]*P6-04 role\/workspace proof[\s\S]*P6-03\s+audit trace proof[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production evidence binder and release-gate audits[\s\S]*This is evidence-checkpoint packaging only[\s\S]*does not collect evidence,\s+execute UAT, grant access, accept audit traceability, approve owner review,\s+waive evidence or mark production GO/i,
   "TTGDTX P0-14 governance evidence checkpoint log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

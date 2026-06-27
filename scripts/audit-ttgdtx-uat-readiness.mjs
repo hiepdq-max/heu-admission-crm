@@ -34,6 +34,7 @@ function requireText(relativePath, pattern, label) {
 }
 
 const requiredFiles = [
+  "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
@@ -142,6 +143,18 @@ requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /(?=[\s\S]*Internal UAT Run Closure Tracker)(?=[\s\S]*BLOCKED_PENDING_MULTI_ACCOUNT_UAT)(?=[\s\S]*UAT_PASS)(?=[\s\S]*UAT-CLOSE-01 Synthetic accounts prepared)(?=[\s\S]*UAT-CLOSE-06 Owners sign UAT result)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof or\s+owner signature keeps production NO-GO)(?=[\s\S]*No passwords, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git\/Codex\/chat)/i,
   "internal UAT run closure tracker remains blocked until signed evidence",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
+  /(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*data-ttgdtx-governance-uat-execution-readiness="P6-04_P6-03")(?=[\s\S]*Governance UAT execution readiness: P6-04 \+ P6-03)(?=[\s\S]*Run P6-04 role\/workspace UAT first, then P6-03 audit-log\s+traceability sampling)(?=[\s\S]*P6_04_SCOPE_UAT \/ P6_03_TRACE_UAT)(?=[\s\S]*Runbook:[\s\S]*step\.runbook)(?=[\s\S]*Guard:[\s\S]*step\.auditCommand)(?=[\s\S]*Stop if evidence is unsigned, role scope leaks, audit trace is\s+missing, redaction fails or the result is stored in\s+Git\/Codex\/chat)/i,
+  "governance UAT execution readiness UI",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*Governance UAT Execution Readiness)(?=[\s\S]*BLOCKED_PENDING_SIGNED_GOVERNANCE_UAT)(?=[\s\S]*Run P6-04 before P6-03)(?=[\s\S]*P6-04 role\/workspace UAT[\s\S]*PENDING[\s\S]*\/settings\/scopes[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*audit:heu-role-scope-uat-pack)(?=[\s\S]*P6-03 audit-log traceability UAT[\s\S]*PENDING[\s\S]*\/audit[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*PASS_LOCAL does not execute these UAT runs, accept evidence, grant access,\s+approve finance action, waive audit traceability or mark production GO)/i,
+  "governance UAT execution log readiness remains blocked until signed evidence",
 );
 
 requireText(
