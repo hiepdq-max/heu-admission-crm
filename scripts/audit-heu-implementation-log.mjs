@@ -111,6 +111,7 @@ for (const heading of [
   "Finance Desk Process Finder Link",
   "P0 Register Pack Foundation",
   "Finance Desk No-Data Boundary Guard",
+  "Finance Desk Vietnamese Copy Clarity",
 ]) {
   requireText(
     log,
@@ -180,6 +181,13 @@ requireText(
   log,
   /Finance Desk No-Data Boundary Guard[\s\S]*FinanceDeskReadOnlyBoundary[\s\S]*no-access,\s+missing-view and loaded-data states[\s\S]*Step90-Step111[\s\S]*backed-up UAT environment[\s\S]*This is UI safety packaging only[\s\S]*does not run Step111, execute UAT,\s+approve migration, approve finance action, accept evidence or mark production\s+GO/i,
   "Finance Desk no-data boundary guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Finance Desk Vietnamese Copy Clarity[\s\S]*status badges, KPI cards,\s+missing-data state, source registry panel, control table and action links[\s\S]*audit:heu-finance-desk[\s\S]*audit:heu-vietnamese-text-encoding[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is UI text clarity only[\s\S]*does not change finance calculation, run\s+Step111, execute UAT, approve migration, approve finance action, accept\s+evidence or mark production GO/i,
+  "Finance Desk Vietnamese copy clarity log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

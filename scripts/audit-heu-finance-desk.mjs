@@ -184,14 +184,14 @@ requireText(
 
 requireText(
   page,
-  /function FinanceDeskReadOnlyBoundary\(\)[\s\S]*data-finance-desk-readonly-boundary="P5-03"[\s\S]*Moi sua so lieu tien phai quay ve dung buoc goc P2[\s\S]*dashboard khong tu phe duyet[\s\S]*khong thay the chung tu[\s\S]*khong khoi tao lenh chuyen tien[\s\S]*Production remains NO-GO until\s+backup\/restore evidence, signed UAT, migration approval and owner\s+Go\/No-Go exist outside Codex\/chat/i,
+  /function FinanceDeskReadOnlyBoundary\(\)[\s\S]*data-finance-desk-readonly-boundary="P5-03"[\s\S]*Mọi sửa số liệu tiền phải quay về đúng bước gốc P2[\s\S]*dashboard không tự phê duyệt[\s\S]*không thay thế chứng từ[\s\S]*không khởi tạo lệnh chuyển tiền[\s\S]*Production remains NO-GO until\s+backup\/restore evidence, signed UAT, migration approval and owner\s+Go\/No-Go exist outside Codex\/chat/i,
   "read-only finance operating boundary",
   "app/finance-desk/page.tsx",
 );
 
 requireText(
   page,
-  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chua doc duoc day du Finance Desk[\s\S]*Step90-Step111[\s\S]*da backup/i,
+  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chưa đọc được đầy đủ Finance Desk[\s\S]*Step90-Step111[\s\S]*đã backup/i,
   "read-only boundary is visible before no-access and missing-view states",
   "app/finance-desk/page.tsx",
 );

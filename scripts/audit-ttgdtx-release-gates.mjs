@@ -484,14 +484,20 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Finance Desk Vietnamese Copy Clarity[\s\S]*status badges, KPI cards,\s+missing-data state, source registry panel, control table and action links[\s\S]*audit:heu-finance-desk[\s\S]*audit:heu-vietnamese-text-encoding[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is UI text clarity only[\s\S]*does not change finance calculation, run\s+Step111, execute UAT, approve migration, approve finance action, accept\s+evidence or mark production GO/i,
+  "Finance Desk Vietnamese copy clarity log entry",
+);
+
+requireText(
   "app/finance-desk/page.tsx",
-  /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*FinanceDeskReadOnlyBoundary)(?=[\s\S]*data-finance-desk-readonly-boundary="P5-03")(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard khong tu phe duyet)(?=[\s\S]*khong khoi tao lenh chuyen tien)(?=[\s\S]*Production remains NO-GO until)/i,
+  /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*FinanceDeskReadOnlyBoundary)(?=[\s\S]*data-finance-desk-readonly-boundary="P5-03")(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard không tự phê duyệt)(?=[\s\S]*không khởi tạo lệnh chuyển tiền)(?=[\s\S]*Production remains NO-GO until)/i,
   "Finance Desk read-only scoped route",
 );
 
 requireText(
   "app/finance-desk/page.tsx",
-  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chua doc duoc day du Finance Desk[\s\S]*Step90-Step111[\s\S]*da backup/i,
+  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chưa đọc được đầy đủ Finance Desk[\s\S]*Step90-Step111[\s\S]*đã backup/i,
   "Finance Desk missing-view state keeps read-only boundary visible",
 );
 

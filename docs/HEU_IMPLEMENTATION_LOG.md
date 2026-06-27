@@ -101,6 +101,18 @@
   approve migration, approve finance action, accept evidence or mark production
   GO.
 
+## 2026-06-27 - Finance Desk Vietnamese Copy Clarity
+
+- Normalized Finance Desk user-facing labels for status badges, KPI cards,
+  missing-data state, source registry panel, control table and action links to
+  readable Vietnamese with diacritics.
+- Kept source P2 correction, read-only cockpit and Production NO-GO wording
+  under `audit:heu-finance-desk`, `audit:heu-vietnamese-text-encoding` and
+  `audit:ttgdtx-release-gates`.
+- This is UI text clarity only. It does not change finance calculation, run
+  Step111, execute UAT, approve migration, approve finance action, accept
+  evidence or mark production GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

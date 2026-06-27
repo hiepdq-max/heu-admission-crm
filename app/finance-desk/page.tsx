@@ -115,20 +115,20 @@ const emptySourceSummary: SourceSummaryRow = {
 };
 
 const statusLabels: Record<string, string> = {
-  READY_TO_LOCK: "San sang khoa",
-  LOCKED: "Da khoa",
-  BLOCKED_CRITICAL: "Bi chan nghiem trong",
-  NEEDS_FIX: "Can sua",
-  NEEDS_REVIEW: "Can ra soat",
-  EMPTY: "Chua co dong import",
-  DRAFT: "Nhap",
-  IMPORTED: "Da import",
-  CHECKING: "Dang kiem",
-  HAS_ISSUES: "Co loi",
-  CANCELLED: "Da huy",
-  PASS: "Dat",
-  REVIEW: "Can xem",
-  CRITICAL: "Nghiem trong",
+  READY_TO_LOCK: "Sẵn sàng khóa",
+  LOCKED: "Đã khóa",
+  BLOCKED_CRITICAL: "Bị chặn nghiêm trọng",
+  NEEDS_FIX: "Cần sửa",
+  NEEDS_REVIEW: "Cần rà soát",
+  EMPTY: "Chưa có dòng import",
+  DRAFT: "Nháp",
+  IMPORTED: "Đã import",
+  CHECKING: "Đang kiểm",
+  HAS_ISSUES: "Có lỗi",
+  CANCELLED: "Đã hủy",
+  PASS: "Đạt",
+  REVIEW: "Cần xem",
+  CRITICAL: "Nghiêm trọng",
 };
 
 function money(value: number | string | null | undefined) {
@@ -143,7 +143,7 @@ function count(value: number | string | null | undefined) {
 
 function formatDateTime(value: string | null | undefined) {
   if (!value) {
-    return "Chua co";
+    return "Chưa có";
   }
 
   return new Intl.DateTimeFormat("vi-VN", {
@@ -249,14 +249,14 @@ function FinanceDeskReadOnlyBoundary() {
         <ShieldCheck className="mt-1 size-5 shrink-0" />
         <div>
           <h2 className="text-lg font-semibold">
-            Nguyen tac van hanh Finance Desk
+            Nguyên tắc vận hành Finance Desk
           </h2>
           <p className="mt-2 text-sm leading-6">
-            Finance Desk la ban lam viec ke toan noi bo. Module nay tong hop
-            import, cong no, thu hoc phi, doi soat, de nghi chi va ho so minh
-            chung. Moi sua so lieu tien phai quay ve dung buoc goc P2;
-            dashboard khong tu phe duyet, khong thay the chung tu ke toan va
-            khong khoi tao lenh chuyen tien. Production remains NO-GO until
+            Finance Desk là bàn làm việc kế toán nội bộ. Module này tổng hợp
+            import, công nợ, thu học phí, đối soát, đề nghị chi và hồ sơ minh
+            chứng. Mọi sửa số liệu tiền phải quay về đúng bước gốc P2;
+            dashboard không tự phê duyệt, không thay thế chứng từ kế toán và
+            không khởi tạo lệnh chuyển tiền. Production remains NO-GO until
             backup/restore evidence, signed UAT, migration approval and owner
             Go/No-Go exist outside Codex/chat.
           </p>
@@ -384,7 +384,7 @@ export default async function FinanceDeskPage() {
     <AppShell
       active="finance-desk"
       title="HEU Finance Desk"
-      description="Cong no hoc phi, import Excel, doi soat nguon va thanh toan trung tam cho TTGDTX 9+."
+      description="Công nợ học phí, import Excel, đối soát nguồn và thanh toán trung tâm cho TTGDTX 9+."
       workspaceSegmentId={segment?.id ?? null}
       workspaceReturnTo="/finance-desk"
       actions={
@@ -392,7 +392,7 @@ export default async function FinanceDeskPage() {
           <Button asChild variant="outline">
             <Link href="/finance-desk">
               <RefreshCcw className="size-4" />
-              Tai lai
+              Tải lại
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -404,7 +404,7 @@ export default async function FinanceDeskPage() {
           <Button asChild variant="outline">
             <Link href="/ttgdtx/source-control">
               <FolderSearch className="size-4" />
-              Ho so/link
+              Hồ sơ/link
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -421,9 +421,9 @@ export default async function FinanceDeskPage() {
 
         {!canOpen ? (
           <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">
-            Tai khoan hien tai chua duoc mo quyen HEU Finance Desk hoac chua co
-            pham vi TTGDTX 9+ phu hop. Can quyen finance_desk.read, quyen bao
-            cao/import/nguon TTGDTX, hoac vai tro ADMIN/BGH.
+            Tài khoản hiện tại chưa được mở quyền HEU Finance Desk hoặc chưa có
+            phạm vi TTGDTX 9+ phù hợp. Cần quyền finance_desk.read, quyền báo
+            cáo/import/nguồn TTGDTX, hoặc vai trò ADMIN/BGH.
           </section>
         ) : dataError ? (
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
@@ -431,11 +431,11 @@ export default async function FinanceDeskPage() {
               <AlertTriangle className="mt-0.5 size-5 shrink-0" />
               <div>
                 <p className="font-semibold">
-                  Chua doc duoc day du Finance Desk
+                  Chưa đọc được đầy đủ Finance Desk
                 </p>
                 <p className="mt-1">
-                  Hay ap dung cac migration Step90-Step111 tren moi truong UAT
-                  da backup. Chi tiet: {dataError.message}
+                  Hãy áp dụng các migration Step90-Step111 trên môi trường UAT
+                  đã backup. Chi tiết: {dataError.message}
                 </p>
               </div>
             </div>
@@ -444,22 +444,22 @@ export default async function FinanceDeskPage() {
           <>
           <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <KpiCard
-              label="Phai thu hoc phi"
+              label="Phải thu học phí"
               value={money(financeSummary.receivable_total_vnd)}
-              hint={`Con no: ${money(financeSummary.receivable_balance_vnd)}`}
+              hint={`Còn nợ: ${money(financeSummary.receivable_balance_vnd)}`}
             />
             <KpiCard
-              label="Da thu"
+              label="Đã thu"
               value={money(financeSummary.collected_total_vnd)}
-              hint={`P2-03 ghi da thu: ${money(
+              hint={`P2-03 ghi đã thu: ${money(
                 financeSummary.receivable_paid_vnd,
               )}`}
               tone="text-emerald-700"
             />
             <KpiCard
-              label="Con phai chi trung tam"
+              label="Còn phải chi trung tâm"
               value={money(financeSummary.remaining_to_pay_vnd)}
-              hint={`Da chi: ${money(financeSummary.disbursed_total_vnd)}`}
+              hint={`Đã chi: ${money(financeSummary.disbursed_total_vnd)}`}
               tone={
                 count(financeSummary.remaining_to_pay_vnd) > 0
                   ? "text-amber-700"
@@ -467,38 +467,38 @@ export default async function FinanceDeskPage() {
               }
             />
             <KpiCard
-              label="Can xu ly"
+              label="Cần xử lý"
               value={
                 count(financeSummary.partner_with_exception_count) +
                 totalImportIssues +
                 totalSourceIssues
               }
-              hint="Tong canh bao tu dashboard, import va ho so nguon"
+              hint="Tổng cảnh báo từ dashboard, import và hồ sơ nguồn"
               tone="text-amber-700"
             />
           </section>
 
           <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <KpiCard
-              label="Da khoa doi soat"
+              label="Đã khóa đối soát"
               value={money(financeSummary.locked_reconciled_total_vnd)}
-              hint="Nguon hop le de lap de nghi chi"
+              hint="Nguồn hợp lệ để lập đề nghị chi"
             />
             <KpiCard
-              label="Da de nghi chi"
+              label="Đã đề nghị chi"
               value={money(financeSummary.requested_total_vnd)}
-              hint="P2-15 tu ky doi soat da khoa"
+              hint="P2-15 từ kỳ đối soát đã khóa"
             />
             <KpiCard
-              label="Da duyet chi"
+              label="Đã duyệt chi"
               value={money(financeSummary.approved_total_vnd)}
-              hint="P2-16 da kiem/duyet"
+              hint="P2-16 đã kiểm/duyệt"
               tone="text-emerald-700"
             />
             <KpiCard
-              label="Ho so nguon"
+              label="Hồ sơ nguồn"
               value={`${sourceSummary.checked_source_count}/${sourceSummary.source_count}`}
-              hint={`${sourceSummary.local_path_count} link local can chuyen registry`}
+              hint={`${sourceSummary.local_path_count} link local cần chuyển registry`}
             />
           </section>
 
@@ -509,14 +509,14 @@ export default async function FinanceDeskPage() {
                   Batch import Excel/Google Sheet
                 </h2>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Theo quy che HEU, file chi duoc dung van hanh khi co ma,
-                  nguon, nguoi phu trach, checklist loi va audit log.
+                  Theo quy chế HEU, file chỉ được dùng vận hành khi có mã,
+                  nguồn, người phụ trách, checklist lỗi và audit log.
                 </p>
               </div>
               <div className="divide-y divide-zinc-200">
                 {importBatches.length === 0 ? (
                   <div className="p-6 text-sm text-zinc-500">
-                    Chua co batch import nao trong pham vi hien tai.
+                    Chưa có batch import nào trong phạm vi hiện tại.
                   </div>
                 ) : (
                   importBatches.map((batch) => (
@@ -537,37 +537,37 @@ export default async function FinanceDeskPage() {
                         </div>
                         <Button asChild variant="outline">
                           <Link href="/ttgdtx/import">
-                            Mo import
+                            Mở import
                             <ArrowRight className="size-4" />
                           </Link>
                         </Button>
                       </div>
                       <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
                         <p>
-                          Phai thu: <b>{money(batch.expected_total_vnd)}</b>
+                          Phải thu: <b>{money(batch.expected_total_vnd)}</b>
                         </p>
                         <p>
-                          Da thu: <b>{money(batch.paid_total_vnd)}</b>
+                          Đã thu: <b>{money(batch.paid_total_vnd)}</b>
                         </p>
                         <p>
-                          Con no: <b>{money(batch.balance_total_vnd)}</b>
+                          Còn nợ: <b>{money(batch.balance_total_vnd)}</b>
                         </p>
                         <p>
-                          Phai chi:{" "}
+                          Phải chi:{" "}
                           <b>{money(batch.partner_payable_total_vnd)}</b>
                         </p>
                         <p>
-                          Da chi: <b>{money(batch.partner_paid_total_vnd)}</b>
+                          Đã chi: <b>{money(batch.partner_paid_total_vnd)}</b>
                         </p>
                         <p>
-                          Con chi:{" "}
+                          Còn chi:{" "}
                           <b>{money(batch.partner_balance_total_vnd)}</b>
                         </p>
                       </div>
                       <p className="mt-3 text-sm text-zinc-500">
-                        Loi/canh bao: {batch.critical_check_count} critical,{" "}
+                        Lỗi/cảnh báo: {batch.critical_check_count} critical,{" "}
                         {batch.failed_check_count} fail,{" "}
-                        {batch.warning_check_count} warning. Cap nhat{" "}
+                        {batch.warning_check_count} warning. Cập nhật{" "}
                         {formatDateTime(batch.updated_at)}.
                       </p>
                     </article>
@@ -578,25 +578,25 @@ export default async function FinanceDeskPage() {
 
             <div className="rounded-lg border border-zinc-200 bg-white shadow-sm">
               <div className="border-b border-zinc-200 p-5">
-                <h2 className="text-lg font-semibold">Ho so va link nguon</h2>
+                <h2 className="text-lg font-semibold">Hồ sơ và link nguồn</h2>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Link hop dong, phu luc, bien ban nghiem thu va chung tu phai
-                  vao File Registry truoc khi dung lam can cu chinh thuc.
+                  Link hợp đồng, phụ lục, biên bản nghiệm thu và chứng từ phải
+                  vào File Registry trước khi dùng làm căn cứ chính thức.
                 </p>
               </div>
               <div className="grid gap-4 p-5">
                 <div className="rounded-lg bg-zinc-50 p-4">
-                  <p className="text-sm text-zinc-500">Nguon da dang ky</p>
+                  <p className="text-sm text-zinc-500">Nguồn đã đăng ký</p>
                   <p className="mt-2 text-2xl font-semibold">
                     {sourceSummary.source_count}
                   </p>
                   <p className="mt-2 text-sm text-zinc-500">
-                    {sourceSummary.checked_source_count} da checked/ready,{" "}
-                    {sourceSummary.pending_source_count} dang cho kiem.
+                    {sourceSummary.checked_source_count} đã checked/ready,{" "}
+                    {sourceSummary.pending_source_count} đang chờ kiểm.
                   </p>
                 </div>
                 <div className="rounded-lg bg-zinc-50 p-4">
-                  <p className="text-sm text-zinc-500">Checklist nguon</p>
+                  <p className="text-sm text-zinc-500">Checklist nguồn</p>
                   <p className="mt-2 text-2xl font-semibold">
                     {sourceSummary.pass_check_count}/{sourceSummary.check_count}
                   </p>
@@ -609,7 +609,7 @@ export default async function FinanceDeskPage() {
                 <Button asChild>
                   <Link href="/ttgdtx/source-control">
                     <FolderSearch className="size-4" />
-                    Mo bang kiem ho so/link
+                    Mở bảng kiểm hồ sơ/link
                   </Link>
                 </Button>
               </div>
@@ -618,22 +618,22 @@ export default async function FinanceDeskPage() {
 
           <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
             <div className="border-b border-zinc-200 p-5">
-              <h2 className="text-lg font-semibold">Kiem soat khop so</h2>
+              <h2 className="text-lg font-semibold">Kiểm soát khớp số</h2>
               <p className="mt-1 text-sm text-zinc-500">
-                Neu co lech, Finance Desk chi duong ve dung buoc goc de sua:
-                cong no, thu tien, doi soat, de nghi chi, duyet chi hoac chi
-                tien.
+                Nếu có lệch, Finance Desk chỉ đường về đúng bước gốc để sửa:
+                công nợ, thu tiền, đối soát, đề nghị chi, duyệt chi hoặc chi
+                tiền.
               </p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1040px] text-sm">
                 <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
                   <tr>
-                    <th className="px-5 py-3">Kiem soat</th>
-                    <th className="px-5 py-3">Buoc</th>
-                    <th className="px-5 py-3">Lech</th>
-                    <th className="px-5 py-3">Trang thai</th>
-                    <th className="px-5 py-3">Xu ly</th>
+                    <th className="px-5 py-3">Kiểm soát</th>
+                    <th className="px-5 py-3">Bước</th>
+                    <th className="px-5 py-3">Lệch</th>
+                    <th className="px-5 py-3">Trạng thái</th>
+                    <th className="px-5 py-3">Xử lý</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-200">
@@ -643,7 +643,7 @@ export default async function FinanceDeskPage() {
                         className="px-5 py-8 text-center text-zinc-500"
                         colSpan={5}
                       >
-                        Chua co dong kiem soat khop so.
+                        Chưa có dòng kiểm soát khớp số.
                       </td>
                     </tr>
                   ) : (
@@ -666,26 +666,26 @@ export default async function FinanceDeskPage() {
                             {money(control.variance_vnd)}
                           </p>
                           <p className="mt-1 text-zinc-500">
-                            {control.affected_partner_count} trung tam bi anh
-                            huong
+                            {control.affected_partner_count} trung tâm bị ảnh
+                            hưởng
                           </p>
                         </td>
                         <td className="px-5 py-4">
                           <StatusBadge status={control.control_status} />
                           <p className="mt-2 text-xs text-zinc-500">
-                            Muc do: {control.severity}
+                            Mức độ: {control.severity}
                           </p>
                         </td>
                         <td className="px-5 py-4">
                           {control.control_status === "PASS" ? (
                             <span className="inline-flex items-center gap-2 rounded-md bg-emerald-50 px-2 py-1 text-emerald-700">
                               <CheckCircle2 className="size-4" />
-                              Dang khop
+                              Đang khớp
                             </span>
                           ) : (
                             <Button asChild variant="outline">
                               <Link href={safeHref(control.action_href)}>
-                                Mo buoc goc
+                                Mở bước gốc
                                 <ArrowRight className="size-4" />
                               </Link>
                             </Button>
@@ -703,37 +703,37 @@ export default async function FinanceDeskPage() {
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/receivables">
                 <ReceiptText className="size-4" />
-                Cong no hoc phi
+                Công nợ học phí
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/payments">
                 <Banknote className="size-4" />
-                Thu hoc phi
+                Thu học phí
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/reconciliation">
                 <Scale className="size-4" />
-                Doi soat
+                Đối soát
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/payment-requests">
                 <WalletCards className="size-4" />
-                De nghi chi
+                Đề nghị chi
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/payment-requests/review">
                 <ShieldCheck className="size-4" />
-                Duyet chi
+                Duyệt chi
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/payment-requests/pay">
                 <Banknote className="size-4" />
-                Ghi nhan chi
+                Ghi nhận chi
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
@@ -745,7 +745,7 @@ export default async function FinanceDeskPage() {
             <Button asChild variant="outline" className="justify-start">
               <Link href="/ttgdtx/source-control">
                 <ClipboardList className="size-4" />
-                Checklist ho so
+                Checklist hồ sơ
               </Link>
             </Button>
           </section>
