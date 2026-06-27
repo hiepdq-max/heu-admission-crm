@@ -2204,3 +2204,17 @@
   `audit:heu-current-state-inventory`.
 - P6-04 remains IN_PROGRESS for production until signed multi-account
   role/workspace UAT and owner sign-off exist outside Codex/chat.
+
+## 2026-06-27 - P6-03 Audit-Log Evidence Acceptance Matrix
+
+- Added a PASS_LOCAL P6-03 audit-log evidence acceptance matrix to
+  `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx`.
+- The matrix requires static trigger coverage, read-only audit surface,
+  required event samples, actor/entity/action/timestamp sufficiency,
+  before/after payload usefulness, evidence redaction, owner sign-off and
+  production-boundary proof.
+- Updated `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`, the production checklist,
+  backlog, current-state inventory, `audit:ttgdtx-audit-trail-guard`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P6-03 remains IN_PROGRESS for production until signed audit-log UAT and owner
+  sign-off exist outside Codex/chat.

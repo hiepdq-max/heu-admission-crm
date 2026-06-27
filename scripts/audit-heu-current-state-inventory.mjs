@@ -126,7 +126,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Audit log[\s\S]*Static coverage and audit trace acceptance matrix pass locally[\s\S]*Signed audit-log UAT pending/i,
+  /Audit log[\s\S]*Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally[\s\S]*Signed audit-log UAT pending/i,
   "P6-03 audit trace acceptance matrix control state",
 );
 requireText(

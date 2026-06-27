@@ -51,6 +51,10 @@ Before signed UAT, the repo must keep local audit-trail evidence green:
   entity groups on `/audit`.
 - `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx` lists
   AUD-01 through AUD-06 evidence expected from the signed UAT session.
+- `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx` also exposes
+  `data-ttgdtx-audit-log-evidence-acceptance-matrix="P6-03"` with
+  P6-03-ACCEPT-01 through P6-03-ACCEPT-06 and decision value
+  `P6_03_ACCEPT / FAIL / BLOCKED`.
 - `components/audit/ttgdtx-audit-trail-guard.tsx` also exposes
   `data-ttgdtx-audit-trace-acceptance-matrix="P6-03"` with AUD-TRACE-01
   through AUD-TRACE-06 acceptance rules.
@@ -121,7 +125,26 @@ traceability.
 | AUD-TRACE-05 | Workflow chain continuity | Reviewer can follow the chain from receivable/payment/reconciliation/request/disbursement/source-control action to final state | A status or money movement has no traceable upstream or downstream audit link |
 | AUD-TRACE-06 | Reviewer sign-off | Audit, KHTC, PHAP_CHE and BGH sign redacted UAT evidence outside Codex/chat | PASS_LOCAL is treated as UAT acceptance |
 
-## 8. Sign-Off Rule
+## 8. Audit-Log Evidence Acceptance Matrix
+
+Use this matrix after the UAT matrix, evidence queries and trace acceptance
+review. It is local-only until signed audit-log UAT and owner sign-off exist.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P6-03-ACCEPT-01 | Static trigger coverage and read-only audit surface | `audit:ttgdtx-audit-log` and `audit:ttgdtx-audit-trail-guard` pass; the `/audit` page reads `audit_logs` only | Any required TTGDTX write table lacks trigger coverage or the audit page can insert, update, delete or call RPC |
+| P6-03-ACCEPT-02 | Required event coverage | UAT evidence includes create/update/check/approve/pay/source-control samples for AUD-01 through AUD-06 | Any required finance/control event is missing or represented only by a generic count with no sampled row |
+| P6-03-ACCEPT-03 | Actor, entity, action and timestamp sufficiency | Each sampled row shows actor, `entity_type`, `entity_id`, `action` and `created_at` tied to the tested workflow step | A reviewer cannot identify who changed which record, when and for which business action |
+| P6-03-ACCEPT-04 | Before/after payload and evidence reference usefulness | `old_values`, `new_values`, notes or controlled evidence reference prove the changed amount, status, approval or source-control result | Payloads are empty, too generic or cannot prove the financial/control change |
+| P6-03-ACCEPT-05 | Redaction and owner sign-off | Screenshots/exports are redacted and signed by Audit, KHTC, IT_DATA, PHAP_CHE and BGH outside Codex/chat | Passwords, OTPs, service-role keys, raw student identity data, CCCD, bank accounts, raw payment data or raw vouchers appear |
+| P6-03-ACCEPT-06 | Production boundary | Audit-log evidence stays advisory/read-only until signed UAT and owner GO/NO-GO exist | PASS_LOCAL is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO |
+
+Decision value: `P6_03_ACCEPT / FAIL / BLOCKED`.
+
+P6-03 can support production readiness only when P6-03-ACCEPT-01 through
+P6-03-ACCEPT-06 all pass with redacted evidence and signed owner approval.
+
+## 9. Sign-Off Rule
 
 Mark audit log completeness as `DONE` only when:
 
@@ -129,5 +152,6 @@ Mark audit log completeness as `DONE` only when:
 2. `npm.cmd run audit:ttgdtx-audit-trail-guard` passes.
 3. UAT confirms at least one audited event for create, update, approve and pay.
 4. AUD-TRACE-01 through AUD-TRACE-06 all pass with redacted evidence.
-5. Audit confirms before/after evidence is sufficient for financial traceability.
-6. No dashboard or AI screen creates, approves or pays money directly.
+5. P6-03-ACCEPT-01 through P6-03-ACCEPT-06 all pass with redacted evidence.
+6. Audit confirms before/after evidence is sufficient for financial traceability.
+7. No dashboard or AI screen creates, approves or pays money directly.

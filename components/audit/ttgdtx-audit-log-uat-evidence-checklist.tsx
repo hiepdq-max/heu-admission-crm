@@ -7,6 +7,13 @@ type EvidenceItem = {
   evidence: string;
 };
 
+type AuditLogAcceptanceItem = {
+  caseId: string;
+  requirement: string;
+  minimumEvidence: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "AUD-01",
@@ -49,6 +56,57 @@ const evidenceItems: EvidenceItem[] = [
     owner: "PHAP_CHE + KHTC + Audit",
     evidence:
       "Audit rows for ttgdtx_source_documents or ttgdtx_source_control_checks after evidence/control update.",
+  },
+];
+
+const auditLogAcceptanceItems: AuditLogAcceptanceItem[] = [
+  {
+    caseId: "P6-03-ACCEPT-01",
+    requirement: "Static trigger coverage and read-only audit surface",
+    minimumEvidence:
+      "`audit:ttgdtx-audit-log` and `audit:ttgdtx-audit-trail-guard` pass; the `/audit` page reads `audit_logs` only.",
+    stopCondition:
+      "Stop if any required TTGDTX write table lacks trigger coverage or the audit page can insert, update, delete or call RPC.",
+  },
+  {
+    caseId: "P6-03-ACCEPT-02",
+    requirement: "Required event coverage",
+    minimumEvidence:
+      "UAT evidence includes create/update/check/approve/pay/source-control samples for AUD-01 through AUD-06.",
+    stopCondition:
+      "Stop if any required finance/control event is missing or represented only by a generic count with no sampled row.",
+  },
+  {
+    caseId: "P6-03-ACCEPT-03",
+    requirement: "Actor, entity, action and timestamp sufficiency",
+    minimumEvidence:
+      "Each sampled row shows actor, entity_type, entity_id, action and created_at tied to the tested workflow step.",
+    stopCondition:
+      "Stop if a reviewer cannot identify who changed which record, when and for which business action.",
+  },
+  {
+    caseId: "P6-03-ACCEPT-04",
+    requirement: "Before/after payload and evidence reference usefulness",
+    minimumEvidence:
+      "old_values, new_values, notes or controlled evidence reference prove the changed amount, status, approval or source-control result.",
+    stopCondition:
+      "Stop if payloads are empty, too generic or cannot prove the financial/control change.",
+  },
+  {
+    caseId: "P6-03-ACCEPT-05",
+    requirement: "Redaction and owner sign-off",
+    minimumEvidence:
+      "Screenshots/exports are redacted and signed by Audit, KHTC, IT_DATA, PHAP_CHE and BGH outside Codex/chat.",
+    stopCondition:
+      "Stop if passwords, OTPs, service-role keys, raw student identity data, CCCD, bank accounts, raw payment data or raw vouchers appear.",
+  },
+  {
+    caseId: "P6-03-ACCEPT-06",
+    requirement: "Production boundary",
+    minimumEvidence:
+      "Audit-log evidence stays advisory/read-only until signed UAT and owner GO/NO-GO exist.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO.",
   },
 ];
 
@@ -105,6 +163,53 @@ export function TtgdtxAuditLogUatEvidenceChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-ttgdtx-audit-log-evidence-acceptance-matrix="P6-03"
+        className="mt-5 border-t border-cyan-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-cyan-950">
+              P6-03 audit-log evidence acceptance matrix: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-cyan-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_03_ACCEPT / FAIL / BLOCKED
+              </span>
+              . Use this matrix to decide whether audit-log evidence is ready
+              for owner review, not to approve production.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-cyan-200 bg-white px-3 py-2 text-cyan-950">
+            Weak screenshots or count-only exports are not enough for financial
+            traceability.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {auditLogAcceptanceItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-cyan-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.requirement}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.minimumEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

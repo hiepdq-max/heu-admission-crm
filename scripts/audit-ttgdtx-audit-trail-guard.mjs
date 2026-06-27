@@ -83,6 +83,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-audit-log-evidence-acceptance-matrix="P6-03")(?=[\s\S]*P6-03 audit-log evidence acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_03_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-03-ACCEPT-01)(?=[\s\S]*P6-03-ACCEPT-02)(?=[\s\S]*P6-03-ACCEPT-03)(?=[\s\S]*P6-03-ACCEPT-04)(?=[\s\S]*P6-03-ACCEPT-05)(?=[\s\S]*P6-03-ACCEPT-06)(?=[\s\S]*Static trigger coverage and read-only audit surface)(?=[\s\S]*Required event coverage)(?=[\s\S]*Actor, entity, action and timestamp sufficiency)(?=[\s\S]*Before\/after payload and evidence reference usefulness)(?=[\s\S]*Redaction and owner sign-off)(?=[\s\S]*Production boundary)(?=[\s\S]*PASS_LOCAL is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO)/i,
+  "P6-03 audit-log evidence acceptance matrix",
+  evidenceChecklistPath,
+);
+
 for (const entity of [
   "ttgdtx_student_receivables",
   "ttgdtx_tuition_payments",
@@ -134,8 +141,15 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Audit-Log Evidence Acceptance Matrix)(?=[\s\S]*data-ttgdtx-audit-log-evidence-acceptance-matrix="P6-03")(?=[\s\S]*P6-03-ACCEPT-01)(?=[\s\S]*P6-03-ACCEPT-06)(?=[\s\S]*P6_03_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-03-ACCEPT-01 through\s+P6-03-ACCEPT-06 all pass with redacted evidence)/i,
+  "runbook audit-log evidence acceptance matrix",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit-log evidence acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps audit log IN_PROGRESS with guard evidence",
   checklistPath,
 );
