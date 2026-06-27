@@ -701,3 +701,31 @@
 - P4-03 is PASS_LOCAL as a policy/design guard.
 - No raw bank statement, account number or production bank evidence is committed.
 - Production bank import/evidence handling still requires signed UAT and business Go/No-Go.
+
+## 2026-06-27 - AI Assistant Advisory-Only Guard
+
+### Scope
+
+- Continued HEU production-readiness hardening with P7-01 AI assistant policy.
+- Added an explicit AI policy: AI may draft, summarize, suggest and warn; AI must not approve, pay, recognize revenue, freeze/release, delete evidence or mark production GO.
+- Updated `/ai-assistant` copy to state the same business boundary.
+- Added a local audit to keep the AI assistant route read-only and advisory-only.
+
+### Files Updated/Added
+
+- `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`
+- `scripts/audit-heu-ai-policy.mjs`
+- `app/ai-assistant/page.tsx`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_CURRENT_STATE_INVENTORY.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P7-01 is PASS_LOCAL for policy and static UI guard only.
+- This does not enable AI automation or production AI.
+- Future AI workflow actions still require prompt/output audit logging, role/scope enforcement and signed UAT.

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "audit:heu-ai-policy": "node scripts/audit-heu-ai-policy.mjs",
     "audit:heu-backlog-codes": "node scripts/audit-heu-backlog-codes.mjs",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",

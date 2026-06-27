@@ -138,7 +138,7 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | P2-18 dashboard authorized UAT pending | HIGH | Route/build/static access guard pass; browser redirects to login without a signed-in test user |
 | Real workbook/PDF/appendix complexity | HIGH | Synthetic real-like UAT pack added and audited; signed UAT still must prove multi-section workbook, bank receipt batch, BBNT, invoice and account-control behavior |
 | Finance flow đã test một lần nhưng chưa có full automated tests | HIGH | VND money format audit passes; duplicate receivable/receipt/reconciliation/payout tests still need expansion |
-| AI policy chưa được enforcement toàn hệ | MEDIUM | AI phải chỉ hỗ trợ, không phê duyệt |
+| AI policy static guard | MEDIUM | AI policy/audit passes for advisory-only route; future AI automation still needs prompt log, data scope and signed UAT |
 | Permission scope cần test nhiều vai trò | HIGH | Cần test admin, kế toán, tuyển sinh, CTHSSV, đối tác |
 
 ## 7. Production Readiness Assessment

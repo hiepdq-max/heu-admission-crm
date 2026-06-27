@@ -46,6 +46,7 @@ const requiredFiles = [
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
@@ -59,6 +60,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
+  "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
@@ -69,6 +71,7 @@ for (const file of requiredFiles) {
 
 const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
+  "audit:heu-ai-policy",
   "audit:heu-backlog-codes",
   "audit:hard-delete",
   "audit:vnd-money-format",

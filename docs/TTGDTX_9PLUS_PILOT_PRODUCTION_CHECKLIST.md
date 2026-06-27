@@ -64,7 +64,7 @@ approval.
 | Audit log completeness | IT_DATA + AUDIT | IN_PROGRESS | `npm.cmd run audit:ttgdtx-audit-log` passes; UAT in `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`; logs for create/update/check/approve/pay | YES | Cannot trace who changed finance state |
 | Hard delete review | IT_DATA + AUDIT | IN_PROGRESS | `docs/HARD_DELETE_AUDIT.md` reviewed; `npm.cmd run audit:hard-delete` and `npm.cmd run audit:ttgdtx-cascade` pass; non-TTGDTX cascade review remains | YES | Loss of evidence, history or legal record |
 | Error routing P2-07/P2-08 | KHTC + IT_DATA + AUDIT | DONE | Issue routing/resolution records | NO | Import errors do not reach the right owner |
-| No AI approval | BGH + IT_DATA | IN_PROGRESS | AI policy shows AI only warns/suggests | YES | AI self-approves finance or go-live |
+| No AI approval | BGH + IT_DATA | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; `/ai-assistant` is advisory/read-only and cannot approve, pay, recognize revenue, freeze/release or mark go-live | YES | AI self-approves finance or go-live |
 | Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; restore procedure; tested dry-run; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
 | Internal UAT sign-off | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` records preflight/build and unauthenticated browser smoke pass; `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` defines synthetic account setup; `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` defines the route/account matrix; signed multi-account UAT still required | YES | Real pilot starts before enough testing |
 
