@@ -278,20 +278,48 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
   },
   {
     caseId: "P0-14-06",
-    blockerCode: "P6-04/P6-03/P6-06",
-    title: "Role, audit-log and hard-delete evidence",
-    owner: "IT_DATA + Audit + process owners",
+    blockerCode: "P6-04",
+    title: "Role and workspace UAT evidence",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
     evidenceClass: "CONTROLLED_REDACTED",
     controlledLocation:
-      "Governance UAT folder with role-scope screenshots, audit trace rows and waiver/conversion notes.",
+      "Governance UAT folder with role/workspace screenshots and route-matrix results.",
     requiredProof:
-      "Role/workspace test matrix, audit rows for finance actions and cascade conversion or written waiver.",
+      "Synthetic-account role/workspace test matrix, blocked out-of-scope cases and signed route results.",
     forbiddenContent:
-      "No real credentials, private profile data, unrestricted audit export or hidden hard-delete approval.",
-    signoff: "IT_DATA, Audit and process owners accept before owner GO/NO-GO.",
+      "No real credentials, private profile data, reset links, passwords, OTPs or broad-access screenshots.",
+    signoff: "IT_DATA, TRUONG_PHONG and Audit accept role/workspace evidence before owner GO/NO-GO.",
   },
   {
     caseId: "P0-14-07",
+    blockerCode: "P6-03",
+    title: "Audit-log traceability evidence",
+    owner: "Audit + IT_DATA + KHTC",
+    evidenceClass: "CONTROLLED_REDACTED",
+    controlledLocation:
+      "Governance UAT folder with redacted audit trace rows and event-to-action mapping.",
+    requiredProof:
+      "Trace rows for create, update, check, approve, pay and source-control events.",
+    forbiddenContent:
+      "No unrestricted audit export, raw profile data, raw payment evidence, passwords or service-role keys.",
+    signoff: "Audit, IT_DATA and KHTC accept traceability evidence before owner GO/NO-GO.",
+  },
+  {
+    caseId: "P0-14-08",
+    blockerCode: "P6-06",
+    title: "Hard-delete and cascade conversion evidence",
+    owner: "IT_DATA + Audit + business owners",
+    evidenceClass: "CONTROLLED_REDACTED",
+    controlledLocation:
+      "Governance evidence folder with conversion notes or narrow written waiver references.",
+    requiredProof:
+      "Protected cascade paths converted to restrict/archive/status patterns, or derived-only waiver signed with rollback note.",
+    forbiddenContent:
+      "No hidden hard-delete approval, raw sensitive row export, broad waiver or deletion-based rollback proof.",
+    signoff: "IT_DATA, Audit and affected business owners accept conversion or narrow waiver before owner GO/NO-GO.",
+  },
+  {
+    caseId: "P0-14-09",
     blockerCode: "P0-09",
     title: "Final owner GO/NO-GO evidence",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",

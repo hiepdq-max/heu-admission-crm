@@ -2675,3 +2675,15 @@
 - This is owner-review wording clarity only. It does not execute UAT, collect
   evidence, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-14 P6 Evidence Binder Split
+
+- Split the P0-14 production evidence binder source so P6-04 role/workspace
+  UAT, P6-03 audit-log traceability and P6-06 hard-delete/cascade
+  conversion-or-narrow-waiver are separate evidence requirements.
+- Updated `audit:heu-production-evidence-binder` and `audit:ttgdtx-release-gates`
+  so the binder cannot silently return to one grouped `P6-04/P6-03/P6-06`
+  proof row.
+- This is evidence-binder clarity only. It does not execute UAT, collect
+  evidence, approve a waiver, approve migration, approve finance action or
+  mark production GO.

@@ -74,6 +74,10 @@ requireText(
   sourcePath,
 );
 
+if (/blockerCode:\s*"P6-04\/P6-03\/P6-06"/.test(source)) {
+  fail(`${sourcePath}: P6-04, P6-03 and P6-06 evidence must stay split.`);
+}
+
 for (const caseId of [
   "P0-14-01",
   "P0-14-02",
@@ -82,6 +86,8 @@ for (const caseId of [
   "P0-14-05",
   "P0-14-06",
   "P0-14-07",
+  "P0-14-08",
+  "P0-14-09",
 ]) {
   requireText(source, new RegExp(caseId), `${caseId} evidence case`, sourcePath);
 }
@@ -92,7 +98,9 @@ for (const blocker of [
   "P0-19",
   "P2-17",
   "P2-18",
-  "P6-04/P6-03/P6-06",
+  "P6-04",
+  "P6-03",
+  "P6-06",
   "P0-09",
 ]) {
   requireText(source, new RegExp(blocker.replaceAll("/", "\\/")), `${blocker} evidence blocker`, sourcePath);
@@ -114,8 +122,29 @@ requireText(
 
 requireText(
   source,
-  /P0-14-07[\s\S]*P0-09[\s\S]*Final owner GO\/NO-GO evidence[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
-  "P0-14-07 owner sign-off UAT handoff proof",
+  /P0-14-06[\s\S]*P6-04[\s\S]*Role and workspace UAT evidence[\s\S]*Synthetic-account role\/workspace test matrix[\s\S]*blocked out-of-scope cases/i,
+  "P0-14-06 role/workspace UAT proof",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /P0-14-07[\s\S]*P6-03[\s\S]*Audit-log traceability evidence[\s\S]*Trace rows for create, update, check, approve, pay and source-control events/i,
+  "P0-14-07 audit-log traceability proof",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /P0-14-08[\s\S]*P6-06[\s\S]*Hard-delete and cascade conversion evidence[\s\S]*Protected cascade paths converted to restrict\/archive\/status patterns[\s\S]*derived-only waiver signed with rollback note/i,
+  "P0-14-08 hard-delete/cascade conversion proof",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /P0-14-09[\s\S]*P0-09[\s\S]*Final owner GO\/NO-GO evidence[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
+  "P0-14-09 owner sign-off UAT handoff proof",
   sourcePath,
 );
 
