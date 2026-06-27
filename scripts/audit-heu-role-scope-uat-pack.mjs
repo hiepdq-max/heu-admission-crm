@@ -48,6 +48,7 @@ requireText(pack, /Do not paste passwords, OTPs, reset links, API keys, service-
 requireText(pack, /audit:permission-soft-revoke[\s\S]*audit:ttgdtx-role-scope-access[\s\S]*audit:ttgdtx-data-fetch-gate[\s\S]*audit:ttgdtx-dashboard-access[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan[\s\S]*audit:heu-role-scope-uat-pack[\s\S]*audit:ttgdtx-release-gates/i, "required static preflight commands");
 requireText(pack, /UAT_ADMIN[\s\S]*UAT_BGH[\s\S]*UAT_KHTC_TTGDTX_OPERATOR[\s\S]*UAT_TUYEN_SINH_TTGDTX[\s\S]*UAT_CTHSSV[\s\S]*UAT_DAO_TAO[\s\S]*UAT_PHAP_CHE[\s\S]*UAT_AUDIT[\s\S]*UAT_OUT_OF_SCOPE_STAFF/i, "role matrix coverage");
 requireText(pack, /Lead list\/detail[\s\S]*TTGDTX contract\/source[\s\S]*TTGDTX receivable, collection, reconciliation and payment[\s\S]*TTGDTX accounting dashboard[\s\S]*Master\/settings[\s\S]*Audit log/i, "route family coverage");
+requireText(pack, /data-heu-role-scope-route-matrix="P6-04"[\s\S]*P6-04-ROUTE-01[\s\S]*P6-04-ROUTE-07[\s\S]*ALLOWED[\s\S]*BLOCKED[\s\S]*EMPTY_SCOPED_STATE[\s\S]*UI-only hide is not enough/i, "role-scope route matrix coverage");
 requireText(pack, /Expected result[\s\S]*ALLOWED, BLOCKED or EMPTY_SCOPED_STATE/i, "evidence expected result field");
 requireText(pack, /Stop UAT and fix/i, "stop conditions section");
 requireText(pack, /A page queries sensitive data before auth, permission and scope checks/i, "query-before-gate stop condition");
@@ -72,6 +73,14 @@ if (
 ) {
   fail(
     "components/settings/user-scope-enforcement-panel.tsx: missing P6-04 role/workspace evidence checklist or no-secret boundary.",
+  );
+}
+
+if (
+  !/(?=[\s\S]*data-heu-role-scope-route-matrix="P6-04")(?=[\s\S]*P6-04 role-scope route matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6-04-ROUTE-01)(?=[\s\S]*P6-04-ROUTE-07)(?=[\s\S]*Login and unauthenticated routes)(?=[\s\S]*Lead list\/detail)(?=[\s\S]*TTGDTX contract\/source pages)(?=[\s\S]*TTGDTX receivable, collection, reconciliation and payment)(?=[\s\S]*TTGDTX accounting dashboard)(?=[\s\S]*Master\/settings pages)(?=[\s\S]*Audit log pages)(?=[\s\S]*ALLOWED, BLOCKED\s+or EMPTY_SCOPED_STATE)(?=[\s\S]*UI-only hide is not enough if a server\s+action can still write)(?=[\s\S]*Do not paste passwords, OTPs, reset links, API keys,\s+service-role keys, CCCD, bank accounts, bank statements,\s+vouchers or raw student identity data)/i.test(panel)
+) {
+  fail(
+    "components/settings/user-scope-enforcement-panel.tsx: missing P6-04 route matrix, route coverage, server-side bypass warning or no-secret boundary.",
   );
 }
 

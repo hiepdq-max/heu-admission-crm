@@ -69,7 +69,9 @@ At minimum, browser UAT must cover:
 
 Use `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` and
 `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md` for detailed
-TTGDTX route cases.
+TTGDTX route cases. The user scope panel also exposes a PASS_LOCAL route
+matrix at `components/settings/user-scope-enforcement-panel.tsx` so testers can
+see the route-family lanes before collecting signed browser evidence.
 
 ## 6. Evidence Template
 
@@ -121,6 +123,14 @@ Evidence must use expected results `ALLOWED`, `BLOCKED` or
 `EMPTY_SCOPED_STATE`. Do not attach passwords, OTPs, reset links, API keys,
 service-role keys, CCCD, bank accounts, bank statements, vouchers or raw
 student identity data in Git/Codex/chat.
+
+The same panel exposes `data-heu-role-scope-route-matrix="P6-04"` for route
+UAT. The route matrix is PASS_LOCAL only and covers P6-04-ROUTE-01 through
+P6-04-ROUTE-07: login/unauthenticated routes, lead list/detail, TTGDTX
+contract/source, TTGDTX finance operations, accounting dashboard,
+master/settings and audit-log pages. Results must be `ALLOWED`, `BLOCKED` or
+`EMPTY_SCOPED_STATE`, and a UI-only hide is not enough if a server action can
+still write.
 
 ## 10. Current Result
 

@@ -101,6 +101,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard and route matrix exist[\s\S]*Multi-account signed UAT pending/i,
+  "P6-04 role-scope route matrix control state",
+);
+requireText(
+  inventory,
   /P7-01\/P7-02\/P7-03 are PASS_LOCAL; autonomous AI remains locked/i,
   "AI remains advisory-only",
 );

@@ -138,6 +138,72 @@ const roleScopeEvidenceItems = [
   },
 ];
 
+const roleScopeRouteMatrixItems = [
+  {
+    caseId: "P6-04-ROUTE-01",
+    routeFamily: "Login and unauthenticated routes",
+    accounts: "All UAT accounts",
+    expected:
+      "Unauthenticated access is redirected or blocked; authenticated access uses only synthetic UAT labels.",
+    stopCondition:
+      "A protected route renders sensitive data before auth, permission and scope checks.",
+  },
+  {
+    caseId: "P6-04-ROUTE-02",
+    routeFamily: "Lead list/detail",
+    accounts: "UAT_TUYEN_SINH_TTGDTX, UAT_CTHSSV, UAT_OUT_OF_SCOPE_STAFF",
+    expected:
+      "Assigned, team and out-of-scope lead visibility produce ALLOWED, BLOCKED or EMPTY_SCOPED_STATE results.",
+    stopCondition:
+      "A user sees unrestricted lead data outside assigned segment, team or role.",
+  },
+  {
+    caseId: "P6-04-ROUTE-03",
+    routeFamily: "TTGDTX contract/source pages",
+    accounts: "UAT_PHAP_CHE, UAT_KHTC_TTGDTX_OPERATOR, UAT_OUT_OF_SCOPE_STAFF",
+    expected:
+      "Legal/source roles can review scoped source evidence; out-of-scope users are blocked or empty.",
+    stopCondition:
+      "Contract-only or source-only access exposes unrestricted finance totals or hidden evidence.",
+  },
+  {
+    caseId: "P6-04-ROUTE-04",
+    routeFamily: "TTGDTX receivable, collection, reconciliation and payment",
+    accounts: "UAT_KHTC_TTGDTX_OPERATOR, UAT_BGH, UAT_TUYEN_SINH_TTGDTX",
+    expected:
+      "KHTC can operate only inside assigned finance scope; BGH stays read-focused; admission roles cannot approve/pay.",
+    stopCondition:
+      "A non-finance user can create receivable, collect, approve or pay through a server action.",
+  },
+  {
+    caseId: "P6-04-ROUTE-05",
+    routeFamily: "TTGDTX accounting dashboard",
+    accounts: "UAT_BGH, UAT_AUDIT, UAT_PHAP_CHE, UAT_OUT_OF_SCOPE_STAFF",
+    expected:
+      "Dashboard data is read-only, scoped and denied to contract-only or out-of-scope users unless approved.",
+    stopCondition:
+      "Dashboard shows unrestricted finance totals or exposes raw sensitive evidence.",
+  },
+  {
+    caseId: "P6-04-ROUTE-06",
+    routeFamily: "Master/settings pages",
+    accounts: "UAT_ADMIN, delegated scope manager, non-admin staff",
+    expected:
+      "Only approved admin/delegated users manage scopes; broad lead visibility ALL remains admin-only.",
+    stopCondition:
+      "A non-admin grants broad access, changes protected roles or bypasses soft-revoke controls.",
+  },
+  {
+    caseId: "P6-04-ROUTE-07",
+    routeFamily: "Audit log pages",
+    accounts: "UAT_AUDIT, UAT_BGH, UAT_OUT_OF_SCOPE_STAFF",
+    expected:
+      "Audit users can review traceability read-only; no account can mutate money, evidence or role scope from audit pages.",
+    stopCondition:
+      "Audit views expose raw secrets/PII or provide write actions.",
+  },
+];
+
 function formatNumber(value: number | null | undefined) {
   return new Intl.NumberFormat("vi-VN").format(value ?? 0);
 }
@@ -369,6 +435,67 @@ export function UserScopeEnforcementPanel({
               PASS_LOCAL does not approve production access, broad permissions,
               real-data UAT, finance action, hard-delete, AI approval or
               production GO.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-950"
+          data-heu-role-scope-route-matrix="P6-04"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ClipboardCheck className="size-4 shrink-0" />
+                <span>P6-04 role-scope route matrix: PASS_LOCAL only</span>
+              </div>
+              <p className="mt-2">
+                Browser UAT must prove each route family with positive and
+                negative synthetic accounts. Results must be ALLOWED, BLOCKED
+                or EMPTY_SCOPED_STATE; a UI-only hide is not enough if a server
+                action can still write.
+              </p>
+              <p className="mt-2 font-mono text-xs">
+                TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-slate-200 bg-white px-3 py-2">
+              Signed evidence is still required outside Codex/chat before
+              P6-04 can support production readiness.
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {roleScopeRouteMatrixItems.map((item) => (
+              <article
+                key={item.caseId}
+                className="border-l-2 border-slate-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-slate-600">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.routeFamily}
+                </p>
+                <p className="mt-2 font-mono text-xs text-slate-700">
+                  {item.accounts}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  {item.expected}
+                </p>
+                <p className="mt-2 leading-5 text-rose-700">
+                  Stop: {item.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+            <ShieldAlert className="mt-0.5 size-4 shrink-0" />
+            <p>
+              Do not paste passwords, OTPs, reset links, API keys,
+              service-role keys, CCCD, bank accounts, bank statements,
+              vouchers or raw student identity data into route UAT evidence.
             </p>
           </div>
         </div>

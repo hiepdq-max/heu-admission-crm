@@ -2088,3 +2088,13 @@
   P6-06 remains IN_PROGRESS for production until protected rows are converted
   to restrict/archive/status transitions or waived in writing by accountable
   owners.
+## 2026-06-27 - P6-04 Role-Scope Route Matrix
+
+- Added a PASS_LOCAL route-family matrix to
+  `components/settings/user-scope-enforcement-panel.tsx` for P6-04 browser UAT.
+- The matrix covers login, lead detail, TTGDTX contract/source, TTGDTX finance,
+  accounting dashboard, master/settings and audit-log route families with
+  positive and negative synthetic account expectations.
+- Extended `audit:heu-role-scope-uat-pack` and release-gate coverage so the
+  route matrix, server-side bypass warning and no-secret evidence boundary stay
+  visible before signed role/workspace UAT.
