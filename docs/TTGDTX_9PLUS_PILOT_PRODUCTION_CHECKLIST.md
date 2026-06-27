@@ -35,7 +35,7 @@ approval.
 | Freeze TTGDTX 9+ pilot scope | BGH + IT_DATA | DONE | Tech Decision 001 | YES | Scope creep and uncontrolled delivery |
 | Align TTGDTX linked operating spine | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md` | YES | Screens are built as isolated features instead of one controlled linked-training chain |
 | TTGDTX operating control matrix | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`; owners, blocking gates and next actions reflected in UI/UAT | YES | Workflow has pages but no enforceable control path |
-| User-friendly TTGDTX process labels | IT_DATA + KHTC | IN_PROGRESS | `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`; screens show business name first and P2 code second | NO | Users cannot find the right workflow because technical P2 codes hide the business meaning |
+| User-friendly TTGDTX process labels | IT_DATA + KHTC | PASS_LOCAL | `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`; `lib/ttgdtx-process-labels.ts`; `npm.cmd run audit:ttgdtx-process-labels`; screens/search show business name first and P2 code second | NO | Users cannot find the right workflow because technical P2 codes hide the business meaning |
 | HEU data foundation controls | IT_DATA + Process owners | PASS_LOCAL | `docs/HEU_DATA_MODEL_V1.md`; `docs/HEU_DATA_DICTIONARY_V1.md`; `docs/HEU_ROLE_PERMISSION_MATRIX_V1.md`; `npm.cmd run audit:heu-data-foundation`; no production schema/access approval | YES | Master names, fields and permissions drift before UAT and migration approval |
 | SQL object to master-name map | IT_DATA | PASS_LOCAL | `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`; `npm.cmd run audit:heu-sql-object-master-map`; map only, no production schema rename/drop/alter | NO | New SQL/dashboard work uses inconsistent names and breaks future migration planning |
 | Generic TTGDTX source/evidence model | IT_DATA + Audit | PASS_LOCAL | `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`; `npm.cmd run audit:ttgdtx-generic-source-evidence`; reference-center material remains metadata/UAT only | NO | A reference center is hard-coded into product logic and cannot scale to other centers |
@@ -103,7 +103,7 @@ production, the highest priority blockers are:
 5. Execute anonymized Phu-Xuyen-like UAT cases from `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json` and attach signed evidence.
 6. Implement or explicitly defer the account-control workflow from `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`.
 7. Reflect `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md` in UI helper text and gate logic.
-8. Finish user-friendly labels/search for process names using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
+8. Validate user-friendly labels/search in browser UAT using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
 9. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
 10. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
 11. Complete role/workspace permission tests.

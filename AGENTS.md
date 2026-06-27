@@ -76,6 +76,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
 - `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
+- `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
 - `docs/STEP110_P2_19_UAT_RUNBOOK.md`
 - `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
 - `docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md`
@@ -117,6 +118,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
   - `npm.cmd run audit:ttgdtx-period-lock-policy`
+  - `npm.cmd run audit:ttgdtx-process-labels`
   - `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`
   - `npm.cmd run audit:ttgdtx-reconciliation-repair-safety`
   - `npm.cmd run audit:ttgdtx-role-scope-access`

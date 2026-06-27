@@ -1014,3 +1014,29 @@
 
 - P6-06 is PASS_LOCAL as a review/control artifact.
 - Hard-delete review remains IN_PROGRESS because protected non-TTGDTX/base cascade paths still require conversion or written waiver before production.
+
+## 2026-06-27 - TTGDTX User-Friendly Process Labels
+
+### Scope
+
+- Continued usability hardening for TTGDTX process discovery.
+- Added a shared process-label helper so business names stay before P2 codes.
+- Added TTGDTX process labels into Search suggestions, including Thu hoc phi (P2-10).
+- Added an audit to prevent reverting to code-first labels.
+
+### Files Updated/Added
+
+- `lib/ttgdtx-process-labels.ts`
+- `scripts/audit-ttgdtx-process-labels.mjs`
+- `app/search/page.tsx`
+- `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- User-friendly TTGDTX process labels are PASS_LOCAL for search/discovery.
+- This does not replace signed UAT or production approval.

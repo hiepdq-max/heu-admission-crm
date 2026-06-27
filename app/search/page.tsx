@@ -12,6 +12,7 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { TTGDTX_PROCESS_SEARCH_SUGGESTIONS } from "@/lib/ttgdtx-process-labels";
 import {
   firstParam,
   getAdmissionWorkspaceContext,
@@ -161,6 +162,7 @@ function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
     "P1-10",
     "P1-11",
     "BHXH",
+    ...TTGDTX_PROCESS_SEARCH_SUGGESTIONS,
     "điểm danh",
     "công nợ",
     "ngắn hạn",

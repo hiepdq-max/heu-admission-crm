@@ -70,6 +70,7 @@ const requiredFiles = [
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "lib/ttgdtx-process-labels.ts",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-bgh-dashboard-spec.mjs",
@@ -83,6 +84,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
+  "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
@@ -114,6 +116,7 @@ const requiredScripts = [
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-period-lock-policy",
+  "audit:ttgdtx-process-labels",
   "audit:ttgdtx-receivable-payment-lifecycle",
   "audit:ttgdtx-reconciliation-repair-safety",
   "audit:ttgdtx-role-scope-access",
@@ -283,6 +286,18 @@ requireText(
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
   /business name first/i,
   "business-name-first process label rule",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /User-friendly TTGDTX process labels[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-process-labels/i,
+  "TTGDTX process labels PASS_LOCAL checklist row",
+);
+
+requireText(
+  "lib/ttgdtx-process-labels.ts",
+  /code: "P2-10"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*hoa don thu tien/i,
+  "P2-10 business-first process label",
 );
 
 requireText(

@@ -72,3 +72,14 @@ To find P2-10, search any of:
 - Hoa don thu tien
 - Collection
 - P2-10
+
+## 5. 2026-06-27 Local Implementation
+
+- Added `lib/ttgdtx-process-labels.ts` as the shared local process-label map.
+- Added `npm.cmd run audit:ttgdtx-process-labels` to keep business names before
+  P2 codes.
+- Added the TTGDTX process labels to Search suggestions so users can search
+  "Thu hoc phi (P2-10)" without knowing only the technical code.
+
+This is PASS_LOCAL only. It does not approve production data, production UAT or
+business sign-off.
