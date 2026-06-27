@@ -3,7 +3,7 @@
 ## 1. Scope
 
 Date: 2026-06-22  
-Scope: database/step90 through database/step108  
+Scope: database/step90 through database/step110
 Mode: documentation-only audit. No migration was run.
 
 ## 2. Migration Inventory
@@ -29,20 +29,25 @@ Mode: documentation-only audit. No migration was run.
 | 106 | step106_ttgdtx_payment_request_approval_p2_16.sql | P2-16 payment approval | Migration | CRITICAL |
 | 107 | step107_ttgdtx_payment_execution_p2_17.sql | P2-17 payment execution | Migration | CRITICAL |
 | 108 | step108_ttgdtx_accounting_dashboard_p2_18.sql | P2-18 accounting dashboard | Migration | HIGH |
+| 109 | step109_role_permission_soft_revoke_p0_11.sql | P0-11 role permission soft revoke | Migration | HIGH |
+| 110 | step110_ttgdtx_real_data_evidence_metadata_p2_19.sql | P2-19 real-data evidence metadata, privacy fit, BBNT/account-control/giai-chap controls | Migration Candidate | HIGH |
 
-## 3. step90-step108 Review
+## 3. step90-step110 Review
 
-Step90 to Step108 form the TTGDTX 9+ accounting pilot chain. They should not be treated as a single undifferentiated SQL bundle. Some files are foundation migrations, some are workflow additions, and some are pilot fixes/temporary unlocks. Production migration requires backup, transaction strategy, idempotency review and rollback plan.
+Step90 to Step108 form the TTGDTX 9+ accounting pilot chain. Step109 is a P0-11 permission hardening migration required by the no-hard-delete control. Step110 is a real-data evidence/privacy metadata extension required before Phu Xuyen-like source packs, BBNT evidence, account-freeze/release notices or collateral giai-chap evidence can be imported or used in UAT. They should not be treated as a single undifferentiated SQL bundle. Some files are foundation migrations, some are workflow additions, some are pilot fixes/temporary unlocks, step109 changes role permission semantics, and step110 expands evidence metadata. Production migration requires backup, transaction strategy, idempotency review and rollback plan.
 
 ## 4. DROP/DELETE/TRUNCATE Risk
 
 | File | Pattern detected | Risk |
 |---|---|---|
-| step101_ttgdtx_reconciliation_p2_13.sql | `delete from public.ttgdtx_tuition_reconciliation_batches` | CRITICAL |
-| step103_fix_p2_13_reconciliation_line_columns.sql | `delete from public.ttgdtx_tuition_reconciliation_batches` | CRITICAL |
-| step105_ttgdtx_partner_payment_request_p2_15.sql | `delete from public.ttgdtx_partner_payment_requests` | CRITICAL |
-| step90-step108 scan | No SQL `truncate` detected in current pattern scan | LOW |
-| step90-step108 scan | No `drop table` detected in current pattern scan | LOW |
+| step101_ttgdtx_reconciliation_p2_13.sql | RESOLVED 2026-06-25: explicit rollback `delete from` removed; exception rolls back the draft batch in the same transaction | RESOLVED |
+| step103_fix_p2_13_reconciliation_line_columns.sql | RESOLVED 2026-06-25: explicit rollback `delete from` removed; exception rolls back the draft batch in the same transaction | RESOLVED |
+| step105_ttgdtx_partner_payment_request_p2_15.sql | RESOLVED 2026-06-25: explicit rollback `delete from` removed; exception rolls back the draft request in the same transaction | RESOLVED |
+| step90-step110 scan | No SQL `delete from` detected after 2026-06-25 cleanup | LOW |
+| step90-step110 scan | No SQL `truncate` detected in current pattern scan | LOW |
+| step90-step110 scan | No `drop table` detected in current pattern scan | LOW |
+| step90-step110 scan | No `on delete cascade` after 2026-06-25 TTGDTX cascade cleanup; `npm.cmd run audit:ttgdtx-cascade` must pass | LOW |
+| step90-step110 scan | TTGDTX tables require `write_audit_log()` triggers where new TTGDTX tables are created; `npm.cmd run audit:ttgdtx-audit-log` must pass | LOW |
 
 ## 5. Re-run Risk
 
@@ -51,9 +56,11 @@ Step90 to Step108 form the TTGDTX 9+ accounting pilot chain. They should not be 
 | step100_ttgdtx_pilot_open_p2_01_p2_02_p0_19.sql | May reopen pilot gates unintentionally | Confirm it is a temporary pilot waiver |
 | step101_ttgdtx_reconciliation_p2_13.sql | May affect reconciliation logic and batch creation | Confirm idempotency and duplicate prevention |
 | step103_fix_p2_13_reconciliation_line_columns.sql | Patch may duplicate or alter columns/functions | Confirm schema state before run |
-| step105_ttgdtx_partner_payment_request_p2_15.sql | Payment request creation must not duplicate requests | Confirm unique constraints |
-| step107_ttgdtx_payment_execution_p2_17.sql | Payout must not execute twice | Confirm idempotency and lock |
-| step108_ttgdtx_accounting_dashboard_p2_18.sql | Dashboard may rely on previous views/functions | Confirm dependencies and runtime |
+| step105_ttgdtx_partner_payment_request_p2_15.sql | Payment request creation must not duplicate requests and must not bypass BBNT/partner-invoice evidence controls | Confirm unique constraints, required evidence link and P2-19 BBNT/partner-invoice blocker behavior |
+| step107_ttgdtx_payment_execution_p2_17.sql | Payout must not execute twice or bypass BBNT/partner-invoice/evidence controls | Confirm RPC-only write path, normalized voucher guard, row lock, required evidence link, P2-19 blockers and UAT runbook |
+| step108_ttgdtx_accounting_dashboard_p2_18.sql | Dashboard may rely on previous views/functions | Confirm dependencies, runtime and `ttgdtx_accounting_dashboard_control_board` |
+| step109_role_permission_soft_revoke_p0_11.sql | Permission semantics change from physical replacement to soft revoke | Confirm `npm.cmd run audit:permission-soft-revoke`, `has_permission()` and settings UI read only ACTIVE permissions |
+| step110_ttgdtx_real_data_evidence_metadata_p2_19.sql | Adds metadata/checks for high-sensitivity evidence, BBNT, account-control notices and collateral giai-chap rules | Confirm no raw PII/bank data is inserted, hard-delete/cascade audits pass, and anonymized UAT pack exists |
 
 ## 6. Dependency Notes
 
@@ -68,6 +75,7 @@ Step90 to Step108 form the TTGDTX 9+ accounting pilot chain. They should not be 
 - Step96
 - Step98
 - Step99
+- Step110, only as a metadata extension after Step92 and Step98 exist; account-freeze/release and collateral-release items remain metadata-only until separate workflow migrations are approved
 
 ### Pilot Patch / Temporary Unlock
 
@@ -121,6 +129,8 @@ Recommended order:
 17. step106_ttgdtx_payment_request_approval_p2_16.sql
 18. step107_ttgdtx_payment_execution_p2_17.sql
 19. step108_ttgdtx_accounting_dashboard_p2_18.sql
+20. step109_role_permission_soft_revoke_p0_11.sql only after role-permission UAT confirms ADMIN is not locked out.
+21. step110_ttgdtx_real_data_evidence_metadata_p2_19.sql only after real-data fit review confirms no raw PII/bank data is committed or imported without anonymized UAT approval, and BBNT/account-control/giai-chap evidence is registered as metadata only.
 
 ## 8. Files Not Approved for Production
 
@@ -130,20 +140,27 @@ The following files need explicit review or waiver before production use:
 - step100_ttgdtx_pilot_open_p2_01_p2_02_p0_19.sql
 - step102_fix_p2_13_partner_status.sql
 - step103_fix_p2_13_reconciliation_line_columns.sql
-- Any step with CRITICAL delete, payment, payout or reconciliation risk until backup, idempotency and rollback evidence are attached.
+- step109_role_permission_soft_revoke_p0_11.sql
+- step110_ttgdtx_real_data_evidence_metadata_p2_19.sql
+- Any payment, payout, reconciliation, cascade or rollback-sensitive step until backup, idempotency and rollback evidence are attached.
 
 ## 9. Rollback Gap
 
-Rollback is not yet proven in this audit. Production migration remains blocked until backup evidence, restore procedure and dry-run rollback evidence are available.
+Rollback is not yet proven in this audit. A draft runbook now exists at `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`, but production migration remains blocked until backup evidence, restore procedure and dry-run rollback evidence are attached.
 
 ## 10. Current Conclusion
 
-Do not run Step90-Step108 on production until:
+Do not run Step90-Step110 on production until:
 
 - Backup is complete.
 - Each step has owner, checker and approver.
 - Patch-only files are separated from base migrations.
 - Idempotency is verified.
-- CRITICAL delete patterns are reviewed.
-- P2-17 duplicate payout prevention is tested.
-- P2-18 dashboard is verified after deploy.
+- No SQL `delete from` remains in step90-step110.
+- Step90-Step110 has no `on delete cascade`; non-TTGDTX/base schema cascade and rollback behavior are reviewed or waived.
+- `npm.cmd run audit:ttgdtx-audit-log` passes and Audit signs off tested create/update/approve/pay evidence.
+- `npm.cmd run audit:ttgdtx-release-gates` passes and the backup/rollback dry-run evidence is attached.
+- P2-17 duplicate payout prevention is tested with `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`.
+- P2-18 dashboard is verified after deploy with `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`.
+- Step109 role permission UAT proves active permissions, revoked permissions and ADMIN access behave correctly, with `npm.cmd run audit:permission-soft-revoke` passing before migration.
+- Step110 real-data metadata is tested only with anonymized Phu Xuyen-like UAT cases from `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md` and account-control/BBNT/giai-chap controls from `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`.

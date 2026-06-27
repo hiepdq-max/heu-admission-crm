@@ -375,3 +375,31 @@
 - Step110 is a migration candidate only and was not run in production.
 - Run preflight first; if any required object is `MISSING`, stop and apply the missing previous step on UAT/restore.
 - If Supabase still reports `relation "a" does not exist`, run the read-only debug SQL and record the object before retrying.
+
+## 2026-06-27 - TTGDTX Release-Gate UAT Evidence Pack Slice
+
+### Scope
+
+- Packaged the UAT/runbook documents that local release gates depend on, so a clean checkout has the evidence scaffolding required by `npm.cmd run audit:ttgdtx-release-gates`.
+- Aligned migration-order, hard-delete and production checklist docs around Step90-Step110, rollback, role-scope, audit-log, P2-17 duplicate payout and P2-18 dashboard UAT.
+- Kept this as documentation/control work only; no production migration was run and no finance approval was implied.
+
+### Files Updated/Added
+
+- `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
+- `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
+- `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
+- `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
+- `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`
+- `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`
+- `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md`
+- `docs/HARD_DELETE_AUDIT.md`
+- `docs/MIGRATION_ORDER_AUDIT.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Production remains NO-GO until backup/restore dry-run, synthetic multi-account UAT and human sign-off are attached.
+- Codex/AI output remains advisory; it does not approve go-live, payments or finance/legal decisions.
