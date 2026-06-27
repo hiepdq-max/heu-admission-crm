@@ -19,6 +19,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
+import { TtgdtxOwnerGoNoGoEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist";
 import { TtgdtxProductionExecutionQueue } from "@/components/ttgdtx/ttgdtx-production-execution-queue";
 import { TtgdtxProductionReadinessGuard } from "@/components/ttgdtx/ttgdtx-production-readiness-guard";
 import { TtgdtxUatSignoffGuard } from "@/components/ttgdtx/ttgdtx-uat-signoff-guard";
@@ -337,6 +338,7 @@ export default async function TtgdtxPage() {
           <TtgdtxProductionReadinessGuard />
           <TtgdtxUatSignoffGuard />
           <TtgdtxProductionExecutionQueue />
+          <TtgdtxOwnerGoNoGoEvidenceChecklist />
           <TtgdtxOperatingControlStrip currentCode="P2-01" />
 
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">

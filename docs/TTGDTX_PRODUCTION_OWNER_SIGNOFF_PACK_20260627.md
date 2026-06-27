@@ -71,7 +71,28 @@ The local preflight must pass, but passing it is not owner approval.
 | Hard-delete/cascade conversion or waiver |  |  | PENDING |
 | Final multi-owner Go/No-Go note |  |  | PENDING |
 
-## 5. Stop Conditions
+## 5. P0-09 Owner Decision Evidence Checklist
+
+The TTGDTX landing page now shows
+`components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx` so the final
+owner decision is visible in the operating surface, not only in this pack.
+
+| Case | Owner | Evidence to attach outside Git | Current default |
+|---|---|---|---|
+| P0-09-01 | IT_DATA + Audit | Backup ID, restore target, preflight/postflight and smoke-check reference | NO-GO |
+| P0-09-02 | IT_DATA + KHTC + PHAP_CHE | Signed Step90-Step110 migration order with P0-03 restore proof | NO-GO |
+| P0-09-03 | PHAP_CHE + KHTC + BGH | P0-19 legal basis, tuition policy and finance-gate UAT evidence | NO-GO |
+| P0-09-04 | KHTC + BGH + Audit + IT_DATA | P2-17 duplicate-payout UAT and P2-18 read-only dashboard reconciliation | NO-GO |
+| P0-09-05 | IT_DATA + Audit + process owners | Role/workspace, audit-log and hard-delete/cascade evidence or written waiver | NO-GO |
+| P0-09-06 | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final signed multi-owner GO/NO-GO note referencing controlled redacted evidence only | NO-GO |
+
+Do not paste secrets, passwords, OTPs, service-role keys, bank credentials, raw
+student PII, raw CCCD, raw phone numbers, raw bank account numbers, bank
+statements, vouchers or raw payment data into Git/Codex/chat. PASS_LOCAL does
+not approve backup, restore, migration, legal waiver, finance action, UAT
+acceptance, payout, dashboard reliance or production GO.
+
+## 6. Stop Conditions
 
 Keep production NO-GO if any condition below is true:
 
@@ -88,7 +109,7 @@ Keep production NO-GO if any condition below is true:
    or UAT screenshots.
 10. Any owner asks for more evidence.
 
-## 6. Final Decision Record
+## 7. Final Decision Record
 
 | Owner group | Name / role | Decision | Signature / evidence ref | Date |
 |---|---|---|---|---|

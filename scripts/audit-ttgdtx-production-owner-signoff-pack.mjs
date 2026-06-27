@@ -5,6 +5,9 @@ const repoRoot = process.cwd();
 const packPath = "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
+const ownerChecklistPath =
+  "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx";
+const ttgdtxPagePath = "app/ttgdtx/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -48,6 +51,8 @@ for (const file of [
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
+  ownerChecklistPath,
+  ttgdtxPagePath,
   "AGENTS.md",
   "package.json",
   "scripts/audit-ttgdtx-release-gates.mjs",
@@ -58,6 +63,8 @@ for (const file of [
 const pack = exists(packPath) ? read(packPath) : "";
 const checklist = exists(checklistPath) ? read(checklistPath) : "";
 const backlog = exists(backlogPath) ? read(backlogPath) : "";
+const ownerChecklist = exists(ownerChecklistPath) ? read(ownerChecklistPath) : "";
+const ttgdtxPage = exists(ttgdtxPagePath) ? read(ttgdtxPagePath) : "";
 const agents = exists("AGENTS.md") ? read("AGENTS.md") : "";
 const releaseGateAudit = exists("scripts/audit-ttgdtx-release-gates.mjs")
   ? read("scripts/audit-ttgdtx-release-gates.mjs")
@@ -119,15 +126,29 @@ requireText(
 );
 
 requireText(
+  ownerChecklist,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, OTPs, service-role\s+keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,\s+raw bank account numbers, bank statements, vouchers or raw payment\s+data)/i,
+  "P0-09 owner GO/NO-GO evidence checklist",
+  ownerChecklistPath,
+);
+
+requireText(
+  ttgdtxPage,
+  /TtgdtxOwnerGoNoGoEvidenceChecklist[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxOwnerGoNoGoEvidenceChecklist\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/i,
+  "TTGDTX page mounts owner GO/NO-GO evidence checklist after execution queue",
+  ttgdtxPagePath,
+);
+
+requireText(
   checklist,
-  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "production checklist final owner sign-off row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
   backlogPath,
 );
@@ -150,6 +171,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-production-owner-signoff-pack")) 
 
 if (
   !releaseGateAudit.includes(packPath) ||
+  !releaseGateAudit.includes(ownerChecklistPath) ||
   !releaseGateAudit.includes("audit:ttgdtx-production-owner-signoff-pack")
 ) {
   fail("scripts/audit-ttgdtx-release-gates.mjs: missing owner sign-off pack coverage.");

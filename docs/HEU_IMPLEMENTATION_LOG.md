@@ -1897,3 +1897,13 @@
   audits pass.
 - Actual backup, restore dry-run, signed UAT and owner GO/NO-GO remain required
   before any production migration can be considered.
+## 2026-06-27 - P0-09 Owner GO/NO-GO Evidence Checklist
+
+- Added a read-only P0-09 owner GO/NO-GO evidence checklist to the TTGDTX
+  landing page after the production execution queue.
+- The checklist makes the final owner decision visible in the operating
+  surface and maps evidence cases P0-09-01 through P0-09-06.
+- Extended owner sign-off and release-gate audits so the P0-09 checklist,
+  owner pack, production checklist and backlog stay aligned.
+- Production remains NO-GO. Signed multi-owner GO/NO-GO evidence is still
+  required outside Codex/chat before any production approval.
