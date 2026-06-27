@@ -404,7 +404,7 @@ export default async function PaymentExecutionPage({
               <p className="mt-2 text-sm leading-6">
                 P2-17 chỉ ghi nhận tiền đã chi sau khi P2-16 đã duyệt. Hệ thống
                 chặn chi vượt số tiền duyệt, chặn trùng số chứng từ, chặn nếu
-                BBNT/hóa đơn đối tác P2-19 còn đỏ, yêu cầu link chứng từ chi và
+                BBNT/hóa đơn đối tác P2-19 chưa đạt, yêu cầu link chứng từ chi và
                 lưu log để kế toán/audit đối chiếu sau này.
               </p>
             </div>
