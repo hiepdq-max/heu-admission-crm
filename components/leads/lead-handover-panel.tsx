@@ -54,6 +54,13 @@ type HandoverAcceptanceItem = {
   stopCondition: string;
 };
 
+type HandoverDecisionItem = {
+  caseId: string;
+  decisionGate: string;
+  requiredDecision: string;
+  stopCondition: string;
+};
+
 const initialState: HandoverFormState = {};
 
 const handoverTypeLabels: Record<string, string> = {
@@ -145,6 +152,57 @@ const handoverAcceptanceItems: HandoverAcceptanceItem[] = [
       "Human accept/reject is auditable; AI suggestion is advisory and cannot accept, reject, waive or approve finance.",
     stopCondition:
       "PASS_LOCAL or AI output is treated as handover acceptance, UAT pass, finance approval or production GO.",
+  },
+];
+
+const handoverDecisionItems: HandoverDecisionItem[] = [
+  {
+    caseId: "P3-02-DEC-01",
+    decisionGate: "Handover packet readiness decision",
+    requiredDecision:
+      "Lead id/code, status, segment, program or major, source evidence reference and maker department are complete before handover reliance.",
+    stopCondition:
+      "Missing identity, status, segment, source reference, maker department or controlled packet ID keeps handover NO_GO.",
+  },
+  {
+    caseId: "P3-02-DEC-02",
+    decisionGate: "Receiver role and workspace decision",
+    requiredDecision:
+      "Receiving department and actor are allowed for the route, role and workspace scope being handed over.",
+    stopCondition:
+      "Out-of-scope receiver can read, accept, reject or rely on the packet.",
+  },
+  {
+    caseId: "P3-02-DEC-03",
+    decisionGate: "Accept or reject trace decision",
+    requiredDecision:
+      "Accept/reject action records actor, timestamp, status and reason when rejected or returned.",
+    stopCondition:
+      "Decision is missing actor, timestamp, final status, rejection reason or audit trail.",
+  },
+  {
+    caseId: "P3-02-DEC-04",
+    decisionGate: "Downstream reliance decision",
+    requiredDecision:
+      "CTHSSV, Dao Tao and KHTC may rely only on accepted handover context; KHTC still uses P0-19, P2-05 and P2-03 finance gates.",
+    stopCondition:
+      "Handover is treated as enrollment approval, receivable creation, tuition collection, invoice issuance, revenue recognition or finance posting.",
+  },
+  {
+    caseId: "P3-02-DEC-05",
+    decisionGate: "Evidence redaction decision",
+    requiredDecision:
+      "Evidence is synthetic or redacted and stored as controlled references outside Git/Codex/chat.",
+    stopCondition:
+      "Raw PII, CCCD, phone, bank data, parent data, credentials, screenshots or uncontrolled evidence enter the app note, repo or Codex/chat.",
+  },
+  {
+    caseId: "P3-02-DEC-06",
+    decisionGate: "Human handover decision recorded",
+    requiredDecision:
+      "Process owner records P3_02_HANDOVER_READY, NO_GO or BLOCKED with signer, date, route result and evidence reference.",
+    stopCondition:
+      "PASS_LOCAL or AI output is treated as signed handover acceptance, UAT acceptance, finance approval, owner waiver or production GO.",
   },
 ];
 
@@ -426,6 +484,57 @@ export function LeadHandoverPanel({
                 </p>
                 <p className="mt-2 leading-5 text-zinc-700">
                   Minimum evidence: {item.minimumEvidence}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop condition: {item.stopCondition}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="border-l-2 border-indigo-300 bg-indigo-50/70 p-4 text-sm"
+          data-heu-lead-handover-decision-manifest="P3-02"
+        >
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <div className="flex items-center gap-2 font-semibold text-indigo-950">
+                <ClipboardCheck className="size-4 text-indigo-700" />
+                <span>
+                  P3-02 handover decision manifest: PASS_LOCAL only
+                </span>
+              </div>
+              <p className="mt-2 leading-6 text-indigo-900">
+                Use after the acceptance matrix. It prepares a human handover
+                reliance decision only and does not approve enrollment,
+                receivable creation, tuition collection, invoice issuance,
+                revenue recognition, finance posting, UAT acceptance, owner
+                waiver or production GO.
+              </p>
+            </div>
+            <div className="min-w-72 border border-indigo-200 bg-white px-3 py-2 text-indigo-950">
+              Decision:
+              <span className="mt-1 block font-mono text-xs">
+                P3_02_HANDOVER_READY / NO_GO / BLOCKED
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {handoverDecisionItems.map((item) => (
+              <div
+                key={item.caseId}
+                className="border-l-2 border-indigo-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-indigo-700">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.decisionGate}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Required decision: {item.requiredDecision}
                 </p>
                 <p className="mt-2 leading-5 text-rose-800">
                   Stop condition: {item.stopCondition}

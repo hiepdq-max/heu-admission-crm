@@ -124,3 +124,27 @@ redacted evidence. Any stop condition keeps production NO-GO.
 | P3-02-ACCEPT-06 | Human approval, audit and AI boundary | Human accept/reject is auditable; AI suggestion is advisory and cannot accept, reject, waive or approve finance | PASS_LOCAL or AI output is treated as handover acceptance, UAT pass, finance approval or production GO |
 
 Decision value: P3_02_ACCEPT / FAIL / BLOCKED.
+
+## 10. P3-02 Handover Decision Manifest
+
+The lead detail handover panel also exposes
+`data-heu-lead-handover-decision-manifest="P3-02"`. Use this manifest after
+the acceptance matrix. It prepares a human handover reliance decision only and
+does not approve enrollment, receivable creation, tuition collection, invoice
+issuance, revenue recognition, finance posting, UAT acceptance, owner waiver or
+production GO.
+
+Decision value: `P3_02_HANDOVER_READY / NO_GO / BLOCKED`.
+
+| Case | Decision gate | Required decision | Stop condition |
+|---|---|---|---|
+| P3-02-DEC-01 | Handover packet readiness decision | Lead id/code, status, segment, program or major, source evidence reference and maker department are complete before handover reliance | Missing identity, status, segment, source reference, maker department or controlled packet ID keeps handover NO_GO |
+| P3-02-DEC-02 | Receiver role and workspace decision | Receiving department and actor are allowed for the route, role and workspace scope being handed over | Out-of-scope receiver can read, accept, reject or rely on the packet |
+| P3-02-DEC-03 | Accept or reject trace decision | Accept/reject action records actor, timestamp, status and reason when rejected or returned | Decision is missing actor, timestamp, final status, rejection reason or audit trail |
+| P3-02-DEC-04 | Downstream reliance decision | CTHSSV, Dao Tao and KHTC may rely only on accepted handover context; KHTC still uses P0-19, P2-05 and P2-03 finance gates | Handover is treated as enrollment approval, receivable creation, tuition collection, invoice issuance, revenue recognition or finance posting |
+| P3-02-DEC-05 | Evidence redaction decision | Evidence is synthetic or redacted and stored as controlled references outside Git/Codex/chat | Raw PII, CCCD, phone, bank data, parent data, credentials, screenshots or uncontrolled evidence enter the app note, repo or Codex/chat |
+| P3-02-DEC-06 | Human handover decision recorded | Process owner records `P3_02_HANDOVER_READY`, `NO_GO` or `BLOCKED` with signer, date, route result and evidence reference | `PASS_LOCAL` or AI output is treated as signed handover acceptance, UAT acceptance, finance approval, owner waiver or production GO |
+
+P3-02 can support downstream CTHSSV/Dao Tao/KHTC reliance only when
+P3-02-ACCEPT-01 through P3-02-ACCEPT-06 and P3-02-DEC-01 through
+P3-02-DEC-06 are closed with redacted evidence and signed owner approval.

@@ -130,6 +130,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P3-02 Lead Handover Decision Manifest[\s\S]*lead-handover-panel\.tsx[\s\S]*HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*handover, current-state, implementation-log and release-gate audits[\s\S]*This is handover-reliance packaging only[\s\S]*does not approve enrollment,\s+receivable creation, tuition collection, invoice issuance, revenue\s+recognition, finance posting, UAT acceptance, owner waiver or production GO/i,
+  "P3-02 lead handover decision manifest log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /P0-05 Implementation Log Audit Guard[\s\S]*audit:heu-implementation-log[\s\S]*P0-05 backlog[\s\S]*production checklist[\s\S]*current-state\s+inventory[\s\S]*This is governance-log alignment only[\s\S]*does not execute UAT, accept real\s+evidence, approve migration, approve finance action or mark production GO/i,
   "P0-05 log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

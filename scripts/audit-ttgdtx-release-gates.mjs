@@ -1457,9 +1457,21 @@ requireText(
 );
 
 requireText(
+  "components/leads/lead-handover-panel.tsx",
+  /(?=[\s\S]*data-heu-lead-handover-decision-manifest="P3-02")(?=[\s\S]*P3-02 handover decision manifest)(?=[\s\S]*P3-02-DEC-01)(?=[\s\S]*P3-02-DEC-06)(?=[\s\S]*P3_02_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve enrollment,\s+receivable creation, tuition collection, invoice issuance,\s+revenue recognition, finance posting, UAT acceptance, owner\s+waiver or production GO)/i,
+  "P3-02 handover decision manifest",
+);
+
+requireText(
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   /(?=[\s\S]*P3-02 Acceptance Matrix)(?=[\s\S]*data-heu-lead-handover-acceptance-matrix="P3-02")(?=[\s\S]*P3-02-ACCEPT-01)(?=[\s\S]*P3-02-ACCEPT-06)(?=[\s\S]*P3_02_ACCEPT \/ FAIL \/ BLOCKED)/i,
   "P3-02 handover acceptance matrix doc",
+);
+
+requireText(
+  "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
+  /(?=[\s\S]*P3-02 Handover Decision Manifest)(?=[\s\S]*data-heu-lead-handover-decision-manifest="P3-02")(?=[\s\S]*P3-02-DEC-01)(?=[\s\S]*P3-02-DEC-06)(?=[\s\S]*P3_02_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P3-02-ACCEPT-01 through P3-02-ACCEPT-06 and P3-02-DEC-01 through\s+P3-02-DEC-06)/i,
+  "P3-02 handover decision manifest doc",
 );
 
 if (failures.length > 0) {
