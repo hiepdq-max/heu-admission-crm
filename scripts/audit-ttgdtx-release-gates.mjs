@@ -66,6 +66,7 @@ const requiredFiles = [
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
+  "docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md",
   "docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md",
   "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
   "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
@@ -835,7 +836,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che|P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Pháp chế/i,
+  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che|P2-10\)[\s\S]*PASS_LOCAL[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Pháp chế/i,
   "P2-10 invoice policy PASS_LOCAL checklist row",
 );
 
@@ -843,6 +844,18 @@ requireText(
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   /data-ttgdtx-invoice-policy-matrix="P2-10"[\s\S]*yes\/no[\s\S]*PASS_LOCAL[\s\S]*PENDING_POLICY/i,
   "P2-10 invoice policy matrix local-only display",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
+  /(?=[\s\S]*data-ttgdtx-invoice-evidence-checklist="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*PENDING_POLICY chan doi soat va chi tiep)(?=[\s\S]*KHTC\/Phap Che ky UAT truoc production)(?=[\s\S]*PASS_LOCAL is treated as invoice approval, legal\/tax advice, UAT acceptance or production GO)/i,
+  "P2-10 invoice/chung-tu UAT evidence checklist",
+);
+
+requireText(
+  "docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
+  "P2-10 invoice/chung-tu UAT runbook",
 );
 
 requireText(

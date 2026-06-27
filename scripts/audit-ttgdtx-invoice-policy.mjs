@@ -30,6 +30,8 @@ const paymentsPagePath = "app/ttgdtx/payments/page.tsx";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 const linkedReviewPath = "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md";
+const invoiceUatRunbookPath =
+  "docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md";
 
 for (const file of [
   policyPath,
@@ -38,6 +40,7 @@ for (const file of [
   checklistPath,
   backlogPath,
   linkedReviewPath,
+  invoiceUatRunbookPath,
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "AGENTS.md",
   "package.json",
@@ -52,6 +55,7 @@ const paymentsPage = read(paymentsPagePath);
 const checklist = read(checklistPath);
 const backlog = read(backlogPath);
 const linkedReview = read(linkedReviewPath);
+const invoiceUatRunbook = read(invoiceUatRunbookPath);
 const agents = read("AGENTS.md");
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 const packageJson = JSON.parse(read("package.json"));
@@ -97,6 +101,20 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-invoice-evidence-checklist="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*PENDING_POLICY chan doi soat va chi tiep)(?=[\s\S]*KHTC\/Phap Che ky UAT truoc production)(?=[\s\S]*raw bank data, CCCD, phone, password, key or voucher body)(?=[\s\S]*PASS_LOCAL is treated as invoice approval, legal\/tax advice, UAT acceptance or production GO)/i,
+  "P2-10 invoice/chung-tu UAT evidence checklist",
+  componentPath,
+);
+
+requireText(
+  invoiceUatRunbook,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*npm\.cmd run audit:ttgdtx-invoice-policy)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
+  "P2-10 invoice/chung-tu UAT runbook",
+  invoiceUatRunbookPath,
+);
+
+requireText(
   paymentsPage,
   /TtgdtxInvoicePolicyMatrix[\s\S]*<TtgdtxInvoicePolicyMatrix \/>/m,
   "P2-10 page mounts invoice policy matrix",
@@ -105,21 +123,21 @@ requireText(
 
 requireText(
   checklist,
-  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che/i,
+  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che/i,
   "production checklist invoice policy PASS_LOCAL row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P4-02[\s\S]*Invoice\/receipt policy matrix[\s\S]*audit:ttgdtx-invoice-policy/i,
+  /P4-02[\s\S]*Invoice\/receipt policy matrix[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy/i,
   "P4-02 backlog audit evidence",
   backlogPath,
 );
 
 requireText(
   linkedReview,
-  /Collection invoice\/receipt[\s\S]*invoice policy matrix[\s\S]*PASS_LOCAL/i,
+  /Collection invoice\/receipt[\s\S]*invoice policy matrix and invoice\/chung-tu UAT evidence checklist[\s\S]*PASS_LOCAL/i,
   "linked operating review invoice matrix status",
   linkedReviewPath,
 );
@@ -138,6 +156,7 @@ requireText(
 for (const needle of [
   policyPath,
   componentPath,
+  invoiceUatRunbookPath,
   "scripts/audit-ttgdtx-invoice-policy.mjs",
   "audit:ttgdtx-invoice-policy",
 ]) {

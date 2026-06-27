@@ -1,4 +1,4 @@
-import { AlertTriangle, ReceiptText, Scale } from "lucide-react";
+import { AlertTriangle, FileCheck2, ReceiptText, Scale } from "lucide-react";
 
 import {
   invoiceRequirementLabels,
@@ -14,6 +14,57 @@ const requirementTone: Record<TtgdtxInvoiceRequirement, string> = {
   PENDING_POLICY: "border-amber-200 bg-amber-50 text-amber-800",
   WAIVED_BY_AUTHORITY: "border-blue-200 bg-blue-50 text-blue-800",
 };
+
+const invoiceEvidenceChecklist = [
+  {
+    caseId: "P2-10-INV-01",
+    title: "Chon dung mo hinh thu va nguoi nop",
+    evidence:
+      "P2-10 payment has collection model, payer type and source receivable/payment reference before invoice decision.",
+    stopCondition:
+      "Stop if the user answers only yes/no without collection model, payer type or source reference.",
+  },
+  {
+    caseId: "P2-10-INV-02",
+    title: "Hoa don/chung-tu bat buoc co du so, ngay va link",
+    evidence:
+      "When invoice_required is REQUIRED, invoice issuer, invoice number/date and controlled evidence link are present.",
+    stopCondition:
+      "Stop if REQUIRED is selected but invoice number/date/evidence is blank or not controlled.",
+  },
+  {
+    caseId: "P2-10-INV-03",
+    title: "Mien/khong can hoa don phai co can cu",
+    evidence:
+      "WAIVED_BY_AUTHORITY or NOT_REQUIRED has owner, reason, policy/legal basis and controlled approval evidence.",
+    stopCondition:
+      "Stop if a user self-selects not required without KHTC/Phap Che authority or written basis.",
+  },
+  {
+    caseId: "P2-10-INV-04",
+    title: "PENDING_POLICY chan doi soat va chi tiep",
+    evidence:
+      "Any PENDING_POLICY payment remains blocked from P2-13/P2-14/P2-15 until KHTC/Phap Che decision exists.",
+    stopCondition:
+      "Stop if unresolved invoice policy can enter reconciliation, lock period or partner payment request.",
+  },
+  {
+    caseId: "P2-10-INV-05",
+    title: "Bang chung duoc redact va luu dung noi",
+    evidence:
+      "Evidence reference uses a controlled storage location and does not expose raw bank data, CCCD, phone, password, key or voucher body in Git/Codex/chat.",
+    stopCondition:
+      "Stop if raw sensitive evidence is pasted into the app note, Git, Codex/chat or UAT screenshot.",
+  },
+  {
+    caseId: "P2-10-INV-06",
+    title: "KHTC/Phap Che ky UAT truoc production",
+    evidence:
+      "Signed UAT covers at least REQUIRED, PENDING_POLICY, WAIVED_BY_AUTHORITY and OTHER_COLLECTION_MODEL cases.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as invoice approval, legal/tax advice, UAT acceptance or production GO.",
+  },
+];
 
 export function TtgdtxInvoicePolicyMatrix() {
   return (
@@ -123,6 +174,50 @@ export function TtgdtxInvoicePolicyMatrix() {
           vấn thuế/pháp lý cuối cùng. Trường hợp khác mẫu phải để PENDING_POLICY
           và xin xác nhận owner.
         </p>
+      </div>
+
+      <div
+        data-ttgdtx-invoice-evidence-checklist="P2-10"
+        className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 p-4"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <FileCheck2 className="mt-0.5 size-4 shrink-0 text-emerald-700" />
+            <div>
+              <h3 className="font-semibold text-emerald-950">
+                P2-10 invoice/chung-tu UAT evidence checklist: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-emerald-900">
+                Checklist này dùng để gom bằng chứng cho KHTC/Pháp chế ký UAT
+                ngoài Codex/chat. Nó không tự phê duyệt hóa đơn, miễn chứng từ,
+                tư vấn thuế/pháp lý hoặc production GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-emerald-200 bg-white px-3 py-2 font-mono text-xs text-emerald-950">
+            P2_10_INVOICE_ACCEPT / FAIL / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {invoiceEvidenceChecklist.map((item) => (
+            <article
+              key={item.caseId}
+              className="rounded-md border border-emerald-200 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Evidence: {item.evidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

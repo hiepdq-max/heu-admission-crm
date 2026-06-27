@@ -96,7 +96,7 @@ requireText(
 );
 requireText(
   inventory,
-  /M01 Legal[\s\S]*P0-19 legal\/finance gate and acceptance matrix are packaged; signed UAT still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist and acceptance matrix exist[\s\S]*Signed legal\/finance UAT still required/i,
+  /M01 Legal[\s\S]*P0-19 legal\/finance gate and acceptance matrix are packaged; signed UAT still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist and acceptance matrix exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged[\s\S]*Local controls pass; signed finance UAT pending/i,
   "P0-19 legal/finance acceptance matrix control state",
 );
 requireText(

@@ -2249,3 +2249,16 @@
   and `audit:heu-current-state-inventory`.
 - P0-09 remains IN_PROGRESS for production until the required owners sign the
   final GO/NO-GO decision outside Codex/chat.
+
+## 2026-06-27 - P2-10 Invoice/Chung-Tu UAT Evidence Checklist
+
+- Added a PASS_LOCAL P2-10 invoice/chung-tu UAT evidence checklist to
+  `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`.
+- Created `docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md` so KHTC
+  and PHAP_CHE can test required, pending-policy, waived-authority,
+  other-model and downstream-blocking cases outside Codex/chat.
+- Updated the production checklist, backlog, linked operating review,
+  current-state inventory, `audit:ttgdtx-invoice-policy`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P2-10 invoice/chung-tu policy remains PASS_LOCAL only until signed KHTC/Phap
+  Che UAT evidence exists.
