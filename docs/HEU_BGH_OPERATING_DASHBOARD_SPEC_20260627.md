@@ -1,0 +1,112 @@
+# HEU BGH Operating Dashboard Specification 2026-06-27
+
+Status: DRAFT_CONTROL
+Scope: P5-02 BGH operating dashboard specification for HEU internal governance
+Production status: NO-GO until source workflows, role-scope UAT and owner
+sign-off are complete
+
+## 1. Purpose
+
+Define what BGH should see in an operating dashboard and, just as importantly,
+what BGH should not do from that dashboard. The dashboard is an executive
+read-only control surface for trend, exception, risk and Go/No-Go review. It is
+not a daily data-entry screen and it must not become a hidden approval,
+payment, revenue or production-release path.
+
+## 2. Design Principles
+
+- Workflow before dashboard: do not trust a KPI before the source workflow is
+  controlled and auditable.
+- Locked/approved facts before conclusion: finance totals must come from
+  approved or locked source records where the workflow requires that state.
+- Exception first: BGH needs blockers, overdue items and high-risk variance
+  before decorative charts.
+- Scope aware: BGH can see governance summaries, but row-level sensitive data
+  still follows role/scope, evidence and privacy rules.
+- Read-only by default: dashboard cards may link to source workflows, but must
+  not create, update, approve, pay, delete, unlock, reverse or mark production
+  GO.
+
+## 3. Dashboard Sections
+
+| Section | Primary source | BGH question answered | Release dependency |
+|---|---|---|---|
+| Admission pipeline | `/`, `/reports`, `leads`, admission segment workspace data | Are leads moving through the funnel and where are bottlenecks? | P3-02 handover guard and role-scope UAT |
+| TTGDTX finance cockpit | `/ttgdtx/accounting-dashboard`, P2-03/P2-10/P2-13/P2-17 views | What is receivable, collected, reconciled, approved and paid? | P4-01 lifecycle, P5-01 dashboard role UAT, signed finance UAT |
+| Go/No-Go readiness | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`, release-gate audits | Is production still NO-GO and why? | P0 backup/restore, migration order, UAT sign-off |
+| Risk and exception board | audit logs, P2-07/P2-08 issue routing, control boards | Which high-risk items need owner action? | P6 audit-log and hard-delete controls |
+| Source/evidence health | P2-11/P2-19 source control docs and checks | Are BBNT, invoice, bank, account-freeze/release and legal evidence sufficient? | P2-19 evidence metadata and source-control UAT |
+| Role/scope health | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md` and role audits | Are users seeing only the right data? | P6-04 signed role-scope UAT |
+| AI advisory health | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md` | Is AI still advisory-only? | P7-01 and future prompt/output audit |
+
+## 4. Minimum KPI Set
+
+The first BGH dashboard version should use a small, controlled KPI set:
+
+| KPI | Definition | Must not show |
+|---|---|---|
+| Lead conversion | Lead counts by status, segment and enrollment result | Raw private phone/CCCD in summary cards |
+| Handover backlog | Count of packets waiting for CTHSSV/Dao Tao/KHTC action | Unredacted evidence payloads |
+| Receivable total | Active TTGDTX receivable total and balance | Editable receivable rows |
+| Collected total | Posted P2-10 collection total with invoice/chung-tu status summary | Raw bank account details |
+| Reconciliation health | READY/REVIEWED/APPROVED/LOCKED/blocked counts | Direct lock/unlock controls |
+| Partner payable | Approved and remaining partner payment request totals | Pay button or voucher entry |
+| Exception count | Critical/open controls by owner department | Hidden or suppressed exceptions |
+| Production blockers | Count and list of NO-GO blockers by owner | GO button or AI-produced approval |
+
+## 5. Access And Privacy Rules
+
+BGH dashboard access must obey these rules:
+
+1. BGH sees governance summaries and approved/controlled dashboard views.
+2. BGH should not be the daily data-entry role.
+3. BGH dashboard must not expose row-level PII, raw bank data, credentials,
+   service keys, OTPs, unredacted source files or private contract terms.
+4. Drill-down links must go to permissioned source workflows.
+5. Finance/legal/evidence data must preserve the source owner and audit trail.
+6. Out-of-scope users must be blocked or see empty scoped states.
+
+## 6. Stop Conditions
+
+Stop implementation and fix before continuing if:
+
+1. A dashboard card can mutate business or finance state.
+2. BGH can approve/pay/recognize revenue/mark production GO from the dashboard.
+3. A KPI is derived from unlocked, unapproved or unresolved source facts when
+   the workflow requires locked/approved/resolved state.
+4. A report exposes raw PII, bank or credential data.
+5. Dashboard queries run before auth, permission and scope checks.
+6. AI output is displayed as approval evidence.
+7. A production-readiness card says GO while the production checklist remains
+   NO-GO.
+
+## 7. Implementation Order
+
+1. Keep `/ttgdtx/accounting-dashboard` as the first finance cockpit.
+2. Execute `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`.
+3. Execute `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`.
+4. Add a BGH summary route only after source workflows and role-scope tests are
+   green in UAT.
+5. Keep the first BGH route read-only and link-only.
+6. Require BGH/KHTC/Phap Che/Audit/IT-Data sign-off before production use.
+
+## 8. Current Evidence
+
+Current local evidence:
+
+- `app/page.tsx`
+- `app/reports/page.tsx`
+- `app/ttgdtx/accounting-dashboard/page.tsx`
+- `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
+- `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
+- `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `npm.cmd run audit:heu-bgh-dashboard-spec`
+- `npm.cmd run audit:ttgdtx-dashboard-access`
+- `npm.cmd run audit:ttgdtx-release-gates`
+
+## 9. Current Result
+
+P5-02 is PASS_LOCAL as a dashboard specification and control boundary only. It
+does not implement a production BGH dashboard, approve production dashboard
+use, approve finance actions, approve production GO or replace signed UAT.

@@ -936,3 +936,29 @@
 - P4-01 is PASS_LOCAL as a lifecycle/control artifact.
 - No production migration, production finance operation, real-data import, revenue recognition or payout execution is approved.
 - Signed finance UAT remains required before production readiness.
+
+## 2026-06-27 - BGH Operating Dashboard Specification
+
+### Scope
+
+- Continued dashboard/governance hardening with P5-02.
+- Defined BGH dashboard as a read-only executive control surface for trends, exceptions, source health, role/scope health and Go/No-Go blockers.
+- Required workflow-before-dashboard, locked/approved facts before conclusion and privacy/scope-preserving drill-downs.
+- Added a local audit to keep the BGH dashboard specification local-only and UAT-gated.
+
+### Files Updated/Added
+
+- `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`
+- `scripts/audit-heu-bgh-dashboard-spec.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P5-02 is PASS_LOCAL as a dashboard specification and control boundary.
+- No production BGH dashboard implementation, finance action, production GO or signed-UAT replacement is approved.
+- Future dashboard UI must stay read-only and link to scoped source workflows.

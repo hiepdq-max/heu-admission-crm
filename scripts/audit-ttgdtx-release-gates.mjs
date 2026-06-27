@@ -49,6 +49,7 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_DATA_MODEL_V1.md",
   "docs/HEU_DATA_DICTIONARY_V1.md",
   "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
@@ -69,6 +70,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
+  "scripts/audit-heu-bgh-dashboard-spec.mjs",
   "scripts/audit-heu-data-foundation.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
@@ -89,6 +91,7 @@ const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
   "audit:heu-ai-policy",
   "audit:heu-backlog-codes",
+  "audit:heu-bgh-dashboard-spec",
   "audit:heu-data-foundation",
   "audit:heu-lead-handover-policy",
   "audit:heu-role-scope-uat-pack",
@@ -172,6 +175,12 @@ requireText(
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   /(?=[\s\S]*P5-01 is PASS_LOCAL)(?=[\s\S]*not production-approved)(?=[\s\S]*P2-18 remains IN_PROGRESS)/i,
   "P5-01 dashboard UAT plan is local-only and P2-18 remains in progress",
+);
+
+requireText(
+  "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH dashboard[\s\S]*approve production GO or replace signed UAT/i,
+  "P5-02 BGH dashboard spec local-only boundary",
 );
 
 requireText(
