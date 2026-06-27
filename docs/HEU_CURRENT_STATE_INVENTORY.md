@@ -84,7 +84,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix and owner sign-off handoff evidence path | PASS_LOCAL, NO-GO |
 | Production blocker shared source | `lib/production-readiness.ts` feeds the Master Control blocker summary and TTGDTX execution queue, including the P0-03 operator run sheet evidence path and P0-09 owner sign-off/UAT handoff evidence path | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
-| Backup/restore | Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
+| Backup/restore | Evidence pack, UI guard, operator run sheet, external evidence manifest and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |

@@ -157,7 +157,7 @@ requireText(
 
 requireText(
   checklist,
-  /STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet/i,
+  /STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix/i,
   "production checklist evidence-pack reference",
   checklistPath,
 );
@@ -188,7 +188,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*restore smoke-check acceptance matrix[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
+if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
   fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
 }
 

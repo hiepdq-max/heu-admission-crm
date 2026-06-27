@@ -2748,3 +2748,14 @@
   EVIDENCE_INDEX_READY / NO_GO / BLOCKED decision cannot be skipped.
 - This is P0-03 evidence-index packaging only. It does not execute backup,
   restore, migration, UAT, rollback, owner waiver or production GO.
+
+## 2026-06-27 - P0-03 Evidence Manifest Checklist Alignment
+
+- Updated the P0-03 backlog, production checklist and current-state inventory
+  so the new external evidence manifest is visible with the operator run sheet,
+  execution evidence checklist and restore smoke-check acceptance matrix.
+- Extended `audit:ttgdtx-backup-restore-dry-run-pack` and
+  `audit:heu-current-state-inventory` so checklist/inventory wording cannot
+  drift behind the P0-03 evidence manifest.
+- This is checklist/inventory alignment only. It does not execute backup,
+  restore, migration, UAT, rollback, owner waiver or production GO.
