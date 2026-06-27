@@ -46,6 +46,21 @@
 - This is PASS_LOCAL packaging only. It does not execute UAT, approve finance
   action, run production migration, accept evidence or mark production GO.
 
+## 2026-06-27 - Finance Desk UAT Runbook Packaging
+
+- Added `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` for P5-03 browser UAT
+  covering authorized KHTC/BGH/Audit access, contract-only denial,
+  out-of-scope denial, read-only behavior, P2-18/import/source reconciliation
+  and VND display.
+- Updated backlog, production checklist and current-state inventory so Finance
+  Desk remains PASS_LOCAL with signed browser UAT pending.
+- Extended `audit:heu-finance-desk`, `audit:heu-implementation-log` and
+  `audit:ttgdtx-release-gates` to require the UAT runbook and local-only
+  boundary.
+- This is UAT packaging only. It does not execute UAT, collect evidence,
+  approve finance action, run production migration, accept evidence or mark
+  production GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

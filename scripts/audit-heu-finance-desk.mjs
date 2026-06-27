@@ -28,6 +28,7 @@ for (const file of [
   "app/finance-desk/page.tsx",
   "database/step111_heu_finance_desk.sql",
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "components/layout/app-shell.tsx",
   "lib/vnd-money.ts",
@@ -52,6 +53,9 @@ const step111 = existsSync(path.join(repoRoot, "database/step111_heu_finance_des
   : "";
 const spec = existsSync(path.join(repoRoot, "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md"))
   ? read("docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md")
+  : "";
+const uatRunbook = existsSync(path.join(repoRoot, "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md"))
+  ? read("docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md")
   : "";
 const sqlObjectMap = existsSync(path.join(repoRoot, "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md"))
   ? read("docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md")
@@ -187,21 +191,21 @@ requireText(
 
 requireText(
   backlog,
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*signed finance\/dashboard UAT still required/i,
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*signed finance\/dashboard UAT still required/i,
   "P5-03 Finance Desk backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*does not approve finance action, production migration, UAT acceptance or owner GO/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT acceptance matrix[\s\S]*does not approve finance action, production migration, UAT acceptance or owner GO/i,
   "production checklist Finance Desk row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*Signed browser UAT pending/i,
+  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Signed browser UAT pending/i,
   "current-state Finance Desk evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -243,6 +247,41 @@ requireText(
   /All finance mutations still happen in the source P2 screens[\s\S]*Finance Desk does not approve payment[\s\S]*Finance Desk does not initiate bank transfers[\s\S]*AI may summarize, validate and warn only/i,
   "Finance Desk spec read-only operating boundary",
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /Status:\s*PASS_LOCAL_TEMPLATE[\s\S]*Scope:\s*P5-03 HEU Finance Desk read-only cockpit[\s\S]*Production status:\s*NO-GO[\s\S]*does not approve payment, create\s+accounting vouchers, replace statutory accounting software, initiate bank\s+transfers, accept UAT or mark production GO/i,
+  "Finance Desk UAT runbook local-only boundary",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /(?=[\s\S]*UAT_KHTC_TTGDTX_OPERATOR)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_AUDIT)(?=[\s\S]*UAT_CONTRACT_ONLY)(?=[\s\S]*UAT_OUT_OF_SCOPE_STAFF)(?=[\s\S]*contract read alone is insufficient)/i,
+  "Finance Desk UAT role coverage",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /P5-03-UAT-01[\s\S]*P5-03-UAT-09[\s\S]*ttgdtx_accounting_dashboard_summary[\s\S]*ttgdtx_accounting_dashboard_control_board[\s\S]*ttgdtx_tuition_import_batch_readiness[\s\S]*ttgdtx_p2_11_summary/i,
+  "Finance Desk UAT browser and source matrix",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*No direct create\/update\/approve\/pay\/import-write form exists inside `\/finance-desk`)(?=[\s\S]*VND values use the shared `lib\/vnd-money\.ts` display)(?=[\s\S]*Anyone treats PASS_LOCAL as production approval)/i,
+  "Finance Desk UAT acceptance matrix",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /Do not paste passwords, OTPs,\s+reset links, service-role keys, API keys, bank credentials, raw CCCD, raw phone\s+numbers, raw student PII, raw bank account numbers, bank statements, vouchers\s+or raw payment evidence into Git, Codex\/chat or this runbook/i,
+  "Finance Desk UAT no-secret boundary",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
 );
 
 requireText(

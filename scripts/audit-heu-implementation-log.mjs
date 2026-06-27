@@ -107,6 +107,7 @@ for (const heading of [
   "Current State Inventory P0 Control Alignment",
   "VND Audit Output Vietnamese Clarity",
   "Finance Desk Read-Only Guard Packaging",
+  "Finance Desk UAT Runbook Packaging",
 ]) {
   requireText(
     log,
@@ -155,6 +156,13 @@ requireText(
   log,
   /Finance Desk Read-Only Guard Packaging[\s\S]*\/finance-desk[\s\S]*P5-03[\s\S]*lib\/vnd-money\.ts[\s\S]*audit:heu-finance-desk[\s\S]*authentication, permission\/workspace scope,\s+read-only data sources, safe internal links and no write actions[\s\S]*This is PASS_LOCAL packaging only[\s\S]*does not execute UAT, approve finance\s+action, run production migration, accept evidence or mark production GO/i,
   "Finance Desk read-only guard packaging log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Finance Desk UAT Runbook Packaging[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 browser UAT[\s\S]*contract-only denial[\s\S]*out-of-scope denial[\s\S]*read-only behavior[\s\S]*audit:heu-finance-desk[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is UAT packaging only[\s\S]*does not execute UAT, collect evidence,\s+approve finance action, run production migration, accept evidence or mark\s+production GO/i,
+  "Finance Desk UAT runbook packaging log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
