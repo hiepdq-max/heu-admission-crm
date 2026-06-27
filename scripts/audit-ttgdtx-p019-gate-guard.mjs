@@ -21,6 +21,8 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/ttgdtx/ttgdtx-p019-gate-guard.tsx";
+const evidenceChecklistPath =
+  "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx";
 const gatePagePath = "app/ttgdtx/gate/page.tsx";
 const receivablesPagePath = "app/ttgdtx/receivables/page.tsx";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
@@ -28,6 +30,7 @@ const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 
 for (const file of [
   componentPath,
+  evidenceChecklistPath,
   gatePagePath,
   receivablesPagePath,
   checklistPath,
@@ -43,6 +46,7 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const evidenceChecklist = read(evidenceChecklistPath);
 const gatePage = read(gatePagePath);
 const receivablesPage = read(receivablesPagePath);
 const checklist = read(checklistPath);
@@ -76,6 +80,12 @@ requireText(
   "Step100 sandbox-only warning",
   componentPath,
 );
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-p019-uat-evidence-checklist="P0-19")(?=[\s\S]*P0-19 legal\/finance UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed legal\/finance UAT is still required before P0-19 can move\s+from IN_PROGRESS)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*P0-19-01)(?=[\s\S]*P0-19-07)(?=[\s\S]*PHAP_CHE, KHTC, BGH and\s+Audit must sign the evidence outside Codex\/chat)/i,
+  "P0-19 UAT evidence checklist",
+  evidenceChecklistPath,
+);
 
 for (const [file, contents] of [
   [gatePagePath, gatePage],
@@ -83,8 +93,8 @@ for (const [file, contents] of [
 ]) {
   requireText(
     contents,
-    /TtgdtxP019GateGuard[\s\S]*<TtgdtxP019GateGuard \/>/,
-    "P0-19 guard mount",
+    /<TtgdtxP019GateGuard\s*\/>[\s\S]*<TtgdtxP019UatEvidenceChecklist\s*\/>/,
+    "P0-19 guard and UAT evidence checklist mount",
     file,
   );
 }
@@ -98,13 +108,13 @@ requireText(
 
 requireText(
   checklist,
-  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
   "P0-19 checklist row remains signed-UAT gated",
   checklistPath,
 );
 requireText(
   backlog,
-  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-p019-gate-guard/i,
+  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*audit:ttgdtx-p019-gate-guard/i,
   "P2-00 backlog guard evidence",
   backlogPath,
 );
@@ -122,6 +132,7 @@ requireText(
 
 for (const needle of [
   componentPath,
+  evidenceChecklistPath,
   "scripts/audit-ttgdtx-p019-gate-guard.mjs",
   "audit:ttgdtx-p019-gate-guard",
 ]) {

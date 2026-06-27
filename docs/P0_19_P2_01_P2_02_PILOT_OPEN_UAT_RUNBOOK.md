@@ -71,3 +71,16 @@ Before any approved sandbox run, attach:
 - Operator name, reviewer name and approval timestamp.
 - Screenshot/export of before and after P2-01, P2-02 and P0-19 readiness counters.
 - Confirmation that Step100 output was not promoted to production.
+
+## P0-19 Evidence Checklist
+
+The app exposes `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx` on
+the P2-05 gate and P2-03 receivables pages. The checklist is PASS_LOCAL only
+and covers P0-19-01 through P0-19-07: legal basis, tuition policy, missing or
+blocked finance gate, Step100 sandbox boundary, receivable creation trace and
+owner sign-off.
+
+Do not attach private contract bodies, raw student PII, CCCD, bank data,
+passwords, OTPs, service-role keys or production credentials in Git/Codex/chat.
+Signed legal/finance UAT remains required before P0-19 can be accepted for
+production receivable use.

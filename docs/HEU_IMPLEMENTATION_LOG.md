@@ -1726,3 +1726,39 @@
 - P2-17 payout UAT evidence checklist is PASS_LOCAL after local audits pass.
 - Signed payout UAT and owner approval are still required before P2-17 can be
   marked production-ready.
+
+## 2026-06-27 - P0-19 Legal/Finance UAT Evidence Checklist
+
+### Scope
+
+- Continued P0-19 production-readiness hardening with a small legal/finance
+  gate slice.
+- Added `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx` below the
+  P0-19 guard on `/ttgdtx/gate` and `/ttgdtx/receivables`.
+- The checklist lists required redacted evidence for P0-19-01 through
+  P0-19-07, including legal basis, tuition policy, missing/blocked finance
+  gate, Step100 sandbox boundary, receivable creation trace and owner sign-off.
+- It repeats that private contract bodies, raw student PII, CCCD, bank data,
+  passwords, OTPs, service-role keys and production credentials stay outside
+  Git/Codex/chat.
+- Extended P0-19 and release-gate audits so the checklist, production
+  checklist, backlog and runbook stay aligned.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx`
+- `app/ttgdtx/gate/page.tsx`
+- `app/ttgdtx/receivables/page.tsx`
+- `scripts/audit-ttgdtx-p019-gate-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P0-19 legal/finance UAT evidence checklist is PASS_LOCAL after local audits
+  pass.
+- Signed legal/finance UAT and owner approval are still required before P0-19
+  can be accepted for production receivable use.

@@ -82,6 +82,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
+  "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
@@ -620,19 +621,25 @@ requireText(
 
 requireText(
   "app/ttgdtx/gate/page.tsx",
-  /TtgdtxP019GateGuard[\s\S]*<TtgdtxP019GateGuard \/>/,
-  "P2-05 gate page mounts P0-19 guard",
+  /<TtgdtxP019GateGuard\s*\/>[\s\S]*<TtgdtxP019UatEvidenceChecklist\s*\/>/,
+  "P2-05 gate page mounts P0-19 guard and UAT evidence checklist",
 );
 
 requireText(
   "app/ttgdtx/receivables/page.tsx",
-  /TtgdtxP019GateGuard[\s\S]*<TtgdtxP019GateGuard \/>/,
-  "P2-03 receivables page mounts P0-19 guard",
+  /<TtgdtxP019GateGuard\s*\/>[\s\S]*<TtgdtxP019UatEvidenceChecklist\s*\/>/,
+  "P2-03 receivables page mounts P0-19 guard and UAT evidence checklist",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-p019-uat-evidence-checklist="P0-19")(?=[\s\S]*P0-19 legal\/finance UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed legal\/finance UAT is still required before P0-19 can move\s+from IN_PROGRESS)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*P0-19-01)(?=[\s\S]*P0-19-07)(?=[\s\S]*private contract bodies, raw student PII, CCCD, bank data,\s+passwords, OTPs, service-role keys and production credentials)(?=[\s\S]*PHAP_CHE, KHTC, BGH and\s+Audit must sign the evidence outside Codex\/chat)/i,
+  "P0-19 legal/finance UAT evidence checklist",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  /(?=[\s\S]*P0-19 legal\/finance gate ready)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-p019-gate-guard\.tsx)(?=[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*signed legal\/finance UAT still required)/i,
   "P0-19 guard checklist row",
 );
 

@@ -17,6 +17,7 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { TtgdtxP019GateGuard } from "@/components/ttgdtx/ttgdtx-p019-gate-guard";
+import { TtgdtxP019UatEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-p019-uat-evidence-checklist";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 
@@ -364,6 +365,7 @@ export default async function TtgdtxReceivableGatePage() {
         <div className="space-y-6">
           <TtgdtxOperatingControlStrip currentCode="P2-05" />
           <TtgdtxP019GateGuard />
+          <TtgdtxP019UatEvidenceChecklist />
 
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
             <div className="flex items-start gap-3">
