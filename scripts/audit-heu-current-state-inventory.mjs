@@ -71,12 +71,12 @@ requireText(
 );
 requireText(
   inventory,
-  /M05 Tuyen sinh CRM[\s\S]*P3-01 lifecycle guard[\s\S]*P3-02 handover policy[\s\S]*finance-gated/i,
+  /M05 Tuyen sinh CRM[\s\S]*P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist[\s\S]*finance-gated/i,
   "M05 P3-01/P3-02 current module state",
 );
 requireText(
   inventory,
-  /Lead lifecycle\/handover[\s\S]*P3-01 lifecycle standard[\s\S]*P3-02 handover policy[\s\S]*PASS_LOCAL[\s\S]*signed role\/workflow UAT pending/i,
+  /Lead lifecycle\/handover[\s\S]*P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist[\s\S]*PASS_LOCAL[\s\S]*signed role\/workflow UAT pending/i,
   "P3-01/P3-02 control state",
 );
 requireText(

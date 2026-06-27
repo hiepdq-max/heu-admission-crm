@@ -82,6 +82,11 @@ requireText(
   /Signed role\/workflow UAT[\s\S]*workspace scope[\s\S]*status transitions[\s\S]*evidence redaction[\s\S]*handover boundary[\s\S]*finance-gate behavior/i,
   "signed UAT boundary",
 );
+requireText(
+  standard,
+  /(?=[\s\S]*P3-01 Acceptance Matrix)(?=[\s\S]*data-heu-lead-lifecycle-acceptance-matrix="P3-01")(?=[\s\S]*P3-01-ACCEPT-01)(?=[\s\S]*P3-01-ACCEPT-06)(?=[\s\S]*Scoped lead identity and source)(?=[\s\S]*Status transition evidence)(?=[\s\S]*Document and evidence readiness)(?=[\s\S]*Eligibility gate before finance)(?=[\s\S]*P3-02 handover boundary)(?=[\s\S]*No finance, AI or production approval)(?=[\s\S]*P3_01_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-01 acceptance matrix",
+);
 
 for (const code of [
   "P3-01-L01",
@@ -121,6 +126,12 @@ requireText(
   "P3-01 visible UI guard",
   "components/leads/lead-lifecycle-guard.tsx",
 );
+requireText(
+  guard,
+  /(?=[\s\S]*data-heu-lead-lifecycle-acceptance-matrix="P3-01")(?=[\s\S]*P3-01 lead lifecycle acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*scoped identity)(?=[\s\S]*status-transition evidence)(?=[\s\S]*document\s+readiness)(?=[\s\S]*eligibility gate)(?=[\s\S]*P3-02 handover boundary)(?=[\s\S]*no-AI\/no-\s+finance approval boundaries)(?=[\s\S]*P3-01-ACCEPT-01)(?=[\s\S]*P3-01-ACCEPT-06)(?=[\s\S]*P3_01_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-01 visible acceptance matrix",
+  "components/leads/lead-lifecycle-guard.tsx",
+);
 
 requireText(
   leadsPage,
@@ -144,7 +155,7 @@ if (!packageJson.scripts?.["audit:heu-lead-lifecycle-standard"]) {
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 requireText(
   backlog,
-  /P3-01[\s\S]*Lead lifecycle standard[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_LIFECYCLE_STANDARD_20260627\.md[\s\S]*audit:heu-lead-lifecycle-standard/i,
+  /P3-01[\s\S]*Lead lifecycle standard[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_LIFECYCLE_STANDARD_20260627\.md[\s\S]*P3-01 acceptance matrix[\s\S]*audit:heu-lead-lifecycle-standard/i,
   "P3-01 PASS_LOCAL backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
@@ -152,7 +163,7 @@ requireText(
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 requireText(
   checklist,
-  /Lead lifecycle standard[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_LIFECYCLE_STANDARD_20260627\.md[\s\S]*audit:heu-lead-lifecycle-standard[\s\S]*No raw form dump into AI/i,
+  /Lead lifecycle standard[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_LIFECYCLE_STANDARD_20260627\.md[\s\S]*P3-01 acceptance matrix[\s\S]*audit:heu-lead-lifecycle-standard[\s\S]*No raw form dump into AI/i,
   "production checklist lead lifecycle row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );

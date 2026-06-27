@@ -61,8 +61,8 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
-| P3-01 | Lead lifecycle standard | Tuyen sinh | PASS_LOCAL | `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`; `components/leads/lead-lifecycle-guard.tsx`; `lib/lead-lifecycle.ts`; `npm.cmd run audit:heu-lead-lifecycle-standard`; no raw form dump into AI; P3-02 and P2 finance gates remain required |
-| P3-02 | Lead-to-student handover | Tuyen sinh + CTHSSV + Dao tao | PASS_LOCAL | `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`; `npm.cmd run audit:heu-lead-handover-policy`; signed role-scope UAT still required |
+| P3-01 | Lead lifecycle standard | Tuyen sinh | PASS_LOCAL | `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`; `components/leads/lead-lifecycle-guard.tsx`; `lib/lead-lifecycle.ts`; P3-01 acceptance matrix; `npm.cmd run audit:heu-lead-lifecycle-standard`; no raw form dump into AI; P3-02 and P2 finance gates remain required |
+| P3-02 | Lead-to-student handover | Tuyen sinh + CTHSSV + Dao tao | PASS_LOCAL | `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`; `components/leads/lead-handover-panel.tsx`; P3-02 acceptance matrix; `npm.cmd run audit:heu-lead-handover-policy`; signed role-scope UAT still required |
 | P3-03 | Finance handover trigger | Tuyen sinh + KHTC | PASS_LOCAL | TTGDTX lead quick-fix is scoped, permissioned and audited; P2-03 remains final receivable gate |
 
 ## P4 - Finance/Receivable

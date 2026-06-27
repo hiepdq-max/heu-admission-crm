@@ -2142,3 +2142,22 @@
   `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
 - P0-19 remains IN_PROGRESS for production until PHAP_CHE, KHTC, BGH and Audit
   sign redacted legal/finance UAT evidence outside Codex/chat.
+
+## 2026-06-27 - P3-01/P3-02 Lead Handover Acceptance Matrices
+
+- Added a PASS_LOCAL P3-01 lead lifecycle acceptance matrix to
+  `components/leads/lead-lifecycle-guard.tsx`.
+- Added a PASS_LOCAL P3-02 handover acceptance matrix to
+  `components/leads/lead-handover-panel.tsx`.
+- The matrices require scoped lead identity, status-transition evidence,
+  redacted document/evidence references, P0-19/P2 finance gate preservation,
+  scoped receiver acceptance/rejection trace and explicit human approval before
+  lead or handover evidence can support downstream finance context.
+- Updated `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`,
+  `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`, the production
+  checklist, backlog, current-state inventory,
+  `audit:heu-lead-lifecycle-standard`, `audit:heu-lead-handover-policy`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P3-01/P3-02 remain PASS_LOCAL only until signed role/workflow UAT proves
+  scope, status transitions, evidence redaction, handover boundary and
+  finance-gate behavior.

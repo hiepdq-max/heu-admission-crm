@@ -63,8 +63,8 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
-| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard and P3-02 handover policy exist; handover remains finance-gated |
-| M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy exists; production UAT pending |
+| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist; handover remains finance-gated |
+| M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy and P3-02 acceptance matrix exist; production UAT pending |
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
 | M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard and P2-03 through P2-18 pilot flow are packaged; signed finance/legal UAT still required |
@@ -81,7 +81,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
-| Lead lifecycle/handover | P3-01 lifecycle standard and P3-02 handover policy exist | PASS_LOCAL; signed role/workflow UAT pending |
+| Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate and execution-readiness guards | Signed payout UAT pending |
 | Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |

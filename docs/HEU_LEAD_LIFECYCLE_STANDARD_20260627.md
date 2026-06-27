@@ -105,3 +105,21 @@ approve production CRM use, production migration, real-data import, finance
 action, UAT acceptance, owner waiver or production GO. Signed role/workflow UAT
 must still prove workspace scope, status transitions, evidence redaction,
 handover boundary and finance-gate behavior.
+
+## 9. P3-01 Acceptance Matrix
+
+The lead list exposes `data-heu-lead-lifecycle-acceptance-matrix="P3-01"`.
+Lead lifecycle evidence can support handover or downstream finance context only
+when each row below is proven with redacted evidence. Any stop condition keeps
+production NO-GO.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P3-01-ACCEPT-01 | Scoped lead identity and source | Lead has lead id/code, source, admission segment, owner and workspace scope before it can be used in reports or handover | Source, owner, segment or workspace scope is missing or unclear |
+| P3-01-ACCEPT-02 | Status transition evidence | `FOLLOW_UP` has `next_followup_at`, `LOST` has `lost_reason`, and every status change has actor/time/activity context | Required reason, date, actor or timestamp is missing |
+| P3-01-ACCEPT-03 | Document and evidence readiness | `DOCUMENT_PENDING` and `DOCUMENT_SUBMITTED` show checklist state and redacted source/evidence reference | Raw PII, CCCD, phone, bank data, vouchers, credentials or private forms are pasted into Git/Codex/chat |
+| P3-01-ACCEPT-04 | Eligibility gate before finance | `ELIGIBLE` and `ENROLLED` are allowed only after P0-19 legal/tuition gate is accepted for the lead major/program | Eligibility or enrollment bypasses P0-19, P2-01, P2-02 or scoped owner review |
+| P3-01-ACCEPT-05 | P3-02 handover boundary | P3-02 handover packet is requested, accepted or rejected by scoped receiver before finance relies on the lead context | KHTC or another department relies on an unaccepted or out-of-scope handover |
+| P3-01-ACCEPT-06 | No finance, AI or production approval | Lead lifecycle evidence states that P2-05/P2-03 remain finance gates and AI output is advisory only | PASS_LOCAL is treated as UAT acceptance, receivable approval, revenue approval or production GO |
+
+Decision value: P3_01_ACCEPT / FAIL / BLOCKED.

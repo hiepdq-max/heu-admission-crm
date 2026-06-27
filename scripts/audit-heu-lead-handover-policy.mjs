@@ -31,10 +31,14 @@ function requireText(contents, pattern, label) {
 
 requireFile(policyPath);
 requireFile("docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md");
+requireFile("components/leads/lead-handover-panel.tsx");
 requireFile("lib/permissions.ts");
 requireFile("lib/heu-os-display.ts");
 
 const policy = exists(policyPath) ? read(policyPath) : "";
+const handoverPanel = exists("components/leads/lead-handover-panel.tsx")
+  ? read("components/leads/lead-handover-panel.tsx")
+  : "";
 
 requireText(policy, /Tuyen Sinh[\s\S]*CTHSSV[\s\S]*Dao Tao[\s\S]*KHTC/i, "department responsibility chain");
 requireText(policy, /DOCUMENT_SUBMITTED[\s\S]*ELIGIBLE[\s\S]*ENROLLED/i, "lead status basis");
@@ -49,6 +53,16 @@ requireText(policy, /P0-19, P2-01 and P2-02 must still be ready/i, "legal/tuitio
 requireText(policy, /AI output alone is not approval evidence/i, "AI approval boundary");
 requireText(policy, /P3-02 is PASS_LOCAL/i, "PASS_LOCAL result");
 requireText(policy, /Signed UAT must still prove role scope/i, "signed UAT boundary");
+requireText(
+  policy,
+  /(?=[\s\S]*P3-02 Acceptance Matrix)(?=[\s\S]*data-heu-lead-handover-acceptance-matrix="P3-02")(?=[\s\S]*P3-02-ACCEPT-01)(?=[\s\S]*P3-02-ACCEPT-06)(?=[\s\S]*Complete handover packet)(?=[\s\S]*Receiving role and workspace scope)(?=[\s\S]*Accept\/reject decision trace)(?=[\s\S]*Finance boundary preserved)(?=[\s\S]*Redacted evidence only)(?=[\s\S]*Human approval, audit and AI boundary)(?=[\s\S]*P3_02_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-02 acceptance matrix",
+);
+requireText(
+  handoverPanel,
+  /(?=[\s\S]*data-heu-lead-handover-acceptance-matrix="P3-02")(?=[\s\S]*P3-02 lead-to-student handover acceptance matrix)(?=[\s\S]*PASS_LOCAL\s+only)(?=[\s\S]*packet is complete)(?=[\s\S]*receiver scope is valid)(?=[\s\S]*accept\/reject trace is auditable)(?=[\s\S]*finance gates remain separate)(?=[\s\S]*evidence is redacted)(?=[\s\S]*human approval is explicit)(?=[\s\S]*P3-02-ACCEPT-01)(?=[\s\S]*P3-02-ACCEPT-06)(?=[\s\S]*P3_02_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-02 visible acceptance matrix",
+);
 
 const permissions = read("lib/permissions.ts");
 for (const permission of [
@@ -72,12 +86,12 @@ if (!packageJson.scripts?.["audit:heu-lead-handover-policy"]) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P3-02[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627\.md[\s\S]*audit:heu-lead-handover-policy/.test(backlog)) {
+if (!/P3-02[\s\S]*PASS_LOCAL[\s\S]*HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627\.md[\s\S]*P3-02 acceptance matrix[\s\S]*audit:heu-lead-handover-policy/.test(backlog)) {
   fail("Backlog P3-02 must be PASS_LOCAL and reference the handover policy audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Lead-to-student handover guard[\s\S]*PASS_LOCAL[\s\S]*audit:heu-lead-handover-policy/.test(checklist)) {
+if (!/Lead-to-student handover guard[\s\S]*PASS_LOCAL[\s\S]*P3-02 acceptance matrix[\s\S]*audit:heu-lead-handover-policy/.test(checklist)) {
   fail("Production checklist must include the lead-to-student handover PASS_LOCAL guard.");
 }
 

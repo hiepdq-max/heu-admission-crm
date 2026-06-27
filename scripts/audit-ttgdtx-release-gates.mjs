@@ -960,9 +960,33 @@ requireText(
 );
 
 requireText(
+  "components/leads/lead-lifecycle-guard.tsx",
+  /(?=[\s\S]*data-heu-lead-lifecycle-acceptance-matrix="P3-01")(?=[\s\S]*P3-01 lead lifecycle acceptance matrix)(?=[\s\S]*P3-01-ACCEPT-01)(?=[\s\S]*P3-01-ACCEPT-06)(?=[\s\S]*P3_01_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-01 lead lifecycle acceptance matrix",
+);
+
+requireText(
+  "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
+  /(?=[\s\S]*P3-01 Acceptance Matrix)(?=[\s\S]*data-heu-lead-lifecycle-acceptance-matrix="P3-01")(?=[\s\S]*P3-01-ACCEPT-01)(?=[\s\S]*P3-01-ACCEPT-06)(?=[\s\S]*P3_01_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-01 lifecycle acceptance matrix doc",
+);
+
+requireText(
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   /(?=[\s\S]*P3-02 is PASS_LOCAL)(?=[\s\S]*P2-05 remains the receivable gate)(?=[\s\S]*P2-03 remains the final\s+student receivable creation control)/i,
   "P3-02 handover PASS_LOCAL and finance-gate boundary",
+);
+
+requireText(
+  "components/leads/lead-handover-panel.tsx",
+  /(?=[\s\S]*data-heu-lead-handover-acceptance-matrix="P3-02")(?=[\s\S]*P3-02 lead-to-student handover acceptance matrix)(?=[\s\S]*P3-02-ACCEPT-01)(?=[\s\S]*P3-02-ACCEPT-06)(?=[\s\S]*P3_02_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-02 handover acceptance matrix",
+);
+
+requireText(
+  "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
+  /(?=[\s\S]*P3-02 Acceptance Matrix)(?=[\s\S]*data-heu-lead-handover-acceptance-matrix="P3-02")(?=[\s\S]*P3-02-ACCEPT-01)(?=[\s\S]*P3-02-ACCEPT-06)(?=[\s\S]*P3_02_ACCEPT \/ FAIL \/ BLOCKED)/i,
+  "P3-02 handover acceptance matrix doc",
 );
 
 if (failures.length > 0) {

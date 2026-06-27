@@ -6,6 +6,64 @@ import {
   leadLifecycleStatusLabels,
 } from "@/lib/lead-lifecycle";
 
+type LeadLifecycleAcceptanceItem = {
+  caseId: string;
+  requirement: string;
+  minimumEvidence: string;
+  stopCondition: string;
+};
+
+const leadLifecycleAcceptanceItems: LeadLifecycleAcceptanceItem[] = [
+  {
+    caseId: "P3-01-ACCEPT-01",
+    requirement: "Scoped lead identity and source",
+    minimumEvidence:
+      "Lead has lead id/code, source, admission segment, owner and workspace scope before it can be used in reports or handover.",
+    stopCondition:
+      "Stop if source, owner, segment or workspace scope is missing or unclear.",
+  },
+  {
+    caseId: "P3-01-ACCEPT-02",
+    requirement: "Status transition evidence",
+    minimumEvidence:
+      "FOLLOW_UP has next_followup_at, LOST has lost_reason, and every status change has actor/time/activity context.",
+    stopCondition:
+      "Stop if a required reason, date, actor or timestamp is missing.",
+  },
+  {
+    caseId: "P3-01-ACCEPT-03",
+    requirement: "Document and evidence readiness",
+    minimumEvidence:
+      "DOCUMENT_PENDING and DOCUMENT_SUBMITTED show checklist state and redacted source/evidence reference.",
+    stopCondition:
+      "Stop if raw PII, CCCD, phone, bank data, vouchers, credentials or private forms are pasted into Git/Codex/chat.",
+  },
+  {
+    caseId: "P3-01-ACCEPT-04",
+    requirement: "Eligibility gate before finance",
+    minimumEvidence:
+      "ELIGIBLE and ENROLLED are allowed only after P0-19 legal/tuition gate is accepted for the lead major/program.",
+    stopCondition:
+      "Stop if eligibility or enrollment bypasses P0-19, P2-01, P2-02 or scoped owner review.",
+  },
+  {
+    caseId: "P3-01-ACCEPT-05",
+    requirement: "P3-02 handover boundary",
+    minimumEvidence:
+      "P3-02 handover packet is requested, accepted or rejected by scoped receiver before finance relies on the lead context.",
+    stopCondition:
+      "Stop if KHTC or another department relies on an unaccepted or out-of-scope handover.",
+  },
+  {
+    caseId: "P3-01-ACCEPT-06",
+    requirement: "No finance, AI or production approval",
+    minimumEvidence:
+      "Lead lifecycle evidence states that P2-05/P2-03 remain finance gates and AI output is advisory only.",
+    stopCondition:
+      "PASS_LOCAL is treated as UAT acceptance, receivable approval, revenue approval or production GO.",
+  },
+];
+
 export function LeadLifecycleGuard() {
   return (
     <section
@@ -110,6 +168,53 @@ export function LeadLifecycleGuard() {
           <p className="mt-1 text-sm leading-6 text-rose-800">
             {leadLifecycleFinanceBoundaries.join(", ")}.
           </p>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 border-l-2 border-emerald-300 bg-emerald-50/70 p-4"
+        data-heu-lead-lifecycle-acceptance-matrix="P3-01"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <ClipboardCheck className="size-4 text-emerald-700" />
+              <p className="text-sm font-semibold text-emerald-950">
+                P3-01 lead lifecycle acceptance matrix: PASS_LOCAL only
+              </p>
+            </div>
+            <p className="mt-2 text-sm leading-6 text-emerald-900">
+              A lead can support handover or downstream finance context only
+              after scoped identity, status-transition evidence, document
+              readiness, eligibility gate, P3-02 handover boundary and no-AI/no-
+              finance approval boundaries are proven.
+            </p>
+          </div>
+          <div className="min-w-72 border border-emerald-200 bg-white px-3 py-2 text-sm text-emerald-950">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P3_01_ACCEPT / FAIL / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {leadLifecycleAcceptanceItems.map((item) => (
+            <div key={item.caseId} className="border-l-2 border-emerald-300 bg-white px-3 py-3">
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 text-sm font-medium text-zinc-950">
+                {item.requirement}
+              </p>
+              <p className="mt-2 text-sm leading-5 text-zinc-700">
+                Minimum evidence: {item.minimumEvidence}
+              </p>
+              <p className="mt-2 text-sm leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

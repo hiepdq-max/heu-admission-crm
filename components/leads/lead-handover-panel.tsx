@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import {
   ArrowRightLeft,
   CheckCircle2,
+  ClipboardCheck,
   Clock3,
   Loader2,
   Save,
@@ -46,6 +47,13 @@ type LeadHandoverPanelProps = {
   loadError?: string;
 };
 
+type HandoverAcceptanceItem = {
+  caseId: string;
+  requirement: string;
+  minimumEvidence: string;
+  stopCondition: string;
+};
+
 const initialState: HandoverFormState = {};
 
 const handoverTypeLabels: Record<string, string> = {
@@ -86,6 +94,57 @@ const handoverOptions = [
   {
     value: "ADMISSION_TO_ACCOUNTING",
     label: "Bàn giao trực tiếp cho Kế toán",
+  },
+];
+
+const handoverAcceptanceItems: HandoverAcceptanceItem[] = [
+  {
+    caseId: "P3-02-ACCEPT-01",
+    requirement: "Complete handover packet",
+    minimumEvidence:
+      "Packet includes lead id/code, current status, segment, program/major, source/evidence reference and maker department.",
+    stopCondition:
+      "Stop if required identity, status, scope or evidence reference is missing.",
+  },
+  {
+    caseId: "P3-02-ACCEPT-02",
+    requirement: "Receiving role and workspace scope",
+    minimumEvidence:
+      "Receiver belongs to the target department and can only read scoped handover/student context.",
+    stopCondition:
+      "Stop if out-of-scope receiver can read, accept or reject the handover.",
+  },
+  {
+    caseId: "P3-02-ACCEPT-03",
+    requirement: "Accept/reject decision trace",
+    minimumEvidence:
+      "Accept or reject action records actor, timestamp, status and reason/note when rejecting or returning.",
+    stopCondition:
+      "Stop if decision is missing actor, timestamp, status or required rejection reason.",
+  },
+  {
+    caseId: "P3-02-ACCEPT-04",
+    requirement: "Finance boundary preserved",
+    minimumEvidence:
+      "KHTC can use accepted context only through P0-19, P2-05 and P2-03; handover itself creates no receivable.",
+    stopCondition:
+      "Stop if handover creates receivable, collects tuition, issues invoice, approves payment or marks revenue.",
+  },
+  {
+    caseId: "P3-02-ACCEPT-05",
+    requirement: "Redacted evidence only",
+    minimumEvidence:
+      "UAT evidence uses synthetic/redacted references and keeps raw PII, CCCD, phone, bank data and credentials out of Git/Codex/chat.",
+    stopCondition:
+      "Stop if raw controlled evidence is pasted into the app note, screenshot, repo or Codex/chat.",
+  },
+  {
+    caseId: "P3-02-ACCEPT-06",
+    requirement: "Human approval, audit and AI boundary",
+    minimumEvidence:
+      "Human accept/reject is auditable; AI suggestion is advisory and cannot accept, reject, waive or approve finance.",
+    stopCondition:
+      "PASS_LOCAL or AI output is treated as handover acceptance, UAT pass, finance approval or production GO.",
   },
 ];
 
@@ -325,6 +384,57 @@ export function LeadHandoverPanel({
       </div>
 
       <div className="space-y-5 p-5">
+        <div
+          className="border-l-2 border-sky-300 bg-sky-50/70 p-4 text-sm"
+          data-heu-lead-handover-acceptance-matrix="P3-02"
+        >
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <div className="flex items-center gap-2 font-semibold text-sky-950">
+                <ClipboardCheck className="size-4 text-sky-700" />
+                <span>
+                  P3-02 lead-to-student handover acceptance matrix: PASS_LOCAL
+                  only
+                </span>
+              </div>
+              <p className="mt-2 leading-6 text-sky-900">
+                Handover can support downstream student or finance context only
+                when the packet is complete, receiver scope is valid, the
+                accept/reject trace is auditable, finance gates remain separate,
+                evidence is redacted and human approval is explicit.
+              </p>
+            </div>
+            <div className="min-w-72 border border-sky-200 bg-white px-3 py-2 text-sky-950">
+              Decision:
+              <span className="mt-1 block font-mono text-xs">
+                P3_02_ACCEPT / FAIL / BLOCKED
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {handoverAcceptanceItems.map((item) => (
+              <div
+                key={item.caseId}
+                className="border-l-2 border-sky-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-sky-700">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.requirement}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Minimum evidence: {item.minimumEvidence}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop condition: {item.stopCondition}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {loadError ? (
           <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
             Chưa đọc được bảng bàn giao. Hãy chạy SQL

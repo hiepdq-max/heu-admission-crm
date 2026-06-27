@@ -106,3 +106,21 @@ P3-02 is PASS_LOCAL as a policy/control guard. This does not create production
 handover, approve enrollment, approve finance posting or approve production
 migration. Signed UAT must still prove role scope, accept/reject behavior,
 evidence redaction, audit logging and P2/P4 finance boundary behavior.
+
+## 9. P3-02 Acceptance Matrix
+
+The lead detail handover panel exposes
+`data-heu-lead-handover-acceptance-matrix="P3-02"`. Handover can support
+student or downstream finance context only when each row below is proven with
+redacted evidence. Any stop condition keeps production NO-GO.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P3-02-ACCEPT-01 | Complete handover packet | Packet includes lead id/code, current status, segment, program/major, source/evidence reference and maker department | Required identity, status, scope or evidence reference is missing |
+| P3-02-ACCEPT-02 | Receiving role and workspace scope | Receiver belongs to the target department and can only read scoped handover/student context | Out-of-scope receiver can read, accept or reject the handover |
+| P3-02-ACCEPT-03 | Accept/reject decision trace | Accept or reject action records actor, timestamp, status and reason/note when rejecting or returning | Decision is missing actor, timestamp, status or required rejection reason |
+| P3-02-ACCEPT-04 | Finance boundary preserved | KHTC can use accepted context only through P0-19, P2-05 and P2-03; handover itself creates no receivable | Handover creates receivable, collects tuition, issues invoice, approves payment or marks revenue |
+| P3-02-ACCEPT-05 | Redacted evidence only | UAT evidence uses synthetic/redacted references and keeps raw PII, CCCD, phone, bank data and credentials out of Git/Codex/chat | Raw controlled evidence is pasted into the app note, screenshot, repo or Codex/chat |
+| P3-02-ACCEPT-06 | Human approval, audit and AI boundary | Human accept/reject is auditable; AI suggestion is advisory and cannot accept, reject, waive or approve finance | PASS_LOCAL or AI output is treated as handover acceptance, UAT pass, finance approval or production GO |
+
+Decision value: P3_02_ACCEPT / FAIL / BLOCKED.
