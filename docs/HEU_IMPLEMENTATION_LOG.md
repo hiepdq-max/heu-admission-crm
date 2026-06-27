@@ -859,3 +859,31 @@
 - P1-04 is PASS_LOCAL as a mapping/control artifact.
 - No schema rename, drop, alter, production migration or data movement is approved.
 - Future migrations should use reviewed compatibility-view or staged migration design.
+
+## 2026-06-27 - HEU Data Foundation Audit
+
+### Scope
+
+- Continued HEU data-foundation hardening with P1-01, P1-02 and P1-03.
+- Added current-result boundaries to the data model, data dictionary and role-permission matrix.
+- Added a local audit for canonical masters, field naming, sensitive-data rules, role families, permission families and scope boundaries.
+- Kept schema change, production migration, broad access and real-data exposure NO-GO.
+
+### Files Updated/Added
+
+- `docs/HEU_DATA_MODEL_V1.md`
+- `docs/HEU_DATA_DICTIONARY_V1.md`
+- `docs/HEU_ROLE_PERMISSION_MATRIX_V1.md`
+- `scripts/audit-heu-data-foundation.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P1-01, P1-02 and P1-03 are PASS_LOCAL as control artifacts.
+- No production schema change, production migration, production access or real-data UAT is approved.
+- Signed UAT and reviewed migrations remain required before production readiness.

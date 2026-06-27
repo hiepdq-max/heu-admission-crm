@@ -18,9 +18,9 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
-| P1-01 | Define `HEU_DATA_MODEL_V1.md` | IT/Data + Process owners | IN_PROGRESS | Data master before automation |
-| P1-02 | Define `HEU_DATA_DICTIONARY_V1.md` | IT/Data | IN_PROGRESS | Stable business codes |
-| P1-03 | Define `HEU_ROLE_PERMISSION_MATRIX_V1.md` | IT/Data + BGH | IN_PROGRESS | Role and scope before finance access |
+| P1-01 | Define `HEU_DATA_MODEL_V1.md` | IT/Data + Process owners | PASS_LOCAL | Canonical masters/lifecycle defined; `npm.cmd run audit:heu-data-foundation`; no production schema change |
+| P1-02 | Define `HEU_DATA_DICTIONARY_V1.md` | IT/Data | PASS_LOCAL | Field/master naming and sensitive-data rules defined; `npm.cmd run audit:heu-data-foundation`; no production data exposure |
+| P1-03 | Define `HEU_ROLE_PERMISSION_MATRIX_V1.md` | IT/Data + BGH | PASS_LOCAL | Baseline roles/permission families/scope boundaries defined; `npm.cmd run audit:heu-data-foundation`; signed access UAT still required |
 | P1-04 | Map existing SQL objects to master names | IT/Data | PASS_LOCAL | `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`; `npm.cmd run audit:heu-sql-object-master-map`; no production schema rename/drop/alter |
 | P1-05 | Build anonymized real-like UAT pack for Phu-Xuyen-like cases | KHTC + IT/Data + Audit | PASS_LOCAL | `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`; `npm.cmd run audit:ttgdtx-synthetic-uat-pack`; no raw PII/bank data |
 | P1-06 | Keep TTGDTX source/evidence model generic across centers | IT/Data | IN_PROGRESS | Product code must not hard-code a reference center |

@@ -49,6 +49,9 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  "docs/HEU_DATA_MODEL_V1.md",
+  "docs/HEU_DATA_DICTIONARY_V1.md",
+  "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
@@ -65,6 +68,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
+  "scripts/audit-heu-data-foundation.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
@@ -83,6 +87,7 @@ const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
   "audit:heu-ai-policy",
   "audit:heu-backlog-codes",
+  "audit:heu-data-foundation",
   "audit:heu-lead-handover-policy",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
@@ -176,6 +181,24 @@ requireText(
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   /(?=[\s\S]*P1-04 is PASS_LOCAL)(?=[\s\S]*Do not rename, drop, alter or merge production SQL objects)(?=[\s\S]*compatibility\s+views, not destructive renames)/i,
   "P1-04 SQL object map is local-only and non-destructive",
+);
+
+requireText(
+  "docs/HEU_DATA_MODEL_V1.md",
+  /P1-01 is PASS_LOCAL[\s\S]*does not approve schema\s+changes, production migration, real-data import, production dashboard use or\s+automated finance posting/i,
+  "P1-01 data model local-only boundary",
+);
+
+requireText(
+  "docs/HEU_DATA_DICTIONARY_V1.md",
+  /P1-02 is PASS_LOCAL[\s\S]*does not approve\s+schema changes, production migration, real-data import or production data\s+exposure/i,
+  "P1-02 data dictionary local-only boundary",
+);
+
+requireText(
+  "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
+  /P1-03 is PASS_LOCAL[\s\S]*does\s+not approve production access, broad permissions, real-data UAT or autonomous\s+AI approval/i,
+  "P1-03 role permission matrix local-only boundary",
 );
 
 requireText(
