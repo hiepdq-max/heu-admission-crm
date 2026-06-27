@@ -14,6 +14,14 @@ type AcceptanceItem = {
   stopCondition: string;
 };
 
+type ExceptionItem = {
+  caseId: string;
+  exceptionType: string;
+  owner: string;
+  requiredEvidence: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "P0-19-01",
@@ -110,6 +118,45 @@ const acceptanceItems: AcceptanceItem[] = [
   },
 ];
 
+const exceptionItems: ExceptionItem[] = [
+  {
+    caseId: "P0-19-WAIVE-01",
+    exceptionType: "Step100 sandbox pilot open",
+    owner: "BGH + KHTC + PHAP_CHE + IT_DATA",
+    requiredEvidence:
+      "Written sandbox/UAT approval, session flag proof, expiry/review date and confirmation that output is not production authority.",
+    stopCondition:
+      "Stop if Step100 output is used as legal acceptance, tuition approval, finance approval, revenue authority or production GO.",
+  },
+  {
+    caseId: "P0-19-WAIVE-02",
+    exceptionType: "Legal basis exception",
+    owner: "PHAP_CHE + BGH",
+    requiredEvidence:
+      "Written legal owner decision, scope, center, program/major, effective period and unresolved-risk note.",
+    stopCondition:
+      "Stop if the exception is oral, ownerless, expired, broad, hidden or not tied to a specific center/program.",
+  },
+  {
+    caseId: "P0-19-WAIVE-03",
+    exceptionType: "Tuition/invoice policy exception",
+    owner: "KHTC + PHAP_CHE",
+    requiredEvidence:
+      "Written policy owner decision, tuition version, payer model, invoice/chung-tu basis and review date.",
+    stopCondition:
+      "Stop if amount, term, payer model, invoice responsibility or waiver basis remains unresolved.",
+  },
+  {
+    caseId: "P0-19-WAIVE-04",
+    exceptionType: "Finance gate override request",
+    owner: "KHTC + Audit + BGH",
+    requiredEvidence:
+      "Negative/positive gate evidence, risk owner decision, audit note and controlled reference ID.",
+    stopCondition:
+      "Stop if P2-03 can create receivable while P0-19 is missing, blocked, unsigned or based only on pilot data.",
+  },
+];
+
 export function TtgdtxP019UatEvidenceChecklist() {
   return (
     <section
@@ -173,6 +220,65 @@ export function TtgdtxP019UatEvidenceChecklist() {
           is approved, or production GO is approved. PHAP_CHE, KHTC, BGH and
           Audit must sign the evidence outside Codex/chat.
         </p>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-sky-200 bg-white p-4"
+        data-ttgdtx-p019-waiver-exception-register="P0-19"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold text-sky-950">
+              <ClipboardCheck className="size-4 shrink-0 text-sky-700" />
+              <span>
+                P0-19 waiver/exception register: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6 text-sky-900">
+              Use this register before any Step100 sandbox use, legal exception,
+              tuition/invoice exception or finance gate override discussion.
+              Every exception needs a written owner, controlled reference ID,
+              expiry/review date and explicit NO-GO boundary.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-950">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P0_19_WAIVER_ACCEPT / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {exceptionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-sky-300 bg-sky-50/70 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.exceptionType}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required evidence: {item.requiredEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+          PASS_LOCAL does not approve a legal waiver, tuition exception, finance
+          override, Step100 production use, receivable creation, revenue
+          recognition or production GO.
+        </div>
       </div>
 
       <div

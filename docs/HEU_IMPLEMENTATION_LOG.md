@@ -2772,3 +2772,15 @@
   cannot be omitted.
 - This is migration-order decision packaging only. It does not run SQL,
   approve a waiver, approve migration, accept UAT or mark production GO.
+
+## 2026-06-28 - P0-19 Waiver Exception Register
+
+- Added a P0-19 waiver/exception register to the legal/finance UAT evidence
+  checklist and runbook so Step100 sandbox use, legal exceptions,
+  tuition/invoice exceptions and finance gate override requests require written
+  owner evidence, controlled reference ID and expiry/review date.
+- Updated the production checklist, backlog, `audit:ttgdtx-p019-gate-guard`
+  and `audit:ttgdtx-release-gates` so the P0-19 register cannot be skipped.
+- This is legal/finance gate packaging only. It does not approve a legal
+  waiver, tuition exception, finance override, receivable creation, revenue
+  recognition, UAT acceptance or production GO.

@@ -85,6 +85,26 @@ passwords, OTPs, service-role keys or production credentials in Git/Codex/chat.
 Signed legal/finance UAT remains required before P0-19 can be accepted for
 production receivable use.
 
+## P0-19 Waiver/Exception Register
+
+The app exposes `data-ttgdtx-p019-waiver-exception-register="P0-19"` for any
+Step100 sandbox use, legal exception, tuition/invoice exception or finance gate
+override discussion. Every row must have a written owner, controlled reference
+ID, expiry/review date and explicit NO-GO boundary.
+
+| Case | Exception type | Owner | Required evidence | Stop condition |
+|---|---|---|---|---|
+| P0-19-WAIVE-01 | Step100 sandbox pilot open | BGH + KHTC + PHAP_CHE + IT_DATA | Written sandbox/UAT approval, session flag proof, expiry/review date and confirmation that output is not production authority | Step100 output is used as legal acceptance, tuition approval, finance approval, revenue authority or production GO |
+| P0-19-WAIVE-02 | Legal basis exception | PHAP_CHE + BGH | Written legal owner decision, scope, center, program/major, effective period and unresolved-risk note | Exception is oral, ownerless, expired, broad, hidden or not tied to a specific center/program |
+| P0-19-WAIVE-03 | Tuition/invoice policy exception | KHTC + PHAP_CHE | Written policy owner decision, tuition version, payer model, invoice/chung-tu basis and review date | Amount, term, payer model, invoice responsibility or waiver basis remains unresolved |
+| P0-19-WAIVE-04 | Finance gate override request | KHTC + Audit + BGH | Negative/positive gate evidence, risk owner decision, audit note and controlled reference ID | P2-03 can create receivable while P0-19 is missing, blocked, unsigned or based only on pilot data |
+
+Decision value: P0_19_WAIVER_ACCEPT / NO_GO / BLOCKED.
+
+PASS_LOCAL does not approve a legal waiver, tuition exception, finance override,
+Step100 production use, receivable creation, revenue recognition or production
+GO.
+
 ## P0-19 Acceptance Matrix
 
 The app also exposes `data-ttgdtx-p019-acceptance-matrix="P0-19"`. P0-19 can
