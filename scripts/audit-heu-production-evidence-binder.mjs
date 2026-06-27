@@ -106,6 +106,20 @@ requireText(
 );
 
 requireText(
+  source,
+  /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, smoke-check result and operator\/checker names/i,
+  "P0-14-01 backup/restore operator run sheet proof",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /P0-14-07[\s\S]*P0-09[\s\S]*Final owner GO\/NO-GO evidence[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
+  "P0-14-07 owner sign-off UAT handoff proof",
+  sourcePath,
+);
+
+requireText(
   component,
   /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*what proof is needed, where\s+it must live, who signs it and what must never be pasted into\s+Git\/Codex\/chat)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*controlled evidence reference exists)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Stop if proof is missing)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)(?=[\s\S]*service-role keys,\s+passwords, OTPs)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements)(?=[\s\S]*AI-produced approvals)/i,
   "P0-14 production evidence binder UI",
@@ -132,21 +146,21 @@ requireText(
 
 requireText(
   backlog,
-  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder/i,
+  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "P0-14 production evidence binder backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder/i,
+  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "production checklist evidence binder row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS/i,
+  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "current-state production evidence binder audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

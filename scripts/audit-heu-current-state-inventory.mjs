@@ -131,7 +131,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, P0-14 evidence binder and closure tracker exist[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
+  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, P0-14 evidence binder and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
   "P0-14 controlled evidence binder closure tracker state",
 );
 requireText(

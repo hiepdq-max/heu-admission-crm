@@ -749,7 +749,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*P0-14-07)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
+  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, smoke-check result and operator\/checker names)(?=[\s\S]*P0-14-07)(?=[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
   "P0-14 production evidence shared source",
 );
 

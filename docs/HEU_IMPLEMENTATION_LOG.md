@@ -2445,3 +2445,14 @@
   so inventory cannot drift behind the blocker-source planning rows.
 - This is current-state alignment only. It does not execute backup/restore,
   accept UAT, approve migration or mark production GO.
+
+## 2026-06-27 - P0-14 Evidence Binder Proof Alignment
+
+- Updated the P0-14 backlog, production checklist and current-state inventory
+  wording so the evidence binder explicitly includes the P0-03 operator run
+  sheet proof and the P0-09 owner sign-off/UAT handoff proof.
+- Extended `audit:heu-production-evidence-binder`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` to
+  require those evidence paths.
+- This is evidence-binder alignment only. It does not collect real evidence,
+  sign UAT, approve migration or mark production GO.
