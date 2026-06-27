@@ -1929,3 +1929,16 @@
   audits to keep P7-02 advisory-only and no-secret.
 - P7-02 is PASS_LOCAL only. Production AI remains locked until prompt/output
   audit logging, role-scoped AI data access and signed UAT are complete.
+## 2026-06-27 - P7-03 AI Risk Suggestion Board
+
+- Added a read-only AI risk suggestion board on `/ai-assistant` for missing
+  evidence, role/workspace leaks, restore proof, duplicate payout, dashboard
+  reconciliation and AI-output misuse.
+- The board is static/advisory only; it does not call AI services, score
+  people, hide exceptions, write data, approve finance, accept UAT, run
+  migration or mark production GO.
+- Extended the AI policy and audits so P7-03 stays advisory-only, no-secret and
+  no-autonomous-approval.
+- P7-03 is PASS_LOCAL only. Production AI remains locked until prompt/output
+  audit logging, role-scoped AI data access, risk-review audit logging and
+  signed UAT are complete.

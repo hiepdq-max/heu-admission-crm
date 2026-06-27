@@ -66,7 +66,28 @@ It must not:
 P7-02 remains PASS_LOCAL only until prompt/output audit logging, role-scoped AI
 data access and signed UAT are complete.
 
-## 6. Evidence Rule
+## 6. P7-03 Read-Only Risk Suggestion Board
+
+`components/ai/ai-risk-suggestion-board.tsx` is allowed as a PASS_LOCAL helper
+because it is static, read-only and advisory-only. It may show risk prompts for
+missing evidence, role/workspace leaks, missing restore proof, duplicate payout,
+dashboard reconciliation and AI-output misuse.
+
+It must not:
+
+- Score people, hide exceptions or suppress risk.
+- Save risk decisions or write workflow data.
+- Call Supabase, RPC, mutation APIs, AI services or production workflows.
+- Approve finance, accept UAT, waive evidence, run migration or mark production
+  GO.
+- Ask users to paste secrets, passwords, OTPs, service-role keys, bank
+  credentials, raw student PII, raw CCCD, raw phone numbers, raw bank account
+  numbers, bank statements, vouchers or raw payment data.
+
+P7-03 remains PASS_LOCAL only until prompt/output audit logging, role-scoped AI
+data access, risk-review audit logging and signed UAT are complete.
+
+## 7. Evidence Rule
 
 Every AI-assisted high-risk workflow must store:
 
@@ -79,9 +100,10 @@ Every AI-assisted high-risk workflow must store:
 
 AI output alone is not approval evidence.
 
-## 7. Current Result
+## 8. Current Result
 
 P7-01 is PASS_LOCAL as a policy and static UI guard. P7-02 is PASS_LOCAL as a
-read-only task checklist helper. This does not enable AI automation.
-Production AI remains locked until the implementation rule, prompt/output audit
-logging, role-scoped AI data access and UAT evidence are complete.
+read-only task checklist helper. P7-03 is PASS_LOCAL as a read-only risk
+suggestion board. This does not enable AI automation. Production AI remains
+locked until the implementation rule, prompt/output audit logging, role-scoped
+AI data access, risk-review audit logging and UAT evidence are complete.
