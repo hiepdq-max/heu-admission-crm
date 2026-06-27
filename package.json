@@ -26,6 +26,7 @@
     "audit:ttgdtx-dashboard-access": "node scripts/audit-ttgdtx-dashboard-access.mjs",
     "audit:ttgdtx-data-fetch-gate": "node scripts/audit-ttgdtx-data-fetch-gate.mjs",
     "audit:ttgdtx-generic-source-evidence": "node scripts/audit-ttgdtx-generic-source-evidence.mjs",
+    "audit:ttgdtx-invoice-policy": "node scripts/audit-ttgdtx-invoice-policy.mjs",
     "audit:ttgdtx-lead-quick-fix-safety": "node scripts/audit-ttgdtx-lead-quick-fix-safety.mjs",
     "audit:ttgdtx-operating-control-ui": "node scripts/audit-ttgdtx-operating-control-ui.mjs",
     "audit:ttgdtx-pilot-open-safety": "node scripts/audit-ttgdtx-pilot-open-safety.mjs",

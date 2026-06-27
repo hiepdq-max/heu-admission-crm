@@ -1093,3 +1093,32 @@
 
 - The operating-control matrix is PASS_LOCAL on key finance UI surfaces.
 - Signed browser UAT is still required before any production readiness claim.
+
+## 2026-06-27 - P2-10 Invoice Policy Matrix UI
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small P2-10 invoice/chung-tu policy slice.
+- Converted the question "thu tien co xuat hoa don khong" into a visible operating matrix on the Thu hoc phi screen.
+- Added policy cases for HEU collection, center collection, split collection, offset/adjustment and unknown collection models.
+- Kept the rule local-only: no global yes/no answer, no tax/legal final approval and no production GO.
+
+### Files Updated/Added
+
+- `lib/ttgdtx-invoice-policy.ts`
+- `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`
+- `scripts/audit-ttgdtx-invoice-policy.mjs`
+- `app/ttgdtx/payments/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md`
+- `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P4-02/P2-10 invoice policy matrix is PASS_LOCAL in the app and audit suite.
+- Signed KHTC/Phap Che UAT is still required before production use.

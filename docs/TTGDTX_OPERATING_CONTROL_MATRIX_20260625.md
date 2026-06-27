@@ -119,7 +119,9 @@ Next action: classify invoice_required and attach evidence/waiver
 
 ### Slice 3 - Make Gates Enforceable
 
-- Add collection invoice/chung-tu status to Thu hoc phi.
+- Keep collection invoice/chung-tu status and the P2-10 invoice policy matrix
+  visible on Thu hoc phi. Status: PASS_LOCAL; signed KHTC/Phap Che UAT still
+  required.
 - Add BBNT and partner invoice gate before payment request. Status:
   P2-15 blocker added through Step105 and P2-19 source-control checks; P2-17
   blocker added through Step107 and P2-19 source-control checks; UAT proof

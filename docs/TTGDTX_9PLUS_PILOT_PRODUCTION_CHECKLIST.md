@@ -56,7 +56,7 @@ approval.
 | Receivable/payment status lifecycle | KHTC + IT_DATA + Audit | PASS_LOCAL | `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`; signed finance UAT still required | YES | Finance records skip evidence, approval, reversal or lock controls |
 | P2-03 receivable creation | KHTC | DONE | Receivable ID, student, amount, due date, audit log | YES | Missing or duplicate receivable |
 | Thu học phí (P2-10) | KHTC | DONE | Receipt/voucher number, amount, date, evidence link | YES | Duplicate receipt or wrong amount |
-| Hóa đơn/chứng từ khi thu học phí (P2-10) | KHTC + PHAP_CHE | IN_PROGRESS | Policy matrix for collection model, payer type, invoice_required, issuer, invoice_status, invoice number/date/evidence or authorized waiver | YES | Tuition is collected without required invoice/chung-tu, or invoice is issued by the wrong party/time |
+| Hóa đơn/chứng từ khi thu học phí (P2-10) | KHTC + PHAP_CHE | PASS_LOCAL | `lib/ttgdtx-invoice-policy.ts`; `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`; `npm.cmd run audit:ttgdtx-invoice-policy`; policy matrix covers collection model, payer type, invoice_required, issuer, invoice_status, invoice number/date/evidence or authorized waiver; signed KHTC/Phap Che UAT still required | YES | Tuition is collected without required invoice/chung-tu, or invoice is issued by the wrong party/time |
 | Money input format | IT_DATA + KHTC | PASS_LOCAL | `npm.cmd run audit:vnd-money-format`; P2-10 and P2-17 share `lib/vnd-money.ts`; accept `1000000`, `1 000 000`, `1.000.000`; display `1.000.000 đ` | NO | User enters wrong money amount |
 | P2-13 reconciliation batch | KHTC | DONE | Batch ID, receipt list, period, partner | YES | Receipt omitted or placed in multiple periods |
 | P2-14 review/approve/lock batch | KHTC + BGH | DONE | Locked batch status, approval log, `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md` | YES | Payment requested from unlocked period |
@@ -104,6 +104,7 @@ production, the highest priority blockers are:
 6. Validate the account-control deferral and collateral separation decision from `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md` in signed UAT.
 7. Validate operating-control UI and gate behavior in signed UAT using `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md`.
 8. Validate user-friendly labels/search in browser UAT using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
-9. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
-10. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
-11. Complete role/workspace permission tests.
+9. Validate P2-10 invoice policy matrix in signed KHTC/Phap Che browser UAT; keep `npm.cmd run audit:ttgdtx-invoice-policy` green.
+10. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
+11. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
+12. Complete role/workspace permission tests.

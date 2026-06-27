@@ -71,7 +71,9 @@ const requiredFiles = [
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
   "lib/vnd-money.ts",
@@ -87,6 +89,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
+  "scripts/audit-ttgdtx-invoice-policy.mjs",
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
@@ -119,6 +122,7 @@ const requiredScripts = [
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
+  "audit:ttgdtx-invoice-policy",
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-operating-control-ui",
   "audit:ttgdtx-pilot-open-safety",
@@ -305,6 +309,24 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /TTGDTX operating control matrix[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-operating-control-ui[\s\S]*signed UAT still required/i,
   "operating-control UI PASS_LOCAL checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che|P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Pháp chế/i,
+  "P2-10 invoice policy PASS_LOCAL checklist row",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
+  /data-ttgdtx-invoice-policy-matrix="P2-10"[\s\S]*yes\/no[\s\S]*PASS_LOCAL[\s\S]*PENDING_POLICY/i,
+  "P2-10 invoice policy matrix local-only display",
+);
+
+requireText(
+  "lib/ttgdtx-invoice-policy.ts",
+  /HEU_COLLECTS_STUDENT[\s\S]*CENTER_COLLECTS_STUDENT[\s\S]*SPLIT_COLLECTION[\s\S]*OFFSET_OR_ADJUSTMENT[\s\S]*OTHER_COLLECTION_MODEL/i,
+  "P2-10 invoice policy case coverage",
 );
 
 requireText(
