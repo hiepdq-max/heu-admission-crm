@@ -27,12 +27,15 @@ function requireText(contents, pattern, label, file) {
 const sourcePath = "lib/production-readiness.ts";
 const blockerSummaryPath =
   "components/master-control/production-readiness-blocker-summary.tsx";
+const readinessGuardPath =
+  "components/ttgdtx/ttgdtx-production-readiness-guard.tsx";
 const executionQueuePath =
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx";
 
 for (const file of [
   sourcePath,
   blockerSummaryPath,
+  readinessGuardPath,
   executionQueuePath,
   "AGENTS.md",
   "package.json",
@@ -49,6 +52,9 @@ for (const file of [
 const source = existsSync(path.join(repoRoot, sourcePath)) ? read(sourcePath) : "";
 const blockerSummary = existsSync(path.join(repoRoot, blockerSummaryPath))
   ? read(blockerSummaryPath)
+  : "";
+const readinessGuard = existsSync(path.join(repoRoot, readinessGuardPath))
+  ? read(readinessGuardPath)
   : "";
 const executionQueue = existsSync(path.join(repoRoot, executionQueuePath))
   ? read(executionQueuePath)
@@ -196,6 +202,13 @@ requireText(
 );
 
 requireText(
+  readinessGuard,
+  /import \{ PRODUCTION_BLOCKERS \} from "@\/lib\/production-readiness"[\s\S]*PRODUCTION_BLOCKERS\.map[\s\S]*item\.code[\s\S]*item\.owner[\s\S]*item\.requiredEvidence/i,
+  "TTGDTX production readiness guard imports and renders shared blockers",
+  readinessGuardPath,
+);
+
+requireText(
   executionQueue,
   /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS[\s\S]*PRODUCTION_INFRA_READINESS_STEPS[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
   "execution queue imports shared execution, gate-handover, governance assurance, infra readiness, risk closure, UAT launch and safe iteration sources",
@@ -204,6 +217,10 @@ requireText(
 
 if (/const\s+productionBlockers\s*=/.test(blockerSummary)) {
   fail(`${blockerSummaryPath}: must not keep a local productionBlockers array`);
+}
+
+if (/const\s+readinessBlockers\b/.test(readinessGuard)) {
+  fail(`${readinessGuardPath}: must not keep a local readinessBlockers array`);
 }
 
 if (/const\s+executionSteps\s*=/.test(executionQueue)) {
@@ -251,21 +268,21 @@ requireText(
 
 requireText(
   backlog,
-  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
+  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*TTGDTX landing guard[\s\S]*blocker summary[\s\S]*production execution queue render from one source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "P0-13 shared blocker source backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
+  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*TTGDTX landing guard[\s\S]*Master Control blocker summary[\s\S]*TTGDTX execution queue use one controlled blocker source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "production checklist shared blocker source row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
+  /npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*Master Control blocker summary[\s\S]*TTGDTX execution queue[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "current-state shared blocker source audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -295,5 +312,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "HEU production blocker source audit passed. Blocker summary and execution queue use one shared source.",
+  "HEU production blocker source audit passed. TTGDTX guard, blocker summary and execution queue use one shared source.",
 );

@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-13 TTGDTX Guard Shared Blocker Coverage[\s\S]*audit:heu-production-blocker-source[\s\S]*TTGDTX landing guard,\s+Master Control blocker summary and TTGDTX production execution queue must all\s+render from `lib\/production-readiness\.ts`[\s\S]*P0-13 backlog row, production checklist and current-state\s+inventory[\s\S]*shared blocker source explicitly covers the TTGDTX landing\s+guard[\s\S]*current-state and release-gate audits[\s\S]*cannot silently drift\s+back to only Master Control plus execution queue coverage[\s\S]*This is shared-source coverage alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action, approve owner waiver\s+or mark production GO/i,
+  "P0-13 TTGDTX guard shared blocker coverage log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
   "TTGDTX production guard shared blocker source log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
