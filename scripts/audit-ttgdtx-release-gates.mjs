@@ -97,6 +97,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
@@ -120,6 +121,7 @@ const requiredFiles = [
   "scripts/audit-heu-lead-lifecycle-standard.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-production-blocker-source.mjs",
+  "scripts/audit-heu-production-evidence-binder.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-heu-vietnamese-text-encoding.mjs",
@@ -162,6 +164,7 @@ const requiredScripts = [
   "audit:heu-lead-lifecycle-standard",
   "audit:heu-non-ttgdtx-cascade-review",
   "audit:heu-production-blocker-source",
+  "audit:heu-production-evidence-binder",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
   "audit:heu-vietnamese-text-encoding",
@@ -598,9 +601,27 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)/i,
+  "P0-14 production evidence binder UI",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxProductionEvidenceBinder\s*\/>[\s\S]*<TtgdtxOwnerGoNoGoEvidenceChecklist\s*\/>/,
+  "TTGDTX landing page mounts evidence binder before owner signoff",
+);
+
+requireText(
   "lib/production-readiness.ts",
   /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*Owner GO\/NO-GO/i,
   "TTGDTX production execution shared source order",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*P0-14-07)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
+  "P0-14 production evidence shared source",
 );
 
 requireText(

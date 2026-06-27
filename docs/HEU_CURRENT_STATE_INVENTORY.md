@@ -45,7 +45,8 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:ttgdtx-contract-tuition-master-guard` | PASS |
 | `npm.cmd run audit:heu-vietnamese-text-encoding` | PASS |
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
-| Full `audit:*` suite | PASS after the P0-13 production blocker shared-source full sweep; 48 audit scripts passed |
+| `npm.cmd run audit:heu-production-evidence-binder` | PASS |
+| Full `audit:*` suite | PASS after the P0-14 production evidence binder full sweep; 49 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.

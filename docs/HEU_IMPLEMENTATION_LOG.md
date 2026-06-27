@@ -2033,3 +2033,14 @@
   source cannot drift from handoff, backlog, checklist or current-state docs.
 - This is PASS_LOCAL only. It makes blockers easier to govern, but production
   remains NO-GO until external evidence and owner sign-off are complete.
+## 2026-06-27 - P0-14 Production Evidence Binder
+
+- Added `PRODUCTION_EVIDENCE_REQUIREMENTS` to `lib/production-readiness.ts` and
+  rendered it through `components/ttgdtx/ttgdtx-production-evidence-binder.tsx`.
+- Mounted the binder on `/ttgdtx` between the production execution queue and
+  owner GO/NO-GO checklist.
+- Added `audit:heu-production-evidence-binder` and release-gate coverage so
+  proof, owner, storage location, forbidden-content and sign-off rules stay
+  visible before production handoff.
+- This is PASS_LOCAL only. Real evidence, controlled storage and human
+  signatures are still required outside Codex/chat.

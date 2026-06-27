@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P0-13 production blocker shared-source full sweep[\s\S]*48 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P0-14 production evidence binder full sweep[\s\S]*49 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(

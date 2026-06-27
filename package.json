@@ -18,6 +18,7 @@
     "audit:heu-lead-lifecycle-standard": "node scripts/audit-heu-lead-lifecycle-standard.mjs",
     "audit:heu-non-ttgdtx-cascade-review": "node scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
     "audit:heu-production-blocker-source": "node scripts/audit-heu-production-blocker-source.mjs",
+    "audit:heu-production-evidence-binder": "node scripts/audit-heu-production-evidence-binder.mjs",
     "audit:heu-role-scope-uat-pack": "node scripts/audit-heu-role-scope-uat-pack.mjs",
     "audit:heu-sql-object-master-map": "node scripts/audit-heu-sql-object-master-map.mjs",
     "audit:heu-vietnamese-text-encoding": "node scripts/audit-heu-vietnamese-text-encoding.mjs",
