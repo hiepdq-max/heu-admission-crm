@@ -88,7 +88,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Production blocker shared source | `lib/production-readiness.ts` feeds the Master Control blocker summary and TTGDTX execution queue, including the P0-03 operator run sheet evidence path, P0-03 restore smoke-check proof for P0-19/P3 gate preservation and P0-09 owner sign-off/UAT handoff evidence path | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, target identity lock, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19/P3 gate preservation and backup/restore closure decision manifest exist | Template ready; real backup/restore evidence missing |
-| Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
+| Migration order | Step90-Step110 guard, migration evidence acceptance lock and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist, waiver/exception register, acceptance matrix and gate decision manifest exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` exist | PASS_LOCAL; signed role/workflow UAT and handover decision pending |

@@ -110,6 +110,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Migration order[\s\S]*Step90-Step110 guard, migration evidence acceptance lock and audit exist[\s\S]*Signed approval still required/i,
+  "Step90-Step110 migration evidence acceptance current-state row",
+);
+requireText(
+  inventory,
   /Production blocker shared source[\s\S]*lib\/production-readiness\.ts[\s\S]*Master Control blocker summary and TTGDTX execution queue[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*PASS_LOCAL, NO-GO/i,
   "P0-13 production blocker shared source evidence-path state",
 );

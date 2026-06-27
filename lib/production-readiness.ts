@@ -245,7 +245,7 @@ export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = 
     route: "/settings/supabase-check",
     runbook: "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
     evidence:
-      "Backup ID, isolated restore target, preflight/postflight output, restore smoke-check and P0-19/P3 gate-preservation proof.",
+      "Target identity lock, backup ID, isolated restore target, preflight/postflight output, restore smoke-check and P0-19/P3 gate-preservation proof.",
     auditCommand: "npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack",
   },
   {
@@ -255,7 +255,7 @@ export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = 
     route: "/settings/supabase-check",
     runbook: "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
     evidence:
-      "Signed Step90-Step110 order, rollback point, Step97/Step100/Step109/Step110 decisions and owner acceptance after backup/restore proof.",
+      "MIGRATION_EVIDENCE_ACCEPTED decision, signed Step90-Step110 order, rollback point, Step97/Step100/Step109/Step110 decisions and owner acceptance after backup/restore proof.",
     auditCommand: "npm.cmd run audit:ttgdtx-migration-order-guard",
   },
 ];
@@ -320,7 +320,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Execute backup and restore dry-run",
     owner: "IT_DATA + Audit",
     proof:
-      "Complete the operator run sheet, then attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
+      "Complete the target identity lock and operator run sheet, then attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
     href: "/settings/supabase-check",
   },
   {
@@ -328,7 +328,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Sign migration order",
     owner: "IT_DATA + KHTC + PHAP_CHE",
     proof:
-      "Approve migration order and Step97, Step100, Step109 and Step110 decisions after backup/restore evidence.",
+      "Approve migration evidence acceptance lock, migration order and Step97, Step100, Step109 and Step110 decisions after backup/restore evidence.",
   },
   {
     code: "P6-04",
@@ -413,7 +413,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Controlled Drive/evidence folder outside Git, referenced by redacted evidence id only.",
     requiredProof:
-      "Operator run sheet, backup ID, restore target, preflight/postflight result, restore smoke-check result proving P0-19 and P3-01/P3-02 gate preservation, and operator/checker names.",
+      "Target identity lock, operator run sheet, backup ID, restore target, preflight/postflight result, restore smoke-check result proving P0-19 and P3-01/P3-02 gate preservation, and operator/checker names.",
     forbiddenContent:
       "No service-role key, database URL, password, OTP, raw dump, private connection string or raw backup file.",
     signoff:
@@ -428,7 +428,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Signed migration-order pack with redacted link in the production checklist.",
     requiredProof:
-      "Step90-Step110 order, Step97/Step100/Step109/Step110 decisions, rollback point and owner signatures.",
+      "MIGRATION_EVIDENCE_ACCEPTED decision, Step90-Step110 order, Step97/Step100/Step109/Step110 decisions, rollback point and owner signatures.",
     forbiddenContent:
       "No production SQL scratch, service secrets, raw credentials or unsigned verbal approval.",
     signoff: "IT_DATA, KHTC and PHAP_CHE sign before any production migration.",

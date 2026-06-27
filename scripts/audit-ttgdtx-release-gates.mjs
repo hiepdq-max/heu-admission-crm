@@ -407,6 +407,12 @@ requireText(
 
 requireText(
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  /(?=[\s\S]*Backup\/Restore Evidence Acceptance Lock)(?=[\s\S]*MIG-LOCK-01)(?=[\s\S]*MIG-LOCK-06)(?=[\s\S]*P0-03 target identity lock accepted)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Restore smoke-check accepted)(?=[\s\S]*Required owners accept evidence before signing)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL proves only that this acceptance-lock structure exists)/i,
+  "migration-order backup/restore evidence acceptance lock",
+);
+
+requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   /(?=[\s\S]*Step Decision Manifest)(?=[\s\S]*MIG-DEC-01)(?=[\s\S]*MIG-DEC-06)(?=[\s\S]*MIGRATION_ORDER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive\s+evidence or unclear production target keeps the migration order NO-GO)/i,
   "Step90-Step110 migration decision manifest",
 );
@@ -1181,7 +1187,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
+  /(?=[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*Target identity lock)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
   "TTGDTX P0-03/Step90-Step110 infra readiness shared source",
 );
 
@@ -1241,7 +1247,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names)(?=[\s\S]*P0-19\/P3 gate preservation)(?=[\s\S]*P0-14-06)(?=[\s\S]*Role and workspace UAT evidence)(?=[\s\S]*P0-14-07)(?=[\s\S]*Audit-log traceability evidence)(?=[\s\S]*P0-14-08)(?=[\s\S]*Hard-delete and cascade conversion evidence)(?=[\s\S]*P0-14-09)(?=[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
+  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names)(?=[\s\S]*P0-19\/P3 gate preservation)(?=[\s\S]*P0-14-02)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED decision)(?=[\s\S]*P0-14-06)(?=[\s\S]*Role and workspace UAT evidence)(?=[\s\S]*P0-14-07)(?=[\s\S]*Audit-log traceability evidence)(?=[\s\S]*P0-14-08)(?=[\s\S]*Hard-delete and cascade conversion evidence)(?=[\s\S]*P0-14-09)(?=[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
   "P0-14 production evidence shared source",
 );
 

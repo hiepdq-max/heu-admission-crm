@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Step90-Step110 Migration Evidence Acceptance Lock
+
+- Added a migration evidence acceptance lock to
+  `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md` so the
+  Step90-Step110 order cannot move to owner signature until MIG-LOCK-01 through
+  MIG-LOCK-06 confirm P0-03 target identity lock, backup/restore proof,
+  preflight/postflight checks, restore smoke-check, rollback/exception decision
+  and required owner evidence acceptance.
+- Updated `lib/production-readiness.ts` so infra readiness, production execution
+  steps and P0-14 evidence requirements cite target identity lock and
+  MIGRATION_EVIDENCE_ACCEPTED before migration-order signature.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so migration order readiness includes
+  the evidence acceptance lock.
+- Extended migration-order, production-blocker-source, current-state,
+  implementation-log and release-gate audits so the lock stays required.
+- This is migration-order packaging only. It does not execute backup, restore,
+  production migration, rollback, UAT acceptance, evidence acceptance, owner
+  waiver, finance action or production GO.
+
 ## 2026-06-28 - P0-03 Backup/Restore Target Identity Lock
 
 - Added a PASS_LOCAL target identity lock to

@@ -102,7 +102,7 @@ requireText(
 
 requireText(
   source,
-  /(?=[\s\S]*PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*\/settings\/supabase-check)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
+  /(?=[\s\S]*PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*Target identity lock)(?=[\s\S]*\/settings\/supabase-check)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
   "P0-03/Step90-Step110 infra readiness shared source coverage",
   sourcePath,
 );
@@ -123,7 +123,7 @@ requireText(
 
 requireText(
   source,
-  /P0-03[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result and smoke-check evidence[\s\S]*Complete the operator run sheet, then attach backup ID, restore target, preflight\/postflight output and smoke-check evidence outside Git[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names/i,
+  /P0-03[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result and smoke-check evidence[\s\S]*Complete the target identity lock and operator run sheet, then attach backup ID, restore target, preflight\/postflight output and smoke-check evidence outside Git[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names/i,
   "P0-03 operator run sheet source coverage",
   sourcePath,
 );

@@ -115,7 +115,7 @@ requireText(
 
 requireText(
   source,
-  /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names[\s\S]*P0-19\/P3 gate preservation/i,
+  /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names[\s\S]*P0-19\/P3 gate preservation/i,
   "P0-14-01 backup/restore operator run sheet proof",
   sourcePath,
 );

@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - Step90-Step110 Migration Evidence Acceptance Lock[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*MIG-LOCK-01 through\s+MIG-LOCK-06[\s\S]*P0-03 target identity lock, backup\/restore proof,\s+preflight\/postflight checks, restore smoke-check, rollback\/exception decision\s+and required owner evidence acceptance[\s\S]*lib\/production-readiness\.ts[\s\S]*target identity lock and\s+MIGRATION_EVIDENCE_ACCEPTED before migration-order signature[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*migration-order, production-blocker-source, current-state,\s+implementation-log and release-gate audits[\s\S]*This is migration-order packaging only[\s\S]*does not execute backup, restore,\s+production migration, rollback, UAT acceptance, evidence acceptance, owner\s+waiver, finance action or production GO/i,
+  "Step90-Step110 migration evidence acceptance lock log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-03 Backup\/Restore Target Identity Lock[\s\S]*supabase-backup-restore-guard\.tsx[\s\S]*execution authority, production source-only status, isolated restore\s+target, app banner, SQL editor\/CLI profile and controlled evidence folder[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*P0-03-TARGET-01 through P0-03-TARGET-06[\s\S]*TARGET_LOCK_READY \/ STOP \/\s+BLOCKED[\s\S]*backlog, production checklist and current-state inventory[\s\S]*backup\/restore, current-state, implementation-log and release-gate\s+audits[\s\S]*This is target-lock packaging only[\s\S]*does not execute backup, restore,\s+migration dry-run, rollback, UAT acceptance, evidence acceptance, finance\s+action, owner waiver or production GO/i,
   "P0-03 backup/restore target identity lock log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

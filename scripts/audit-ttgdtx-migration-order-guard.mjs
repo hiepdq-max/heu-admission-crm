@@ -83,6 +83,11 @@ requireText(
 );
 requireText(
   guardDoc,
+  /(?=[\s\S]*Backup\/Restore Evidence Acceptance Lock)(?=[\s\S]*MIG-LOCK-01)(?=[\s\S]*MIG-LOCK-06)(?=[\s\S]*P0-03 target identity lock accepted)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks accepted)(?=[\s\S]*Restore smoke-check accepted)(?=[\s\S]*Rollback point and exception decision accepted)(?=[\s\S]*Required owners accept evidence before signing)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL proves only that this acceptance-lock structure exists)/i,
+  "backup/restore evidence acceptance lock",
+);
+requireText(
+  guardDoc,
   /(?=[\s\S]*Step Decision Manifest)(?=[\s\S]*MIG-DEC-01)(?=[\s\S]*MIG-DEC-06)(?=[\s\S]*Step90-Step96)(?=[\s\S]*Step97)(?=[\s\S]*Step100)(?=[\s\S]*Step101-Step108)(?=[\s\S]*Step109)(?=[\s\S]*Step110)(?=[\s\S]*MIGRATION_ORDER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive\s+evidence or unclear production target keeps the migration order NO-GO)/i,
   "Step90-Step110 decision manifest",
 );
@@ -120,12 +125,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Approve Step90-Step110 migration order[\s\S]*IN_PROGRESS[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*Step Decision Manifest[\s\S]*MIG-DEC-01 through MIG-DEC-06[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*signed approval/i,
+  /Approve Step90-Step110 migration order[\s\S]*IN_PROGRESS[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*Migration Evidence Acceptance Lock[\s\S]*MIG-LOCK-01 through MIG-LOCK-06[\s\S]*Step Decision Manifest[\s\S]*MIG-DEC-01 through MIG-DEC-06[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*signed approval/i,
   "migration order checklist row remains signed-approval gated",
 );
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-03[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*actual backup\/restore evidence still required/i,
+  /P0-03[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*migration evidence acceptance lock[\s\S]*MIG-LOCK-01 through MIG-LOCK-06[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*actual backup\/restore evidence still required/i,
   "P0-03 backlog guard evidence",
 );
 requireText(
