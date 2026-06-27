@@ -29,8 +29,9 @@ export function ProductionReadinessBlockerSummary() {
               Read-only BGH/owner view for the TTGDTX production blockers.
               Production remains NO-GO until backup/restore, migration order,
               legal/finance UAT, payout UAT, dashboard UAT, role-scope UAT,
-              audit-log UAT, cascade waiver, redaction and final owner
-              sign-off are completed outside Codex/chat.
+              audit-log UAT, cascade waiver, redaction, P0-14 evidence binder,
+              P0-15 final handoff summary and final owner sign-off are
+              completed outside Codex/chat.
             </p>
           </div>
         </div>

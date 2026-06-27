@@ -117,6 +117,8 @@ const orderedExecutionCodes = [
   "P2-17",
   "P2-18",
   "P6-03/P6-06",
+  "P0-14",
+  "P0-15",
   "Owner GO/NO-GO",
 ];
 

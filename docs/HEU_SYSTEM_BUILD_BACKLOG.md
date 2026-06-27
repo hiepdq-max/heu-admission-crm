@@ -80,7 +80,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P5-01 | TTGDTX accounting dashboard UAT | KHTC + BGH | PASS_LOCAL | `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`; `npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan`; signed browser UAT still required |
-| P5-02 | BGH operating dashboard specification | BGH + IT/Data | PASS_LOCAL | `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`; `components/master-control/production-readiness-blocker-summary.tsx`; read-only blocker summary and next controlled actions queue; `npm.cmd run audit:heu-bgh-dashboard-spec`; dashboard stays read-only and UAT-gated |
+| P5-02 | BGH operating dashboard specification | BGH + IT/Data | PASS_LOCAL | `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`; `components/master-control/production-readiness-blocker-summary.tsx`; read-only blocker summary and next controlled actions queue includes P0-14 evidence binder and P0-15 final handoff summary before owner GO/NO-GO; `npm.cmd run audit:heu-bgh-dashboard-spec`; dashboard stays read-only and UAT-gated |
 
 ## P6 - Audit/Governance
 

@@ -173,6 +173,22 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     href: "/audit",
   },
   {
+    code: "P0-14",
+    title: "Close production evidence binder",
+    owner: "IT_DATA + Audit + process owners",
+    proof:
+      "Verify every required proof, controlled location, forbidden-content check and owner signoff path before owner review.",
+    href: "/ttgdtx",
+  },
+  {
+    code: "P0-15",
+    title: "Prepare final handoff summary",
+    owner: "IT_DATA + Audit",
+    proof:
+      "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths before owner decision.",
+    href: "/master-control",
+  },
+  {
     code: "Owner GO/NO-GO",
     title: "Record final owner decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT",

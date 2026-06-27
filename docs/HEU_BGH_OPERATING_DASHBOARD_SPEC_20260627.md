@@ -33,7 +33,7 @@ payment, revenue or production-release path.
 |---|---|---|---|
 | Admission pipeline | `/`, `/reports`, `leads`, admission segment workspace data | Are leads moving through the funnel and where are bottlenecks? | P3-02 handover guard and role-scope UAT |
 | TTGDTX finance cockpit | `/ttgdtx/accounting-dashboard`, P2-03/P2-10/P2-13/P2-17 views | What is receivable, collected, reconciled, approved and paid? | P4-01 lifecycle, P5-01 dashboard role UAT, signed finance UAT |
-| Go/No-Go readiness | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`, release-gate audits | Is production still NO-GO and why? | P0 backup/restore, migration order, UAT sign-off |
+| Go/No-Go readiness | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`, release-gate audits | Is production still NO-GO and why? | P0 backup/restore, migration order, evidence binder, final handoff summary and UAT sign-off |
 | Risk and exception board | audit logs, P2-07/P2-08 issue routing, control boards | Which high-risk items need owner action? | P6 audit-log and hard-delete controls |
 | Source/evidence health | P2-11/P2-19 source control docs and checks | Are BBNT, invoice, bank, account-freeze/release and legal evidence sufficient? | P2-19 evidence metadata and source-control UAT |
 | Role/scope health | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md` and role audits | Are users seeing only the right data? | P6-04 signed role-scope UAT |
@@ -102,7 +102,8 @@ Step90-Step110, P0-19, P2-17, P2-18, P6-04, P6-03, P6-06, P0-10 and P0-09
 blockers with responsible owners and source links. No GO button is provided.
 The same component also shows a `data-heu-production-action-queue="P5-02"`
 Next controlled actions queue from `PRODUCTION_EXECUTION_STEPS` so BGH and
-owners can see the controlled sequence before any GO/NO-GO discussion. The
+owners can see the controlled sequence, including P0-14 evidence binder closure
+and P0-15 final handoff summary, before any GO/NO-GO discussion. The
 component is read-only and does not create, update, approve, pay, delete,
 unlock, reverse, mark UAT accepted or mark production GO.
 

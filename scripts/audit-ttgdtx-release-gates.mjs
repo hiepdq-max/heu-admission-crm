@@ -359,7 +359,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -569,7 +569,7 @@ requireText(
 
 requireText(
   "components/master-control/production-readiness-blocker-summary.tsx",
-  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*data-heu-production-action-queue="P5-02")(?=[\s\S]*Next controlled actions)(?=[\s\S]*owner GO\/NO-GO discussion)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
+  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction, P0-14 evidence binder,\s+P0-15 final handoff summary and final owner sign-off are\s+completed outside Codex\/chat)(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*data-heu-production-action-queue="P5-02")(?=[\s\S]*Next controlled actions)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*P0-15 final handoff summary)(?=[\s\S]*owner GO\/NO-GO discussion)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
   "P5-02 production blocker summary UI shell",
 );
 
@@ -731,7 +731,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, P0-14\s+evidence binder, P0-15 final handoff summary, then final owner\s+Go\/No-Go)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
   "TTGDTX production execution queue UI shell",
 );
 
@@ -749,7 +749,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*Owner GO\/NO-GO/i,
+  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*P0-14[\s\S]*P0-15[\s\S]*Owner GO\/NO-GO/i,
   "TTGDTX production execution shared source order",
 );
 

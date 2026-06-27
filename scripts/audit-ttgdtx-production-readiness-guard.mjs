@@ -109,14 +109,14 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Do not skip ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, P0-14\s+evidence binder, P0-15 final handoff summary, then final owner\s+Go\/No-Go)(?=[\s\S]*Do not skip ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
   "TTGDTX production execution queue UI shell",
   executionQueuePath,
 );
 
 requireText(
   blockerSource,
-  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*Owner GO\/NO-GO/i,
+  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*P0-14[\s\S]*P0-15[\s\S]*Owner GO\/NO-GO/i,
   "TTGDTX production execution shared source order",
   blockerSourcePath,
 );
