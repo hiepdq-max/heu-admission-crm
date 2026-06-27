@@ -117,3 +117,15 @@ This audit remains a No-Go blocker for production until:
 - Production remains NO-GO because non-TTGDTX/base schema cascade review,
   unapplied step109, role/audit evidence, backup and rollback still require
   review and approval.
+
+## 11. 2026-06-27 Non-TTGDTX/Base Cascade Review
+
+- Added `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md` to classify the
+  remaining non-TTGDTX/base cascade review surface.
+- Added `npm.cmd run audit:heu-non-ttgdtx-cascade-review` to scan current
+  non-TTGDTX/base cascade count and ensure every file with `on delete cascade`
+  is included in the review.
+- Current scan count is 44 findings outside TTGDTX Step90-Step110.
+- This closes the review ambiguity only. Production remains NO-GO until
+  protected records are converted to restrict/archive/status transitions or
+  waived in writing by the responsible owner group.

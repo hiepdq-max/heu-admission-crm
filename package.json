@@ -12,6 +12,7 @@
     "audit:heu-bgh-dashboard-spec": "node scripts/audit-heu-bgh-dashboard-spec.mjs",
     "audit:heu-data-foundation": "node scripts/audit-heu-data-foundation.mjs",
     "audit:heu-lead-handover-policy": "node scripts/audit-heu-lead-handover-policy.mjs",
+    "audit:heu-non-ttgdtx-cascade-review": "node scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
     "audit:heu-role-scope-uat-pack": "node scripts/audit-heu-role-scope-uat-pack.mjs",
     "audit:heu-sql-object-master-map": "node scripts/audit-heu-sql-object-master-map.mjs",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",

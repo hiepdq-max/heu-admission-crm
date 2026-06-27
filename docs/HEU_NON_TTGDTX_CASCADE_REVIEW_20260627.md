@@ -1,0 +1,87 @@
+# HEU Non-TTGDTX/Base Cascade Review
+
+Status: PASS_LOCAL_REVIEW
+Date: 2026-06-27
+Scope: database `on delete cascade` outside TTGDTX Step90-Step110
+Mode: review and control artifact only. This document does not approve
+production migration, data deletion, cascade execution or production GO.
+
+## 1. Purpose
+
+This review closes the ambiguity around the remaining non-TTGDTX/base cascade
+findings. It classifies the current cascade surface so the team can decide,
+before production, which paths must be converted to `on delete restrict`,
+soft-archive/status transitions, or explicitly waived by the responsible owner.
+
+Production remains NO-GO until the unresolved HIGH/CRITICAL cascade paths are
+converted or waived with written approval.
+
+## 2. Scan Result
+
+Current scan count: 44
+
+The scan covers SQL files under `database/` and excludes TTGDTX Step90-Step110
+because that chain is already guarded by `npm.cmd run audit:ttgdtx-cascade`.
+
+| File | Count | Review classification | Required production decision |
+|---|---:|---|---|
+| `database/schema.sql` | 6 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step35a_hou_foundation.sql` | 3 | MEDIUM | REVIEW_OR_WAIVE |
+| `database/step35d_hou_commission_foundation.sql` | 5 | CRITICAL | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step35g_hou_evidence_files.sql` | 3 | CRITICAL | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step36a_lead_condition_checklist.sql` | 1 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step38_user_scopes_and_handovers.sql` | 5 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step40_user_lead_visibility.sql` | 1 | MEDIUM | REVIEW_OR_WAIVE |
+| `database/step41_master_control.sql` | 1 | MEDIUM | REVIEW_OR_WAIVE |
+| `database/step44_admission_segment_operating_os.sql` | 3 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step48_evidence_document_control.sql` | 2 | CRITICAL | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step49_master_data_governance.sql` | 1 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step52_admission_workspace_selector.sql` | 1 | MEDIUM | REVIEW_OR_WAIVE |
+| `database/step54_admission_object_field_schema.sql` | 3 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step56_dynamic_admission_configuration.sql` | 2 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step57_dynamic_lead_form_enforcement.sql` | 2 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step59_major_legal_tuition_gate.sql` | 1 | CRITICAL | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step60_admission_catalog_workspace_gate.sql` | 1 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+| `database/step62_short_course_data_foundation.sql` | 3 | HIGH | REQUIRES_CONVERSION_OR_WAIVER |
+
+## 3. Risk Buckets
+
+| Bucket | Files | Risk | Required control |
+|---|---|---|---|
+| Base identity and CRM lead children | `database/schema.sql`, `database/step36a_lead_condition_checklist.sql` | Deleting a user or lead can remove activity, follow-up, document, payment or checklist evidence | Convert to restrict/archive or waive with owner approval |
+| HOU finance and evidence | `database/step35d_hou_commission_foundation.sql`, `database/step35g_hou_evidence_files.sql` | Commission, payment-line and evidence history can disappear with parent deletion | Convert to restrict/archive before production finance use |
+| Workspace/scope helpers | `database/step38_user_scopes_and_handovers.sql`, `database/step40_user_lead_visibility.sql`, `database/step52_admission_workspace_selector.sql` | Access-scope history can disappear and weaken audit | Prefer status soft-revoke pattern; waive only for pure derived rows |
+| Master/control and dynamic configuration | `database/step41_master_control.sql`, `database/step44_admission_segment_operating_os.sql`, `database/step49_master_data_governance.sql`, `database/step54_admission_object_field_schema.sql`, `database/step56_dynamic_admission_configuration.sql`, `database/step57_dynamic_lead_form_enforcement.sql`, `database/step60_admission_catalog_workspace_gate.sql` | Deleting a master row can remove configuration, form, gate or governance history | Convert to restrict/archive unless proven derived-only |
+| Legal/tuition and short-course operations | `database/step59_major_legal_tuition_gate.sql`, `database/step62_short_course_data_foundation.sql` | Legal/tuition gate and attendance/enrollment evidence can be removed | Convert to restrict/archive before production use |
+
+## 4. Production Rules
+
+- Do not run production migration from Codex/chat.
+- Do not rely on parent deletion as a normal operating workflow.
+- Finance, payment, evidence, approval, legal/tuition gate and audit records
+  must use restrict/archive/status transitions.
+- Pure derived join rows may be waived only when they do not carry finance,
+  evidence, approval, legal, audit or student-operating history.
+- Every waiver must name owner, reason, affected table, rollback approach and
+  evidence that no protected record is removed.
+
+## 5. Required Next Actions
+
+1. IT/Data maps each finding to the generated table and parent table.
+2. Business owner classifies the row as protected record or derived helper.
+3. For protected records, prepare a reviewed migration to replace cascade with
+   restrict/archive/status transition.
+4. For derived helper rows, record a waiver with owner approval.
+5. Run `npm.cmd run audit:heu-non-ttgdtx-cascade-review`,
+   `npm.cmd run audit:hard-delete`, `npm.cmd run audit:ttgdtx-cascade` and
+   `npm.cmd run audit:ttgdtx-release-gates`.
+
+## 6. Local Control Decision
+
+P6-06 is PASS_LOCAL as a cascade review/control artifact. It does not approve
+production migration, production deletion, cascade execution, waiver, data
+cleanup or production GO.
+
+The hard-delete checklist remains IN_PROGRESS until every
+REQUIRES_CONVERSION_OR_WAIVER row is converted or signed off by the responsible
+owner group.

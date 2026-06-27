@@ -988,3 +988,29 @@
 
 - P0-03 has a PASS_LOCAL evidence-pack template and local audit coverage, but remains IN_PROGRESS because real backup/restore evidence and human Go/No-Go are not complete.
 - Production remains NO-GO.
+
+## 2026-06-27 - Non-TTGDTX/Base Cascade Review
+
+### Scope
+
+- Continued P6 hard-delete/cascade governance with a non-TTGDTX/base cascade review.
+- Classified 44 current `on delete cascade` findings outside TTGDTX Step90-Step110.
+- Added a local audit so future cascade drift fails until the review is updated.
+- Kept SQL migrations, production deletion, conversion, waiver and production GO outside Codex authority.
+
+### Files Updated/Added
+
+- `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`
+- `scripts/audit-heu-non-ttgdtx-cascade-review.mjs`
+- `docs/HARD_DELETE_AUDIT.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-06 is PASS_LOCAL as a review/control artifact.
+- Hard-delete review remains IN_PROGRESS because protected non-TTGDTX/base cascade paths still require conversion or written waiver before production.

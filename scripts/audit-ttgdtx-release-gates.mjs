@@ -53,6 +53,7 @@ const requiredFiles = [
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_DATA_MODEL_V1.md",
   "docs/HEU_DATA_DICTIONARY_V1.md",
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
   "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
@@ -75,6 +76,7 @@ const requiredFiles = [
   "scripts/audit-heu-data-foundation.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
+  "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
@@ -96,6 +98,7 @@ const requiredScripts = [
   "audit:heu-bgh-dashboard-spec",
   "audit:heu-data-foundation",
   "audit:heu-lead-handover-policy",
+  "audit:heu-non-ttgdtx-cascade-review",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
   "audit:hard-delete",
@@ -196,6 +199,18 @@ requireText(
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH dashboard[\s\S]*approve production GO or replace signed UAT/i,
   "P5-02 BGH dashboard spec local-only boundary",
+);
+
+requireText(
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i,
+  "P6-06 non-TTGDTX cascade review local-only boundary",
+);
+
+requireText(
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  /Current scan count:\s*44/i,
+  "P6-06 current cascade count",
 );
 
 requireText(

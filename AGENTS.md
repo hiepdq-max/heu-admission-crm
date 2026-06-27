@@ -55,6 +55,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`
 - `docs/HEU_DATA_MODEL_V1.md`
 - `docs/HEU_DATA_DICTIONARY_V1.md`
+- `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`
 - `docs/HEU_ROLE_PERMISSION_MATRIX_V1.md`
 - `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`
 - `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
@@ -100,6 +101,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-bgh-dashboard-spec`
   - `npm.cmd run audit:heu-data-foundation`
   - `npm.cmd run audit:heu-lead-handover-policy`
+  - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
   - `npm.cmd run audit:heu-role-scope-uat-pack`
   - `npm.cmd run audit:heu-sql-object-master-map`
   - `npm.cmd run audit:hard-delete`
