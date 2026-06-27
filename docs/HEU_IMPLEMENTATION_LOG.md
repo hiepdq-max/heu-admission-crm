@@ -1040,3 +1040,27 @@
 
 - User-friendly TTGDTX process labels are PASS_LOCAL for search/discovery.
 - This does not replace signed UAT or production approval.
+
+## 2026-06-27 - TTGDTX Account-Control Scope Decision
+
+### Scope
+
+- Continued real-world TTGDTX control hardening for phong toa/giai toa and collateral giai-chap.
+- Explicitly deferred real bank freeze/release workflow from the current payment flow.
+- Kept account-control evidence metadata-only through P2-11/P2-19 until owner approval and signed UAT.
+- Separated collateral giai-chap into a restricted legal-finance register outside tuition-account release and partner payment.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md`
+- `scripts/audit-ttgdtx-account-control-scope-decision.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Account-control workflow and collateral giai-chap separation are PASS_LOCAL as a scope decision.
+- No bank action, collateral release, production data import, production migration, real UAT or production GO is approved.

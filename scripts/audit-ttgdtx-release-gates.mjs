@@ -42,6 +42,7 @@ const requiredFiles = [
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
+  "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
   "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
@@ -80,6 +81,7 @@ const requiredFiles = [
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
+  "scripts/audit-ttgdtx-account-control-scope-decision.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
@@ -106,6 +108,7 @@ const requiredScripts = [
   "audit:hard-delete",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
+  "audit:ttgdtx-account-control-scope-decision",
   "audit:ttgdtx-accounting-dashboard-uat-plan",
   "audit:ttgdtx-audit-log",
   "audit:ttgdtx-backup-restore-dry-run-pack",
@@ -196,6 +199,18 @@ requireText(
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   /(?=[\s\S]*P5-01 is PASS_LOCAL)(?=[\s\S]*not production-approved)(?=[\s\S]*P2-18 remains IN_PROGRESS)/i,
   "P5-01 dashboard UAT plan is local-only and P2-18 remains in progress",
+);
+
+requireText(
+  "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
+  /will not build or operate a real bank\s+freeze\/release action workflow inside the payment flow/i,
+  "account-control bank action deferral",
+);
+
+requireText(
+  "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
+  /PASS_LOCAL means scope is clarified and the risky real workflow is deferred[\s\S]*does not approve production bank operation, collateral release, production data\s+import, real UAT, production migration or production GO/i,
+  "account-control scope decision local-only boundary",
 );
 
 requireText(

@@ -18,6 +18,7 @@
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",
+    "audit:ttgdtx-account-control-scope-decision": "node scripts/audit-ttgdtx-account-control-scope-decision.mjs",
     "audit:ttgdtx-audit-log": "node scripts/audit-ttgdtx-audit-log-coverage.mjs",
     "audit:ttgdtx-backup-restore-dry-run-pack": "node scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
     "audit:ttgdtx-accounting-dashboard-uat-plan": "node scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
