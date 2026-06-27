@@ -134,6 +134,12 @@ requireText(
 
 requireText(
   pack,
+  /(?=[\s\S]*P0-09 Final Owner GO\/NO-GO Decision Manifest)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve\s+production, backup, restore, migration, legal waiver, finance action, UAT\s+acceptance, payout, dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is\s+named as approver, or PASS_LOCAL is treated as production GO)/i,
+  "P0-09 final owner GO/NO-GO decision manifest",
+);
+
+requireText(
+  pack,
   /Final production recommendation remains NO-GO until every required owner signs\s+GO, P0-09-ACCEPT-01 through P0-09-ACCEPT-06 are accepted and no stop condition\s+remains open/i,
   "final NO-GO until all owners sign",
 );
@@ -153,6 +159,13 @@ requireText(
 );
 
 requireText(
+  ownerChecklist,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-decision-manifest="P0-09")(?=[\s\S]*P0-09 final owner GO\/NO-GO decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve production, backup, restore, migration,\s+legal waiver, finance action, UAT acceptance, payout,\s+dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is named as approver, or PASS_LOCAL is treated\s+as production GO)/i,
+  "P0-09 final owner GO/NO-GO decision manifest",
+  ownerChecklistPath,
+);
+
+requireText(
   ttgdtxPage,
   /TtgdtxOwnerGoNoGoEvidenceChecklist[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxOwnerGoNoGoEvidenceChecklist\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/i,
   "TTGDTX page mounts owner GO/NO-GO evidence checklist after execution queue",
@@ -161,14 +174,14 @@ requireText(
 
 requireText(
   checklist,
-  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "production checklist final owner sign-off row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
   backlogPath,
 );

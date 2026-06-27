@@ -1,4 +1,10 @@
-import { ClipboardCheck, FileCheck2, ListChecks, ShieldAlert } from "lucide-react";
+import {
+  BadgeCheck,
+  ClipboardCheck,
+  FileCheck2,
+  ListChecks,
+  ShieldAlert,
+} from "lucide-react";
 
 type EvidenceItem = {
   caseId: string;
@@ -11,6 +17,13 @@ type OwnerGoNoGoAcceptanceItem = {
   caseId: string;
   title: string;
   minimum: string;
+  stopCondition: string;
+};
+
+type OwnerGoNoGoDecisionItem = {
+  caseId: string;
+  title: string;
+  requiredDecision: string;
   stopCondition: string;
 };
 
@@ -107,6 +120,57 @@ const ownerGoNoGoAcceptanceItems: OwnerGoNoGoAcceptanceItem[] = [
       "All stop conditions in the sign-off pack are explicitly closed, otherwise the final decision remains NO-GO.",
     stopCondition:
       "Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains.",
+  },
+];
+
+const ownerGoNoGoDecisionItems: OwnerGoNoGoDecisionItem[] = [
+  {
+    caseId: "P0-09-DEC-01",
+    title: "Evidence pack and redaction decision",
+    requiredDecision:
+      "Owner decision cites P0-10 redaction acceptance, P0-14 binder proof IDs and controlled external evidence references only.",
+    stopCondition:
+      "Any raw sensitive evidence, uncontrolled location, missing evidence ID or unsigned evidence owner keeps NO_GO.",
+  },
+  {
+    caseId: "P0-09-DEC-02",
+    title: "Backup/restore and migration authority decision",
+    requiredDecision:
+      "Owner decision cites P0-03 backup/restore closure, restore smoke-check, target isolation and signed Step90-Step110 migration order.",
+    stopCondition:
+      "Missing actual backup proof, restore-target proof, smoke-check result, rollback note or migration order keeps NO_GO.",
+  },
+  {
+    caseId: "P0-09-DEC-03",
+    title: "Legal, tuition and finance gate decision",
+    requiredDecision:
+      "PHAP_CHE, KHTC and BGH decision cites P0-19 legal basis, tuition/invoice policy, waiver register and signed finance-gate UAT evidence.",
+    stopCondition:
+      "Unsigned legal/finance evidence, unresolved invoice/chung-tu basis, hidden waiver or finance override request keeps NO_GO.",
+  },
+  {
+    caseId: "P0-09-DEC-04",
+    title: "UAT and operating proof decision",
+    requiredDecision:
+      "Owner decision cites signed P2-17 payout UAT, P2-18 dashboard UAT, P5-03 Finance Desk UAT and UAT operator handoff closure.",
+    stopCondition:
+      "Any unsigned browser UAT, duplicate payout risk, dashboard write path, unreconciled total or missing handoff closure keeps NO_GO.",
+  },
+  {
+    caseId: "P0-09-DEC-05",
+    title: "Role, audit and hard-delete proof decision",
+    requiredDecision:
+      "Owner decision cites P6-04 role/workspace UAT, P6-03 audit traceability and P6-06 hard-delete/cascade conversion or written waiver.",
+    stopCondition:
+      "Role leak, missing audit trace, generic audit payload, unresolved cascade finding or unsigned waiver keeps NO_GO.",
+  },
+  {
+    caseId: "P0-09-DEC-06",
+    title: "Final multi-owner accountability decision",
+    requiredDecision:
+      "BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, signer, date and controlled evidence refs.",
+    stopCondition:
+      "Missing decision ID, unsigned owner, unresolved blocker, raw sensitive evidence, AI/Codex approval or PASS_LOCAL treated as production GO keeps BLOCKED or NO_GO.",
   },
 ];
 
@@ -207,6 +271,68 @@ export function TtgdtxOwnerGoNoGoEvidenceChecklist() {
             </article>
           ))}
         </div>
+      </div>
+
+      <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+        <ShieldAlert className="mt-0.5 size-4 shrink-0" />
+        <p>
+          The acceptance matrix only says whether the pack can move to human
+          review. It is not the final decision. Complete the final decision
+          manifest below before any owner GO/NO-GO meeting.
+        </p>
+      </div>
+
+      <div
+        data-ttgdtx-owner-go-no-go-decision-manifest="P0-09"
+        className="mt-5 rounded-md border border-emerald-200 bg-white p-4"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-emerald-700" />
+            <div>
+              <h3 className="font-semibold text-emerald-950">
+                P0-09 final owner GO/NO-GO decision manifest: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-emerald-900">
+                Use this manifest after the evidence checklist and acceptance
+                matrix are complete. It prepares a human final decision only
+                and does not approve production, backup, restore, migration,
+                legal waiver, finance action, UAT acceptance, payout,
+                dashboard reliance or production GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 font-mono text-xs text-emerald-950">
+            P0_09_FINAL_GO / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {ownerGoNoGoDecisionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Decision evidence: {item.requiredDecision}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 leading-6 text-rose-900">
+          Stop immediately if any decision ID is missing, any owner signature
+          is absent, any blocker remains open, raw sensitive evidence is
+          referenced, AI/Codex is named as approver, or PASS_LOCAL is treated
+          as production GO.
+        </p>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

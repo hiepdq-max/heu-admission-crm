@@ -110,7 +110,29 @@ final owner decision remains NO-GO.
 | P0-09-ACCEPT-05 | Production boundary and AI/Codex limitation | Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat | PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production |
 | P0-09-ACCEPT-06 | Final outcome stays NO-GO until every stop condition is closed | All stop conditions in this sign-off pack are explicitly closed, otherwise the final decision remains NO-GO | Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains |
 
-## 7. Stop Conditions
+## 7. P0-09 Final Owner GO/NO-GO Decision Manifest
+
+Decision value: `P0_09_FINAL_GO / NO_GO / BLOCKED`.
+
+Use this manifest after the evidence checklist and acceptance matrix are
+complete. It prepares the human final decision only. It does not approve
+production, backup, restore, migration, legal waiver, finance action, UAT
+acceptance, payout, dashboard reliance or production GO.
+
+| Case | Decision test | Required decision evidence | Stop condition |
+|---|---|---|---|
+| P0-09-DEC-01 | Evidence pack and redaction decision | Owner decision cites P0-10 redaction acceptance, P0-14 binder proof IDs and controlled external evidence references only | Any raw sensitive evidence, uncontrolled location, missing evidence ID or unsigned evidence owner keeps NO_GO |
+| P0-09-DEC-02 | Backup/restore and migration authority decision | Owner decision cites P0-03 backup/restore closure, restore smoke-check, target isolation and signed Step90-Step110 migration order | Missing actual backup proof, restore-target proof, smoke-check result, rollback note or migration order keeps NO_GO |
+| P0-09-DEC-03 | Legal, tuition and finance gate decision | PHAP_CHE, KHTC and BGH decision cites P0-19 legal basis, tuition/invoice policy, waiver register and signed finance-gate UAT evidence | Unsigned legal/finance evidence, unresolved invoice/chung-tu basis, hidden waiver or finance override request keeps NO_GO |
+| P0-09-DEC-04 | UAT and operating proof decision | Owner decision cites signed P2-17 payout UAT, P2-18 dashboard UAT, P5-03 Finance Desk UAT and UAT operator handoff closure | Any unsigned browser UAT, duplicate payout risk, dashboard write path, unreconciled total or missing handoff closure keeps NO_GO |
+| P0-09-DEC-05 | Role, audit and hard-delete proof decision | Owner decision cites P6-04 role/workspace UAT, P6-03 audit traceability and P6-06 hard-delete/cascade conversion or written waiver | Role leak, missing audit trace, generic audit payload, unresolved cascade finding or unsigned waiver keeps NO_GO |
+| P0-09-DEC-06 | Final multi-owner accountability decision | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, signer, date and controlled evidence refs | Missing decision ID, unsigned owner, unresolved blocker, raw sensitive evidence, AI/Codex approval or PASS_LOCAL treated as production GO keeps BLOCKED or NO_GO |
+
+Stop immediately if any decision ID is missing, any owner signature is absent,
+any blocker remains open, raw sensitive evidence is referenced, AI/Codex is
+named as approver, or PASS_LOCAL is treated as production GO.
+
+## 8. Stop Conditions
 
 Keep production NO-GO if any condition below is true:
 
@@ -127,7 +149,7 @@ Keep production NO-GO if any condition below is true:
    or UAT screenshots.
 10. Any owner asks for more evidence.
 
-## 8. Final Decision Record
+## 9. Final Decision Record
 
 | Owner group | Name / role | Decision | Signature / evidence ref | Date |
 |---|---|---|---|---|

@@ -55,7 +55,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 56 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 56 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -81,7 +81,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Area | Current evidence | Readiness |
 |---|---|---|
-| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix and owner sign-off handoff evidence path | PASS_LOCAL, NO-GO |
+| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path | PASS_LOCAL, NO-GO |
 | Production blocker shared source | `lib/production-readiness.ts` feeds the Master Control blocker summary and TTGDTX execution queue, including the P0-03 operator run sheet evidence path and P0-09 owner sign-off/UAT handoff evidence path | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix and backup/restore closure decision manifest exist | Template ready; real backup/restore evidence missing |
@@ -141,8 +141,8 @@ Production is still NO-GO because:
 8. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
 9. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
    `npm.cmd run lint` green before owner review.
-10. Record final owner GO/NO-GO outside Codex/chat using the owner sign-off pack
-    and UAT operator handoff references.
+10. Record final owner GO/NO-GO outside Codex/chat using the owner sign-off pack,
+    final owner decision manifest and UAT operator handoff references.
 
 ## 9. Current Conclusion
 
