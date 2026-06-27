@@ -100,12 +100,15 @@ The first implemented control surface is
 It shows the current production recommendation as NO-GO and lists P0-03,
 Step90-Step110, P0-19, P2-17, P2-18, P6-04, P6-03, P6-06, P0-10 and P0-09
 blockers with responsible owners and source links. No GO button is provided.
-The same component also shows a `data-heu-production-action-queue="P5-02"`
-Next controlled actions queue from `PRODUCTION_EXECUTION_STEPS` so BGH and
-owners can see the controlled sequence, including P0-14 evidence binder closure
-and P0-15 final handoff summary, before any GO/NO-GO discussion. The
-component is read-only and does not create, update, approve, pay, delete,
-unlock, reverse, mark UAT accepted or mark production GO.
+The same component also shows a
+`data-heu-production-safe-iteration-loop="P5-02"` Safe iteration loop from
+`SAFE_ITERATION_STEPS`, plus a `data-heu-production-action-queue="P5-02"` Next controlled actions
+queue from `PRODUCTION_EXECUTION_STEPS`, so BGH and owners
+can see the one-blocker, one-audit, controlled-proof rhythm and the controlled
+sequence, including P0-14 evidence binder closure and P0-15 final handoff summary,
+before any GO/NO-GO discussion. The component is read-only and does
+not create, update, approve, pay, delete, unlock, reverse, mark UAT accepted or
+mark production GO.
 
 ## 9. Current Evidence
 

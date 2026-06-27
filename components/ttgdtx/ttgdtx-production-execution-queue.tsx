@@ -1,34 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
-import { PRODUCTION_EXECUTION_STEPS } from "@/lib/production-readiness";
-
-const safeIterationSteps = [
-  {
-    code: "ITER-01",
-    title: "Pick one blocker",
-    detail:
-      "Choose exactly one open blocker from the queue; do not mix backup, UAT, payout, dashboard or owner sign-off in one slice.",
-  },
-  {
-    code: "ITER-02",
-    title: "Run local guard",
-    detail:
-      "Run the matching audit command and keep Stage D/NO-GO visible before asking owners to test or sign evidence.",
-  },
-  {
-    code: "ITER-03",
-    title: "Attach controlled proof",
-    detail:
-      "Store real evidence outside Git/Codex/chat, then reference only redacted evidence IDs in the checklist or handoff note.",
-  },
-  {
-    code: "ITER-04",
-    title: "Advance only if green",
-    detail:
-      "If the slice passes, commit that small scope; if it fails, keep NO-GO, fix the smallest cause and rerun the guard.",
-  },
-];
+import {
+  PRODUCTION_EXECUTION_STEPS,
+  SAFE_ITERATION_STEPS,
+} from "@/lib/production-readiness";
 
 export function TtgdtxProductionExecutionQueue() {
   return (
@@ -77,7 +53,7 @@ export function TtgdtxProductionExecutionQueue() {
           </span>
         </div>
         <div className="mt-4 grid gap-3 lg:grid-cols-4">
-          {safeIterationSteps.map((step) => (
+          {SAFE_ITERATION_STEPS.map((step) => (
             <article
               key={step.code}
               className="border-l-2 border-indigo-300 bg-indigo-50 px-3 py-3"

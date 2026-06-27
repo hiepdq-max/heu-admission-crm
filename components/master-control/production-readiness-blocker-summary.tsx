@@ -10,6 +10,7 @@ import {
 import {
   PRODUCTION_BLOCKERS,
   PRODUCTION_EXECUTION_STEPS,
+  SAFE_ITERATION_STEPS,
 } from "@/lib/production-readiness";
 
 export function ProductionReadinessBlockerSummary() {
@@ -83,6 +84,40 @@ export function ProductionReadinessBlockerSummary() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-production-safe-iteration-loop="P5-02"
+      >
+        <div className="flex items-start gap-3">
+          <ClipboardList className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Safe iteration loop
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              Master Control follows the same rhythm as TTGDTX: one blocker,
+              one local audit, controlled evidence, then advance only if the
+              guard is green.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-4">
+          {SAFE_ITERATION_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.detail}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div

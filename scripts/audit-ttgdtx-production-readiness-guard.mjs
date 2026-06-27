@@ -116,9 +116,16 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*data-ttgdtx-safe-iteration-loop="TTGDTX_9PLUS")(?=[\s\S]*Safe iteration loop: one small slice at a time)(?=[\s\S]*Build rhythm: select one blocker, run the local audit, attach\s+controlled proof, then advance only when the guard is green)(?=[\s\S]*fail keeps NO-GO)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
+  /(?=[\s\S]*SAFE_ITERATION_STEPS)(?=[\s\S]*data-ttgdtx-safe-iteration-loop="TTGDTX_9PLUS")(?=[\s\S]*Safe iteration loop: one small slice at a time)(?=[\s\S]*Build rhythm: select one blocker, run the local audit, attach\s+controlled proof, then advance only when the guard is green)(?=[\s\S]*fail keeps NO-GO)/i,
   "TTGDTX safe iteration loop",
   executionQueuePath,
+);
+
+requireText(
+  blockerSource,
+  /(?=[\s\S]*export const SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
+  "TTGDTX safe iteration shared source",
+  blockerSourcePath,
 );
 
 requireText(

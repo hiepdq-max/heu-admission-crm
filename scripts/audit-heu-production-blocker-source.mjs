@@ -74,8 +74,15 @@ const packageJson = JSON.parse(read("package.json"));
 
 requireText(
   source,
-  /export const PRODUCTION_BLOCKERS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
-  "shared blocker and execution-step exports",
+  /export const PRODUCTION_BLOCKERS[\s\S]*export const SAFE_ITERATION_STEPS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
+  "shared blocker, safe iteration and execution-step exports",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /(?=[\s\S]*SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
+  "safe iteration shared source coverage",
   sourcePath,
 );
 
@@ -148,15 +155,15 @@ for (const code of orderedExecutionCodes) {
 
 requireText(
   blockerSummary,
-  /import \{[\s\S]*PRODUCTION_BLOCKERS[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
-  "blocker summary imports shared blocker and execution sources",
+  /import \{[\s\S]*PRODUCTION_BLOCKERS[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
+  "blocker summary imports shared blocker, execution and safe iteration sources",
   blockerSummaryPath,
 );
 
 requireText(
   executionQueue,
-  /import \{ PRODUCTION_EXECUTION_STEPS \} from "@\/lib\/production-readiness"/,
-  "execution queue imports shared execution source",
+  /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
+  "execution queue imports shared execution and safe iteration sources",
   executionQueuePath,
 );
 
@@ -166,6 +173,14 @@ if (/const\s+productionBlockers\s*=/.test(blockerSummary)) {
 
 if (/const\s+executionSteps\s*=/.test(executionQueue)) {
   fail(`${executionQueuePath}: must not keep a local executionSteps array`);
+}
+
+if (/const\s+safeIterationSteps\s*=/.test(executionQueue)) {
+  fail(`${executionQueuePath}: must not keep a local safeIterationSteps array`);
+}
+
+if (/const\s+safeIterationSteps\s*=/.test(blockerSummary)) {
+  fail(`${blockerSummaryPath}: must not keep a local safeIterationSteps array`);
 }
 
 if (!packageJson.scripts?.["audit:heu-production-blocker-source"]) {

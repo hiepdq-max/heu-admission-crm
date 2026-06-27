@@ -59,7 +59,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -100,7 +100,7 @@ requireText(
 );
 requireText(
   inventory,
-  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard reliance decision manifest, P5-02 action queue and P5-03 Finance Desk read-only cockpit with reliance decision manifest are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
+  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard reliance decision manifest, P5-02 action queue with safe iteration loop and P5-03 Finance Desk read-only cockpit with reliance decision manifest are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
   "M10 P2-18 dashboard acceptance matrix current module state",
 );
 requireText(
@@ -130,7 +130,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard reliance decision manifest and P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
   "P2-18 dashboard and P5-02 action queue control state",
 );
 requireText(
