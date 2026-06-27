@@ -1,0 +1,141 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+const repoRoot = process.cwd();
+const componentPath = "components/audit/hard-delete-boundary-guard.tsx";
+const pagePath = "app/audit/page.tsx";
+const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
+const failures = [];
+
+function fail(message) {
+  failures.push(message);
+}
+
+function read(relativePath) {
+  return readFileSync(path.join(repoRoot, relativePath), "utf8");
+}
+
+function requireFile(relativePath) {
+  if (!existsSync(path.join(repoRoot, relativePath))) {
+    fail(`Missing required file: ${relativePath}`);
+  }
+}
+
+function requireText(contents, pattern, label, file) {
+  if (!pattern.test(contents)) {
+    fail(`${file}: missing ${label}`);
+  }
+}
+
+for (const file of [
+  componentPath,
+  pagePath,
+  checklistPath,
+  "docs/HARD_DELETE_AUDIT.md",
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  "AGENTS.md",
+  "package.json",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+]) {
+  requireFile(file);
+}
+
+const component = existsSync(path.join(repoRoot, componentPath))
+  ? read(componentPath)
+  : "";
+const page = existsSync(path.join(repoRoot, pagePath)) ? read(pagePath) : "";
+const checklist = existsSync(path.join(repoRoot, checklistPath))
+  ? read(checklistPath)
+  : "";
+const hardDeleteAudit = existsSync(path.join(repoRoot, "docs/HARD_DELETE_AUDIT.md"))
+  ? read("docs/HARD_DELETE_AUDIT.md")
+  : "";
+const nonTtgdtxReview = existsSync(
+  path.join(repoRoot, "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md"),
+)
+  ? read("docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md")
+  : "";
+const backlog = existsSync(path.join(repoRoot, "docs/HEU_SYSTEM_BUILD_BACKLOG.md"))
+  ? read("docs/HEU_SYSTEM_BUILD_BACKLOG.md")
+  : "";
+const agents = existsSync(path.join(repoRoot, "AGENTS.md")) ? read("AGENTS.md") : "";
+const releaseGateAudit = existsSync(
+  path.join(repoRoot, "scripts/audit-ttgdtx-release-gates.mjs"),
+)
+  ? read("scripts/audit-ttgdtx-release-gates.mjs")
+  : "";
+const packageJson = JSON.parse(read("package.json"));
+
+requireText(
+  component,
+  /(?=[\s\S]*data-hard-delete-boundary-guard="P6-06")(?=[\s\S]*P6-06 hard-delete and cascade review)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until non-TTGDTX\/base cascade paths are\s+converted or waived with written approval)(?=[\s\S]*No hard-delete for\s+finance, evidence, approval, payment, lead or audit rows)(?=[\s\S]*Do not use hard-delete, truncate, drop table or on delete cascade\s+as rollback proof)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*REQUIRES_CONVERSION_OR_WAIVER)(?=[\s\S]*audit:hard-delete)(?=[\s\S]*audit:ttgdtx-cascade)(?=[\s\S]*audit:heu-non-ttgdtx-cascade-review)/i,
+  "P6-06 hard-delete boundary guard",
+  componentPath,
+);
+
+requireText(
+  page,
+  /HardDeleteBoundaryGuard[\s\S]*<HardDeleteBoundaryGuard \/>[\s\S]*AuditLogTable/i,
+  "audit page mounts hard-delete boundary guard before audit table",
+  pagePath,
+);
+
+requireText(
+  checklist,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  "production checklist keeps hard-delete review IN_PROGRESS with UI guard evidence",
+  checklistPath,
+);
+
+requireText(
+  hardDeleteAudit,
+  /Production remains NO-GO[\s\S]*non-TTGDTX\/base schema cascade review/i,
+  "hard-delete audit production NO-GO boundary",
+  "docs/HARD_DELETE_AUDIT.md",
+);
+
+requireText(
+  nonTtgdtxReview,
+  /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i,
+  "non-TTGDTX cascade review local-only boundary",
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+);
+
+requireText(
+  backlog,
+  /P6-06[\s\S]*PASS_LOCAL[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
+  "backlog hard-delete boundary evidence",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+);
+
+if (!packageJson.scripts?.["audit:hard-delete-boundary-guard"]) {
+  fail("package.json: missing audit:hard-delete-boundary-guard script");
+}
+
+if (!agents.includes("npm.cmd run audit:hard-delete-boundary-guard")) {
+  fail("AGENTS.md: missing audit:hard-delete-boundary-guard final handoff command");
+}
+
+for (const needle of [
+  componentPath,
+  "scripts/audit-hard-delete-boundary-guard.mjs",
+  "audit:hard-delete-boundary-guard",
+]) {
+  if (!releaseGateAudit.includes(needle)) {
+    fail(`scripts/audit-ttgdtx-release-gates.mjs: missing ${needle}`);
+  }
+}
+
+if (failures.length > 0) {
+  console.error("Hard-delete boundary guard audit failed.");
+  for (const failure of failures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log(
+  "Hard-delete boundary guard audit passed. Production remains NO-GO until conversion or written waiver.",
+);

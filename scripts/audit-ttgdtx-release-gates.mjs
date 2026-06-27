@@ -72,6 +72,7 @@ const requiredFiles = [
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "components/audit/hard-delete-boundary-guard.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
@@ -93,6 +94,7 @@ const requiredFiles = [
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
+  "scripts/audit-hard-delete-boundary-guard.mjs",
   "scripts/audit-ttgdtx-account-control-scope-decision.mjs",
   "scripts/audit-ttgdtx-audit-trail-guard.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
@@ -127,6 +129,7 @@ const requiredScripts = [
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
   "audit:hard-delete",
+  "audit:hard-delete-boundary-guard",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
   "audit:ttgdtx-account-control-scope-decision",
@@ -313,6 +316,18 @@ requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
   /Current scan count:\s*44/i,
   "P6-06 current cascade count",
+);
+
+requireText(
+  "components/audit/hard-delete-boundary-guard.tsx",
+  /(?=[\s\S]*data-hard-delete-boundary-guard="P6-06")(?=[\s\S]*P6-06 hard-delete and cascade review)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until non-TTGDTX\/base cascade paths are\s+converted or waived with written approval)(?=[\s\S]*No hard-delete for\s+finance, evidence, approval, payment, lead or audit rows)(?=[\s\S]*Do not use hard-delete, truncate, drop table or on delete cascade\s+as rollback proof)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*REQUIRES_CONVERSION_OR_WAIVER)(?=[\s\S]*audit:hard-delete)(?=[\s\S]*audit:ttgdtx-cascade)(?=[\s\S]*audit:heu-non-ttgdtx-cascade-review)/i,
+  "P6-06 hard-delete boundary guard",
+);
+
+requireText(
+  "app/audit/page.tsx",
+  /HardDeleteBoundaryGuard[\s\S]*<HardDeleteBoundaryGuard \/>[\s\S]*AuditLogTable/i,
+  "audit page mounts hard-delete boundary guard",
 );
 
 requireText(

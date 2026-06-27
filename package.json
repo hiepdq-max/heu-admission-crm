@@ -16,6 +16,7 @@
     "audit:heu-role-scope-uat-pack": "node scripts/audit-heu-role-scope-uat-pack.mjs",
     "audit:heu-sql-object-master-map": "node scripts/audit-heu-sql-object-master-map.mjs",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
+    "audit:hard-delete-boundary-guard": "node scripts/audit-hard-delete-boundary-guard.mjs",
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",
     "audit:ttgdtx-account-control-scope-decision": "node scripts/audit-ttgdtx-account-control-scope-decision.mjs",

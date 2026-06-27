@@ -1411,3 +1411,34 @@
 
 - P6-03 audit-log UAT boundary is PASS_LOCAL after local audits pass.
 - Signed audit-log UAT remains required before production readiness.
+
+## 2026-06-27 - Hard Delete Boundary Guard
+
+### Scope
+
+- Continued P6 hard-delete/cascade governance with a small Audit page slice.
+- Added a visible hard-delete boundary guard on `/audit` for P6-06.
+- The guard states PASS_LOCAL only, production NO-GO until non-TTGDTX/base
+  cascade paths are converted or waived with written approval, no hard-delete
+  for finance/evidence/approval/payment/lead/audit rows, and no rollback proof
+  by hard-delete, truncate, drop table or cascade.
+- Added `audit:hard-delete-boundary-guard` and release-gate coverage so the UI
+  boundary, checklist and backlog stay aligned.
+
+### Files Updated/Added
+
+- `components/audit/hard-delete-boundary-guard.tsx`
+- `app/audit/page.tsx`
+- `scripts/audit-hard-delete-boundary-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+- `package.json`
+- `AGENTS.md`
+
+### Decision
+
+- P6-06 hard-delete boundary guard is PASS_LOCAL after local audits pass.
+- Non-TTGDTX/base cascade conversion or written waiver remains required before
+  production readiness.
