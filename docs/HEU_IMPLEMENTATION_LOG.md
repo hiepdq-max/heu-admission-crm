@@ -2353,3 +2353,13 @@
 - The execution log remains PARTIAL PASS/BLOCKED until synthetic-account route
   testing, negative tests, redacted evidence and required owner signatures are
   complete outside Codex/chat.
+
+## 2026-06-27 - Current-State Inventory After UAT Closure Template
+
+- Refreshed `docs/HEU_CURRENT_STATE_INVENTORY.md` so the current Stage D /
+  NO-GO snapshot includes the internal UAT run closure tracker and the UAT
+  execution closure template.
+- Updated `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`
+  to require the refreshed current-state wording.
+- This is inventory/audit alignment only. It does not execute UAT, approve
+  production, attach real evidence or change the owner GO/NO-GO boundary.
