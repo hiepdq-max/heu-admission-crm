@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-10 Controlled Evidence Acceptance Matrix
+
+- Added a PASS_LOCAL P0-10 controlled evidence acceptance matrix to
+  `components/audit/controlled-evidence-redaction-guard.tsx`.
+- Updated `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so redaction acceptance is explicit
+  before any evidence reference enters tracked work.
+- Extended controlled-evidence, current-state and release-gate audits to require
+  the acceptance matrix before handoff.
+- This is redaction-control packaging only. It does not collect evidence,
+  accept evidence, approve UAT, approve backup completion, approve finance
+  action, approve owner waiver or mark production GO.
+
 ## 2026-06-28 - P0-19 Legal Finance Gate Decision Manifest
 
 - Added a PASS_LOCAL P0-19 legal/finance gate decision manifest to

@@ -86,11 +86,23 @@ requireText(
 requireText(pack, /Stop Conditions[\s\S]*password, OTP, reset link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
 requireText(pack, /Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*audit:ttgdtx-release-gates[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build/i, "local preflight commands");
 requireText(pack, /Passing these checks proves only that local documentation and gates are aligned/i, "PASS_LOCAL local-only statement");
+requireText(
+  pack,
+  /(?=[\s\S]*P0-10 Controlled Evidence Acceptance Matrix)(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)/i,
+  "controlled evidence acceptance matrix",
+);
 
 requireText(
   component,
   /(?=[\s\S]*data-heu-controlled-evidence-redaction-guard="P0-10")(?=[\s\S]*P0-10 controlled evidence redaction\/intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Production remains NO-GO until evidence is collected in the\s+controlled location, redacted where needed, reviewed by Audit and\s+signed by the required human owners)(?=[\s\S]*Raw evidence stays outside\s+Git\/Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API\s+keys, private keys, bank credentials, reset links, raw student\s+PII, raw CCCD, raw phone numbers, raw bank account numbers, bank\s+statements, vouchers or raw payment data)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*does not\s+prove evidence was collected, accepted, signed, or production-approved)/i,
   "controlled evidence redaction UI guard",
+  componentPath,
+);
+
+requireText(
+  component,
+  /(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10 controlled evidence acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)/i,
+  "controlled evidence acceptance matrix UI",
   componentPath,
 );
 
@@ -110,14 +122,14 @@ requireText(
 
 requireText(
   checklist,
-  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
   "production checklist redaction row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
   "backlog P0-10 redaction row",
   backlogPath,
 );

@@ -108,3 +108,23 @@ git status --short --branch
 Passing these checks proves only that local documentation and gates are aligned.
 It does not prove that sensitive evidence exists, that evidence was accepted, or
 that production is approved.
+
+## 8. P0-10 Controlled Evidence Acceptance Matrix
+
+The app exposes
+`data-heu-controlled-evidence-acceptance-matrix="P0-10"` in
+`components/audit/controlled-evidence-redaction-guard.tsx`. Use this matrix
+before any redacted evidence reference enters a tracked document, checklist,
+issue, screenshot or Codex/chat. It prepares evidence for human review; it does
+not accept evidence or approve production.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P0-10-ACCEPT-01 | Evidence classified before use | Each item is marked PUBLIC_CONTROL, CONTROLLED_REDACTED, CONTROLLED_SENSITIVE or FORBIDDEN_IN_GIT_OR_CODEX | Classification is missing, guessed, or a forbidden item is treated as redacted evidence |
+| P0-10-ACCEPT-02 | Sensitive originals stay outside Git/Codex | Backup, UAT, bank, voucher, source workbook and signed evidence originals live only in the controlled evidence location | Raw controlled evidence is stored in Git, docs, screenshots, browser notes, issues or Codex/chat |
+| P0-10-ACCEPT-03 | Redaction preserves proof while removing private data | Names, CCCD/passport, phone, bank account, credentials, reset links, vouchers and raw payment data are masked or removed | The redacted copy leaks private data or no longer proves the intended control |
+| P0-10-ACCEPT-04 | Owner and Audit review recorded | Evidence owner, Audit reviewer, date, controlled storage reference and required business owner review are recorded | Evidence has no owner, reviewer, date, controlled storage reference or business owner review |
+| P0-10-ACCEPT-05 | Only safe references enter tracked work | Git/docs/Codex contain only non-secret evidence IDs, masked snippets or reviewed redacted copies | A secret, raw PII, bank statement, voucher, source workbook or signed sensitive document enters tracked work |
+| P0-10-ACCEPT-06 | Production boundary acknowledged | The evidence note states PASS_LOCAL proves structure only and does not accept evidence, UAT, migration, finance action or GO | PASS_LOCAL is treated as evidence acceptance, UAT pass, backup completion, finance approval, owner waiver or production GO |
+
+Decision value: P0_10_ACCEPT / NO_GO / BLOCKED.
