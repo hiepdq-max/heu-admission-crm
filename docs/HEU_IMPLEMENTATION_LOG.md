@@ -887,3 +887,26 @@
 - P1-01, P1-02 and P1-03 are PASS_LOCAL as control artifacts.
 - No production schema change, production migration, production access or real-data UAT is approved.
 - Signed UAT and reviewed migrations remain required before production readiness.
+
+## 2026-06-27 - Generic TTGDTX Source/Evidence Guard Closure
+
+### Scope
+
+- Continued data/source-evidence hardening with P1-06.
+- Closed the generic source/evidence guard as PASS_LOCAL.
+- Reaffirmed that Phu-Xuyen-like material is reference metadata/UAT material only, not product logic.
+- Kept production migration, real-data import, source-code renaming and production source metadata changes NO-GO.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P1-06 is PASS_LOCAL as a product-code generalization guard.
+- Product code remains generic for many centers/partners.
+- Signed UAT and reviewed migration design remain required before production use of real source packs.

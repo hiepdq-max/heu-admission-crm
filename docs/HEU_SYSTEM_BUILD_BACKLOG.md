@@ -23,7 +23,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P1-03 | Define `HEU_ROLE_PERMISSION_MATRIX_V1.md` | IT/Data + BGH | PASS_LOCAL | Baseline roles/permission families/scope boundaries defined; `npm.cmd run audit:heu-data-foundation`; signed access UAT still required |
 | P1-04 | Map existing SQL objects to master names | IT/Data | PASS_LOCAL | `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`; `npm.cmd run audit:heu-sql-object-master-map`; no production schema rename/drop/alter |
 | P1-05 | Build anonymized real-like UAT pack for Phu-Xuyen-like cases | KHTC + IT/Data + Audit | PASS_LOCAL | `fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json`; `npm.cmd run audit:ttgdtx-synthetic-uat-pack`; no raw PII/bank data |
-| P1-06 | Keep TTGDTX source/evidence model generic across centers | IT/Data | IN_PROGRESS | Product code must not hard-code a reference center |
+| P1-06 | Keep TTGDTX source/evidence model generic across centers | IT/Data | PASS_LOCAL | `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`; `npm.cmd run audit:ttgdtx-generic-source-evidence`; reference-center material stays metadata/UAT only |
 
 ## P2 - TTGDTX/9+ Pilot
 

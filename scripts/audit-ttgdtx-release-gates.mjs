@@ -226,6 +226,12 @@ requireText(
 );
 
 requireText(
+  "docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md",
+  /P1-06 is PASS_LOCAL[\s\S]*app`, `components` and `lib` do not hard-code a reference center\/source[\s\S]*does not approve production migration, real-data import, source-code\s+renaming, production source metadata changes or production use/i,
+  "P1-06 generic source evidence local-only boundary",
+);
+
+requireText(
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   /Do not let AI approve/i,
   "operating matrix AI approval boundary",
