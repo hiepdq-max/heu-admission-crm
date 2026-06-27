@@ -1064,3 +1064,32 @@
 
 - Account-control workflow and collateral giai-chap separation are PASS_LOCAL as a scope decision.
 - No bank action, collateral release, production data import, production migration, real UAT or production GO is approved.
+
+## 2026-06-27 - TTGDTX Operating-Control UI Strip
+
+### Scope
+
+- Continued TTGDTX linked-spine hardening by reflecting the operating control matrix in key finance screens.
+- Added shared operating-control metadata for P2-01 through P2-18.
+- Added a reusable UI strip that shows current step, previous/next step, owner, must-have evidence and blocking consequence.
+- Mounted the strip on P2-10 Thu hoc phi, P2-15 De nghi thanh toan, P2-17 Chi tien and P2-18 Dashboard ke toan.
+
+### Files Updated/Added
+
+- `lib/ttgdtx-operating-controls.ts`
+- `components/ttgdtx/ttgdtx-operating-control-strip.tsx`
+- `scripts/audit-ttgdtx-operating-control-ui.mjs`
+- `app/ttgdtx/payments/page.tsx`
+- `app/ttgdtx/payment-requests/page.tsx`
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `app/ttgdtx/accounting-dashboard/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- The operating-control matrix is PASS_LOCAL on key finance UI surfaces.
+- Signed browser UAT is still required before any production readiness claim.

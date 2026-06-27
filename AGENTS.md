@@ -118,6 +118,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-data-fetch-gate`
   - `npm.cmd run audit:ttgdtx-generic-source-evidence`
   - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
+  - `npm.cmd run audit:ttgdtx-operating-control-ui`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
   - `npm.cmd run audit:ttgdtx-period-lock-policy`
   - `npm.cmd run audit:ttgdtx-process-labels`

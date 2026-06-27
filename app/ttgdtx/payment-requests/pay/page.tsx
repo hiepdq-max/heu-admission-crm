@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -378,6 +379,8 @@ export default async function PaymentExecutionPage({
             SQL thì hãy chạy file database/step107_ttgdtx_payment_execution_p2_17.sql.
           </div>
         ) : null}
+
+        <TtgdtxOperatingControlStrip currentCode="P2-17" />
 
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900">
           <div className="flex gap-3">

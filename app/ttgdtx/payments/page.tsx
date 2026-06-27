@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -446,6 +447,8 @@ export default async function TtgdtxPaymentsPage({
               </div>
             </section>
           ) : null}
+
+          <TtgdtxOperatingControlStrip currentCode="P2-10" />
 
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
             <div className="flex items-start gap-3">

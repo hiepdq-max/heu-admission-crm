@@ -71,6 +71,8 @@ const requiredFiles = [
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
   "lib/vnd-money.ts",
   "scripts/audit-heu-backlog-codes.mjs",
@@ -85,6 +87,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
+  "scripts/audit-ttgdtx-operating-control-ui.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
@@ -117,6 +120,7 @@ const requiredScripts = [
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-lead-quick-fix-safety",
+  "audit:ttgdtx-operating-control-ui",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-period-lock-policy",
   "audit:ttgdtx-process-labels",
@@ -295,6 +299,18 @@ requireText(
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   /Do not let AI approve/i,
   "operating matrix AI approval boundary",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /TTGDTX operating control matrix[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-operating-control-ui[\s\S]*signed UAT still required/i,
+  "operating-control UI PASS_LOCAL checklist row",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  /data-ttgdtx-operating-control=\{current\.code\}[\s\S]*Owner:[\s\S]*Điều kiện trước khi đi tiếp[\s\S]*Nếu thiếu điều kiện, bước này phải chặn/i,
+  "operating-control strip owner and blocker display",
 );
 
 requireText(
