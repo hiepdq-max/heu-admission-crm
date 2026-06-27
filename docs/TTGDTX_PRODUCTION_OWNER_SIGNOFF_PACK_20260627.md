@@ -38,7 +38,7 @@ approved, or production GO is approved.
 | Role and workspace permission | IT_DATA + TRUONG_PHONG + Audit | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`, `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`, multi-role browser evidence | NO-GO |
 | Audit log completeness | Audit + IT_DATA + KHTC | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`, audit rows for create, update, check, approve, pay and source-control events | NO-GO |
 | Hard-delete/cascade risk | IT_DATA + Audit + affected business owner | `docs/HARD_DELETE_AUDIT.md`, `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`, conversion evidence or written waiver | NO-GO |
-| Internal multi-account UAT | BGH + KHTC + PHAP_CHE + IT_DATA | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`, `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`, `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | NO-GO |
+| Internal multi-account UAT | BGH + KHTC + PHAP_CHE + IT_DATA | `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`, `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`, `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`, `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | NO-GO |
 | Controlled evidence redaction | IT_DATA + Audit | `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`, redacted evidence references and controlled storage location outside Git | NO-GO |
 
 ## 3. Required Local Preflight
@@ -69,6 +69,7 @@ The local preflight must pass, but passing it is not owner approval.
 | Role/workspace browser UAT |  |  | PENDING |
 | Audit-log UAT |  |  | PENDING |
 | Hard-delete/cascade conversion or waiver |  |  | PENDING |
+| Internal UAT operator handoff and signed run closure |  |  | PENDING |
 | Final multi-owner Go/No-Go note |  |  | PENDING |
 
 ## 5. P0-09 Owner Decision Evidence Checklist
@@ -104,7 +105,7 @@ final owner decision remains NO-GO.
 |---|---|---|---|
 | P0-09-ACCEPT-01 | Evidence pack completeness and redaction | Every required evidence item has a controlled external location, owner initials, result and no raw sensitive data in Git/Codex/chat | Any evidence is missing, stored in an uncontrolled location or contains raw sensitive data |
 | P0-09-ACCEPT-02 | Backup/restore and migration readiness | Backup ID, restore target, smoke-check, preflight/postflight and signed Step90-Step110 migration order are accepted | Restore proof is missing, app connection to restore target is not proven or migration order is unsigned |
-| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P2-17, P2-18, role/workspace, audit-log and hard-delete/cascade evidence or written waiver are signed | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete |
+| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P2-17, P2-18, role/workspace, audit-log, UAT operator handoff and hard-delete/cascade evidence or written waiver are signed | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete |
 | P0-09-ACCEPT-04 | Owner decision quorum and accountability | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, evidence ref, signature and date | Any owner is missing, approval is oral-only, role is ambiguous, waiver is hidden or one owner asks for more evidence |
 | P0-09-ACCEPT-05 | Production boundary and AI/Codex limitation | Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat | PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production |
 | P0-09-ACCEPT-06 | Final outcome stays NO-GO until every stop condition is closed | All stop conditions in this sign-off pack are explicitly closed, otherwise the final decision remains NO-GO | Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains |

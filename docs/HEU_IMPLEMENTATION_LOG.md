@@ -2394,3 +2394,13 @@
   so the current-state inventory cannot drift behind the UAT handoff artifact.
 - This is inventory/audit alignment only. It does not execute UAT, accept
   evidence, approve production migration or change the owner GO/NO-GO boundary.
+
+## 2026-06-27 - Owner Sign-Off Alignment With UAT Operator Handoff
+
+- Added `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` to the P0-09 owner
+  sign-off pack, production checklist and system backlog so final GO/NO-GO
+  review cannot bypass the human UAT operator handoff.
+- Extended the owner sign-off and release-gate audits to require the handoff
+  file in the final owner evidence path.
+- This is evidence-path alignment only. It does not execute UAT, accept raw
+  evidence, approve finance action, approve migration or mark production GO.

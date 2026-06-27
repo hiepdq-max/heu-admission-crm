@@ -47,6 +47,7 @@ for (const file of [
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/HARD_DELETE_AUDIT.md",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
@@ -81,6 +82,12 @@ requireText(pack, /Do not mark production GO from Codex\/chat/i, "Codex/chat GO 
 requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i, "secret and PII boundary");
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, owner waiver is approved, finance action is\s+approved, or production GO is approved/i, "PASS_LOCAL non-approval boundary");
 requireText(pack, /HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*Raw evidence stays outside Git/i, "controlled evidence redaction reference");
+
+requireText(
+  pack,
+  /Internal multi-account UAT[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*NO-GO/i,
+  "internal multi-account UAT operator handoff evidence",
+);
 
 for (const required of [
   "Production backup and restore dry-run",
@@ -154,14 +161,14 @@ requireText(
 
 requireText(
   checklist,
-  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "production checklist final owner sign-off row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
   backlogPath,
 );
