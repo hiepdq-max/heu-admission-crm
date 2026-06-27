@@ -2425,3 +2425,13 @@
   execution queue cannot drift back to a generic final sign-off message.
 - This is UI/source alignment only. Production still requires real controlled
   evidence and signed human owner decisions outside Codex/chat.
+
+## 2026-06-27 - P0-13 Backlog And Checklist Evidence Path Alignment
+
+- Updated the P0-13 backlog and production-checklist rows so the shared
+  blocker source explicitly covers the P0-03 operator run sheet evidence path
+  and the P0-09 owner sign-off/UAT handoff evidence path.
+- Extended `audit:heu-production-blocker-source` to require those P0-13
+  planning rows, keeping the plan aligned with the shared app source.
+- This remains PASS_LOCAL planning alignment only; production still requires
+  real controlled evidence and signed owner decisions.

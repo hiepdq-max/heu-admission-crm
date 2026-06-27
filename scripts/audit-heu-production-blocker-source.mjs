@@ -171,14 +171,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source/i,
+  /P0-13[\s\S]*Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "P0-13 shared blocker source backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source/i,
+  /Production blocker shared source[\s\S]*PASS_LOCAL[\s\S]*audit:heu-production-blocker-source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path/i,
   "production checklist shared blocker source row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
