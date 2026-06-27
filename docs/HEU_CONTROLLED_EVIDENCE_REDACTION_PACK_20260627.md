@@ -128,3 +128,29 @@ not accept evidence or approve production.
 | P0-10-ACCEPT-06 | Production boundary acknowledged | The evidence note states PASS_LOCAL proves structure only and does not accept evidence, UAT, migration, finance action or GO | PASS_LOCAL is treated as evidence acceptance, UAT pass, backup completion, finance approval, owner waiver or production GO |
 
 Decision value: P0_10_ACCEPT / NO_GO / BLOCKED.
+
+## 9. P0-14 Controlled Evidence Intake Ledger
+
+The TTGDTX production evidence binder exposes
+`data-p014-controlled-evidence-intake-ledger="P0-14"` in
+`components/ttgdtx/ttgdtx-production-evidence-binder.tsx`. Use this ledger
+after P0-10 redaction review and before P0-14 closure. It does not accept
+evidence or approve production.
+
+Each blocker row must record only Git-safe references:
+
+| Field | Requirement |
+|---|---|
+| Evidence ID | Non-secret reference ID only; no raw file, credential, bank data, voucher, student PII or private link |
+| Controlled folder reference | Location label or approved controlled folder reference outside Git/Codex/chat |
+| Evidence class | PUBLIC_CONTROL, CONTROLLED_REDACTED, CONTROLLED_SENSITIVE or FORBIDDEN_IN_GIT_OR_CODEX |
+| Redaction reviewer | Reviewer name/initials and review date recorded outside Git if sensitive |
+| Owner signature state | ACCEPT / NO_GO / BLOCKED for the required owner group |
+| Blocker decision | P0_14_INTAKE_READY / NO_GO / BLOCKED |
+
+Decision value: P0_14_INTAKE_READY / NO_GO / BLOCKED.
+
+Stop if the evidence ID is missing, storage is uncontrolled, redaction review is
+missing, owner signature is missing or forbidden content appears in
+Git/Codex/chat. PASS_LOCAL proves only that the intake-ledger structure exists;
+it does not prove evidence was collected, accepted, signed or production-ready.

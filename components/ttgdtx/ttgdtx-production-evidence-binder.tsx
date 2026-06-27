@@ -1,4 +1,10 @@
-import { Archive, FileCheck2, LockKeyhole, ShieldCheck } from "lucide-react";
+import {
+  Archive,
+  ClipboardList,
+  FileCheck2,
+  LockKeyhole,
+  ShieldCheck,
+} from "lucide-react";
 
 import {
   PRODUCTION_EVIDENCE_REQUIREMENTS,
@@ -71,6 +77,60 @@ export function TtgdtxProductionEvidenceBinder() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-emerald-200 bg-white p-4"
+        data-p014-controlled-evidence-intake-ledger="P0-14"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <ClipboardList className="mt-0.5 size-4 shrink-0 text-emerald-700" />
+            <div>
+              <h3 className="font-semibold text-emerald-950">
+                P0-14 controlled evidence intake ledger: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-zinc-700">
+                Complete this ledger after P0-10 redaction review and before
+                P0-14 closure. Each blocker needs a non-secret evidence ID,
+                controlled folder reference, redaction reviewer, owner signature
+                state and ACCEPT / NO_GO / BLOCKED decision.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 font-mono text-xs text-emerald-950">
+            P0_14_INTAKE_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {PRODUCTION_EVIDENCE_REQUIREMENTS.map((item) => (
+            <article
+              key={`${item.caseId}-intake`}
+              className="border-l-2 border-emerald-300 bg-emerald-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId} intake
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.blockerCode}: {item.title}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Ledger fields: evidence ID, controlled folder reference,
+                evidence class, redaction reviewer, owner signature state and
+                blocker decision.
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required class: {item.evidenceClass}. Owner: {item.owner}.
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop if the evidence ID is missing, storage is uncontrolled,
+                redaction review is missing, owner signature is missing or
+                forbidden content appears: {item.forbiddenContent}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div

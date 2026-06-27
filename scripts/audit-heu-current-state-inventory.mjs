@@ -165,7 +165,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder, governance evidence checkpoint and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof with P3-01\/P3-02 runbook evidence[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
+  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint and closure tracker exist[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof with P3-01\/P3-02 runbook evidence[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
   "P0-14 controlled evidence binder closure tracker state",
 );
 requireText(

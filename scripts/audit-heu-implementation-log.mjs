@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-14 Controlled Evidence Intake Ledger[\s\S]*ttgdtx-production-evidence-binder\.tsx[\s\S]*non-secret evidence ID, controlled folder reference,\s+evidence class, redaction reviewer, owner signature state and blocker\s+decision before P0-14 closure[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED[\s\S]*P0-10 redaction review hands off safely into P0-14[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production-evidence, controlled-evidence, current-state,\s+implementation-log and release-gate audits[\s\S]*This is evidence-intake packaging only[\s\S]*does not collect raw evidence,\s+accept evidence, approve UAT, approve migration, approve finance action,\s+approve owner waiver or mark production GO/i,
+  "P0-14 controlled evidence intake ledger log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - Step90-Step110 Migration Evidence Acceptance Lock[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*MIG-LOCK-01 through\s+MIG-LOCK-06[\s\S]*P0-03 target identity lock, backup\/restore proof,\s+preflight\/postflight checks, restore smoke-check, rollback\/exception decision\s+and required owner evidence acceptance[\s\S]*lib\/production-readiness\.ts[\s\S]*target identity lock and\s+MIGRATION_EVIDENCE_ACCEPTED before migration-order signature[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*migration-order, production-blocker-source, current-state,\s+implementation-log and release-gate audits[\s\S]*This is migration-order packaging only[\s\S]*does not execute backup, restore,\s+production migration, rollback, UAT acceptance, evidence acceptance, owner\s+waiver, finance action or production GO/i,
   "Step90-Step110 migration evidence acceptance lock log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

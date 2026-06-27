@@ -91,6 +91,11 @@ requireText(
   /(?=[\s\S]*P0-10 Controlled Evidence Acceptance Matrix)(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)/i,
   "controlled evidence acceptance matrix",
 );
+requireText(
+  pack,
+  /(?=[\s\S]*P0-14 Controlled Evidence Intake Ledger)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Evidence ID)(?=[\s\S]*Controlled folder reference)(?=[\s\S]*Evidence class)(?=[\s\S]*Redaction reviewer)(?=[\s\S]*Owner signature state)(?=[\s\S]*Blocker decision)(?=[\s\S]*PASS_LOCAL proves only that the intake-ledger structure exists)/i,
+  "P0-14 controlled evidence intake ledger handoff",
+);
 
 requireText(
   component,

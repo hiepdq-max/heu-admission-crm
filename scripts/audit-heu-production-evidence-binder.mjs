@@ -150,7 +150,7 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*governanceEvidenceCases)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*what proof is needed, where\s+it must live, who signs it and what must never be pasted into\s+Git\/Codex\/chat)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*controlled references, redaction checks and human sign-off)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*P6_04_SCOPE \+ P6_03_TRACE)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*controlled evidence reference exists)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Stop if proof is missing)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)(?=[\s\S]*service-role keys,\s+passwords, OTPs)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements)(?=[\s\S]*AI-produced approvals)/i,
+  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*governanceEvidenceCases)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*what proof is needed, where\s+it must live, who signs it and what must never be pasted into\s+Git\/Codex\/chat)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0-14 controlled evidence intake ledger)(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*evidence ID, controlled folder reference,\s+evidence class, redaction reviewer, owner signature state and\s+blocker decision)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*controlled references, redaction checks and human sign-off)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*P6_04_SCOPE \+ P6_03_TRACE)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*controlled evidence reference exists)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Stop if proof is missing)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)(?=[\s\S]*service-role keys,\s+passwords, OTPs)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements)(?=[\s\S]*AI-produced approvals)/i,
   "P0-14 production evidence binder UI",
   componentPath,
 );
@@ -175,14 +175,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "P0-14 production evidence binder backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "production checklist evidence binder row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
@@ -196,14 +196,14 @@ requireText(
 
 requireText(
   checklist,
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*redaction reviewer[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
   "priority blocker list includes P0-14 evidence binder closure",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Backup\/restore[\s\S]*restore smoke-check acceptance matrix with P0-19\/P3 gate preservation[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder, governance evidence checkpoint and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
+  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Backup\/restore[\s\S]*restore smoke-check acceptance matrix with P0-19\/P3 gate preservation[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff proof/i,
   "current-state production evidence binder audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

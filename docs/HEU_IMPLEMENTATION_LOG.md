@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-14 Controlled Evidence Intake Ledger
+
+- Added a PASS_LOCAL controlled evidence intake ledger to
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` so each P0-14
+  blocker must carry a non-secret evidence ID, controlled folder reference,
+  evidence class, redaction reviewer, owner signature state and blocker
+  decision before P0-14 closure.
+- Updated `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md` with the
+  P0-14 intake ledger fields and P0_14_INTAKE_READY / NO_GO / BLOCKED decision
+  value so P0-10 redaction review hands off safely into P0-14.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so evidence readiness includes the
+  intake ledger, redaction reviewer and owner signature state.
+- Extended production-evidence, controlled-evidence, current-state,
+  implementation-log and release-gate audits so the ledger cannot drift out of
+  the production readiness path.
+- This is evidence-intake packaging only. It does not collect raw evidence,
+  accept evidence, approve UAT, approve migration, approve finance action,
+  approve owner waiver or mark production GO.
+
 ## 2026-06-28 - Step90-Step110 Migration Evidence Acceptance Lock
 
 - Added a migration evidence acceptance lock to

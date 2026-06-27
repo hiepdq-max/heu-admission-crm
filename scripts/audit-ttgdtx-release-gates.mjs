@@ -575,7 +575,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*Run P0-15 final handoff coverage[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*Keep P0-05 implementation log audit green[\s\S]*Complete role\/workspace permission tests/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*Run P0-15 final handoff coverage[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*Keep P0-05 implementation log audit green[\s\S]*Complete role\/workspace permission tests/i,
   "priority blocker list includes P0-14/P0-15/P0-05 before role tests",
 );
 
@@ -787,6 +787,12 @@ requireText(
   "components/audit/controlled-evidence-redaction-guard.tsx",
   /(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10 controlled evidence acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)/i,
   "controlled evidence acceptance matrix UI",
+);
+
+requireText(
+  "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
+  /(?=[\s\S]*P0-14 Controlled Evidence Intake Ledger)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Evidence ID)(?=[\s\S]*Controlled folder reference)(?=[\s\S]*Evidence class)(?=[\s\S]*Redaction reviewer)(?=[\s\S]*Owner signature state)(?=[\s\S]*Blocker decision)(?=[\s\S]*PASS_LOCAL proves only that the intake-ledger structure exists)/i,
+  "P0-14 controlled evidence intake ledger handoff",
 );
 
 requireText(
@@ -1223,7 +1229,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
-  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)/i,
+  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0-14 controlled evidence intake ledger)(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*evidence ID, controlled folder reference,\s+evidence class, redaction reviewer, owner signature state and\s+blocker decision)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)/i,
   "P0-14 production evidence binder UI",
 );
 
