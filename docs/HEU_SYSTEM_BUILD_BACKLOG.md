@@ -12,7 +12,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-04 | Keep generated logs out of commits | IT/Data | PASS_LOCAL | `.gitignore` covers logs/env; no tracked `.log`/`.env`; no unignored generated files in current status |
 | P0-05 | Record every phase in `HEU_IMPLEMENTATION_LOG.md` | Codex + IT/Data | IN_PROGRESS | Log before conclusion |
 | P0-06 | Freeze code edits until inventory/backlog is current | Codex + IT/Data | PASS_LOCAL | Current P0 docs updated after `28b8e7d` |
-| P0-08 | Expose TTGDTX production readiness guard in app | IT/Data + Process owners | PASS_LOCAL | `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`; `npm.cmd run audit:ttgdtx-production-readiness-guard`; production remains NO-GO until backup, signed UAT and owner approval |
+| P0-08 | Expose TTGDTX production readiness guard in app | IT/Data + Process owners | PASS_LOCAL | `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`; `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx`; `npm.cmd run audit:ttgdtx-production-readiness-guard`; production remains NO-GO until backup, signed UAT and owner approval |
 | P0-11 | Role permission soft revoke | IT/Data + ADMIN | PASS_LOCAL | Step109 is migration candidate only; settings uses INACTIVE/upsert instead of hard delete |
 
 ## P1 - Data Foundation

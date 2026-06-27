@@ -81,6 +81,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
+  "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
   "lib/ttgdtx-invoice-policy.ts",
@@ -410,8 +411,20 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-uat-signoff-guard="INTERNAL_UAT")(?=[\s\S]*Internal UAT sign-off)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Production remains NO-GO until signed multi-account UAT evidence\s+exists)(?=[\s\S]*PASS_LOCAL does not approve real pilot start, production\s+migration, revenue recognition, payout, dashboard reliance or\s+Go\/No-Go)(?=[\s\S]*Do not paste real passwords, OTPs, service-role keys, student\s+PII, CCCD, phone numbers, bank accounts or raw payment evidence)(?=[\s\S]*UAT_ADMIN)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_KHTC)(?=[\s\S]*UAT_TUYEN_SINH)(?=[\s\S]*UAT_PHAP_CHE)(?=[\s\S]*UAT_OUT_OF_SCOPE)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*signed multi-account UAT still required)/i,
+  "TTGDTX internal UAT sign-off guard",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /<TtgdtxProductionReadinessGuard\s*\/>[\s\S]*<TtgdtxUatSignoffGuard\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/,
+  "TTGDTX landing page mounts internal UAT sign-off guard",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "internal UAT readiness guard checklist row",
 );
 

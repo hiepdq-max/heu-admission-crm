@@ -1498,3 +1498,34 @@
 - Supabase backup/restore UI guard is PASS_LOCAL after local audits pass.
 - Actual backup/restore evidence and owner sign-off remain required before
   production readiness.
+
+## 2026-06-27 - Internal UAT Sign-Off Guard
+
+### Scope
+
+- Continued production-readiness hardening with a small TTGDTX landing page
+  slice.
+- Added a visible internal UAT sign-off guard below the production readiness
+  guard.
+- The guard lists the synthetic account matrix, required UAT evidence docs and
+  states PASS_LOCAL only.
+- It keeps production NO-GO until signed multi-account UAT evidence exists and
+  repeats the no-secret boundary for passwords, OTPs, service-role keys,
+  student PII, CCCD, phone numbers, bank accounts and raw payment evidence.
+- Extended production-readiness and release-gate audits so the UAT guard,
+  checklist and backlog stay aligned.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx`
+- `app/ttgdtx/page.tsx`
+- `scripts/audit-ttgdtx-production-readiness-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Internal UAT sign-off guard is PASS_LOCAL after local audits pass.
+- Signed multi-account UAT remains required before production readiness.
