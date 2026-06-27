@@ -52,7 +52,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment; 53 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment; 53 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -93,6 +93,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |
 | Controlled evidence | Redaction/intake pack, audit guard, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof and P0-09 owner sign-off/UAT handoff proof | Real evidence must stay outside Git/Codex/chat |
+| Final handoff coverage | `AGENTS.md` final handoff summary requires live git state, local check results, Stage D/NO-GO, the P0-03 operator run sheet evidence path, P0-09 owner sign-off/UAT handoff evidence path, P0-13 blocker source and P0-14 evidence binder | PASS_LOCAL; cannot override production NO-GO |
 | AI helper layer | Task checklist and risk board are read-only | Advisory only; no autonomous approval |
 
 ## 6. Risk Findings

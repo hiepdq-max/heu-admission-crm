@@ -69,6 +69,13 @@ requireText(
   "AGENTS.md",
 );
 
+requireText(
+  agents,
+  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*local checks run[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT\s+handoff evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14\s+production evidence binder[\s\S]*real evidence stays outside Git\/Codex\/chat[\s\S]*does not approve production, migration, finance action or\s+owner GO\/NO-GO/i,
+  "final handoff summary content guard",
+  "AGENTS.md",
+);
+
 for (const script of auditScripts) {
   const handoffCommand = `npm.cmd run ${script}`;
   if (!agents.includes(handoffCommand)) {
@@ -89,21 +96,21 @@ requireText(
 
 requireText(
   backlog,
-  /P0-15[\s\S]*Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage/i,
+  /P0-15[\s\S]*Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder/i,
   "P0-15 final handoff coverage backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage/i,
+  /Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder/i,
   "production checklist final handoff coverage row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS/i,
+  /npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*Final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*cannot override production NO-GO/i,
   "current-state final handoff coverage audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

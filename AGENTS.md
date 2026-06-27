@@ -160,6 +160,17 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-release-gates`
   - `npm.cmd run lint`
   - `npm.cmd run build`
+- Final handoff summaries must include:
+  - live `git status --short --branch` and `git rev-parse --short HEAD`
+    results;
+  - local checks run and whether each passed or failed;
+  - `Stage D - internal controlled test only` and `Production remains NO-GO`;
+  - the P0-03 operator run sheet evidence path, P0-09 owner sign-off/UAT
+    handoff evidence path, P0-13 production blocker shared source and P0-14
+    production evidence binder;
+  - the boundary that real evidence stays outside Git/Codex/chat and that
+    Codex output does not approve production, migration, finance action or
+    owner GO/NO-GO.
 
 ## Product Rules
 

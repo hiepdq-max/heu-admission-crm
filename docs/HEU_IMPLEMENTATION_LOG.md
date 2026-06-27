@@ -2456,3 +2456,14 @@
   require those evidence paths.
 - This is evidence-binder alignment only. It does not collect real evidence,
   sign UAT, approve migration or mark production GO.
+
+## 2026-06-27 - P0-15 Final Handoff Summary Guard
+
+- Updated `AGENTS.md`, backlog, production checklist and current-state
+  inventory so final handoff must state live git status, local check results,
+  Stage D/NO-GO and the P0-03/P0-09/P0-13/P0-14 evidence paths.
+- Extended `audit:heu-final-handoff-coverage`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  final handoff guard cannot drift behind the production evidence path.
+- This is handoff-control alignment only. It does not execute UAT, accept real
+  evidence, approve migration, approve finance action or mark production GO.
