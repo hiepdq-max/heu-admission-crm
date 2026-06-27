@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-15 Final Handoff P0-03 P3 Gate Proof[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P0-03\s+restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*final-handoff, current-state and release-gate audits[\s\S]*This is final-handoff packaging only[\s\S]*does not execute backup, restore,\s+migration dry-run, UAT, evidence acceptance, finance action, owner waiver or\s+production GO/i,
+  "P0-15 final handoff P0-03/P3 gate proof log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-14 Evidence Binder P0-03 P3 Gate Proof[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-14-01 backup\/restore evidence[\s\S]*restore smoke-check proof that P0-19 and P3-01\/P3-02 gate\s+preservation survived the restore dry-run[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*production-evidence, current-state and release-gate audits[\s\S]*This is evidence-binder packaging only[\s\S]*does not execute backup, restore,\s+migration dry-run, UAT, evidence acceptance, finance action, owner waiver or\s+production GO/i,
   "P0-14 evidence binder P0-03/P3 gate proof log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
