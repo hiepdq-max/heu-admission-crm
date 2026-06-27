@@ -2044,3 +2044,12 @@
   visible before production handoff.
 - This is PASS_LOCAL only. Real evidence, controlled storage and human
   signatures are still required outside Codex/chat.
+## 2026-06-27 - P0-15 Final Handoff Audit Coverage
+
+- Added `audit:heu-final-handoff-coverage` to compare `package.json` audit
+  scripts against `AGENTS.md` final handoff commands and release-gate required
+  script coverage.
+- Updated the backlog, production checklist, current-state inventory and
+  release-gate audit so future guard scripts cannot be silently skipped.
+- This is PASS_LOCAL only. It improves handoff discipline; it does not approve
+  production readiness or replace external evidence and signatures.
