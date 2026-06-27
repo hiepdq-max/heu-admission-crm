@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_INFRA_READINESS_STEPS,
   PRODUCTION_RISK_CLOSURE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
   SAFE_ITERATION_STEPS,
@@ -65,6 +66,57 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
               <p className="mt-2 leading-5 text-zinc-700">{step.detail}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-sky-200 bg-white p-4"
+        data-ttgdtx-infra-readiness-plan="P0-03_STEP90_STEP110"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-sky-950">
+              Infra readiness plan: P0-03 + Step90-Step110
+            </h3>
+            <p className="mt-1 leading-6 text-sky-900">
+              Prove backup/restore dry-run first, then sign the migration order.
+              No production migration runs from Codex/chat and any missing proof
+              keeps production NO-GO.
+            </p>
+          </div>
+          <span className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-xs font-semibold uppercase text-sky-800">
+            backup proof first
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_INFRA_READINESS_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-sky-300 bg-sky-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Runbook: {step.runbook}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-600">
+                Guard: {step.auditCommand}
+              </p>
+              <Link
+                href={step.route}
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-sky-700 hover:text-sky-950"
+              >
+                Open infra route
+                <ArrowRight className="size-3" />
+              </Link>
             </article>
           ))}
         </div>

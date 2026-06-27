@@ -40,6 +40,16 @@ export type ProductionRiskClosureStep = {
   auditCommand: string;
 };
 
+export type ProductionInfraReadinessStep = {
+  code: string;
+  title: string;
+  owner: string;
+  route: string;
+  runbook: string;
+  evidence: string;
+  auditCommand: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -204,6 +214,29 @@ export const PRODUCTION_RISK_CLOSURE_STEPS: ProductionRiskClosureStep[] = [
     evidence:
       "Duplicate-click result, overpay guard, voucher normalization, RPC-only path and BBNT/partner-invoice dossier proof.",
     auditCommand: "npm.cmd run audit:ttgdtx-payout-execution-readiness",
+  },
+];
+
+export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = [
+  {
+    code: "P0-03",
+    title: "Backup and restore dry-run evidence",
+    owner: "IT_DATA + Audit",
+    route: "/settings/supabase-check",
+    runbook: "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
+    evidence:
+      "Backup ID, isolated restore target, preflight/postflight output, restore smoke-check and P0-19/P3 gate-preservation proof.",
+    auditCommand: "npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack",
+  },
+  {
+    code: "Step90-Step110",
+    title: "Signed production migration order",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    route: "/settings/supabase-check",
+    runbook: "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+    evidence:
+      "Signed Step90-Step110 order, rollback point, Step97/Step100/Step109/Step110 decisions and owner acceptance after backup/restore proof.",
+    auditCommand: "npm.cmd run audit:ttgdtx-migration-order-guard",
   },
 ];
 

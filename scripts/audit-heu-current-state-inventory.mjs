@@ -105,7 +105,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue with safe iteration loop, P2-18\/P5-03 UAT launch plan, P6-06\/P2-17 risk closure plan, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue with safe iteration loop, P0-03\/Step90-Step110 infra readiness plan, P2-18\/P5-03 UAT launch plan, P6-06\/P2-17 risk closure plan, owner GO\/NO-GO checklist, owner acceptance matrix, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(

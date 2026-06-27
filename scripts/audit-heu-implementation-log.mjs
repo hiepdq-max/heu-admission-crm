@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX P0-03 Step90-Step110 Infra Readiness Plan[\s\S]*PRODUCTION_INFRA_READINESS_STEPS[\s\S]*P0-03 backup\/restore dry-run evidence[\s\S]*Step90-Step110 signed production migration order[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route, runbook, owner, evidence and local guard command before UAT launch\s+and risk-closure tracks[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is infra-readiness launch packaging only[\s\S]*does not execute backup,\s+restore, production migration, migration-order approval, evidence acceptance,\s+finance action, UAT acceptance or production GO/i,
+  "TTGDTX P0-03/Step90-Step110 infra readiness plan log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX P6-06 P2-17 Risk Closure Plan[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver[\s\S]*P2-17 payout duplicate\/dossier UAT[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route,\s+runbook, owner, evidence and local guard command[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is risk-closure launch packaging only[\s\S]*does not execute payout UAT,\s+convert cascade rules, approve waiver, collect evidence, approve finance\s+action, accept evidence or mark production GO/i,
   "TTGDTX P6-06/P2-17 risk closure plan log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
