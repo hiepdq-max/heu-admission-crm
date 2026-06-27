@@ -36,6 +36,7 @@
     "audit:ttgdtx-contract-tuition-master-guard": "node scripts/audit-ttgdtx-contract-tuition-master-guard.mjs",
     "audit:ttgdtx-dashboard-access": "node scripts/audit-ttgdtx-dashboard-access.mjs",
     "audit:ttgdtx-dashboard-readonly-guard": "node scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
+    "audit:ttgdtx-dashboard-source-reconciliation": "node scripts/audit-ttgdtx-dashboard-source-reconciliation.mjs",
     "audit:ttgdtx-data-fetch-gate": "node scripts/audit-ttgdtx-data-fetch-gate.mjs",
     "audit:ttgdtx-generic-source-evidence": "node scripts/audit-ttgdtx-generic-source-evidence.mjs",
     "audit:ttgdtx-invoice-policy": "node scripts/audit-ttgdtx-invoice-policy.mjs",

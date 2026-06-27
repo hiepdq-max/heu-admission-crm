@@ -47,7 +47,8 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
-| Full `audit:*` suite | PASS after the P0-15 final handoff coverage full sweep; 50 audit scripts passed |
+| `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
+| Full `audit:*` suite | PASS after the P2-18 dashboard source reconciliation full sweep; 51 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.

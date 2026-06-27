@@ -58,11 +58,15 @@ Before signed browser UAT, the repo must keep local guard evidence green:
 - `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx` shows the
   required redacted evidence set for P2-18-01 through P2-18-08 and references
   `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`.
+- `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`
+  shows the source reconciliation checklist for P2-03, P2-10,
+  P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata.
 - `app/ttgdtx/accounting-dashboard/page.tsx` mounts the guard and only queries
   dashboard views after `canOpen` is true.
 - `scripts/audit-ttgdtx-dashboard-access.mjs` confirms contract-only permission
   is not used as finance-dashboard access.
 - `npm.cmd run audit:ttgdtx-dashboard-readonly-guard` must pass.
+- `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` must pass.
 
 This local evidence does not replace signed browser UAT. It only proves the
 dashboard guard is packaged before the UAT team executes the matrix above.

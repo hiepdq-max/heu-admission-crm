@@ -88,6 +88,7 @@ const requiredFiles = [
   "components/master-control/production-readiness-blocker-summary.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
+  "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
@@ -133,6 +134,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-contract-tuition-master-guard.mjs",
   "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
+  "scripts/audit-ttgdtx-dashboard-source-reconciliation.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-invoice-policy.mjs",
   "scripts/audit-ttgdtx-migration-order-guard.mjs",
@@ -183,6 +185,7 @@ const requiredScripts = [
   "audit:ttgdtx-contract-tuition-master-guard",
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-dashboard-readonly-guard",
+  "audit:ttgdtx-dashboard-source-reconciliation",
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-invoice-policy",
@@ -447,6 +450,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-source-reconciliation-checklist="P2-18")(?=[\s\S]*P2-18 source reconciliation checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-18-SRC-01)(?=[\s\S]*P2-18-SRC-06)(?=[\s\S]*P2-03 receivable)(?=[\s\S]*P2-17 payout)(?=[\s\S]*P2-19 source\/evidence metadata)(?=[\s\S]*Signed\s+browser UAT must still prove at least one complete flow and one\s+exception flow)/i,
+  "P2-18 dashboard source reconciliation checklist",
+);
+
+requireText(
   "app/ttgdtx/accounting-dashboard/page.tsx",
   /TtgdtxDashboardReadonlyGuard[\s\S]*<TtgdtxDashboardReadonlyGuard \/>/,
   "P2-18 dashboard read-only guard mount",
@@ -454,13 +463,13 @@ requireText(
 
 requireText(
   "app/ttgdtx/accounting-dashboard/page.tsx",
-  /<TtgdtxDashboardReadonlyGuard\s*\/>[\s\S]*<TtgdtxDashboardUatEvidenceChecklist\s*\/>/,
+  /<TtgdtxDashboardReadonlyGuard\s*\/>[\s\S]*<TtgdtxDashboardSourceReconciliationChecklist\s*\/>[\s\S]*<TtgdtxDashboardUatEvidenceChecklist\s*\/>/,
   "P2-18 dashboard UAT evidence checklist mount",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
 );
 

@@ -2053,3 +2053,14 @@
   release-gate audit so future guard scripts cannot be silently skipped.
 - This is PASS_LOCAL only. It improves handoff discipline; it does not approve
   production readiness or replace external evidence and signatures.
+## 2026-06-27 - P2-18 Dashboard Source Reconciliation Checklist
+
+- Added `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`
+  and mounted it on `/ttgdtx/accounting-dashboard` between the read-only guard
+  and the P2-18 evidence checklist.
+- The checklist maps dashboard KPI checks to P2-03, P2-10, P2-13/P2-14,
+  P2-15/P2-16, P2-17 and P2-19 source/evidence controls with owner and stop
+  condition.
+- Added `audit:ttgdtx-dashboard-source-reconciliation` and release-gate
+  coverage. P2-18 remains IN_PROGRESS until signed browser UAT proves at least
+  one complete flow and one exception flow.

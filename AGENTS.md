@@ -133,6 +133,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-contract-tuition-master-guard`
   - `npm.cmd run audit:ttgdtx-dashboard-access`
   - `npm.cmd run audit:ttgdtx-dashboard-readonly-guard`
+  - `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation`
   - `npm.cmd run audit:ttgdtx-data-fetch-gate`
   - `npm.cmd run audit:ttgdtx-generic-source-evidence`
   - `npm.cmd run audit:ttgdtx-invoice-policy`
