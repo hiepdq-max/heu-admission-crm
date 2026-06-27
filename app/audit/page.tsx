@@ -6,6 +6,7 @@ import {
   AuditLogTable,
   type AuditLogRow,
 } from "@/components/audit/audit-log-table";
+import { ControlledEvidenceRedactionGuard } from "@/components/audit/controlled-evidence-redaction-guard";
 import { HardDeleteBoundaryGuard } from "@/components/audit/hard-delete-boundary-guard";
 import { TtgdtxAuditTrailGuard } from "@/components/audit/ttgdtx-audit-trail-guard";
 import { AppShell } from "@/components/layout/app-shell";
@@ -90,6 +91,7 @@ export default async function AuditPage() {
         </section>
       ) : (
         <div className="space-y-6">
+          <ControlledEvidenceRedactionGuard />
           <TtgdtxAuditTrailGuard />
           <HardDeleteBoundaryGuard />
           <AuditLogTable

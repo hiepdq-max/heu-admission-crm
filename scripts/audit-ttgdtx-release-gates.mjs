@@ -74,6 +74,7 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "components/audit/controlled-evidence-redaction-guard.tsx",
   "components/audit/hard-delete-boundary-guard.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
@@ -270,6 +271,18 @@ requireText(
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
   /(?=[\s\S]*Status:\s*PASS_LOCAL_PACK)(?=[\s\S]*This document does not approve\s+production, UAT pass, backup completion, migration, finance action or owner\s+Go\/No-Go)(?=[\s\S]*Production remains NO-GO until required evidence is collected)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API keys, private\s+keys, bank credentials, reset links, raw student PII, raw CCCD, raw phone\s+numbers, raw bank account numbers, bank statements, vouchers or raw payment\s+data)(?=[\s\S]*Do not store raw controlled evidence in Git)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*Receive evidence)(?=[\s\S]*Classify)(?=[\s\S]*Redact)(?=[\s\S]*Review)(?=[\s\S]*Reference)(?=[\s\S]*Sign)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)/i,
   "controlled evidence redaction pack",
+);
+
+requireText(
+  "components/audit/controlled-evidence-redaction-guard.tsx",
+  /(?=[\s\S]*data-heu-controlled-evidence-redaction-guard="P0-10")(?=[\s\S]*P0-10 controlled evidence redaction\/intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Raw evidence stays outside\s+Git\/Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API\s+keys, private keys, bank credentials, reset links, raw student\s+PII, raw CCCD, raw phone numbers, raw bank account numbers, bank\s+statements, vouchers or raw payment data)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)(?=[\s\S]*does not\s+prove evidence was collected, accepted, signed, or production-approved)/i,
+  "controlled evidence redaction UI guard",
+);
+
+requireText(
+  "app/audit/page.tsx",
+  /ControlledEvidenceRedactionGuard[\s\S]*<ControlledEvidenceRedactionGuard \/>[\s\S]*TtgdtxAuditTrailGuard[\s\S]*HardDeleteBoundaryGuard/i,
+  "audit page mounts controlled evidence redaction guard",
 );
 
 requireText(

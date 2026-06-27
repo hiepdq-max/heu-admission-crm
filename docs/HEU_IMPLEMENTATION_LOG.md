@@ -1596,3 +1596,32 @@
 - Controlled evidence redaction pack is PASS_LOCAL after local audits pass.
 - Production remains NO-GO until controlled evidence is actually collected,
   reviewed, signed and approved by the required human owners.
+
+## 2026-06-27 - Controlled Evidence UI Guard
+
+### Scope
+
+- Continued P0-10 with a small UI slice on `/audit`.
+- Added `components/audit/controlled-evidence-redaction-guard.tsx` so Audit
+  and IT/Data users see the no-secret/no-raw-evidence boundary before reviewing
+  audit logs or hard-delete findings.
+- Mounted the guard above the existing TTGDTX audit-trail and hard-delete
+  guards.
+- Extended the redaction-pack audit and release-gate audit so the UI guard,
+  checklist and backlog stay aligned.
+
+### Files Updated/Added
+
+- `components/audit/controlled-evidence-redaction-guard.tsx`
+- `app/audit/page.tsx`
+- `scripts/audit-heu-controlled-evidence-redaction-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Controlled evidence UI guard is PASS_LOCAL after local audits pass.
+- It is read-only and does not approve evidence, UAT, finance action or
+  production GO.

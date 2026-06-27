@@ -6,6 +6,8 @@ const packPath = "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md";
 const ownerPackPath = "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
+const componentPath = "components/audit/controlled-evidence-redaction-guard.tsx";
+const auditPagePath = "app/audit/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -37,6 +39,8 @@ for (const file of [
   ownerPackPath,
   checklistPath,
   backlogPath,
+  componentPath,
+  auditPagePath,
   "AGENTS.md",
   "package.json",
   "scripts/audit-ttgdtx-release-gates.mjs",
@@ -48,6 +52,8 @@ const pack = exists(packPath) ? read(packPath) : "";
 const ownerPack = exists(ownerPackPath) ? read(ownerPackPath) : "";
 const checklist = exists(checklistPath) ? read(checklistPath) : "";
 const backlog = exists(backlogPath) ? read(backlogPath) : "";
+const component = exists(componentPath) ? read(componentPath) : "";
+const auditPage = exists(auditPagePath) ? read(auditPagePath) : "";
 const agents = exists("AGENTS.md") ? read("AGENTS.md") : "";
 const releaseGateAudit = exists("scripts/audit-ttgdtx-release-gates.mjs")
   ? read("scripts/audit-ttgdtx-release-gates.mjs")
@@ -71,6 +77,20 @@ requireText(pack, /Evidence Types Requiring This Pack[\s\S]*Supabase backup and 
 requireText(pack, /Stop Conditions[\s\S]*password, OTP, reset link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
 requireText(pack, /Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*audit:ttgdtx-release-gates[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build/i, "local preflight commands");
 requireText(pack, /Passing these checks proves only that local documentation and gates are aligned/i, "PASS_LOCAL local-only statement");
+
+requireText(
+  component,
+  /(?=[\s\S]*data-heu-controlled-evidence-redaction-guard="P0-10")(?=[\s\S]*P0-10 controlled evidence redaction\/intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Production remains NO-GO until evidence is collected in the\s+controlled location, redacted where needed, reviewed by Audit and\s+signed by the required human owners)(?=[\s\S]*Raw evidence stays outside\s+Git\/Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API\s+keys, private keys, bank credentials, reset links, raw student\s+PII, raw CCCD, raw phone numbers, raw bank account numbers, bank\s+statements, vouchers or raw payment data)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*does not\s+prove evidence was collected, accepted, signed, or production-approved)/i,
+  "controlled evidence redaction UI guard",
+  componentPath,
+);
+
+requireText(
+  auditPage,
+  /ControlledEvidenceRedactionGuard[\s\S]*<ControlledEvidenceRedactionGuard \/>[\s\S]*TtgdtxAuditTrailGuard[\s\S]*HardDeleteBoundaryGuard/i,
+  "audit page mounts controlled evidence guard before audit/hard-delete guards",
+  auditPagePath,
+);
 
 requireText(
   ownerPack,
