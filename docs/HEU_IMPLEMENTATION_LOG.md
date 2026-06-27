@@ -1918,3 +1918,14 @@
   read-only, link-only and local-only.
 - No GO button, finance action, migration approval, UAT acceptance, owner
   waiver or production approval was added.
+## 2026-06-27 - P7-02 AI Task Checklist Generator
+
+- Added a read-only AI task checklist generator on `/ai-assistant` for TTGDTX
+  UAT evidence, owner GO/NO-GO review and small build slices.
+- The helper uses local templates only; it does not call AI services, save
+  prompts, write data, call Supabase, approve finance, accept UAT, run
+  migration or mark production GO.
+- Extended `docs/HEU_AI_ASSISTANT_POLICY_20260627.md` and the AI/release-gate
+  audits to keep P7-02 advisory-only and no-secret.
+- P7-02 is PASS_LOCAL only. Production AI remains locked until prompt/output
+  audit logging, role-scoped AI data access and signed UAT are complete.

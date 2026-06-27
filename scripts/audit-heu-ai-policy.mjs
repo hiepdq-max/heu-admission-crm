@@ -56,6 +56,11 @@ const policy = requireText(
   /AI output alone is not approval evidence/i,
   "AI output is not approval evidence rule",
 );
+const checklistGenerator = requireText(
+  "components/ai/ai-task-checklist-generator.tsx",
+  /data-heu-ai-task-checklist-generator="P7-02"/i,
+  "P7-02 checklist generator marker",
+);
 
 requireText(
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
@@ -68,6 +73,11 @@ requireText(
   /Production AI remains locked/i,
   "production AI locked statement",
 );
+requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-02 Read-Only Task Checklist Generator[\s\S]*local, read-only and template-based[\s\S]*TTGDTX UAT evidence[\s\S]*owner GO\/NO-GO review[\s\S]*small build slices[\s\S]*must not:[\s\S]*Send prompts to an AI service[\s\S]*Save user-entered prompts[\s\S]*Call Supabase, RPC, mutation APIs or production workflows[\s\S]*Approve finance, accept UAT, waive evidence, run migration or mark production\s+GO[\s\S]*P7-02 remains PASS_LOCAL only/i,
+  "P7-02 read-only checklist generator policy",
+);
 
 const aiPage = requireText(
   "app/ai-assistant/page.tsx",
@@ -79,6 +89,17 @@ requireText(
   "app/ai-assistant/page.tsx",
   /chỉ hỗ trợ[\s\S]*nháp|nháp[\s\S]*gợi ý/i,
   "draft/suggestion-only AI description",
+);
+
+requireText(
+  "app/ai-assistant/page.tsx",
+  /AiTaskChecklistGenerator[\s\S]*<AiTaskChecklistGenerator\s*\/>[\s\S]*ModulePage/i,
+  "AI page mounts P7-02 task checklist generator before module page",
+);
+requireText(
+  "components/ai/ai-task-checklist-generator.tsx",
+  /(?=[\s\S]*data-heu-ai-task-checklist-generator="P7-02")(?=[\s\S]*P7-02 AI task checklist generator)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*choose a small slice, run checks, commit only after pass, then\s+continue)(?=[\s\S]*does not call AI, save prompts, write data, approve\s+finance, accept UAT, run migration or mark production GO)(?=[\s\S]*TTGDTX UAT evidence run)(?=[\s\S]*Owner GO\/NO-GO review)(?=[\s\S]*Small build slice)(?=[\s\S]*No production migration, no raw credentials, no hidden approval)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, bank\s+credentials, raw student PII, raw CCCD, raw phone numbers, raw bank\s+account numbers, bank statements, vouchers or raw payment data)(?=[\s\S]*PASS_LOCAL does not enable\s+autonomous AI, prompt\/output logging, production AI, production\s+migration, finance action, UAT acceptance, owner waiver or production\s+GO)/i,
+  "P7-02 checklist generator UI boundary",
 );
 
 const aiRouteFiles = listFiles("app/ai-assistant");
@@ -103,6 +124,12 @@ for (const filePath of aiRouteFiles) {
   }
 }
 
+for (const { label, pattern } of forbiddenAiRoutePatterns) {
+  if (pattern.test(checklistGenerator)) {
+    fail(`components/ai/ai-task-checklist-generator.tsx: checklist generator must stay read-only, found ${label}`);
+  }
+}
+
 if (!policy.includes("Prompt/output audit logging")) {
   fail("AI policy must require prompt/output audit logging before automation.");
 }
@@ -112,13 +139,16 @@ if (!aiPage.includes("Cảnh báo rủi ro nhưng không thay người duyệt")
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*audit:heu-ai-policy/i.test(checklist)) {
+if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*ai-task-checklist-generator\.tsx[\s\S]*audit:heu-ai-policy/i.test(checklist)) {
   fail("Production checklist must mark No AI approval PASS_LOCAL with audit:heu-ai-policy evidence.");
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 if (!/P7-01[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md/i.test(backlog)) {
   fail("Backlog P7-01 must be PASS_LOCAL and reference the AI policy.");
+}
+if (!/P7-02[\s\S]*AI task checklist generator[\s\S]*PASS_LOCAL[\s\S]*ai-task-checklist-generator\.tsx[\s\S]*audit:heu-ai-policy[\s\S]*read-only checklist templates/i.test(backlog)) {
+  fail("Backlog P7-02 must be PASS_LOCAL and reference the AI task checklist generator.");
 }
 
 if (failures.length > 0) {

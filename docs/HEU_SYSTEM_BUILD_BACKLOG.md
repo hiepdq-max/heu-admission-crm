@@ -94,5 +94,5 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P7-01 | AI assistant policy | BGH + IT/Data | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; AI drafts/checks/warns only |
-| P7-02 | AI task checklist generator | IT/Data | LATER | Workflow/logs first |
+| P7-02 | AI task checklist generator | IT/Data | PASS_LOCAL | `components/ai/ai-task-checklist-generator.tsx`; `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; read-only checklist templates only, no AI call, no prompt save, no production action |
 | P7-03 | AI risk suggestion board | Audit + IT/Data | LATER | No autonomous approval |

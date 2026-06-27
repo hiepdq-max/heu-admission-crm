@@ -46,7 +46,27 @@ HEU has:
 4. Role/scope enforcement for all AI-readable data.
 5. Signed UAT showing AI cannot approve, pay, release, delete or go-live.
 
-## 5. Evidence Rule
+## 5. P7-02 Read-Only Task Checklist Generator
+
+`components/ai/ai-task-checklist-generator.tsx` is allowed as a PASS_LOCAL
+helper because it is local, read-only and template-based. It may show checklist
+templates for TTGDTX UAT evidence, owner GO/NO-GO review and small build slices.
+
+It must not:
+
+- Send prompts to an AI service.
+- Save user-entered prompts, files or evidence.
+- Call Supabase, RPC, mutation APIs or production workflows.
+- Approve finance, accept UAT, waive evidence, run migration or mark production
+  GO.
+- Ask users to paste secrets, passwords, OTPs, service-role keys, bank
+  credentials, raw student PII, raw CCCD, raw phone numbers, raw bank account
+  numbers, bank statements, vouchers or raw payment data.
+
+P7-02 remains PASS_LOCAL only until prompt/output audit logging, role-scoped AI
+data access and signed UAT are complete.
+
+## 6. Evidence Rule
 
 Every AI-assisted high-risk workflow must store:
 
@@ -59,8 +79,9 @@ Every AI-assisted high-risk workflow must store:
 
 AI output alone is not approval evidence.
 
-## 6. Current Result
+## 7. Current Result
 
-P7-01 is PASS_LOCAL as a policy and static UI guard. This does not enable AI
-automation. Production AI remains locked until the implementation rule and UAT
-evidence are complete.
+P7-01 is PASS_LOCAL as a policy and static UI guard. P7-02 is PASS_LOCAL as a
+read-only task checklist helper. This does not enable AI automation.
+Production AI remains locked until the implementation rule, prompt/output audit
+logging, role-scoped AI data access and UAT evidence are complete.
