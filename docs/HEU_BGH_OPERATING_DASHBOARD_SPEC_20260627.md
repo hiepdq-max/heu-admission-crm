@@ -111,6 +111,7 @@ Current local evidence:
 - `app/reports/page.tsx`
 - `app/master-control/page.tsx`
 - `components/master-control/production-readiness-blocker-summary.tsx`
+- `lib/production-readiness.ts`
 - `app/ttgdtx/accounting-dashboard/page.tsx`
 - `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
 - `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`

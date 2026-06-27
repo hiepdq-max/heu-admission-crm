@@ -104,6 +104,7 @@ const requiredFiles = [
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
   "lib/lead-lifecycle.ts",
+  "lib/production-readiness.ts",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -118,6 +119,7 @@ const requiredFiles = [
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-lead-lifecycle-standard.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
+  "scripts/audit-heu-production-blocker-source.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-heu-vietnamese-text-encoding.mjs",
@@ -159,6 +161,7 @@ const requiredScripts = [
   "audit:heu-lead-handover-policy",
   "audit:heu-lead-lifecycle-standard",
   "audit:heu-non-ttgdtx-cascade-review",
+  "audit:heu-production-blocker-source",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-sql-object-master-map",
   "audit:heu-vietnamese-text-encoding",
@@ -476,8 +479,14 @@ requireText(
 
 requireText(
   "components/master-control/production-readiness-blocker-summary.tsx",
-  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
-  "P5-02 production blocker summary UI",
+  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
+  "P5-02 production blocker summary UI shell",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /P0-03[\s\S]*Step90-Step110[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-04[\s\S]*P6-03[\s\S]*P6-06[\s\S]*P0-10[\s\S]*P0-09/i,
+  "P5-02 production blocker shared source coverage",
 );
 
 requireText(
@@ -584,8 +593,14 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-03\/P6-06)(?=[\s\S]*Owner GO\/NO-GO)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
-  "TTGDTX production execution queue",
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  "TTGDTX production execution queue UI shell",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*Owner GO\/NO-GO/i,
+  "TTGDTX production execution shared source order",
 );
 
 requireText(

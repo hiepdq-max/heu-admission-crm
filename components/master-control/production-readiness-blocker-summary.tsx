@@ -6,95 +6,7 @@ import {
   ShieldAlert,
 } from "lucide-react";
 
-type ProductionBlocker = {
-  code: string;
-  title: string;
-  owner: string;
-  requiredEvidence: string;
-  href?: string;
-};
-
-const productionBlockers: ProductionBlocker[] = [
-  {
-    code: "P0-03",
-    title: "Backup and restore dry-run",
-    owner: "IT_DATA + Audit",
-    requiredEvidence:
-      "Backup ID, restore target, preflight/postflight result and smoke-check evidence.",
-    href: "/settings/supabase-check",
-  },
-  {
-    code: "Step90-Step110",
-    title: "Migration order approval",
-    owner: "IT_DATA + KHTC + PHAP_CHE",
-    requiredEvidence:
-      "Signed migration order after P0-03 evidence is accepted by the required owners.",
-  },
-  {
-    code: "P0-19",
-    title: "Legal and finance gate UAT",
-    owner: "PHAP_CHE + KHTC + BGH",
-    requiredEvidence:
-      "Legal basis, tuition policy, finance gate and signed legal/finance UAT.",
-    href: "/ttgdtx/gate",
-  },
-  {
-    code: "P2-17",
-    title: "Partner payout cannot run twice",
-    owner: "KHTC + BGH + Audit",
-    requiredEvidence:
-      "Duplicate-click, overpay, voucher, RPC-only and dossier evidence signed by owners.",
-    href: "/ttgdtx/payment-requests/pay",
-  },
-  {
-    code: "P2-18",
-    title: "Accounting dashboard is read-only and reconciled",
-    owner: "KHTC + BGH + IT_DATA",
-    requiredEvidence:
-      "Source comparison, role-scope denial and no-write evidence for dashboard UAT.",
-    href: "/ttgdtx/accounting-dashboard",
-  },
-  {
-    code: "P6-04",
-    title: "Role and workspace scope UAT",
-    owner: "IT_DATA + TRUONG_PHONG + Audit",
-    requiredEvidence:
-      "ADMIN, BGH, KHTC, PHAP_CHE, AUDIT and out-of-scope browser UAT evidence.",
-    href: "/settings/scopes",
-  },
-  {
-    code: "P6-03",
-    title: "Audit log traceability",
-    owner: "Audit + IT_DATA + KHTC",
-    requiredEvidence:
-      "Trace rows for create, update, check, approve, pay and source-control events.",
-    href: "/audit",
-  },
-  {
-    code: "P6-06",
-    title: "Hard-delete and cascade risk",
-    owner: "IT_DATA + Audit + business owners",
-    requiredEvidence:
-      "Conversion evidence or written waiver for unresolved non-TTGDTX/base cascade paths.",
-    href: "/audit",
-  },
-  {
-    code: "P0-10",
-    title: "Controlled evidence redaction",
-    owner: "IT_DATA + Audit",
-    requiredEvidence:
-      "Controlled evidence location and redacted references; raw evidence stays outside Git/Codex/chat.",
-    href: "/audit",
-  },
-  {
-    code: "P0-09",
-    title: "Final owner GO/NO-GO decision",
-    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
-    requiredEvidence:
-      "Final signed multi-owner GO/NO-GO note with every stop condition closed.",
-    href: "/ttgdtx",
-  },
-];
+import { PRODUCTION_BLOCKERS } from "@/lib/production-readiness";
 
 export function ProductionReadinessBlockerSummary() {
   return (
@@ -126,14 +38,14 @@ export function ProductionReadinessBlockerSummary() {
           <div className="rounded-md border border-rose-200 bg-white px-3 py-2 text-rose-950">
             Tracked blockers:
             <span className="mt-1 block font-semibold">
-              {productionBlockers.length}
+              {PRODUCTION_BLOCKERS.length}
             </span>
           </div>
         </div>
       </div>
 
       <div className="mt-5 grid gap-3 xl:grid-cols-2">
-        {productionBlockers.map((blocker) => (
+        {PRODUCTION_BLOCKERS.map((blocker) => (
           <article
             key={blocker.code}
             className="border-l-2 border-rose-300 bg-white px-3 py-3"

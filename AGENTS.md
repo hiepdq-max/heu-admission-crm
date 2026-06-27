@@ -114,6 +114,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-lead-lifecycle-standard`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
+  - `npm.cmd run audit:heu-production-blocker-source`
   - `npm.cmd run audit:heu-role-scope-uat-pack`
   - `npm.cmd run audit:heu-sql-object-master-map`
   - `npm.cmd run audit:heu-vietnamese-text-encoding`

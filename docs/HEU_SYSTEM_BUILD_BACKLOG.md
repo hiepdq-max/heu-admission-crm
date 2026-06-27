@@ -17,6 +17,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-10 | Controlled evidence redaction/intake | IT/Data + Audit | PASS_LOCAL | `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; `components/audit/controlled-evidence-redaction-guard.tsx`; `npm.cmd run audit:heu-controlled-evidence-redaction-pack`; raw evidence stays outside Git and only redacted/non-secret references enter docs/Codex/chat |
 | P0-11 | Role permission soft revoke | IT/Data + ADMIN | PASS_LOCAL | Step109 is migration candidate only; settings uses INACTIVE/upsert instead of hard delete |
 | P0-12 | Vietnamese UI text encoding | IT/Data + Process owners | PASS_LOCAL | `npm.cmd run audit:heu-vietnamese-text-encoding`; UI/docs text must stay readable and free of mojibake before handoff |
+| P0-13 | Production blocker shared source | IT/Data + BGH + Audit | PASS_LOCAL | `lib/production-readiness.ts`; `npm.cmd run audit:heu-production-blocker-source`; blocker summary and production execution queue render from one source |
 
 ## P1 - Data Foundation
 

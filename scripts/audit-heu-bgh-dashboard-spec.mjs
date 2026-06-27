@@ -3,6 +3,7 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const specPath = "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md";
+const blockerSourcePath = "lib/production-readiness.ts";
 const blockerSummaryPath =
   "components/master-control/production-readiness-blocker-summary.tsx";
 const masterControlPagePath = "app/master-control/page.tsx";
@@ -34,6 +35,7 @@ function requireText(contents, pattern, label, file = specPath) {
 
 const requiredFiles = [
   specPath,
+  blockerSourcePath,
   "app/page.tsx",
   "app/reports/page.tsx",
   masterControlPagePath,
@@ -50,6 +52,7 @@ for (const file of requiredFiles) {
 }
 
 const spec = exists(specPath) ? read(specPath) : "";
+const blockerSource = exists(blockerSourcePath) ? read(blockerSourcePath) : "";
 const blockerSummary = exists(blockerSummaryPath) ? read(blockerSummaryPath) : "";
 const masterControlPage = exists(masterControlPagePath)
   ? read(masterControlPagePath)
@@ -71,9 +74,16 @@ requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH
 
 requireText(
   blockerSummary,
-  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
-  "P5-02 production blocker summary UI",
+  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
+  "P5-02 production blocker summary UI shell",
   blockerSummaryPath,
+);
+
+requireText(
+  blockerSource,
+  /P0-03[\s\S]*Step90-Step110[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-04[\s\S]*P6-03[\s\S]*P6-06[\s\S]*P0-10[\s\S]*P0-09/i,
+  "P5-02 production blocker shared source coverage",
+  blockerSourcePath,
 );
 
 requireText(

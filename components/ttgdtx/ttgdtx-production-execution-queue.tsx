@@ -1,86 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
-type ExecutionStep = {
-  code: string;
-  title: string;
-  owner: string;
-  proof: string;
-  href?: string;
-};
-
-const executionSteps: ExecutionStep[] = [
-  {
-    code: "P0-10",
-    title: "Apply controlled evidence redaction",
-    owner: "IT_DATA + Audit",
-    proof:
-      "Use the redaction pack before any UAT screenshot, backup proof, voucher or signed evidence is referenced.",
-    href: "/audit",
-  },
-  {
-    code: "P0-03",
-    title: "Execute backup and restore dry-run",
-    owner: "IT_DATA + Audit",
-    proof:
-      "Attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
-    href: "/settings/supabase-check",
-  },
-  {
-    code: "Step90-Step110",
-    title: "Sign migration order",
-    owner: "IT_DATA + KHTC + PHAP_CHE",
-    proof:
-      "Approve migration order and Step97, Step100, Step109, Step110 decisions after backup/restore evidence.",
-  },
-  {
-    code: "P6-04",
-    title: "Run role and workspace UAT",
-    owner: "IT_DATA + TRUONG_PHONG + Audit",
-    proof:
-      "Test ADMIN, BGH, KHTC, TUYEN_SINH, PHAP_CHE, AUDIT and out-of-scope accounts with synthetic users.",
-    href: "/settings/scopes",
-  },
-  {
-    code: "P0-19",
-    title: "Sign legal and finance gate UAT",
-    owner: "PHAP_CHE + KHTC + BGH",
-    proof:
-      "Prove legal basis, tuition policy and ALLOW_FINANCE gate before any receivable or payment trust.",
-    href: "/ttgdtx/gate",
-  },
-  {
-    code: "P2-17",
-    title: "Prove payout cannot run twice",
-    owner: "KHTC + BGH + Audit",
-    proof:
-      "Run duplicate-click, overpay, voucher normalization, RPC-only and required dossier UAT.",
-    href: "/ttgdtx/payment-requests/pay",
-  },
-  {
-    code: "P2-18",
-    title: "Prove dashboard is read-only and reconciled",
-    owner: "KHTC + BGH + IT_DATA",
-    proof:
-      "Compare dashboard totals to source workflows and prove role-scoped, read-only behavior.",
-    href: "/ttgdtx/accounting-dashboard",
-  },
-  {
-    code: "P6-03/P6-06",
-    title: "Close audit-log and hard-delete risks",
-    owner: "IT_DATA + Audit",
-    proof:
-      "Attach traceability rows for finance actions and conversion or written waiver for remaining cascade risks.",
-    href: "/audit",
-  },
-  {
-    code: "Owner GO/NO-GO",
-    title: "Record final owner decision",
-    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT",
-    proof:
-      "Use the owner sign-off pack. Production remains NO-GO until every required owner signs GO.",
-  },
-];
+import { PRODUCTION_EXECUTION_STEPS } from "@/lib/production-readiness";
 
 export function TtgdtxProductionExecutionQueue() {
   return (
@@ -109,7 +30,7 @@ export function TtgdtxProductionExecutionQueue() {
       </div>
 
       <div className="mt-5 grid gap-3 xl:grid-cols-3">
-        {executionSteps.map((step, index) => (
+        {PRODUCTION_EXECUTION_STEPS.map((step, index) => (
           <article
             key={step.code}
             className="border-l-2 border-indigo-300 bg-white px-3 py-3"

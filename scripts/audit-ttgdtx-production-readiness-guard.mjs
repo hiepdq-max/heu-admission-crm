@@ -21,6 +21,7 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/ttgdtx/ttgdtx-production-readiness-guard.tsx";
+const blockerSourcePath = "lib/production-readiness.ts";
 const uatGuardPath = "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx";
 const executionQueuePath = "components/ttgdtx/ttgdtx-production-execution-queue.tsx";
 const pagePath = "app/ttgdtx/page.tsx";
@@ -29,6 +30,7 @@ const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 
 for (const file of [
   componentPath,
+  blockerSourcePath,
   uatGuardPath,
   executionQueuePath,
   pagePath,
@@ -43,6 +45,7 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const blockerSource = read(blockerSourcePath);
 const uatGuard = read(uatGuardPath);
 const executionQueue = read(executionQueuePath);
 const page = read(pagePath);
@@ -105,9 +108,16 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Do not skip ahead)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-03\/P6-06)(?=[\s\S]*Owner GO\/NO-GO)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
-  "TTGDTX production execution queue",
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Do not skip ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  "TTGDTX production execution queue UI shell",
   executionQueuePath,
+);
+
+requireText(
+  blockerSource,
+  /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03\/P6-06[\s\S]*Owner GO\/NO-GO/i,
+  "TTGDTX production execution shared source order",
+  blockerSourcePath,
 );
 
 requireText(

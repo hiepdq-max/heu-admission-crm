@@ -2023,3 +2023,13 @@
   the backlog, the current-state inventory and the release-gate audit.
 - This protects user-facing Vietnamese labels and process text. It does not
   change production data, run migration or approve production readiness.
+## 2026-06-27 - P0-13 Production Blocker Shared Source
+
+- Added `lib/production-readiness.ts` as the shared blocker and execution-order
+  source for Master Control and TTGDTX production execution UI.
+- Updated the blocker summary and execution queue to render from that source
+  instead of separate local arrays.
+- Added `audit:heu-production-blocker-source` and release-gate coverage so the
+  source cannot drift from handoff, backlog, checklist or current-state docs.
+- This is PASS_LOCAL only. It makes blockers easier to govern, but production
+  remains NO-GO until external evidence and owner sign-off are complete.
