@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX Production Guard Vietnamese Copy Polish[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*PASS_LOCAL, no-production-migration, no-real-data and safe\s+iteration guidance uses clear Vietnamese with accents[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*audit:ttgdtx-release-gates[\s\S]*accented Vietnamese guidance and\s+PASS_LOCAL\/NO-GO boundary cannot silently regress[\s\S]*This is UI copy and audit alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action, approve owner waiver\s+or mark production GO/i,
+  "TTGDTX production guard Vietnamese copy polish log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-13 TTGDTX Guard Shared Blocker Coverage[\s\S]*audit:heu-production-blocker-source[\s\S]*TTGDTX landing guard,\s+Master Control blocker summary and TTGDTX production execution queue must all\s+render from `lib\/production-readiness\.ts`[\s\S]*P0-13 backlog row, production checklist and current-state\s+inventory[\s\S]*shared blocker source explicitly covers the TTGDTX landing\s+guard[\s\S]*current-state and release-gate audits[\s\S]*cannot silently drift\s+back to only Master Control plus execution queue coverage[\s\S]*This is shared-source coverage alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action, approve owner waiver\s+or mark production GO/i,
   "P0-13 TTGDTX guard shared blocker coverage log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

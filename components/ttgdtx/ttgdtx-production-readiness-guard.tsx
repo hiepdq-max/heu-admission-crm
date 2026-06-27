@@ -28,11 +28,11 @@ export function TtgdtxProductionReadinessGuard() {
               </span>
             </div>
             <p className="mt-2 leading-6 text-zinc-600">
-              PASS_LOCAL chi co nghia la app, tai lieu va audit guard da san
-              sang cho UAT noi bo. Guard nay render tu cung nguon production
-              blocker voi Master Control va execution queue; PASS_LOCAL khong
-              phe duyet production migration, thu/chi tien, backup, signed UAT
-              hoac ky duyet cua chu so huu.
+              PASS_LOCAL chỉ có nghĩa là app, tài liệu và audit guard đã sẵn
+              sàng cho UAT nội bộ. Guard này render từ cùng nguồn production
+              blocker với Master Control và execution queue; PASS_LOCAL không
+              phê duyệt production migration, thu/chi tiền, backup, signed UAT
+              hoặc ký duyệt của chủ sở hữu.
             </p>
           </div>
         </div>
@@ -40,9 +40,9 @@ export function TtgdtxProductionReadinessGuard() {
         <div className="flex min-w-64 items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
           <LockKeyhole className="mt-0.5 size-4 shrink-0" />
           <p>
-            Khong chay migration production tu Codex/chat. Khong dung du lieu
-            that, mat khau, OTP, service key, CCCD, tai khoan ngan hang hoac
-            file thanh toan that trong UAT.
+            Không chạy migration production từ Codex/chat. Không dùng dữ liệu
+            thật, mật khẩu, OTP, service key, CCCD, tài khoản ngân hàng hoặc
+            file thanh toán thật trong UAT.
           </p>
         </div>
       </div>
@@ -93,9 +93,9 @@ export function TtgdtxProductionReadinessGuard() {
       <div className="mt-5 flex items-start gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-800">
         <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
         <p>
-          Cach di tiep an toan: chay audit, dung synthetic UAT account, ghi
-          evidence, co owner ky. Dat den dau commit den do; chua dat thi giu
-          NO-GO va sua tung loi nho.
+          Cách đi tiếp an toàn: chạy audit, dùng synthetic UAT account, ghi
+          evidence, có owner ký. Đạt đến đâu commit đến đó; chưa đạt thì giữ
+          NO-GO và sửa từng lỗi nhỏ.
         </p>
       </div>
     </section>

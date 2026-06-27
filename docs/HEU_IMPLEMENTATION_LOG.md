@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX Production Guard Vietnamese Copy Polish
+
+- Updated `components/ttgdtx/ttgdtx-production-readiness-guard.tsx` so the
+  operator-facing PASS_LOCAL, no-production-migration, no-real-data and safe
+  iteration guidance uses clear Vietnamese with accents.
+- Extended `audit:ttgdtx-production-readiness-guard` and
+  `audit:ttgdtx-release-gates` so the accented Vietnamese guidance and
+  PASS_LOCAL/NO-GO boundary cannot silently regress.
+- This is UI copy and audit alignment only. It does not collect evidence,
+  execute UAT, approve migration, approve finance action, approve owner waiver
+  or mark production GO.
+
 ## 2026-06-28 - P0-13 TTGDTX Guard Shared Blocker Coverage
 
 - Extended `audit:heu-production-blocker-source` so the TTGDTX landing guard,

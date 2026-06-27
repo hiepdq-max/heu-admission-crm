@@ -64,8 +64,15 @@ requireText(
 );
 requireText(
   component,
-  /Production remains NO-GO[\s\S]*PASS_LOCAL[\s\S]*render tu cung nguon production\s+blocker[\s\S]*khong\s+phe duyet production migration/i,
+  /Production remains NO-GO[\s\S]*PASS_LOCAL[\s\S]*render từ cùng nguồn production\s+blocker[\s\S]*không\s+phê duyệt production migration/i,
   "NO-GO and PASS_LOCAL boundary",
+  componentPath,
+);
+
+requireText(
+  component,
+  /Không chạy migration production từ Codex\/chat[\s\S]*Không dùng dữ liệu\s+thật, mật khẩu, OTP, service key, CCCD, tài khoản ngân hàng hoặc\s+file thanh toán thật trong UAT[\s\S]*Cách đi tiếp an toàn: chạy audit[\s\S]*Đạt đến đâu commit đến đó; chưa đạt thì giữ\s+NO-GO và sửa từng lỗi nhỏ/i,
+  "accented Vietnamese production-readiness guidance",
   componentPath,
 );
 
