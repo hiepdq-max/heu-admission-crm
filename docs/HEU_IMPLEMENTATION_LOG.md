@@ -2435,3 +2435,13 @@
   planning rows, keeping the plan aligned with the shared app source.
 - This remains PASS_LOCAL planning alignment only; production still requires
   real controlled evidence and signed owner decisions.
+
+## 2026-06-27 - Current-State Inventory After P0-13 Evidence Path Alignment
+
+- Refreshed `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Stage D / NO-GO
+  snapshot now records the P0-13 shared blocker source and its P0-03/P0-09
+  evidence-path coverage.
+- Updated `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`
+  so inventory cannot drift behind the blocker-source planning rows.
+- This is current-state alignment only. It does not execute backup/restore,
+  accept UAT, approve migration or mark production GO.
