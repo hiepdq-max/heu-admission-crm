@@ -2292,3 +2292,15 @@
   checklist, `audit:ttgdtx-process-labels` and `audit:ttgdtx-release-gates`.
 - This remains PASS_LOCAL only; it improves navigation and search, but does
   not approve UAT, finance action, production data or production GO.
+
+## 2026-06-27 - P5-02 Master Control Action Queue
+
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with a read-only `data-heu-production-action-queue="P5-02"` queue.
+- The queue reuses `PRODUCTION_EXECUTION_STEPS` so Master Control shows the
+  same controlled order as the TTGDTX production execution queue.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`, the production
+  checklist, backlog, `audit:heu-bgh-dashboard-spec` and
+  `audit:ttgdtx-release-gates`.
+- P5-02 remains PASS_LOCAL only; it does not create a production BGH dashboard,
+  approve UAT, approve finance actions or mark production GO.

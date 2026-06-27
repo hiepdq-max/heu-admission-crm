@@ -2,11 +2,15 @@ import Link from "next/link";
 import {
   AlertTriangle,
   ClipboardCheck,
+  ClipboardList,
   FileWarning,
   ShieldAlert,
 } from "lucide-react";
 
-import { PRODUCTION_BLOCKERS } from "@/lib/production-readiness";
+import {
+  PRODUCTION_BLOCKERS,
+  PRODUCTION_EXECUTION_STEPS,
+} from "@/lib/production-readiness";
 
 export function ProductionReadinessBlockerSummary() {
   return (
@@ -78,6 +82,55 @@ export function ProductionReadinessBlockerSummary() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-production-action-queue="P5-02"
+      >
+        <div className="flex items-start gap-3">
+          <ClipboardList className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Next controlled actions
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              Work through this queue before any owner GO/NO-GO discussion.
+              Each item still needs controlled evidence and human sign-off.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {PRODUCTION_EXECUTION_STEPS.map((step, index) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {String(index + 1).padStart(2, "0")} - {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.proof}</p>
+              {step.href ? (
+                <Link
+                  href={step.href}
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-rose-700 hover:text-rose-950"
+                >
+                  Open action source
+                  <ClipboardCheck className="size-3" />
+                </Link>
+              ) : (
+                <p className="mt-3 text-xs font-medium uppercase text-rose-700">
+                  Signed evidence required
+                </p>
+              )}
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

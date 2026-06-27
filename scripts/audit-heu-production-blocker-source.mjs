@@ -124,8 +124,8 @@ for (const code of orderedExecutionCodes) {
 
 requireText(
   blockerSummary,
-  /import \{ PRODUCTION_BLOCKERS \} from "@\/lib\/production-readiness"/,
-  "blocker summary imports shared blocker source",
+  /import \{[\s\S]*PRODUCTION_BLOCKERS[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
+  "blocker summary imports shared blocker and execution sources",
   blockerSummaryPath,
 );
 
