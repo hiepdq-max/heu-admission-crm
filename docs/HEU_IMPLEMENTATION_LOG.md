@@ -1261,3 +1261,33 @@
 - Step90-Step110 migration-order guard is PASS_LOCAL only after local audits
   pass.
 - Production remains NO-GO; do not run production migration from Codex/chat.
+
+## 2026-06-27 - TTGDTX Production Readiness Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small app visibility slice.
+- Added a read-only Go/No-Go guard to the TTGDTX landing page so production
+  blockers are visible inside the app, not only in documents.
+- The guard surfaces backup/restore, Step90-Step110 sign-off, Step97/Step100
+  decisions, P2-17 payout UAT, P2-18 dashboard UAT, Step109 role-scope UAT,
+  Step110 privacy review, audit-log, hard-delete and rollback blockers.
+- Added a local audit that checks the guard, page mount, production checklist,
+  backlog, AGENTS handoff list and release-gate audit.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`
+- `scripts/audit-ttgdtx-production-readiness-guard.mjs`
+- `app/ttgdtx/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- TTGDTX production readiness guard is PASS_LOCAL only after local audits pass.
+- Production remains NO-GO until backup, signed UAT and owner approval exist.

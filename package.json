@@ -36,6 +36,7 @@
     "audit:ttgdtx-pilot-open-safety": "node scripts/audit-ttgdtx-pilot-open-safety.mjs",
     "audit:ttgdtx-payout-duplicate-guard": "node scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
     "audit:ttgdtx-period-lock-policy": "node scripts/audit-ttgdtx-period-lock-policy.mjs",
+    "audit:ttgdtx-production-readiness-guard": "node scripts/audit-ttgdtx-production-readiness-guard.mjs",
     "audit:ttgdtx-process-labels": "node scripts/audit-ttgdtx-process-labels.mjs",
     "audit:ttgdtx-receivable-payment-lifecycle": "node scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
     "audit:ttgdtx-reconciliation-repair-safety": "node scripts/audit-ttgdtx-reconciliation-repair-safety.mjs",

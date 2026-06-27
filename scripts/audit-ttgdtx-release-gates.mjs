@@ -78,6 +78,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
+  "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -102,6 +103,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
+  "scripts/audit-ttgdtx-production-readiness-guard.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
   "scripts/audit-vnd-money-format.mjs",
@@ -142,6 +144,7 @@ const requiredScripts = [
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-payout-duplicate-guard",
   "audit:ttgdtx-period-lock-policy",
+  "audit:ttgdtx-production-readiness-guard",
   "audit:ttgdtx-process-labels",
   "audit:ttgdtx-receivable-payment-lifecycle",
   "audit:ttgdtx-reconciliation-repair-safety",
@@ -354,6 +357,24 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /\|\s*Rollback plan\s*\|\s*IT_DATA\s*\|\s*IN_PROGRESS\s*\|/i,
   "rollback plan IN_PROGRESS status",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
+  /data-ttgdtx-production-readiness-guard="TTGDTX_9PLUS"[\s\S]*Production remains NO-GO[\s\S]*PASS_LOCAL[\s\S]*signed UAT/i,
+  "TTGDTX production readiness guard display",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /TtgdtxProductionReadinessGuard[\s\S]*<TtgdtxProductionReadinessGuard \/>/,
+  "TTGDTX landing page mounts production readiness guard",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  "internal UAT readiness guard checklist row",
 );
 
 requireText(
