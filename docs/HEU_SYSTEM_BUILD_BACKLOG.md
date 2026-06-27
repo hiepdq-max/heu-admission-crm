@@ -7,7 +7,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P0-01 | Keep branch `hardening/ttgdtx-9plus-pilot` as working branch | IT/Data | PASS_LOCAL | No force push, no main/master push |
-| P0-02 | Split dirty working tree by scope: docs, TTGDTX UI, TTGDTX SQL, CRM shared, audit scripts | IT/Data | IN_PROGRESS | Review before commit |
+| P0-02 | Split dirty working tree by scope: docs, TTGDTX UI, TTGDTX SQL, CRM shared, audit scripts | IT/Data | PASS_LOCAL | `docs/GIT_CLEANUP_ANALYSIS.md`; `npm.cmd run audit:heu-git-hygiene`; clean local status verified before each slice; current exact ahead count must be verified live with `git status --short --branch` |
 | P0-03 | Maintain migration order and production No-Go checklist | IT/Data + BGH | IN_PROGRESS | `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`; `components/settings/supabase-backup-restore-guard.tsx`; backup/restore execution evidence checklist; `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md`; `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`; `npm.cmd run audit:ttgdtx-migration-order-guard`; actual backup/restore evidence still required before production |
 | P0-04 | Keep generated logs out of commits | IT/Data | PASS_LOCAL | `.gitignore` covers logs/env; no tracked `.log`/`.env`; no unignored generated files in current status |
 | P0-05 | Record every phase in `HEU_IMPLEMENTATION_LOG.md` | Codex + IT/Data | IN_PROGRESS | Log before conclusion |

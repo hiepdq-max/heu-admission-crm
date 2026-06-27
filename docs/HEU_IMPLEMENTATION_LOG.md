@@ -1942,3 +1942,13 @@
 - P7-03 is PASS_LOCAL only. Production AI remains locked until prompt/output
   audit logging, role-scoped AI data access, risk-review audit logging and
   signed UAT are complete.
+## 2026-06-27 - P0-02 Git Hygiene Refresh
+
+- Refreshed `docs/GIT_CLEANUP_ANALYSIS.md` so it no longer treats a stale
+  branch-ahead count as a durable gate.
+- Marked P0-02 as PASS_LOCAL in the backlog and production checklist because
+  the dirty worktree has been split into small committed scopes.
+- Added `audit:heu-git-hygiene` to block unignored local noise and tracked
+  log/env files before handoff.
+- Production remains NO-GO; owner review/push, backup/restore evidence and
+  signed UAT are still required.

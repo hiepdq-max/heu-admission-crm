@@ -55,6 +55,7 @@ const requiredFiles = [
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_DATA_MODEL_V1.md",
   "docs/HEU_DATA_DICTIONARY_V1.md",
+  "docs/GIT_CLEANUP_ANALYSIS.md",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
   "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
@@ -105,6 +106,7 @@ const requiredFiles = [
   "scripts/audit-heu-bgh-dashboard-spec.mjs",
   "scripts/audit-heu-controlled-evidence-redaction-pack.mjs",
   "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-git-hygiene.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
@@ -142,6 +144,7 @@ const requiredScripts = [
   "audit:heu-bgh-dashboard-spec",
   "audit:heu-controlled-evidence-redaction-pack",
   "audit:heu-data-foundation",
+  "audit:heu-git-hygiene",
   "audit:heu-lead-handover-policy",
   "audit:heu-non-ttgdtx-cascade-review",
   "audit:heu-role-scope-uat-pack",
@@ -275,6 +278,18 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Current recommendation:\s*NO-GO/i,
   "NO-GO current recommendation",
+);
+
+requireText(
+  "docs/GIT_CLEANUP_ANALYSIS.md",
+  /Current Snapshot - 2026-06-27[\s\S]*Branch:\s*`hardening\/ttgdtx-9plus-pilot`[\s\S]*git status --short --branch[\s\S]*clean worktree[\s\S]*Exact ahead count is intentionally treated as live state[\s\S]*drifts with each safe commit[\s\S]*Do not commit runtime logs, local secrets, raw UAT evidence, exported bank\s+statements or temporary SQL scratch files/i,
+  "P0-02 Git hygiene current snapshot",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Review dirty Git state[\s\S]*PASS_LOCAL[\s\S]*GIT_CLEANUP_ANALYSIS\.md[\s\S]*audit:heu-git-hygiene[\s\S]*current exact ahead count must be verified live/i,
+  "P0-02 Git hygiene checklist row",
 );
 
 requireText(

@@ -17,12 +17,15 @@ current dirty list without running a fresh `git status`.
 Current verified snapshot before this addendum:
 
 - Branch: `hardening/ttgdtx-9plus-pilot`.
-- `git status --short --branch`: clean worktree, branch ahead of
-  `origin/hardening/ttgdtx-9plus-pilot` by 58 commits.
-- Latest local commit at snapshot time: `cd03030 feat: show hard delete
-  boundary guard`.
+- `git status --short --branch`: clean worktree on the hardening branch.
+- Exact ahead count is intentionally treated as live state and must be read from
+  `git status --short --branch`; it drifts with each safe commit and should not
+  be used as a durable production gate.
+- Latest local commit before this hygiene refresh: `17e8265 feat: show p7-03
+  ai risk suggestion board`.
 - Recent work has been split into small reviewed commits for production
-  readiness guards, role-scope, audit-log and hard-delete boundaries.
+  readiness guards, role-scope, audit-log, hard-delete boundaries, BGH blocker
+  summary and advisory-only AI helpers.
 - No production migration, Supabase SQL execution, hard-delete, reset or
   destructive cleanup was performed from this cleanup pass.
 
@@ -34,6 +37,8 @@ Current cleanup rule:
    statements or temporary SQL scratch files.
 4. Keep production status NO-GO until backup/restore evidence, signed UAT and
    owner approval exist.
+5. Run `npm.cmd run audit:heu-git-hygiene` before handoff; the audit blocks
+   unignored local noise and tracked log/env files.
 
 ## 1. Scope
 
