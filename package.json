@@ -14,6 +14,7 @@
     "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",
     "audit:ttgdtx-audit-log": "node scripts/audit-ttgdtx-audit-log-coverage.mjs",
+    "audit:ttgdtx-accounting-dashboard-uat-plan": "node scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
     "audit:ttgdtx-cascade": "node scripts/audit-ttgdtx-cascade-risk.mjs",
     "audit:ttgdtx-dashboard-access": "node scripts/audit-ttgdtx-dashboard-access.mjs",
     "audit:ttgdtx-data-fetch-gate": "node scripts/audit-ttgdtx-data-fetch-gate.mjs",

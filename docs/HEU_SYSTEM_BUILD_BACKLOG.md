@@ -72,7 +72,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
-| P5-01 | TTGDTX accounting dashboard UAT | KHTC + BGH | OPEN | Authorized/out-of-scope role tests |
+| P5-01 | TTGDTX accounting dashboard UAT | KHTC + BGH | PASS_LOCAL | `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`; `npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan`; signed browser UAT still required |
 | P5-02 | BGH operating dashboard specification | BGH + IT/Data | OPEN | Workflow/data available first |
 
 ## P6 - Audit/Governance

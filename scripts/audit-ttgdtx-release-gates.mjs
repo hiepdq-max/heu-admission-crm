@@ -40,6 +40,7 @@ const requiredFiles = [
   "docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md",
   "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
+  "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
@@ -64,6 +65,7 @@ const requiredFiles = [
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
+  "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-vnd-money-format.mjs",
@@ -81,6 +83,7 @@ const requiredScripts = [
   "audit:hard-delete",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
+  "audit:ttgdtx-accounting-dashboard-uat-plan",
   "audit:ttgdtx-audit-log",
   "audit:ttgdtx-cascade",
   "audit:ttgdtx-dashboard-access",
@@ -149,6 +152,12 @@ requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /Result:\s*PARTIAL PASS/i,
   "partial UAT pass marker",
+);
+
+requireText(
+  "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
+  /(?=[\s\S]*P5-01 is PASS_LOCAL)(?=[\s\S]*not production-approved)(?=[\s\S]*P2-18 remains IN_PROGRESS)/i,
+  "P5-01 dashboard UAT plan is local-only and P2-18 remains in progress",
 );
 
 requireText(

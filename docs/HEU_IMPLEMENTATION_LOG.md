@@ -781,3 +781,29 @@
 - P3-02 is PASS_LOCAL as a policy/control guard.
 - No production handover, enrollment approval, receivable, collection or migration is approved.
 - Signed UAT must still prove role scope, accept/reject behavior, evidence redaction and audit logging.
+
+## 2026-06-27 - TTGDTX Accounting Dashboard Role UAT Plan
+
+### Scope
+
+- Continued production-readiness hardening with P5-01 TTGDTX accounting dashboard UAT.
+- Added a role/account matrix for authorized BGH/Admin, KHTC, Tuyen Sinh, contract-only, out-of-scope and partner-like users.
+- Required sanitized evidence capture, source comparison and stop conditions.
+- Kept P2-18 accounting dashboard IN_PROGRESS until signed browser UAT proves access scope and financial totals.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
+- `scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P5-01 is PASS_LOCAL as a UAT plan and static guard package.
+- P2-18 remains IN_PROGRESS and production remains NO-GO.
+- Signed UAT evidence is still required before dashboard data can support a production Go decision.
