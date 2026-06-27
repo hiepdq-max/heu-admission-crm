@@ -1962,3 +1962,11 @@
   to be checked by command, not as a durable hard-coded approval signal.
 - Production remains NO-GO until backup/restore evidence, signed UAT, migration
   order, hard-delete/cascade waiver and final owner GO/NO-GO are complete.
+## 2026-06-27 - P0 Handoff Audit Guard
+
+- Added `audit:heu-current-state-inventory` and `audit:heu-git-hygiene` to the
+  mandatory final handoff command list in `AGENTS.md`.
+- Extended both P0 audit scripts so they fail if the handoff list stops requiring
+  their checks.
+- This keeps current-state and Git-hygiene verification in the standard operating
+  loop before any future handoff.

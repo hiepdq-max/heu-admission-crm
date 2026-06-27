@@ -38,6 +38,7 @@ for (const file of [
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  "AGENTS.md",
   ".gitignore",
   "package.json",
 ]) {
@@ -58,6 +59,7 @@ const checklist = existsSync(
 const gitignore = existsSync(path.join(repoRoot, ".gitignore"))
   ? read(".gitignore")
   : "";
+const agents = existsSync(path.join(repoRoot, "AGENTS.md")) ? read("AGENTS.md") : "";
 const packageJson = JSON.parse(read("package.json"));
 
 requireText(
@@ -94,6 +96,13 @@ for (const pattern of [/\.log/, /dev-server\*\.log/, /next-dev\*\.log/, /\.env/]
 if (!packageJson.scripts?.["audit:heu-git-hygiene"]) {
   fail("package.json: missing audit:heu-git-hygiene script");
 }
+
+requireText(
+  agents,
+  /Before any final handoff[\s\S]*npm\.cmd run audit:heu-git-hygiene/i,
+  "final handoff git hygiene audit command",
+  "AGENTS.md",
+);
 
 const untracked = runGit("ls-files -o --exclude-standard");
 if (untracked) {

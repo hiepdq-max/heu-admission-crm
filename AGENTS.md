@@ -105,7 +105,9 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-backlog-codes`
   - `npm.cmd run audit:heu-bgh-dashboard-spec`
   - `npm.cmd run audit:heu-controlled-evidence-redaction-pack`
+  - `npm.cmd run audit:heu-current-state-inventory`
   - `npm.cmd run audit:heu-data-foundation`
+  - `npm.cmd run audit:heu-git-hygiene`
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
   - `npm.cmd run audit:heu-role-scope-uat-pack`

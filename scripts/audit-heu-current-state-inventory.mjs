@@ -30,6 +30,7 @@ for (const file of [
   "docs/GIT_CLEANUP_ANALYSIS.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "AGENTS.md",
   "package.json",
 ]) {
   requireFile(file);
@@ -38,6 +39,7 @@ for (const file of [
 const inventory = existsSync(path.join(repoRoot, inventoryPath))
   ? read(inventoryPath)
   : "";
+const agents = existsSync(path.join(repoRoot, "AGENTS.md")) ? read("AGENTS.md") : "";
 
 requireText(inventory, /Date:\s*2026-06-27/i, "current inventory date");
 requireText(
@@ -85,6 +87,13 @@ const packageJson = JSON.parse(read("package.json"));
 if (!packageJson.scripts?.["audit:heu-current-state-inventory"]) {
   fail("package.json: missing audit:heu-current-state-inventory script");
 }
+
+requireText(
+  agents,
+  /Before any final handoff[\s\S]*npm\.cmd run audit:heu-current-state-inventory/i,
+  "final handoff current-state inventory audit command",
+  "AGENTS.md",
+);
 
 if (failures.length > 0) {
   console.error("HEU current-state inventory audit failed.");
