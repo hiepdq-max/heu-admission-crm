@@ -50,7 +50,24 @@ off by KHTC/Audit, and linked in the production checklist.
 | P2-17-10 | Keep `P2_19_PARTNER_INVOICE_BEFORE_PAYOUT` as `FAIL` or `NOT_CHECKED`, then try payout | Board blocks and RPC rejects because partner invoice evidence is incomplete |
 | P2-17-11 | Mark both P2-19 checks as passed in UAT, then retry payout with evidence URL | Payout can proceed if all other amount/status/voucher controls pass |
 
-## 5. Evidence Queries
+## 5. Local Guard Evidence
+
+Before signed UAT, the repo must keep local guard evidence green:
+
+- `components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx` shows the P2-17 guard
+  chain on the payout screen.
+- `PaymentSubmitButton` disables while pending for the double-submit case.
+- `recordTtgdtxPartnerPaymentDisbursementAction` requires voucher number and
+  payout evidence before calling the RPC.
+- `database/step107_ttgdtx_payment_execution_p2_17.sql` keeps row lock,
+  normalized voucher uniqueness, overpayment guard, direct-write revoke and
+  P2-19 blockers.
+- `npm.cmd run audit:ttgdtx-payout-duplicate-guard` must pass.
+
+This local evidence does not replace signed UAT. It only proves the guard is
+packaged and visible before the UAT team executes the matrix above.
+
+## 6. Evidence Queries
 
 Use these only against UAT/test data.
 
@@ -97,7 +114,7 @@ where record_status = 'ACTIVE'
 
 Expected: zero rows.
 
-## 6. Sign-Off Rule
+## 7. Sign-Off Rule
 
 Mark P2-17 as `DONE` only when:
 

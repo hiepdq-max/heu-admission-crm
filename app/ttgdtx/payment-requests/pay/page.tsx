@@ -15,6 +15,7 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { TtgdtxPaymentDossierChecklist } from "@/components/ttgdtx/ttgdtx-payment-dossier-checklist";
+import { TtgdtxPayoutDuplicateGuard } from "@/components/ttgdtx/ttgdtx-payout-duplicate-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -384,6 +385,8 @@ export default async function PaymentExecutionPage({
         <TtgdtxOperatingControlStrip currentCode="P2-17" />
 
         <TtgdtxPaymentDossierChecklist currentStep="P2-17" />
+
+        <TtgdtxPayoutDuplicateGuard />
 
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900">
           <div className="flex gap-3">

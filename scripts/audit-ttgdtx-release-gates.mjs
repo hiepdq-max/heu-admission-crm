@@ -74,6 +74,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
+  "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -94,6 +95,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
+  "scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
   "scripts/audit-vnd-money-format.mjs",
@@ -129,6 +131,7 @@ const requiredScripts = [
   "audit:ttgdtx-operating-control-ui",
   "audit:ttgdtx-payment-dossier-checklist",
   "audit:ttgdtx-pilot-open-safety",
+  "audit:ttgdtx-payout-duplicate-guard",
   "audit:ttgdtx-period-lock-policy",
   "audit:ttgdtx-process-labels",
   "audit:ttgdtx-receivable-payment-lifecycle",
@@ -360,6 +363,24 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
   "payment dossier checklist PASS_LOCAL checklist row",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
+  /data-ttgdtx-payout-duplicate-guard="P2-17"[\s\S]*nút pending[\s\S]*RPC[\s\S]*khóa dòng[\s\S]*voucher guard[\s\S]*P2-19/i,
+  "P2-17 payout duplicate guard display",
+);
+
+requireText(
+  "app/ttgdtx/payment-requests/pay/page.tsx",
+  /TtgdtxPayoutDuplicateGuard[\s\S]*<TtgdtxPayoutDuplicateGuard \/>/,
+  "P2-17 payout duplicate guard mount",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-17 execute payout once[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-payout-duplicate-guard[\s\S]*signed UAT/i,
+  "P2-17 duplicate guard checklist row",
 );
 
 requireText(

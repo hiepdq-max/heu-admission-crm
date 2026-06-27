@@ -1150,3 +1150,30 @@
 
 - BBNT/partner-invoice payment dossier visibility is PASS_LOCAL.
 - Signed UAT is still required before production payment use.
+
+## 2026-06-27 - P2-17 Duplicate Payout Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small P2-17 duplicate-payout guard slice.
+- Added a visible guard panel on Chi tien (P2-17) for pending submit, RPC-only write path, row lock, normalized voucher guard, overpayment block and P2-19 evidence blockers.
+- Added a local audit that checks the UI guard, submit button pending state, server action voucher/evidence requirements, SQL row lock/direct-write revoke/unique voucher guard and UAT runbook cases.
+- Kept P2-17 production checklist IN_PROGRESS because signed duplicate payout UAT is still required.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx`
+- `scripts/audit-ttgdtx-payout-duplicate-guard.mjs`
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P2-17 duplicate, overpay, direct-write and missing-evidence guards are PASS_LOCAL.
+- Production remains NO-GO until the runbook is executed with controlled UAT data and signed by KHTC/Audit.
