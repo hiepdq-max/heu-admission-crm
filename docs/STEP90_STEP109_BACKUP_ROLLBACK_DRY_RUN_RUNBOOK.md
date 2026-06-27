@@ -42,6 +42,11 @@ as the controlled evidence pack when the dry-run is executed. The table below
 is the minimum summary; the evidence pack carries the detailed backup, restore,
 preflight, postflight, UAT, exception and sign-off records.
 
+Before execution, fill
+`docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md` so the
+operator/checker pair, execution window, production project/ref, restore target
+project/ref, evidence folder and immediate STOP/BLOCKED conditions are explicit.
+
 Record this before any production migration is considered:
 
 | Field | Value |
@@ -125,19 +130,20 @@ Run only on an isolated UAT/restore target, not production:
 ## 7. Restore Dry-Run Flow
 
 1. Create a backup/snapshot from the source environment.
-2. Restore it into an isolated UAT/restore target.
-3. Confirm the app points to the restore target, not production.
-4. Run the static preflight commands.
-5. Apply Step90-Step110 in the approved order.
-6. Run the static preflight commands again.
-7. Execute these UAT runbooks:
+2. Complete the operator run sheet through P0-03-RUN-03 before restore starts.
+3. Restore it into an isolated UAT/restore target.
+4. Confirm the app points to the restore target, not production.
+5. Run the static preflight commands.
+6. Apply Step90-Step110 in the approved order on the restore target only.
+7. Run the static preflight commands again.
+8. Execute these UAT runbooks:
    - `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
    - `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
    - `docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md`
    - `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
    - `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`
-8. Record pass/fail evidence in the production checklist.
-9. If any critical issue appears, STOP and use backup restore as the rollback
+9. Record pass/fail evidence in the production checklist.
+10. If any critical issue appears, STOP and use backup restore as the rollback
    proof. Do not fix by deleting finance/evidence/audit rows.
 
 ## 8. Rollback Principle

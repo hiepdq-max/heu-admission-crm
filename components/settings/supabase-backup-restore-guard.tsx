@@ -104,6 +104,63 @@ const restoreSmokeCheckItems = [
   },
 ];
 
+const operatorRunSheetItems = [
+  {
+    caseId: "P0-03-RUN-01",
+    title: "Confirm approved execution window",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "Execution window, operator, checker, source environment and owner approval reference are recorded before any backup/restore activity.",
+    stopCondition:
+      "Stop if the execution window, operator/checker pair or source environment is unclear.",
+  },
+  {
+    caseId: "P0-03-RUN-02",
+    title: "Prove production versus restore target identity",
+    owner: "IT_DATA",
+    evidence:
+      "Production project/ref and restore target project/ref are listed side by side before any command or screenshot is accepted.",
+    stopCondition:
+      "Stop if a screenshot, SQL editor, browser tab or connection string could point to production.",
+  },
+  {
+    caseId: "P0-03-RUN-03",
+    title: "Capture backup evidence before restore",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "Backup/snapshot ID, timestamp, operator, checker and controlled evidence location are captured before restore starts.",
+    stopCondition:
+      "Stop if backup ID or controlled evidence location is missing.",
+  },
+  {
+    caseId: "P0-03-RUN-04",
+    title: "Restore and verify isolated target before migration dry-run",
+    owner: "IT_DATA",
+    evidence:
+      "Restore completion, target isolation proof, app/Supabase connection proof and preflight command results are attached.",
+    stopCondition:
+      "Stop if the app or SQL client has not been proven to point to the restore target.",
+  },
+  {
+    caseId: "P0-03-RUN-05",
+    title: "Apply Step90-Step110 only on restore target",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    evidence:
+      "Each migration step records APPLY/SKIP/WAIVE, operator, result and evidence note in the dry-run evidence pack.",
+    stopCondition:
+      "Stop if Step97, Step100, Step109 or Step110 lacks its required owner decision.",
+  },
+  {
+    caseId: "P0-03-RUN-06",
+    title: "Close with postflight, smoke-check and owner review",
+    owner: "IT_DATA + Audit + BGH",
+    evidence:
+      "Postflight checks, restore smoke-check matrix, exceptions and owner GO/NO-GO notes are recorded outside Codex/chat.",
+    stopCondition:
+      "Stop if any HIGH/BLOCKER issue, raw sensitive exposure or unsigned owner decision remains open.",
+  },
+];
+
 const localChecks = [
   "audit:ttgdtx-backup-restore-dry-run-pack",
   "audit:ttgdtx-release-gates",
@@ -178,6 +235,62 @@ export function SupabaseBackupRestoreGuard() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-purple-200 bg-purple-50 p-4 text-purple-950"
+        data-p003-backup-restore-operator-run-sheet="P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P0-03 backup/restore operator run sheet: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this run sheet before a human IT_DATA operator executes the
+              backup/restore dry-run outside Codex/chat. It does not run
+              backup, restore, migration, rollback or production GO.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-purple-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              BACKUP_RESTORE_RUN_READY / STOP / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {operatorRunSheetItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-purple-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-purple-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.evidence}</p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-purple-200 bg-white px-3 py-2 text-purple-900">
+          PASS_LOCAL does not prove an approved execution window, backup,
+          restore, migration dry-run, rollback proof, owner sign-off or
+          production GO. Attach only controlled evidence references; keep raw
+          exports, credentials, bank data, vouchers and personal data outside
+          Git/Codex/chat.
         </div>
       </div>
 

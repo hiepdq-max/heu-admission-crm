@@ -77,7 +77,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Area | Current evidence | Readiness |
 |---|---|---|
 | Production readiness guard | TTGDTX landing guard, execution queue, owner GO/NO-GO checklist and owner acceptance matrix | PASS_LOCAL, NO-GO |
-| Backup/restore | Evidence pack, UI guard and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
+| Backup/restore | Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |

@@ -2262,3 +2262,20 @@
   `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
 - P2-10 invoice/chung-tu policy remains PASS_LOCAL only until signed KHTC/Phap
   Che UAT evidence exists.
+
+## 2026-06-27 - P0-03 Backup/Restore Operator Run Sheet
+
+- Added a PASS_LOCAL P0-03 backup/restore operator run sheet to
+  `components/settings/supabase-backup-restore-guard.tsx`.
+- Created
+  `docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md` so
+  IT_DATA and Audit can confirm execution window, production/restore target
+  identity, backup evidence, isolated restore, Step90-Step110 decisions and
+  postflight owner review before any production discussion.
+- Updated the backup/restore evidence pack, backup/rollback runbook,
+  production checklist, backlog, current-state inventory,
+  `audit:ttgdtx-backup-restore-dry-run-pack`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P0-03 remains NOT_STARTED/IN_PROGRESS for production because real backup,
+  restore, smoke-check, UAT and owner sign-off evidence must be collected
+  outside Git/Codex/chat.

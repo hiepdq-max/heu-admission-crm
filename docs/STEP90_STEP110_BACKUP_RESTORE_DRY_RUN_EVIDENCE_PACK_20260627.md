@@ -32,6 +32,7 @@ and human sign-off.
 
 | Document | Required use |
 |---|---|
+| `docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md` | One-page operator/checker run sheet before execution |
 | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` | Procedure owner and execution order |
 | `docs/MIGRATION_ORDER_AUDIT.md` | Migration ordering and waiver review |
 | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` | Final Go/No-Go control |
@@ -202,6 +203,14 @@ The Supabase check page exposes a backup/restore execution evidence checklist in
 PASS_LOCAL only and covers P0-03-01 through P0-03-06: backup evidence, isolated
 restore target, app connection to restore target, preflight/postflight command
 results, smoke-check/UAT index and final human GO/NO-GO sign-off.
+
+The same page also exposes
+`data-p003-backup-restore-operator-run-sheet="P0-03"` and references
+`docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md`. The run
+sheet uses P0-03-RUN-01 through P0-03-RUN-06 and the decision value
+BACKUP_RESTORE_RUN_READY / STOP / BLOCKED so the operator/checker must confirm
+execution window, target identity, backup evidence, isolated restore, migration
+step decisions and postflight owner review before any production discussion.
 
 Do not attach secrets, passwords, OTPs, service-role keys, bank credentials,
 raw student PII, raw CCCD, raw phone numbers or raw payment data in
