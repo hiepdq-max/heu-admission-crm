@@ -9,7 +9,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-01 | Keep branch `hardening/ttgdtx-9plus-pilot` as working branch | IT/Data | PASS_LOCAL | No force push, no main/master push |
 | P0-02 | Split dirty working tree by scope: docs, TTGDTX UI, TTGDTX SQL, CRM shared, audit scripts | IT/Data | IN_PROGRESS | Review before commit |
 | P0-03 | Maintain migration order and production No-Go checklist | IT/Data + BGH | IN_PROGRESS | Backup and restore dry-run before production |
-| P0-04 | Keep generated logs out of commits | IT/Data | OPEN | `.gitignore`/manual review |
+| P0-04 | Keep generated logs out of commits | IT/Data | PASS_LOCAL | `.gitignore` covers logs/env; no tracked `.log`/`.env`; no unignored generated files in current status |
 | P0-05 | Record every phase in `HEU_IMPLEMENTATION_LOG.md` | Codex + IT/Data | IN_PROGRESS | Log before conclusion |
 | P0-06 | Freeze code edits until inventory/backlog is current | Codex + IT/Data | PASS_LOCAL | Current P0 docs updated after `28b8e7d` |
 | P0-11 | Role permission soft revoke | IT/Data + ADMIN | PASS_LOCAL | Step109 is migration candidate only; settings uses INACTIVE/upsert instead of hard delete |

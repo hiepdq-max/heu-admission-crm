@@ -38,7 +38,7 @@ approval.
 | User-friendly TTGDTX process labels | IT_DATA + KHTC | IN_PROGRESS | `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`; screens show business name first and P2 code second | NO | Users cannot find the right workflow because technical P2 codes hide the business meaning |
 | Keep safety branch for hardening | IT_DATA | DONE | Branch `hardening/ttgdtx-9plus-pilot` | NO | Pilot changes mix with unstable main work |
 | Review dirty Git state | IT_DATA | IN_PROGRESS | GIT_CLEANUP_ANALYSIS.md | YES | Wrong files or temporary SQL committed |
-| Exclude runtime logs from commit | IT_DATA | NOT_STARTED | .gitignore review and status check | NO | Logs or local noise committed |
+| Exclude runtime logs from commit | IT_DATA | PASS_LOCAL | `.gitignore` covers `.log`, `dev-server*.log`, `next-dev*.log`, `.env`, `.env.local`, `.env.*.local`; `git ls-files -o --exclude-standard` currently empty | NO | Logs or local noise committed |
 | Supabase backup before production migration | IT_DATA | NOT_STARTED | Backup ID, timestamp, restore note | YES | Cannot recover after failed migration |
 | Approve Step90-Step110 migration order | IT_DATA + KHTC + PHAP_CHE | IN_PROGRESS | `docs/MIGRATION_ORDER_AUDIT.md` signed off | YES | Wrong order can damage finance data |
 | P2-01 TTGDTX contract active | PHAP_CHE + BGH | DONE | Contract row, status, scope, effective date | YES | Finance action without effective contract |

@@ -630,3 +630,22 @@
 ### Decision
 
 - This is a coordination guard only. It does not change production migration status.
+
+## 2026-06-27 - Generated Log Commit Guard Review
+
+### Scope
+
+- Reviewed `.gitignore` and current Git noise for generated logs and local env files.
+- Verified `.log`, `dev-server*.log`, `next-dev*.log`, `.env`, `.env.local` and `.env.*.local` are ignored.
+- Verified no `.log` or `.env` files are tracked and no generated untracked files are visible to Git in the current status.
+
+### Files Updated/Added
+
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P0-04 is PASS_LOCAL for the current repo state.
+- Future generated logs/env files must remain untracked and outside commits.
