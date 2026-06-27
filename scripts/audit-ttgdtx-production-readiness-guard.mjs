@@ -22,6 +22,7 @@ function requireText(contents, pattern, label, file) {
 
 const componentPath = "components/ttgdtx/ttgdtx-production-readiness-guard.tsx";
 const uatGuardPath = "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx";
+const executionQueuePath = "components/ttgdtx/ttgdtx-production-execution-queue.tsx";
 const pagePath = "app/ttgdtx/page.tsx";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
@@ -29,6 +30,7 @@ const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 for (const file of [
   componentPath,
   uatGuardPath,
+  executionQueuePath,
   pagePath,
   checklistPath,
   backlogPath,
@@ -42,6 +44,7 @@ for (const file of [
 
 const component = read(componentPath);
 const uatGuard = read(uatGuardPath);
+const executionQueue = read(executionQueuePath);
 const page = read(pagePath);
 const checklist = read(checklistPath);
 const backlog = read(backlogPath);
@@ -101,6 +104,20 @@ requireText(
 );
 
 requireText(
+  executionQueue,
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*Do not skip ahead)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-03\/P6-06)(?=[\s\S]*Owner GO\/NO-GO)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  "TTGDTX production execution queue",
+  executionQueuePath,
+);
+
+requireText(
+  page,
+  /<TtgdtxProductionReadinessGuard\s*\/>[\s\S]*<TtgdtxUatSignoffGuard\s*\/>[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/,
+  "TTGDTX landing page mounts production execution queue before operating strip",
+  pagePath,
+);
+
+requireText(
   checklist,
   /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
@@ -128,6 +145,7 @@ requireText(
 for (const needle of [
   componentPath,
   uatGuardPath,
+  executionQueuePath,
   "scripts/audit-ttgdtx-production-readiness-guard.mjs",
   "audit:ttgdtx-production-readiness-guard",
 ]) {

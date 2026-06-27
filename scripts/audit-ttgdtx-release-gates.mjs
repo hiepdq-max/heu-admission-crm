@@ -83,6 +83,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
@@ -454,9 +455,21 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit\/hard-delete, then final\s+owner Go\/No-Go)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-03\/P6-06)(?=[\s\S]*Owner GO\/NO-GO)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  "TTGDTX production execution queue",
+);
+
+requireText(
   "app/ttgdtx/page.tsx",
   /TtgdtxProductionReadinessGuard[\s\S]*<TtgdtxProductionReadinessGuard \/>/,
   "TTGDTX landing page mounts production readiness guard",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /<TtgdtxProductionReadinessGuard\s*\/>[\s\S]*<TtgdtxUatSignoffGuard\s*\/>[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/,
+  "TTGDTX landing page mounts production execution queue",
 );
 
 requireText(
