@@ -29,6 +29,7 @@ for (const file of [
   inventoryPath,
   "docs/GIT_CLEANUP_ANALYSIS.md",
   "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
+  "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "AGENTS.md",
@@ -65,6 +66,11 @@ requireText(
 );
 requireText(
   inventory,
+  /npm\.cmd run audit:ttgdtx-contract-tuition-master-guard[\s\S]*PASS/i,
+  "P2-01/P2-02 master guard audit evidence",
+);
+requireText(
+  inventory,
   /M05 Tuyen sinh CRM[\s\S]*P3-01 lifecycle guard[\s\S]*P3-02 handover policy[\s\S]*finance-gated/i,
   "M05 P3-01/P3-02 current module state",
 );
@@ -72,6 +78,16 @@ requireText(
   inventory,
   /Lead lifecycle\/handover[\s\S]*P3-01 lifecycle standard[\s\S]*P3-02 handover policy[\s\S]*PASS_LOCAL[\s\S]*signed role\/workflow UAT pending/i,
   "P3-01/P3-02 control state",
+);
+requireText(
+  inventory,
+  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*signed finance\/legal UAT still required/i,
+  "M09 P2-01/P2-02 current module state",
+);
+requireText(
+  inventory,
+  /Contract\/tuition master[\s\S]*P2-01\/P2-02 master guard exists[\s\S]*PASS_LOCAL[\s\S]*signed legal\/finance\/KHTC UAT pending/i,
+  "P2-01/P2-02 control state",
 );
 requireText(
   inventory,
@@ -102,6 +118,12 @@ if (/Latest known commit:\s*9d54348/i.test(inventory)) {
 }
 if (/Dirty working tree\s*\|\s*HIGH/i.test(inventory)) {
   fail(`${inventoryPath}: stale dirty working tree risk row must be replaced.`);
+}
+if (/P2-01 TTGDTX contract active[\s\S]*\|\s*DONE\s*\|/i.test(inventory)) {
+  fail(`${inventoryPath}: must not mark P2-01 DONE without signed evidence.`);
+}
+if (/P2-02 tuition policy ready[\s\S]*\|\s*DONE\s*\|/i.test(inventory)) {
+  fail(`${inventoryPath}: must not mark P2-02 DONE without signed evidence.`);
 }
 
 const packageJson = JSON.parse(read("package.json"));

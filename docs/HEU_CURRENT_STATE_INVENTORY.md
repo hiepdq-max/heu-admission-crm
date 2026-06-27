@@ -42,6 +42,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:ttgdtx-release-gates` | PASS |
 | `npm.cmd run audit:heu-git-hygiene` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-standard` | PASS |
+| `npm.cmd run audit:ttgdtx-contract-tuition-master-guard` | PASS |
 | Full `audit:*` suite | Last full PASS after the P7-03 slice; rerun before final handoff |
 
 Passing local checks proves only local packaging quality. It does not approve
@@ -59,7 +60,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy exists; production UAT pending |
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
-| M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01 through P2-18 pilot flow is packaged |
+| M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard and P2-03 through P2-18 pilot flow are packaged; signed finance/legal UAT still required |
 | M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 and P5-02 are read-only and UAT-gated |
 | M11 AI Agent | Advisory/checklist/risk assistant | Advisory only | P7-01/P7-02/P7-03 are PASS_LOCAL; autonomous AI remains locked |
 | M12 Audit/Risk | Audit log, issue routing, risk alerts | Strong internal | P6 audit guards and hard-delete/cascade reviews pass locally |
@@ -72,6 +73,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Backup/restore | Evidence pack and UI guard exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard and UAT checklist exist | Signed legal/finance UAT still required |
+| Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard and P3-02 handover policy exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier and duplicate guards | Signed payout UAT pending |

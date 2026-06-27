@@ -1998,3 +1998,11 @@
   required before production reliance.
 - Added `audit:ttgdtx-contract-tuition-master-guard` and release-gate coverage
   to verify Step88/Step89/Step97 readiness boundaries and UI guard mounts.
+## 2026-06-27 - Current State Inventory P2-01/P2-02 Sync
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M09 and the TTGDTX control
+  state mention the P2-01/P2-02 master guard and signed-UAT boundary.
+- Added `audit:ttgdtx-contract-tuition-master-guard` to current audit evidence.
+- Extended `audit:heu-current-state-inventory` so the inventory fails if
+  P2-01/P2-02 disappear from the current-state view or drift back to `DONE`
+  wording without signed evidence.
