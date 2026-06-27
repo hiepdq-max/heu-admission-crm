@@ -55,7 +55,27 @@ Production remains NO-GO.
 - Step109 changes permission semantics and requires role/access UAT before run.
 - Step110 is evidence metadata only and must not import raw sensitive data.
 
-## 5. Local Guard Command
+## 5. Step Decision Manifest
+
+Each decision must be recorded outside Git/Codex/chat with controlled evidence
+references only. Do not treat a green local audit as permission to run SQL in
+production.
+
+| Decision ID | Step(s) | Allowed decision | Required evidence before owner review |
+|---|---|---|---|
+| MIG-DEC-01 | Step90-Step96 | APPLY / BLOCKED | P0-03 backup/restore evidence, release-gate preflight, idempotency review |
+| MIG-DEC-02 | Step97 | APPLY / SKIP / BLOCKED | P0-19 mismatch check, KHTC owner decision, rollback note |
+| MIG-DEC-03 | Step100 | APPLY / SKIP / WAIVE / BLOCKED | Formal pilot waiver, BGH/KHTC/PHAP_CHE/IT_DATA approval, expiry/review note |
+| MIG-DEC-04 | Step101-Step108 | APPLY / BLOCKED | P2-13 through P2-18 finance UAT, duplicate-payout guard and audit-log traceability |
+| MIG-DEC-05 | Step109 | APPLY / BLOCKED | ADMIN access test, revoked/inactive permission behavior and role/workspace UAT |
+| MIG-DEC-06 | Step110 | APPLY / SKIP / BLOCKED | Privacy fit, anonymized UAT, metadata-only proof and no raw PII/bank import |
+
+Final migration-order decision: MIGRATION_ORDER_READY / NO_GO / BLOCKED.
+
+Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive
+evidence or unclear production target keeps the migration order NO-GO.
+
+## 6. Local Guard Command
 
 Run this before any handoff that discusses Step90-Step110 readiness:
 
@@ -71,7 +91,7 @@ The guard checks that:
 - Step97 and Step100 remain conditional or waiver-only;
 - AGENTS.md and release-gate audit include this guard.
 
-## 6. Current Decision
+## 7. Current Decision
 
 The Step90-Step110 order is locally reviewed, but production execution is still
 blocked. The next valid movement is signed owner review and backup/restore

@@ -370,6 +370,12 @@ requireText(
 );
 
 requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  /(?=[\s\S]*Step Decision Manifest)(?=[\s\S]*MIG-DEC-01)(?=[\s\S]*MIG-DEC-06)(?=[\s\S]*MIGRATION_ORDER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive\s+evidence or unclear production target keeps the migration order NO-GO)/i,
+  "Step90-Step110 migration decision manifest",
+);
+
+requireText(
   "docs/MIGRATION_ORDER_AUDIT.md",
   /Local Sign-Off Guard Evidence[\s\S]*audit:ttgdtx-migration-order-guard/i,
   "migration-order local sign-off guard evidence",

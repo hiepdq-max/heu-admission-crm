@@ -83,6 +83,11 @@ requireText(
 );
 requireText(
   guardDoc,
+  /(?=[\s\S]*Step Decision Manifest)(?=[\s\S]*MIG-DEC-01)(?=[\s\S]*MIG-DEC-06)(?=[\s\S]*Step90-Step96)(?=[\s\S]*Step97)(?=[\s\S]*Step100)(?=[\s\S]*Step101-Step108)(?=[\s\S]*Step109)(?=[\s\S]*Step110)(?=[\s\S]*MIGRATION_ORDER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive\s+evidence or unclear production target keeps the migration order NO-GO)/i,
+  "Step90-Step110 decision manifest",
+);
+requireText(
+  guardDoc,
   /raw student PII[\s\S]*raw payment data/i,
   "no raw sensitive data rule",
 );
@@ -115,7 +120,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Approve Step90-Step110 migration order[\s\S]*IN_PROGRESS[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*signed approval/i,
+  /Approve Step90-Step110 migration order[\s\S]*IN_PROGRESS[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md[\s\S]*Step Decision Manifest[\s\S]*MIG-DEC-01 through MIG-DEC-06[\s\S]*audit:ttgdtx-migration-order-guard[\s\S]*signed approval/i,
   "migration order checklist row remains signed-approval gated",
 );
 requireText(

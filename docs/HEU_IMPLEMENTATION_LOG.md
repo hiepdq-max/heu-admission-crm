@@ -2759,3 +2759,16 @@
   drift behind the P0-03 evidence manifest.
 - This is checklist/inventory alignment only. It does not execute backup,
   restore, migration, UAT, rollback, owner waiver or production GO.
+
+## 2026-06-27 - Step90-Step110 Decision Manifest
+
+- Added a Step Decision Manifest to the migration-order sign-off guard so
+  Step90-Step96, Step97, Step100, Step101-Step108, Step109 and Step110 each
+  have explicit APPLY/SKIP/WAIVE/BLOCKED decision boundaries before owner
+  review.
+- Updated the production checklist and extended
+  `audit:ttgdtx-migration-order-guard` plus `audit:ttgdtx-release-gates` so
+  MIG-DEC-01 through MIG-DEC-06 and MIGRATION_ORDER_READY / NO_GO / BLOCKED
+  cannot be omitted.
+- This is migration-order decision packaging only. It does not run SQL,
+  approve a waiver, approve migration, accept UAT or mark production GO.
