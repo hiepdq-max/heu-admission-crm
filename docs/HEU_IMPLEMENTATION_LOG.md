@@ -500,3 +500,29 @@
 - Step99 remains a migration candidate only and was not run in production.
 - P2-12 controls dropdown/master data only. It does not create receivables, collect tuition, reconcile money, approve payment requests or record payouts.
 - Production still requires backup evidence, restore dry-run, signed UAT and business Go/No-Go.
+
+## 2026-06-27 - P0-19 / P2-01 / P2-02 Pilot Gate Safety
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot by packaging the P0-19 finance gate guard before receivable creation.
+- Added production-boundary and transaction safety to Step97 so P2-03 candidate/trigger logic requires P0-19 legal, tuition and finance readiness.
+- Hardened Step100 as a sandbox/UAT-only pilot fixture; it is blocked by default unless an explicit session flag is set.
+- Added a local pilot-open safety audit and UAT runbook.
+
+### Files Updated/Added
+
+- `database/step97_ttgdtx_p0_19_finance_gate_fix.sql`
+- `database/step100_ttgdtx_pilot_open_p2_01_p2_02_p0_19.sql`
+- `scripts/audit-ttgdtx-pilot-open-safety.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step97 and Step100 remain migration candidates only and were not run in production.
+- Step100 is not legal, tuition, revenue, invoice or payout authority; it is only a guarded sandbox/UAT fixture.
+- Production still requires official contract, official tuition decision, legal gate approval, backup evidence, restore dry-run, signed UAT and business Go/No-Go.

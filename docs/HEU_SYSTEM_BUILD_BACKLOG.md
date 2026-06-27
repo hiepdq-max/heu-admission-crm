@@ -29,6 +29,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
+| P2-00 | P0-19 major legal/tuition finance gate | Dao tao + Phap Che + KHTC + IT/Data | PASS_LOCAL | Step97 blocks P2-03 when legal/tuition/finance gate is not ready; Step100 sandbox pilot open requires explicit session flag |
 | P2-01 | Contract/partner master | Phap Che + KHTC | BUILT_INTERNAL | Human approval for legal records |
 | P2-02 | Tuition policy master | KHTC | BUILT_INTERNAL | Approved policy version |
 | P2-03 | Student receivables | KHTC | PASS_LOCAL | Step90 is migration candidate only; scoped RLS, no direct delete policy, active duplicate guard; signed UAT still required |

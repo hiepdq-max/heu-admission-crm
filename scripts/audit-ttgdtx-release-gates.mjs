@@ -51,6 +51,7 @@ const requiredFiles = [
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
 ];
 
 for (const file of requiredFiles) {
@@ -66,6 +67,7 @@ const requiredScripts = [
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
+  "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-role-scope-access",
   "audit:ttgdtx-step110-safety",
   "audit:ttgdtx-uat-readiness",
@@ -166,6 +168,12 @@ requireText(
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   /Khong gui mat khau, OTP, API key/i,
   "Codex no-secret operating rule",
+);
+
+requireText(
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+  /Step100 is sandbox\/UAT only/i,
+  "Step100 sandbox-only boundary",
 );
 
 if (failures.length > 0) {
