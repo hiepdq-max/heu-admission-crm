@@ -2112,3 +2112,19 @@
   `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
 - P6-03 remains IN_PROGRESS for production until Audit/KHTC/PHAP_CHE/BGH sign
   redacted UAT evidence outside Codex/chat.
+
+## 2026-06-27 - P0-03 Restore Smoke-Check Acceptance Matrix
+
+- Added a PASS_LOCAL restore smoke-check acceptance matrix to
+  `components/settings/supabase-backup-restore-guard.tsx`.
+- The matrix requires isolated restore target proof, core master readability,
+  finance guard behavior, role/workspace scope, audit trace and dashboard
+  source reconciliation before a restore dry-run can support production review.
+- Updated
+  `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`, the
+  production checklist, backlog, current-state inventory,
+  `audit:ttgdtx-backup-restore-dry-run-pack`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P0-03 remains IN_PROGRESS/NO-GO for production until real backup, restore,
+  smoke-check, UAT and owner sign-off evidence are collected outside
+  Git/Codex/chat.

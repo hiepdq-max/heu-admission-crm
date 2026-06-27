@@ -207,3 +207,26 @@ Do not attach secrets, passwords, OTPs, service-role keys, bank credentials,
 raw student PII, raw CCCD, raw phone numbers or raw payment data in
 Git/Codex/chat. Actual backup, restore dry-run, signed UAT and owner GO/NO-GO
 evidence remain required before production migration can be considered.
+
+## 14. Restore Smoke-Check Acceptance Matrix
+
+The Supabase check page also exposes
+`data-p003-restore-smoke-check-acceptance-matrix="P0-03"`. A restore dry-run is
+not acceptable until these checks are proven on the isolated restore target.
+Each stop condition keeps production NO-GO.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P0-03-SMOKE-01 | Restore target identity | Project/ref, URL and connection banner prove the app and SQL checks point to the isolated restore target | Any screenshot or query could be production |
+| P0-03-SMOKE-02 | Core master records readable | Contract, tuition policy, source-control and TTGDTX master/dropdown records are readable after restore | Legal or tuition master evidence is missing after restore |
+| P0-03-SMOKE-03 | Finance guard behavior preserved | Duplicate receivable, over-collection, unresolved reconciliation line and duplicate payout voucher guards still block | Restored database allows a duplicate or overpayment case |
+| P0-03-SMOKE-04 | Role and workspace scope preserved | Authorized, out-of-scope and inactive/revoked test users return the expected read/write boundaries | Out-of-scope user can see restricted TTGDTX finance or evidence data |
+| P0-03-SMOKE-05 | Audit trace preserved | `audit_logs` show create, update, check, approve, pay and source-control traceability after restore checks | Key restored actions cannot be traced to actor, time, entity and action |
+| P0-03-SMOKE-06 | Dashboard source reconciliation preserved | P2-18 dashboard totals match restored source tables and remain read-only for tested roles | Dashboard values drift from restored source records |
+
+Final smoke-check decision: RESTORE_SMOKE_CHECK_PASS / FAIL / BLOCKED.
+
+PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass, rollback
+proof, migration approval or production GO. Attach only redacted evidence
+references; keep raw exports, credentials, bank data, vouchers and personal data
+outside Git/Codex/chat.
