@@ -4,6 +4,8 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const labelPath = "lib/ttgdtx-process-labels.ts";
 const searchPagePath = "app/search/page.tsx";
+const quickFinderPath = "components/ttgdtx/ttgdtx-process-quick-finder.tsx";
+const landingPath = "app/ttgdtx/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -28,11 +30,15 @@ function requireText(contents, pattern, label, file) {
 
 requireFile(labelPath);
 requireFile(searchPagePath);
+requireFile(quickFinderPath);
+requireFile(landingPath);
 requireFile("docs/TTGDTX_PROCESS_CODE_MAP_20260625.md");
 requireFile("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
 const labels = read(labelPath);
 const searchPage = read(searchPagePath);
+const quickFinder = read(quickFinderPath);
+const landingPage = read(landingPath);
 const processMap = read("docs/TTGDTX_PROCESS_CODE_MAP_20260625.md");
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
@@ -93,8 +99,26 @@ requireText(
   searchPagePath,
 );
 requireText(
+  quickFinder,
+  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*hoa don thu tien)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
+  "TTGDTX landing quick finder with P2-10 business search and local-only boundary",
+  quickFinderPath,
+);
+requireText(
+  quickFinder,
+  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Thu hoc phi, hoa don thu tien, P2-10"/i,
+  "quick finder search form",
+  quickFinderPath,
+);
+requireText(
+  landingPage,
+  /TtgdtxProcessQuickFinder[\s\S]*<TtgdtxProcessQuickFinder \/>[\s\S]*<TtgdtxOperatingControlStrip currentCode="P2-01" \/>/i,
+  "TTGDTX landing quick finder before operating control strip",
+  landingPath,
+);
+requireText(
   processMap,
-  /User-facing screens and documents should show the business name first/i,
+  /User-facing screens and documents should show the business name first[\s\S]*TTGDTX\s+landing quick finder/i,
   "business-name-first rule",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
 );

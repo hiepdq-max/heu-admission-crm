@@ -94,6 +94,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx",
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
@@ -1017,7 +1018,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
-  /business name first/i,
+  /business name first[\s\S]*TTGDTX\s+landing quick finder/i,
   "business-name-first process label rule",
 );
 
@@ -1031,6 +1032,18 @@ requireText(
   "lib/ttgdtx-process-labels.ts",
   /code: "P2-10"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*hoa don thu tien/i,
   "P2-10 business-first process label",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
+  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*hoa don thu tien)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
+  "TTGDTX process quick finder local-only display",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /TtgdtxProcessQuickFinder[\s\S]*<TtgdtxProcessQuickFinder \/>[\s\S]*<TtgdtxOperatingControlStrip currentCode="P2-01" \/>/,
+  "TTGDTX landing page mounts process quick finder",
 );
 
 requireText(

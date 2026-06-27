@@ -2279,3 +2279,16 @@
 - P0-03 remains NOT_STARTED/IN_PROGRESS for production because real backup,
   restore, smoke-check, UAT and owner sign-off evidence must be collected
   outside Git/Codex/chat.
+
+## 2026-06-27 - TTGDTX Process Quick Finder
+
+- Added `components/ttgdtx/ttgdtx-process-quick-finder.tsx` to the TTGDTX
+  landing page so users can choose by business work first and use the P2 code
+  only for audit/search reference.
+- The quick finder highlights common TTGDTX flows including Thu hoc phi
+  (P2-10), doi soat, de nghi thanh toan, chi tien, dashboard ke toan and
+  source/evidence metadata.
+- Updated `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`, the production
+  checklist, `audit:ttgdtx-process-labels` and `audit:ttgdtx-release-gates`.
+- This remains PASS_LOCAL only; it improves navigation and search, but does
+  not approve UAT, finance action, production data or production GO.

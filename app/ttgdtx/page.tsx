@@ -21,6 +21,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxContractTuitionMasterGuard } from "@/components/ttgdtx/ttgdtx-contract-tuition-master-guard";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { TtgdtxOwnerGoNoGoEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist";
+import { TtgdtxProcessQuickFinder } from "@/components/ttgdtx/ttgdtx-process-quick-finder";
 import { TtgdtxProductionEvidenceBinder } from "@/components/ttgdtx/ttgdtx-production-evidence-binder";
 import { TtgdtxProductionExecutionQueue } from "@/components/ttgdtx/ttgdtx-production-execution-queue";
 import { TtgdtxProductionReadinessGuard } from "@/components/ttgdtx/ttgdtx-production-readiness-guard";
@@ -342,6 +343,7 @@ export default async function TtgdtxPage() {
           <TtgdtxProductionExecutionQueue />
           <TtgdtxProductionEvidenceBinder />
           <TtgdtxOwnerGoNoGoEvidenceChecklist />
+          <TtgdtxProcessQuickFinder />
           <TtgdtxOperatingControlStrip currentCode="P2-01" />
           <TtgdtxContractTuitionMasterGuard />
 

@@ -76,6 +76,9 @@ To find P2-10, search any of:
 ## 5. 2026-06-27 Local Implementation
 
 - Added `lib/ttgdtx-process-labels.ts` as the shared local process-label map.
+- Added `components/ttgdtx/ttgdtx-process-quick-finder.tsx` as the TTGDTX
+  landing quick finder so users can choose by business work first, then use the
+  P2 code for audit/search.
 - Added `npm.cmd run audit:ttgdtx-process-labels` to keep business names before
   P2 codes.
 - Added the TTGDTX process labels to Search suggestions so users can search
