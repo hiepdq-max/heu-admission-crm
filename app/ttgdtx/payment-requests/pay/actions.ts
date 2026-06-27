@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { parsePositiveVndAmountInput } from "@/lib/vnd-money";
 import { createClient } from "@/lib/supabase/server";
 
 function textValue(formData: FormData, key: string) {
@@ -16,16 +17,6 @@ function uuidValue(value: string) {
   )
     ? value
     : null;
-}
-
-function moneyValue(value: string) {
-  const normalized = value.replace(/[^\d]/g, "");
-  if (!normalized) {
-    return 0;
-  }
-
-  const numeric = Number(normalized);
-  return Number.isFinite(numeric) && numeric > 0 ? numeric : 0;
 }
 
 function safeReturnTo(value: string) {
@@ -52,7 +43,7 @@ export async function recordTtgdtxPartnerPaymentDisbursementAction(
   }
 
   const requestId = uuidValue(textValue(formData, "request_id"));
-  const amount = moneyValue(textValue(formData, "amount_vnd"));
+  const amount = parsePositiveVndAmountInput(textValue(formData, "amount_vnd"));
   const voucherNo = textValue(formData, "voucher_no");
 
   if (!requestId) {

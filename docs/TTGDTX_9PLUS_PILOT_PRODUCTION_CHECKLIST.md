@@ -52,7 +52,7 @@ approval.
 | P2-03 receivable creation | KHTC | DONE | Receivable ID, student, amount, due date, audit log | YES | Missing or duplicate receivable |
 | Thu học phí (P2-10) | KHTC | DONE | Receipt/voucher number, amount, date, evidence link | YES | Duplicate receipt or wrong amount |
 | Hóa đơn/chứng từ khi thu học phí (P2-10) | KHTC + PHAP_CHE | IN_PROGRESS | Policy matrix for collection model, payer type, invoice_required, issuer, invoice_status, invoice number/date/evidence or authorized waiver | YES | Tuition is collected without required invoice/chung-tu, or invoice is issued by the wrong party/time |
-| Money input format | IT_DATA + KHTC | IN_PROGRESS | Accept `1000000`, `1 000 000`, `1.000.000`; display formatted VND | NO | User enters wrong money amount |
+| Money input format | IT_DATA + KHTC | PASS_LOCAL | `npm.cmd run audit:vnd-money-format`; P2-10 and P2-17 share `lib/vnd-money.ts`; accept `1000000`, `1 000 000`, `1.000.000`; display `1.000.000 đ` | NO | User enters wrong money amount |
 | P2-13 reconciliation batch | KHTC | DONE | Batch ID, receipt list, period, partner | YES | Receipt omitted or placed in multiple periods |
 | P2-14 review/approve/lock batch | KHTC + BGH | DONE | Locked batch status and approval log | YES | Payment requested from unlocked period |
 | P2-15 payment request created | KHTC | DONE | Payment request ID, amount, batch, creator, required evidence link | YES | Missing payment request evidence |
@@ -98,6 +98,6 @@ production, the highest priority blockers are:
 6. Implement or explicitly defer the account-control workflow from `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`.
 7. Reflect `docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md` in UI helper text and gate logic.
 8. Finish user-friendly labels/search for process names using `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`.
-9. Add collection invoice/receipt status to Thu học phí (P2-10); partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
+9. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance forms; partner invoice gate is added to P2-15/P2-17 and still needs signed UAT proof.
 10. BBNT evidence gate is added to P2-15/P2-17 and still needs signed UAT proof.
 11. Complete role/workspace permission tests.

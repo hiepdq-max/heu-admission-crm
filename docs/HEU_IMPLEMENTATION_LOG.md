@@ -580,3 +580,32 @@
 - The quick-fix is metadata repair only and does not create receivables, collect money, reconcile, approve or pay.
 - It cannot self-promote a lead to ELIGIBLE/ENROLLED and cannot mark DOCUMENT_SUBMITTED without document evidence.
 - Production still requires signed role/scope UAT and business Go/No-Go.
+
+## 2026-06-27 - VND Money Input And Display Guard
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot with a small P2-10/P2-17 finance input hardening step.
+- Added one shared VND helper for parsing positive submitted amounts and displaying VND amounts.
+- Normalized P2-10 Thu học phí and P2-17 Chi tiền to accept `1000000`, `1 000 000`, `1.000.000` and display `1.000.000 đ`.
+- Added a local audit so future finance forms do not revert to unsafe non-digit stripping.
+
+### Files Updated/Added
+
+- `lib/vnd-money.ts`
+- `app/ttgdtx/payments/actions.ts`
+- `app/ttgdtx/payments/page.tsx`
+- `app/ttgdtx/payment-requests/pay/actions.ts`
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `scripts/audit-vnd-money-format.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_CURRENT_STATE_INVENTORY.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- This is PASS_LOCAL only; it does not mark P2-10/P2-17 production-ready.
+- Production still requires signed finance UAT, duplicate receipt/payout tests and business Go/No-Go.

@@ -16,6 +16,10 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  formatVndAmount as money,
+  formatVndInput as amountInput,
+} from "@/lib/vnd-money";
 import { firstParam } from "@/lib/workspace";
 
 import { recordTtgdtxTuitionPaymentAction } from "./actions";
@@ -186,28 +190,6 @@ const invoiceControlLabels: Record<string, string> = {
   RESOLVED: "Đã rõ hóa đơn",
   NEEDS_INVOICE_DECISION: "Cần chốt hóa đơn",
 };
-
-function money(value: number | string | null | undefined) {
-  const numeric = Number(value ?? 0);
-
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-    maximumFractionDigits: 0,
-  }).format(Number.isFinite(numeric) ? numeric : 0);
-}
-
-function amountInput(value: number | string | null | undefined) {
-  const numeric = Number(value ?? 0);
-
-  if (!Number.isFinite(numeric)) {
-    return "0";
-  }
-
-  return new Intl.NumberFormat("vi-VN")
-    .format(Math.round(numeric))
-    .replace(/\./g, " ");
-}
 
 function formatDate(value: string | null | undefined) {
   if (!value) {

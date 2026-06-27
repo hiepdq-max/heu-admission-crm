@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { parsePositiveVndAmountInput } from "@/lib/vnd-money";
 import { createClient } from "@/lib/supabase/server";
 
 const invoiceRequiredValues = new Set([
@@ -46,17 +47,6 @@ function uuidValue(value: string | null) {
     : null;
 }
 
-function numberValue(value: string | null) {
-  if (!value) {
-    return null;
-  }
-
-  const normalized = value.replace(/[^\d]/g, "");
-  const numeric = Number(normalized);
-
-  return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
-}
-
 function safePath(value: string | null, fallback = "/ttgdtx/payments") {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
     return fallback;
@@ -90,7 +80,9 @@ export async function recordTtgdtxTuitionPaymentAction(formData: FormData) {
   }
 
   const receivableId = uuidValue(textValue(formData, "receivable_id"));
-  const paymentAmount = numberValue(textValue(formData, "payment_amount_vnd"));
+  const paymentAmount = parsePositiveVndAmountInput(
+    textValue(formData, "payment_amount_vnd"),
+  );
   const paymentDate = textValue(formData, "payment_date");
   const voucherNo = textValue(formData, "voucher_no");
   const invoiceRequired =

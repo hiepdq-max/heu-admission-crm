@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "audit:hard-delete": "node scripts/audit-hard-delete.mjs",
+    "audit:vnd-money-format": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audit-vnd-money-format.mjs",
     "audit:permission-soft-revoke": "node scripts/audit-permission-soft-revoke.mjs",
     "audit:ttgdtx-audit-log": "node scripts/audit-ttgdtx-audit-log-coverage.mjs",
     "audit:ttgdtx-cascade": "node scripts/audit-ttgdtx-cascade-risk.mjs",

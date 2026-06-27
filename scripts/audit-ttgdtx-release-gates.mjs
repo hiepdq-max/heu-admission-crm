@@ -54,6 +54,8 @@ const requiredFiles = [
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
+  "lib/vnd-money.ts",
+  "scripts/audit-vnd-money-format.mjs",
 ];
 
 for (const file of requiredFiles) {
@@ -63,6 +65,7 @@ for (const file of requiredFiles) {
 const packageJson = JSON.parse(read("package.json"));
 const requiredScripts = [
   "audit:hard-delete",
+  "audit:vnd-money-format",
   "audit:permission-soft-revoke",
   "audit:ttgdtx-audit-log",
   "audit:ttgdtx-cascade",

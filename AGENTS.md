@@ -81,6 +81,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   unrelated work unless explicitly asked.
 - Before any final handoff, run:
   - `npm.cmd run audit:hard-delete`
+  - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`
   - `npm.cmd run audit:ttgdtx-audit-log`
   - `npm.cmd run audit:ttgdtx-cascade`

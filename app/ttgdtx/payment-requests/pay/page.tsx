@@ -15,6 +15,10 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  formatVndAmount as money,
+  formatVndInput as amountInput,
+} from "@/lib/vnd-money";
 import { firstParam } from "@/lib/workspace";
 
 import { PaymentSubmitButton } from "./payment-submit-button";
@@ -147,27 +151,6 @@ const paymentMethodLabels: Record<string, string> = {
   OFFSET: "Bù trừ công nợ",
   OTHER: "Khác",
 };
-
-function money(value: number | string | null | undefined) {
-  const numeric = Number(value ?? 0);
-  const safeValue = Number.isFinite(numeric) ? numeric : 0;
-  const formatted = new Intl.NumberFormat("vi-VN", {
-    maximumFractionDigits: 0,
-  }).format(safeValue);
-
-  return `${formatted.replace(/\./g, " ")} đ`;
-}
-
-function amountInput(value: number | string | null | undefined) {
-  const numeric = Number(value ?? 0);
-  const safeValue = Number.isFinite(numeric) ? numeric : 0;
-
-  return new Intl.NumberFormat("vi-VN", {
-    maximumFractionDigits: 0,
-  })
-    .format(safeValue)
-    .replace(/\./g, " ");
-}
 
 function formatDate(value: string | null | undefined) {
   if (!value) {
