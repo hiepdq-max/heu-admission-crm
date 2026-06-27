@@ -2015,3 +2015,11 @@
 - This proves local guard alignment only. Production remains NO-GO until
   backup/restore evidence, signed UAT, migration order, hard-delete/cascade
   waiver and owner GO/NO-GO are complete.
+## 2026-06-27 - P0-12 Vietnamese Text Encoding Guard
+
+- Added `audit:heu-vietnamese-text-encoding` to scan UI, docs, lib, scripts and
+  fixture text for mojibake before handoff.
+- Registered the guard in `package.json`, `AGENTS.md`, the production checklist,
+  the backlog, the current-state inventory and the release-gate audit.
+- This protects user-facing Vietnamese labels and process text. It does not
+  change production data, run migration or approve production readiness.
