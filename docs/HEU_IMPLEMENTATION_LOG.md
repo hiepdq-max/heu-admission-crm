@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P3-01 P3-02 Lead Lifecycle Handover UAT Pack
+
+- Added `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` as the
+  PASS_LOCAL UAT execution pack for P3-01 lead lifecycle and P3-02
+  lead-to-student handover.
+- Added a visible P3-01/P3-02 UAT execution pack to
+  `components/leads/lead-lifecycle-guard.tsx` with P3-UAT-01 through
+  P3-UAT-08, required actor labels, route coverage, expected evidence and stop
+  conditions.
+- Added `audit:heu-lead-lifecycle-handover-uat-pack` and wired it into
+  AGENTS, backlog, production checklist, current-state inventory,
+  implementation-log and release-gate audits.
+- This is P3 UAT packaging only. It does not execute UAT, accept handover,
+  create receivable, approve finance action, accept evidence, waive owner
+  sign-off or mark production GO.
+
 ## 2026-06-28 - P0-15 Final Handoff P6-06 Register Reference
 
 - Updated `AGENTS.md` so final handoff summaries must cite

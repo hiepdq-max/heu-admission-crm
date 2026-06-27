@@ -90,6 +90,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
 - `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`
 - `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
+- `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md`
 - `docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
 - `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
@@ -125,6 +126,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-git-hygiene`
   - `npm.cmd run audit:heu-implementation-log`
   - `npm.cmd run audit:heu-lead-handover-policy`
+  - `npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack`
   - `npm.cmd run audit:heu-lead-lifecycle-standard`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
   - `npm.cmd run audit:heu-p0-register-pack`

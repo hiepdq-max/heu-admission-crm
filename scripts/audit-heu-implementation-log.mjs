@@ -92,9 +92,16 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*56 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*57 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - P3-01 P3-02 Lead Lifecycle Handover UAT Pack[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*lead-lifecycle-guard\.tsx[\s\S]*P3-UAT-01 through\s+P3-UAT-08[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*This is P3 UAT packaging only[\s\S]*does not execute UAT, accept handover,\s+create receivable, approve finance action, accept evidence, waive owner\s+sign-off or mark production GO/i,
+  "P3 lead lifecycle/handover UAT pack log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 for (const heading of [

@@ -85,6 +85,7 @@ const requiredFiles = [
   "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
   "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
+  "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
   "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
@@ -121,6 +122,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
   "components/leads/lead-lifecycle-guard.tsx",
+  "components/leads/lead-handover-panel.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
   "app/finance-desk/page.tsx",
@@ -142,6 +144,7 @@ const requiredFiles = [
   "scripts/audit-heu-implementation-log.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
+  "scripts/audit-heu-lead-lifecycle-handover-uat-pack.mjs",
   "scripts/audit-heu-lead-lifecycle-standard.mjs",
   "scripts/audit-heu-non-ttgdtx-cascade-review.mjs",
   "scripts/audit-heu-p0-register-pack.mjs",
@@ -192,6 +195,7 @@ const requiredScripts = [
   "audit:heu-git-hygiene",
   "audit:heu-implementation-log",
   "audit:heu-lead-handover-policy",
+  "audit:heu-lead-lifecycle-handover-uat-pack",
   "audit:heu-lead-lifecycle-standard",
   "audit:heu-non-ttgdtx-cascade-review",
   "audit:heu-p0-register-pack",
@@ -409,7 +413,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*final owner decision manifest[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 reliance decision manifest[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references/i,
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*final owner decision manifest[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 reliance decision manifest[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -1479,6 +1483,30 @@ requireText(
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   /(?=[\s\S]*P3-02 Handover Decision Manifest)(?=[\s\S]*data-heu-lead-handover-decision-manifest="P3-02")(?=[\s\S]*P3-02-DEC-01)(?=[\s\S]*P3-02-DEC-06)(?=[\s\S]*P3_02_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P3-02-ACCEPT-01 through P3-02-ACCEPT-06 and P3-02-DEC-01 through\s+P3-02-DEC-06)/i,
   "P3-02 handover decision manifest doc",
+);
+
+requireText(
+  "components/leads/lead-lifecycle-guard.tsx",
+  /(?=[\s\S]*data-heu-lead-lifecycle-handover-uat-pack="P3-01-P3-02")(?=[\s\S]*P3-01\/P3-02 UAT execution pack:\s*PASS_LOCAL only)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3-UAT-01)(?=[\s\S]*P3-UAT-08)(?=[\s\S]*Tuyen Sinh, CTHSSV, Dao Tao, KHTC, IT_DATA and Audit)(?=[\s\S]*PASS_LOCAL does not accept UAT, approve handover reliance, create\s+finance facts, waive evidence, approve owner sign-off or mark\s+production GO)/i,
+  "P3-01/P3-02 visible UAT execution pack",
+);
+
+requireText(
+  "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*P3-01 lead lifecycle and P3-02 lead-to-student handover)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P3-UAT-01)(?=[\s\S]*P3-UAT-08)(?=[\s\S]*P3-UAT-DEC-01)(?=[\s\S]*P3-UAT-DEC-06)(?=[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs or keys)(?=[\s\S]*P3-01\/P3-02 remain pending until every P3-UAT case is executed with redacted\s+evidence)/i,
+  "P3-01/P3-02 UAT runbook and closure rule",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /(?=[\s\S]*P3-01[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*P3-01\/P3-02 UAT execution pack[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)(?=[\s\S]*P3-02[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*P3-01\/P3-02 UAT execution pack[\s\S]*signed role-scope UAT and handover decision still required)/i,
+  "P3 backlog UAT execution pack reference",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /(?=[\s\S]*Lead lifecycle standard[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*P3-01\/P3-02 UAT execution pack[\s\S]*signed UAT still required)(?=[\s\S]*Lead-to-student handover guard[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*P3-01\/P3-02 UAT execution pack[\s\S]*signed UAT and handover decision still required)/i,
+  "production checklist P3 UAT execution pack reference",
 );
 
 if (failures.length > 0) {

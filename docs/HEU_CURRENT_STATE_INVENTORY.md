@@ -51,11 +51,12 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
+| `npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack` | PASS |
 | `npm.cmd run audit:heu-p0-register-pack` | PASS |
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 56 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 57 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -68,8 +69,8 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
-| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix and handover decision manifest exist; handover remains finance-gated |
-| M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy, P3-02 acceptance matrix and handover decision manifest exist; production UAT pending |
+| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and P3-01/P3-02 UAT execution pack exist; handover remains finance-gated |
+| M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy, P3-02 acceptance matrix, handover decision manifest and P3-01/P3-02 UAT execution pack exist; production UAT pending |
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
 | M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard, P2-03 through P2-18 pilot flow and P5-03 Finance Desk read-only cockpit with reliance decision manifest are packaged; signed finance/legal UAT still required |
@@ -88,7 +89,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist, waiver/exception register, acceptance matrix and gate decision manifest exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
-| Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix and handover decision manifest exist | PASS_LOCAL; signed role/workflow UAT and handover decision pending |
+| Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` exist | PASS_LOCAL; signed role/workflow UAT and handover decision pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-10 invoice/chung-tu decision manifest, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, payment dossier acceptance matrix, duplicate, execution-readiness guards, payout acceptance matrix and payout release decision manifest | Signed payout UAT pending |
 | Account-control/collateral scope | Account-control scope decision and source-control UI guard keep tuition-account freeze/release metadata-only and collateral giai-chap separate | PASS_LOCAL; real bank/collateral operation deferred |
