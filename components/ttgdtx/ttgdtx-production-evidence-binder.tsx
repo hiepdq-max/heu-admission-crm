@@ -1,6 +1,13 @@
-import { Archive, FileCheck2, LockKeyhole } from "lucide-react";
+import { Archive, FileCheck2, LockKeyhole, ShieldCheck } from "lucide-react";
 
-import { PRODUCTION_EVIDENCE_REQUIREMENTS } from "@/lib/production-readiness";
+import {
+  PRODUCTION_EVIDENCE_REQUIREMENTS,
+  PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
+} from "@/lib/production-readiness";
+
+const governanceEvidenceCases = PRODUCTION_EVIDENCE_REQUIREMENTS.filter(
+  (item) => item.blockerCode === "P6-04" || item.blockerCode === "P6-03",
+);
 
 export function TtgdtxProductionEvidenceBinder() {
   return (
@@ -64,6 +71,65 @@ export function TtgdtxProductionEvidenceBinder() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-sky-200 bg-white p-4"
+        data-p014-governance-evidence-checkpoint="P6-04_P6-03"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-sky-700" />
+            <div>
+              <h3 className="font-semibold text-sky-950">
+                P0-14 governance evidence checkpoint: P6-04 + P6-03
+              </h3>
+              <p className="mt-2 leading-6 text-zinc-700">
+                Role/workspace proof and audit trace proof must both have
+                controlled references, redaction checks and human sign-off
+                before owner review. A role leak, missing trace row, broad
+                access path or unsigned evidence keeps P0-14 NO-GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 font-mono text-xs text-sky-950">
+            P6_04_SCOPE + P6_03_TRACE
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {PRODUCTION_GOVERNANCE_ASSURANCE_STEPS.map((step) => {
+            const evidence = governanceEvidenceCases.find(
+              (item) => item.blockerCode === step.code,
+            );
+
+            return (
+              <article
+                key={`${step.code}-p014-checkpoint`}
+                className="border-l-2 border-sky-300 bg-sky-50 px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-sky-700">
+                  {step.code}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  <span className="font-medium">Route:</span> {step.route}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  <span className="font-medium">Evidence:</span>{" "}
+                  {evidence?.requiredProof}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop if missing, unsigned or stored with forbidden content:{" "}
+                  {evidence?.forbiddenContent}
+                </p>
+                <p className="mt-2 text-xs font-medium text-sky-800">
+                  Guard: {step.auditCommand}
+                </p>
+              </article>
+            );
+          })}
+        </div>
       </div>
 
       <div
