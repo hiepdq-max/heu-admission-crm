@@ -41,6 +41,8 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run lint` | PASS at last verification |
 | `npm.cmd run audit:ttgdtx-release-gates` | PASS |
 | `npm.cmd run audit:heu-git-hygiene` | PASS |
+| `npm.cmd run audit:ttgdtx-process-labels` | PASS |
+| `npm.cmd run audit:heu-bgh-dashboard-spec` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-standard` | PASS |
 | `npm.cmd run audit:ttgdtx-contract-tuition-master-guard` | PASS |
 | `npm.cmd run audit:heu-vietnamese-text-encoding` | PASS |
@@ -50,7 +52,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the P6-06 hard-delete decision queue full sweep; 53 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder and P5-02 Master Control action queue sweep; 53 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -77,6 +79,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Area | Current evidence | Readiness |
 |---|---|---|
 | Production readiness guard | TTGDTX landing guard, execution queue, owner GO/NO-GO checklist and owner acceptance matrix | PASS_LOCAL, NO-GO |
+| Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
 | Legal/finance gate | P0-19 guard, UAT checklist and acceptance matrix exist | Signed legal/finance UAT still required |
@@ -84,7 +87,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
-| Accounting dashboard | P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist | Signed browser UAT pending |
+| Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue exist | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix and acceptance matrix exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |

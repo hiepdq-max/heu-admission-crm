@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P6-06 hard-delete decision queue full sweep[\s\S]*53 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder and P5-02 Master Control action queue sweep[\s\S]*53 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -96,6 +96,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Process discovery\/navigation[\s\S]*Shared TTGDTX process labels, Search suggestions and `\/ttgdtx` quick finder show business name before P2 code[\s\S]*PASS_LOCAL; signed browser UAT pending/i,
+  "TTGDTX process discovery and quick finder control state",
+);
+requireText(
+  inventory,
   /M01 Legal[\s\S]*P0-19 legal\/finance gate and acceptance matrix are packaged; signed UAT still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist and acceptance matrix exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged[\s\S]*Local controls pass; signed finance UAT pending/i,
   "P0-19 legal/finance acceptance matrix control state",
 );
@@ -106,8 +111,8 @@ requireText(
 );
 requireText(
   inventory,
-  /Accounting dashboard[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist[\s\S]*Signed browser UAT pending/i,
-  "P2-18 dashboard acceptance matrix control state",
+  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue exist[\s\S]*Signed browser UAT pending/i,
+  "P2-18 dashboard and P5-02 action queue control state",
 );
 requireText(
   inventory,

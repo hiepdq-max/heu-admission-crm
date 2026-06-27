@@ -2304,3 +2304,15 @@
   `audit:ttgdtx-release-gates`.
 - P5-02 remains PASS_LOCAL only; it does not create a production BGH dashboard,
   approve UAT, approve finance actions or mark production GO.
+
+## 2026-06-27 - Current-State Inventory Refresh
+
+- Refreshed `docs/HEU_CURRENT_STATE_INVENTORY.md` after the TTGDTX process
+  quick finder and P5-02 Master Control action queue slices.
+- Added explicit current evidence for `audit:ttgdtx-process-labels` and
+  `audit:heu-bgh-dashboard-spec`.
+- Updated `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`
+  so the inventory requires the current Stage D / production NO-GO snapshot.
+- This is documentation and audit control only; production still requires real
+  backup/restore evidence, signed UAT, signed migration approval and final
+  owner GO/NO-GO.
