@@ -1130,7 +1130,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
-  /business name first[\s\S]*TTGDTX\s+landing quick finder/i,
+  /business name first[\s\S]*HEU Finance Desk[\s\S]*P5-03[\s\S]*TTGDTX\s+landing quick finder/i,
   "business-name-first process label rule",
 );
 
@@ -1147,9 +1147,21 @@ requireText(
 );
 
 requireText(
+  "lib/ttgdtx-process-labels.ts",
+  /code: "P5-03"[\s\S]*businessName: "HEU Finance Desk"[\s\S]*label: "HEU Finance Desk \(P5-03\)"[\s\S]*href: "\/finance-desk"[\s\S]*dashboard tai chinh/i,
+  "P5-03 Finance Desk process label",
+);
+
+requireText(
   "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
-  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*hoa don thu tien)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*"P5-03")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
   "TTGDTX process quick finder local-only display",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Finance Desk Process Finder Link[\s\S]*HEU Finance Desk \(P5-03\)[\s\S]*TTGDTX process-label map[\s\S]*\/finance-desk[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not grant production\s+access, execute UAT, approve finance action, run production migration, accept\s+evidence or mark production GO/i,
+  "Finance Desk process finder log entry",
 );
 
 requireText(

@@ -61,6 +61,19 @@
   approve finance action, run production migration, accept evidence or mark
   production GO.
 
+## 2026-06-27 - Finance Desk Process Finder Link
+
+- Added `HEU Finance Desk (P5-03)` to the TTGDTX process-label map and search
+  suggestions so operators can find the read-only KHTC/BGH cockpit without
+  memorizing a route.
+- Added P5-03 to the TTGDTX quick finder and kept the entry tied to
+  `/finance-desk`, not to any write/approval screen.
+- Extended process-label and release-gate audits so the Finance Desk finder
+  entry stays business-name-first, discoverable and PASS_LOCAL.
+- This is navigation/discovery packaging only. It does not grant production
+  access, execute UAT, approve finance action, run production migration, accept
+  evidence or mark production GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

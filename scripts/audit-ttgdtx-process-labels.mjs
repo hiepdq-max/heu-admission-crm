@@ -59,6 +59,7 @@ const requiredCodes = [
   "P2-17",
   "P2-18",
   "P2-19",
+  "P5-03",
 ];
 
 for (const code of requiredCodes) {
@@ -88,6 +89,12 @@ requireText(
 );
 requireText(
   labels,
+  /code: "P5-03"[\s\S]*businessName: "HEU Finance Desk"[\s\S]*label: "HEU Finance Desk \(P5-03\)"[\s\S]*href: "\/finance-desk"[\s\S]*dashboard tai chinh/i,
+  "P5-03 Finance Desk search terms",
+  labelPath,
+);
+requireText(
+  labels,
   /TTGDTX_PROCESS_SEARCH_SUGGESTIONS = TTGDTX_PROCESS_LABELS\.map/i,
   "search suggestions export",
   labelPath,
@@ -100,13 +107,13 @@ requireText(
 );
 requireText(
   quickFinder,
-  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*hoa don thu tien)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
-  "TTGDTX landing quick finder with P2-10 business search and local-only boundary",
+  /(?=[\s\S]*data-ttgdtx-process-quick-finder="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX_PROCESS_LABELS)(?=[\s\S]*featuredProcessCodes)(?=[\s\S]*"P2-10")(?=[\s\S]*"P5-03")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*production GO)/i,
+  "TTGDTX landing quick finder with P2-10 and P5-03 business search and local-only boundary",
   quickFinderPath,
 );
 requireText(
   quickFinder,
-  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Thu hoc phi, hoa don thu tien, P2-10"/i,
+  /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Finance Desk, Thu hoc phi, P2-10"/i,
   "quick finder search form",
   quickFinderPath,
 );
@@ -118,7 +125,7 @@ requireText(
 );
 requireText(
   processMap,
-  /User-facing screens and documents should show the business name first[\s\S]*TTGDTX\s+landing quick finder/i,
+  /User-facing screens and documents should show the business name first[\s\S]*HEU Finance Desk[\s\S]*P5-03[\s\S]*TTGDTX\s+landing quick finder/i,
   "business-name-first rule",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
 );

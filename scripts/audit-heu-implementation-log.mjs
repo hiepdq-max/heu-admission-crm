@@ -108,6 +108,7 @@ for (const heading of [
   "VND Audit Output Vietnamese Clarity",
   "Finance Desk Read-Only Guard Packaging",
   "Finance Desk UAT Runbook Packaging",
+  "Finance Desk Process Finder Link",
 ]) {
   requireText(
     log,
@@ -163,6 +164,13 @@ requireText(
   log,
   /Finance Desk UAT Runbook Packaging[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 browser UAT[\s\S]*contract-only denial[\s\S]*out-of-scope denial[\s\S]*read-only behavior[\s\S]*audit:heu-finance-desk[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is UAT packaging only[\s\S]*does not execute UAT, collect evidence,\s+approve finance action, run production migration, accept evidence or mark\s+production GO/i,
   "Finance Desk UAT runbook packaging log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Finance Desk Process Finder Link[\s\S]*HEU Finance Desk \(P5-03\)[\s\S]*TTGDTX process-label map[\s\S]*\/finance-desk[\s\S]*process-label and release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not grant production\s+access, execute UAT, approve finance action, run production migration, accept\s+evidence or mark production GO/i,
+  "Finance Desk process finder log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

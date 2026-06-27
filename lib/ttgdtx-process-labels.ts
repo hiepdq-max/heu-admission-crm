@@ -144,6 +144,21 @@ export const TTGDTX_PROCESS_LABELS: TtgdtxProcessLabel[] = [
     plainMeaning: "Metadata cho BBNT, phong toả/giải toả, hoá đơn và giải chấp",
     searchTerms: ["du lieu that", "bbnt", "phong toa", "giai chap"],
   },
+  {
+    code: "P5-03",
+    businessName: "HEU Finance Desk",
+    label: "HEU Finance Desk (P5-03)",
+    href: "/finance-desk",
+    plainMeaning:
+      "Cockpit read-only cho KHTC/BGH xem công nợ, import, nguồn và chi trả TTGDTX",
+    searchTerms: [
+      "finance desk",
+      "ke toan",
+      "khtc",
+      "dashboard tai chinh",
+      "p5-03",
+    ],
+  },
 ];
 
 export const TTGDTX_PROCESS_SEARCH_SUGGESTIONS = TTGDTX_PROCESS_LABELS.map(

@@ -41,6 +41,7 @@ the mental model for daily users.
 | Chi tien | P2-17 | `/ttgdtx/payment-requests/pay` | Thuc hien chi tra mot lan, co chung tu |
 | Dashboard ke toan | P2-18 | `/ttgdtx/accounting-dashboard` | Tong hop tien, cong no, doi soat, chi tra |
 | Bang chung du lieu that | P2-19 | Step110/source-control docs | Metadata cho Phu Xuyen, BBNT, phong toa/giai toa, hoa don, giai chap |
+| HEU Finance Desk | P5-03 | `/finance-desk` | Cockpit read-only cho KHTC/BGH xem cong no, import, nguon va chi tra TTGDTX |
 
 ## 3. Where Is P2-10?
 
@@ -83,6 +84,9 @@ To find P2-10, search any of:
   P2 codes.
 - Added the TTGDTX process labels to Search suggestions so users can search
   "Thu hoc phi (P2-10)" without knowing only the technical code.
+- Added `HEU Finance Desk (P5-03)` to the process-label map and TTGDTX quick
+  finder as a read-only KHTC/BGH cockpit entry. This helps operators find the
+  finance workbench without treating it as a write/approval screen.
 
 This is PASS_LOCAL only. It does not approve production data, production UAT or
 business sign-off.
