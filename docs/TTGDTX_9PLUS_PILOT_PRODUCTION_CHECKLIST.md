@@ -84,9 +84,12 @@ approval.
 
 ## 6. P0 Go/No-Go Controls
 
-P0 controls include backup, controlled evidence redaction, migration order,
-permission, audit, hard-delete, rollback, P2-17 payout, P2-18 dashboard, final
-UAT sign-off and final owner Go/No-Go sign-off.
+P0 controls include implementation-log discipline, backup/restore, controlled
+evidence redaction, migration order, permission, audit, hard-delete, rollback,
+P2-17 payout, P2-18 dashboard, P0-14 production evidence binder, P0-15 final
+handoff coverage, final UAT sign-off and final owner Go/No-Go sign-off.
+PASS_LOCAL controls only prove local packaging. Production remains NO-GO until
+controlled external evidence and required owner signatures exist.
 
 ## 7. Evidence Required
 

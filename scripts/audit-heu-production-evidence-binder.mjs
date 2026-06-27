@@ -160,6 +160,13 @@ requireText(
 
 requireText(
   checklist,
+  /P0 controls include[\s\S]*P0-14 production evidence binder[\s\S]*Production remains NO-GO until\s+controlled external evidence and required owner signatures exist/i,
+  "P0 Go/No-Go controls include P0-14 evidence binder",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
+  checklist,
   /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
   "priority blocker list includes P0-14 evidence binder closure",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",

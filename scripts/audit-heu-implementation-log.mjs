@@ -78,6 +78,13 @@ requireText(
 
 requireText(
   checklist,
+  /P0 controls include implementation-log discipline[\s\S]*P0-14 production evidence binder[\s\S]*P0-15 final\s+handoff coverage[\s\S]*Production remains NO-GO until\s+controlled external evidence and required owner signatures exist/i,
+  "P0 Go/No-Go controls include implementation-log and local-only boundary",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
+  checklist,
   /highest priority blockers[\s\S]*Keep P0-05 implementation log audit green[\s\S]*safe build slice[\s\S]*scope, checks and local-only boundary[\s\S]*before commit/i,
   "priority blocker list includes P0-05 implementation-log guard",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
@@ -96,6 +103,7 @@ for (const heading of [
   "P5-02 Execution Queue Evidence Closure Alignment",
   "P0-05 Implementation Log Audit Guard",
   "Production Priority Blocker List Alignment",
+  "P0 Go No-Go Control Paragraph Alignment",
 ]) {
   requireText(
     log,
@@ -116,6 +124,13 @@ requireText(
   log,
   /Production Priority Blocker List Alignment[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*P0-05\s+implementation-log audit[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is checklist-priority alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
   "priority blocker list alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /P0 Go No-Go Control Paragraph Alignment[\s\S]*P0 controls paragraph[\s\S]*implementation-log\s+discipline[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*Production remains NO-GO until controlled\s+external evidence and required owner signatures exist[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is P0 control wording alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
+  "P0 Go/No-Go control paragraph alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

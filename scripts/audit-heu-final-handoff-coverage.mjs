@@ -110,6 +110,13 @@ requireText(
 
 requireText(
   checklist,
+  /P0 controls include[\s\S]*P0-15 final\s+handoff coverage[\s\S]*Production remains NO-GO until\s+controlled external evidence and required owner signatures exist/i,
+  "P0 Go/No-Go controls include P0-15 final handoff",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+requireText(
+  checklist,
   /highest priority blockers[\s\S]*Run P0-15 final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*owner GO\/NO-GO/i,
   "priority blocker list includes P0-15 final handoff",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",

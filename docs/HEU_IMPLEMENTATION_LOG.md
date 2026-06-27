@@ -2502,3 +2502,16 @@
   execution queue.
 - This is checklist-priority alignment only. It does not collect evidence,
   execute UAT, approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - P0 Go No-Go Control Paragraph Alignment
+
+- Updated the P0 controls paragraph so it includes implementation-log
+  discipline, P0-14 evidence binder and P0-15 final handoff coverage before
+  final UAT and owner Go/No-Go.
+- Added the explicit boundary that Production remains NO-GO until controlled
+  external evidence and required owner signatures exist.
+- Extended `audit:heu-production-evidence-binder`,
+  `audit:heu-final-handoff-coverage`, `audit:heu-implementation-log` and
+  `audit:ttgdtx-release-gates` so the P0 control wording stays aligned.
+- This is P0 control wording alignment only. It does not collect evidence,
+  execute UAT, approve migration, approve finance action or mark production GO.

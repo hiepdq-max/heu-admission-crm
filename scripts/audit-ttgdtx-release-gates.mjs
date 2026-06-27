@@ -385,6 +385,18 @@ requireText(
 );
 
 requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P0 controls include implementation-log discipline, backup\/restore[\s\S]*P0-14 production evidence binder[\s\S]*P0-15 final\s+handoff coverage[\s\S]*Production remains NO-GO until\s+controlled external evidence and required owner signatures exist/i,
+  "P0 Go/No-Go controls include P0-05/P0-14/P0-15 and external-evidence boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0 Go No-Go Control Paragraph Alignment[\s\S]*P0 controls paragraph[\s\S]*implementation-log\s+discipline[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*Production remains NO-GO until controlled\s+external evidence and required owner signatures exist[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is P0 control wording alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
+  "P0 Go/No-Go control paragraph alignment log entry",
+);
+
+requireText(
   "AGENTS.md",
   /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT\s+handoff evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14\s+production evidence binder[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
   "P0-15 final handoff summary guard",
