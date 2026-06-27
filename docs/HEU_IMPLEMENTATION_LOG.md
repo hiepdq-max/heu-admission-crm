@@ -2480,3 +2480,13 @@
   `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`.
 - This is read-only queue alignment only. It does not collect evidence, execute
   UAT, approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - P0-05 Implementation Log Audit Guard
+
+- Added `audit:heu-implementation-log` so implementation-log discipline is
+  checked in package scripts, `AGENTS.md` final handoff and release gates.
+- Updated the P0-05 backlog row, production checklist and current-state
+  inventory so each safe build slice must record scope, checks and the
+  local-only boundary before commit.
+- This is governance-log alignment only. It does not execute UAT, accept real
+  evidence, approve migration, approve finance action or mark production GO.

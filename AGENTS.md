@@ -113,6 +113,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-data-foundation`
   - `npm.cmd run audit:heu-final-handoff-coverage`
   - `npm.cmd run audit:heu-git-hygiene`
+  - `npm.cmd run audit:heu-implementation-log`
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-lead-lifecycle-standard`
   - `npm.cmd run audit:heu-non-ttgdtx-cascade-review`
