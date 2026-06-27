@@ -3,6 +3,11 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const scanRoot = path.join(repoRoot, "app", "ttgdtx");
+const step90Path = path.join(
+  repoRoot,
+  "database",
+  "step90_ttgdtx_student_receivables.sql",
+);
 const failures = [];
 
 function fail(message) {
@@ -80,6 +85,54 @@ for (const filePath of pageFiles) {
       fail(`${relative}: Boolean scope access must include a business permission`);
     }
   }
+}
+
+const step90Sql = readFileSync(step90Path, "utf8");
+
+if (!/Migration candidate only\. Do not run production migration from Codex\/chat\./i.test(step90Sql)) {
+  fail("database/step90_ttgdtx_student_receivables.sql: missing production migration boundary");
+}
+
+if (
+  !/create or replace function public\.can_read_ttgdtx_receivable[\s\S]*\(\s*\(\s*public\.has_permission\('ttgdtx\.receivable\.read'\)[\s\S]*public\.has_permission\('ttgdtx\.receivable\.manage'\)[\s\S]*public\.has_permission\('ttgdtx\.receivable\.approve'\)[\s\S]*\)\s*and public\.can_access_business_scope/i.test(
+    step90Sql,
+  )
+) {
+  fail(
+    "database/step90_ttgdtx_student_receivables.sql: P2-03 read access must require both receivable permission and business scope",
+  );
+}
+
+if (/create policy "ttgdtx_receivables_manage"[\s\S]*for all/i.test(step90Sql)) {
+  fail(
+    'database/step90_ttgdtx_student_receivables.sql: P2-03 must not use a broad "for all" manage policy',
+  );
+}
+
+if (/create policy "ttgdtx_receivables_[^"]+"[\s\S]*for delete/i.test(step90Sql)) {
+  fail(
+    "database/step90_ttgdtx_student_receivables.sql: P2-03 must not expose direct delete policy",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_receivables_insert"[\s\S]*for insert[\s\S]*public\.can_manage_ttgdtx_receivable\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, partner_id\)/i.test(
+    step90Sql,
+  )
+) {
+  fail(
+    "database/step90_ttgdtx_student_receivables.sql: P2-03 insert policy must require manage permission and business scope",
+  );
+}
+
+if (
+  !/create policy "ttgdtx_receivables_update"[\s\S]*for update[\s\S]*public\.can_manage_ttgdtx_receivable\(\)[\s\S]*public\.can_access_business_scope\(admission_segment_id, partner_id\)/i.test(
+    step90Sql,
+  )
+) {
+  fail(
+    "database/step90_ttgdtx_student_receivables.sql: P2-03 update policy must require manage permission and business scope",
+  );
 }
 
 if (failures.length > 0) {

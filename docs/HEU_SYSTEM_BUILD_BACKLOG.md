@@ -31,7 +31,8 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 |---|---|---|---|---|
 | P2-01 | Contract/partner master | Phap Che + KHTC | BUILT_INTERNAL | Human approval for legal records |
 | P2-02 | Tuition policy master | KHTC | BUILT_INTERNAL | Approved policy version |
-| P2-03 | Student receivables | KHTC | BUILT_INTERNAL | No duplicate receivable test |
+| P2-03 | Student receivables | KHTC | PASS_LOCAL | Step90 is migration candidate only; scoped RLS, no direct delete policy, active duplicate guard; signed UAT still required |
+| P2-04 | TTGDTX operating simulation | KHTC + IT/Data | PASS_LOCAL | Read-only simulation route; no receivable, collection or payout write |
 | P2-05 | Receivable gate | KHTC + IT/Data | PASS_LOCAL | Gate before posting; Step91 is migration candidate only |
 | P2-06 | Import staging/control | IT/Data + KHTC | PASS_LOCAL | Step92 is migration candidate only; source file registry and validation |
 | P2-07 | Import issue routing | IT/Data + KHTC + owners | PASS_LOCAL | Step93 is migration candidate only; classify errors by owner department |

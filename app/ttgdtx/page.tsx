@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
+  Banknote,
   AlertTriangle,
+  Building2,
   CheckCircle2,
+  ClipboardCheck,
   FileSearch,
+  FileSpreadsheet,
   Handshake,
+  LayoutDashboard,
+  ReceiptText,
   RefreshCcw,
+  Scale,
   ShieldCheck,
   WalletCards,
 } from "lucide-react";
@@ -115,12 +122,12 @@ function canOpenTtgdtx(
   scopes: ScopeRow[],
   hasContractRead: boolean,
 ) {
-  if (!segmentId) {
-    return hasContractRead || roleCode === "ADMIN" || roleCode === "BGH";
+  if (roleCode === "ADMIN" || roleCode === "BGH") {
+    return true;
   }
 
-  if (roleCode === "ADMIN" || roleCode === "BGH" || hasContractRead) {
-    return true;
+  if (!segmentId || !hasContractRead) {
+    return false;
   }
 
   return scopes.some((scope) => scope.segment_id === segmentId);
@@ -148,7 +155,6 @@ export default async function TtgdtxPage() {
     readPermissionResult,
     segmentResult,
     scopeResult,
-    readinessResult,
   ] = await Promise.all([
     supabase.rpc("current_user_role_code"),
     supabase.rpc("has_permission", { permission_name: "ttgdtx.contract.read" }),
@@ -164,11 +170,6 @@ export default async function TtgdtxPage() {
       .eq("user_id", user.id)
       .eq("status", "ACTIVE")
       .returns<ScopeRow[]>(),
-    supabase
-      .from("ttgdtx_partner_contract_readiness")
-      .select("*")
-      .order("partner_name", { ascending: true })
-      .returns<TtgdtxContractReadinessRow[]>(),
   ]);
 
   const segment = segmentResult.data;
@@ -178,7 +179,19 @@ export default async function TtgdtxPage() {
     scopeResult.data ?? [],
     Boolean(readPermissionResult.data),
   );
-  const rows = readinessResult.data ?? [];
+  let rows: TtgdtxContractReadinessRow[] = [];
+  let dataError: { message: string } | null = null;
+
+  if (canOpen) {
+    const readinessResult = await supabase
+      .from("ttgdtx_partner_contract_readiness")
+      .select("*")
+      .order("partner_name", { ascending: true })
+      .returns<TtgdtxContractReadinessRow[]>();
+
+    rows = readinessResult.data ?? [];
+    dataError = readinessResult.error;
+  }
   const readyCount = countBy(rows, (row) => row.readiness_status === "READY");
   const blockedCount = countBy(rows, (row) => row.readiness_status !== "READY");
   const highRiskCount = countBy(rows, (row) =>
@@ -207,15 +220,87 @@ export default async function TtgdtxPage() {
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/ttgdtx/tuition">
-              <WalletCards className="size-4" />
-              P2-02 học phí
+            <Link href="/ttgdtx/master">
+              <Building2 className="size-4" />
+              Danh mục TTGDTX (P2-12)
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/search?q=P2-01">
+            <Link href="/ttgdtx/tuition">
+              <WalletCards className="size-4" />
+              Chính sách học phí (P2-02)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/receivables">
+              <ReceiptText className="size-4" />
+              Công nợ (P2-03)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/payments">
+              <Banknote className="size-4" />
+              Thu học phí (P2-10)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/reconciliation">
+              <Scale className="size-4" />
+              Đối soát (P2-13)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/reconciliation/review">
+              <CheckCircle2 className="size-4" />
+              Duyệt kỳ (P2-14)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/payment-requests">
+              <WalletCards className="size-4" />
+              Đề nghị chi (P2-15)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/payment-requests/review">
+              <ShieldCheck className="size-4" />
+              Duyệt chi (P2-16)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/payment-requests/pay">
+              <Banknote className="size-4" />
+              Chi tiền (P2-17)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/accounting-dashboard">
+              <LayoutDashboard className="size-4" />
+              Dashboard kế toán (P2-18)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/simulation">
+              <ClipboardCheck className="size-4" />
+              Mô phỏng (P2-04)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/gate">
+              <ShieldCheck className="size-4" />
+              Gate điều kiện (P2-05)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/import">
+              <FileSpreadsheet className="size-4" />
+              Import dữ liệu (P2-06)
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/search?q=TTGDTX%20contract%20P2-01">
               <FileSearch className="size-4" />
-              Tìm P2-01
+              Tìm hồ sơ TTGDTX
             </Link>
           </Button>
         </>
@@ -227,7 +312,7 @@ export default async function TtgdtxPage() {
           P2-01 hoặc được phân vào đối tượng tuyển sinh Trung cấp 9+ liên kết
           TTGDTX.
         </section>
-      ) : readinessResult.error ? (
+      ) : dataError ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
           <div className="flex items-start gap-3">
             <AlertTriangle className="mt-0.5 size-5 shrink-0" />
@@ -238,7 +323,7 @@ export default async function TtgdtxPage() {
                 <span className="font-medium">
                   step88_ttgdtx_partner_contract_master.sql
                 </span>
-                . Chi tiết: {readinessResult.error.message}
+                . Chi tiết: {dataError.message}
               </p>
             </div>
           </div>

@@ -4,7 +4,10 @@ import {
   AlertTriangle,
   ArrowLeft,
   CheckCircle2,
+  ClipboardCheck,
   FileSearch,
+  FileSpreadsheet,
+  ReceiptText,
   RefreshCcw,
   ShieldCheck,
   WalletCards,
@@ -134,12 +137,12 @@ function canOpenTtgdtxTuition(
   scopes: ScopeRow[],
   hasTuitionRead: boolean,
 ) {
-  if (!segmentId) {
-    return hasTuitionRead || roleCode === "ADMIN" || roleCode === "BGH";
+  if (roleCode === "ADMIN" || roleCode === "BGH") {
+    return true;
   }
 
-  if (roleCode === "ADMIN" || roleCode === "BGH" || hasTuitionRead) {
-    return true;
+  if (!segmentId || !hasTuitionRead) {
+    return false;
   }
 
   return scopes.some((scope) => scope.segment_id === segmentId);
@@ -167,7 +170,6 @@ export default async function TtgdtxTuitionPage() {
     readPermissionResult,
     segmentResult,
     scopeResult,
-    policyResult,
   ] = await Promise.all([
     supabase.rpc("current_user_role_code"),
     supabase.rpc("has_permission", { permission_name: "ttgdtx.tuition.read" }),
@@ -183,12 +185,6 @@ export default async function TtgdtxTuitionPage() {
       .eq("user_id", user.id)
       .eq("status", "ACTIVE")
       .returns<ScopeRow[]>(),
-    supabase
-      .from("ttgdtx_tuition_policy_readiness")
-      .select("*")
-      .order("partner_name", { ascending: true })
-      .order("major_name", { ascending: true })
-      .returns<TtgdtxTuitionPolicyRow[]>(),
   ]);
 
   const segment = segmentResult.data;
@@ -198,7 +194,20 @@ export default async function TtgdtxTuitionPage() {
     scopeResult.data ?? [],
     Boolean(readPermissionResult.data),
   );
-  const rows = policyResult.data ?? [];
+  let rows: TtgdtxTuitionPolicyRow[] = [];
+  let dataError: { message: string } | null = null;
+
+  if (canOpen) {
+    const policyResult = await supabase
+      .from("ttgdtx_tuition_policy_readiness")
+      .select("*")
+      .order("partner_name", { ascending: true })
+      .order("major_name", { ascending: true })
+      .returns<TtgdtxTuitionPolicyRow[]>();
+
+    rows = policyResult.data ?? [];
+    dataError = policyResult.error;
+  }
   const readyCount = countBy(rows, (row) => row.readiness_status === "READY");
   const missingAmountCount = countBy(
     rows,
@@ -232,6 +241,30 @@ export default async function TtgdtxTuitionPage() {
             </Link>
           </Button>
           <Button asChild variant="outline">
+            <Link href="/ttgdtx/receivables">
+              <ReceiptText className="size-4" />
+              P2-03 công nợ
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/simulation">
+              <ClipboardCheck className="size-4" />
+              P2-04 mô phỏng
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/gate">
+              <ShieldCheck className="size-4" />
+              P2-05 gate
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/import">
+              <FileSpreadsheet className="size-4" />
+              P2-06 import
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
             <Link href="/search?q=P2-02">
               <FileSearch className="size-4" />
               Tìm P2-02
@@ -246,7 +279,7 @@ export default async function TtgdtxTuitionPage() {
           Cần quyền P2-02 hoặc được phân vào đối tượng Trung cấp 9+ liên kết
           TTGDTX.
         </section>
-      ) : policyResult.error ? (
+      ) : dataError ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
           <div className="flex items-start gap-3">
             <AlertTriangle className="mt-0.5 size-5 shrink-0" />
@@ -257,7 +290,7 @@ export default async function TtgdtxTuitionPage() {
                 <span className="font-medium">
                   step89_ttgdtx_tuition_policy.sql
                 </span>
-                . Chi tiết: {policyResult.error.message}
+                . Chi tiết: {dataError.message}
               </p>
             </div>
           </div>

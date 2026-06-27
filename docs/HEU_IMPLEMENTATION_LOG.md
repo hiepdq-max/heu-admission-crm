@@ -426,3 +426,31 @@
 
 - TTGDTX remains one linked operating spine, not separate isolated finance pages.
 - AI/Codex still cannot approve production, finance actions, account freeze/release, collateral release or go-live.
+
+## 2026-06-27 - P2-03/P2-04 TTGDTX Receivable Runtime Slice
+
+### Scope
+
+- Packaged the P2-03 receivable page, P2-04 read-only simulation page, server action and Step90 SQL candidate for TTGDTX student receivables.
+- Tightened Step90 database access so read access requires receivable permission plus business scope, and direct write policy is insert/update only with scope.
+- Added a P2-03 UAT runbook for duplicate receivable, out-of-scope user, blocker and audit-log cases.
+
+### Files Updated/Added
+
+- `app/ttgdtx/receivables/page.tsx`
+- `app/ttgdtx/receivables/actions.ts`
+- `app/ttgdtx/simulation/page.tsx`
+- `app/ttgdtx/page.tsx`
+- `app/ttgdtx/tuition/page.tsx`
+- `database/step90_ttgdtx_student_receivables.sql`
+- `docs/P2_03_RECEIVABLE_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+- `scripts/audit-ttgdtx-role-scope-access.mjs`
+
+### Decision
+
+- Step90 is a migration candidate only and was not run in production.
+- P2-03 creates receivable facts only; it does not confirm cash collection, issue final invoice, reconcile, approve or pay.
+- P2-04 is read-only simulation and only points users to the next safe operating step.
+- Production remains NO-GO until signed UAT and backup/restore evidence are attached.
