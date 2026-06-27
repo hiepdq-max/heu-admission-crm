@@ -84,6 +84,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
+  "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
@@ -588,14 +589,26 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-payout-uat-evidence-checklist="P2-17")(?=[\s\S]*P2-17 payout UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed payout UAT is still required before P2-17 can move from\s+IN_PROGRESS)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2-17-01\/P2-17-02)(?=[\s\S]*P2-17-09\/P2-17-10\/P2-17-11)(?=[\s\S]*KHTC, PHAP_CHE, BGH and Audit must sign the evidence outside\s+Codex\/chat)/i,
+  "P2-17 payout UAT evidence checklist",
+);
+
+requireText(
   "app/ttgdtx/payment-requests/pay/page.tsx",
   /TtgdtxPayoutDuplicateGuard[\s\S]*<TtgdtxPayoutDuplicateGuard \/>/,
   "P2-17 payout duplicate guard mount",
 );
 
 requireText(
+  "app/ttgdtx/payment-requests/pay/page.tsx",
+  /<TtgdtxPayoutDuplicateGuard\s*\/>[\s\S]*<TtgdtxPayoutUatEvidenceChecklist\s*\/>/,
+  "P2-17 payout UAT evidence checklist mount",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /P2-17 execute payout once[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-payout-duplicate-guard[\s\S]*signed UAT/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*signed UAT)/i,
   "P2-17 duplicate guard checklist row",
 );
 

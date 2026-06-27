@@ -1691,3 +1691,38 @@
 - P2-18 UAT evidence checklist is PASS_LOCAL after local audits pass.
 - Signed browser UAT and owner approval are still required before P2-18 can be
   marked production-ready.
+
+## 2026-06-27 - P2-17 Payout UAT Evidence Checklist
+
+### Scope
+
+- Continued P2-17 production-readiness hardening with a small payout page
+  slice.
+- Added `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx` below the
+  duplicate-payout guard on `/ttgdtx/payment-requests/pay`.
+- The checklist lists required redacted evidence for P2-17-01 through P2-17-11,
+  including single payout, double-submit prevention, duplicate voucher
+  rejection, overpayment block, RPC-only write path, evidence URL requirement
+  and P2-19 BBNT/partner-invoice gates.
+- It repeats that raw bank statements, bank accounts, vouchers, passwords,
+  OTPs, service-role keys, raw payment data, student PII and CCCD stay outside
+  Git/Codex/chat.
+- Extended payout and release-gate audits so the checklist, production
+  checklist, backlog and runbook stay aligned.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx`
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `scripts/audit-ttgdtx-payout-duplicate-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P2-17 payout UAT evidence checklist is PASS_LOCAL after local audits pass.
+- Signed payout UAT and owner approval are still required before P2-17 can be
+  marked production-ready.

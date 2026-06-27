@@ -56,6 +56,10 @@ Before signed UAT, the repo must keep local guard evidence green:
 
 - `components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx` shows the P2-17 guard
   chain on the payout screen.
+- `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx` shows the
+  required redacted evidence set for P2-17-01 through P2-17-11 and keeps raw
+  bank statements, vouchers, payment data, student PII and credentials out of
+  Git/Codex/chat.
 - `PaymentSubmitButton` disables while pending for the double-submit case.
 - `recordTtgdtxPartnerPaymentDisbursementAction` requires voucher number and
   payout evidence before calling the RPC.

@@ -25,6 +25,7 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx";
+const evidenceChecklistPath = "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx";
 const pagePath = "app/ttgdtx/payment-requests/pay/page.tsx";
 const buttonPath = "app/ttgdtx/payment-requests/pay/payment-submit-button.tsx";
 const actionPath = "app/ttgdtx/payment-requests/pay/actions.ts";
@@ -35,6 +36,7 @@ const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
 
 for (const file of [
   componentPath,
+  evidenceChecklistPath,
   pagePath,
   buttonPath,
   actionPath,
@@ -51,6 +53,7 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const evidenceChecklist = read(evidenceChecklistPath);
 const page = read(pagePath);
 const button = read(buttonPath);
 const action = read(actionPath);
@@ -67,6 +70,13 @@ requireText(
   /data-ttgdtx-payout-duplicate-guard="P2-17"[\s\S]*nút pending[\s\S]*RPC[\s\S]*khóa dòng[\s\S]*voucher guard[\s\S]*P2-19/i,
   "P2-17 duplicate guard UI marker and guard chain",
   componentPath,
+);
+
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-payout-uat-evidence-checklist="P2-17")(?=[\s\S]*P2-17 payout UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed payout UAT is still required before P2-17 can move from\s+IN_PROGRESS)(?=[\s\S]*raw bank statements, raw bank\s+accounts, vouchers, passwords, OTPs, service-role keys, raw\s+payment data, student PII and CCCD stay outside Git\/Codex\/chat)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2-17-01\/P2-17-02)(?=[\s\S]*P2-17-03)(?=[\s\S]*P2-17-04\/P2-17-05\/P2-17-07)(?=[\s\S]*P2-17-06)(?=[\s\S]*P2-17-08)(?=[\s\S]*P2-17-09\/P2-17-10\/P2-17-11)(?=[\s\S]*KHTC, PHAP_CHE, BGH and Audit must sign the evidence outside\s+Codex\/chat)/i,
+  "P2-17 payout UAT evidence checklist",
+  evidenceChecklistPath,
 );
 
 for (const uatCase of [
@@ -87,6 +97,13 @@ requireText(
   page,
   /TtgdtxPayoutDuplicateGuard[\s\S]*<TtgdtxPayoutDuplicateGuard \/>/,
   "P2-17 page mounts duplicate payout guard",
+  pagePath,
+);
+
+requireText(
+  page,
+  /<TtgdtxPayoutDuplicateGuard\s*\/>[\s\S]*<TtgdtxPayoutUatEvidenceChecklist\s*\/>/,
+  "P2-17 page mounts UAT evidence checklist after duplicate guard",
   pagePath,
 );
 
@@ -173,6 +190,7 @@ requireText(
 
 for (const needle of [
   componentPath,
+  evidenceChecklistPath,
   "scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
   "audit:ttgdtx-payout-duplicate-guard",
 ]) {
