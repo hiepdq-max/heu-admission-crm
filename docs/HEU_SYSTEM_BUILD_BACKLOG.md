@@ -33,8 +33,8 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P2-00 | P0-19 major legal/tuition finance gate | Dao tao + Phap Che + KHTC + IT/Data | PASS_LOCAL | Step97 blocks P2-03 when legal/tuition/finance gate is not ready; Step100 sandbox pilot open requires explicit session flag; `components/ttgdtx/ttgdtx-p019-gate-guard.tsx`; `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx`; `npm.cmd run audit:ttgdtx-p019-gate-guard`; signed legal/finance UAT still required |
-| P2-01 | Contract/partner master | Phap Che + KHTC | BUILT_INTERNAL | Human approval for legal records |
-| P2-02 | Tuition policy master | KHTC | BUILT_INTERNAL | Approved policy version |
+| P2-01 | Contract/partner master | Phap Che + KHTC | PASS_LOCAL | `docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md`; `components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx`; `npm.cmd run audit:ttgdtx-contract-tuition-master-guard`; signed legal/finance UAT still required |
+| P2-02 | Tuition policy master | KHTC | PASS_LOCAL | `docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md`; `components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx`; `npm.cmd run audit:ttgdtx-contract-tuition-master-guard`; signed KHTC/Phap Che UAT still required |
 | P2-03 | Student receivables | KHTC | PASS_LOCAL | Step90 is migration candidate only; scoped RLS, no direct delete policy, active duplicate guard; signed UAT still required |
 | P2-04 | TTGDTX operating simulation | KHTC + IT/Data | PASS_LOCAL | Read-only simulation route; no receivable, collection or payout write |
 | P2-05 | Receivable gate | KHTC + IT/Data | PASS_LOCAL | Gate before posting; Step91 is migration candidate only |

@@ -1989,3 +1989,12 @@
   the full `audit:*` suite marked as last full pass, not a fresh claim.
 - Extended `audit:heu-current-state-inventory` so the inventory fails if P3-01
   disappears from the current-state, UAT priority or evidence view.
+## 2026-06-27 - P2-01/P2-02 Master Guard
+
+- Added `docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md` and a visible
+  read-only P2-01/P2-02 guard on `/ttgdtx` and `/ttgdtx/tuition`.
+- Reclassified P2-01 and P2-02 from `BUILT_INTERNAL`/`DONE` wording to
+  `PASS_LOCAL` because signed legal/finance/KHTC owner evidence is still
+  required before production reliance.
+- Added `audit:ttgdtx-contract-tuition-master-guard` and release-gate coverage
+  to verify Step88/Step89/Step97 readiness boundaries and UI guard mounts.

@@ -80,6 +80,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
 - `docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md`
 - `docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md`
+- `docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
 - `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`
 - `docs/STEP110_P2_19_UAT_RUNBOOK.md`
@@ -125,6 +126,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-audit-trail-guard`
   - `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`
   - `npm.cmd run audit:ttgdtx-cascade`
+  - `npm.cmd run audit:ttgdtx-contract-tuition-master-guard`
   - `npm.cmd run audit:ttgdtx-dashboard-access`
   - `npm.cmd run audit:ttgdtx-dashboard-readonly-guard`
   - `npm.cmd run audit:ttgdtx-data-fetch-gate`

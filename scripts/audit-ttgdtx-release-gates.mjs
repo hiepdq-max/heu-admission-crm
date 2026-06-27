@@ -71,6 +71,7 @@ const requiredFiles = [
   "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
   "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
+  "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
@@ -90,6 +91,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  "components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx",
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
@@ -123,6 +125,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-audit-trail-guard.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
+  "scripts/audit-ttgdtx-contract-tuition-master-guard.mjs",
   "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-invoice-policy.mjs",
@@ -167,6 +170,7 @@ const requiredScripts = [
   "audit:ttgdtx-audit-trail-guard",
   "audit:ttgdtx-backup-restore-dry-run-pack",
   "audit:ttgdtx-cascade",
+  "audit:ttgdtx-contract-tuition-master-guard",
   "audit:ttgdtx-dashboard-access",
   "audit:ttgdtx-dashboard-readonly-guard",
   "audit:ttgdtx-data-fetch-gate",
@@ -646,6 +650,42 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Align TTGDTX linked operating spine[\s\S]*PASS_LOCAL[\s\S]*P2-01\/P2-02\/P2-05\/P2-03\/P2-10\/P2-13\/P2-14\/P2-15\/P2-16\/P2-17\/P2-18[\s\S]*signed UAT still required/i,
   "linked operating spine PASS_LOCAL checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
+  /(?=[\s\S]*P2-01 and P2-02 are PASS_LOCAL)(?=[\s\S]*P2-01 contract is ACTIVE)(?=[\s\S]*P2-02 tuition policy is READY)(?=[\s\S]*P0-19 legal\/tuition finance gate)(?=[\s\S]*P2-05 receivable gate passes)(?=[\s\S]*production approval)/i,
+  "P2-01/P2-02 master guard local-only boundary",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-contract-tuition-master-guard="P2-01-P2-02")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-01 contract must be ACTIVE)(?=[\s\S]*P2-02 tuition policy must be READY)(?=[\s\S]*P2-03 creates receivable only after)/i,
+  "P2-01/P2-02 master guard display",
+);
+
+requireText(
+  "app/ttgdtx/page.tsx",
+  /<TtgdtxOperatingControlStrip currentCode="P2-01" \/>[\s\S]*<TtgdtxContractTuitionMasterGuard \/>/,
+  "P2-01 page master guard mount",
+);
+
+requireText(
+  "app/ttgdtx/tuition/page.tsx",
+  /<TtgdtxOperatingControlStrip currentCode="P2-02" \/>[\s\S]*<TtgdtxContractTuitionMasterGuard \/>/,
+  "P2-02 page master guard mount",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-01 TTGDTX contract active[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-contract-tuition-master-guard\.tsx[\s\S]*audit:ttgdtx-contract-tuition-master-guard[\s\S]*signed legal\/finance UAT still required/i,
+  "P2-01 contract PASS_LOCAL checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-02 tuition policy ready[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-contract-tuition-master-guard\.tsx[\s\S]*audit:ttgdtx-contract-tuition-master-guard[\s\S]*signed KHTC\/Phap Che UAT still required/i,
+  "P2-02 tuition PASS_LOCAL checklist row",
 );
 
 requireText(
