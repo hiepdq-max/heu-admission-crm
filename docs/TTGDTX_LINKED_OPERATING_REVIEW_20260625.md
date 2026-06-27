@@ -61,8 +61,8 @@ Build HEU as a controlled operating system for linked TTGDTX work:
 | Collection invoice/receipt | Step96 evidence fields plus P2-10 invoice policy matrix | PASS_LOCAL, UAT pending | Validate invoice/chung-tu requirement by collection model, payer type and legal/tax policy with signed KHTC/Phap Che UAT |
 | Reconciliation | `/ttgdtx/reconciliation`, `/ttgdtx/reconciliation/review`, Step101-Step104 | Internal-test foundation exists | Keep locked-period rule before payment request |
 | BBNT gate | Step110 metadata, source-control checks, Step105 P2-15 blocker and Step107 P2-17 blocker | P2-15/P2-17 gate added, UAT pending | Prove BBNT block/pass cases with signed UAT evidence |
-| Payment request and approval | `/ttgdtx/payment-requests`, `/review`, Step105-Step106 | Internal-test foundation with P2-19 blockers | Require accepted-period evidence, partner invoice and formula basis in signed UAT |
-| Payout | `/ttgdtx/payment-requests/pay`, Step107 | Hardened with P2-19 blockers, UAT pending | Execute duplicate payout, missing-evidence and P2-19 block/pass UAT while keeping RPC-only path |
+| Payment request and approval | `/ttgdtx/payment-requests`, `/review`, Step105-Step106, shared payment dossier checklist | PASS_LOCAL with P2-19 blockers, UAT pending | Require accepted-period evidence, partner invoice and formula basis in signed UAT |
+| Payout | `/ttgdtx/payment-requests/pay`, Step107, shared payment dossier checklist | Hardened with P2-19 blockers, UAT pending | Execute duplicate payout, missing-evidence and P2-19 block/pass UAT while keeping RPC-only path |
 | Accounting dashboard | `/ttgdtx/accounting-dashboard`, Step108 | Internal-test foundation exists | Finish signed role-based dashboard UAT |
 | Account freeze/release | Step110 metadata and account-control note | Not built as workflow | Build account-control module after design approval |
 | Collateral giai chap | Step110 metadata and collateral-control note | Not built as workflow | Keep as restricted legal-finance register, separate from tuition-account release |

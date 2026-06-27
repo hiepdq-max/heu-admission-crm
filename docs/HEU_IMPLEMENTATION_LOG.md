@@ -1122,3 +1122,31 @@
 
 - P4-02/P2-10 invoice policy matrix is PASS_LOCAL in the app and audit suite.
 - Signed KHTC/Phap Che UAT is still required before production use.
+
+## 2026-06-27 - TTGDTX Payment Dossier Checklist
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small P2-15/P2-17 payment dossier slice.
+- Added a shared checklist for BBNT, partner invoice, accepted-period evidence, formula basis and P2-19 source-control checks.
+- Mounted the checklist on De nghi thanh toan (P2-15) and Chi tien (P2-17).
+- Kept P2-17 duplicate-click and signed payment-flow UAT as production blockers.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx`
+- `scripts/audit-ttgdtx-payment-dossier-checklist.mjs`
+- `app/ttgdtx/payment-requests/page.tsx`
+- `app/ttgdtx/payment-requests/pay/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- BBNT/partner-invoice payment dossier visibility is PASS_LOCAL.
+- Signed UAT is still required before production payment use.

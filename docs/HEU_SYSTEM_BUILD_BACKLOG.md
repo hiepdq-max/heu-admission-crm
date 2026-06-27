@@ -44,9 +44,9 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-10 | Tuition collection | KHTC | PASS_LOCAL | Step96 is migration candidate only; invoice/receipt decision captured per payment; P2-10 invoice matrix is visible on the collection page |
 | P2-13 | Reconciliation | KHTC + Audit | PASS_LOCAL | Step101 is migration candidate only; blocks unresolved invoice/receipt decisions; Step102/Step103 retired no-op |
 | P2-14 | Reconciliation review/lock | KHTC + Audit + BGH | PASS_LOCAL | Step104 is migration candidate only; cannot review/approve/lock unresolved invoice/receipt lines |
-| P2-15 | Partner payment request | KHTC + Phap Che | PASS_LOCAL | Step105 is migration candidate only; BBNT/partner invoice dossier required, no unresolved collection invoice lines |
+| P2-15 | Partner payment request | KHTC + Phap Che | PASS_LOCAL | Step105 is migration candidate only; BBNT/partner invoice dossier required, no unresolved collection invoice lines; `components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx`; `npm.cmd run audit:ttgdtx-payment-dossier-checklist` |
 | P2-16 | Partner payment request approval | KHTC + Audit + BGH | PASS_LOCAL | Step106 is migration candidate only; must CHECK before APPROVE and still does not pay money |
-| P2-17 | Partner payout record | KHTC + BGH | PASS_LOCAL | Step107 is migration candidate only; record after P2-16 APPROVED, no duplicate voucher and no overpayment |
+| P2-17 | Partner payout record | KHTC + BGH | PASS_LOCAL | Step107 is migration candidate only; record after P2-16 APPROVED, no duplicate voucher, no overpayment and shared payment dossier checklist visible |
 | P2-18 | Accounting dashboard | KHTC + BGH | PASS_LOCAL | Step108 is migration candidate only; read-only rollup, no money movement |
 | P2-19 | Real-data evidence metadata | IT/Data + Audit | PASS_LOCAL | Step110 is migration candidate only; metadata-only, preflight/postflight/debug guard added, no raw sensitive import |
 

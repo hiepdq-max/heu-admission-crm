@@ -73,6 +73,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -91,6 +92,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-invoice-policy.mjs",
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
+  "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
@@ -125,6 +127,7 @@ const requiredScripts = [
   "audit:ttgdtx-invoice-policy",
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-operating-control-ui",
+  "audit:ttgdtx-payment-dossier-checklist",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-period-lock-policy",
   "audit:ttgdtx-process-labels",
@@ -327,6 +330,36 @@ requireText(
   "lib/ttgdtx-invoice-policy.ts",
   /HEU_COLLECTS_STUDENT[\s\S]*CENTER_COLLECTS_STUDENT[\s\S]*SPLIT_COLLECTION[\s\S]*OFFSET_OR_ADJUSTMENT[\s\S]*OTHER_COLLECTION_MODEL/i,
   "P2-10 invoice policy case coverage",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
+  /data-ttgdtx-payment-dossier-checklist=\{currentStep\}[\s\S]*Checklist hồ sơ thanh toán|data-ttgdtx-payment-dossier-checklist=\{currentStep\}[\s\S]*Checklist ho so thanh toan/i,
+  "P2-15/P2-17 payment dossier checklist display",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
+  /BBNT[\s\S]*Partner invoice evidence[\s\S]*duplicate payout/i,
+  "P2-15/P2-17 payment dossier gate metadata",
+);
+
+requireText(
+  "app/ttgdtx/payment-requests/page.tsx",
+  /TtgdtxPaymentDossierChecklist[\s\S]*currentStep="P2-15"/,
+  "P2-15 payment dossier checklist mount",
+);
+
+requireText(
+  "app/ttgdtx/payment-requests/pay/page.tsx",
+  /TtgdtxPaymentDossierChecklist[\s\S]*currentStep="P2-17"/,
+  "P2-17 payment dossier checklist mount",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
+  "payment dossier checklist PASS_LOCAL checklist row",
 );
 
 requireText(
