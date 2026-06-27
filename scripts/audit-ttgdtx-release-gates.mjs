@@ -1132,6 +1132,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
+  /(?=[\s\S]*data-ttgdtx-safe-iteration-loop="TTGDTX_9PLUS")(?=[\s\S]*Safe iteration loop: one small slice at a time)(?=[\s\S]*Build rhythm: select one blocker, run the local audit, attach\s+controlled proof, then advance only when the guard is green)(?=[\s\S]*fail keeps NO-GO)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
+  "TTGDTX safe iteration loop",
+);
+
+requireText(
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)/i,
   "P0-14 production evidence binder UI",

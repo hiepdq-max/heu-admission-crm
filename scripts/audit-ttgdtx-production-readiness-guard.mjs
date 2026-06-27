@@ -115,6 +115,13 @@ requireText(
 );
 
 requireText(
+  executionQueue,
+  /(?=[\s\S]*data-ttgdtx-safe-iteration-loop="TTGDTX_9PLUS")(?=[\s\S]*Safe iteration loop: one small slice at a time)(?=[\s\S]*Build rhythm: select one blocker, run the local audit, attach\s+controlled proof, then advance only when the guard is green)(?=[\s\S]*fail keeps NO-GO)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
+  "TTGDTX safe iteration loop",
+  executionQueuePath,
+);
+
+requireText(
   blockerSource,
   /P0-10[\s\S]*P0-03[\s\S]*Step90-Step110[\s\S]*P6-04[\s\S]*P0-19[\s\S]*P2-17[\s\S]*P2-18[\s\S]*P6-03[\s\S]*P6-06[\s\S]*P0-14[\s\S]*P0-15[\s\S]*Owner GO\/NO-GO/i,
   "TTGDTX production execution shared source order",
@@ -144,7 +151,7 @@ requireText(
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );

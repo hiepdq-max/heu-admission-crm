@@ -3,6 +3,33 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import { PRODUCTION_EXECUTION_STEPS } from "@/lib/production-readiness";
 
+const safeIterationSteps = [
+  {
+    code: "ITER-01",
+    title: "Pick one blocker",
+    detail:
+      "Choose exactly one open blocker from the queue; do not mix backup, UAT, payout, dashboard or owner sign-off in one slice.",
+  },
+  {
+    code: "ITER-02",
+    title: "Run local guard",
+    detail:
+      "Run the matching audit command and keep Stage D/NO-GO visible before asking owners to test or sign evidence.",
+  },
+  {
+    code: "ITER-03",
+    title: "Attach controlled proof",
+    detail:
+      "Store real evidence outside Git/Codex/chat, then reference only redacted evidence IDs in the checklist or handoff note.",
+  },
+  {
+    code: "ITER-04",
+    title: "Advance only if green",
+    detail:
+      "If the slice passes, commit that small scope; if it fails, keep NO-GO, fix the smallest cause and rerun the guard.",
+  },
+];
+
 export function TtgdtxProductionExecutionQueue() {
   return (
     <section
@@ -28,6 +55,40 @@ export function TtgdtxProductionExecutionQueue() {
         </div>
         <div className="min-w-72 rounded-md border border-indigo-200 bg-white px-3 py-2 text-indigo-950">
           Final result stays NO-GO until signed owner GO exists.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-indigo-200 bg-white p-4"
+        data-ttgdtx-safe-iteration-loop="TTGDTX_9PLUS"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-indigo-950">
+              Safe iteration loop: one small slice at a time
+            </h3>
+            <p className="mt-1 leading-6 text-indigo-900">
+              Build rhythm: select one blocker, run the local audit, attach
+              controlled proof, then advance only when the guard is green.
+            </p>
+          </div>
+          <span className="rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-semibold uppercase text-indigo-800">
+            fail keeps NO-GO
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-4">
+          {safeIterationSteps.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-indigo-300 bg-indigo-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-indigo-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.detail}</p>
+            </article>
+          ))}
         </div>
       </div>
 
