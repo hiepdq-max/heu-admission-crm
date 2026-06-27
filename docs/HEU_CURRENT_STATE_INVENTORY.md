@@ -80,7 +80,7 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | Supabase checks/admin | step files before P0/P1/P2 |
 | Master Control | P0 step files |
 | Short-course ERP | P1 step files |
-| TTGDTX 9+ accounting | database/step90 through database/step108 |
+| TTGDTX 9+ accounting | database/step90 through database/step110 |
 
 ## 4. HEU Module Mapping M01-M12
 
@@ -107,13 +107,14 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | Admission segment/program/major | Dynamic admission config and scoped workspace | Internal test |
 | TTGDTX contract | P2-01 contract master | Internal test |
 | TTGDTX tuition policy | P2-02 policy control | Internal test |
+| TTGDTX real-data fit | Phu Xuyen K23/K24 source pack reviewed read-only | Design note added; no real-data import/go-live approved |
 | TTGDTX receivable/debt | P2-03 receivables | Internal test |
 | TTGDTX collection | P2-10 payment receipt/voucher flow | Internal test |
 | TTGDTX reconciliation | P2-13/P2-14 batch approval/lock | Internal test |
 | TTGDTX payment request | P2-15/P2-16 request and approval | Internal test |
-| TTGDTX payout | P2-17 execution | Internal test, needs duplicate-click audit |
-| Accounting dashboard | P2-18 dashboard | Needs verification |
-| Audit log | Exists across workflows | Needs completeness audit |
+| TTGDTX payout | P2-17 execution | Static hardening and duplicate-click UAT runbook added; signed UAT pending |
+| Accounting dashboard | P2-18 dashboard | Static access guard added; authorized-user UAT evidence pending |
+| Audit log | Exists across workflows | Static TTGDTX coverage audit passes; signed UAT pending |
 | Approval log | Exists as approval/workflow request pattern | Needs production hardening |
 
 ### Required Data Questions
@@ -131,10 +132,11 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | Risk | Severity | Note |
 |---|---|---|
 | Dirty working tree | HIGH | Cần phân loại file trước commit/push |
-| Untracked SQL migrations | HIGH | Step90-108 cần thứ tự migration, rollback và idempotency audit |
-| Hard delete patterns | HIGH | Có .delete(), delete from và on delete cascade cần review |
+| Untracked SQL migrations | HIGH | Step90-109 need approved migration order, backup, restore dry-run and idempotency evidence |
+| Hard delete patterns | HIGH | Static hard-delete and TTGDTX cascade audits pass; non-TTGDTX/base cascade review still needs approval |
 | Logs untracked | MEDIUM | dev-server logs không nên commit |
-| P2-18 dashboard chưa verify ổn định | HIGH | User từng gặp localhost refused |
+| P2-18 dashboard authorized UAT pending | HIGH | Route/build/static access guard pass; browser redirects to login without a signed-in test user |
+| Real workbook/PDF/appendix complexity | HIGH | Phu Xuyen source pack shows multi-section Excel, bank receipt batches, scanned PDFs and contract appendices; see `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md` |
 | Finance flow đã test một lần nhưng chưa có automated tests | HIGH | Cần test chặn trùng thu/chi |
 | AI policy chưa được enforcement toàn hệ | MEDIUM | AI phải chỉ hỗ trợ, không phê duyệt |
 | Permission scope cần test nhiều vai trò | HIGH | Cần test admin, kế toán, tuyển sinh, CTHSSV, đối tác |
@@ -145,10 +147,10 @@ Current stage: D - Có thể test nội bộ.
 
 Not production-ready because:
 
-- Chưa có migration order chính thức và rollback plan.
+- Chua co migration order chinh thuc, backup evidence va restore dry-run sign-off.
 - Chưa có test tự động cho luồng tài chính.
-- Chưa xác nhận hard delete/soft delete policy.
-- Chưa xác nhận P2-18 dashboard ổn định.
+- Chua co production waiver/approval cho non-TTGDTX cascade va hard-delete residual risk.
+- Chua co signed UAT cho P2-18 dashboard bang tai khoan duoc phan quyen.
 - Chưa có checklist Go/No-Go được BGH/KHTC/Pháp chế/IT-Data duyệt.
 - Chưa có bằng chứng backup trước migration.
 
@@ -156,14 +158,15 @@ Not production-ready because:
 
 1. Freeze TTGDTX 9+ scope and stop expansion outside pilot.
 2. Clean Git state by reviewing modified/untracked files.
-3. Approve migration order for step90-step108.
-4. Add backup/rollback procedure before any production migration.
-5. Audit and replace risky hard delete patterns.
-6. Verify P2-18 accounting dashboard loads and matches P2-03/P2-10/P2-13/P2-17 data.
+3. Approve migration order for step90-step110.
+4. Execute backup/restore dry-run before any production migration.
+5. Finish non-TTGDTX cascade and residual hard-delete approval.
+6. Execute P2-18 UAT with authorized, out-of-scope and contract-only users.
 7. Add tests for no duplicate receivable, no duplicate receipt, no duplicate reconciliation and no duplicate payout.
-8. Verify permissions by role and workspace.
+8. Execute `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md` by role and workspace.
 9. Normalize money input/display: accept `1000000`, `1 000 000`, `1.000.000` and display `1.000.000 đ`.
-10. Prepare internal pilot sign-off.
+10. Build anonymized Phu Xuyen-like UAT cases for multi-section workbook, bank receipt PDF batch, K23 appendix and K24 support-fee formula.
+11. Prepare internal pilot sign-off.
 
 ## 9. Current Conclusion
 

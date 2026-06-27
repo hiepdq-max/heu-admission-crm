@@ -56,6 +56,8 @@ The repo is dirty and contains both modified tracked files and untracked TTGDTX 
 | database/step106_ttgdtx_payment_request_approval_p2_16.sql | SQL / Finance / Approval | REVIEW | Check/approve flow |
 | database/step107_ttgdtx_payment_execution_p2_17.sql | SQL / Finance / Payment | REVIEW | Must guarantee no double payout |
 | database/step108_ttgdtx_accounting_dashboard_p2_18.sql | SQL / Dashboard | REVIEW | Dashboard route previously needed server verification |
+| database/step109_role_permission_soft_revoke_p0_11.sql | SQL / Permission | REVIEW | Role permission soft-revoke must pass UAT before production |
+| database/step110_ttgdtx_real_data_evidence_metadata_p2_19.sql | SQL / Data / Privacy | REVIEW | Real-data evidence metadata; must not import raw PII/bank data and needs anonymized UAT |
 | dev-server.err.log | Log | IGNORE / DELETE-LATER | Generated runtime log, should not be committed |
 | dev-server.out.log | Log | IGNORE / DELETE-LATER | Generated runtime log, should not be committed |
 | next-dev.err.log | Log | IGNORE / DELETE-LATER | Generated runtime log, should not be committed |
@@ -70,19 +72,19 @@ The repo is dirty and contains both modified tracked files and untracked TTGDTX 
 | next-dev.err.log | IGNORE / DELETE-LATER | Generated runtime log, not part of docs-only commit |
 | next-dev.log | IGNORE / DELETE-LATER | Generated runtime log, not part of docs-only commit |
 
-## 5. SQL Files step90-step108
+## 5. SQL Files step90-step110
 
-SQL files from step90 through step108 are migration or patch candidates for the TTGDTX 9+ pilot. They are not allowed in the current docs-only commit and must be reviewed under the migration order audit before any production use.
+SQL files from step90 through step110 are migration or patch candidates for the TTGDTX 9+ pilot. They are not allowed in the current docs-only commit and must be reviewed under the migration order audit before any production use.
 
 ## 6. TTGDTX P2 Files
 
 | Group | Files | Recommendation |
 |---|---:|---|
-| TTGDTX | Many app/ttgdtx and SQL step90-step108 files | Keep for pilot review |
+| TTGDTX | Many app/ttgdtx and SQL step90-step110 files | Keep for pilot review |
 | CRM | Lead actions/detail files | Review shared effects |
 | Finance | P2-02, P2-03, P2-10, P2-13 to P2-17 | Highest priority review |
 | UI | TTGDTX pages and lead components | Review for usability and Vietnamese labels |
-| SQL | step90-step108 | Migration order audit required |
+| SQL | step90-step110 | Migration order audit required |
 | Log | dev/next log files | Ignore/delete later, not now |
 | Other | None identified in current dirty list | No action |
 
@@ -115,5 +117,5 @@ SQL files from step90 through step108 are migration or patch candidates for the 
 | Group | Examples | Reason |
 |---|---|---|
 | App/code files | `app/`, `components/`, `lib/` | Current change is documentation-only |
-| Database files | `database/step90` through `database/step108` | Migration review is required before commit |
+| Database files | `database/step90` through `database/step110` | Migration review is required before commit |
 | Runtime logs | `*.log` | Generated output should not be committed |

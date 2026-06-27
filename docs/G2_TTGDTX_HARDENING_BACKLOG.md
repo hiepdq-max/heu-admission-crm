@@ -12,7 +12,8 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 | Remote checkpoint | DONE |
 | G2 status | G2_NEEDS_FIX |
 | Migration allowed | NO |
-| Real data allowed | NO |
+| Real data allowed | READ_ONLY_DESIGN_REVIEW_ONLY |
+| Operating spine | TTGDTX_LINKED_OPERATING_REVIEW_20260625 |
 | Commit G2 as one group | NO |
 
 ## 3. Scope Split
@@ -60,13 +61,14 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 
 | Blocker | Applies to | Risk | Required evidence | Owner | Status |
 |---|---|---:|---|---|---|
-| Missing rollback for step91/97/98/99/100 | G2b/G2c | HIGH | Rollback plan/file | Tech Lead | NOT_STARTED |
+| Backup/rollback dry-run for step91/97/98/99/100 | G2b/G2c | HIGH | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; restore dry-run evidence | Tech Lead | IN_PROGRESS |
 | step100 pilot-open needs final approval | G2c | HIGH | Approval record | Final Authority | BLOCKED |
 | DAT_TAM_THOI/pilot markers need classification | G2b/G2c | MEDIUM-HIGH | Classification note | Product Owner | NOT_STARTED |
 | RLS needs role/scope test | G2a/G2b | HIGH | Test matrix result | Tech Lead | NOT_STARTED |
 | Audit evidence needed for pilot/finance/contract status update | G2c | HIGH | Audit log evidence | Audit Owner | NOT_STARTED |
 | No migration allowed before backup | G2b/G2c | HIGH | Backup evidence | DBA/Tech Lead | NOT_STARTED |
-| No real data allowed | All | CRITICAL | Go/No-Go approval | Final Authority | BLOCKED |
+| No real data import/posting allowed | All | CRITICAL | Go/No-Go approval; anonymized UAT source pack; `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`; `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md` | Final Authority | BLOCKED |
+| TTGDTX linked spine must stay coherent | All | HIGH | `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md`; source-control, BBNT gate and account-control priorities tracked | Product Owner + Tech Lead | IN_PROGRESS |
 | G2 must not include P2-03/P2-10/P2-13+ | G2a/G2b | HIGH | Scope check | Tech Lead | IN_PROGRESS |
 
 ## 9. RLS / Permission Test Matrix
@@ -102,7 +104,7 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 
 ### G2b ready when
 
-- Rollback plan exists.
+- Rollback runbook exists and restore dry-run evidence is attached.
 - RLS policy reviewed.
 - drop policy if exists approved.
 - Backup required marked YES.
@@ -112,7 +114,7 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 ### G2c ready when
 
 - Backup exists.
-- Rollback exists.
+- Rollback runbook exists and restore dry-run evidence is attached.
 - Final authority approves.
 - Go/No-Go checklist passes.
 - No production run without written approval.
@@ -125,3 +127,5 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 - Keep G2b SQL separate.
 - Keep step100 blocked.
 - Migration remains NO-GO.
+- Treat phong toa/giai toa, BBNT and collateral giai chap as metadata-only
+  real-source review until anonymized UAT and approval evidence exist.

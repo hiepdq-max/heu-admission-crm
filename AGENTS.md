@@ -1,5 +1,139 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# HEU Admission CRM - Codex Working Rules
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+## Current Mission
+
+Build and harden the HEU web app in a controlled way. The current approved
+scope is the TTGDTX 9+ pilot hardening chain only:
+
+1. P2-01 TTGDTX contract master.
+2. P2-02 tuition policy.
+3. P2-05 receivable gate.
+4. P2-03 receivable creation.
+5. P2-10 tuition collection.
+6. P2-13 reconciliation.
+7. P2-14 reconciliation review, approval, and lock.
+8. P2-15 partner payment request.
+9. P2-16 payment request review and approval.
+10. P2-17 payout execution.
+11. P2-18 accounting dashboard.
+12. P2-19 source/evidence metadata for anonymized UAT design review only.
+
+Production remains NO-GO until the production checklist says otherwise.
+
+<!-- BEGIN:nextjs-agent-rules -->
+## Next.js Compatibility Note
+
+This project uses a newer Next.js version with APIs, conventions, and file
+structure that may differ from older examples. Before changing framework-level
+code, routing, server actions, cache behavior, or build configuration, read the
+relevant guide in `node_modules/next/dist/docs/` and follow deprecation notices.
 <!-- END:nextjs-agent-rules -->
+
+## Hard Boundaries
+
+- Do not expand production scope to HOU, short-course, AI agents, broad
+  dashboards, or new enrollment flows while TTGDTX 9+ is still hardening.
+- Do not run Supabase or production migrations without an explicit backup,
+  rollback plan, migration order approval, and user confirmation.
+- Do not use real student, parent, CCCD, bank, phone, or payment data in tests.
+  Use synthetic data unless the user explicitly provides sanitized samples.
+- Do not add, expose, or request passwords, API keys, service role keys, access
+  tokens, OTPs, private keys, or bank credentials.
+- Do not hard-delete finance, evidence, approval, payment, lead, or audit rows.
+  Prefer status transitions, archive fields, and audit notes.
+- Do not allow AI to approve, pay, mark revenue, unlock production, or replace a
+  human approval role. AI may suggest, summarize, validate, and warn only.
+
+## Required Reading Before Meaningful Changes
+
+Read these documents before changing TTGDTX finance or migration logic:
+
+- `docs/HEU_TECH_DECISION_001_FREEZE_AND_HARDEN_TTGDTX_9PLUS.md`
+- `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/REMAINING_CHANGE_AUDIT_20260622.md`
+- `docs/MIGRATION_ORDER_AUDIT.md`
+- `docs/HARD_DELETE_AUDIT.md`
+- `docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md`
+- `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
+- `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
+- `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
+- `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
+- `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
+- `docs/STEP110_P2_19_UAT_RUNBOOK.md`
+- `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
+- `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`
+- `docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md`
+
+## Engineering Workflow
+
+- Check `git status --short` before editing.
+- Keep changes small and grouped by hardening group:
+  - G2: TTGDTX base, master, source, and gate.
+  - G3: receivables, import, collection.
+  - G4: reconciliation.
+  - G5: payment request, approval, payout.
+  - G6: accounting dashboard.
+  - G7: lead detail integration.
+- Do not commit all dirty files together. Commit only reviewed, related files.
+- Preserve user or previous-agent changes. Never reset, checkout, or delete
+  unrelated work unless explicitly asked.
+- Before any final handoff, run:
+  - `npm.cmd run audit:hard-delete`
+  - `npm.cmd run audit:permission-soft-revoke`
+  - `npm.cmd run audit:ttgdtx-audit-log`
+  - `npm.cmd run audit:ttgdtx-cascade`
+  - `npm.cmd run audit:ttgdtx-dashboard-access`
+  - `npm.cmd run audit:ttgdtx-data-fetch-gate`
+  - `npm.cmd run audit:ttgdtx-generic-source-evidence`
+  - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
+  - `npm.cmd run audit:ttgdtx-pilot-open-safety`
+  - `npm.cmd run audit:ttgdtx-reconciliation-repair-safety`
+  - `npm.cmd run audit:ttgdtx-role-scope-access`
+  - `npm.cmd run audit:ttgdtx-step110-safety`
+  - `npm.cmd run audit:ttgdtx-uat-readiness`
+  - `npm.cmd run audit:ttgdtx-release-gates`
+  - `npm.cmd run lint`
+  - `npm.cmd run build`
+
+## Product Rules
+
+- Money is recognized only when HEU actually receives it.
+- Receivables must not be created for leads that fail the legal/finance gate.
+- A reconciliation period must be approved and locked before payment requests.
+- A partner payment request must not be paid twice.
+- Payment execution must require evidence and leave an audit trail.
+- BGH views dashboards; BGH should not be the daily data-entry role.
+- Finance, admission, training, audit, and partner roles must not see or edit
+  data outside their scope.
+
+## Security And Privacy
+
+- Keep `.env`, `.env.local`, logs, screenshots with secrets, exports, and local
+  backups out of Git.
+- Never commit service-role keys or production credentials.
+- Treat evidence links and source files as controlled documents.
+- Prefer role checks and workspace scope checks on server actions.
+- For any page or action that changes finance state, check both permission and
+  business status before writing.
+
+## Frontend Standards
+
+- This project uses Next.js 16, React 19, Tailwind, shadcn-style components, and
+  lucide icons.
+- Keep operational screens dense, calm, and scan-friendly. This is an internal
+  ERP/CRM tool, not a marketing site.
+- Use clear status labels, tables, filters, badges, and action buttons.
+- Do not add decorative hero sections, large gradients, or unrelated visual
+  flourish to operations pages.
+
+## Definition Of Done
+
+A hardening change is done only when:
+
+- It stays inside the current approved scope.
+- It has no hard-delete or double-payment risk unless documented and approved.
+- It passes lint and build.
+- It updates relevant docs/checklists when production readiness changes.
+- It does not require production migration or real data to verify locally.
