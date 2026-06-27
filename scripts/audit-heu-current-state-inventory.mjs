@@ -111,7 +111,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, duplicate and execution-readiness guards[\s\S]*Signed payout UAT pending/i,
+  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix[\s\S]*Signed payout UAT pending/i,
   "P2-17 payout execution readiness control state",
 );
 requireText(

@@ -7,6 +7,13 @@ type EvidenceItem = {
   evidence: string;
 };
 
+type PayoutAcceptanceItem = {
+  caseId: string;
+  requirement: string;
+  minimumEvidence: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "P2-17-01/P2-17-02",
@@ -48,6 +55,57 @@ const evidenceItems: EvidenceItem[] = [
     owner: "KHTC + PHAP_CHE + Audit",
     evidence:
       "Block/pass evidence for BBNT and partner-invoice checks before payout can proceed.",
+  },
+];
+
+const payoutAcceptanceItems: PayoutAcceptanceItem[] = [
+  {
+    caseId: "P2-17-ACCEPT-01",
+    requirement: "Approved request identity and remaining amount",
+    minimumEvidence:
+      "Payout record ties to one P2-15 request approved in P2-16; amount is within remaining approved balance and request is not already PAID.",
+    stopCondition:
+      "Stop if request identity is unclear, approved amount cannot be proven, or overpayment remains possible.",
+  },
+  {
+    caseId: "P2-17-ACCEPT-02",
+    requirement: "Single write path and double-submit control",
+    minimumEvidence:
+      "PaymentSubmitButton disables while pending and the server action reaches payout write only through the approved RPC.",
+    stopCondition:
+      "Stop if direct table writes, duplicate clicks or any non-RPC path can create payout records.",
+  },
+  {
+    caseId: "P2-17-ACCEPT-03",
+    requirement: "Voucher and evidence uniqueness",
+    minimumEvidence:
+      "Normalized voucher uniqueness and payout evidence URL requirement are proven with redacted, non-secret references.",
+    stopCondition:
+      "Stop if voucher reuse is accepted, evidence URL is optional, or raw bank/payment evidence enters Git/Codex/chat.",
+  },
+  {
+    caseId: "P2-17-ACCEPT-04",
+    requirement: "P2-19 dossier blockers",
+    minimumEvidence:
+      "BBNT and partner-invoice checks are PASS before payout; FAIL or NOT_CHECKED blocks the board and RPC.",
+    stopCondition:
+      "Stop if P2_19_ACCEPTANCE_BEFORE_PAYOUT or P2_19_PARTNER_INVOICE_BEFORE_PAYOUT can be bypassed.",
+  },
+  {
+    caseId: "P2-17-ACCEPT-05",
+    requirement: "Partial and final payout lifecycle",
+    minimumEvidence:
+      "Partial payout stays within remaining balance, final payout updates paid status, and audit trace records actor/time/voucher.",
+    stopCondition:
+      "Stop if paid amount, request status or audit trace drifts from actual payout records.",
+  },
+  {
+    caseId: "P2-17-ACCEPT-06",
+    requirement: "Owner sign-off and production boundary",
+    minimumEvidence:
+      "KHTC, PHAP_CHE, BGH and Audit sign redacted evidence outside Codex/chat before P2-17 can support production review.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as payout UAT pass, bank transfer approval, finance approval, money movement or production GO.",
   },
 ];
 
@@ -104,6 +162,47 @@ export function TtgdtxPayoutUatEvidenceChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-ttgdtx-payout-acceptance-matrix="P2-17"
+        className="mt-5 border-t border-fuchsia-200 pt-5"
+      >
+        <div>
+          <h3 className="font-semibold text-fuchsia-950">
+            P2-17 payout acceptance matrix: PASS_LOCAL only
+          </h3>
+          <p className="mt-1 leading-6 text-fuchsia-900">
+            Decision value:{" "}
+            <span className="font-mono text-xs">
+              P2_17_ACCEPT / FAIL / BLOCKED
+            </span>
+            . Use this matrix to decide whether payout evidence is ready for
+            owner review, not to initiate money movement or approve production.
+          </p>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {payoutAcceptanceItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-fuchsia-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-fuchsia-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.requirement}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.minimumEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

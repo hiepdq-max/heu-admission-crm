@@ -852,6 +852,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-payout-acceptance-matrix="P2-17")(?=[\s\S]*P2-17 payout acceptance matrix)(?=[\s\S]*P2_17_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-17-ACCEPT-01)(?=[\s\S]*P2-17-ACCEPT-06)(?=[\s\S]*Single write path and double-submit control)(?=[\s\S]*P2-19 dossier blockers)(?=[\s\S]*Owner sign-off and production boundary)/i,
+  "P2-17 payout acceptance matrix",
+);
+
+requireText(
   "app/ttgdtx/payment-requests/pay/page.tsx",
   /TtgdtxPayoutDuplicateGuard[\s\S]*<TtgdtxPayoutDuplicateGuard \/>/,
   "P2-17 payout duplicate guard mount",
@@ -865,8 +871,14 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
   "P2-17 duplicate guard checklist row",
+);
+
+requireText(
+  "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
+  /(?=[\s\S]*Payout Acceptance Matrix)(?=[\s\S]*P2-17-ACCEPT-01)(?=[\s\S]*P2-17-ACCEPT-06)(?=[\s\S]*P2_17_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-17-ACCEPT-01 through P2-17-ACCEPT-06 all pass with redacted evidence)/i,
+  "P2-17 runbook payout acceptance matrix",
 );
 
 requireText(

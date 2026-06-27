@@ -79,6 +79,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-payout-acceptance-matrix="P2-17")(?=[\s\S]*P2-17 payout acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_17_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-17-ACCEPT-01)(?=[\s\S]*P2-17-ACCEPT-02)(?=[\s\S]*P2-17-ACCEPT-03)(?=[\s\S]*P2-17-ACCEPT-04)(?=[\s\S]*P2-17-ACCEPT-05)(?=[\s\S]*P2-17-ACCEPT-06)(?=[\s\S]*Approved request identity and remaining amount)(?=[\s\S]*Single write path and double-submit control)(?=[\s\S]*Voucher and evidence uniqueness)(?=[\s\S]*P2-19 dossier blockers)(?=[\s\S]*Partial and final payout lifecycle)(?=[\s\S]*Owner sign-off and production boundary)(?=[\s\S]*PASS_LOCAL is treated as payout UAT pass, bank transfer approval, finance approval, money movement or production GO)/i,
+  "P2-17 payout acceptance matrix",
+  evidenceChecklistPath,
+);
+
 for (const uatCase of [
   "P2-17-02",
   "P2-17-03",
@@ -164,15 +171,22 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Payout Acceptance Matrix)(?=[\s\S]*data-ttgdtx-payout-acceptance-matrix="P2-17")(?=[\s\S]*P2-17-ACCEPT-01)(?=[\s\S]*P2-17-ACCEPT-06)(?=[\s\S]*P2_17_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*redacted evidence)/i,
+  "runbook payout acceptance matrix",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /P2-17 execute payout once[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-payout-duplicate-guard[\s\S]*signed UAT/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps P2-17 IN_PROGRESS with guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-17[\s\S]*audit:ttgdtx-payout-duplicate-guard/i,
+  /P2-17[\s\S]*payout acceptance matrix[\s\S]*audit:ttgdtx-payout-duplicate-guard/i,
   "backlog records P2-17 duplicate guard audit",
   backlogPath,
 );

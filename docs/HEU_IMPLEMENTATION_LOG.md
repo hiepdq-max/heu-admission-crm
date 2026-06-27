@@ -2176,3 +2176,17 @@
   `audit:heu-current-state-inventory`.
 - P2-18 remains IN_PROGRESS for production until signed browser UAT and owner
   sign-off exist outside Codex/chat.
+
+## 2026-06-27 - P2-17 Payout Acceptance Matrix
+
+- Added a PASS_LOCAL P2-17 payout acceptance matrix to
+  `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx`.
+- The matrix requires approved request identity, remaining amount control,
+  single RPC write path, double-submit protection, voucher/evidence uniqueness,
+  P2-19 dossier blockers, partial/final payout lifecycle and owner sign-off.
+- Updated `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`, the production
+  checklist, backlog, current-state inventory,
+  `audit:ttgdtx-payout-duplicate-guard`, `audit:ttgdtx-release-gates` and
+  `audit:heu-current-state-inventory`.
+- P2-17 remains IN_PROGRESS for production until signed payout UAT and owner
+  sign-off exist outside Codex/chat.

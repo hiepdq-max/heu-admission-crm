@@ -83,7 +83,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
-| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate and execution-readiness guards | Signed payout UAT pending |
+| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
 | Accounting dashboard | P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack, scope UI guard and route matrix exist | Multi-account signed UAT pending |
 | Audit log | Static coverage and audit trace acceptance matrix pass locally | Signed audit-log UAT pending |

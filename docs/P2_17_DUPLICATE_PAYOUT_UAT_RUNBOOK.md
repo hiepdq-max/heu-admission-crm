@@ -66,6 +66,9 @@ Before signed UAT, the repo must keep local guard evidence green:
   required redacted evidence set for P2-17-01 through P2-17-11 and keeps raw
   bank statements, vouchers, payment data, student PII and credentials out of
   Git/Codex/chat.
+- The same checklist exposes `data-ttgdtx-payout-acceptance-matrix="P2-17"`
+  with P2-17-ACCEPT-01 through P2-17-ACCEPT-06 and decision value
+  `P2_17_ACCEPT / FAIL / BLOCKED`.
 - `PaymentSubmitButton` disables while pending for the double-submit case.
 - `recordTtgdtxPartnerPaymentDisbursementAction` requires voucher number and
   payout evidence before calling the RPC.
@@ -125,7 +128,24 @@ where record_status = 'ACTIVE'
 
 Expected: zero rows.
 
-## 7. Sign-Off Rule
+## 7. Payout Acceptance Matrix
+
+Use the P2-17 payout acceptance matrix after the test matrix and evidence
+queries. The matrix is local-only until signed payout UAT and owner sign-off
+exist.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P2-17-ACCEPT-01 | Approved request identity and remaining amount | Payout record ties to one P2-15 request approved in P2-16; amount is within remaining approved balance and request is not already `PAID` | Request identity is unclear, approved amount cannot be proven, or overpayment remains possible |
+| P2-17-ACCEPT-02 | Single write path and double-submit control | `PaymentSubmitButton` disables while pending and the server action reaches payout write only through the approved RPC | Direct table writes, duplicate clicks or any non-RPC path can create payout records |
+| P2-17-ACCEPT-03 | Voucher and evidence uniqueness | Normalized voucher uniqueness and payout evidence URL requirement are proven with redacted, non-secret references | Voucher reuse is accepted, evidence URL is optional, or raw bank/payment evidence enters Git/Codex/chat |
+| P2-17-ACCEPT-04 | P2-19 dossier blockers | BBNT and partner-invoice checks are `PASS` before payout; `FAIL` or `NOT_CHECKED` blocks the board and RPC | `P2_19_ACCEPTANCE_BEFORE_PAYOUT` or `P2_19_PARTNER_INVOICE_BEFORE_PAYOUT` can be bypassed |
+| P2-17-ACCEPT-05 | Partial and final payout lifecycle | Partial payout stays within remaining balance, final payout updates paid status, and audit trace records actor/time/voucher | Paid amount, request status or audit trace drifts from actual payout records |
+| P2-17-ACCEPT-06 | Owner sign-off and production boundary | KHTC, PHAP_CHE, BGH and Audit sign redacted evidence outside Codex/chat before P2-17 can support production review | PASS_LOCAL is treated as payout UAT pass, bank transfer approval, finance approval, money movement or production GO |
+
+Decision value: `P2_17_ACCEPT / FAIL / BLOCKED`.
+
+## 8. Sign-Off Rule
 
 Mark P2-17 as `DONE` only when:
 
@@ -136,3 +156,4 @@ Mark P2-17 as `DONE` only when:
 4. KHTC/Audit confirms that partial payout behavior is intended.
 5. KHTC/Phap Che confirms that BBNT and partner-invoice block/pass cases match
    the accepted payment dossier rule.
+6. P2-17-ACCEPT-01 through P2-17-ACCEPT-06 all pass with redacted evidence.
