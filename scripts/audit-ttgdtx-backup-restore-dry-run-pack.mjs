@@ -44,6 +44,8 @@ const requiredFiles = [
   pagePath,
   "docs/MIGRATION_ORDER_AUDIT.md",
   "docs/HARD_DELETE_AUDIT.md",
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+  "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
   "docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md",
   "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
@@ -78,8 +80,8 @@ requireText(pack, /Backup Evidence Record[\s\S]*Backup ID \/ snapshot ID[\s\S]*B
 requireText(pack, /Restore Evidence Record[\s\S]*Restore target project\/ref[\s\S]*App connection checked against restore target[\s\S]*Restore result/i, "restore evidence fields");
 requireText(pack, /Static Preflight And Postflight Evidence[\s\S]*audit:ttgdtx-release-gates[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack[\s\S]*npm\.cmd run build/i, "preflight and postflight command set");
 requireText(pack, /Migration Execution Record[\s\S]*Step90[\s\S]*Step110/i, "Step90 through Step110 migration record");
-requireText(pack, /Data Smoke-Check Evidence[\s\S]*Receivable duplicate guard[\s\S]*Payout cannot exceed approved amount[\s\S]*Dashboard views are read-only and role-scoped/i, "data smoke-check coverage");
-requireText(pack, /UAT Evidence Index[\s\S]*P2-17 duplicate payout UAT[\s\S]*P2-18 accounting dashboard UAT[\s\S]*Step109 role permission UAT[\s\S]*TTGDTX audit-log UAT/i, "UAT evidence index");
+requireText(pack, /Data Smoke-Check Evidence[\s\S]*Receivable duplicate guard[\s\S]*P0-19 legal\/finance gate blocks unresolved basis before receivable creation[\s\S]*P3 handover cannot bypass P0-19\/P2-05\/P2-03 finance gates[\s\S]*Payout cannot exceed approved amount[\s\S]*Dashboard views are read-only and role-scoped/i, "data smoke-check coverage");
+requireText(pack, /UAT Evidence Index[\s\S]*P0-19 legal\/finance gate UAT[\s\S]*P3-01\/P3-02 lead lifecycle and handover UAT[\s\S]*P2-17 duplicate payout UAT[\s\S]*P2-18 accounting dashboard UAT[\s\S]*Step109 role permission UAT[\s\S]*TTGDTX audit-log UAT/i, "UAT evidence index");
 requireText(pack, /Exception Log[\s\S]*HIGH or BLOCKER exception keeps production NO-GO/i, "exception NO-GO rule");
 requireText(pack, /Human Sign-Off[\s\S]*IT_DATA[\s\S]*KHTC[\s\S]*Phap Che[\s\S]*Audit[\s\S]*BGH/i, "human sign-off matrix");
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, or production GO is approved/i, "PASS_LOCAL local-only boundary");
@@ -90,13 +92,13 @@ requireText(
 );
 requireText(
   pack,
-  /(?=[\s\S]*Restore Smoke-Check Acceptance Matrix)(?=[\s\S]*data-p003-restore-smoke-check-acceptance-matrix="P0-03")(?=[\s\S]*P0-03-SMOKE-01)(?=[\s\S]*P0-03-SMOKE-06)(?=[\s\S]*Restore target identity)(?=[\s\S]*Core master records readable)(?=[\s\S]*Finance guard behavior preserved)(?=[\s\S]*Role and workspace scope preserved)(?=[\s\S]*Audit trace preserved)(?=[\s\S]*Dashboard source reconciliation preserved)(?=[\s\S]*RESTORE_SMOKE_CHECK_PASS \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass, rollback\s+proof, migration approval or production GO)/i,
+  /(?=[\s\S]*Restore Smoke-Check Acceptance Matrix)(?=[\s\S]*data-p003-restore-smoke-check-acceptance-matrix="P0-03")(?=[\s\S]*P0-03-SMOKE-01)(?=[\s\S]*P0-03-SMOKE-07)(?=[\s\S]*Restore target identity)(?=[\s\S]*Core master records readable)(?=[\s\S]*Finance guard behavior preserved)(?=[\s\S]*Role and workspace scope preserved)(?=[\s\S]*Audit trace preserved)(?=[\s\S]*Dashboard source reconciliation preserved)(?=[\s\S]*Lead handover finance gate preserved)(?=[\s\S]*P0-19\/P2-05\/P2-03)(?=[\s\S]*RESTORE_SMOKE_CHECK_PASS \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass, rollback\s+proof, migration approval or production GO)/i,
   "restore smoke-check acceptance matrix",
 );
 
 requireText(
   pack,
-  /(?=[\s\S]*P0-03 Backup\/Restore Closure Decision Manifest)(?=[\s\S]*data-p003-backup-restore-closure-decision-manifest="P0-03")(?=[\s\S]*P0-03-CLOSE-01)(?=[\s\S]*P0-03-CLOSE-06)(?=[\s\S]*Execution authority and target isolation confirmed)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks pass)(?=[\s\S]*Smoke-check and UAT index accepted)(?=[\s\S]*Exceptions and waivers controlled)(?=[\s\S]*Human closure decision recorded)(?=[\s\S]*P0_03_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL keeps P0-03 at evidence-structure readiness only)/i,
+  /(?=[\s\S]*P0-03 Backup\/Restore Closure Decision Manifest)(?=[\s\S]*data-p003-backup-restore-closure-decision-manifest="P0-03")(?=[\s\S]*P0-03-CLOSE-01)(?=[\s\S]*P0-03-CLOSE-06)(?=[\s\S]*Execution authority and target isolation confirmed)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks pass)(?=[\s\S]*Smoke-check and UAT index accepted)(?=[\s\S]*P0-19 gate UAT)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT)(?=[\s\S]*Exceptions and waivers controlled)(?=[\s\S]*Human closure decision recorded)(?=[\s\S]*P0_03_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL keeps P0-03 at evidence-structure readiness only)/i,
   "backup/restore closure decision manifest",
 );
 
@@ -142,14 +144,14 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-p003-restore-smoke-check-acceptance-matrix="P0-03")(?=[\s\S]*P0-03 restore smoke-check acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*target isolation)(?=[\s\S]*core master readability)(?=[\s\S]*finance guard\s+behavior)(?=[\s\S]*role\/workspace scope)(?=[\s\S]*audit trace)(?=[\s\S]*dashboard source\s+reconciliation)(?=[\s\S]*P0-03-SMOKE-01)(?=[\s\S]*P0-03-SMOKE-06)(?=[\s\S]*RESTORE_SMOKE_CHECK_PASS \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass,\s+rollback proof, migration approval or production GO)(?=[\s\S]*raw exports, credentials, bank data,\s+vouchers and personal data outside Git\/Codex\/chat)/i,
+  /(?=[\s\S]*data-p003-restore-smoke-check-acceptance-matrix="P0-03")(?=[\s\S]*P0-03 restore smoke-check acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*target isolation)(?=[\s\S]*core master readability)(?=[\s\S]*finance guard\s+behavior)(?=[\s\S]*role\/workspace scope)(?=[\s\S]*audit trace)(?=[\s\S]*dashboard source\s+reconciliation)(?=[\s\S]*Lead handover finance gate preserved)(?=[\s\S]*P0-19\/P2-05\/P2-03)(?=[\s\S]*P0-03-SMOKE-01)(?=[\s\S]*P0-03-SMOKE-07)(?=[\s\S]*RESTORE_SMOKE_CHECK_PASS \/ FAIL \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not prove an actual restore, smoke-check, UAT pass,\s+rollback proof, migration approval or production GO)(?=[\s\S]*raw exports, credentials, bank data,\s+vouchers and personal data outside Git\/Codex\/chat)/i,
   "P0-03 restore smoke-check acceptance matrix",
   componentPath,
 );
 
 requireText(
   component,
-  /(?=[\s\S]*data-p003-backup-restore-closure-decision-manifest="P0-03")(?=[\s\S]*P0-03 backup\/restore closure decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_03_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-03-CLOSE-01)(?=[\s\S]*P0-03-CLOSE-06)(?=[\s\S]*Execution authority and target isolation confirmed)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks pass)(?=[\s\S]*Smoke-check and UAT index accepted)(?=[\s\S]*Exceptions and waivers controlled)(?=[\s\S]*Human closure decision recorded)(?=[\s\S]*PASS_LOCAL keeps P0-03 at evidence-structure readiness only)/i,
+  /(?=[\s\S]*data-p003-backup-restore-closure-decision-manifest="P0-03")(?=[\s\S]*P0-03 backup\/restore closure decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_03_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-03-CLOSE-01)(?=[\s\S]*P0-03-CLOSE-06)(?=[\s\S]*Execution authority and target isolation confirmed)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks pass)(?=[\s\S]*Smoke-check and UAT index accepted)(?=[\s\S]*P0-19 gate UAT)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT)(?=[\s\S]*Exceptions and waivers controlled)(?=[\s\S]*Human closure decision recorded)(?=[\s\S]*PASS_LOCAL keeps P0-03 at evidence-structure readiness only)/i,
   "P0-03 backup/restore closure decision manifest",
   componentPath,
 );

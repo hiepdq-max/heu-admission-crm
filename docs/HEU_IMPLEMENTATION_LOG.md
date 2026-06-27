@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-03 Restore Smoke-Check P0-19 P3 Gate Coverage
+
+- Updated `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+  so restore smoke-check and UAT index require P0-19 legal/finance gate UAT
+  and P3-01/P3-02 lifecycle/handover UAT.
+- Updated `components/settings/supabase-backup-restore-guard.tsx` with
+  P0-03-SMOKE-07 to prove lead handover cannot create finance facts or bypass
+  P0-19/P2-05/P2-03 after restore.
+- Updated backlog, production checklist, backup/restore audit and release-gate
+  audit so the P0-03 restore path cannot lose P0-19/P3 gate preservation.
+- This is restore-smoke-check packaging only. It does not execute backup,
+  restore, migration dry-run, UAT, evidence acceptance, finance action,
+  owner waiver or production GO.
+
 ## 2026-06-28 - Current State P0-09 P3 Evidence Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Stage D/NO-GO snapshot

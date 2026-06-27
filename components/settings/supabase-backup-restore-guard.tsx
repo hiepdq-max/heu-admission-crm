@@ -147,6 +147,15 @@ const restoreSmokeCheckItems = [
       "P2-18 dashboard totals match restored source tables and remain read-only for the tested roles.",
     stopCondition: "Stop if dashboard values drift from restored source records.",
   },
+  {
+    caseId: "P0-03-SMOKE-07",
+    title: "Lead handover finance gate preserved",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO + KHTC + Audit",
+    evidence:
+      "P3 handover evidence proves lead-to-student handover cannot create finance facts or bypass P0-19/P2-05/P2-03 after restore.",
+    stopCondition:
+      "Stop if lead handover creates receivable/payment facts or bypasses finance gates.",
+  },
 ];
 
 const backupRestoreClosureItems = [
@@ -178,9 +187,9 @@ const backupRestoreClosureItems = [
     caseId: "P0-03-CLOSE-04",
     title: "Smoke-check and UAT index accepted",
     evidence:
-      "Restore smoke-check matrix, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete.",
+      "Restore smoke-check matrix, P0-19 gate UAT, P3-01/P3-02 lifecycle and handover UAT, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete.",
     blocker:
-      "Block closure if smoke-check, UAT evidence or source reconciliation is missing or unresolved.",
+      "Block closure if smoke-check, P0-19/P3 gate evidence, UAT evidence or source reconciliation is missing or unresolved.",
   },
   {
     caseId: "P0-03-CLOSE-05",

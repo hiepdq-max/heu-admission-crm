@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-03 Restore Smoke-Check P0-19 P3 Gate Coverage[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*P0-19 legal\/finance gate UAT[\s\S]*P3-01\/P3-02 lifecycle\/handover UAT[\s\S]*supabase-backup-restore-guard\.tsx[\s\S]*P0-03-SMOKE-07[\s\S]*lead handover cannot create finance facts or bypass\s+P0-19\/P2-05\/P2-03 after restore[\s\S]*backlog, production checklist, backup\/restore audit and release-gate\s+audit[\s\S]*This is restore-smoke-check packaging only[\s\S]*does not execute backup,\s+restore, migration dry-run, UAT, evidence acceptance, finance action,\s+owner waiver or production GO/i,
+  "P0-03 restore smoke-check P0-19/P3 gate coverage log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - Current State P0-09 P3 Evidence Alignment[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*Stage D\/NO-GO snapshot[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path includes\s+the P3-01\/P3-02 lifecycle and handover UAT requirement[\s\S]*current-state audit[\s\S]*missing P3 UAT evidence in the owner\s+signoff path, controlled evidence path, final handoff path or production\s+NO-GO blocker list fails locally[\s\S]*This is current-state inventory alignment only[\s\S]*does not execute UAT,\s+attach real evidence, approve migration, approve finance action, accept\s+handover, waive owner sign-off or mark production GO/i,
   "current-state P0-09 P3 evidence alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

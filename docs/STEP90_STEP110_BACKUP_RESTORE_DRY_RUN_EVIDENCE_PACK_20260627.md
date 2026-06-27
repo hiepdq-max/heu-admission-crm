@@ -37,6 +37,8 @@ and human sign-off.
 | `docs/MIGRATION_ORDER_AUDIT.md` | Migration ordering and waiver review |
 | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` | Final Go/No-Go control |
 | `docs/HARD_DELETE_AUDIT.md` | Rollback/hard-delete boundary |
+| `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md` | Legal/finance gate and pilot-open UAT |
+| `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` | Lead lifecycle and handover UAT |
 | `docs/STEP109_ROLE_PERMISSION_UAT_RUNBOOK.md` | ADMIN and role access UAT |
 | `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md` | Duplicate payout UAT |
 | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md` | Dashboard UAT |
@@ -149,6 +151,8 @@ from Codex/chat.
 | Receivable duplicate guard still blocks duplicates | PASS | | |
 | Tuition collection cannot exceed eligible balance without approved exception | PASS | | |
 | Reconciliation cannot lock unresolved invoice/receipt lines | PASS | | |
+| P0-19 legal/finance gate blocks unresolved basis before receivable creation | PASS | | |
+| P3 handover cannot bypass P0-19/P2-05/P2-03 finance gates | PASS | | |
 | Partner payment request requires BBNT/partner invoice dossier | PASS | | |
 | Payout cannot exceed approved amount or reuse voucher fingerprint | PASS | | |
 | Dashboard views are read-only and role-scoped | PASS | | |
@@ -159,6 +163,8 @@ from Codex/chat.
 
 | UAT pack | Required result | Evidence link / note |
 |---|---|---|
+| P0-19 legal/finance gate UAT | PASS | |
+| P3-01/P3-02 lead lifecycle and handover UAT | PASS | |
 | P2-17 duplicate payout UAT | PASS | |
 | P2-18 accounting dashboard UAT | PASS | |
 | Step109 role permission UAT | PASS | |
@@ -257,6 +263,7 @@ Each stop condition keeps production NO-GO.
 | P0-03-SMOKE-04 | Role and workspace scope preserved | Authorized, out-of-scope and inactive/revoked test users return the expected read/write boundaries | Out-of-scope user can see restricted TTGDTX finance or evidence data |
 | P0-03-SMOKE-05 | Audit trace preserved | `audit_logs` show create, update, check, approve, pay and source-control traceability after restore checks | Key restored actions cannot be traced to actor, time, entity and action |
 | P0-03-SMOKE-06 | Dashboard source reconciliation preserved | P2-18 dashboard totals match restored source tables and remain read-only for tested roles | Dashboard values drift from restored source records |
+| P0-03-SMOKE-07 | Lead handover finance gate preserved | P3 handover evidence proves lead-to-student handover cannot create finance facts or bypass P0-19/P2-05/P2-03 after restore | Lead handover creates receivable/payment facts or bypasses finance gates |
 
 Final smoke-check decision: RESTORE_SMOKE_CHECK_PASS / FAIL / BLOCKED.
 
@@ -279,7 +286,7 @@ GO.
 | P0-03-CLOSE-01 | Execution authority and target isolation confirmed | Approved execution window, operator/checker names, production project/ref and isolated restore target project/ref are recorded | Any command, screenshot or browser tab could point to production |
 | P0-03-CLOSE-02 | Backup and restore proof accepted | Backup/snapshot ID, restore completion, controlled evidence reference and checker confirmation exist outside Git/Codex/chat | Backup ID, restore evidence, controlled storage or checker confirmation is missing |
 | P0-03-CLOSE-03 | Preflight and postflight checks pass | Required audit scripts, lint and build pass before and after the dry-run on the isolated restore target | Any required check fails, is skipped without written waiver or was run against the wrong target |
-| P0-03-CLOSE-04 | Smoke-check and UAT index accepted | Restore smoke-check matrix, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete | Smoke-check, UAT evidence or source reconciliation is missing or unresolved |
+| P0-03-CLOSE-04 | Smoke-check and UAT index accepted | Restore smoke-check matrix, P0-19 gate UAT, P3-01/P3-02 lifecycle and handover UAT, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete | Smoke-check, P0-19/P3 gate evidence, UAT evidence or source reconciliation is missing or unresolved |
 | P0-03-CLOSE-05 | Exceptions and waivers controlled | Every HIGH/BLOCKER exception is fixed or has a written owner waiver with impact, rollback and expiry | Exception handling is oral, broad, ownerless or hides finance/legal/audit risk |
 | P0-03-CLOSE-06 | Human closure decision recorded | IT_DATA, Audit, KHTC, PHAP_CHE and BGH record GO, NO_GO or BLOCKED before migration order review | PASS_LOCAL is treated as backup executed, restore executed, UAT accepted, migration approved, rollback proven or production GO |
 
