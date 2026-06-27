@@ -152,7 +152,30 @@ Decision value: `P6_04_ACCEPT / FAIL / BLOCKED`.
 P6-04 can support production readiness only when P6-04-ACCEPT-01 through
 P6-04-ACCEPT-06 all pass with redacted evidence and signed owner approval.
 
-## 11. Current Result
+## 11. Role-Scope Access Decision Manifest
+
+The same panel exposes
+`data-heu-role-scope-access-decision-manifest="P6-04"` for the final access
+decision record after route UAT and before owner review. This manifest is
+PASS_LOCAL only until signed role-scope UAT evidence and owner sign-off exist.
+It does not approve production access, broad permissions, real-data UAT,
+finance action or production GO.
+
+| Case | Decision gate | Required decision | Stop condition |
+|---|---|---|---|
+| P6-04-DEC-01 | Static preflight complete | Permission soft-revoke, role-scope access, data-fetch, dashboard-access, UAT-plan, role-scope pack and release-gate audits pass before browser UAT evidence is trusted | Any preflight audit fails or real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
+| P6-04-DEC-02 | Positive role access decision | ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles are marked `ALLOWED` only for approved route families and scoped records | A positive account sees daily finance actions, hidden evidence, production GO controls or records outside approved scope |
+| P6-04-DEC-03 | Negative denial decision | Out-of-scope, contract-only, admission-only and non-finance accounts are marked `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any negative account sees unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data |
+| P6-04-DEC-04 | Server-side enforcement decision | Protected pages and server actions prove auth, permission and scope checks happen before sensitive query or write behavior | UI hiding is the only control, a query runs before `canOpen`/scope checks, or a blocked user can still write through a server action |
+| P6-04-DEC-05 | Broad access and delegation decision | Broad lead visibility, scope grants, protected role changes and delegation remain admin/delegated-only and respect soft-revoke state | A non-admin grants broad access, changes protected roles, bypasses soft revoke, hard-deletes evidence or receives unexpired unsafe delegation |
+| P6-04-DEC-06 | Human access decision | Operator, checker, process owner, evidence IDs, route results and final decision are recorded as `P6_04_ACCESS_READY`, `NO_GO` or `BLOCKED` | `PASS_LOCAL` is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval, owner GO or production GO |
+
+Final access decision: `P6_04_ACCESS_READY / NO_GO / BLOCKED`.
+
+Missing access decision ID, unsigned owner decision, unresolved route result,
+server-side bypass or raw sensitive role-scope evidence keeps P6-04 NO-GO.
+
+## 12. Current Result
 
 P6-04 is PASS_LOCAL as an execution pack and static guard package only. It does
 not approve production access, production migration, broad account grants or

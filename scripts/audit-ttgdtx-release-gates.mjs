@@ -850,6 +850,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
+  /(?=[\s\S]*Role-Scope Access Decision Manifest)(?=[\s\S]*data-heu-role-scope-access-decision-manifest="P6-04")(?=[\s\S]*P6-04-DEC-01)(?=[\s\S]*P6-04-DEC-06)(?=[\s\S]*P6_04_ACCESS_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive role-scope evidence keeps P6-04 NO-GO)/i,
+  "P6-04 role-scope access decision manifest doc",
+);
+
+requireText(
   "components/settings/user-scope-enforcement-panel.tsx",
   /(?=[\s\S]*data-heu-role-scope-ui-guard="P6-04")(?=[\s\S]*P6-04 role-scope UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until\s+signed UAT evidence exists)(?=[\s\S]*UAT_ADMIN)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_KHTC)(?=[\s\S]*UAT_TUYEN_SINH)(?=[\s\S]*UAT_PHAP_CHE)(?=[\s\S]*UAT_AUDIT)(?=[\s\S]*UAT_OUT_OF_SCOPE_STAFF)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank\s+accounts)(?=[\s\S]*raw student identity data)/i,
   "P6-04 role-scope UI guard stays local-only and no-secret",
@@ -874,8 +880,14 @@ requireText(
 );
 
 requireText(
+  "components/settings/user-scope-enforcement-panel.tsx",
+  /(?=[\s\S]*data-heu-role-scope-access-decision-manifest="P6-04")(?=[\s\S]*P6-04 role-scope access decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_04_ACCESS_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-04-DEC-01)(?=[\s\S]*P6-04-DEC-06)(?=[\s\S]*Static preflight complete)(?=[\s\S]*Positive role access decision)(?=[\s\S]*Negative denial decision)(?=[\s\S]*Server-side enforcement decision)(?=[\s\S]*Broad access and delegation decision)(?=[\s\S]*Human access decision)(?=[\s\S]*production GO)/i,
+  "P6-04 role-scope access decision manifest UI",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, UAT execution closure template and UAT operator handoff)(?=[\s\S]*signed UAT still required)/i,
+  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff)(?=[\s\S]*signed UAT still required)/i,
   "P6-04 production checklist acceptance matrix row",
 );
 

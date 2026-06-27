@@ -2813,3 +2813,17 @@
 - This is dashboard reliance-readiness packaging only. It does not approve
   finance action, statutory accounting, UAT acceptance, dashboard production
   reliance or production GO.
+
+## 2026-06-28 - P6-04 Access Decision Manifest
+
+- Added a P6-04 role-scope access decision manifest to the user-scope
+  enforcement panel and role-scope UAT execution pack so static preflight,
+  positive role access, negative denial, server-side enforcement, broad access
+  delegation and human access decision must be recorded before owner review.
+- Updated the production checklist, system backlog, current-state inventory,
+  `audit:heu-role-scope-uat-pack`, `audit:heu-current-state-inventory` and
+  `audit:ttgdtx-release-gates` so the P6-04 access decision manifest cannot be
+  skipped.
+- This is role-scope access-readiness packaging only. It does not approve
+  production access, broad permissions, real-data UAT, finance action or
+  production GO.

@@ -255,6 +255,63 @@ const roleScopeAcceptanceItems = [
   },
 ];
 
+const roleScopeAccessDecisionItems = [
+  {
+    caseId: "P6-04-DEC-01",
+    decisionGate: "Static preflight complete",
+    requiredDecision:
+      "Permission soft-revoke, role-scope access, data-fetch, dashboard-access, UAT-plan, role-scope pack and release-gate audits pass before browser UAT evidence is trusted.",
+    owner: "IT_DATA + Audit",
+    stopCondition:
+      "Stop if any preflight audit fails or real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
+  },
+  {
+    caseId: "P6-04-DEC-02",
+    decisionGate: "Positive role access decision",
+    requiredDecision:
+      "ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles are marked ALLOWED only for approved route families and scoped records.",
+    owner: "IT_DATA + process owners",
+    stopCondition:
+      "Stop if a positive account sees daily finance actions, hidden evidence, production GO controls or records outside approved scope.",
+  },
+  {
+    caseId: "P6-04-DEC-03",
+    decisionGate: "Negative denial decision",
+    requiredDecision:
+      "Out-of-scope, contract-only, admission-only and non-finance accounts are marked BLOCKED or EMPTY_SCOPED_STATE where required.",
+    owner: "IT_DATA + Audit",
+    stopCondition:
+      "Stop if any negative account sees unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data.",
+  },
+  {
+    caseId: "P6-04-DEC-04",
+    decisionGate: "Server-side enforcement decision",
+    requiredDecision:
+      "Protected pages and server actions prove auth, permission and scope checks happen before sensitive query or write behavior.",
+    owner: "IT_DATA + Audit",
+    stopCondition:
+      "Stop if UI hiding is the only control, a query runs before canOpen/scope checks, or a blocked user can still write through a server action.",
+  },
+  {
+    caseId: "P6-04-DEC-05",
+    decisionGate: "Broad access and delegation decision",
+    requiredDecision:
+      "Broad lead visibility, scope grants, protected role changes and delegation remain admin/delegated-only and respect soft-revoke state.",
+    owner: "IT_DATA + BGH",
+    stopCondition:
+      "Stop if a non-admin grants broad access, changes protected roles, bypasses soft revoke, hard-deletes evidence or receives unexpired unsafe delegation.",
+  },
+  {
+    caseId: "P6-04-DEC-06",
+    decisionGate: "Human access decision",
+    requiredDecision:
+      "Operator, checker, process owner, evidence IDs, route results and final decision are recorded as P6_04_ACCESS_READY, NO_GO or BLOCKED.",
+    owner: "IT_DATA + Audit + process owners",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval, owner GO or production GO.",
+  },
+];
+
 function formatNumber(value: number | null | undefined) {
   return new Intl.NumberFormat("vi-VN").format(value ?? 0);
 }
@@ -598,6 +655,65 @@ export function UserScopeEnforcementPanel({
                 </p>
               </article>
             ))}
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm leading-6 text-sky-950"
+          data-heu-role-scope-access-decision-manifest="P6-04"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ClipboardCheck className="size-4 shrink-0" />
+                <span>
+                  P6-04 role-scope access decision manifest: PASS_LOCAL only
+                </span>
+              </div>
+              <p className="mt-2">
+                Use this manifest after route UAT and before owner review. It
+                records who is allowed, blocked or empty-scoped, but it does
+                not approve production access, broad permissions, real-data
+                UAT, finance action or production GO.
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-sky-200 bg-white px-3 py-2">
+              Access decision:
+              <span className="mt-1 block font-mono text-xs">
+                P6_04_ACCESS_READY / NO_GO / BLOCKED
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {roleScopeAccessDecisionItems.map((item) => (
+              <article
+                key={item.caseId}
+                className="border-l-2 border-sky-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-sky-700">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.decisionGate}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  {item.requiredDecision}
+                </p>
+                <p className="mt-2 text-xs font-medium text-zinc-500">
+                  Owner: {item.owner}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop: {item.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-md border border-sky-200 bg-white px-3 py-2 text-sky-900">
+            Missing access decision ID, unsigned owner decision, unresolved
+            route result, server-side bypass or raw sensitive role-scope
+            evidence keeps P6-04 NO-GO.
           </div>
         </div>
       </div>

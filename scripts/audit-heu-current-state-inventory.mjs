@@ -151,7 +151,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );
 requireText(
