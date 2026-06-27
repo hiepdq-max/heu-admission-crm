@@ -142,7 +142,8 @@ Production is still NO-GO because:
 5. Execute P2-17 duplicate payout UAT and sign results.
 6. Execute P2-18 dashboard UAT and P5-03 Finance Desk UAT with authorized, out-of-scope and contract-only users.
 7. Execute P6-04 role/workspace UAT using the UAT operator handoff, complete the internal UAT execution closure tracker and execute P6-03 audit-log UAT.
-8. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
+8. Convert remaining non-TTGDTX/base hard-delete/cascade findings or obtain
+   written waiver.
 9. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
    `npm.cmd run lint` green before owner review.
 10. Record final owner GO/NO-GO outside Codex/chat using the owner sign-off pack,
@@ -156,4 +157,4 @@ Production is still NO-GO because:
 | Production readiness | NO-GO |
 | Pilot scope | TTGDTX 9+ accounting end-to-end |
 | Strong internal modules | M05, M09, M12 |
-| Most important blockers | Backup/restore evidence, signed UAT, migration order, hard-delete/cascade waiver and owner GO/NO-GO |
+| Most important blockers | Backup/restore evidence, signed UAT, migration order, hard-delete/cascade conversion or written waiver and owner GO/NO-GO |

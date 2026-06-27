@@ -186,6 +186,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Convert remaining non-TTGDTX\/base hard-delete\/cascade findings or obtain\s+written waiver[\s\S]*Most important blockers[\s\S]*hard-delete\/cascade conversion or written waiver and owner GO\/NO-GO/i,
+  "P6-06 conversion-or-written-waiver priority wording",
+);
+requireText(
+  inventory,
   /Do not paste|Raw PII, bank data, passwords, keys and vouchers must stay outside Git\/Codex\/chat/i,
   "sensitive-data boundary",
 );

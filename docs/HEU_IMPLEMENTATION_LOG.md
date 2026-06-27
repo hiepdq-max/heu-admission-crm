@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Current State P6-06 Conversion Or Written Waiver Wording
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P6-06 priority action
+  and current conclusion say hard-delete/cascade findings need conversion or a
+  written waiver, not a generic waiver.
+- Updated `scripts/audit-heu-current-state-inventory.mjs` so the current-state
+  inventory fails if the P6-06 blocker summary loses the conversion-or-written
+  waiver requirement.
+- This is current-state wording alignment only. It does not approve production
+  deletion, cascade execution, waiver, conversion migration, data cleanup,
+  evidence acceptance, owner GO/NO-GO or production GO.
+
 ## 2026-06-28 - P0-13 Shared Source P0-03 P3 Gate Proof
 
 - Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
