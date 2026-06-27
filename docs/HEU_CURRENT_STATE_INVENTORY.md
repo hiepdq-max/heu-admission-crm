@@ -1,13 +1,13 @@
 # HEU Current State Inventory
 
-Date: 2026-06-22  
-Repository: heu-admission-crm  
-Remote: https://github.com/hiepdq-max/heu-admission-crm.git  
-Base branch: main  
-Hardening branch: hardening/ttgdtx-9plus-pilot  
-Latest known commit: 9d54348 Add TTGDTX tuition policy control  
-Git state: dirty, có modified và untracked files  
-Conclusion: D - Có thể test nội bộ, chưa production-ready
+Date: 2026-06-27
+Repository: heu-admission-crm
+Remote: https://github.com/hiepdq-max/heu-admission-crm.git
+Working branch: hardening/ttgdtx-9plus-pilot
+Git state: clean local worktree at last verified handoff; exact ahead count and
+current commit are live Git state and must be read with `git status --short
+--branch` and `git rev-parse --short HEAD`.
+Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 
 ## 1. Repository Identity
 
@@ -17,163 +17,115 @@ Conclusion: D - Có thể test nội bộ, chưa production-ready
 | Remote | https://github.com/hiepdq-max/heu-admission-crm.git |
 | Base branch | main |
 | Working branch | hardening/ttgdtx-9plus-pilot |
-| Latest known commit | 9d54348 Add TTGDTX tuition policy control |
-| Current status | Dirty working tree |
-| Current production state | Not production-ready |
+| Current commit | Live state; run `git rev-parse --short HEAD` |
+| Current status | Clean local worktree at last verified handoff |
+| Current production state | NO-GO |
 
 ## 2. Technical Stack
 
 | Layer | Current evidence |
 |---|---|
 | Frontend | Next.js 16, React 19, TypeScript |
-| UI | Tailwind CSS v4, shadcn, Radix UI, lucide-react |
-| Backend | Next.js App Router server actions/pages |
+| UI | Tailwind CSS v4, shadcn/Radix patterns, lucide-react |
+| Backend | Next.js App Router, server pages/actions |
 | Database | Supabase/PostgreSQL |
-| Auth | Supabase Auth and CRM user/profile scope |
-| ORM | Không thấy ORM chuyên biệt; đang dùng Supabase client/server actions |
-| Deployment | Vercel-oriented Next.js project |
+| Auth | Supabase Auth with HEU role and workspace scope checks |
 | Package manager | npm with package-lock.json |
+| Local command rule | Use `npm.cmd` on Windows |
 
-## 3. Folder/File Inventory
+## 3. Current Build And Audit Evidence
 
-### Main Folders
-
-| Folder | Purpose |
+| Evidence | Current status |
 |---|---|
-| app | Next.js routes, pages and server actions |
-| app/ttgdtx | TTGDTX 9+ pilot workflows and screens |
-| components | Shared UI and domain components |
-| components/leads | Lead detail and TTGDTX quick-fix components |
-| database | SQL schema, step migrations and pilot patches |
-| lib | Supabase, workspace, rules and shared helper logic |
-| public | Static assets |
-| docs | Documentation and hardening evidence |
+| `npm.cmd run build` | PASS at last verification |
+| `npm.cmd run lint` | PASS at last verification |
+| `npm.cmd run audit:ttgdtx-release-gates` | PASS |
+| `npm.cmd run audit:heu-git-hygiene` | PASS |
+| Full `audit:*` suite | PASS after the P7-03 slice; rerun before handoff |
 
-### Main Config Files
-
-| File | Purpose |
-|---|---|
-| package.json | Scripts and dependencies |
-| package-lock.json | Locked npm dependency versions |
-| next.config.ts | Next.js configuration |
-| tsconfig.json | TypeScript configuration |
-| eslint.config.mjs | ESLint configuration |
-| postcss.config.mjs | PostCSS/Tailwind pipeline |
-| components.json | shadcn component configuration |
-| .gitignore | Git ignore rules |
-| .env.local | Local secrets; must not be printed or committed |
-
-### Main Documentation Files
-
-| File | Note |
-|---|---|
-| README.md | Project overview if maintained |
-| AGENTS.md | Agent/developer guidance if maintained |
-| CLAUDE.md | Prior assistant/development guidance if maintained |
-| docs/*.md | Hardening and audit documentation |
-
-### Database/Schema Files
-
-| Group | Evidence |
-|---|---|
-| Base schema | database/schema.sql |
-| Supabase checks/admin | step files before P0/P1/P2 |
-| Master Control | P0 step files |
-| Short-course ERP | P1 step files |
-| TTGDTX 9+ accounting | database/step90 through database/step110 |
+Passing local checks proves only local packaging quality. It does not approve
+production, production migration, UAT acceptance, finance action or owner GO.
 
 ## 4. HEU Module Mapping M01-M12
 
 | Module | Scope | Current status | Evidence |
 |---|---|---|---|
-| M01 Legal | Legal registry, rules, gates | Partial | Legal/gate data exists, but formal legal source control still incomplete |
-| M02 HR | User, roles, direct manager, scopes | Partial | User scope pages and role/profile flow exist |
-| M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Dynamic admission config and TTGDTX dropdown exist |
-| M04 SOP/Workflow | Workflow/request engine, gates | Partial | P0/P1/P2 workflows and approval request patterns exist |
-| M05 Tuyển sinh CRM | Leads, pipeline, follow-up, detail | Strong | Lead list/detail, scope filtering, P0-13 workspace |
-| M06 CTHSSV | Student handover/profile readiness | Partial | Handover concepts and short student master exist |
-| M07 Đào tạo | Class/program/course handling | Partial | Short-course/class primitives exist |
-| M08 Khoa/Giảng viên | Faculty/teacher/class delivery | Partial | Not yet a strong production module |
-| M09 Tài chính/Công nợ | Tuition, receivable, payment, reconciliation, payout | Strong | TTGDTX P2-01 to P2-18 pilot flow |
-| M10 Dashboard | Reports, accounting dashboard | Partial | Dashboards exist but production verification incomplete |
-| M11 AI Agent | AI support/risk assistant | Partial | AI policy exists; no autonomous approval allowed |
-| M12 Audit/Risk | Audit log, issue routing, risk alerts | Strong | P2-07/P2-08 issue routing and audit/risk concepts |
+| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate is packaged; signed UAT still required |
+| M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
+| M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
+| M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
+| M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | Lead routes exist; handover remains finance-gated |
+| M06 CTHSSV | Student handover/profile readiness | Partial | Handover policy exists; production UAT pending |
+| M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
+| M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
+| M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01 through P2-18 pilot flow is packaged |
+| M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 and P5-02 are read-only and UAT-gated |
+| M11 AI Agent | Advisory/checklist/risk assistant | Advisory only | P7-01/P7-02/P7-03 are PASS_LOCAL; autonomous AI remains locked |
+| M12 Audit/Risk | Audit log, issue routing, risk alerts | Strong internal | P6 audit guards and hard-delete/cascade reviews pass locally |
 
-## 5. Data Layer
+## 5. TTGDTX 9+ Current Control State
 
-| Data Area | Current evidence | Readiness |
+| Area | Current evidence | Readiness |
 |---|---|---|
-| Lead/CRM | Leads, statuses, sources, workspace/segment | Internal test |
-| Admission segment/program/major | Dynamic admission config and scoped workspace | Internal test |
-| TTGDTX contract | P2-01 contract master | Internal test |
-| TTGDTX tuition policy | P2-02 policy control | Internal test |
-| TTGDTX real-data fit | Phu Xuyen K23/K24 source pack reviewed read-only | Design note added; no real-data import/go-live approved |
-| TTGDTX receivable/debt | P2-03 receivables | Internal test |
-| TTGDTX collection | P2-10 payment receipt/voucher flow | Internal test |
-| TTGDTX reconciliation | P2-13/P2-14 batch approval/lock | Internal test |
-| TTGDTX payment request | P2-15/P2-16 request and approval | Internal test |
-| TTGDTX payout | P2-17 execution | Static hardening and duplicate-click UAT runbook added; signed UAT pending |
-| Accounting dashboard | P2-18 dashboard | Static access guard added; authorized-user UAT evidence pending |
-| Audit log | Exists across workflows | Static TTGDTX coverage audit passes; signed UAT pending |
-| Approval log | Exists as approval/workflow request pattern | Needs production hardening |
-
-### Required Data Questions
-
-| Question | Current answer |
-|---|---|
-| Có STUDENT_MASTER không? | Có dấu vết student master/short student master; cần chuẩn hóa tên và scope |
-| Có CLASS_MASTER không? | Có lớp/ngắn hạn; TTGDTX 9+ cần xác nhận class master riêng |
-| Có PAYMENT/DEBT không? | Có TTGDTX receivable, collection, payment request and payout |
-| Có AUDIT_LOG không? | Có audit concepts/actions, cần audit completeness |
-| Có APPROVAL_LOG không? | Có approval request/decision gate patterns, cần chuẩn hóa |
+| Production readiness guard | TTGDTX landing guard, execution queue, owner GO/NO-GO checklist | PASS_LOCAL, NO-GO |
+| Backup/restore | Evidence pack and UI guard exist | Template ready; real backup/restore evidence missing |
+| Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
+| Legal/finance gate | P0-19 guard and UAT checklist exist | Signed legal/finance UAT still required |
+| Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
+| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier and duplicate guards | Signed payout UAT pending |
+| Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |
+| Role/workspace scope | P6-04 pack and scope UI guard exist | Multi-account signed UAT pending |
+| Audit log | Static coverage audit passes | Signed audit-log UAT pending |
+| Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings | Conversion or written waiver pending |
+| Controlled evidence | Redaction/intake pack and audit guard exist | Real evidence must stay outside Git/Codex/chat |
+| AI helper layer | Task checklist and risk board are read-only | Advisory only; no autonomous approval |
 
 ## 6. Risk Findings
 
-| Risk | Severity | Note |
+| Risk | Severity | Current status |
 |---|---|---|
-| Dirty working tree | HIGH | Cần phân loại file trước commit/push |
-| Untracked SQL migrations | HIGH | Step90-109 need approved migration order, backup, restore dry-run and idempotency evidence |
-| Hard delete patterns | HIGH | Static hard-delete and TTGDTX cascade audits pass; non-TTGDTX/base cascade review still needs approval |
-| Logs untracked | MEDIUM | dev-server logs không nên commit |
-| P2-18 dashboard authorized UAT pending | HIGH | Route/build/static access guard pass; browser redirects to login without a signed-in test user |
-| Real workbook/PDF/appendix complexity | HIGH | Synthetic real-like UAT pack added and audited; signed UAT still must prove multi-section workbook, bank receipt batch, BBNT, invoice and account-control behavior |
-| Finance flow đã test một lần nhưng chưa có full automated tests | HIGH | VND money format audit passes; duplicate receivable/receipt/reconciliation/payout tests still need expansion |
-| AI policy static guard | MEDIUM | AI policy/audit passes for advisory-only route; future AI automation still needs prompt log, data scope and signed UAT |
-| Permission scope cần test nhiều vai trò | HIGH | Cần test admin, kế toán, tuyển sinh, CTHSSV, đối tác |
+| Git hygiene drift | MEDIUM | P0-02/P0-04 are PASS_LOCAL; keep `audit:heu-git-hygiene` green and verify exact ahead count live |
+| Production backup/restore not executed | CRITICAL | Real backup ID, restore target and smoke-check evidence are still missing |
+| Migration order unsigned | CRITICAL | Step90-Step110 approval must be signed by IT_DATA, KHTC and PHAP_CHE |
+| Signed UAT missing | CRITICAL | P0-19, P2-17, P2-18, P6-03 and P6-04 still require signed evidence |
+| Hard-delete/cascade residual risk | HIGH | Non-TTGDTX/base cascade findings need conversion or written waiver |
+| Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, keys and vouchers must stay outside Git/Codex/chat |
+| AI misuse | MEDIUM | AI remains advisory-only; prompt/output logging and role-scoped AI data are not enabled |
 
 ## 7. Production Readiness Assessment
 
-Current stage: D - Có thể test nội bộ.
+Current stage: Stage D - internal controlled test only.
 
-Not production-ready because:
+Production is still NO-GO because:
 
-- Chua co migration order chinh thuc, backup evidence va restore dry-run sign-off.
-- Chưa có test tự động cho luồng tài chính.
-- Chua co production waiver/approval cho non-TTGDTX cascade va hard-delete residual risk.
-- Chua co signed UAT cho P2-18 dashboard bang tai khoan duoc phan quyen.
-- Chưa có checklist Go/No-Go được BGH/KHTC/Pháp chế/IT-Data duyệt.
-- Chưa có bằng chứng backup trước migration.
+- No real production backup/restore dry-run evidence has been attached.
+- Step90-Step110 production migration order is not signed.
+- P0-19 legal/finance UAT is not signed.
+- P2-17 duplicate payout UAT is not signed.
+- P2-18 dashboard browser UAT is not signed.
+- P6-03 audit-log UAT and P6-04 role/workspace UAT are not signed.
+- Non-TTGDTX/base cascade findings still need conversion or written waiver.
+- Final BGH/IT_DATA/KHTC/PHAP_CHE/Audit/owner GO/NO-GO is not signed.
 
 ## 8. Priority Fix List
 
-1. Freeze TTGDTX 9+ scope and stop expansion outside pilot.
-2. Clean Git state by reviewing modified/untracked files.
-3. Approve migration order for step90-step110.
-4. Execute backup/restore dry-run before any production migration.
-5. Finish non-TTGDTX cascade and residual hard-delete approval.
-6. Execute P2-18 UAT with authorized, out-of-scope and contract-only users.
-7. Add tests for no duplicate receivable, no duplicate receipt, no duplicate reconciliation and no duplicate payout.
-8. Execute `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md` by role and workspace.
-9. Keep `npm.cmd run audit:vnd-money-format` green when adding new finance input forms.
-10. Execute anonymized Phu-Xuyen-like UAT pack for multi-section workbook, bank receipt batch, K23 appendix and K24 support-fee formula.
-11. Prepare internal pilot sign-off.
+1. Execute backup/restore dry-run and attach controlled evidence outside Git.
+2. Sign Step90-Step110 migration order after backup/restore evidence is accepted.
+3. Execute P0-19 legal/finance UAT and sign results.
+4. Execute P2-17 duplicate payout UAT and sign results.
+5. Execute P2-18 dashboard UAT with authorized, out-of-scope and contract-only users.
+6. Execute P6-04 role/workspace UAT and P6-03 audit-log UAT.
+7. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
+8. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
+   `npm.cmd run lint` green before owner review.
+9. Record final owner GO/NO-GO outside Codex/chat.
 
 ## 9. Current Conclusion
 
 | Item | Conclusion |
 |---|---|
-| Current stage | D - Có thể test nội bộ |
-| Production readiness | Not production-ready |
+| Current stage | Stage D - internal controlled test only |
+| Production readiness | NO-GO |
 | Pilot scope | TTGDTX 9+ accounting end-to-end |
-| Strong modules | M05, M09, M12 |
-| Partial modules | M01, M02, M03, M04, M06, M07, M08, M10, M11 |
+| Strong internal modules | M05, M09, M12 |
+| Most important blockers | Backup/restore evidence, signed UAT, migration order, hard-delete/cascade waiver and owner GO/NO-GO |

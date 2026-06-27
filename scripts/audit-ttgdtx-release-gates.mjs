@@ -62,6 +62,7 @@ const requiredFiles = [
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
@@ -105,6 +106,7 @@ const requiredFiles = [
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-bgh-dashboard-spec.mjs",
   "scripts/audit-heu-controlled-evidence-redaction-pack.mjs",
+  "scripts/audit-heu-current-state-inventory.mjs",
   "scripts/audit-heu-data-foundation.mjs",
   "scripts/audit-heu-git-hygiene.mjs",
   "scripts/audit-heu-ai-policy.mjs",
@@ -143,6 +145,7 @@ const requiredScripts = [
   "audit:heu-backlog-codes",
   "audit:heu-bgh-dashboard-spec",
   "audit:heu-controlled-evidence-redaction-pack",
+  "audit:heu-current-state-inventory",
   "audit:heu-data-foundation",
   "audit:heu-git-hygiene",
   "audit:heu-lead-handover-policy",
@@ -284,6 +287,12 @@ requireText(
   "docs/GIT_CLEANUP_ANALYSIS.md",
   /Current Snapshot - 2026-06-27[\s\S]*Branch:\s*`hardening\/ttgdtx-9plus-pilot`[\s\S]*git status --short --branch[\s\S]*clean worktree[\s\S]*Exact ahead count is intentionally treated as live state[\s\S]*drifts with each safe commit[\s\S]*Do not commit runtime logs, local secrets, raw UAT evidence, exported bank\s+statements or temporary SQL scratch files/i,
   "P0-02 Git hygiene current snapshot",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed/i,
+  "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
 requireText(

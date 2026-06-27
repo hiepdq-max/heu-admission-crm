@@ -1952,3 +1952,13 @@
   log/env files before handoff.
 - Production remains NO-GO; owner review/push, backup/restore evidence and
   signed UAT are still required.
+## 2026-06-27 - Current State Inventory Refresh
+
+- Rewrote `docs/HEU_CURRENT_STATE_INVENTORY.md` so it reflects the current
+  Stage D / production NO-GO state instead of the old dirty-worktree snapshot.
+- Added `audit:heu-current-state-inventory` and release-gate coverage to keep
+  the inventory aligned with the actual operating posture.
+- The inventory now treats exact commit and branch-ahead count as live Git state
+  to be checked by command, not as a durable hard-coded approval signal.
+- Production remains NO-GO until backup/restore evidence, signed UAT, migration
+  order, hard-delete/cascade waiver and final owner GO/NO-GO are complete.
