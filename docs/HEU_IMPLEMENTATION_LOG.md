@@ -2798,3 +2798,18 @@
 - This is payout release-readiness packaging only. It does not initiate a bank
   transfer, approve finance action, accept UAT, move money or mark production
   GO.
+
+## 2026-06-28 - P2-18 Dashboard Reliance Decision Manifest
+
+- Added a P2-18 dashboard reliance decision manifest to the source
+  reconciliation checklist and accounting-dashboard UAT runbook so authorized
+  read-only access, source totals, control-board status, redacted evidence,
+  reliance boundary and human reliance decision must be recorded before
+  BGH/KHTC rely on dashboard numbers.
+- Updated the production checklist, system backlog, current-state inventory,
+  `audit:ttgdtx-dashboard-source-reconciliation`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  dashboard reliance manifest cannot be skipped.
+- This is dashboard reliance-readiness packaging only. It does not approve
+  finance action, statutory accounting, UAT acceptance, dashboard production
+  reliance or production GO.

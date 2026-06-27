@@ -74,6 +74,13 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18 dashboard reliance decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*Authorized read-only access)(?=[\s\S]*Source-total reconciliation)(?=[\s\S]*Control-board status)(?=[\s\S]*Evidence redaction and storage)(?=[\s\S]*Dashboard reliance boundary)(?=[\s\S]*Human reliance decision)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve finance action, statutory\s+accounting, UAT acceptance, dashboard production reliance or\s+production GO)(?=[\s\S]*Missing reliance decision ID, unresolved variance, unsigned owner\s+decision, uncontrolled evidence or raw sensitive dashboard data keeps\s+P2-18 NO-GO)/i,
+  "P2-18 dashboard reliance decision manifest UI",
+  componentPath,
+);
+
+requireText(
   page,
   /<TtgdtxDashboardReadonlyGuard\s*\/>[\s\S]*<TtgdtxDashboardSourceReconciliationChecklist\s*\/>[\s\S]*<TtgdtxDashboardUatEvidenceChecklist\s*\/>/,
   "P2-18 page mounts source reconciliation between guard and evidence checklist",
@@ -82,28 +89,28 @@ requireText(
 
 requireText(
   runbook,
-  /(?=[\s\S]*source reconciliation checklist)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*P2-03)(?=[\s\S]*P2-10)(?=[\s\S]*P2-13\/P2-14)(?=[\s\S]*P2-15\/P2-16)(?=[\s\S]*P2-17)(?=[\s\S]*P2-19)/i,
+  /(?=[\s\S]*source reconciliation checklist)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*P2-03)(?=[\s\S]*P2-10)(?=[\s\S]*P2-13\/P2-14)(?=[\s\S]*P2-15\/P2-16)(?=[\s\S]*P2-17)(?=[\s\S]*P2-19)(?=[\s\S]*Dashboard Reliance Decision Manifest)(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)/i,
   "P2-18 runbook source reconciliation checklist reference",
   runbookPath,
 );
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "production checklist P2-18 source reconciliation guard row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-18[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*audit:ttgdtx-dashboard-source-reconciliation/i,
+  /P2-18[\s\S]*dashboard reliance decision manifest[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*audit:ttgdtx-dashboard-source-reconciliation/i,
   "backlog P2-18 source reconciliation guard",
   backlogPath,
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS/i,
+  /(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*dashboard reliance decision manifest[\s\S]*Signed browser UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS)/i,
   "current-state P2-18 source reconciliation audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

@@ -127,7 +127,30 @@ exist.
 
 Decision value: `P2_18_ACCEPT / FAIL / BLOCKED`.
 
-## 8. Sign-Off Rule
+## 8. Dashboard Reliance Decision Manifest
+
+Before BGH/KHTC rely on any P2-18 dashboard number for internal review,
+complete the reliance decision manifest exposed on the dashboard through
+`data-ttgdtx-dashboard-reliance-decision-manifest="P2-18"`. This manifest is
+local-only until signed browser UAT and owner sign-off exist. It does not
+approve finance action, statutory accounting, UAT acceptance, dashboard
+production reliance or production GO.
+
+| Case | Reliance gate | Required decision | Stop condition |
+|---|---|---|---|
+| P2-18-REL-01 | Authorized read-only access | BGH/KHTC can open the dashboard only after permission and TTGDTX scope checks pass; the page exposes no write action | A query runs before `canOpen`, a write button exists, or contract-only/out-of-scope access exposes finance totals |
+| P2-18-REL-02 | Source-total reconciliation | Dashboard totals reconcile to P2-03, P2-10, P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 controlled references | Any accepted KPI cannot be traced to the approved source workflow, query or evidence reference |
+| P2-18-REL-03 | Control-board status | All intentional completed flows are `PASS`; `REVIEW` items have owner notes; `CRITICAL` rows are explained or block reliance | A `CRITICAL` row is unexplained, a `REVIEW` row has no owner, or an exception route points to the wrong workflow |
+| P2-18-REL-04 | Evidence redaction and storage | Screenshots, exports and source comparisons use controlled redacted evidence IDs outside Git/Codex/chat | Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys appear |
+| P2-18-REL-05 | Dashboard reliance boundary | Owners record whether the dashboard can support internal review only, with no finance action or statutory-accounting reliance | Dashboard `PASS_LOCAL` is treated as finance approval, statutory accounting, UAT acceptance or production GO |
+| P2-18-REL-06 | Human reliance decision | Operator, checker, owner signers, timestamp, evidence IDs and final decision are recorded as `P2_18_RELIANCE_READY`, `NO_GO` or `BLOCKED` | Signed browser UAT, owner sign-off, backup/restore proof or final GO/NO-GO evidence is missing |
+
+Final reliance decision: `P2_18_RELIANCE_READY / NO_GO / BLOCKED`.
+
+Missing reliance decision ID, unresolved variance, unsigned owner decision,
+uncontrolled evidence or raw sensitive dashboard data keeps P2-18 NO-GO.
+
+## 9. Sign-Off Rule
 
 Mark P2-18 as `DONE` only when:
 

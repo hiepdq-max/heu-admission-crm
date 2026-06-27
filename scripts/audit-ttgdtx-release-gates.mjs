@@ -712,6 +712,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18 dashboard reliance decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve finance action, statutory\s+accounting, UAT acceptance, dashboard production reliance or\s+production GO)/i,
+  "P2-18 dashboard reliance decision manifest",
+);
+
+requireText(
   "app/ttgdtx/accounting-dashboard/page.tsx",
   /TtgdtxDashboardReadonlyGuard[\s\S]*<TtgdtxDashboardReadonlyGuard \/>/,
   "P2-18 dashboard read-only guard mount",
@@ -725,7 +731,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
 );
 
@@ -733,6 +739,12 @@ requireText(
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
   /(?=[\s\S]*Dashboard Acceptance Matrix)(?=[\s\S]*P2-18-ACCEPT-01)(?=[\s\S]*P2-18-ACCEPT-06)(?=[\s\S]*P2_18_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-18-ACCEPT-01 through P2-18-ACCEPT-06 all pass with redacted evidence)/i,
   "P2-18 runbook dashboard acceptance matrix",
+);
+
+requireText(
+  "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
+  /(?=[\s\S]*Dashboard Reliance Decision Manifest)(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive dashboard data keeps\s+P2-18 NO-GO)/i,
+  "P2-18 runbook dashboard reliance decision manifest",
 );
 
 requireText(
