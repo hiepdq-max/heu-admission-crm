@@ -83,8 +83,14 @@ for (const code of requiredCodes) {
 
 requireText(
   labels,
-  /code: "P2-10"[\s\S]*businessName: "Thu học phí"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*hoa don thu tien/i,
-  "P2-10 Thu hoc phi search terms",
+  /code: "P2-10"[\s\S]*businessName: "Thu học phí"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*thu tien co hoa don khong[\s\S]*thu tien co xuat hoa don khong[\s\S]*xuat hoa don[\s\S]*co can hoa don/i,
+  "P2-10 natural invoice search terms",
+  labelPath,
+);
+requireText(
+  labels,
+  /(?=[\s\S]*normalizeTtgdtxProcessSearchText)(?=[\s\S]*matchesTtgdtxProcessQuery)(?=[\s\S]*normalize\("NFD"\))(?=[\s\S]*\\u0111)(?=[\s\S]*normalizedQuery\.includes\(normalizedValue\))/i,
+  "accent-insensitive process query matcher",
   labelPath,
 );
 requireText(
@@ -103,6 +109,12 @@ requireText(
   searchPage,
   /TTGDTX_PROCESS_SEARCH_SUGGESTIONS/i,
   "TTGDTX process suggestions in search page",
+  searchPagePath,
+);
+requireText(
+  searchPage,
+  /matchesTtgdtxProcessQuery[\s\S]*buildTtgdtxProcessResults[\s\S]*mergeSearchResults[\s\S]*processResults[\s\S]*loadError = null/i,
+  "local TTGDTX process search fallback",
   searchPagePath,
 );
 requireText(
@@ -125,7 +137,7 @@ requireText(
 );
 requireText(
   processMap,
-  /User-facing screens and documents should show the business name first[\s\S]*HEU Finance Desk[\s\S]*P5-03[\s\S]*TTGDTX\s+landing quick finder/i,
+  /(?=[\s\S]*User-facing screens and documents should show the business name first)(?=[\s\S]*Thu tien co xuat hoa don khong)(?=[\s\S]*\/search)(?=[\s\S]*local TTGDTX process-label map)(?=[\s\S]*HEU Finance Desk)(?=[\s\S]*P5-03)(?=[\s\S]*TTGDTX\s+quick\s+finder)/i,
   "business-name-first rule",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
 );

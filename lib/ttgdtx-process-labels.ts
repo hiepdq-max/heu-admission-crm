@@ -70,7 +70,18 @@ export const TTGDTX_PROCESS_LABELS: TtgdtxProcessLabel[] = [
     label: "Thu học phí (P2-10)",
     href: "/ttgdtx/payments",
     plainMeaning: "Ghi nhận tiền đã thu, chứng từ thu, hóa đơn/chứng từ nếu cần",
-    searchTerms: ["thu hoc phi", "chung tu thu", "voucher thu", "hoa don thu tien"],
+    searchTerms: [
+      "thu hoc phi",
+      "thu tien",
+      "thu tien co hoa don khong",
+      "thu tien co xuat hoa don khong",
+      "chung tu thu",
+      "voucher thu",
+      "hoa don thu tien",
+      "xuat hoa don",
+      "co can hoa don",
+      "hoa don chung tu",
+    ],
   },
   {
     code: "P2-11",
@@ -164,6 +175,44 @@ export const TTGDTX_PROCESS_LABELS: TtgdtxProcessLabel[] = [
 export const TTGDTX_PROCESS_SEARCH_SUGGESTIONS = TTGDTX_PROCESS_LABELS.map(
   (item) => item.label,
 );
+
+export function normalizeTtgdtxProcessSearchText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\u0111/g, "d")
+    .replace(/\u0110/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9/]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function matchesTtgdtxProcessQuery(
+  item: TtgdtxProcessLabel,
+  query: string,
+) {
+  const normalizedQuery = normalizeTtgdtxProcessSearchText(query);
+
+  if (normalizedQuery.length < 2) {
+    return false;
+  }
+
+  return [
+    item.code,
+    item.businessName,
+    item.label,
+    item.plainMeaning,
+    ...item.searchTerms,
+  ].some((value) => {
+    const normalizedValue = normalizeTtgdtxProcessSearchText(value);
+
+    return (
+      normalizedValue.includes(normalizedQuery) ||
+      normalizedQuery.includes(normalizedValue)
+    );
+  });
+}
 
 export function getTtgdtxProcessLabel(code: string) {
   return (

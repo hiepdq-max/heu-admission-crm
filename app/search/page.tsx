@@ -12,7 +12,11 @@ import {
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { TTGDTX_PROCESS_SEARCH_SUGGESTIONS } from "@/lib/ttgdtx-process-labels";
+import {
+  matchesTtgdtxProcessQuery,
+  TTGDTX_PROCESS_LABELS,
+  TTGDTX_PROCESS_SEARCH_SUGGESTIONS,
+} from "@/lib/ttgdtx-process-labels";
 import {
   firstParam,
   getAdmissionWorkspaceContext,
@@ -112,6 +116,49 @@ function safeHref(value: string | null) {
   }
 
   return value;
+}
+
+function buildTtgdtxProcessResults(query: string): SearchResultRow[] {
+  return TTGDTX_PROCESS_LABELS.filter((item) =>
+    matchesTtgdtxProcessQuery(item, query),
+  ).map((item, index) => ({
+    result_rank: index + 1,
+    result_type: "WORKFLOW",
+    result_label: item.label,
+    result_code: item.code,
+    result_summary: item.plainMeaning,
+    href: item.href,
+    module_code: "TTGDTX",
+    source_table: null,
+    entity_id: null,
+    segment_id: null,
+    segment_label: null,
+    owner_department: null,
+    status_label: "PASS_LOCAL",
+    risk_level: null,
+    updated_at: null,
+  }));
+}
+
+function mergeSearchResults(
+  localResults: SearchResultRow[],
+  remoteResults: SearchResultRow[],
+) {
+  const seen = new Set<string>();
+  const merged: SearchResultRow[] = [];
+
+  for (const row of [...localResults, ...remoteResults]) {
+    const key = `${row.result_type}:${row.result_code ?? row.href ?? row.entity_id}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+    merged.push(row);
+  }
+
+  return merged;
 }
 
 function SearchForm({
@@ -307,6 +354,8 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
   let loadError: string | null = null;
 
   if (effectiveQuery.length >= 2) {
+    const processResults = buildTtgdtxProcessResults(effectiveQuery);
+
     const { data, error } = await supabase.rpc("search_heu_os", {
       p_query: effectiveQuery,
       p_limit: 50,
@@ -321,7 +370,7 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
         });
 
         if (fallback.error) {
-          loadError = fallback.error.message;
+          loadError = processResults.length > 0 ? null : fallback.error.message;
         } else {
           const fallbackRows = Array.isArray(fallback.data)
             ? (fallback.data as SearchResultRow[])
@@ -339,6 +388,11 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
       }
     } else {
       results = Array.isArray(data) ? (data as SearchResultRow[]) : [];
+    }
+
+    if (processResults.length > 0) {
+      results = mergeSearchResults(processResults, results);
+      loadError = null;
     }
   }
 

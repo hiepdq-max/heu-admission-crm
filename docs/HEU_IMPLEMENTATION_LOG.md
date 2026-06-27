@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-10 Natural Invoice Search Fallback
+
+- Updated `lib/ttgdtx-process-labels.ts` with natural P2-10 search terms for
+  "thu tien co hoa don khong", "thu tien co xuat hoa don khong", "xuat hoa
+  don" and "co can hoa don".
+- Updated `app/search/page.tsx` so `/search` merges local TTGDTX process-label
+  matches before remote search results; users can find Thu hoc phi (P2-10)
+  from invoice/chung-tu questions even if the remote search RPC does not cover
+  that synonym.
+- Updated `docs/TTGDTX_PROCESS_CODE_MAP_20260625.md`,
+  `scripts/audit-ttgdtx-process-labels.mjs` and release-gate audits so the
+  fallback and terms remain guarded.
+- This is navigation/discovery packaging only. It does not approve invoice
+  issuance, legal/tax interpretation, finance posting, UAT acceptance, owner
+  waiver or production GO.
+
 ## 2026-06-28 - Current State P6-06 Conversion Or Written Waiver Wording
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P6-06 priority action

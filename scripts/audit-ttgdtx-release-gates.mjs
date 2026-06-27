@@ -473,6 +473,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-10 Natural Invoice Search Fallback[\s\S]*ttgdtx-process-labels\.ts[\s\S]*thu tien co hoa don khong[\s\S]*thu tien co xuat hoa don khong[\s\S]*xuat hoa\s+don[\s\S]*co can hoa don[\s\S]*app\/search\/page\.tsx[\s\S]*merges local TTGDTX process-label\s+matches before remote search results[\s\S]*Thu hoc phi \(P2-10\)[\s\S]*invoice\/chung-tu questions[\s\S]*TTGDTX_PROCESS_CODE_MAP_20260625\.md[\s\S]*audit-ttgdtx-process-labels\.mjs[\s\S]*release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not approve invoice\s+issuance, legal\/tax interpretation, finance posting, UAT acceptance, owner\s+waiver or production GO/i,
+  "P2-10 natural invoice search fallback log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /Current State P6-06 Conversion Or Written Waiver Wording[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P6-06 priority action[\s\S]*hard-delete\/cascade findings need conversion or a\s+written waiver[\s\S]*not a generic waiver[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*P6-06 blocker summary loses the conversion-or-written\s+waiver requirement[\s\S]*This is current-state wording alignment only[\s\S]*does not approve production\s+deletion, cascade execution, waiver, conversion migration, data cleanup,\s+evidence acceptance, owner GO\/NO-GO or production GO/i,
   "current-state P6-06 conversion-or-written-waiver wording log entry",
 );
@@ -1385,7 +1391,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
-  /business name first[\s\S]*HEU Finance Desk[\s\S]*P5-03[\s\S]*TTGDTX\s+landing quick finder/i,
+  /(?=[\s\S]*business name first)(?=[\s\S]*Thu tien co xuat hoa don khong)(?=[\s\S]*\/search)(?=[\s\S]*local TTGDTX process-label map)(?=[\s\S]*HEU Finance Desk)(?=[\s\S]*P5-03)(?=[\s\S]*TTGDTX\s+quick\s+finder)/i,
   "business-name-first process label rule",
 );
 
@@ -1397,8 +1403,20 @@ requireText(
 
 requireText(
   "lib/ttgdtx-process-labels.ts",
-  /code: "P2-10"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*hoa don thu tien/i,
+  /code: "P2-10"[\s\S]*label: "Thu học phí \(P2-10\)"[\s\S]*thu tien co hoa don khong[\s\S]*thu tien co xuat hoa don khong[\s\S]*xuat hoa don[\s\S]*co can hoa don/i,
   "P2-10 business-first process label",
+);
+
+requireText(
+  "lib/ttgdtx-process-labels.ts",
+  /(?=[\s\S]*normalizeTtgdtxProcessSearchText)(?=[\s\S]*matchesTtgdtxProcessQuery)(?=[\s\S]*normalize\("NFD"\))(?=[\s\S]*\\u0111)(?=[\s\S]*normalizedQuery\.includes\(normalizedValue\))/i,
+  "P2-10 accent-insensitive process query matcher",
+);
+
+requireText(
+  "app/search/page.tsx",
+  /matchesTtgdtxProcessQuery[\s\S]*buildTtgdtxProcessResults[\s\S]*mergeSearchResults[\s\S]*processResults[\s\S]*loadError = null/i,
+  "local TTGDTX process search fallback",
 );
 
 requireText(

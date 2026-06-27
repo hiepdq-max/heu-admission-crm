@@ -71,10 +71,22 @@ To find P2-10, search any of:
 - Chung tu thu
 - Voucher thu
 - Hoa don thu tien
+- Thu tien co hoa don khong
+- Thu tien co xuat hoa don khong
+- Xuat hoa don
+- Co can hoa don
 - Collection
 - P2-10
 
-## 5. 2026-06-27 Local Implementation
+## 5. 2026-06-28 Search Fallback
+
+- `/search` also checks the local TTGDTX process-label map before showing
+  remote search results, so business questions like "thu tien co xuat hoa don
+  khong" can still route to Thu hoc phi (P2-10).
+- This fallback is navigation only. It does not approve invoice issuance,
+  legal/tax interpretation, finance posting, UAT acceptance or production GO.
+
+## 6. 2026-06-27 Local Implementation
 
 - Added `lib/ttgdtx-process-labels.ts` as the shared local process-label map.
 - Added `components/ttgdtx/ttgdtx-process-quick-finder.tsx` as the TTGDTX
