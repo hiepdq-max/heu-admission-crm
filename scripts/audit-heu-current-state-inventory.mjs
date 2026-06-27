@@ -126,6 +126,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Controlled evidence[\s\S]*Redaction\/intake pack, audit guard, P0-14 evidence binder and closure tracker exist[\s\S]*Real evidence must stay outside Git\/Codex\/chat/i,
+  "P0-14 controlled evidence binder closure tracker state",
+);
+requireText(
+  inventory,
   /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix and acceptance matrix exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );

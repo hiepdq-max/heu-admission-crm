@@ -66,6 +66,53 @@ export function TtgdtxProductionEvidenceBinder() {
         ))}
       </div>
 
+      <div
+        className="mt-5 rounded-md border border-cyan-200 bg-white p-4"
+        data-p014-production-evidence-closure-tracker="P0-14"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-cyan-950">
+              P0-14 production evidence closure tracker: PASS_LOCAL only
+            </h3>
+            <p className="mt-2 leading-6 text-zinc-700">
+              Use this tracker before owner GO/NO-GO. Each evidence item needs
+              a controlled reference, redaction check, owner signature and
+              no open stop condition. Missing proof keeps production NO-GO.
+            </p>
+          </div>
+          <div className="rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 font-mono text-xs text-cyan-950">
+            P0_14_CLOSE / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {PRODUCTION_EVIDENCE_REQUIREMENTS.map((item) => (
+            <article
+              key={`${item.caseId}-closure`}
+              className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {item.caseId} closure
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.blockerCode}: {item.title}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Close when: controlled evidence reference exists,{" "}
+                {item.evidenceClass} redaction/classification is correct and{" "}
+                {item.signoff}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop if proof is missing, owner signature is missing, evidence
+                is in the wrong location or forbidden content appears:{" "}
+                {item.forbiddenContent}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
         <LockKeyhole className="mt-0.5 size-4 shrink-0" />
         <p>

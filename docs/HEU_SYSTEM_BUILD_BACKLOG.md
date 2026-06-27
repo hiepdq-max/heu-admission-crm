@@ -18,7 +18,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-11 | Role permission soft revoke | IT/Data + ADMIN | PASS_LOCAL | Step109 is migration candidate only; settings uses INACTIVE/upsert instead of hard delete |
 | P0-12 | Vietnamese UI text encoding | IT/Data + Process owners | PASS_LOCAL | `npm.cmd run audit:heu-vietnamese-text-encoding`; UI/docs text must stay readable and free of mojibake before handoff |
 | P0-13 | Production blocker shared source | IT/Data + BGH + Audit | PASS_LOCAL | `lib/production-readiness.ts`; `npm.cmd run audit:heu-production-blocker-source`; blocker summary and production execution queue render from one source |
-| P0-14 | Production evidence binder | IT/Data + Audit + process owners | PASS_LOCAL | `components/ttgdtx/ttgdtx-production-evidence-binder.tsx`; `npm.cmd run audit:heu-production-evidence-binder`; proof, owner, storage and forbidden-content rules are visible before owner sign-off |
+| P0-14 | Production evidence binder | IT/Data + Audit + process owners | PASS_LOCAL | `components/ttgdtx/ttgdtx-production-evidence-binder.tsx`; production evidence closure tracker; `npm.cmd run audit:heu-production-evidence-binder`; proof, owner, storage and forbidden-content rules are visible before owner sign-off |
 | P0-15 | Final handoff audit coverage | IT/Data + Audit | PASS_LOCAL | `npm.cmd run audit:heu-final-handoff-coverage`; every `audit:*` script must be listed in `AGENTS.md` and the release-gate required script list |
 
 ## P1 - Data Foundation
