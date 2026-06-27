@@ -123,6 +123,13 @@ for (const heading of [
 
 requireText(
   log,
+  /## 2026-06-28 - P0-09 Owner Signoff P6-06 Register Alignment[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P6-06-FIND-001\s+through P6-06-FIND-044[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*owner-signoff, implementation-log and release-gate audits[\s\S]*This is owner-signoff evidence alignment only[\s\S]*does not approve production\s+deletion, cascade execution, waiver, conversion migration, UAT acceptance,\s+owner GO\/NO-GO or production GO/i,
+  "P0-09 owner signoff P6-06 register alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P6-06 Cascade Finding Register[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P6-06-FIND-001 through P6-06-FIND-044[\s\S]*current SQL locations, child tables,\s+parent references, owner lanes and required dispositions[\s\S]*HEU_NON_TTGDTX_CASCADE_REVIEW_20260627\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*non-TTGDTX cascade, current-state, implementation-log and release\s+gate audits[\s\S]*This is finding-register packaging only[\s\S]*does not approve production\s+deletion, cascade execution, waiver, conversion migration, data cleanup,\s+rollback success or production GO/i,
   "P6-06 cascade finding register log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

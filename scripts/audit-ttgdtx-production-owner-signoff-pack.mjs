@@ -47,6 +47,7 @@ for (const file of [
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/HARD_DELETE_AUDIT.md",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
@@ -89,6 +90,12 @@ requireText(
   "internal multi-account UAT operator handoff evidence",
 );
 
+requireText(
+  pack,
+  /Hard-delete\/cascade risk[\s\S]*HEU_NON_TTGDTX_CASCADE_REVIEW_20260627\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P6-06-FIND-001 through P6-06-FIND-044[\s\S]*conversion evidence or written waiver[\s\S]*NO-GO/i,
+  "hard-delete/cascade finding register owner decision evidence",
+);
+
 for (const required of [
   "Production backup and restore dry-run",
   "Step90-Step110 migration order",
@@ -128,13 +135,13 @@ requireText(
 
 requireText(
   pack,
-  /(?=[\s\S]*P0-09 Owner GO\/NO-GO Acceptance Matrix)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*Codex\/AI is advisory only)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
+  /(?=[\s\S]*P0-09 Owner GO\/NO-GO Acceptance Matrix)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*every unresolved P6-06 finding is converted or narrowly waived in writing)(?=[\s\S]*Codex\/AI is advisory only)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
   "P0-09 owner GO/NO-GO acceptance matrix",
 );
 
 requireText(
   pack,
-  /(?=[\s\S]*P0-09 Final Owner GO\/NO-GO Decision Manifest)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve\s+production, backup, restore, migration, legal waiver, finance action, UAT\s+acceptance, payout, dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is\s+named as approver, or PASS_LOCAL is treated as production GO)/i,
+  /(?=[\s\S]*P0-09 Final Owner GO\/NO-GO Decision Manifest)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve\s+production, backup, restore, migration, legal waiver, finance action, UAT\s+acceptance, payout, dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is\s+named as approver, or PASS_LOCAL is treated as production GO)/i,
   "P0-09 final owner GO/NO-GO decision manifest",
 );
 
@@ -146,21 +153,21 @@ requireText(
 
 requireText(
   ownerChecklist,
-  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, OTPs, service-role\s+keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,\s+raw bank account numbers, bank statements, vouchers or raw payment\s+data)/i,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, OTPs, service-role\s+keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,\s+raw bank account numbers, bank statements, vouchers or raw payment\s+data)/i,
   "P0-09 owner GO/NO-GO evidence checklist",
   ownerChecklistPath,
 );
 
 requireText(
   ownerChecklist,
-  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-acceptance-matrix="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*Evidence pack completeness and redaction)(?=[\s\S]*Backup\/restore and migration readiness)(?=[\s\S]*Finance, legal and UAT blockers closed)(?=[\s\S]*Owner decision quorum and accountability)(?=[\s\S]*Production boundary and AI\/Codex limitation)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-acceptance-matrix="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*Evidence pack completeness and redaction)(?=[\s\S]*Backup\/restore and migration readiness)(?=[\s\S]*Finance, legal and UAT blockers closed)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*Owner decision quorum and accountability)(?=[\s\S]*Production boundary and AI\/Codex limitation)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
   "P0-09 owner GO/NO-GO acceptance matrix",
   ownerChecklistPath,
 );
 
 requireText(
   ownerChecklist,
-  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-decision-manifest="P0-09")(?=[\s\S]*P0-09 final owner GO\/NO-GO decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve production, backup, restore, migration,\s+legal waiver, finance action, UAT acceptance, payout,\s+dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is named as approver, or PASS_LOCAL is treated\s+as production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-decision-manifest="P0-09")(?=[\s\S]*P0-09 final owner GO\/NO-GO decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_09_FINAL_GO \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-DEC-01)(?=[\s\S]*P0-09-DEC-06)(?=[\s\S]*Evidence pack and redaction decision)(?=[\s\S]*Backup\/restore and migration authority decision)(?=[\s\S]*Legal, tuition and finance gate decision)(?=[\s\S]*UAT and operating proof decision)(?=[\s\S]*Role, audit and hard-delete proof decision)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*Final multi-owner accountability decision)(?=[\s\S]*does not approve production, backup, restore, migration,\s+legal waiver, finance action, UAT acceptance, payout,\s+dashboard reliance or production GO)(?=[\s\S]*AI\/Codex is named as approver, or PASS_LOCAL is treated\s+as production GO)/i,
   "P0-09 final owner GO/NO-GO decision manifest",
   ownerChecklistPath,
 );
@@ -174,14 +181,14 @@ requireText(
 
 requireText(
   checklist,
-  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
   "production checklist final owner sign-off row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
   backlogPath,
 );
@@ -204,6 +211,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-production-owner-signoff-pack")) 
 
 if (
   !releaseGateAudit.includes(packPath) ||
+  !releaseGateAudit.includes("docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md") ||
   !releaseGateAudit.includes(ownerChecklistPath) ||
   !releaseGateAudit.includes("audit:ttgdtx-production-owner-signoff-pack")
 ) {

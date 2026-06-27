@@ -61,7 +61,7 @@ const evidenceItems: EvidenceItem[] = [
     title: "Role UAT, audit trace and hard-delete decision accepted",
     owner: "IT_DATA + Audit + process owners",
     evidence:
-      "Role/workspace UAT evidence, audit-log trace rows and hard-delete/cascade conversion evidence or narrow written waiver accepted by the responsible owners.",
+      "Role/workspace UAT evidence, audit-log trace rows, HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md and hard-delete/cascade conversion evidence or narrow written waiver accepted by the responsible owners.",
   },
   {
     caseId: "P0-09-06",
@@ -93,9 +93,9 @@ const ownerGoNoGoAcceptanceItems: OwnerGoNoGoAcceptanceItem[] = [
     caseId: "P0-09-ACCEPT-03",
     title: "Finance, legal and UAT blockers closed",
     minimum:
-      "P0-19, P2-17, P2-18, role/workspace UAT, audit-log trace rows and UAT operator handoff are signed; hard-delete/cascade is converted or narrowly waived in writing.",
+      "P0-19, P2-17, P2-18, role/workspace UAT, audit-log trace rows and UAT operator handoff are signed; HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md is cited; every unresolved P6-06 finding is converted or narrowly waived in writing.",
     stopCondition:
-      "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete.",
+      "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists, audit trace is incomplete or a P6-06 finding lacks conversion/waiver decision.",
   },
   {
     caseId: "P0-09-ACCEPT-04",
@@ -160,9 +160,9 @@ const ownerGoNoGoDecisionItems: OwnerGoNoGoDecisionItem[] = [
     caseId: "P0-09-DEC-05",
     title: "Role, audit and hard-delete proof decision",
     requiredDecision:
-      "Owner decision cites P6-04 role/workspace UAT, P6-03 audit traceability and P6-06 hard-delete/cascade conversion or written waiver.",
+      "Owner decision cites P6-04 role/workspace UAT, P6-03 audit traceability, HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md and P6-06 hard-delete/cascade conversion or written waiver.",
     stopCondition:
-      "Role leak, missing audit trace, generic audit payload, unresolved cascade finding or unsigned waiver keeps NO_GO.",
+      "Role leak, missing audit trace, generic audit payload, unresolved cascade finding, missing finding-register citation or unsigned waiver keeps NO_GO.",
   },
   {
     caseId: "P0-09-DEC-06",
