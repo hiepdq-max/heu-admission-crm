@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX P0-19 P3 Gate Handover Readiness Plan[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS[\s\S]*P0-19 legal\/finance gate UAT[\s\S]*P3-01\/P3-02 lead lifecycle\/handover UAT[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route, runbook, owner, evidence and local guard command before\s+dashboard\/Finance Desk UAT and risk-closure tracks[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is gate-handover launch packaging only[\s\S]*does not execute UAT, accept\s+handover, create receivable, approve finance action, accept evidence, waive\s+owner sign-off or mark production GO/i,
+  "TTGDTX P0-19/P3 gate-handover readiness plan log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX P0-03 Step90-Step110 Infra Readiness Plan[\s\S]*PRODUCTION_INFRA_READINESS_STEPS[\s\S]*P0-03 backup\/restore dry-run evidence[\s\S]*Step90-Step110 signed production migration order[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route, runbook, owner, evidence and local guard command before UAT launch\s+and risk-closure tracks[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is infra-readiness launch packaging only[\s\S]*does not execute backup,\s+restore, production migration, migration-order approval, evidence acceptance,\s+finance action, UAT acceptance or production GO/i,
   "TTGDTX P0-03/Step90-Step110 infra readiness plan log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

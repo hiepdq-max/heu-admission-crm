@@ -150,6 +150,20 @@ requireText(
 );
 
 requireText(
+  executionQueue,
+  /(?=[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*data-ttgdtx-gate-handover-plan="P0-19_P3-01_P3-02")(?=[\s\S]*Gate and handover readiness: P0-19 \+ P3-01\/P3-02)(?=[\s\S]*legal\/finance basis)(?=[\s\S]*lead handover UAT)(?=[\s\S]*Handover cannot bypass P0-19\/P2-05\/P2-03)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*finance gate first)(?=[\s\S]*Open gate route)/i,
+  "TTGDTX P0-19/P3 gate-handover readiness plan",
+  executionQueuePath,
+);
+
+requireText(
+  blockerSource,
+  /(?=[\s\S]*export const PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*P0-19)(?=[\s\S]*Legal and finance gate UAT)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*Lead lifecycle and handover UAT)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)(?=[\s\S]*bypass P0-19\/P2-05\/P2-03 finance gates)/i,
+  "TTGDTX P0-19/P3 gate-handover shared source",
+  blockerSourcePath,
+);
+
+requireText(
   blockerSource,
   /(?=[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*audit:heu-finance-desk)/i,
   "TTGDTX P2-18/P5-03 UAT launch shared source",
@@ -193,14 +207,14 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*UAT run closure tracker[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );

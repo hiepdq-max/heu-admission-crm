@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_GATE_HANDOVER_STEPS,
   PRODUCTION_INFRA_READINESS_STEPS,
   PRODUCTION_RISK_CLOSURE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
@@ -115,6 +116,57 @@ export function TtgdtxProductionExecutionQueue() {
                 className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-sky-700 hover:text-sky-950"
               >
                 Open infra route
+                <ArrowRight className="size-3" />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-emerald-200 bg-white p-4"
+        data-ttgdtx-gate-handover-plan="P0-19_P3-01_P3-02"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-emerald-950">
+              Gate and handover readiness: P0-19 + P3-01/P3-02
+            </h3>
+            <p className="mt-1 leading-6 text-emerald-900">
+              Prove legal/finance basis and lead handover UAT before any
+              receivable reliance. Handover cannot bypass P0-19/P2-05/P2-03
+              finance gates, and unsigned evidence keeps production NO-GO.
+            </p>
+          </div>
+          <span className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase text-emerald-800">
+            finance gate first
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_GATE_HANDOVER_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-emerald-300 bg-emerald-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Runbook: {step.runbook}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-600">
+                Guard: {step.auditCommand}
+              </p>
+              <Link
+                href={step.route}
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-emerald-700 hover:text-emerald-950"
+              >
+                Open gate route
                 <ArrowRight className="size-3" />
               </Link>
             </article>

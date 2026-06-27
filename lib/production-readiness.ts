@@ -50,6 +50,16 @@ export type ProductionInfraReadinessStep = {
   auditCommand: string;
 };
 
+export type ProductionGateHandoverStep = {
+  code: string;
+  title: string;
+  owner: string;
+  route: string;
+  runbook: string;
+  evidence: string;
+  auditCommand: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -237,6 +247,29 @@ export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = 
     evidence:
       "Signed Step90-Step110 order, rollback point, Step97/Step100/Step109/Step110 decisions and owner acceptance after backup/restore proof.",
     auditCommand: "npm.cmd run audit:ttgdtx-migration-order-guard",
+  },
+];
+
+export const PRODUCTION_GATE_HANDOVER_STEPS: ProductionGateHandoverStep[] = [
+  {
+    code: "P0-19",
+    title: "Legal and finance gate UAT",
+    owner: "PHAP_CHE + KHTC + BGH",
+    route: "/ttgdtx/gate",
+    runbook: "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+    evidence:
+      "Legal basis, tuition policy, waiver/exception decision and ALLOW_FINANCE gate proof before any receivable or payment reliance.",
+    auditCommand: "npm.cmd run audit:ttgdtx-p019-gate-guard",
+  },
+  {
+    code: "P3-01/P3-02",
+    title: "Lead lifecycle and handover UAT",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO + KHTC",
+    route: "/leads",
+    runbook: "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
+    evidence:
+      "Signed lifecycle and handover UAT proving handover cannot create finance facts or bypass P0-19/P2-05/P2-03 finance gates.",
+    auditCommand: "npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack",
   },
 ];
 
