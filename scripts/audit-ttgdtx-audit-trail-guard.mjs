@@ -90,6 +90,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-audit-trace-decision-manifest="P6-03")(?=[\s\S]*P6-03 audit traceability decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_03_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-03-DEC-01)(?=[\s\S]*P6-03-DEC-06)(?=[\s\S]*Static trigger and read-only surface)(?=[\s\S]*Required event sample coverage)(?=[\s\S]*Actor, entity, action and time)(?=[\s\S]*Before\/after and evidence usefulness)(?=[\s\S]*Workflow chain continuity)(?=[\s\S]*Human traceability decision)(?=[\s\S]*does not accept UAT, approve finance,\s+waive evidence or approve production GO)(?=[\s\S]*Missing trace decision ID, missing sampled row, generic payload,\s+broken workflow chain, unsigned owner decision or raw sensitive audit\s+evidence keeps P6-03 NO-GO)/i,
+  "P6-03 audit traceability decision manifest",
+  evidenceChecklistPath,
+);
+
 for (const entity of [
   "ttgdtx_student_receivables",
   "ttgdtx_tuition_payments",
@@ -148,8 +155,15 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Audit Traceability Decision Manifest)(?=[\s\S]*data-ttgdtx-audit-trace-decision-manifest="P6-03")(?=[\s\S]*P6-03-DEC-01)(?=[\s\S]*P6-03-DEC-06)(?=[\s\S]*P6_03_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive audit evidence keeps\s+P6-03 NO-GO)/i,
+  "runbook audit traceability decision manifest",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit-log evidence acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit-log evidence acceptance matrix)(?=[\s\S]*audit traceability decision manifest)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps audit log IN_PROGRESS with guard evidence",
   checklistPath,
 );

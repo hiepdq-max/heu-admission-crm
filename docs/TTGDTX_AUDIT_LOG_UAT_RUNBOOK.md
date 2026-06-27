@@ -144,7 +144,30 @@ Decision value: `P6_03_ACCEPT / FAIL / BLOCKED`.
 P6-03 can support production readiness only when P6-03-ACCEPT-01 through
 P6-03-ACCEPT-06 all pass with redacted evidence and signed owner approval.
 
-## 9. Sign-Off Rule
+## 9. Audit Traceability Decision Manifest
+
+Before P6-03 audit-log evidence can support owner review, complete the
+traceability decision manifest exposed on the audit page through
+`data-ttgdtx-audit-trace-decision-manifest="P6-03"`. This manifest is
+local-only until signed audit-log UAT and owner sign-off exist. It does not
+accept UAT, approve finance, waive evidence or approve production GO.
+
+| Case | Decision gate | Required decision | Stop condition |
+|---|---|---|---|
+| P6-03-DEC-01 | Static trigger and read-only surface | `audit:ttgdtx-audit-log`, `audit:ttgdtx-audit-trail-guard` and release-gate audits pass; `/audit` reads `audit_logs` only | Any required TTGDTX write table lacks trigger coverage or the audit surface can write, call RPC or approve workflow state |
+| P6-03-DEC-02 | Required event sample coverage | AUD-01 through AUD-06 each have at least one sampled row for create/update/check/approve/pay/source-control events | Any event is missing, represented only by a count, or cannot be tied to a concrete UAT record |
+| P6-03-DEC-03 | Actor, entity, action and time | Each sampled row identifies actor, `entity_type`, `entity_id`, `action`, `created_at` and the related business step | Reviewers cannot identify who changed which record, when and for which business action |
+| P6-03-DEC-04 | Before/after and evidence usefulness | `old_values`, `new_values`, notes, `evidence_url` or controlled reference prove the changed amount, status, approval or source-control result | Payloads are empty, too generic, unredacted, or cannot prove the financial/control change |
+| P6-03-DEC-05 | Workflow chain continuity | Trace rows connect upstream request/source records to downstream receivable, collection, reconciliation, payout or control state | A status, approval or money movement has no traceable upstream/downstream audit link |
+| P6-03-DEC-06 | Human traceability decision | Operator, checker, owner signers, evidence IDs, sampled rows and final decision are recorded as `P6_03_TRACE_READY`, `NO_GO` or `BLOCKED` | `PASS_LOCAL` is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO |
+
+Final trace decision: `P6_03_TRACE_READY / NO_GO / BLOCKED`.
+
+Missing trace decision ID, missing sampled row, generic payload, broken
+workflow chain, unsigned owner decision or raw sensitive audit evidence keeps
+P6-03 NO-GO.
+
+## 10. Sign-Off Rule
 
 Mark audit log completeness as `DONE` only when:
 

@@ -676,8 +676,14 @@ requireText(
 );
 
 requireText(
+  "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-audit-trace-decision-manifest="P6-03")(?=[\s\S]*P6-03 audit traceability decision manifest)(?=[\s\S]*P6_03_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-03-DEC-01)(?=[\s\S]*P6-03-DEC-06)(?=[\s\S]*Required event sample coverage)(?=[\s\S]*Workflow chain continuity)(?=[\s\S]*Human traceability decision)(?=[\s\S]*production GO)/i,
+  "P6-03 audit traceability decision manifest",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit-log evidence acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit-log evidence acceptance matrix)(?=[\s\S]*audit traceability decision manifest)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*signed UAT)/i,
   "audit log completeness guard checklist row",
 );
 

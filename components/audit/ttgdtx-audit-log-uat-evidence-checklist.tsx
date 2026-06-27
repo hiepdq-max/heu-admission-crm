@@ -14,6 +14,14 @@ type AuditLogAcceptanceItem = {
   stopCondition: string;
 };
 
+type AuditTraceDecisionItem = {
+  caseId: string;
+  decisionGate: string;
+  requiredDecision: string;
+  owner: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "AUD-01",
@@ -105,6 +113,63 @@ const auditLogAcceptanceItems: AuditLogAcceptanceItem[] = [
     requirement: "Production boundary",
     minimumEvidence:
       "Audit-log evidence stays advisory/read-only until signed UAT and owner GO/NO-GO exist.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO.",
+  },
+];
+
+const auditTraceDecisionItems: AuditTraceDecisionItem[] = [
+  {
+    caseId: "P6-03-DEC-01",
+    decisionGate: "Static trigger and read-only surface",
+    requiredDecision:
+      "`audit:ttgdtx-audit-log`, `audit:ttgdtx-audit-trail-guard` and release-gate audits pass; `/audit` reads audit_logs only.",
+    owner: "IT_DATA + Audit",
+    stopCondition:
+      "Stop if any required TTGDTX write table lacks trigger coverage or the audit surface can write, call RPC or approve workflow state.",
+  },
+  {
+    caseId: "P6-03-DEC-02",
+    decisionGate: "Required event sample coverage",
+    requiredDecision:
+      "AUD-01 through AUD-06 each have at least one sampled row for create/update/check/approve/pay/source-control events.",
+    owner: "KHTC + Audit",
+    stopCondition:
+      "Stop if any event is missing, represented only by a count, or cannot be tied to a concrete UAT record.",
+  },
+  {
+    caseId: "P6-03-DEC-03",
+    decisionGate: "Actor, entity, action and time",
+    requiredDecision:
+      "Each sampled row identifies actor, entity_type, entity_id, action, created_at and the related business step.",
+    owner: "Audit + IT_DATA",
+    stopCondition:
+      "Stop if reviewers cannot identify who changed which record, when and for which business action.",
+  },
+  {
+    caseId: "P6-03-DEC-04",
+    decisionGate: "Before/after and evidence usefulness",
+    requiredDecision:
+      "old_values, new_values, notes, evidence_url or controlled reference prove the changed amount, status, approval or source-control result.",
+    owner: "KHTC + PHAP_CHE + Audit",
+    stopCondition:
+      "Stop if payloads are empty, too generic, unredacted, or cannot prove the financial/control change.",
+  },
+  {
+    caseId: "P6-03-DEC-05",
+    decisionGate: "Workflow chain continuity",
+    requiredDecision:
+      "Trace rows connect upstream request/source records to downstream receivable, collection, reconciliation, payout or control state.",
+    owner: "KHTC + IT_DATA + Audit",
+    stopCondition:
+      "Stop if a status, approval or money movement has no traceable upstream/downstream audit link.",
+  },
+  {
+    caseId: "P6-03-DEC-06",
+    decisionGate: "Human traceability decision",
+    requiredDecision:
+      "Operator, checker, owner signers, evidence IDs, sampled rows and final decision are recorded as P6_03_TRACE_READY, NO_GO or BLOCKED.",
+    owner: "Audit + KHTC + IT_DATA + BGH",
     stopCondition:
       "Stop if PASS_LOCAL is treated as audit-log UAT pass, financial traceability acceptance, owner waiver, finance approval or production GO.",
   },
@@ -209,6 +274,65 @@ export function TtgdtxAuditLogUatEvidenceChecklist() {
               </p>
             </article>
           ))}
+        </div>
+      </div>
+
+      <div
+        data-ttgdtx-audit-trace-decision-manifest="P6-03"
+        className="mt-5 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sky-950"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P6-03 audit traceability decision manifest: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this manifest after audit-log UAT evidence is sampled and
+              before owner review. It records whether traceability evidence is
+              ready for review, but it does not accept UAT, approve finance,
+              waive evidence or approve production GO.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-sky-200 bg-white px-3 py-2">
+            Trace decision:
+            <span className="mt-1 block font-mono text-xs">
+              P6_03_TRACE_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {auditTraceDecisionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-sky-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.decisionGate}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredDecision}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-sky-200 bg-white px-3 py-2 text-sky-900">
+          Missing trace decision ID, missing sampled row, generic payload,
+          broken workflow chain, unsigned owner decision or raw sensitive audit
+          evidence keeps P6-03 NO-GO.
         </div>
       </div>
 

@@ -2827,3 +2827,18 @@
 - This is role-scope access-readiness packaging only. It does not approve
   production access, broad permissions, real-data UAT, finance action or
   production GO.
+
+## 2026-06-28 - P6-03 Audit Traceability Decision Manifest
+
+- Added a P6-03 audit traceability decision manifest to the audit-log UAT
+  evidence checklist and audit-log UAT runbook so static trigger coverage,
+  required event samples, actor/entity/action/time, before/after usefulness,
+  workflow chain continuity and human traceability decision must be recorded
+  before owner review.
+- Updated the production checklist, system backlog, current-state inventory,
+  `audit:ttgdtx-audit-trail-guard`, `audit:heu-current-state-inventory` and
+  `audit:ttgdtx-release-gates` so the P6-03 traceability decision manifest
+  cannot be skipped.
+- This is audit traceability-readiness packaging only. It does not accept UAT,
+  approve finance, waive evidence, accept financial traceability for
+  production, or approve production GO.
