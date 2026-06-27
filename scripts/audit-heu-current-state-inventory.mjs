@@ -86,6 +86,11 @@ requireText(
 );
 requireText(
   inventory,
+  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix and P5-02 are read-only and UAT-gated/i,
+  "M10 P2-18 dashboard acceptance matrix current module state",
+);
+requireText(
+  inventory,
   /Backup\/restore[\s\S]*Evidence pack, UI guard and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
@@ -98,6 +103,11 @@ requireText(
   inventory,
   /Contract\/tuition master[\s\S]*P2-01\/P2-02 master guard exists[\s\S]*PASS_LOCAL[\s\S]*signed legal\/finance\/KHTC UAT pending/i,
   "P2-01/P2-02 control state",
+);
+requireText(
+  inventory,
+  /Accounting dashboard[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist[\s\S]*Signed browser UAT pending/i,
+  "P2-18 dashboard acceptance matrix control state",
 );
 requireText(
   inventory,

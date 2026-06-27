@@ -68,7 +68,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | M07 Dao tao | Class/program/course handling | Partial | Short-course/class primitives exist |
 | M08 Khoa/Giang vien | Faculty/teacher/class delivery | Early | Not yet a strong production module |
 | M09 Tai chinh/Cong no | Tuition, receivable, reconciliation, payout | Strong internal | TTGDTX P2-01/P2-02 master guard and P2-03 through P2-18 pilot flow are packaged; signed finance/legal UAT still required |
-| M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 and P5-02 are read-only and UAT-gated |
+| M10 Dashboard | Reports, accounting dashboard, BGH view | Partial | P2-18 read-only guard, source reconciliation, dashboard acceptance matrix and P5-02 are read-only and UAT-gated |
 | M11 AI Agent | Advisory/checklist/risk assistant | Advisory only | P7-01/P7-02/P7-03 are PASS_LOCAL; autonomous AI remains locked |
 | M12 Audit/Risk | Audit log, issue routing, risk alerts | Strong internal | P6 audit guards and hard-delete/cascade reviews pass locally |
 
@@ -84,7 +84,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate and execution-readiness guards | Signed payout UAT pending |
-| Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |
+| Accounting dashboard | P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack, scope UI guard and route matrix exist | Multi-account signed UAT pending |
 | Audit log | Static coverage and audit trace acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue | Conversion or written waiver pending |

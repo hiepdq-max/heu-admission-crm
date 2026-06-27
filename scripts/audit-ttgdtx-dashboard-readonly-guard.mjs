@@ -82,6 +82,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-dashboard-acceptance-matrix="P2-18")(?=[\s\S]*P2-18 dashboard acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_18_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-18-ACCEPT-01)(?=[\s\S]*P2-18-ACCEPT-02)(?=[\s\S]*P2-18-ACCEPT-03)(?=[\s\S]*P2-18-ACCEPT-04)(?=[\s\S]*P2-18-ACCEPT-05)(?=[\s\S]*P2-18-ACCEPT-06)(?=[\s\S]*Read-only route and authorized load)(?=[\s\S]*Source-total reconciliation)(?=[\s\S]*Role and contract-only denial)(?=[\s\S]*Exception and movement traceability)(?=[\s\S]*Evidence redaction and owner sign-off)(?=[\s\S]*Production boundary)(?=[\s\S]*PASS_LOCAL is treated as dashboard UAT pass, finance approval, dashboard reliance or production GO)/i,
+  "P2-18 dashboard acceptance matrix",
+  evidenceChecklistPath,
+);
+
 for (const uatCase of [
   "P2-18-01",
   "P2-18-02",
@@ -147,15 +154,22 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Dashboard Acceptance Matrix)(?=[\s\S]*data-ttgdtx-dashboard-acceptance-matrix="P2-18")(?=[\s\S]*P2-18-ACCEPT-01)(?=[\s\S]*P2-18-ACCEPT-06)(?=[\s\S]*P2_18_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*redacted evidence)/i,
+  "runbook dashboard acceptance matrix",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /P2-18 accounting dashboard[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-dashboard-readonly-guard[\s\S]*signed UAT evidence/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
   "production checklist keeps P2-18 IN_PROGRESS with read-only guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-18[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
+  /P2-18[\s\S]*dashboard acceptance matrix[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
   "backlog records P2-18 read-only guard audit",
   backlogPath,
 );

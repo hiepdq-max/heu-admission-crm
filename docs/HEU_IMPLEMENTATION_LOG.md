@@ -2161,3 +2161,18 @@
 - P3-01/P3-02 remain PASS_LOCAL only until signed role/workflow UAT proves
   scope, status transitions, evidence redaction, handover boundary and
   finance-gate behavior.
+
+## 2026-06-27 - P2-18 Dashboard Acceptance Matrix
+
+- Added a PASS_LOCAL P2-18 dashboard acceptance matrix to
+  `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx`.
+- The matrix requires authorized read-only load, source-total reconciliation,
+  role and contract-only denial, exception and movement traceability, evidence
+  redaction and production-boundary proof before P2-18 can support owner
+  review.
+- Updated `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`, the production
+  checklist, backlog, current-state inventory,
+  `audit:ttgdtx-dashboard-readonly-guard`, `audit:ttgdtx-release-gates` and
+  `audit:heu-current-state-inventory`.
+- P2-18 remains IN_PROGRESS for production until signed browser UAT and owner
+  sign-off exist outside Codex/chat.

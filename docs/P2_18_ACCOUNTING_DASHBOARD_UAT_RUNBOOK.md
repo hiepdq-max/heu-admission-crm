@@ -58,6 +58,10 @@ Before signed browser UAT, the repo must keep local guard evidence green:
 - `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx` shows the
   required redacted evidence set for P2-18-01 through P2-18-08 and references
   `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`.
+- The same checklist exposes
+  `data-ttgdtx-dashboard-acceptance-matrix="P2-18"` with
+  P2-18-ACCEPT-01 through P2-18-ACCEPT-06 and decision value
+  `P2_18_ACCEPT / FAIL / BLOCKED`.
 - `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`
   shows the source reconciliation checklist for P2-03, P2-10,
   P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata.
@@ -106,7 +110,24 @@ limit 30;
 
 Expected: each exception points to the correct next workflow step.
 
-## 7. Sign-Off Rule
+## 7. Dashboard Acceptance Matrix
+
+Use the P2-18 dashboard acceptance matrix after the test matrix and evidence
+queries. The matrix is local-only until signed browser UAT and owner sign-off
+exist.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P2-18-ACCEPT-01 | Read-only route and authorized load | Authorized BGH/KHTC opens the dashboard after `canOpen`; no form or button can create, update, approve or pay | Dashboard exposes any write action or queries run before permission and TTGDTX scope gate |
+| P2-18-ACCEPT-02 | Source-total reconciliation | Summary, control and partner totals reconcile to P2-03, P2-10, P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata | Any accepted KPI lacks source query evidence or cannot be tied back to an approved source workflow |
+| P2-18-ACCEPT-03 | Role and contract-only denial | Out-of-scope and contract-only users are blocked or scoped; `ttgdtx.contract.read` alone does not expose finance totals | Contract-only permission or out-of-scope access exposes unrestricted dashboard data |
+| P2-18-ACCEPT-04 | Exception and movement traceability | Each exception row links to the correct source workflow and recent movement rows match source records | An exception or movement row cannot be traced to the source step and owner |
+| P2-18-ACCEPT-05 | Evidence redaction and owner sign-off | Screenshots or exports use redacted, non-secret references; KHTC, BGH, IT_DATA and Audit sign outside Codex/chat | Raw PII, CCCD, bank accounts, vouchers, passwords, OTPs or service-role keys are exposed |
+| P2-18-ACCEPT-06 | Production boundary | P2-18 stays an advisory read-only cockpit until backup/restore evidence, UAT evidence and owner GO/NO-GO are signed | PASS_LOCAL is treated as dashboard UAT pass, finance approval, dashboard reliance or production GO |
+
+Decision value: `P2_18_ACCEPT / FAIL / BLOCKED`.
+
+## 8. Sign-Off Rule
 
 Mark P2-18 as `DONE` only when:
 
@@ -116,3 +137,4 @@ Mark P2-18 as `DONE` only when:
 4. Control board has no unexplained `CRITICAL` row.
 5. At least one complete flow and one exception flow are verified.
 6. KHTC confirms financial totals; Audit confirms traceability.
+7. P2-18-ACCEPT-01 through P2-18-ACCEPT-06 all pass with redacted evidence.
