@@ -109,7 +109,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit-log traceability,\s+hard-delete conversion\/waiver, P0-14 evidence binder, P0-15\s+final handoff summary, then final owner Go\/No-Go)(?=[\s\S]*Do not skip\s+ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit-log traceability,\s+hard-delete conversion\/waiver, P0-14 intake-ledger evidence\s+binder, P0-15 final handoff summary, then final owner Go\/No-Go)(?=[\s\S]*Do not skip\s+ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
   "TTGDTX production execution queue UI shell",
   executionQueuePath,
 );

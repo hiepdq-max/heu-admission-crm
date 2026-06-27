@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P5-02 P0-14 Intake Ledger Action Queue Alignment[\s\S]*Master Control blocker summary and TTGDTX production execution\s+queue[\s\S]*P0-14 intake-ledger evidence\s+binder before P0-15 final handoff and owner GO\/NO-GO[\s\S]*BGH operating dashboard spec, backlog, production checklist and\s+current-state inventory[\s\S]*does not reduce\s+P0-14 to a generic evidence binder[\s\S]*BGH dashboard, current-state, implementation-log, production\s+readiness and release-gate audits[\s\S]*This is management-queue wording and guard alignment only[\s\S]*does not\s+collect evidence, accept evidence, execute UAT, approve migration, approve\s+finance action, approve owner waiver or mark production GO/i,
+  "P5-02 P0-14 intake ledger action queue alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-15 Final Handoff Evidence Intake Ledger Alignment[\s\S]*AGENTS\.md[\s\S]*P0-14 controlled evidence intake ledger, redaction reviewer and owner\s+signature state alongside P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*lib\/production-readiness\.ts[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*cannot treat the P0-14\s+evidence binder as complete without intake-ledger proof[\s\S]*final-handoff, current-state, implementation-log and release-gate\s+audits[\s\S]*This is final-handoff packaging only[\s\S]*does not collect evidence, accept\s+evidence, execute UAT, approve migration, approve finance action, approve\s+owner waiver or mark production GO/i,
   "P0-15 final handoff evidence intake ledger alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

@@ -105,8 +105,8 @@ The same component also shows a
 `SAFE_ITERATION_STEPS`, plus a `data-heu-production-action-queue="P5-02"` Next controlled actions
 queue from `PRODUCTION_EXECUTION_STEPS`, so BGH and owners
 can see the one-blocker, one-audit, controlled-proof rhythm and the controlled
-sequence, including P0-14 evidence binder closure and P0-15 final handoff summary,
-before any GO/NO-GO discussion. The component is read-only and does
+sequence, including P0-14 intake-ledger evidence binder closure and P0-15 final
+handoff summary, before any GO/NO-GO discussion. The component is read-only and does
 not create, update, approve, pay, delete, unlock, reverse, mark UAT accepted or
 mark production GO.
 

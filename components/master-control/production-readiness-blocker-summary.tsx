@@ -31,8 +31,8 @@ export function ProductionReadinessBlockerSummary() {
               Production remains NO-GO until backup/restore, migration order,
               legal/finance UAT, payout UAT, dashboard UAT, role-scope UAT,
               audit-log UAT, hard-delete conversion/waiver, redaction, P0-14
-              evidence binder, P0-15 final handoff summary and final owner
-              sign-off are completed outside Codex/chat.
+              intake-ledger evidence binder, P0-15 final handoff summary and
+              final owner sign-off are completed outside Codex/chat.
             </p>
           </div>
         </div>
