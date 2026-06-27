@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*PASS/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P2-01\/P2-02 master guard full sweep[\s\S]*46 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
