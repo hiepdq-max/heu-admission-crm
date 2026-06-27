@@ -204,6 +204,57 @@ const roleScopeRouteMatrixItems = [
   },
 ];
 
+const roleScopeAcceptanceItems = [
+  {
+    caseId: "P6-04-ACCEPT-01",
+    requirement: "Static preflight and synthetic-account boundary",
+    minimumEvidence:
+      "Required role-scope, data-fetch, dashboard-access and release-gate audits pass; UAT evidence uses synthetic account labels only.",
+    stopCondition:
+      "Stop if real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
+  },
+  {
+    caseId: "P6-04-ACCEPT-02",
+    requirement: "Positive role access is scoped",
+    minimumEvidence:
+      "Approved ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles can open only the routes and records owned by their role/scope.",
+    stopCondition:
+      "Stop if an approved user cannot perform required scoped work or sees production GO/daily finance actions outside scope.",
+  },
+  {
+    caseId: "P6-04-ACCEPT-03",
+    requirement: "Negative and out-of-scope denial",
+    minimumEvidence:
+      "UAT_OUT_OF_SCOPE_STAFF, contract-only, admission-only and non-finance accounts receive BLOCKED or EMPTY_SCOPED_STATE where required.",
+    stopCondition:
+      "Stop if any out-of-scope account sees unrestricted TTGDTX finance, lead, source, dashboard or audit data.",
+  },
+  {
+    caseId: "P6-04-ACCEPT-04",
+    requirement: "Server-side enforcement",
+    minimumEvidence:
+      "Protected pages and server actions check auth, permission and scope before query or write; UI-only hide is not the control.",
+    stopCondition:
+      "Stop if a route queries sensitive data before canOpen/scope checks or a server action writes despite blocked UI.",
+  },
+  {
+    caseId: "P6-04-ACCEPT-05",
+    requirement: "Admin delegation and broad access control",
+    minimumEvidence:
+      "Broad lead visibility ALL, scope grants and protected role changes remain admin/delegated-only and respect soft-revoke state.",
+    stopCondition:
+      "Stop if a non-admin grants broad access, changes protected roles, bypasses soft revoke or hard-deletes evidence rows.",
+  },
+  {
+    caseId: "P6-04-ACCEPT-06",
+    requirement: "Signed evidence and production boundary",
+    minimumEvidence:
+      "IT/Data, Audit and process owners sign redacted role-scope results outside Codex/chat before P6-04 supports production review.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval or production GO.",
+  },
+];
+
 function formatNumber(value: number | null | undefined) {
   return new Intl.NumberFormat("vi-VN").format(value ?? 0);
 }
@@ -497,6 +548,56 @@ export function UserScopeEnforcementPanel({
               service-role keys, CCCD, bank accounts, bank statements,
               vouchers or raw student identity data into route UAT evidence.
             </p>
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-cyan-200 bg-cyan-50 p-4 text-sm leading-6 text-cyan-950"
+          data-heu-role-scope-acceptance-matrix="P6-04"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ClipboardCheck className="size-4 shrink-0" />
+                <span>
+                  P6-04 role-scope acceptance matrix: PASS_LOCAL only
+                </span>
+              </div>
+              <p className="mt-2">
+                Decision value:{" "}
+                <span className="font-mono text-xs">
+                  P6_04_ACCEPT / FAIL / BLOCKED
+                </span>
+                . Use this matrix to decide whether signed role-scope evidence
+                can support owner review, not to approve production access.
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-cyan-200 bg-white px-3 py-2">
+              PASS_LOCAL does not approve production access, broad permissions,
+              real-data UAT, finance action or production GO.
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {roleScopeAcceptanceItems.map((item) => (
+              <article
+                key={item.caseId}
+                className="border-l-2 border-cyan-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-cyan-700">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.requirement}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  {item.minimumEvidence}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  {item.stopCondition}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </div>

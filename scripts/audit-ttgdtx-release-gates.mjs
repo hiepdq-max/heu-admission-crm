@@ -588,6 +588,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
+  /(?=[\s\S]*Role-Scope Acceptance Matrix)(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
+  "P6-04 role-scope acceptance matrix doc",
+);
+
+requireText(
   "components/settings/user-scope-enforcement-panel.tsx",
   /(?=[\s\S]*data-heu-role-scope-ui-guard="P6-04")(?=[\s\S]*P6-04 role-scope UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until\s+signed UAT evidence exists)(?=[\s\S]*UAT_ADMIN)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_KHTC)(?=[\s\S]*UAT_TUYEN_SINH)(?=[\s\S]*UAT_PHAP_CHE)(?=[\s\S]*UAT_AUDIT)(?=[\s\S]*UAT_OUT_OF_SCOPE_STAFF)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank\s+accounts)(?=[\s\S]*raw student identity data)/i,
   "P6-04 role-scope UI guard stays local-only and no-secret",
@@ -603,6 +609,18 @@ requireText(
   "components/settings/user-scope-enforcement-panel.tsx",
   /(?=[\s\S]*data-heu-role-scope-route-matrix="P6-04")(?=[\s\S]*P6-04 role-scope route matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6-04-ROUTE-01)(?=[\s\S]*P6-04-ROUTE-07)(?=[\s\S]*Login and unauthenticated routes)(?=[\s\S]*Lead list\/detail)(?=[\s\S]*TTGDTX contract\/source pages)(?=[\s\S]*TTGDTX receivable, collection, reconciliation and payment)(?=[\s\S]*TTGDTX accounting dashboard)(?=[\s\S]*Master\/settings pages)(?=[\s\S]*Audit log pages)(?=[\s\S]*UI-only hide is not enough if a server\s+action can still write)(?=[\s\S]*Do not paste passwords, OTPs, reset links, API keys,\s+service-role keys, CCCD, bank accounts, bank statements,\s+vouchers or raw student identity data)/i,
   "P6-04 role-scope route matrix",
+);
+
+requireText(
+  "components/settings/user-scope-enforcement-panel.tsx",
+  /(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04 role-scope acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*Static preflight and synthetic-account boundary)(?=[\s\S]*Negative and out-of-scope denial)(?=[\s\S]*Server-side enforcement)(?=[\s\S]*Signed evidence and production boundary)/i,
+  "P6-04 role-scope acceptance matrix UI",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*role-scope evidence checklist, route matrix and acceptance matrix)(?=[\s\S]*signed UAT still required)/i,
+  "P6-04 production checklist acceptance matrix row",
 );
 
 requireText(

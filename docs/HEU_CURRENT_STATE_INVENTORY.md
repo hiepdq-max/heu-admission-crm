@@ -85,7 +85,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
 | Accounting dashboard | P2-18 read-only guard, source reconciliation checklist, UAT checklist and dashboard acceptance matrix exist | Signed browser UAT pending |
-| Role/workspace scope | P6-04 pack, scope UI guard and route matrix exist | Multi-account signed UAT pending |
+| Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix and acceptance matrix exist | Multi-account signed UAT pending |
 | Audit log | Static coverage and audit trace acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue | Conversion or written waiver pending |
 | Controlled evidence | Redaction/intake pack and audit guard exist | Real evidence must stay outside Git/Codex/chat |

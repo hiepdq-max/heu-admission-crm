@@ -2190,3 +2190,17 @@
   `audit:heu-current-state-inventory`.
 - P2-17 remains IN_PROGRESS for production until signed payout UAT and owner
   sign-off exist outside Codex/chat.
+
+## 2026-06-27 - P6-04 Role-Scope Acceptance Matrix
+
+- Added a PASS_LOCAL P6-04 role-scope acceptance matrix to
+  `components/settings/user-scope-enforcement-panel.tsx`.
+- The matrix requires static preflight, synthetic account boundaries, positive
+  scoped access, negative/out-of-scope denial, server-side enforcement,
+  admin/delegation control and signed owner evidence.
+- Updated `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`, the production
+  checklist, backlog, current-state inventory,
+  `audit:heu-role-scope-uat-pack`, `audit:ttgdtx-release-gates` and
+  `audit:heu-current-state-inventory`.
+- P6-04 remains IN_PROGRESS for production until signed multi-account
+  role/workspace UAT and owner sign-off exist outside Codex/chat.

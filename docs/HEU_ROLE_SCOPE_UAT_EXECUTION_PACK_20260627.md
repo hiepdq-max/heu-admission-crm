@@ -132,7 +132,27 @@ master/settings and audit-log pages. Results must be `ALLOWED`, `BLOCKED` or
 `EMPTY_SCOPED_STATE`, and a UI-only hide is not enough if a server action can
 still write.
 
-## 10. Current Result
+## 10. Role-Scope Acceptance Matrix
+
+The same panel exposes `data-heu-role-scope-acceptance-matrix="P6-04"` for the
+final local acceptance review. The matrix is PASS_LOCAL only until signed
+role-scope UAT evidence and owner sign-off exist.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P6-04-ACCEPT-01 | Static preflight and synthetic-account boundary | Required role-scope, data-fetch, dashboard-access and release-gate audits pass; UAT evidence uses synthetic account labels only | Real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
+| P6-04-ACCEPT-02 | Positive role access is scoped | Approved ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles can open only the routes and records owned by their role/scope | An approved user cannot perform required scoped work or sees production GO/daily finance actions outside scope |
+| P6-04-ACCEPT-03 | Negative and out-of-scope denial | UAT_OUT_OF_SCOPE_STAFF, contract-only, admission-only and non-finance accounts receive `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any out-of-scope account sees unrestricted TTGDTX finance, lead, source, dashboard or audit data |
+| P6-04-ACCEPT-04 | Server-side enforcement | Protected pages and server actions check auth, permission and scope before query or write; UI-only hide is not the control | A route queries sensitive data before canOpen/scope checks or a server action writes despite blocked UI |
+| P6-04-ACCEPT-05 | Admin delegation and broad access control | Broad lead visibility `ALL`, scope grants and protected role changes remain admin/delegated-only and respect soft-revoke state | A non-admin grants broad access, changes protected roles, bypasses soft revoke or hard-deletes evidence rows |
+| P6-04-ACCEPT-06 | Signed evidence and production boundary | IT/Data, Audit and process owners sign redacted role-scope results outside Codex/chat before P6-04 supports production review | PASS_LOCAL is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval or production GO |
+
+Decision value: `P6_04_ACCEPT / FAIL / BLOCKED`.
+
+P6-04 can support production readiness only when P6-04-ACCEPT-01 through
+P6-04-ACCEPT-06 all pass with redacted evidence and signed owner approval.
+
+## 11. Current Result
 
 P6-04 is PASS_LOCAL as an execution pack and static guard package only. It does
 not approve production access, production migration, broad account grants or
