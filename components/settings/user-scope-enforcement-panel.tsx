@@ -212,6 +212,52 @@ export function UserScopeEnforcementPanel({
             Đúng người · Đúng phòng · Đúng đối tượng · Đúng dữ liệu
           </span>
         </div>
+
+        <div
+          className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900"
+          data-heu-role-scope-ui-guard="P6-04"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ShieldAlert className="size-4 shrink-0" />
+                <span>P6-04 role-scope UAT: PASS_LOCAL only</span>
+              </div>
+              <p className="mt-2">
+                Signed role-scope UAT evidence is still required. NO-GO until
+                signed UAT evidence exists for workspace, role and
+                out-of-scope denial checks.
+              </p>
+              <p className="mt-2">
+                Do not paste passwords, OTPs, service-role keys, CCCD, bank
+                accounts or raw student identity data into Codex, browser UAT
+                notes or screenshots.
+              </p>
+            </div>
+            <div className="grid gap-2 text-xs font-medium text-amber-950 sm:grid-cols-2 lg:min-w-[360px]">
+              {[
+                "UAT_ADMIN",
+                "UAT_BGH",
+                "UAT_KHTC",
+                "UAT_KHTC_TTGDTX_OPERATOR",
+                "UAT_TUYEN_SINH",
+                "UAT_TUYEN_SINH_TTGDTX",
+                "UAT_CTHSSV",
+                "UAT_DAO_TAO",
+                "UAT_PHAP_CHE",
+                "UAT_AUDIT",
+                "UAT_OUT_OF_SCOPE_STAFF",
+              ].map((role) => (
+                <span
+                  key={role}
+                  className="rounded-md border border-amber-200 bg-white px-2 py-1"
+                >
+                  {role}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

@@ -80,6 +80,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
+  "components/settings/user-scope-enforcement-panel.tsx",
   "lib/ttgdtx-invoice-policy.ts",
   "lib/ttgdtx-operating-controls.ts",
   "lib/ttgdtx-process-labels.ts",
@@ -318,6 +319,12 @@ requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   /(?=[\s\S]*P6-04 is PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until signed UAT evidence exists)/i,
   "P6-04 role-scope UAT pack stays local-only",
+);
+
+requireText(
+  "components/settings/user-scope-enforcement-panel.tsx",
+  /(?=[\s\S]*data-heu-role-scope-ui-guard="P6-04")(?=[\s\S]*P6-04 role-scope UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until\s+signed UAT evidence exists)(?=[\s\S]*UAT_ADMIN)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_KHTC)(?=[\s\S]*UAT_TUYEN_SINH)(?=[\s\S]*UAT_PHAP_CHE)(?=[\s\S]*UAT_AUDIT)(?=[\s\S]*UAT_OUT_OF_SCOPE_STAFF)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank\s+accounts)(?=[\s\S]*raw student identity data)/i,
+  "P6-04 role-scope UI guard stays local-only and no-secret",
 );
 
 requireText(

@@ -1357,3 +1357,30 @@
 - TTGDTX linked operating spine is PASS_LOCAL for core screen visibility after
   local audits pass.
 - Signed role/workflow UAT is still required before production use.
+
+## 2026-06-27 - Role Scope UAT UI Guard
+
+### Scope
+
+- Continued HEU security/governance hardening with a small Settings UI slice.
+- Added a visible read-only P6-04 role-scope UAT guard to the user-scope
+  enforcement panel.
+- The guard states PASS_LOCAL only, signed UAT required, production NO-GO until
+  signed evidence exists, and no passwords, OTPs, service-role keys, CCCD, bank
+  accounts or raw student identity data should be pasted into UAT notes.
+- Extended role-scope and release-gate audits so the UI guard cannot be removed
+  silently.
+
+### Files Updated
+
+- `components/settings/user-scope-enforcement-panel.tsx`
+- `scripts/audit-heu-role-scope-uat-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-04 role-scope UI guard is PASS_LOCAL after local audits pass.
+- Signed role-scope UAT remains required before production readiness.

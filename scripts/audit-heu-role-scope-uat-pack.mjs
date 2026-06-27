@@ -33,10 +33,14 @@ requireFile(packPath);
 requireFile("docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md");
 requireFile("docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md");
 requireFile("docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md");
+requireFile("components/settings/user-scope-enforcement-panel.tsx");
 requireFile("scripts/audit-ttgdtx-role-scope-access.mjs");
 requireFile("scripts/audit-ttgdtx-data-fetch-gate.mjs");
 
 const pack = exists(packPath) ? read(packPath) : "";
+const panel = exists("components/settings/user-scope-enforcement-panel.tsx")
+  ? read("components/settings/user-scope-enforcement-panel.tsx")
+  : "";
 
 requireText(pack, /P6-04 role-scope UAT/i, "P6-04 scope");
 requireText(pack, /NO-GO until signed UAT evidence exists/i, "production NO-GO boundary");
@@ -53,6 +57,16 @@ requireText(pack, /AI can approve, pay, release, delete, mark revenue or mark pr
 requireText(pack, /P6-04 is PASS_LOCAL/i, "PASS_LOCAL result");
 requireText(pack, /Signed role-scope UAT evidence is still required/i, "signed UAT boundary");
 
+if (
+  !/(?=[\s\S]*data-heu-role-scope-ui-guard="P6-04")(?=[\s\S]*P6-04 role-scope UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until\s+signed UAT evidence exists)(?=[\s\S]*UAT_ADMIN)(?=[\s\S]*UAT_BGH)(?=[\s\S]*UAT_KHTC)(?=[\s\S]*UAT_TUYEN_SINH)(?=[\s\S]*UAT_PHAP_CHE)(?=[\s\S]*UAT_AUDIT)(?=[\s\S]*UAT_OUT_OF_SCOPE_STAFF)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank\s+accounts)(?=[\s\S]*raw student identity data)/i.test(
+    panel,
+  )
+) {
+  fail(
+    "components/settings/user-scope-enforcement-panel.tsx: missing P6-04 UI guard, signed-UAT boundary, role coverage or no-secret warning.",
+  );
+}
+
 const runbook = read("docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md");
 if (!/Do not test with real passwords, OTPs, service keys or bank credentials/i.test(runbook)) {
   fail("TTGDTX role-scope runbook must keep the no-secret rule.");
@@ -67,12 +81,12 @@ if (!packageJson.scripts?.["audit:heu-role-scope-uat-pack"]) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
+if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
   fail("Backlog P6-04 must be PASS_LOCAL and reference the role-scope UAT pack audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md/.test(checklist)) {
+if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx/.test(checklist)) {
   fail("Production checklist must keep role/workspace permission IN_PROGRESS and reference the P6-04 pack.");
 }
 
