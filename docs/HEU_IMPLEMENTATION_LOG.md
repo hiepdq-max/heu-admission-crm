@@ -833,3 +833,29 @@
 - P6-04 is PASS_LOCAL as an execution pack and static guard package.
 - It does not approve production access, real-data UAT or broad permissions.
 - Signed role-scope UAT evidence remains required before production readiness.
+
+## 2026-06-27 - SQL Object To Master Name Map
+
+### Scope
+
+- Continued HEU data-foundation hardening with P1-04 SQL object mapping.
+- Mapped current CRM, short-course, TTGDTX, role/scope, workflow, evidence and dashboard SQL objects to canonical HEU master names.
+- Added a local audit to verify key SQL objects still exist and the map remains non-destructive.
+- Kept production schema rename/drop/alter and production migration NO-GO.
+
+### Files Updated/Added
+
+- `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`
+- `scripts/audit-heu-sql-object-master-map.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P1-04 is PASS_LOCAL as a mapping/control artifact.
+- No schema rename, drop, alter, production migration or data movement is approved.
+- Future migrations should use reviewed compatibility-view or staged migration design.

@@ -49,6 +49,7 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
@@ -67,6 +68,7 @@ const requiredFiles = [
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-role-scope-uat-pack.mjs",
+  "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
@@ -83,6 +85,7 @@ const requiredScripts = [
   "audit:heu-backlog-codes",
   "audit:heu-lead-handover-policy",
   "audit:heu-role-scope-uat-pack",
+  "audit:heu-sql-object-master-map",
   "audit:hard-delete",
   "audit:vnd-money-format",
   "audit:permission-soft-revoke",
@@ -167,6 +170,12 @@ requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   /(?=[\s\S]*P6-04 is PASS_LOCAL)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until signed UAT evidence exists)/i,
   "P6-04 role-scope UAT pack stays local-only",
+);
+
+requireText(
+  "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
+  /(?=[\s\S]*P1-04 is PASS_LOCAL)(?=[\s\S]*Do not rename, drop, alter or merge production SQL objects)(?=[\s\S]*compatibility\s+views, not destructive renames)/i,
+  "P1-04 SQL object map is local-only and non-destructive",
 );
 
 requireText(

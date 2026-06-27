@@ -52,6 +52,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/HEU_TECH_DECISION_001_FREEZE_AND_HARDEN_TTGDTX_9PLUS.md`
 - `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`
 - `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`
+- `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`
 - `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
 - `docs/REMAINING_CHANGE_AUDIT_20260622.md`
 - `docs/MIGRATION_ORDER_AUDIT.md`
@@ -92,6 +93,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-backlog-codes`
   - `npm.cmd run audit:heu-lead-handover-policy`
   - `npm.cmd run audit:heu-role-scope-uat-pack`
+  - `npm.cmd run audit:heu-sql-object-master-map`
   - `npm.cmd run audit:hard-delete`
   - `npm.cmd run audit:vnd-money-format`
   - `npm.cmd run audit:permission-soft-revoke`
