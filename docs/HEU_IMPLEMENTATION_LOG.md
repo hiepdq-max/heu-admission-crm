@@ -1829,3 +1829,37 @@
   pass.
 - Non-TTGDTX/base cascade conversion or written waiver remains required before
   hard-delete review can be accepted for production readiness.
+
+## 2026-06-27 - P6-04 Role/Workspace Evidence Checklist
+
+### Scope
+
+- Continued P6-04 security hardening with a small user-scope panel slice.
+- Added a role/workspace evidence checklist inside
+  `components/settings/user-scope-enforcement-panel.tsx`.
+- The checklist lists required redacted evidence for P6-04-SCOPE-001 through
+  P6-04-SCOPE-006, including admin/BGH boundaries, KHTC TTGDTX operator scope,
+  admission/student-service denial, legal/audit read-only scope,
+  out-of-scope denial and no-secret signed evidence.
+- It repeats that passwords, OTPs, reset links, API keys, service-role keys,
+  CCCD, bank accounts, bank statements, vouchers and raw student identity data
+  stay outside Git/Codex/chat.
+- Extended role-scope and release-gate audits so the panel, production
+  checklist, backlog and UAT execution pack stay aligned.
+
+### Files Updated/Added
+
+- `components/settings/user-scope-enforcement-panel.tsx`
+- `scripts/audit-heu-role-scope-uat-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-04 role/workspace evidence checklist is PASS_LOCAL after local audits
+  pass.
+- Signed role-scope UAT remains required before production-ready access control
+  can be accepted.

@@ -67,6 +67,14 @@ if (
   );
 }
 
+if (
+  !/(?=[\s\S]*data-heu-role-scope-evidence-checklist="P6-04")(?=[\s\S]*P6-04 role\/workspace evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed role-scope UAT is still required before P6-04 can move\s+from IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*P6-04-SCOPE-001)(?=[\s\S]*P6-04-SCOPE-006)(?=[\s\S]*ALLOWED, BLOCKED or EMPTY_SCOPED_STATE)(?=[\s\S]*passwords, OTPs, reset links, API keys,\s+service-role keys, CCCD, bank accounts, bank statements,\s+vouchers and raw student identity data)(?=[\s\S]*PASS_LOCAL does not approve production access, broad permissions,\s+real-data UAT, finance action, hard-delete, AI approval or\s+production GO)/i.test(panel)
+) {
+  fail(
+    "components/settings/user-scope-enforcement-panel.tsx: missing P6-04 role/workspace evidence checklist or no-secret boundary.",
+  );
+}
+
 const runbook = read("docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md");
 if (!/Do not test with real passwords, OTPs, service keys or bank credentials/i.test(runbook)) {
   fail("TTGDTX role-scope runbook must keep the no-secret rule.");
@@ -81,12 +89,12 @@ if (!packageJson.scripts?.["audit:heu-role-scope-uat-pack"]) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
+if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*role-scope evidence checklist[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
   fail("Backlog P6-04 must be PASS_LOCAL and reference the role-scope UAT pack audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx/.test(checklist)) {
+if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*role-scope evidence checklist/.test(checklist)) {
   fail("Production checklist must keep role/workspace permission IN_PROGRESS and reference the P6-04 pack.");
 }
 

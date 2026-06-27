@@ -109,7 +109,20 @@ P6-04 can support production readiness only when:
 5. IT/Data confirms no server-side bypass.
 6. Audit confirms evidence is redacted and traceable.
 
-## 9. Current Result
+## 9. Role-Scope Evidence Checklist
+
+The user scope panel exposes a role-scope evidence checklist on
+`components/settings/user-scope-enforcement-panel.tsx`. The checklist is
+PASS_LOCAL only and covers P6-04-SCOPE-001 through P6-04-SCOPE-006: admin/BGH
+boundaries, KHTC TTGDTX operator scope, admission/student-service denial,
+legal/audit read-only scope, out-of-scope denial and no-secret signed evidence.
+
+Evidence must use expected results `ALLOWED`, `BLOCKED` or
+`EMPTY_SCOPED_STATE`. Do not attach passwords, OTPs, reset links, API keys,
+service-role keys, CCCD, bank accounts, bank statements, vouchers or raw
+student identity data in Git/Codex/chat.
+
+## 10. Current Result
 
 P6-04 is PASS_LOCAL as an execution pack and static guard package only. It does
 not approve production access, production migration, broad account grants or

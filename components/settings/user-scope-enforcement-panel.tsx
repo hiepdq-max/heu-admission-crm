@@ -1,7 +1,9 @@
 import {
   AlertTriangle,
   CheckCircle2,
+  ClipboardCheck,
   Eye,
+  FileCheck2,
   LockKeyhole,
   ShieldAlert,
   ShieldCheck,
@@ -90,6 +92,51 @@ const riskFlagLabels: Record<string, string> = {
   OVER_BROAD_NON_ADMIN: "User không phải ADMIN nhưng quyền quá rộng",
   TEAM_SCOPE_WITHOUT_SUBORDINATE: "Chọn xem cấp dưới nhưng chưa có cấp dưới",
 };
+
+const roleScopeEvidenceItems = [
+  {
+    caseId: "P6-04-SCOPE-001",
+    title: "Admin and BGH boundaries",
+    owner: "IT_DATA + BGH + Audit",
+    evidence:
+      "UAT_ADMIN and UAT_BGH screenshots proving approved admin/executive access without production GO or daily finance execution.",
+  },
+  {
+    caseId: "P6-04-SCOPE-002",
+    title: "KHTC TTGDTX operator scope",
+    owner: "KHTC + IT_DATA",
+    evidence:
+      "Evidence that UAT_KHTC_TTGDTX_OPERATOR sees only assigned TTGDTX finance scope and cannot hard-delete rows.",
+  },
+  {
+    caseId: "P6-04-SCOPE-003",
+    title: "Admission and student-service denial",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO",
+    evidence:
+      "Evidence that admission/student roles see assigned lead/handover context but cannot approve, pay or view unrestricted finance totals.",
+  },
+  {
+    caseId: "P6-04-SCOPE-004",
+    title: "Legal and audit read-only scope",
+    owner: "PHAP_CHE + Audit",
+    evidence:
+      "Evidence that legal/audit roles can review source, evidence and logs in scope without money movement or ownership writes.",
+  },
+  {
+    caseId: "P6-04-SCOPE-005",
+    title: "Out-of-scope denial",
+    owner: "IT_DATA + Audit",
+    evidence:
+      "UAT_OUT_OF_SCOPE_STAFF evidence showing blocked or empty scoped state for TTGDTX finance, lead, source and dashboard data.",
+  },
+  {
+    caseId: "P6-04-SCOPE-006",
+    title: "No-secret signed evidence",
+    owner: "IT_DATA + process owners",
+    evidence:
+      "Signed evidence references use synthetic labels only; passwords, OTPs, reset links, keys, CCCD, bank accounts and raw identity data stay outside Git/Codex/chat.",
+  },
+];
 
 function formatNumber(value: number | null | undefined) {
   return new Intl.NumberFormat("vi-VN").format(value ?? 0);
@@ -256,6 +303,73 @@ export function UserScopeEnforcementPanel({
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-indigo-200 bg-indigo-50 p-4 text-sm leading-6 text-indigo-950"
+          data-heu-role-scope-evidence-checklist="P6-04"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ClipboardCheck className="size-4 shrink-0" />
+                <span>
+                  P6-04 role/workspace evidence checklist: PASS_LOCAL only
+                </span>
+              </div>
+              <p className="mt-2">
+                Signed role-scope UAT is still required before P6-04 can move
+                from IN_PROGRESS. Use only synthetic account labels and redacted
+                evidence references; passwords, OTPs, reset links, API keys,
+                service-role keys, CCCD, bank accounts, bank statements,
+                vouchers and raw student identity data stay outside
+                Git/Codex/chat.
+              </p>
+              <p className="mt-2 font-mono text-xs">
+                HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-indigo-200 bg-white px-3 py-2">
+              Expected results must be ALLOWED, BLOCKED or EMPTY_SCOPED_STATE
+              and signed by IT/Data plus the process owner.
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {roleScopeEvidenceItems.map((item) => (
+              <article
+                key={item.caseId}
+                className="border-l-2 border-indigo-300 bg-white px-3 py-3"
+              >
+                <div className="flex items-start gap-2">
+                  <FileCheck2 className="mt-0.5 size-4 shrink-0 text-indigo-700" />
+                  <div>
+                    <p className="text-xs font-semibold uppercase text-indigo-700">
+                      {item.caseId}
+                    </p>
+                    <p className="mt-1 font-medium text-zinc-950">
+                      {item.title}
+                    </p>
+                    <p className="mt-2 text-xs font-medium text-zinc-500">
+                      Owner: {item.owner}
+                    </p>
+                    <p className="mt-2 leading-5 text-zinc-700">
+                      {item.evidence}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+            <ShieldAlert className="mt-0.5 size-4 shrink-0" />
+            <p>
+              PASS_LOCAL does not approve production access, broad permissions,
+              real-data UAT, finance action, hard-delete, AI approval or
+              production GO.
+            </p>
           </div>
         </div>
       </div>
