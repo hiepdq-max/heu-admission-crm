@@ -30,6 +30,16 @@ export type ProductionUatLaunchStep = {
   auditCommand: string;
 };
 
+export type ProductionRiskClosureStep = {
+  code: string;
+  title: string;
+  owner: string;
+  route: string;
+  runbook: string;
+  evidence: string;
+  auditCommand: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -171,6 +181,29 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     evidence:
       "Scoped access, read-only cockpit behavior, source reconciliation, no-secret screenshots and human reliance decision.",
     auditCommand: "npm.cmd run audit:heu-finance-desk",
+  },
+];
+
+export const PRODUCTION_RISK_CLOSURE_STEPS: ProductionRiskClosureStep[] = [
+  {
+    code: "P6-06",
+    title: "Hard-delete and cascade conversion or waiver",
+    owner: "IT_DATA + Audit + business owners",
+    route: "/audit",
+    runbook: "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+    evidence:
+      "Conversion proof or narrow written waiver for unresolved non-TTGDTX/base cascade findings, with closure decision and rollback note.",
+    auditCommand: "npm.cmd run audit:hard-delete-conversion-decision-queue",
+  },
+  {
+    code: "P2-17",
+    title: "Payout duplicate-click and dossier UAT",
+    owner: "KHTC + BGH + Audit",
+    route: "/ttgdtx/payment-requests/pay",
+    runbook: "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
+    evidence:
+      "Duplicate-click result, overpay guard, voucher normalization, RPC-only path and BBNT/partner-invoice dossier proof.",
+    auditCommand: "npm.cmd run audit:ttgdtx-payout-execution-readiness",
   },
 ];
 

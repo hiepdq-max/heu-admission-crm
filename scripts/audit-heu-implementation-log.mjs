@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX P6-06 P2-17 Risk Closure Plan[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver[\s\S]*P2-17 payout duplicate\/dossier UAT[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route,\s+runbook, owner, evidence and local guard command[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is risk-closure launch packaging only[\s\S]*does not execute payout UAT,\s+convert cascade rules, approve waiver, collect evidence, approve finance\s+action, accept evidence or mark production GO/i,
+  "TTGDTX P6-06/P2-17 risk closure plan log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - TTGDTX P2-18 P5-03 UAT Launch Plan[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*P2-18 accounting dashboard[\s\S]*P5-03\s+Finance Desk[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route, runbook,\s+owner, evidence and local guard command[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is UAT launch packaging only[\s\S]*does not execute browser UAT, collect\s+evidence, accept dashboard reliance, approve finance action, approve\s+production migration or mark production GO/i,
   "TTGDTX P2-18/P5-03 UAT launch plan log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_RISK_CLOSURE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
   SAFE_ITERATION_STEPS,
 } from "@/lib/production-readiness";
@@ -113,6 +114,57 @@ export function TtgdtxProductionExecutionQueue() {
                 className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-amber-700 hover:text-amber-950"
               >
                 Open UAT route
+                <ArrowRight className="size-3" />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-rose-200 bg-white p-4"
+        data-ttgdtx-risk-closure-plan="P6-06_P2-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-rose-950">
+              Next risk closure plan: P6-06 + P2-17
+            </h3>
+            <p className="mt-1 leading-6 text-rose-900">
+              Close hard-delete/cascade conversion-or-waiver and payout
+              duplicate/dossier evidence before owner GO/NO-GO. Missing proof
+              keeps production NO-GO.
+            </p>
+          </div>
+          <span className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold uppercase text-rose-800">
+            closure proof required
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_RISK_CLOSURE_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-rose-300 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Runbook: {step.runbook}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-600">
+                Guard: {step.auditCommand}
+              </p>
+              <Link
+                href={step.route}
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-rose-700 hover:text-rose-950"
+              >
+                Open closure route
                 <ArrowRight className="size-3" />
               </Link>
             </article>

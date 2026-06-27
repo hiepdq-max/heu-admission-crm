@@ -1,5 +1,23 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX P6-06 P2-17 Risk Closure Plan
+
+- Added `PRODUCTION_RISK_CLOSURE_STEPS` in `lib/production-readiness.ts` for
+  the next priority blockers: P6-06 hard-delete/cascade conversion-or-waiver
+  and P2-17 payout duplicate/dossier UAT.
+- Updated `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the
+  TTGDTX landing page shows the P6-06/P2-17 risk closure plan with route,
+  runbook, owner, evidence and local guard command.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-08/internal UAT and the
+  current-state snapshot reference the risk closure plan while keeping NO-GO.
+- Updated production readiness, production blocker source, current-state and
+  release-gate audits so the risk closure plan stays shared and local-only.
+- This is risk-closure launch packaging only. It does not execute payout UAT,
+  convert cascade rules, approve waiver, collect evidence, approve finance
+  action, accept evidence or mark production GO.
+
 ## 2026-06-28 - TTGDTX P2-18 P5-03 UAT Launch Plan
 
 - Added `PRODUCTION_UAT_LAUNCH_STEPS` in `lib/production-readiness.ts` for
