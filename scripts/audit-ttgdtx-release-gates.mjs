@@ -71,6 +71,7 @@ const requiredFiles = [
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
+  "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
@@ -89,6 +90,7 @@ const requiredFiles = [
   "scripts/audit-heu-role-scope-uat-pack.mjs",
   "scripts/audit-heu-sql-object-master-map.mjs",
   "scripts/audit-ttgdtx-account-control-scope-decision.mjs",
+  "scripts/audit-ttgdtx-audit-trail-guard.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
@@ -123,6 +125,7 @@ const requiredScripts = [
   "audit:ttgdtx-account-control-scope-decision",
   "audit:ttgdtx-accounting-dashboard-uat-plan",
   "audit:ttgdtx-audit-log",
+  "audit:ttgdtx-audit-trail-guard",
   "audit:ttgdtx-backup-restore-dry-run-pack",
   "audit:ttgdtx-cascade",
   "audit:ttgdtx-dashboard-access",
@@ -210,6 +213,24 @@ requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /Result:\s*PARTIAL PASS/i,
   "partial UAT pass marker",
+);
+
+requireText(
+  "components/audit/ttgdtx-audit-trail-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-audit-trail-guard="AUDIT_LOG")(?=[\s\S]*audit_logs)(?=[\s\S]*AUD-01)(?=[\s\S]*AUD-06)/i,
+  "TTGDTX audit trail guard display",
+);
+
+requireText(
+  "app/audit/page.tsx",
+  /TtgdtxAuditTrailGuard[\s\S]*<TtgdtxAuditTrailGuard \/>[\s\S]*AuditLogTable/i,
+  "audit page mounts TTGDTX audit trail guard",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Audit log completeness[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*signed UAT/i,
+  "audit log completeness guard checklist row",
 );
 
 requireText(

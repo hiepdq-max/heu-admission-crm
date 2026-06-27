@@ -43,7 +43,21 @@ Required audited tables include:
 | AUD-05 | Record one P2-17 disbursement | `audit_logs` has evidence for disbursement and request paid amount/status update |
 | AUD-06 | Update one P2-11 source control item | `audit_logs` has evidence for source document or control check update |
 
-## 5. Evidence Queries
+## 5. Local Audit Trail Guard Evidence
+
+Before signed UAT, the repo must keep local audit-trail evidence green:
+
+- `components/audit/ttgdtx-audit-trail-guard.tsx` shows the required TTGDTX
+  entity groups on `/audit`.
+- `app/audit/page.tsx` mounts the guard and only reads `audit_logs`.
+- `npm.cmd run audit:ttgdtx-audit-log` verifies Step90-Step110 tables have
+  `write_audit_log()` triggers where the steps create TTGDTX tables.
+- `npm.cmd run audit:ttgdtx-audit-trail-guard` must pass.
+
+This local evidence does not replace signed UAT. It only proves the audit log
+surface is packaged before Audit/KHTC execute the matrix above.
+
+## 6. Evidence Queries
 
 Use these only against UAT/test data.
 
@@ -86,7 +100,7 @@ limit 100;
 
 Expected: recent UAT actions identify the user and affected entity.
 
-## 6. Sign-Off Rule
+## 7. Sign-Off Rule
 
 Mark audit log completeness as `DONE` only when:
 

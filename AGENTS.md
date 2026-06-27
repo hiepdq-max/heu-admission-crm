@@ -112,6 +112,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-account-control-scope-decision`
   - `npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan`
   - `npm.cmd run audit:ttgdtx-audit-log`
+  - `npm.cmd run audit:ttgdtx-audit-trail-guard`
   - `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`
   - `npm.cmd run audit:ttgdtx-cascade`
   - `npm.cmd run audit:ttgdtx-dashboard-access`

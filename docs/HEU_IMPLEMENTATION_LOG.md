@@ -1204,3 +1204,29 @@
 
 - P2-18 read-only, role-scope and source-comparison guard is PASS_LOCAL.
 - Production remains NO-GO until signed dashboard UAT proves role scope and source totals.
+
+## 2026-06-27 - TTGDTX Audit Trail Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small audit-log traceability slice.
+- Added a visible TTGDTX audit trail guard on `/audit` for P2-03, P2-10, P2-13/P2-14, P2-15/P2-16, P2-17 and P2-11/P2-19 evidence.
+- Added a local audit that checks the guard, read-only audit page behavior, required UAT cases AUD-01 through AUD-06, audit-log UAT runbook and production checklist status.
+- Kept Audit log completeness IN_PROGRESS because signed UAT must still prove real create/update/approve/pay audit rows.
+
+### Files Updated/Added
+
+- `components/audit/ttgdtx-audit-trail-guard.tsx`
+- `scripts/audit-ttgdtx-audit-trail-guard.mjs`
+- `app/audit/page.tsx`
+- `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- TTGDTX audit trail guard is PASS_LOCAL.
+- Production remains NO-GO until signed UAT proves actual audit rows for create, update, approve and pay events.

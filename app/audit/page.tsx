@@ -6,6 +6,7 @@ import {
   AuditLogTable,
   type AuditLogRow,
 } from "@/components/audit/audit-log-table";
+import { TtgdtxAuditTrailGuard } from "@/components/audit/ttgdtx-audit-trail-guard";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -87,16 +88,19 @@ export default async function AuditPage() {
           Không đọc được audit log: {error.message}
         </section>
       ) : (
-        <AuditLogTable
-          logs={auditRows}
-          summary={{
-            total: auditRows.length,
-            inserts: auditRows.filter((row) => row.action === "INSERT").length,
-            updates: auditRows.filter((row) => row.action === "UPDATE").length,
-            deletes: auditRows.filter((row) => row.action === "DELETE").length,
-            entityTypes: entityTypes.size,
-          }}
-        />
+        <div className="space-y-6">
+          <TtgdtxAuditTrailGuard />
+          <AuditLogTable
+            logs={auditRows}
+            summary={{
+              total: auditRows.length,
+              inserts: auditRows.filter((row) => row.action === "INSERT").length,
+              updates: auditRows.filter((row) => row.action === "UPDATE").length,
+              deletes: auditRows.filter((row) => row.action === "DELETE").length,
+              entityTypes: entityTypes.size,
+            }}
+          />
+        </div>
       )}
     </AppShell>
   );
