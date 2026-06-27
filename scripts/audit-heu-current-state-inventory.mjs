@@ -42,8 +42,11 @@ const inventory = existsSync(path.join(repoRoot, inventoryPath))
   ? read(inventoryPath)
   : "";
 const agents = existsSync(path.join(repoRoot, "AGENTS.md")) ? read("AGENTS.md") : "";
+const backlog = existsSync(path.join(repoRoot, "docs/HEU_SYSTEM_BUILD_BACKLOG.md"))
+  ? read("docs/HEU_SYSTEM_BUILD_BACKLOG.md")
+  : "";
 
-requireText(inventory, /Date:\s*2026-06-27/i, "current inventory date");
+requireText(inventory, /Date:\s*2026-06-28/i, "current inventory date");
 requireText(
   inventory,
   /Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state/i,
@@ -56,7 +59,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*57 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -68,6 +71,17 @@ requireText(
   inventory,
   /npm\.cmd run audit:ttgdtx-contract-tuition-master-guard[\s\S]*PASS/i,
   "P2-01/P2-02 master guard audit evidence",
+);
+requireText(
+  inventory,
+  /M02 HR[\s\S]*Role\/scope pages, P6-04 UAT pack and create-user temporary password guard exist/i,
+  "M02 user account temporary password current module state",
+);
+requireText(
+  backlog,
+  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords/i,
+  "P0-17 user account temporary password backlog row",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 requireText(
   inventory,
@@ -156,7 +170,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );
 requireText(
@@ -191,7 +205,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Do not paste|Raw PII, bank data, passwords, keys and vouchers must stay outside Git\/Codex\/chat/i,
+  /Do not paste|Raw PII, bank data, passwords, temporary passwords, service-role keys and vouchers must stay outside Git\/Codex\/chat/i,
   "sensitive-data boundary",
 );
 

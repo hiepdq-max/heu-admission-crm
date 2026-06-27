@@ -1,6 +1,6 @@
 # HEU Current State Inventory
 
-Date: 2026-06-27
+Date: 2026-06-28
 Repository: heu-admission-crm
 Remote: https://github.com/hiepdq-max/heu-admission-crm.git
 Working branch: hardening/ttgdtx-9plus-pilot
@@ -51,13 +51,14 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
+| `npm.cmd run audit:heu-user-account-security` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack` | PASS |
 | `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` | PASS |
 | `npm.cmd run audit:heu-p0-register-pack` | PASS |
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment and P0 Go/No-Go control paragraph alignment plus P6-03/P6-06 execution-queue split; 57 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment, P0 Go/No-Go control paragraph alignment, P6-03/P6-06 execution-queue split and user account temporary password guard; 58 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -67,7 +68,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Module | Scope | Current status | Evidence |
 |---|---|---|---|
 | M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate, acceptance matrix and gate decision manifest are packaged; signed UAT still required |
-| M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages and P6-04 UAT pack exist |
+| M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages, P6-04 UAT pack and create-user temporary password guard exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls exist; signed UAT still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
 | M05 Tuyen sinh CRM | Leads, pipeline, follow-up, detail | Strong internal | P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and P3-01/P3-02 UAT execution pack exist; handover remains finance-gated |
@@ -97,7 +98,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard reliance decision manifest and P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO/NO-GO exist | Signed browser UAT pending |
 | Finance Desk / KHTC cockpit | P5-03 read-only cockpit exists at `/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` acceptance matrix and P5-03 reliance decision manifest | Signed browser UAT and reliance decision pending |
 | P0 register pack | Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents | PASS_LOCAL; official owner signoff and Drive registry still required |
-| Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
+| Role/workspace scope | P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix, audit-log evidence acceptance matrix and audit traceability decision manifest pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings, locks P6-06-FIND-001 through P6-06-FIND-044 in `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, and exposes a conversion/waiver decision queue, hard-delete/cascade acceptance matrix and closure decision manifest | Conversion or written waiver pending |
 | Controlled evidence | Redaction/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder and closure tracker exist, including the P0-03 operator run sheet proof, P0-03 restore smoke-check proof for P0-19/P3 gate preservation, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff proof with P3-01/P3-02 runbook evidence | Real evidence must stay outside Git/Codex/chat |
@@ -113,7 +114,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Migration order unsigned | CRITICAL | Step90-Step110 approval must be signed by IT_DATA, KHTC and PHAP_CHE |
 | Signed UAT missing | CRITICAL | P3-01/P3-02, P0-19, P2-17, P2-18, P6-03, P6-04, the internal UAT run closure tracker, the UAT execution closure template and UAT operator handoff still require signed evidence |
 | Hard-delete/cascade residual risk | HIGH | Non-TTGDTX/base cascade findings need conversion or written waiver |
-| Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, keys and vouchers must stay outside Git/Codex/chat |
+| Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, temporary passwords, service-role keys and vouchers must stay outside Git/Codex/chat |
 | AI misuse | MEDIUM | AI remains advisory-only; prompt/output logging and role-scoped AI data are not enabled |
 
 ## 7. Production Readiness Assessment

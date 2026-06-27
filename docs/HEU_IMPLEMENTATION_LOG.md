@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Current State User Account Security Alignment
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` so M02/role-workspace scope, P0 backlog
+  and the full audit count include the user account temporary password guard.
+- Updated `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and release-gate audits so the
+  Stage D/NO-GO current-state snapshot cannot drop the temporary password
+  boundary or stale 58-audit-script count.
+- This is current-state/backlog alignment only. It does not create accounts,
+  send passwords, approve role scope, accept UAT, rotate keys, approve
+  migration or mark production GO.
+
 ## 2026-06-28 - User Account Temporary Password Guard
 
 - Updated `components/settings/user-create-form.tsx` so the create-user form

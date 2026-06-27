@@ -92,9 +92,16 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*57 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+requireText(
+  log,
+  /(?=[\s\S]*## 2026-06-28 - Current State User Account Security Alignment)(?=[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md)(?=[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md)(?=[\s\S]*M02\/role-workspace scope)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58-audit-script count)(?=[\s\S]*audit-heu-current-state-inventory\.mjs)(?=[\s\S]*audit-heu-implementation-log\.mjs)(?=[\s\S]*release-gate audits)(?=[\s\S]*current-state\/backlog alignment only)(?=[\s\S]*does not create accounts)(?=[\s\S]*send passwords)(?=[\s\S]*approve role scope)(?=[\s\S]*mark production GO)/i,
+  "current-state user-account security alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(
