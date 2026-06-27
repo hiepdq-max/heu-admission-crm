@@ -79,6 +79,12 @@ requireText(
   "P0-03 Supabase backup/restore UI guard",
   componentPath,
 );
+requireText(
+  component,
+  /(?=[\s\S]*data-p003-backup-restore-evidence-checklist="P0-03")(?=[\s\S]*P0-03 backup\/restore execution evidence checklist)(?=[\s\S]*PASS_LOCAL\s+only)(?=[\s\S]*P0-03-01)(?=[\s\S]*P0-03-06)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md)(?=[\s\S]*Actual backup, restore dry-run, migration preflight\/postflight,\s+data smoke-check, signed UAT and owner GO\/NO-GO evidence are still\s+required)(?=[\s\S]*PASS_LOCAL does not prove backup was executed, restore was executed,\s+migration is safe, UAT passed, rollback is proven or production GO is\s+approved)(?=[\s\S]*secrets, passwords, OTPs, service-role keys,\s+bank credentials, raw student PII, raw CCCD, raw phone numbers or raw\s+payment data)/i,
+  "P0-03 backup/restore execution evidence checklist",
+  componentPath,
+);
 
 requireText(
   page,
@@ -123,7 +129,7 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
+if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore execution evidence checklist[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
   fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
 }
 

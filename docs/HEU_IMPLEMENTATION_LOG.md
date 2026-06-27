@@ -1863,3 +1863,37 @@
   pass.
 - Signed role-scope UAT remains required before production-ready access control
   can be accepted.
+
+## 2026-06-27 - P0-03 Backup/Restore Execution Evidence Checklist
+
+### Scope
+
+- Continued P0-03 production-readiness hardening with a small Supabase check
+  page slice.
+- Extended `components/settings/supabase-backup-restore-guard.tsx` with a
+  backup/restore execution evidence checklist.
+- The checklist lists required evidence for P0-03-01 through P0-03-06,
+  including backup evidence, isolated restore target, app connection check,
+  preflight/postflight commands, smoke-check/UAT index and owner GO/NO-GO.
+- It repeats that secrets, passwords, OTPs, service-role keys, bank credentials,
+  raw student PII, raw CCCD, raw phone numbers and raw payment data stay outside
+  Git/Codex/chat.
+- Extended backup/restore and release-gate audits so the UI guard, evidence
+  pack, production checklist and backlog stay aligned.
+
+### Files Updated/Added
+
+- `components/settings/supabase-backup-restore-guard.tsx`
+- `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P0-03 backup/restore execution evidence checklist is PASS_LOCAL after local
+  audits pass.
+- Actual backup, restore dry-run, signed UAT and owner GO/NO-GO remain required
+  before any production migration can be considered.

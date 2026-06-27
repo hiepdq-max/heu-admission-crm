@@ -194,3 +194,16 @@ PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,
 production migration is approved, or production GO is approved. Actual
 production readiness still requires completed evidence, owner review and signed
 human Go/No-Go.
+
+## 13. P0-03 UI Execution Checklist
+
+The Supabase check page exposes a backup/restore execution evidence checklist in
+`components/settings/supabase-backup-restore-guard.tsx`. The checklist is
+PASS_LOCAL only and covers P0-03-01 through P0-03-06: backup evidence, isolated
+restore target, app connection to restore target, preflight/postflight command
+results, smoke-check/UAT index and final human GO/NO-GO sign-off.
+
+Do not attach secrets, passwords, OTPs, service-role keys, bank credentials,
+raw student PII, raw CCCD, raw phone numbers or raw payment data in
+Git/Codex/chat. Actual backup, restore dry-run, signed UAT and owner GO/NO-GO
+evidence remain required before production migration can be considered.
