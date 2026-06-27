@@ -7,50 +7,7 @@ import {
   ShieldAlert,
 } from "lucide-react";
 
-type ReadinessBlocker = {
-  title: string;
-  proof: string;
-  route: string;
-};
-
-const readinessBlockers: ReadinessBlocker[] = [
-  {
-    title: "Supabase backup and restore proof",
-    proof:
-      "Backup ID, restore dry-run and rollback decision must be attached before any production migration.",
-    route: "STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
-  },
-  {
-    title: "Step90-Step110 signed migration order",
-    proof:
-      "IT_DATA, KHTC and PHAP_CHE must sign Step97, Step100, Step109 and Step110 decisions.",
-    route: "MIGRATION_ORDER_AUDIT.md",
-  },
-  {
-    title: "P2-17 payout cannot run twice",
-    proof:
-      "Duplicate-click, normalized voucher, row lock and P2-19 evidence blockers need signed UAT.",
-    route: "/ttgdtx/payment-requests/pay",
-  },
-  {
-    title: "P2-18 dashboard is read-only and scoped",
-    proof:
-      "BGH/KHTC dashboard totals must be checked against source workflows and role-scope UAT.",
-    route: "/ttgdtx/accounting-dashboard",
-  },
-  {
-    title: "Step109 role and workspace scope",
-    proof:
-      "ADMIN, BGH, KHTC, legal, admission, audit and out-of-scope users need signed browser UAT.",
-    route: "HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
-  },
-  {
-    title: "Audit log, hard-delete and rollback controls",
-    proof:
-      "Finance changes need traceable audit rows; hard-delete/cascade risks need conversion or written waiver.",
-    route: "/audit",
-  },
-];
+import { PRODUCTION_BLOCKERS } from "@/lib/production-readiness";
 
 export function TtgdtxProductionReadinessGuard() {
   return (
@@ -72,9 +29,10 @@ export function TtgdtxProductionReadinessGuard() {
             </div>
             <p className="mt-2 leading-6 text-zinc-600">
               PASS_LOCAL chi co nghia la app, tai lieu va audit guard da san
-              sang cho UAT noi bo. PASS_LOCAL khong phe duyet production
-              migration, khong phe duyet thu/chi tien, khong thay the backup,
-              signed UAT hoac ky duyet cua chu so huu.
+              sang cho UAT noi bo. Guard nay render tu cung nguon production
+              blocker voi Master Control va execution queue; PASS_LOCAL khong
+              phe duyet production migration, thu/chi tien, backup, signed UAT
+              hoac ky duyet cua chu so huu.
             </p>
           </div>
         </div>
@@ -90,22 +48,30 @@ export function TtgdtxProductionReadinessGuard() {
       </div>
 
       <div className="mt-5 grid gap-3 xl:grid-cols-2">
-        {readinessBlockers.map((item) => {
-          const isAppRoute = item.route.startsWith("/");
+        {PRODUCTION_BLOCKERS.map((item) => {
+          const href = item.href;
 
           return (
             <div
-              key={item.title}
+              key={item.code}
               className="border-l-2 border-rose-200 bg-rose-50/60 px-3 py-3"
             >
               <div className="flex items-start gap-2">
                 <AlertTriangle className="mt-0.5 size-4 shrink-0 text-rose-700" />
                 <div>
+                  <p className="text-xs font-semibold uppercase text-rose-700">
+                    {item.code}
+                  </p>
                   <p className="font-medium text-zinc-950">{item.title}</p>
-                  <p className="mt-2 leading-5 text-zinc-700">{item.proof}</p>
-                  {isAppRoute ? (
+                  <p className="mt-2 text-xs font-medium text-zinc-500">
+                    Owner: {item.owner}
+                  </p>
+                  <p className="mt-2 leading-5 text-zinc-700">
+                    {item.requiredEvidence}
+                  </p>
+                  {href ? (
                     <Link
-                      href={item.route}
+                      href={href}
                       className="mt-2 inline-flex items-center gap-1 text-xs font-medium uppercase text-rose-700 hover:text-rose-900"
                     >
                       <Route className="size-3" />
@@ -114,7 +80,7 @@ export function TtgdtxProductionReadinessGuard() {
                   ) : (
                     <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium uppercase text-rose-700">
                       <Route className="size-3" />
-                      Evidence: {item.route}
+                      Evidence pack required
                     </p>
                   )}
                 </div>

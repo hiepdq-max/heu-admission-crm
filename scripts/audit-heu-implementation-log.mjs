@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
+  "TTGDTX production guard shared blocker source log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P0-15 Final Handoff Owner Decision Manifest Alignment[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P0-15 final handoff summaries must\s+include the P0-09 final owner decision manifest alongside the P0-09\s+sign-off\/UAT handoff evidence path[\s\S]*final-handoff, production-blocker-source, production-evidence,\s+current-state, implementation-log and release-gate audits[\s\S]*This is final-handoff packaging only[\s\S]*does not collect evidence, accept\s+evidence, execute UAT, approve migration, approve finance action, approve\s+owner waiver or mark production GO/i,
   "P0-15 final handoff owner decision manifest alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

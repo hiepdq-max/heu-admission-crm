@@ -64,27 +64,30 @@ requireText(
 );
 requireText(
   component,
-  /Production remains NO-GO[\s\S]*PASS_LOCAL[\s\S]*khong phe duyet production\s+migration/i,
+  /Production remains NO-GO[\s\S]*PASS_LOCAL[\s\S]*render tu cung nguon production\s+blocker[\s\S]*khong\s+phe duyet production migration/i,
   "NO-GO and PASS_LOCAL boundary",
   componentPath,
 );
 
-for (const blocker of [
-  "Supabase backup",
-  "Step90-Step110",
-  "Step97",
-  "Step100",
-  "Step109",
-  "Step110",
-  "P2-17",
-  "P2-18",
-  "signed UAT",
-  "Audit log",
-  "hard-delete",
-  "rollback",
-]) {
-  requireText(component, new RegExp(blocker, "i"), `${blocker} blocker`, componentPath);
+requireText(
+  component,
+  /(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*PRODUCTION_BLOCKERS\.map)(?=[\s\S]*item\.code)(?=[\s\S]*item\.owner)(?=[\s\S]*item\.requiredEvidence)(?=[\s\S]*Evidence pack required)/i,
+  "TTGDTX guard renders shared production blocker source",
+  componentPath,
+);
+
+if (/const\s+readinessBlockers\b/.test(component)) {
+  failures.push(
+    `${componentPath}: must not keep a local readinessBlockers array; render PRODUCTION_BLOCKERS from ${blockerSourcePath}.`,
+  );
 }
+
+requireText(
+  blockerSource,
+  /(?=[\s\S]*export const PRODUCTION_BLOCKERS)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*Final signed multi-owner GO\/NO-GO)/i,
+  "shared production blocker source includes all current TTGDTX production blockers",
+  blockerSourcePath,
+);
 
 requireText(
   page,
@@ -221,14 +224,14 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );
