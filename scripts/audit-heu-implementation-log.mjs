@@ -104,6 +104,7 @@ for (const heading of [
   "P0-05 Implementation Log Audit Guard",
   "Production Priority Blocker List Alignment",
   "P0 Go No-Go Control Paragraph Alignment",
+  "Current State Inventory P0 Control Alignment",
 ]) {
   requireText(
     log,
@@ -131,6 +132,13 @@ requireText(
   log,
   /P0 Go No-Go Control Paragraph Alignment[\s\S]*P0 controls paragraph[\s\S]*implementation-log\s+discipline[\s\S]*P0-14 evidence binder[\s\S]*P0-15 final handoff coverage[\s\S]*Production remains NO-GO until controlled\s+external evidence and required owner signatures exist[\s\S]*audit:heu-production-evidence-binder[\s\S]*audit:heu-final-handoff-coverage[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is P0 control wording alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
   "P0 Go/No-Go control paragraph alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Current State Inventory P0 Control Alignment[\s\S]*current-state inventory[\s\S]*P0\s+Go\/No-Go control paragraph alignment[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*This is current-state inventory alignment only[\s\S]*does not collect evidence,\s+execute UAT, approve migration, approve finance action or mark production GO/i,
+  "current-state inventory P0 control alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

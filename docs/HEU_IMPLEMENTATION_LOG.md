@@ -2515,3 +2515,13 @@
   `audit:ttgdtx-release-gates` so the P0 control wording stays aligned.
 - This is P0 control wording alignment only. It does not collect evidence,
   execute UAT, approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - Current State Inventory P0 Control Alignment
+
+- Updated the current-state inventory full-audit row so it records the P0
+  Go/No-Go control paragraph alignment as part of the checked local guard set.
+- Extended `audit:heu-current-state-inventory`,
+  `audit:heu-implementation-log` and `audit:ttgdtx-release-gates` so inventory
+  status cannot drift behind the P0 control wording guard.
+- This is current-state inventory alignment only. It does not collect evidence,
+  execute UAT, approve migration, approve finance action or mark production GO.
