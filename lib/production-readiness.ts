@@ -20,6 +20,16 @@ export type SafeIterationStep = {
   detail: string;
 };
 
+export type ProductionUatLaunchStep = {
+  code: string;
+  title: string;
+  owner: string;
+  route: string;
+  runbook: string;
+  evidence: string;
+  auditCommand: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -138,6 +148,29 @@ export const SAFE_ITERATION_STEPS: SafeIterationStep[] = [
     title: "Advance only if green",
     detail:
       "If the slice passes, commit that small scope; if it fails, keep NO-GO, fix the smallest cause and rerun the guard.",
+  },
+];
+
+export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
+  {
+    code: "P2-18",
+    title: "Accounting dashboard browser UAT",
+    owner: "KHTC + BGH + IT_DATA",
+    route: "/ttgdtx/accounting-dashboard",
+    runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
+    evidence:
+      "Authorized access, blocked out-of-scope access, no-write behavior, source comparison and dashboard reliance decision.",
+    auditCommand: "npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan",
+  },
+  {
+    code: "P5-03",
+    title: "Finance Desk browser UAT",
+    owner: "KHTC + BGH + IT_DATA",
+    route: "/finance-desk",
+    runbook: "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    evidence:
+      "Scoped access, read-only cockpit behavior, source reconciliation, no-secret screenshots and human reliance decision.",
+    auditCommand: "npm.cmd run audit:heu-finance-desk",
   },
 ];
 

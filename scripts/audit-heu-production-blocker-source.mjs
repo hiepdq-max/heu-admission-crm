@@ -74,8 +74,8 @@ const packageJson = JSON.parse(read("package.json"));
 
 requireText(
   source,
-  /export const PRODUCTION_BLOCKERS[\s\S]*export const SAFE_ITERATION_STEPS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
-  "shared blocker, safe iteration and execution-step exports",
+  /export const PRODUCTION_BLOCKERS[\s\S]*export const SAFE_ITERATION_STEPS[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*export const PRODUCTION_EXECUTION_STEPS/i,
+  "shared blocker, safe iteration, UAT launch and execution-step exports",
   sourcePath,
 );
 
@@ -83,6 +83,13 @@ requireText(
   source,
   /(?=[\s\S]*SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
   "safe iteration shared source coverage",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*\/ttgdtx\/accounting-dashboard)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*\/finance-desk)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*audit:heu-finance-desk)/i,
+  "P2-18/P5-03 UAT launch shared source coverage",
   sourcePath,
 );
 
@@ -162,8 +169,8 @@ requireText(
 
 requireText(
   executionQueue,
-  /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
-  "execution queue imports shared execution and safe iteration sources",
+  /import \{[\s\S]*PRODUCTION_EXECUTION_STEPS[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*SAFE_ITERATION_STEPS[\s\S]*\} from "@\/lib\/production-readiness"/,
+  "execution queue imports shared execution, UAT launch and safe iteration sources",
   executionQueuePath,
 );
 
@@ -177,6 +184,10 @@ if (/const\s+executionSteps\s*=/.test(executionQueue)) {
 
 if (/const\s+safeIterationSteps\s*=/.test(executionQueue)) {
   fail(`${executionQueuePath}: must not keep a local safeIterationSteps array`);
+}
+
+if (/const\s+uatLaunchSteps\s*=/.test(executionQueue)) {
+  fail(`${executionQueuePath}: must not keep a local uatLaunchSteps array`);
 }
 
 if (/const\s+safeIterationSteps\s*=/.test(blockerSummary)) {

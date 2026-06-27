@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - TTGDTX P2-18 P5-03 UAT Launch Plan[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS[\s\S]*P2-18 accounting dashboard[\s\S]*P5-03\s+Finance Desk[\s\S]*ttgdtx-production-execution-queue\.tsx[\s\S]*route, runbook,\s+owner, evidence and local guard command[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*production readiness, production blocker source, current-state and\s+release-gate audits[\s\S]*This is UAT launch packaging only[\s\S]*does not execute browser UAT, collect\s+evidence, accept dashboard reliance, approve finance action, approve\s+production migration or mark production GO/i,
+  "TTGDTX P2-18/P5-03 UAT launch plan log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - Finance Desk UAT Evidence Checklist[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*\/finance-desk[\s\S]*P5-03\s+browser UAT cases[\s\S]*acceptance criteria[\s\S]*no-secret evidence rules[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*audit-heu-finance-desk\.mjs[\s\S]*release-gate audits[\s\S]*This is UAT packaging only[\s\S]*does not execute UAT, collect evidence,\s+approve finance action, approve dashboard reliance, run production migration\s+or mark production GO/i,
   "Finance Desk UAT evidence checklist log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

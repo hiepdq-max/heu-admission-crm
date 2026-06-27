@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_UAT_LAUNCH_STEPS,
   SAFE_ITERATION_STEPS,
 } from "@/lib/production-readiness";
 
@@ -63,6 +64,57 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
               <p className="mt-2 leading-5 text-zinc-700">{step.detail}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-indigo-200 bg-white p-4"
+        data-ttgdtx-uat-launch-plan="P2-18_P5-03"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-indigo-950">
+              First UAT launch plan: P2-18 + P5-03
+            </h3>
+            <p className="mt-1 leading-6 text-indigo-900">
+              Start signed browser UAT with the dashboard and Finance Desk
+              tracks. Use synthetic accounts, store proof outside Git/Codex/chat
+              and keep production NO-GO until owners sign.
+            </p>
+          </div>
+          <span className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold uppercase text-amber-800">
+            signed evidence required
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {PRODUCTION_UAT_LAUNCH_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-amber-300 bg-amber-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-amber-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Runbook: {step.runbook}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-600">
+                Guard: {step.auditCommand}
+              </p>
+              <Link
+                href={step.route}
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium uppercase text-amber-700 hover:text-amber-950"
+              >
+                Open UAT route
+                <ArrowRight className="size-3" />
+              </Link>
             </article>
           ))}
         </div>
