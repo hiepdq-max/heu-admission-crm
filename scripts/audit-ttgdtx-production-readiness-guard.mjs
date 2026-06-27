@@ -122,6 +122,13 @@ requireText(
 );
 
 requireText(
+  blockerSource,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*P0-14 split into P6-04\/P6-03\/P6-06 proof paths[\s\S]*before owner decision/i,
+  "TTGDTX P0-15 final handoff split evidence source",
+  blockerSourcePath,
+);
+
+requireText(
   page,
   /<TtgdtxProductionReadinessGuard\s*\/>[\s\S]*<TtgdtxUatSignoffGuard\s*\/>[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxOperatingControlStrip\b/,
   "TTGDTX landing page mounts production execution queue before operating strip",

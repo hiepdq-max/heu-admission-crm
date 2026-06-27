@@ -2723,3 +2723,16 @@
 - This is final-handoff wording control only. It does not collect evidence,
   execute UAT, approve a waiver, approve migration, approve finance action or
   mark production GO.
+
+## 2026-06-27 - P0-15 Shared Execution Proof Alignment
+
+- Updated the shared `PRODUCTION_EXECUTION_STEPS` P0-15 proof text so the
+  Master Control and TTGDTX execution queue also show the P0-14 split into
+  P6-04 role/workspace, P6-03 audit-log and P6-06 hard-delete/cascade proof
+  paths before owner decision.
+- Extended `audit:heu-production-blocker-source`,
+  `audit:ttgdtx-production-readiness-guard` and `audit:ttgdtx-release-gates`
+  so the UI shared source cannot drift behind the final handoff guard.
+- This is shared-source wording control only. It does not collect evidence,
+  execute UAT, approve a waiver, approve migration, approve finance action or
+  mark production GO.
