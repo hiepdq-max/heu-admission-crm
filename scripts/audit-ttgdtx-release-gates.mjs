@@ -63,6 +63,7 @@ const requiredScripts = [
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-role-scope-access",
+  "audit:ttgdtx-step110-safety",
   "audit:ttgdtx-uat-readiness",
   "audit:ttgdtx-release-gates",
 ];

@@ -346,3 +346,32 @@
 - Step109 is a migration candidate only and was not run in production.
 - Production remains blocked until backup, restore dry-run, ADMIN lockout test and audit evidence are complete.
 - Settings UI now warns if Step109 has not been run before editing role permissions.
+
+## 2026-06-27 - P2-19 Step110 Evidence Metadata Safety Slice
+
+### Scope
+
+- Continued the TTGDTX/9+ Pilot with Step110 real-data evidence metadata controls.
+- Kept Phu-Xuyen-like material as reference metadata only; no raw student, bank, transaction, CIF or collateral values are imported into repo or UI.
+- Added a Step110 UAT runbook and a local safety audit for the previous Supabase failure modes: wrong view column order, `relation "a"` and `array_agg`.
+
+### Files Updated/Added
+
+- `database/step110_ttgdtx_real_data_evidence_metadata_p2_19.sql`
+- `database/step110_preflight_check_before_p2_19.sql`
+- `database/step110_postflight_check_p2_19.sql`
+- `database/step110_find_relation_a_debug.sql`
+- `docs/STEP110_P2_19_UAT_RUNBOOK.md`
+- `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md`
+- `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`
+- `scripts/audit-ttgdtx-step110-safety.mjs`
+- `package.json`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step110 is a migration candidate only and was not run in production.
+- Run preflight first; if any required object is `MISSING`, stop and apply the missing previous step on UAT/restore.
+- If Supabase still reports `relation "a" does not exist`, run the read-only debug SQL and record the object before retrying.

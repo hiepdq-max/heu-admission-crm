@@ -45,7 +45,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-16 | Partner payment request approval | KHTC + Audit + BGH | PASS_LOCAL | Step106 is migration candidate only; must CHECK before APPROVE and still does not pay money |
 | P2-17 | Partner payout record | KHTC + BGH | PASS_LOCAL | Step107 is migration candidate only; record after P2-16 APPROVED, no duplicate voucher and no overpayment |
 | P2-18 | Accounting dashboard | KHTC + BGH | PASS_LOCAL | Step108 is migration candidate only; read-only rollup, no money movement |
-| P2-19 | Real-data evidence metadata | IT/Data + Audit | BUILT_INTERNAL | Metadata only, no raw sensitive import |
+| P2-19 | Real-data evidence metadata | IT/Data + Audit | PASS_LOCAL | Step110 is migration candidate only; metadata-only, preflight/postflight/debug guard added, no raw sensitive import |
 
 ## P3 - CRM/Tuyen Sinh
 
