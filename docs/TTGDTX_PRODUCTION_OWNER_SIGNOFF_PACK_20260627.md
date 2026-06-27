@@ -84,7 +84,7 @@ owner decision is visible in the operating surface, not only in this pack.
 | P0-09-02 | IT_DATA + KHTC + PHAP_CHE | Signed Step90-Step110 migration order with P0-03 restore proof | NO-GO |
 | P0-09-03 | PHAP_CHE + KHTC + BGH | P0-19 legal basis, tuition policy and finance-gate UAT evidence | NO-GO |
 | P0-09-04 | KHTC + BGH + Audit + IT_DATA | P2-17 duplicate-payout UAT and P2-18 read-only dashboard reconciliation | NO-GO |
-| P0-09-05 | IT_DATA + Audit + process owners | Role/workspace, audit-log and hard-delete/cascade evidence or written waiver | NO-GO |
+| P0-09-05 | IT_DATA + Audit + process owners | Role/workspace UAT evidence; audit-log trace rows; hard-delete/cascade conversion evidence or narrow written waiver | NO-GO |
 | P0-09-06 | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final signed multi-owner GO/NO-GO note referencing controlled redacted evidence only | NO-GO |
 
 Do not paste secrets, passwords, OTPs, service-role keys, bank credentials, raw
@@ -105,7 +105,7 @@ final owner decision remains NO-GO.
 |---|---|---|---|
 | P0-09-ACCEPT-01 | Evidence pack completeness and redaction | Every required evidence item has a controlled external location, owner initials, result and no raw sensitive data in Git/Codex/chat | Any evidence is missing, stored in an uncontrolled location or contains raw sensitive data |
 | P0-09-ACCEPT-02 | Backup/restore and migration readiness | Backup ID, restore target, smoke-check, preflight/postflight and signed Step90-Step110 migration order are accepted | Restore proof is missing, app connection to restore target is not proven or migration order is unsigned |
-| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P2-17, P2-18, role/workspace, audit-log, UAT operator handoff and hard-delete/cascade evidence or written waiver are signed | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete |
+| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P2-17, P2-18, role/workspace UAT, audit-log trace rows and UAT operator handoff are signed; hard-delete/cascade is converted or narrowly waived in writing | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete |
 | P0-09-ACCEPT-04 | Owner decision quorum and accountability | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, evidence ref, signature and date | Any owner is missing, approval is oral-only, role is ambiguous, waiver is hidden or one owner asks for more evidence |
 | P0-09-ACCEPT-05 | Production boundary and AI/Codex limitation | Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat | PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production |
 | P0-09-ACCEPT-06 | Final outcome stays NO-GO until every stop condition is closed | All stop conditions in this sign-off pack are explicitly closed, otherwise the final decision remains NO-GO | Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains |

@@ -45,10 +45,10 @@ const evidenceItems: EvidenceItem[] = [
   },
   {
     caseId: "P0-09-05",
-    title: "Role, audit and hard-delete evidence accepted",
+    title: "Role UAT, audit trace and hard-delete decision accepted",
     owner: "IT_DATA + Audit + process owners",
     evidence:
-      "Role/workspace, audit-log and hard-delete/cascade evidence or written waiver accepted by the responsible owners.",
+      "Role/workspace UAT evidence, audit-log trace rows and hard-delete/cascade conversion evidence or narrow written waiver accepted by the responsible owners.",
   },
   {
     caseId: "P0-09-06",
@@ -80,7 +80,7 @@ const ownerGoNoGoAcceptanceItems: OwnerGoNoGoAcceptanceItem[] = [
     caseId: "P0-09-ACCEPT-03",
     title: "Finance, legal and UAT blockers closed",
     minimum:
-      "P0-19, P2-17, P2-18, role/workspace, audit-log and hard-delete/cascade evidence or written waiver are signed.",
+      "P0-19, P2-17, P2-18, role/workspace UAT, audit-log trace rows and UAT operator handoff are signed; hard-delete/cascade is converted or narrowly waived in writing.",
     stopCondition:
       "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists or audit trace is incomplete.",
   },

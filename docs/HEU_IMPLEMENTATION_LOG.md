@@ -2662,3 +2662,16 @@
 - This is execution-queue clarity only. It does not collect audit evidence,
   convert cascade paths, approve a waiver, execute UAT, approve migration,
   approve finance action or mark production GO.
+
+## 2026-06-27 - Owner Sign-Off P6 Evidence Clarity
+
+- Clarified P0-09 owner sign-off evidence so role/workspace UAT, audit-log
+  trace rows and hard-delete/cascade conversion-or-narrow-waiver are separate
+  proof requirements.
+- Updated `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx`
+  and `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`, then verified
+  `audit:ttgdtx-production-owner-signoff-pack`, `audit:ttgdtx-release-gates`
+  and `npm.cmd run lint`.
+- This is owner-review wording clarity only. It does not execute UAT, collect
+  evidence, approve a waiver, approve migration, approve finance action or
+  mark production GO.
