@@ -17,6 +17,7 @@ The pilot will only track account-control evidence as metadata through the
 source/evidence control path:
 
 - `docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md`
+- `components/ttgdtx/ttgdtx-account-control-scope-guard.tsx`
 - P2-11 source/evidence control
 - P2-19 real-data evidence metadata
 - signed UAT evidence before any real operation
@@ -82,3 +83,19 @@ the account-control workflow for the TTGDTX pilot.
 PASS_LOCAL means scope is clarified and the risky real workflow is deferred. It
 does not approve production bank operation, collateral release, production data
 import, real UAT, production migration or production GO.
+
+## 7. UI Guard
+
+The source-control page mounts
+`components/ttgdtx/ttgdtx-account-control-scope-guard.tsx` with marker
+`data-ttgdtx-account-control-scope-guard="P2-19"` so users see the current
+metadata-only boundary before reviewing account-freeze/account-release or
+collateral evidence.
+
+The guard must state:
+
+- Tuition-account freeze/release is metadata/evidence reference only.
+- No bank action, no account state change and no real operation are approved.
+- Collateral giai-chap stays in a separate restricted legal-finance register.
+- PASS_LOCAL does not approve bank operation, collateral release, payout, UAT,
+  data import, production migration or production GO.

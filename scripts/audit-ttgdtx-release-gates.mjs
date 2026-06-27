@@ -106,6 +106,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-process-quick-finder.tsx",
+  "components/ttgdtx/ttgdtx-account-control-scope-guard.tsx",
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx",
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
@@ -781,6 +782,18 @@ requireText(
   "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
   /PASS_LOCAL means scope is clarified and the risky real workflow is deferred[\s\S]*does not approve production bank operation, collateral release, production data\s+import, real UAT, production migration or production GO/i,
   "account-control scope decision local-only boundary",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-account-control-scope-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong toa\/giai toa tai khoan)(?=[\s\S]*khong gui lenh ngan\s+hang)(?=[\s\S]*khong danh dau tai khoan da phong toa\/giai toa)(?=[\s\S]*khong phe\s+duyet giai chap)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Collateral giai-chap separation)(?=[\s\S]*No bank operation, collateral\s+release, payout, UAT acceptance, data import, production migration\s+or production GO)/i,
+  "account-control scope UI guard",
+);
+
+requireText(
+  "app/ttgdtx/source-control/page.tsx",
+  /TtgdtxAccountControlScopeGuard[\s\S]*<TtgdtxAccountControlScopeGuard \/>[\s\S]*P2-11/i,
+  "source-control page mounts account-control scope guard",
 );
 
 requireText(

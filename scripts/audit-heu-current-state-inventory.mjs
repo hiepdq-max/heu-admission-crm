@@ -136,6 +136,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Account-control\/collateral scope[\s\S]*Account-control scope decision and source-control UI guard keep tuition-account freeze\/release metadata-only and collateral giai-chap separate[\s\S]*PASS_LOCAL; real bank\/collateral operation deferred/i,
+  "account-control/collateral scope control state",
+);
+requireText(
+  inventory,
   /Hard-delete\/cascade[\s\S]*TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion\/waiver decision queue, hard-delete\/cascade acceptance matrix and closure decision manifest[\s\S]*Conversion or written waiver pending/i,
   "P6-06 hard-delete decision queue control state",
 );

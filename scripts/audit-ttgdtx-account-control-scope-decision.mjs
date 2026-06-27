@@ -4,6 +4,8 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const decisionPath = "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md";
 const sourceNotePath = "docs/TTGDTX_ACCOUNT_FREEZE_RELEASE_ACCEPTANCE_NOTE_20260625.md";
+const guardPath = "components/ttgdtx/ttgdtx-account-control-scope-guard.tsx";
+const sourceControlPagePath = "app/ttgdtx/source-control/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -28,10 +30,14 @@ function requireText(contents, pattern, label, file = decisionPath) {
 
 requireFile(decisionPath);
 requireFile(sourceNotePath);
+requireFile(guardPath);
+requireFile(sourceControlPagePath);
 requireFile("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
 const decision = read(decisionPath);
 const sourceNote = read(sourceNotePath);
+const guard = read(guardPath);
+const sourceControlPage = read(sourceControlPagePath);
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
 requireText(decision, /Status:\s*PASS_LOCAL_SCOPE_DECISION/i, "PASS_LOCAL_SCOPE_DECISION status");
@@ -44,6 +50,21 @@ requireText(decision, /BBNT evidence[\s\S]*Blocks P2-15\/P2-17 if missing/i, "BB
 requireText(decision, /Partner invoice[\s\S]*Blocks P2-15\/P2-17 if missing/i, "partner invoice payment gate");
 requireText(decision, /Allowing AI to approve, freeze, release, giai-chap, pay or mark production\s+GO/i, "AI stop condition");
 requireText(decision, /PASS_LOCAL means scope is clarified and the risky real workflow is deferred[\s\S]*does not approve production bank operation, collateral release, production data\s+import, real UAT, production migration or production GO/i, "PASS_LOCAL non-approval boundary");
+requireText(decision, /ttgdtx-account-control-scope-guard\.tsx[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19"[\s\S]*metadata-only boundary/i, "UI guard reference");
+
+requireText(
+  guard,
+  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong toa\/giai toa tai khoan)(?=[\s\S]*khong gui lenh ngan\s+hang)(?=[\s\S]*khong danh dau tai khoan da phong toa\/giai toa)(?=[\s\S]*khong phe\s+duyet giai chap)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Collateral giai-chap separation)(?=[\s\S]*No bank operation, collateral\s+release, payout, UAT acceptance, data import, production migration\s+or production GO)/i,
+  "account-control scope UI guard",
+  guardPath,
+);
+
+requireText(
+  sourceControlPage,
+  /TtgdtxAccountControlScopeGuard[\s\S]*<TtgdtxAccountControlScopeGuard \/>[\s\S]*P2-11/i,
+  "source-control page mounts account-control scope guard",
+  sourceControlPagePath,
+);
 
 requireText(
   sourceNote,
@@ -54,13 +75,13 @@ requireText(
 
 requireText(
   checklist,
-  /Account-control workflow for phong toa\/giai toa[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627\.md[\s\S]*audit:ttgdtx-account-control-scope-decision/i,
+  /Account-control workflow for phong toa\/giai toa[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627\.md[\s\S]*ttgdtx-account-control-scope-guard\.tsx[\s\S]*audit:ttgdtx-account-control-scope-decision/i,
   "account-control PASS_LOCAL checklist row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 requireText(
   checklist,
-  /Collateral giai-chap separation[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627\.md[\s\S]*restricted legal-finance register/i,
+  /Collateral giai-chap separation[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627\.md[\s\S]*ttgdtx-account-control-scope-guard\.tsx[\s\S]*restricted legal-finance register/i,
   "collateral separation PASS_LOCAL checklist row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );

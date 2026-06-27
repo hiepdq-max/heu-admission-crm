@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Account-Control Scope UI Guard
+
+- Added `components/ttgdtx/ttgdtx-account-control-scope-guard.tsx` and mounted
+  it on `/ttgdtx/source-control`.
+- Updated `docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so phong toa/giai toa remains
+  metadata-only and collateral giai-chap stays separate from TTGDTX payment.
+- Extended account-control, current-state and release-gate audits to require
+  the source-control UI guard before handoff.
+- This is scope-boundary packaging only. It does not approve bank operation,
+  account freeze/release, collateral release, payout, UAT acceptance, data
+  import, production migration or production GO.
+
 ## 2026-06-28 - P2-15 P2-17 Payment Dossier Acceptance Matrix
 
 - Added a PASS_LOCAL payment dossier acceptance matrix to

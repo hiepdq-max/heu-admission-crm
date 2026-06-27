@@ -56,7 +56,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-16 | Partner payment request approval | KHTC + Audit + BGH | PASS_LOCAL | Step106 is migration candidate only; must CHECK before APPROVE and still does not pay money |
 | P2-17 | Partner payout record | KHTC + BGH | PASS_LOCAL | Step107 is migration candidate only; record after P2-16 APPROVED, no duplicate voucher, no overpayment, shared payment dossier checklist visible, payment dossier acceptance matrix, payout acceptance matrix, payout release decision manifest, `components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx`, `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx`, `npm.cmd run audit:ttgdtx-payout-duplicate-guard` and `npm.cmd run audit:ttgdtx-payout-execution-readiness` |
 | P2-18 | Accounting dashboard | KHTC + BGH | PASS_LOCAL | Step108 is migration candidate only; read-only rollup, no money movement; dashboard acceptance matrix; dashboard reliance decision manifest; `components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx`; `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`; `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx`; `npm.cmd run audit:ttgdtx-dashboard-readonly-guard`; `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` |
-| P2-19 | Real-data evidence metadata | IT/Data + Audit | PASS_LOCAL | Step110 is migration candidate only; metadata-only, preflight/postflight/debug guard added, no raw sensitive import |
+| P2-19 | Real-data evidence metadata | IT/Data + Audit | PASS_LOCAL | Step110 is migration candidate only; metadata-only, preflight/postflight/debug guard and account-control scope guard added, no raw sensitive import or bank/collateral operation |
 
 ## P3 - CRM/Tuyen Sinh
 

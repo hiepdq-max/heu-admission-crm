@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxAccountControlScopeGuard } from "@/components/ttgdtx/ttgdtx-account-control-scope-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 
@@ -432,6 +433,8 @@ export default async function TtgdtxSourceControlPage() {
         </section>
       ) : (
         <div className="space-y-6">
+          <TtgdtxAccountControlScopeGuard />
+
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-amber-900">
             <div className="flex gap-4">
               <ShieldCheck className="mt-1 size-5 shrink-0" />
