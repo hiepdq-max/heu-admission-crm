@@ -62,7 +62,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
-| P4-01 | Receivable/payment status lifecycle | KHTC | IN_PROGRESS | Audit columns and source evidence |
+| P4-01 | Receivable/payment status lifecycle | KHTC | PASS_LOCAL | `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`; signed finance UAT still required |
 | P4-02 | Invoice/receipt policy matrix | KHTC + Phap Che | PASS_LOCAL | Captured in P2-10 as required/not required/pending/waived; needs human legal sign-off |
 | P4-03 | Bank statement handling policy | KHTC + IT/Data | PASS_LOCAL | `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`; no raw bank data in repo/chat; duplicate fingerprint case in synthetic pack |
 | P4-04 | VND money input/display normalization | IT/Data + KHTC | PASS_LOCAL | `lib/vnd-money.ts`; `npm.cmd run audit:vnd-money-format`; P2-10/P2-17 display `1.000.000 đ` |

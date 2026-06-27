@@ -60,6 +60,7 @@ const requiredFiles = [
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
   "docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md",
   "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
+  "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
   "docs/HEU_LEAD_TO_STUDENT_HANDOVER_POLICY_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
@@ -76,6 +77,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
+  "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
 
@@ -103,6 +105,7 @@ const requiredScripts = [
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-period-lock-policy",
+  "audit:ttgdtx-receivable-payment-lifecycle",
   "audit:ttgdtx-reconciliation-repair-safety",
   "audit:ttgdtx-role-scope-access",
   "audit:ttgdtx-step110-safety",
@@ -265,6 +268,12 @@ requireText(
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   /quick-fix cannot self-promote/i,
   "TTGDTX lead quick-fix self-promotion boundary",
+);
+
+requireText(
+  "docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md",
+  /P4-01 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production finance operation, real-data import, revenue\s+recognition or payout execution[\s\S]*Signed finance UAT must still prove/i,
+  "P4-01 receivable/payment lifecycle local-only boundary",
 );
 
 requireText(

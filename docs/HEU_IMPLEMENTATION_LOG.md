@@ -910,3 +910,29 @@
 - P1-06 is PASS_LOCAL as a product-code generalization guard.
 - Product code remains generic for many centers/partners.
 - Signed UAT and reviewed migration design remain required before production use of real source packs.
+
+## 2026-06-27 - Receivable And Payment Status Lifecycle
+
+### Scope
+
+- Continued TTGDTX finance hardening with P4-01 receivable/payment status lifecycle.
+- Defined the controlled status chain from P2-03 receivable through P2-10 collection, P2-13/P2-14 reconciliation, P2-15/P2-16 payment request approval and P2-17 payout.
+- Added stop conditions for over-collection, cancelled/waived receivables, unresolved invoice decisions, unlocked reconciliation, missing CHECK step, overpayment, duplicate voucher and AI approval.
+- Added a local audit to verify SQL status constraints and lifecycle dependencies.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`
+- `scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P4-01 is PASS_LOCAL as a lifecycle/control artifact.
+- No production migration, production finance operation, real-data import, revenue recognition or payout execution is approved.
+- Signed finance UAT remains required before production readiness.
