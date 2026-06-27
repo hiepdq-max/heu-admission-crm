@@ -526,3 +526,29 @@
 - Step97 and Step100 remain migration candidates only and were not run in production.
 - Step100 is not legal, tuition, revenue, invoice or payout authority; it is only a guarded sandbox/UAT fixture.
 - Production still requires official contract, official tuition decision, legal gate approval, backup evidence, restore dry-run, signed UAT and business Go/No-Go.
+
+## 2026-06-27 - P2-13 Reconciliation Repair Safety
+
+### Scope
+
+- Continued the TTGDTX/9+ pilot by retiring stale P2-13 repair scripts.
+- Converted Step102 and Step103 into explicit no-op history files so they cannot overwrite current Step101 reconciliation logic.
+- Added a local audit to verify Step101 still preserves invoice/receipt columns and blocks unresolved invoice decisions.
+- Added a UAT runbook for P2-13 repair safety.
+
+### Files Updated/Added
+
+- `database/step102_fix_p2_13_partner_status.sql`
+- `database/step103_fix_p2_13_reconciliation_line_columns.sql`
+- `scripts/audit-ttgdtx-reconciliation-repair-safety.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Step102 and Step103 are retained only as retired/no-op migration history.
+- Step101 remains the source of truth for P2-13 batch creation.
+- Production still requires signed UAT and business Go/No-Go before reconciliation/payment workflows are trusted.
