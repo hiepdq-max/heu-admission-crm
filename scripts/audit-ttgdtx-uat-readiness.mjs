@@ -38,6 +38,7 @@ const requiredFiles = [
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 ];
 
@@ -147,6 +148,12 @@ requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /No real passwords, OTPs, service keys, bank credentials/i,
   "no secret or real credential rule",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*UAT-HANDOFF-06)(?=[\s\S]*Do not paste passwords, OTPs, reset links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof,\s+reviewer or owner signature keeps production NO-GO)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
+  "operator handoff keeps UAT run order and no-secret boundary",
 );
 
 requireText(

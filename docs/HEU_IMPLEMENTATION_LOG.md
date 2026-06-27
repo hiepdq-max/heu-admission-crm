@@ -2374,3 +2374,14 @@
   `audit:heu-role-scope-uat-pack` and `audit:ttgdtx-release-gates`.
 - This keeps the backlog operationally aligned only. Signed UAT and owner
   evidence remain required outside Codex/chat.
+
+## 2026-06-27 - TTGDTX UAT Operator Handoff
+
+- Added `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` to give the human UAT
+  operator one run order across static preflight, synthetic account setup,
+  browser route matrix, execution-log closure and owner signature.
+- Updated the production checklist, backlog and audits
+  `audit:ttgdtx-uat-readiness`, `audit:ttgdtx-production-readiness-guard`,
+  `audit:heu-role-scope-uat-pack` and `audit:ttgdtx-release-gates`.
+- This is a handoff artifact only. It does not execute UAT, store raw evidence,
+  approve migration, approve finance action or mark production GO.
