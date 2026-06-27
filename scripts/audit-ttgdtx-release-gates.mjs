@@ -76,6 +76,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
+  "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-production-readiness-guard.tsx",
@@ -100,6 +101,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-invoice-policy.mjs",
   "scripts/audit-ttgdtx-migration-order-guard.mjs",
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
+  "scripts/audit-ttgdtx-p019-gate-guard.mjs",
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
@@ -140,6 +142,7 @@ const requiredScripts = [
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-migration-order-guard",
   "audit:ttgdtx-operating-control-ui",
+  "audit:ttgdtx-p019-gate-guard",
   "audit:ttgdtx-payment-dossier-checklist",
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-payout-duplicate-guard",
@@ -465,6 +468,30 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /P2-17 execute payout once[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-payout-duplicate-guard[\s\S]*signed UAT/i,
   "P2-17 duplicate guard checklist row",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-p019-gate-guard="P0-19")(?=[\s\S]*Legal basis)(?=[\s\S]*Tuition policy)(?=[\s\S]*Finance gate)(?=[\s\S]*ALLOW_FINANCE)/i,
+  "P0-19 legal tuition finance guard display",
+);
+
+requireText(
+  "app/ttgdtx/gate/page.tsx",
+  /TtgdtxP019GateGuard[\s\S]*<TtgdtxP019GateGuard \/>/,
+  "P2-05 gate page mounts P0-19 guard",
+);
+
+requireText(
+  "app/ttgdtx/receivables/page.tsx",
+  /TtgdtxP019GateGuard[\s\S]*<TtgdtxP019GateGuard \/>/,
+  "P2-03 receivables page mounts P0-19 guard",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  "P0-19 guard checklist row",
 );
 
 requireText(

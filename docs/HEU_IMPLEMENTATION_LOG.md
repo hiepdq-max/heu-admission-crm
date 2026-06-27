@@ -1291,3 +1291,35 @@
 
 - TTGDTX production readiness guard is PASS_LOCAL only after local audits pass.
 - Production remains NO-GO until backup, signed UAT and owner approval exist.
+
+## 2026-06-27 - P0-19 Legal/Tuition Finance Gate Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small P0-19 clarity slice.
+- Added a visible P0-19 guard to P2-05 gate and P2-03 receivables so users see
+  that legal basis, tuition policy and finance permission must all be ready
+  before creating receivables.
+- The guard clarifies that Step100 is sandbox/UAT only and cannot be treated as
+  production legal, tuition, revenue or payout authority.
+- Added a local audit that checks the guard, both page mounts, production
+  checklist, backlog, AGENTS handoff list and release-gate audit.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-p019-gate-guard.tsx`
+- `scripts/audit-ttgdtx-p019-gate-guard.mjs`
+- `app/ttgdtx/gate/page.tsx`
+- `app/ttgdtx/receivables/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P0-19 legal/tuition finance gate guard is PASS_LOCAL only after local audits
+  pass.
+- Signed legal/finance UAT is still required before production receivable use.

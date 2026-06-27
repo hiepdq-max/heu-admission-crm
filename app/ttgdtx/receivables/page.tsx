@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxP019GateGuard } from "@/components/ttgdtx/ttgdtx-p019-gate-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { firstParam } from "@/lib/workspace";
@@ -500,6 +501,8 @@ export default async function TtgdtxReceivablesPage({
         </section>
       ) : (
         <div className="space-y-6">
+          <TtgdtxP019GateGuard />
+
           {message ? (
             <section
               className={`rounded-lg border p-5 text-sm leading-6 ${

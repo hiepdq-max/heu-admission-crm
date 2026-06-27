@@ -124,6 +124,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
   - `npm.cmd run audit:ttgdtx-migration-order-guard`
   - `npm.cmd run audit:ttgdtx-operating-control-ui`
+  - `npm.cmd run audit:ttgdtx-p019-gate-guard`
   - `npm.cmd run audit:ttgdtx-payment-dossier-checklist`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
   - `npm.cmd run audit:ttgdtx-payout-duplicate-guard`
