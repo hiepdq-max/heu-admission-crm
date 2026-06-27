@@ -24,6 +24,7 @@
     "audit:ttgdtx-accounting-dashboard-uat-plan": "node scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
     "audit:ttgdtx-cascade": "node scripts/audit-ttgdtx-cascade-risk.mjs",
     "audit:ttgdtx-dashboard-access": "node scripts/audit-ttgdtx-dashboard-access.mjs",
+    "audit:ttgdtx-dashboard-readonly-guard": "node scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
     "audit:ttgdtx-data-fetch-gate": "node scripts/audit-ttgdtx-data-fetch-gate.mjs",
     "audit:ttgdtx-generic-source-evidence": "node scripts/audit-ttgdtx-generic-source-evidence.mjs",
     "audit:ttgdtx-invoice-policy": "node scripts/audit-ttgdtx-invoice-policy.mjs",

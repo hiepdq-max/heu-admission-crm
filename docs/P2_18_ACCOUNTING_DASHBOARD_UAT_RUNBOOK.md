@@ -49,7 +49,22 @@ signed off by IT Data, KHTC and Audit.
 | P2-18-07 | Review recent movements | Movement labels and evidence links reflect P2-10, P2-13, P2-15 and P2-17 |
 | P2-18-08 | Confirm dashboard has no write form for money movement | No create/update/pay approval is possible from P2-18 |
 
-## 5. Evidence Queries
+## 5. Local Read-Only Guard Evidence
+
+Before signed browser UAT, the repo must keep local guard evidence green:
+
+- `components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx` shows the P2-18
+  read-only, source-comparison and role-scope guard on the dashboard.
+- `app/ttgdtx/accounting-dashboard/page.tsx` mounts the guard and only queries
+  dashboard views after `canOpen` is true.
+- `scripts/audit-ttgdtx-dashboard-access.mjs` confirms contract-only permission
+  is not used as finance-dashboard access.
+- `npm.cmd run audit:ttgdtx-dashboard-readonly-guard` must pass.
+
+This local evidence does not replace signed browser UAT. It only proves the
+dashboard guard is packaged before the UAT team executes the matrix above.
+
+## 6. Evidence Queries
 
 Use these only against UAT/test data.
 
@@ -84,7 +99,7 @@ limit 30;
 
 Expected: each exception points to the correct next workflow step.
 
-## 6. Sign-Off Rule
+## 7. Sign-Off Rule
 
 Mark P2-18 as `DONE` only when:
 

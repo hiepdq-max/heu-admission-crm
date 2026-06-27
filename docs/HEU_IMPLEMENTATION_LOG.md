@@ -1177,3 +1177,30 @@
 
 - P2-17 duplicate, overpay, direct-write and missing-evidence guards are PASS_LOCAL.
 - Production remains NO-GO until the runbook is executed with controlled UAT data and signed by KHTC/Audit.
+
+## 2026-06-27 - P2-18 Dashboard Read-Only Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small P2-18 accounting dashboard guard slice.
+- Added a visible read-only guard on the dashboard for no-write behavior, source-step comparison, role-scope access, contract-only denial and exception routing back to source workflows.
+- Added a local audit that checks the UI guard, dashboard mount, access gate order, no contract-read finance access, UAT runbook cases and production checklist status.
+- Kept P2-18 production checklist IN_PROGRESS because signed browser UAT is still required.
+
+### Files Updated/Added
+
+- `components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx`
+- `scripts/audit-ttgdtx-dashboard-readonly-guard.mjs`
+- `app/ttgdtx/accounting-dashboard/page.tsx`
+- `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P2-18 read-only, role-scope and source-comparison guard is PASS_LOCAL.
+- Production remains NO-GO until signed dashboard UAT proves role scope and source totals.

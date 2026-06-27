@@ -72,6 +72,7 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
+  "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
@@ -90,6 +91,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-account-control-scope-decision.mjs",
   "scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs",
   "scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
+  "scripts/audit-ttgdtx-dashboard-readonly-guard.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
   "scripts/audit-ttgdtx-invoice-policy.mjs",
   "scripts/audit-ttgdtx-operating-control-ui.mjs",
@@ -124,6 +126,7 @@ const requiredScripts = [
   "audit:ttgdtx-backup-restore-dry-run-pack",
   "audit:ttgdtx-cascade",
   "audit:ttgdtx-dashboard-access",
+  "audit:ttgdtx-dashboard-readonly-guard",
   "audit:ttgdtx-data-fetch-gate",
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-invoice-policy",
@@ -213,6 +216,24 @@ requireText(
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   /(?=[\s\S]*P5-01 is PASS_LOCAL)(?=[\s\S]*not production-approved)(?=[\s\S]*P2-18 remains IN_PROGRESS)/i,
   "P5-01 dashboard UAT plan is local-only and P2-18 remains in progress",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-readonly-guard="P2-18")(?=[\s\S]*Role-scope)(?=[\s\S]*contract-only)(?=[\s\S]*signed browser UAT)/i,
+  "P2-18 dashboard read-only guard display",
+);
+
+requireText(
+  "app/ttgdtx/accounting-dashboard/page.tsx",
+  /TtgdtxDashboardReadonlyGuard[\s\S]*<TtgdtxDashboardReadonlyGuard \/>/,
+  "P2-18 dashboard read-only guard mount",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-18 accounting dashboard[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-dashboard-readonly-guard[\s\S]*signed UAT evidence/i,
+  "P2-18 read-only guard checklist row",
 );
 
 requireText(
