@@ -73,6 +73,25 @@ export function TtgdtxAuditTrailGuard() {
         </div>
       </div>
 
+      <div
+        className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4 leading-6 text-amber-950"
+        data-ttgdtx-audit-log-uat-boundary="P6-03"
+      >
+        <p className="font-semibold">
+          P6-03 audit-log UAT: PASS_LOCAL only.
+        </p>
+        <p className="mt-2">
+          Signed audit-log UAT evidence is still required. NO-GO until signed
+          audit-log evidence exists for create, update, check, approve, pay and
+          source-control events.
+        </p>
+        <p className="mt-2">
+          Do not paste passwords, OTPs, service-role keys, CCCD, bank accounts
+          or raw student identity data into audit screenshots, UAT notes or
+          Codex prompts.
+        </p>
+      </div>
+
       <div className="mt-5 grid gap-3 xl:grid-cols-2">
         {auditTrailItems.map((item) => (
           <div

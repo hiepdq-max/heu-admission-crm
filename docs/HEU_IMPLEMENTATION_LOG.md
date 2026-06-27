@@ -1384,3 +1384,30 @@
 
 - P6-04 role-scope UI guard is PASS_LOCAL after local audits pass.
 - Signed role-scope UAT remains required before production readiness.
+
+## 2026-06-27 - Audit Log UAT Boundary Guard
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small audit-log boundary slice.
+- Added an explicit P6-03 audit-log UAT boundary to the audit trail guard.
+- The guard keeps audit-log status PASS_LOCAL only, blocks production GO until
+  signed audit-log evidence exists, and warns against putting passwords, OTPs,
+  service-role keys, CCCD, bank accounts or raw student identity data in audit
+  screenshots, UAT notes or Codex prompts.
+- Tightened local audits and release gates so audit-log guard coverage includes
+  the signed-UAT and no-secret boundaries.
+
+### Files Updated
+
+- `components/audit/ttgdtx-audit-trail-guard.tsx`
+- `scripts/audit-ttgdtx-audit-trail-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-03 audit-log UAT boundary is PASS_LOCAL after local audits pass.
+- Signed audit-log UAT remains required before production readiness.

@@ -58,6 +58,13 @@ requireText(
   componentPath,
 );
 
+requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-audit-log-uat-boundary="P6-03")(?=[\s\S]*P6-03 audit-log UAT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Signed audit-log UAT evidence is still required)(?=[\s\S]*NO-GO until signed\s+audit-log evidence exists)(?=[\s\S]*create)(?=[\s\S]*update)(?=[\s\S]*check)(?=[\s\S]*approve)(?=[\s\S]*pay)(?=[\s\S]*source-control)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank accounts)(?=[\s\S]*raw student identity data)/i,
+  "P6-03 audit-log UAT boundary and no-secret warning",
+  componentPath,
+);
+
 for (const entity of [
   "ttgdtx_student_receivables",
   "ttgdtx_tuition_payments",
@@ -103,7 +110,7 @@ requireText(
 
 requireText(
   checklist,
-  /Audit log completeness[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*signed UAT/i,
+  /Audit log completeness[\s\S]*IN_PROGRESS[\s\S]*audit:ttgdtx-audit-trail-guard[\s\S]*P6-03 audit-log UAT boundary[\s\S]*signed UAT/i,
   "production checklist keeps audit log IN_PROGRESS with guard evidence",
   checklistPath,
 );
