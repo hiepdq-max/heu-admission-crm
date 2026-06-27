@@ -1907,3 +1907,14 @@
   owner pack, production checklist and backlog stay aligned.
 - Production remains NO-GO. Signed multi-owner GO/NO-GO evidence is still
   required outside Codex/chat before any production approval.
+## 2026-06-27 - P5-02 Production Blocker Summary
+
+- Added a read-only production blocker summary to Master Control for BGH and
+  owner review.
+- The summary keeps the recommendation at NO-GO and lists P0-03,
+  Step90-Step110, P0-19, P2-17, P2-18, P6-04, P6-03, P6-06, P0-10 and P0-09
+  blockers with owner and required evidence.
+- Extended the BGH dashboard audit and release gate audit so this surface stays
+  read-only, link-only and local-only.
+- No GO button, finance action, migration approval, UAT acceptance, owner
+  waiver or production approval was added.

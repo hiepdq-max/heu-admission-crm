@@ -90,12 +90,27 @@ Stop implementation and fix before continuing if:
 5. Keep the first BGH route read-only and link-only.
 6. Require BGH/KHTC/Phap Che/Audit/IT-Data sign-off before production use.
 
-## 8. Current Evidence
+## 8. P5-02 Read-Only Blocker Summary
+
+The first implemented control surface is
+`components/master-control/production-readiness-blocker-summary.tsx`, mounted on
+`app/master-control/page.tsx` with
+`data-heu-production-blocker-summary="P5-02"`.
+
+It shows the current production recommendation as NO-GO and lists P0-03,
+Step90-Step110, P0-19, P2-17, P2-18, P6-04, P6-03, P6-06, P0-10 and P0-09
+blockers with responsible owners and source links. No GO button is provided.
+The component is read-only and does not create, update, approve, pay, delete,
+unlock, reverse, mark UAT accepted or mark production GO.
+
+## 9. Current Evidence
 
 Current local evidence:
 
 - `app/page.tsx`
 - `app/reports/page.tsx`
+- `app/master-control/page.tsx`
+- `components/master-control/production-readiness-blocker-summary.tsx`
 - `app/ttgdtx/accounting-dashboard/page.tsx`
 - `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
 - `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`
@@ -105,8 +120,9 @@ Current local evidence:
 - `npm.cmd run audit:ttgdtx-dashboard-access`
 - `npm.cmd run audit:ttgdtx-release-gates`
 
-## 9. Current Result
+## 10. Current Result
 
-P5-02 is PASS_LOCAL as a dashboard specification and control boundary only. It
-does not implement a production BGH dashboard, approve production dashboard
-use, approve finance actions, approve production GO or replace signed UAT.
+P5-02 is PASS_LOCAL as a dashboard specification, control boundary and
+read-only blocker summary only. It does not implement a production BGH
+dashboard, approve production dashboard use, approve finance actions, approve
+production GO or replace signed UAT.

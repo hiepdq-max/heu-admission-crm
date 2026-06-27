@@ -3,6 +3,9 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const specPath = "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md";
+const blockerSummaryPath =
+  "components/master-control/production-readiness-blocker-summary.tsx";
+const masterControlPagePath = "app/master-control/page.tsx";
 const failures = [];
 
 function fail(message) {
@@ -33,6 +36,8 @@ const requiredFiles = [
   specPath,
   "app/page.tsx",
   "app/reports/page.tsx",
+  masterControlPagePath,
+  blockerSummaryPath,
   "app/ttgdtx/accounting-dashboard/page.tsx",
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
@@ -45,6 +50,10 @@ for (const file of requiredFiles) {
 }
 
 const spec = exists(specPath) ? read(specPath) : "";
+const blockerSummary = exists(blockerSummaryPath) ? read(blockerSummaryPath) : "";
+const masterControlPage = exists(masterControlPagePath)
+  ? read(masterControlPagePath)
+  : "";
 
 requireText(spec, /P5-02 BGH operating dashboard specification/i, "P5-02 scope");
 requireText(spec, /NO-GO until source workflows, role-scope UAT and owner\s+sign-off are complete/i, "production NO-GO boundary");
@@ -57,7 +66,22 @@ requireText(spec, /BGH should not be the daily data-entry role/i, "BGH posture")
 requireText(spec, /must not expose row-level PII, raw bank data, credentials,\s+service keys, OTPs, unredacted source files or private contract terms/i, "privacy rule");
 requireText(spec, /A dashboard card can mutate business or finance state/i, "mutation stop condition");
 requireText(spec, /production checklist remains\s+NO-GO/i, "GO/NO-GO stop condition");
-requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH dashboard[\s\S]*replace signed UAT/i, "PASS_LOCAL local-only boundary");
+requireText(spec, /P5-02 Read-Only Blocker Summary[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*data-heu-production-blocker-summary="P5-02"[\s\S]*No GO button is provided/i, "read-only blocker summary implementation note");
+requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH\s+dashboard[\s\S]*replace signed UAT/i, "PASS_LOCAL local-only boundary");
+
+requireText(
+  blockerSummary,
+  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
+  "P5-02 production blocker summary UI",
+  blockerSummaryPath,
+);
+
+requireText(
+  masterControlPage,
+  /ProductionReadinessBlockerSummary[\s\S]*<ProductionReadinessBlockerSummary\s*\/>[\s\S]*<HeuOsVisualNavigationMap/i,
+  "Master Control mounts production blocker summary before navigation map",
+  masterControlPagePath,
+);
 
 const accountingPlan = read("docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md");
 requireText(
@@ -95,12 +119,12 @@ if (!packageJson.scripts?.["audit:heu-bgh-dashboard-spec"]) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P5-02[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*audit:heu-bgh-dashboard-spec/.test(backlog)) {
+if (!/P5-02[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*audit:heu-bgh-dashboard-spec/.test(backlog)) {
   fail("Backlog P5-02 must be PASS_LOCAL and reference BGH dashboard spec audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/BGH operating dashboard specification[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md/.test(checklist)) {
+if (!/BGH operating dashboard specification[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx/.test(checklist)) {
   fail("Production checklist must include BGH operating dashboard specification PASS_LOCAL evidence.");
 }
 
@@ -113,7 +137,11 @@ if (!agents.includes("npm.cmd run audit:heu-bgh-dashboard-spec")) {
 }
 
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
-if (!releaseGateAudit.includes(specPath) || !releaseGateAudit.includes("audit:heu-bgh-dashboard-spec")) {
+if (
+  !releaseGateAudit.includes(specPath) ||
+  !releaseGateAudit.includes(blockerSummaryPath) ||
+  !releaseGateAudit.includes("audit:heu-bgh-dashboard-spec")
+) {
   fail("scripts/audit-ttgdtx-release-gates.mjs: missing BGH dashboard spec gate coverage.");
 }
 
@@ -125,4 +153,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("HEU BGH dashboard spec audit passed. P5-02 is specified without production dashboard approval.");
+console.log("HEU BGH dashboard spec audit passed. P5-02 blocker summary is read-only and does not approve production.");

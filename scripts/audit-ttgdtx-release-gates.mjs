@@ -79,6 +79,7 @@ const requiredFiles = [
   "components/audit/hard-delete-waiver-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
+  "components/master-control/production-readiness-blocker-summary.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
@@ -396,8 +397,20 @@ requireText(
 
 requireText(
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
-  /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH dashboard[\s\S]*approve production GO or replace signed UAT/i,
+  /(?=[\s\S]*P5-02 Read-Only Blocker Summary)(?=[\s\S]*production-readiness-blocker-summary\.tsx)(?=[\s\S]*No GO button is provided)(?=[\s\S]*P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH\s+dashboard[\s\S]*approve\s+production GO or replace signed UAT)/i,
   "P5-02 BGH dashboard spec local-only boundary",
+);
+
+requireText(
+  "components/master-control/production-readiness-blocker-summary.tsx",
+  /(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, cascade waiver, redaction and final owner\s+sign-off are completed outside Codex\/chat)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords, OTPs,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
+  "P5-02 production blocker summary UI",
+);
+
+requireText(
+  "app/master-control/page.tsx",
+  /ProductionReadinessBlockerSummary[\s\S]*<ProductionReadinessBlockerSummary\s*\/>[\s\S]*<HeuOsVisualNavigationMap/i,
+  "Master Control mounts production blocker summary",
 );
 
 requireText(

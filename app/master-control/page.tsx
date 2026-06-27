@@ -47,6 +47,7 @@ import {
   type ProcessOwnershipRow,
   type ProcessOwnershipSummaryRow,
 } from "@/components/master-control/process-ownership-matrix";
+import { ProductionReadinessBlockerSummary } from "@/components/master-control/production-readiness-blocker-summary";
 import {
   RolePermissionDelegationMatrix,
   type PermissionDelegationRow,
@@ -449,6 +450,7 @@ export default async function MasterControlPage({
       description="Legal Registry, SOP Registry, Data Dictionary và Decision Gate cho HEU OS."
     >
       <div className="space-y-6">
+        <ProductionReadinessBlockerSummary />
         <HeuOsVisualNavigationMap
           rows={navigationRows ?? []}
           summary={navigationSummary}
