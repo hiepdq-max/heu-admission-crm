@@ -41,7 +41,7 @@ if (moneyModule.formatVndInput(1000000) !== "1.000.000") {
 }
 
 if (moneyModule.formatVndAmount(1000000) !== "1.000.000 \u0111") {
-  fail("formatVndAmount(1000000) must return 1.000.000 d");
+  fail("formatVndAmount(1000000) must return 1.000.000 \u0111");
 }
 
 const expectedImports = [
@@ -99,4 +99,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("VND money format audit passed. P2-10/P2-17 use one parser and display 1.000.000 d.");
+console.log("VND money format audit passed. P2-10/P2-17 use one parser and display 1.000.000 \u0111.");

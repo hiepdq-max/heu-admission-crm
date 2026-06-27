@@ -2525,3 +2525,14 @@
   status cannot drift behind the P0 control wording guard.
 - This is current-state inventory alignment only. It does not collect evidence,
   execute UAT, approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - VND Audit Output Vietnamese Clarity
+
+- Checked Vietnamese text and money-format wording after the xong/xanh and VND
+  display concern. Repository docs and VND tests use `1.000.000 đ`; no xong/xanh
+  confusion was found in the scanned app/docs/scripts scope.
+- Updated `audit:vnd-money-format` so its failure/success output prints
+  `1.000.000 đ` instead of the ASCII fallback `1.000.000 d`.
+- This is audit-output clarity only. It does not change finance calculation,
+  collect evidence, execute UAT, approve migration, approve finance action or
+  mark production GO.
