@@ -14,6 +14,13 @@ type HardDeleteAcceptanceItem = {
   stopCondition: string;
 };
 
+type HardDeleteClosureDecisionItem = {
+  caseId: string;
+  decisionGate: string;
+  requiredProof: string;
+  blocker: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "HD-01",
@@ -107,6 +114,57 @@ const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
       "P6-06 remains IN_PROGRESS until all required conversions or written waivers are signed and owner GO/NO-GO exists.",
     stopCondition:
       "Stop if PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO.",
+  },
+];
+
+const hardDeleteClosureDecisionItems: HardDeleteClosureDecisionItem[] = [
+  {
+    caseId: "P6-06-DEC-01",
+    decisionGate: "Current scan and owner lanes locked",
+    requiredProof:
+      "The 44 non-TTGDTX/base cascade findings have a dated scan reference, owner lane and risk bucket.",
+    blocker:
+      "Block closure if the scan is stale, a table is unmapped, or a finding has no owner.",
+  },
+  {
+    caseId: "P6-06-DEC-02",
+    decisionGate: "Protected rows converted",
+    requiredProof:
+      "Finance, evidence, approval, payment, legal, audit, lead and operating-history rows use restrict, archive or status-transition behavior.",
+    blocker:
+      "Block closure if protected records can still be removed by parent delete, cascade execution, cleanup or migration.",
+  },
+  {
+    caseId: "P6-06-DEC-03",
+    decisionGate: "Derived-helper waiver controlled",
+    requiredProof:
+      "Every remaining derived-helper cascade has a narrow written waiver with table, reason, owner, rollback note and affected scope.",
+    blocker:
+      "Block closure if waiver is broad, oral, ownerless, hidden or covers protected finance/evidence/audit/legal/student-operating history.",
+  },
+  {
+    caseId: "P6-06-DEC-04",
+    decisionGate: "Rollback and cleanup proof independent of deletion",
+    requiredProof:
+      "Rollback evidence uses backup/restore or reversible state and cleanup evidence preserves legal, finance and audit records.",
+    blocker:
+      "Block closure if truncate, drop table, hard-delete or cascade execution is presented as rollback proof.",
+  },
+  {
+    caseId: "P6-06-DEC-05",
+    decisionGate: "Redacted evidence and human sign-off",
+    requiredProof:
+      "BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence in the controlled evidence location.",
+    blocker:
+      "Block closure if raw sensitive data or credentials appear in Git, Codex/chat or public notes.",
+  },
+  {
+    caseId: "P6-06-DEC-06",
+    decisionGate: "Production boundary acknowledged",
+    requiredProof:
+      "The closure record states P6-06 is only ready for owner GO/NO-GO review after all stop conditions are cleared.",
+    blocker:
+      "Block closure if PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO.",
   },
 ];
 
@@ -207,6 +265,53 @@ export function HardDeleteWaiverEvidenceChecklist() {
               <p className="mt-2 leading-5 text-rose-800">
                 {item.stopCondition}
               </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        data-hard-delete-cascade-closure-decision-manifest="P6-06"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 hard-delete/cascade closure decision manifest: PASS_LOCAL
+              only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_CLOSURE_READY / NO_GO / BLOCKED
+              </span>
+              . Use this manifest to prepare a human closure decision for
+              conversion/waiver evidence, not to approve deletion, cascade
+              execution or production.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            P6-06 can close only after every protected cascade path is converted
+            or every derived-helper exception has a narrow written waiver.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {hardDeleteClosureDecisionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.decisionGate}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">{item.blocker}</p>
             </article>
           ))}
         </div>

@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P6-06 Hard-Delete Closure Decision Manifest
+
+- Added a PASS_LOCAL P6-06 hard-delete/cascade closure decision manifest to
+  `components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+- Updated `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the closure decision is visible in
+  the same control chain as the conversion queue and acceptance matrix.
+- Extended hard-delete, non-TTGDTX cascade, current-state and release-gate
+  audits to require the closure manifest before handoff.
+- This is control packaging only. It does not approve production deletion,
+  cascade execution, waiver, conversion migration, cleanup, rollback success,
+  UAT acceptance or production GO.
+
 ## 2026-06-27 - HEU Finance Desk MVP Shell
 
 ### Scope

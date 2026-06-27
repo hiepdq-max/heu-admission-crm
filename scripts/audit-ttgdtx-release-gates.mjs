@@ -797,7 +797,7 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
-  /(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
+  /(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06 Closure Decision Manifest)(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
   "P6-06 hard-delete/cascade acceptance matrix doc",
 );
 
@@ -838,8 +838,14 @@ requireText(
 );
 
 requireText(
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx",
+  /(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade closure decision manifest)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*Current scan and owner lanes locked)(?=[\s\S]*Protected rows converted)(?=[\s\S]*Derived-helper waiver controlled)(?=[\s\S]*Rollback and cleanup proof independent of deletion)(?=[\s\S]*Production boundary acknowledged)/i,
+  "P6-06 hard-delete/cascade closure decision manifest UI",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*hard-delete\/cascade acceptance matrix)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
+  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*hard-delete\/cascade acceptance matrix)(?=[\s\S]*hard-delete\/cascade closure decision manifest)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
   "P6-06 production checklist acceptance matrix row",
 );
 

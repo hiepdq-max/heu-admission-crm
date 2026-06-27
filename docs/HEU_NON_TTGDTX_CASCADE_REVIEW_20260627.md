@@ -140,3 +140,25 @@ Decision value: `P6_06_ACCEPT / FAIL / BLOCKED`.
 
 P6-06 can support production readiness only when P6-06-ACCEPT-01 through
 P6-06-ACCEPT-06 all pass with redacted evidence and signed owner approval.
+
+## 10. P6-06 Closure Decision Manifest
+
+The app exposes
+`data-hard-delete-cascade-closure-decision-manifest="P6-06"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`. The manifest is
+PASS_LOCAL only and prepares the human closure decision after conversion/waiver
+evidence is reviewed.
+
+| Case | Decision gate | Required proof | Blocker |
+|---|---|---|---|
+| P6-06-DEC-01 | Current scan and owner lanes locked | The 44 non-TTGDTX/base cascade findings have a dated scan reference, owner lane and risk bucket | Scan is stale, a table is unmapped, or a finding has no owner |
+| P6-06-DEC-02 | Protected rows converted | Finance, evidence, approval, payment, legal, audit, lead and operating-history rows use restrict, archive or status-transition behavior | Protected records can still be removed by parent delete, cascade execution, cleanup or migration |
+| P6-06-DEC-03 | Derived-helper waiver controlled | Every remaining derived-helper cascade has a narrow written waiver with table, reason, owner, rollback note and affected scope | Waiver is broad, oral, ownerless, hidden or covers protected finance/evidence/audit/legal/student-operating history |
+| P6-06-DEC-04 | Rollback and cleanup proof independent of deletion | Rollback evidence uses backup/restore or reversible state and cleanup evidence preserves legal, finance and audit records | Truncate, drop table, hard-delete or cascade execution is presented as rollback proof |
+| P6-06-DEC-05 | Redacted evidence and human sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence in the controlled evidence location | Raw sensitive data or credentials appear in Git, Codex/chat or public notes |
+| P6-06-DEC-06 | Production boundary acknowledged | The closure record states P6-06 is only ready for owner GO/NO-GO review after all stop conditions are cleared | PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO |
+
+Decision value: `P6_06_CLOSURE_READY / NO_GO / BLOCKED`.
+
+This manifest does not approve production deletion, cascade execution, waiver,
+conversion migration, cleanup, rollback success or production GO.
