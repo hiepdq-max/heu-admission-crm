@@ -383,7 +383,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Close production evidence binder",
     owner: "IT_DATA + Audit + process owners",
     proof:
-      "Verify every required proof, controlled location, forbidden-content check and owner signoff path before owner review.",
+      "Verify every required proof, controlled location, controlled evidence intake ledger, redaction reviewer, owner signature state, forbidden-content check and owner signoff path before owner review.",
     href: "/ttgdtx",
   },
   {
@@ -391,7 +391,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Prepare final handoff summary",
     owner: "IT_DATA + Audit",
     proof:
-      "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation, with P0-14 split into P6-04/P6-03/P6-06 proof paths and the P6-06 finding register, before owner decision.",
+      "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation, with P0-14 controlled evidence intake ledger, redaction reviewer, owner signature state, P6-04/P6-03/P6-06 proof paths and the P6-06 finding register, before owner decision.",
     href: "/master-control",
   },
   {

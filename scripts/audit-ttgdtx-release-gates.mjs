@@ -557,6 +557,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-15 Final Handoff Evidence Intake Ledger Alignment[\s\S]*AGENTS\.md[\s\S]*P0-14 controlled evidence intake ledger, redaction reviewer and owner\s+signature state alongside P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*lib\/production-readiness\.ts[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*cannot treat the P0-14\s+evidence binder as complete without intake-ledger proof[\s\S]*final-handoff, current-state, implementation-log and release-gate\s+audits[\s\S]*This is final-handoff packaging only[\s\S]*does not collect evidence, accept\s+evidence, execute UAT, approve migration, approve finance action, approve\s+owner waiver or mark production GO/i,
+  "P0-15 final handoff evidence intake ledger alignment log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /P0-13 Shared Source P0-03 P3 Gate Proof[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*P0-13 shared blocker\s+source coverage[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate\s+preservation[\s\S]*operator run sheet and owner sign-off\/UAT handoff\s+path[\s\S]*audit-heu-production-blocker-source\.mjs[\s\S]*backlog,\s+checklist, current-state and shared P0-15 source checks fail[\s\S]*This is P0-13 source-alignment packaging only[\s\S]*does not execute backup,\s+restore, migration dry-run, UAT, evidence acceptance, finance action, owner\s+waiver or production GO/i,
   "P0-13 shared source P0-03/P3 gate proof log entry",
 );
@@ -719,7 +725,7 @@ requireText(
 
 requireText(
   "AGENTS.md",
-  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check\s+proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT\s+handoff\s+evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14 production\s+evidence binder[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
+  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check\s+proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT\s+handoff\s+evidence path[\s\S]*P0-13 production blocker shared source[\s\S]*P0-14 production\s+evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction\s+reviewer[\s\S]*owner signature state[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03\s+audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
   "P0-15 final handoff summary guard",
 );
 
@@ -1247,7 +1253,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-14 split into P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "P0-15 final handoff split evidence shared source",
 );
 

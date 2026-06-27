@@ -207,7 +207,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*P0-14 split into P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "TTGDTX P0-15 final handoff split evidence source",
   blockerSourcePath,
 );

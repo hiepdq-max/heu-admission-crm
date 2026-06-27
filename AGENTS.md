@@ -183,8 +183,9 @@ Read these documents before changing TTGDTX finance or migration logic:
   - the P0-03 operator run sheet evidence path, P0-03 restore smoke-check
     proof for P0-19/P3 gate preservation, P0-09 owner sign-off/UAT handoff
     evidence path, P0-13 production blocker shared source and P0-14 production
-    evidence binder, including separate P6-04 role/workspace, P6-03 audit-log
-    and P6-06 hard-delete/cascade proof paths, including
+    evidence binder, including controlled evidence intake ledger, redaction
+    reviewer, owner signature state, separate P6-04 role/workspace, P6-03
+    audit-log and P6-06 hard-delete/cascade proof paths, including
     `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`;
   - the boundary that real evidence stays outside Git/Codex/chat and that
     Codex output does not approve production, migration, finance action or
