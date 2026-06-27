@@ -184,8 +184,15 @@ requireText(
 
 requireText(
   page,
-  /dashboard khong tu phe duyet[\s\S]*khong thay the chung tu[\s\S]*khong khoi tao lenh chuyen tien/i,
+  /function FinanceDeskReadOnlyBoundary\(\)[\s\S]*data-finance-desk-readonly-boundary="P5-03"[\s\S]*Moi sua so lieu tien phai quay ve dung buoc goc P2[\s\S]*dashboard khong tu phe duyet[\s\S]*khong thay the chung tu[\s\S]*khong khoi tao lenh chuyen tien[\s\S]*Production remains NO-GO until\s+backup\/restore evidence, signed UAT, migration approval and owner\s+Go\/No-Go exist outside Codex\/chat/i,
   "read-only finance operating boundary",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  page,
+  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chua doc duoc day du Finance Desk[\s\S]*Step90-Step111[\s\S]*da backup/i,
+  "read-only boundary is visible before no-access and missing-view states",
   "app/finance-desk/page.tsx",
 );
 

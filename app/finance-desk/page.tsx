@@ -239,6 +239,33 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+function FinanceDeskReadOnlyBoundary() {
+  return (
+    <section
+      className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900"
+      data-finance-desk-readonly-boundary="P5-03"
+    >
+      <div className="flex gap-3">
+        <ShieldCheck className="mt-1 size-5 shrink-0" />
+        <div>
+          <h2 className="text-lg font-semibold">
+            Nguyen tac van hanh Finance Desk
+          </h2>
+          <p className="mt-2 text-sm leading-6">
+            Finance Desk la ban lam viec ke toan noi bo. Module nay tong hop
+            import, cong no, thu hoc phi, doi soat, de nghi chi va ho so minh
+            chung. Moi sua so lieu tien phai quay ve dung buoc goc P2;
+            dashboard khong tu phe duyet, khong thay the chung tu ke toan va
+            khong khoi tao lenh chuyen tien. Production remains NO-GO until
+            backup/restore evidence, signed UAT, migration approval and owner
+            Go/No-Go exist outside Codex/chat.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default async function FinanceDeskPage() {
   // FinanceDeskPage guard map: formatVndAmount, canOpenFinanceDesk,
   // ttgdtx_accounting_dashboard_summary,
@@ -389,45 +416,32 @@ export default async function FinanceDeskPage() {
         </>
       }
     >
-      {!canOpen ? (
-        <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">
-          Tai khoan hien tai chua duoc mo quyen HEU Finance Desk hoac chua co
-          pham vi TTGDTX 9+ phu hop. Can quyen finance_desk.read, quyen bao
-          cao/import/nguon TTGDTX, hoac vai tro ADMIN/BGH.
-        </section>
-      ) : dataError ? (
-        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
-          <div className="flex gap-3">
-            <AlertTriangle className="mt-0.5 size-5 shrink-0" />
-            <div>
-              <p className="font-semibold">Chua doc duoc day du Finance Desk</p>
-              <p className="mt-1">
-                Hay ap dung cac migration Step90-Step111 tren moi truong UAT da
-                backup. Chi tiet: {dataError.message}
-              </p>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <div className="space-y-6">
-          <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-900">
+      <div className="space-y-6">
+        <FinanceDeskReadOnlyBoundary />
+
+        {!canOpen ? (
+          <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">
+            Tai khoan hien tai chua duoc mo quyen HEU Finance Desk hoac chua co
+            pham vi TTGDTX 9+ phu hop. Can quyen finance_desk.read, quyen bao
+            cao/import/nguon TTGDTX, hoac vai tro ADMIN/BGH.
+          </section>
+        ) : dataError ? (
+          <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
             <div className="flex gap-3">
-              <ShieldCheck className="mt-1 size-5 shrink-0" />
+              <AlertTriangle className="mt-0.5 size-5 shrink-0" />
               <div>
-                <h2 className="text-lg font-semibold">
-                  Nguyen tac van hanh Finance Desk
-                </h2>
-                <p className="mt-2 text-sm leading-6">
-                  Finance Desk la ban lam viec ke toan noi bo. Module nay tong
-                  hop import, cong no, thu hoc phi, doi soat, de nghi chi va
-                  ho so minh chung. Moi sua so lieu tien phai quay ve dung buoc
-                  goc P2; dashboard khong tu phe duyet, khong thay the chung tu
-                  ke toan va khong khoi tao lenh chuyen tien.
+                <p className="font-semibold">
+                  Chua doc duoc day du Finance Desk
+                </p>
+                <p className="mt-1">
+                  Hay ap dung cac migration Step90-Step111 tren moi truong UAT
+                  da backup. Chi tiet: {dataError.message}
                 </p>
               </div>
             </div>
           </section>
-
+        ) : (
+          <>
           <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <KpiCard
               label="Phai thu hoc phi"
@@ -735,8 +749,9 @@ export default async function FinanceDeskPage() {
               </Link>
             </Button>
           </section>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </AppShell>
   );
 }

@@ -478,9 +478,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Finance Desk No-Data Boundary Guard[\s\S]*FinanceDeskReadOnlyBoundary[\s\S]*no-access,\s+missing-view and loaded-data states[\s\S]*Step90-Step111[\s\S]*backed-up UAT environment[\s\S]*This is UI safety packaging only[\s\S]*does not run Step111, execute UAT,\s+approve migration, approve finance action, accept evidence or mark production\s+GO/i,
+  "Finance Desk no-data boundary guard log entry",
+);
+
+requireText(
   "app/finance-desk/page.tsx",
-  /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard khong tu phe duyet)(?=[\s\S]*khong khoi tao lenh chuyen tien)/i,
+  /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*FinanceDeskReadOnlyBoundary)(?=[\s\S]*data-finance-desk-readonly-boundary="P5-03")(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard khong tu phe duyet)(?=[\s\S]*khong khoi tao lenh chuyen tien)(?=[\s\S]*Production remains NO-GO until)/i,
   "Finance Desk read-only scoped route",
+);
+
+requireText(
+  "app/finance-desk/page.tsx",
+  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chua doc duoc day du Finance Desk[\s\S]*Step90-Step111[\s\S]*da backup/i,
+  "Finance Desk missing-view state keeps read-only boundary visible",
 );
 
 requireText(

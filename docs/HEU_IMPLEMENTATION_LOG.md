@@ -88,6 +88,19 @@
 - This is register packaging only. It does not execute UAT, approve migration,
   approve finance action or mark production GO.
 
+## 2026-06-27 - Finance Desk No-Data Boundary Guard
+
+- Moved the Finance Desk read-only operating boundary into a shared
+  `FinanceDeskReadOnlyBoundary` panel so it renders before the no-access,
+  missing-view and loaded-data states.
+- Kept the missing-data state explicit: Step90-Step111 views must exist on a
+  backed-up UAT environment before Finance Desk can show trusted cockpit data.
+- Extended Finance Desk and release-gate audits to require the P5-03 boundary
+  panel, source-P2 correction rule and Production NO-GO text.
+- This is UI safety packaging only. It does not run Step111, execute UAT,
+  approve migration, approve finance action, accept evidence or mark production
+  GO.
+
 ## 2026-06-26 - Safe Resume And Production Build Control
 
 ### Scope

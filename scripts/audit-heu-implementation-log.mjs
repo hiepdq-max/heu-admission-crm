@@ -110,6 +110,7 @@ for (const heading of [
   "Finance Desk UAT Runbook Packaging",
   "Finance Desk Process Finder Link",
   "P0 Register Pack Foundation",
+  "Finance Desk No-Data Boundary Guard",
 ]) {
   requireText(
     log,
@@ -172,6 +173,13 @@ requireText(
   log,
   /Finance Desk Process Finder Link[\s\S]*HEU Finance Desk \(P5-03\)[\s\S]*TTGDTX process-label map[\s\S]*\/finance-desk[\s\S]*process-label and release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not grant production\s+access, execute UAT, approve finance action, run production migration, accept\s+evidence or mark production GO/i,
   "Finance Desk process finder log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /Finance Desk No-Data Boundary Guard[\s\S]*FinanceDeskReadOnlyBoundary[\s\S]*no-access,\s+missing-view and loaded-data states[\s\S]*Step90-Step111[\s\S]*backed-up UAT environment[\s\S]*This is UI safety packaging only[\s\S]*does not run Step111, execute UAT,\s+approve migration, approve finance action, accept evidence or mark production\s+GO/i,
+  "Finance Desk no-data boundary guard log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
