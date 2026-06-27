@@ -85,6 +85,13 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-payout-release-decision-manifest="P2-17")(?=[\s\S]*P2-17 payout release decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-17-REL-01)(?=[\s\S]*P2-17-REL-06)(?=[\s\S]*Approved request and scope)(?=[\s\S]*Amount and remaining balance)(?=[\s\S]*Voucher and evidence reference)(?=[\s\S]*P2-19 dossier gate)(?=[\s\S]*Technical write guard)(?=[\s\S]*Human release decision)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not\s+initiate a bank transfer, approve finance action, accept UAT or\s+mark production GO)(?=[\s\S]*Missing release decision ID, unsigned owner decision, uncontrolled\s+evidence location, raw sensitive payout data or unclear bank-transfer\s+boundary keeps P2-17 NO-GO)/i,
+  "P2-17 payout release decision manifest UI",
+  componentPath,
+);
+
+requireText(
   page,
   /TtgdtxPayoutExecutionReadinessChecklist[\s\S]*<TtgdtxPayoutDuplicateGuard\s*\/>[\s\S]*<TtgdtxPayoutExecutionReadinessChecklist\s*\/>[\s\S]*<TtgdtxPayoutUatEvidenceChecklist\s*\/>/,
   "P2-17 page mounts execution readiness between duplicate guard and UAT evidence checklist",
@@ -114,28 +121,28 @@ requireText(
 
 requireText(
   runbook,
-  /(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*P2-17-EXEC-01)(?=[\s\S]*P2-17-EXEC-08)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*does not replace signed UAT)/i,
+  /(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*P2-17-EXEC-01)(?=[\s\S]*P2-17-EXEC-08)(?=[\s\S]*Payout Release Decision Manifest)(?=[\s\S]*data-ttgdtx-payout-release-decision-manifest="P2-17")(?=[\s\S]*P2-17-REL-01)(?=[\s\S]*P2-17-REL-06)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*does not replace signed UAT)/i,
   "runbook references execution readiness checklist",
   runbookPath,
 );
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps P2-17 IN_PROGRESS with execution readiness audit",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-17[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx[\s\S]*audit:ttgdtx-payout-execution-readiness/i,
+  /P2-17[\s\S]*payout release decision manifest[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx[\s\S]*audit:ttgdtx-payout-execution-readiness/i,
   "backlog records P2-17 execution readiness guard",
   backlogPath,
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS/i,
+  /(?=[\s\S]*Partner payment\/payout[\s\S]*payout release decision manifest[\s\S]*Signed payout UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS)/i,
   "current-state P2-17 payout execution readiness audit evidence",
   inventoryPath,
 );

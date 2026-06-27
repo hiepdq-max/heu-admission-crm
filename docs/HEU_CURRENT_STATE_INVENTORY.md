@@ -90,7 +90,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy and P3-02 acceptance matrix exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |
-| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
+| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards, payout acceptance matrix and payout release decision manifest | Signed payout UAT pending |
 | Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO/NO-GO exist | Signed browser UAT pending |
 | Finance Desk / KHTC cockpit | P5-03 read-only cockpit exists at `/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter and `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` acceptance matrix | Signed browser UAT pending |
 | P0 register pack | Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents | PASS_LOCAL; official owner signoff and Drive registry still required |

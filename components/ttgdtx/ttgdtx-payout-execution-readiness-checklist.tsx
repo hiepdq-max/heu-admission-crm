@@ -1,10 +1,24 @@
-import { FileCheck2, ShieldAlert, ShieldCheck, WalletCards } from "lucide-react";
+import {
+  ClipboardCheck,
+  FileCheck2,
+  ShieldAlert,
+  ShieldCheck,
+  WalletCards,
+} from "lucide-react";
 
 type ExecutionReadinessCheck = {
   caseId: string;
   check: string;
   source: string;
   passRule: string;
+  owner: string;
+  stopCondition: string;
+};
+
+type PayoutReleaseDecisionItem = {
+  caseId: string;
+  releaseGate: string;
+  requiredDecision: string;
   owner: string;
   stopCondition: string;
 };
@@ -92,6 +106,63 @@ const executionReadinessChecks: ExecutionReadinessCheck[] = [
   },
 ];
 
+const payoutReleaseDecisionItems: PayoutReleaseDecisionItem[] = [
+  {
+    caseId: "P2-17-REL-01",
+    releaseGate: "Approved request and scope",
+    requiredDecision:
+      "One P2-15 request is approved in P2-16, belongs to the intended TTGDTX scope and can_pay is true before the operator records payout evidence.",
+    owner: "KHTC + BGH",
+    stopCondition:
+      "Stop if the request is not approved, out of scope, hidden by workspace rules or can_pay is false.",
+  },
+  {
+    caseId: "P2-17-REL-02",
+    releaseGate: "Amount and remaining balance",
+    requiredDecision:
+      "Approved amount, paid amount, remaining amount and requested payout amount reconcile before submission.",
+    owner: "KHTC + Audit",
+    stopCondition:
+      "Stop if the amount is zero, negative, above remaining balance, already paid or not supported by the approved request.",
+  },
+  {
+    caseId: "P2-17-REL-03",
+    releaseGate: "Voucher and evidence reference",
+    requiredDecision:
+      "Voucher number, normalized voucher uniqueness and payout evidence URL are recorded as controlled redacted references.",
+    owner: "KHTC + Audit",
+    stopCondition:
+      "Stop if the voucher is missing, duplicated, uncontrolled, or raw bank/payment evidence appears in Git, Codex or chat.",
+  },
+  {
+    caseId: "P2-17-REL-04",
+    releaseGate: "P2-19 dossier gate",
+    requiredDecision:
+      "BBNT/accepted-period and partner-invoice checks are PASS, or a written owner exception blocks production reliance until signed.",
+    owner: "KHTC + PHAP_CHE + BGH",
+    stopCondition:
+      "Stop if either P2-19 check is FAIL, NOT_CHECKED, missing or waived without a written owner decision.",
+  },
+  {
+    caseId: "P2-17-REL-05",
+    releaseGate: "Technical write guard",
+    requiredDecision:
+      "Operator confirms the screen uses only the approved server action and RPC, direct writes are revoked and the submit button disables while pending.",
+    owner: "IT_DATA + Audit",
+    stopCondition:
+      "Stop if any direct table write, alternate mutation path, double-submit path or unreviewed automation can create payout records.",
+  },
+  {
+    caseId: "P2-17-REL-06",
+    releaseGate: "Human release decision",
+    requiredDecision:
+      "Operator, checker, owner signers, timestamp, evidence IDs and final decision are recorded as P2_17_RELEASE_READY, NO_GO or BLOCKED.",
+    owner: "KHTC + BGH + Audit",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as bank transfer approval, finance approval, payout UAT acceptance, money movement or production GO.",
+  },
+];
+
 export function TtgdtxPayoutExecutionReadinessChecklist() {
   return (
     <section
@@ -150,6 +221,65 @@ export function TtgdtxPayoutExecutionReadinessChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-ttgdtx-payout-release-decision-manifest="P2-17"
+        className="mt-5 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sky-950"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                P2-17 payout release decision manifest: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this manifest before recording payout evidence. It turns the
+              operator check into a controlled release decision, but it does not
+              initiate a bank transfer, approve finance action, accept UAT or
+              mark production GO.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-sky-200 bg-white px-3 py-2">
+            Release decision:
+            <span className="mt-1 block font-mono text-xs">
+              P2_17_RELEASE_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {payoutReleaseDecisionItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-sky-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.releaseGate}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredDecision}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-sky-200 bg-white px-3 py-2 text-sky-900">
+          Missing release decision ID, unsigned owner decision, uncontrolled
+          evidence location, raw sensitive payout data or unclear bank-transfer
+          boundary keeps P2-17 NO-GO.
+        </div>
       </div>
 
       <div className="mt-5 grid gap-3 lg:grid-cols-2">

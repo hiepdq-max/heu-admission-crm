@@ -1144,6 +1144,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-payout-release-decision-manifest="P2-17")(?=[\s\S]*P2-17 payout release decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-17-REL-01)(?=[\s\S]*P2-17-REL-06)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not\s+initiate a bank transfer, approve finance action, accept UAT or\s+mark production GO)/i,
+  "P2-17 payout release decision manifest",
+);
+
+requireText(
   "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
   /(?=[\s\S]*data-ttgdtx-payout-uat-evidence-checklist="P2-17")(?=[\s\S]*P2-17 payout UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed payout UAT is still required before P2-17 can move from\s+IN_PROGRESS)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2-17-01\/P2-17-02)(?=[\s\S]*P2-17-09\/P2-17-10\/P2-17-11)(?=[\s\S]*KHTC, PHAP_CHE, BGH and Audit must sign the evidence outside\s+Codex\/chat)/i,
   "P2-17 payout UAT evidence checklist",
@@ -1169,7 +1175,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
   "P2-17 duplicate guard checklist row",
 );
 
@@ -1177,6 +1183,12 @@ requireText(
   "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
   /(?=[\s\S]*Payout Acceptance Matrix)(?=[\s\S]*P2-17-ACCEPT-01)(?=[\s\S]*P2-17-ACCEPT-06)(?=[\s\S]*P2_17_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-17-ACCEPT-01 through P2-17-ACCEPT-06 all pass with redacted evidence)/i,
   "P2-17 runbook payout acceptance matrix",
+);
+
+requireText(
+  "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
+  /(?=[\s\S]*Payout Release Decision Manifest)(?=[\s\S]*data-ttgdtx-payout-release-decision-manifest="P2-17")(?=[\s\S]*P2-17-REL-01)(?=[\s\S]*P2-17-REL-06)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*unclear bank-transfer boundary keeps\s+P2-17 NO-GO)/i,
+  "P2-17 runbook payout release decision manifest",
 );
 
 requireText(

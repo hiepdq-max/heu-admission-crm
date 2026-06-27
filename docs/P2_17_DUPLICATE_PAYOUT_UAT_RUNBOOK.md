@@ -145,7 +145,31 @@ exist.
 
 Decision value: `P2_17_ACCEPT / FAIL / BLOCKED`.
 
-## 8. Sign-Off Rule
+## 8. Payout Release Decision Manifest
+
+Before any P2-17 payout evidence is recorded in UAT, complete the release
+decision manifest exposed on the payout screen through
+`data-ttgdtx-payout-release-decision-manifest="P2-17"`. This manifest is
+local-only until signed UAT and owner sign-off exist. It does not initiate a
+bank transfer, approve finance action, accept UAT, move money or mark
+production GO.
+
+| Case | Release gate | Required decision | Stop condition |
+|---|---|---|---|
+| P2-17-REL-01 | Approved request and scope | One P2-15 request is approved in P2-16, belongs to the intended TTGDTX scope and `can_pay` is true before the operator records payout evidence | Request is not approved, out of scope, hidden by workspace rules or `can_pay` is false |
+| P2-17-REL-02 | Amount and remaining balance | Approved amount, paid amount, remaining amount and requested payout amount reconcile before submission | Amount is zero, negative, above remaining balance, already paid or not supported by the approved request |
+| P2-17-REL-03 | Voucher and evidence reference | Voucher number, normalized voucher uniqueness and payout evidence URL are recorded as controlled redacted references | Voucher is missing, duplicated, uncontrolled, or raw bank/payment evidence appears in Git, Codex or chat |
+| P2-17-REL-04 | P2-19 dossier gate | BBNT/accepted-period and partner-invoice checks are `PASS`, or a written owner exception blocks production reliance until signed | Either P2-19 check is `FAIL`, `NOT_CHECKED`, missing or waived without a written owner decision |
+| P2-17-REL-05 | Technical write guard | Operator confirms the screen uses only the approved server action and RPC, direct writes are revoked and the submit button disables while pending | Direct table write, alternate mutation path, double-submit path or unreviewed automation can create payout records |
+| P2-17-REL-06 | Human release decision | Operator, checker, owner signers, timestamp, evidence IDs and final decision are recorded as `P2_17_RELEASE_READY`, `NO_GO` or `BLOCKED` | `PASS_LOCAL` is treated as bank transfer approval, finance approval, payout UAT acceptance, money movement or production GO |
+
+Final release decision: `P2_17_RELEASE_READY / NO_GO / BLOCKED`.
+
+Missing release decision ID, unsigned owner decision, uncontrolled evidence
+location, raw sensitive payout data or unclear bank-transfer boundary keeps
+P2-17 NO-GO.
+
+## 9. Sign-Off Rule
 
 Mark P2-17 as `DONE` only when:
 

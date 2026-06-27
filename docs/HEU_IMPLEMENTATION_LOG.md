@@ -2784,3 +2784,17 @@
 - This is legal/finance gate packaging only. It does not approve a legal
   waiver, tuition exception, finance override, receivable creation, revenue
   recognition, UAT acceptance or production GO.
+
+## 2026-06-28 - P2-17 Payout Release Decision Manifest
+
+- Added a P2-17 payout release decision manifest to the execution-readiness
+  checklist and duplicate-payout UAT runbook so approved request scope, amount,
+  voucher/evidence reference, P2-19 dossier gate, technical write guard and
+  human release decision must be recorded before payout evidence is relied on.
+- Updated the production checklist, system backlog, current-state inventory,
+  `audit:ttgdtx-payout-execution-readiness`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  release manifest cannot drift out of the P2-17 guard package.
+- This is payout release-readiness packaging only. It does not initiate a bank
+  transfer, approve finance action, accept UAT, move money or mark production
+  GO.
