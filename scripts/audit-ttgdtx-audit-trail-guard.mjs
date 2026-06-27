@@ -68,6 +68,14 @@ requireText(
   "P6-03 audit-log UAT boundary and no-secret warning",
   componentPath,
 );
+
+requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-audit-trace-acceptance-matrix="P6-03")(?=[\s\S]*P6-03 audit trace acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*actor identity)(?=[\s\S]*timestamp)(?=[\s\S]*entity\/action coverage)(?=[\s\S]*before\/after value usefulness)(?=[\s\S]*evidence link or controlled reference)(?=[\s\S]*workflow chain continuity)(?=[\s\S]*reviewer sign-off)(?=[\s\S]*AUD-TRACE-01)(?=[\s\S]*AUD-TRACE-06)(?=[\s\S]*passwords)(?=[\s\S]*OTPs)(?=[\s\S]*service-role keys)(?=[\s\S]*CCCD)(?=[\s\S]*bank accounts)(?=[\s\S]*raw student identity data)(?=[\s\S]*raw payment data)(?=[\s\S]*raw vouchers)/i,
+  "P6-03 audit trace acceptance matrix",
+  componentPath,
+);
+
 requireText(
   evidenceChecklist,
   /(?=[\s\S]*data-ttgdtx-audit-log-uat-evidence-checklist="P6-03")(?=[\s\S]*P6-03 audit-log UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed audit-log UAT is still required before P6-03 can move from\s+IN_PROGRESS)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*AUD-01)(?=[\s\S]*AUD-06)(?=[\s\S]*passwords, OTPs, service-role keys, raw\s+student identity data, CCCD, bank accounts and raw payment data)(?=[\s\S]*Audit, KHTC, IT_DATA, PHAP_CHE and BGH must sign the evidence outside\s+Codex\/chat)/i,
@@ -119,8 +127,15 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Audit Trace Acceptance Matrix)(?=[\s\S]*data-ttgdtx-audit-trace-acceptance-matrix="P6-03")(?=[\s\S]*AUD-TRACE-01)(?=[\s\S]*AUD-TRACE-06)(?=[\s\S]*does not replace signed UAT)(?=[\s\S]*weak screenshots)(?=[\s\S]*financial\s+traceability)(?=[\s\S]*PASS_LOCAL is treated as UAT acceptance)/i,
+  "runbook audit trace acceptance matrix",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*P6-03 audit-log UAT boundary)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps audit log IN_PROGRESS with guard evidence",
   checklistPath,
 );

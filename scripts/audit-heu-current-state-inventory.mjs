@@ -106,6 +106,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Audit log[\s\S]*Static coverage and audit trace acceptance matrix pass locally[\s\S]*Signed audit-log UAT pending/i,
+  "P6-03 audit trace acceptance matrix control state",
+);
+requireText(
+  inventory,
   /P7-01\/P7-02\/P7-03 are PASS_LOCAL; autonomous AI remains locked/i,
   "AI remains advisory-only",
 );

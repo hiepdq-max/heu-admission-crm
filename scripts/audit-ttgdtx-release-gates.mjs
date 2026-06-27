@@ -420,6 +420,12 @@ requireText(
 );
 
 requireText(
+  "components/audit/ttgdtx-audit-trail-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-audit-trace-acceptance-matrix="P6-03")(?=[\s\S]*P6-03 audit trace acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*actor identity)(?=[\s\S]*entity\/action coverage)(?=[\s\S]*before\/after value usefulness)(?=[\s\S]*evidence link or controlled reference)(?=[\s\S]*workflow chain continuity)(?=[\s\S]*reviewer sign-off)(?=[\s\S]*AUD-TRACE-01)(?=[\s\S]*AUD-TRACE-06)(?=[\s\S]*raw payment data)(?=[\s\S]*raw vouchers)/i,
+  "P6-03 audit trace acceptance matrix display",
+);
+
+requireText(
   "app/audit/page.tsx",
   /<TtgdtxAuditTrailGuard\s*\/>[\s\S]*<TtgdtxAuditLogUatEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
   "audit page mounts TTGDTX audit trail guard and UAT evidence checklist",
@@ -433,7 +439,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*Audit log completeness)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-audit-log-uat-evidence-checklist\.tsx)(?=[\s\S]*audit trace acceptance matrix)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)(?=[\s\S]*signed UAT)/i,
   "audit log completeness guard checklist row",
 );
 

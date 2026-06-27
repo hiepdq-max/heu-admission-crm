@@ -51,6 +51,9 @@ Before signed UAT, the repo must keep local audit-trail evidence green:
   entity groups on `/audit`.
 - `components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx` lists
   AUD-01 through AUD-06 evidence expected from the signed UAT session.
+- `components/audit/ttgdtx-audit-trail-guard.tsx` also exposes
+  `data-ttgdtx-audit-trace-acceptance-matrix="P6-03"` with AUD-TRACE-01
+  through AUD-TRACE-06 acceptance rules.
 - `app/audit/page.tsx` mounts the guard and only reads `audit_logs`.
 - `npm.cmd run audit:ttgdtx-audit-log` verifies Step90-Step110 tables have
   `write_audit_log()` triggers where the steps create TTGDTX tables.
@@ -102,11 +105,29 @@ limit 100;
 
 Expected: recent UAT actions identify the user and affected entity.
 
-## 7. Sign-Off Rule
+## 7. Audit Trace Acceptance Matrix
+
+Signed audit-log evidence must pass this matrix before P6-03 can move from
+`IN_PROGRESS` to `DONE`. This matrix does not replace signed UAT; it prevents
+weak screenshots or incomplete audit rows from being treated as financial
+traceability.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| AUD-TRACE-01 | Actor identity and timestamp | `user_id`, `created_at` and business action time identify who changed the record and when | Actor or time is missing, vague or cannot be tied to the UAT step |
+| AUD-TRACE-02 | Entity and action coverage | `entity_type`, `entity_id` and `action` map to the tested receivable, payment, reconciliation, request, payout or source-control record | Action or entity naming is too generic for finance traceability |
+| AUD-TRACE-03 | Before/after value usefulness | `old_values`, `new_values` or notes prove the changed field, amount, status or approval state | Payload does not explain what changed in the financial record |
+| AUD-TRACE-04 | Evidence link or controlled reference | Audit row aligns with `evidence_url`, source document or controlled evidence note | Evidence exposes passwords, OTPs, service-role keys, CCCD, bank accounts, raw student identity data, raw payment data or raw vouchers |
+| AUD-TRACE-05 | Workflow chain continuity | Reviewer can follow the chain from receivable/payment/reconciliation/request/disbursement/source-control action to final state | A status or money movement has no traceable upstream or downstream audit link |
+| AUD-TRACE-06 | Reviewer sign-off | Audit, KHTC, PHAP_CHE and BGH sign redacted UAT evidence outside Codex/chat | PASS_LOCAL is treated as UAT acceptance |
+
+## 8. Sign-Off Rule
 
 Mark audit log completeness as `DONE` only when:
 
 1. `npm.cmd run audit:ttgdtx-audit-log` passes.
-2. UAT confirms at least one audited event for create, update, approve and pay.
-3. Audit confirms before/after evidence is sufficient for financial traceability.
-4. No dashboard or AI screen creates, approves or pays money directly.
+2. `npm.cmd run audit:ttgdtx-audit-trail-guard` passes.
+3. UAT confirms at least one audited event for create, update, approve and pay.
+4. AUD-TRACE-01 through AUD-TRACE-06 all pass with redacted evidence.
+5. Audit confirms before/after evidence is sufficient for financial traceability.
+6. No dashboard or AI screen creates, approves or pays money directly.

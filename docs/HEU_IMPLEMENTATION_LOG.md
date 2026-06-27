@@ -2098,3 +2098,17 @@
 - Extended `audit:heu-role-scope-uat-pack` and release-gate coverage so the
   route matrix, server-side bypass warning and no-secret evidence boundary stay
   visible before signed role/workspace UAT.
+
+## 2026-06-27 - P6-03 Audit Trace Acceptance Matrix
+
+- Added a PASS_LOCAL audit trace acceptance matrix to
+  `components/audit/ttgdtx-audit-trail-guard.tsx`.
+- The matrix requires actor identity, timestamp, entity/action coverage,
+  before/after value usefulness, evidence link or controlled reference,
+  workflow chain continuity and reviewer sign-off before audit screenshots can
+  be treated as finance traceability evidence.
+- Updated `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`, the production checklist,
+  backlog, current-state inventory, `audit:ttgdtx-audit-trail-guard`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P6-03 remains IN_PROGRESS for production until Audit/KHTC/PHAP_CHE/BGH sign
+  redacted UAT evidence outside Codex/chat.
