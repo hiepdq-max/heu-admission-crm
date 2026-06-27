@@ -47,8 +47,9 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
+| `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the P2-18 dashboard source reconciliation full sweep; 51 audit scripts passed |
+| Full `audit:*` suite | PASS after the P2-17 payout execution readiness full sweep; 52 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -81,7 +82,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard and P3-02 handover policy exist | PASS_LOCAL; signed role/workflow UAT pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-13, P2-14 packaged | Local controls pass; signed finance UAT pending |
-| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier and duplicate guards | Signed payout UAT pending |
+| Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate and execution-readiness guards | Signed payout UAT pending |
 | Accounting dashboard | P2-18 read-only guard and UAT checklist exist | Signed browser UAT pending |
 | Role/workspace scope | P6-04 pack and scope UI guard exist | Multi-account signed UAT pending |
 | Audit log | Static coverage audit passes | Signed audit-log UAT pending |

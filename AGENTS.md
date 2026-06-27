@@ -144,6 +144,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-payment-dossier-checklist`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
   - `npm.cmd run audit:ttgdtx-payout-duplicate-guard`
+  - `npm.cmd run audit:ttgdtx-payout-execution-readiness`
   - `npm.cmd run audit:ttgdtx-period-lock-policy`
   - `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`
   - `npm.cmd run audit:ttgdtx-production-readiness-guard`

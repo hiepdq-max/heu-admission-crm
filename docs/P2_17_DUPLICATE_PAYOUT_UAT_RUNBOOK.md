@@ -56,6 +56,12 @@ Before signed UAT, the repo must keep local guard evidence green:
 
 - `components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx` shows the P2-17 guard
   chain on the payout screen.
+- `components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx` shows
+  the operator pre-pay checklist for P2-17-EXEC-01 through P2-17-EXEC-08:
+  approved request identity, remaining amount, voucher uniqueness, evidence
+  URL, P2-19 dossier blockers, RPC-only write path, double-submit behavior and
+  audit trace. P2-17 records money already paid; it does not initiate a bank
+  transfer.
 - `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx` shows the
   required redacted evidence set for P2-17-01 through P2-17-11 and keeps raw
   bank statements, vouchers, payment data, student PII and credentials out of
@@ -67,6 +73,7 @@ Before signed UAT, the repo must keep local guard evidence green:
   normalized voucher uniqueness, overpayment guard, direct-write revoke and
   P2-19 blockers.
 - `npm.cmd run audit:ttgdtx-payout-duplicate-guard` must pass.
+- `npm.cmd run audit:ttgdtx-payout-execution-readiness` must pass.
 
 This local evidence does not replace signed UAT. It only proves the guard is
 packaged and visible before the UAT team executes the matrix above.

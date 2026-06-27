@@ -2064,3 +2064,15 @@
 - Added `audit:ttgdtx-dashboard-source-reconciliation` and release-gate
   coverage. P2-18 remains IN_PROGRESS until signed browser UAT proves at least
   one complete flow and one exception flow.
+## 2026-06-27 - P2-17 Payout Execution Readiness Checklist
+
+- Added `components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx`
+  and mounted it on `/ttgdtx/payment-requests/pay` between the duplicate payout
+  guard and the P2-17 UAT evidence checklist.
+- The checklist makes operators verify approved request identity, remaining
+  amount, voucher uniqueness, controlled evidence URL, P2-19 dossier blockers,
+  RPC-only write path, double-submit behavior and audit trace before relying on
+  a payout record.
+- Added `audit:ttgdtx-payout-execution-readiness` and release-gate coverage.
+  P2-17 remains IN_PROGRESS until signed payout UAT proves the duplicate,
+  overpay, evidence and P2-19 blocker cases with controlled evidence.
