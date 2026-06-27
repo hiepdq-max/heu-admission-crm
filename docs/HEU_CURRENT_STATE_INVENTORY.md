@@ -52,7 +52,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker and UAT execution closure template sweeps; 53 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template and UAT operator handoff sweeps; 53 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -78,7 +78,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Area | Current evidence | Readiness |
 |---|---|---|
-| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, execution queue, owner GO/NO-GO checklist and owner acceptance matrix | PASS_LOCAL, NO-GO |
+| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist and owner acceptance matrix | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
@@ -88,7 +88,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |
 | Partner payment/payout | P2-15, P2-16, P2-17 packaged with dossier, duplicate, execution-readiness guards and payout acceptance matrix | Signed payout UAT pending |
 | Accounting dashboard / BGH control | P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix and P5-02 Master Control action queue exist | Signed browser UAT pending |
-| Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker and execution-log closure template exist | Multi-account signed UAT pending |
+| Role/workspace scope | P6-04 pack, scope UI guard, evidence checklist, route matrix, acceptance matrix, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix and audit-log evidence acceptance matrix pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion/waiver decision queue plus hard-delete/cascade acceptance matrix | Conversion or written waiver pending |
 | Controlled evidence | Redaction/intake pack, audit guard, P0-14 evidence binder and closure tracker exist | Real evidence must stay outside Git/Codex/chat |
@@ -101,7 +101,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Git hygiene drift | MEDIUM | P0-02/P0-04 are PASS_LOCAL; keep `audit:heu-git-hygiene` green and verify exact ahead count live |
 | Production backup/restore not executed | CRITICAL | Real backup ID, restore target and smoke-check evidence are still missing |
 | Migration order unsigned | CRITICAL | Step90-Step110 approval must be signed by IT_DATA, KHTC and PHAP_CHE |
-| Signed UAT missing | CRITICAL | P3-01/P3-02, P0-19, P2-17, P2-18, P6-03, P6-04, the internal UAT run closure tracker and the UAT execution closure template still require signed evidence |
+| Signed UAT missing | CRITICAL | P3-01/P3-02, P0-19, P2-17, P2-18, P6-03, P6-04, the internal UAT run closure tracker, the UAT execution closure template and UAT operator handoff still require signed evidence |
 | Hard-delete/cascade residual risk | HIGH | Non-TTGDTX/base cascade findings need conversion or written waiver |
 | Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, keys and vouchers must stay outside Git/Codex/chat |
 | AI misuse | MEDIUM | AI remains advisory-only; prompt/output logging and role-scoped AI data are not enabled |
@@ -129,7 +129,7 @@ Production is still NO-GO because:
 4. Execute P3-01/P3-02 lead lifecycle and handover UAT with scoped users.
 5. Execute P2-17 duplicate payout UAT and sign results.
 6. Execute P2-18 dashboard UAT with authorized, out-of-scope and contract-only users.
-7. Execute P6-04 role/workspace UAT, complete the internal UAT execution closure tracker and execute P6-03 audit-log UAT.
+7. Execute P6-04 role/workspace UAT using the UAT operator handoff, complete the internal UAT execution closure tracker and execute P6-03 audit-log UAT.
 8. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
 9. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
    `npm.cmd run lint` green before owner review.

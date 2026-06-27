@@ -2385,3 +2385,12 @@
   `audit:heu-role-scope-uat-pack` and `audit:ttgdtx-release-gates`.
 - This is a handoff artifact only. It does not execute UAT, store raw evidence,
   approve migration, approve finance action or mark production GO.
+
+## 2026-06-27 - Current-State Inventory After UAT Operator Handoff
+
+- Refreshed `docs/HEU_CURRENT_STATE_INVENTORY.md` so the current Stage D /
+  NO-GO snapshot includes the TTGDTX UAT operator handoff.
+- Updated `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`
+  so the current-state inventory cannot drift behind the UAT handoff artifact.
+- This is inventory/audit alignment only. It does not execute UAT, accept
+  evidence, approve production migration or change the owner GO/NO-GO boundary.
