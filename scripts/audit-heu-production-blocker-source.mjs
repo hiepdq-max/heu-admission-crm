@@ -79,6 +79,20 @@ requireText(
   sourcePath,
 );
 
+requireText(
+  source,
+  /P0-03[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result and smoke-check evidence[\s\S]*Complete the operator run sheet, then attach backup ID, restore target, preflight\/postflight output and smoke-check evidence outside Git[\s\S]*Operator run sheet, backup ID, restore target, preflight\/postflight result, smoke-check result and operator\/checker names/i,
+  "P0-03 operator run sheet source coverage",
+  sourcePath,
+);
+
+requireText(
+  source,
+  /P0-09[\s\S]*Final signed multi-owner GO\/NO-GO note using the owner sign-off pack, UAT operator handoff and redacted evidence references[\s\S]*Use the owner sign-off pack and UAT operator handoff references[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
+  "P0-09 owner sign-off handoff source coverage",
+  sourcePath,
+);
+
 for (const code of [
   "P0-03",
   "Step90-Step110",

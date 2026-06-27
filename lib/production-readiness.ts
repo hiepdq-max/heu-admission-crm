@@ -32,7 +32,7 @@ export const PRODUCTION_BLOCKERS: ProductionBlocker[] = [
     title: "Backup and restore dry-run",
     owner: "IT_DATA + Audit",
     requiredEvidence:
-      "Backup ID, restore target, preflight/postflight result and smoke-check evidence.",
+      "Operator run sheet, backup ID, restore target, preflight/postflight result and smoke-check evidence.",
     href: "/settings/supabase-check",
   },
   {
@@ -103,7 +103,7 @@ export const PRODUCTION_BLOCKERS: ProductionBlocker[] = [
     title: "Final owner GO/NO-GO decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
     requiredEvidence:
-      "Final signed multi-owner GO/NO-GO note with every stop condition closed.",
+      "Final signed multi-owner GO/NO-GO note using the owner sign-off pack, UAT operator handoff and redacted evidence references.",
     href: "/ttgdtx",
   },
 ];
@@ -122,7 +122,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Execute backup and restore dry-run",
     owner: "IT_DATA + Audit",
     proof:
-      "Attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
+      "Complete the operator run sheet, then attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
     href: "/settings/supabase-check",
   },
   {
@@ -177,7 +177,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Record final owner decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT",
     proof:
-      "Use the owner sign-off pack. Production remains NO-GO until every required owner signs GO.",
+      "Use the owner sign-off pack and UAT operator handoff references. Production remains NO-GO until every required owner signs GO.",
   },
 ];
 
@@ -191,7 +191,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Controlled Drive/evidence folder outside Git, referenced by redacted evidence id only.",
     requiredProof:
-      "Backup ID, restore target, preflight/postflight result, smoke-check result and operator/checker names.",
+      "Operator run sheet, backup ID, restore target, preflight/postflight result, smoke-check result and operator/checker names.",
     forbiddenContent:
       "No service-role key, database URL, password, OTP, raw dump, private connection string or raw backup file.",
     signoff: "IT_DATA and Audit accept restore evidence before migration order sign-off.",
@@ -275,7 +275,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Final owner sign-off pack outside Codex/chat with redacted checklist references only.",
     requiredProof:
-      "Every blocker closed or explicitly waived by authority, final recommendation and signed decision.",
+      "Every blocker closed or explicitly waived by authority, final recommendation and signed decision referencing the owner sign-off pack and UAT operator handoff.",
     forbiddenContent:
       "No unsigned GO, AI approval, hidden waiver, raw sensitive attachment or oral-only decision.",
     signoff: "All required owners sign final GO/NO-GO; missing evidence keeps production NO-GO.",

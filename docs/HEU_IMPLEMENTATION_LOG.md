@@ -2415,3 +2415,13 @@
 - Production remains NO-GO until real backup/restore evidence, signed UAT,
   signed migration order, hard-delete/cascade closure and final owner
   GO/NO-GO exist outside Codex/chat.
+
+## 2026-06-27 - Production Blocker Source Evidence Path Alignment
+
+- Updated `lib/production-readiness.ts` so the shared blocker source now
+  names the P0-03 operator run sheet and the P0-09 owner sign-off pack plus UAT
+  operator handoff evidence path.
+- Extended `audit:heu-production-blocker-source` so BGH dashboard and TTGDTX
+  execution queue cannot drift back to a generic final sign-off message.
+- This is UI/source alignment only. Production still requires real controlled
+  evidence and signed human owner decisions outside Codex/chat.
