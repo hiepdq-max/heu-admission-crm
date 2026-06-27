@@ -62,6 +62,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
 - `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`
+- `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`
 - `docs/TTGDTX_GENERIC_SOURCE_EVIDENCE_AUDIT_20260626.md`
 - `docs/STEP110_P2_19_UAT_RUNBOOK.md`
 - `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
@@ -95,6 +96,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-generic-source-evidence`
   - `npm.cmd run audit:ttgdtx-lead-quick-fix-safety`
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
+  - `npm.cmd run audit:ttgdtx-period-lock-policy`
   - `npm.cmd run audit:ttgdtx-reconciliation-repair-safety`
   - `npm.cmd run audit:ttgdtx-role-scope-access`
   - `npm.cmd run audit:ttgdtx-step110-safety`

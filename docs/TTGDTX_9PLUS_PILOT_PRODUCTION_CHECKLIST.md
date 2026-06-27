@@ -54,7 +54,7 @@ approval.
 | Hóa đơn/chứng từ khi thu học phí (P2-10) | KHTC + PHAP_CHE | IN_PROGRESS | Policy matrix for collection model, payer type, invoice_required, issuer, invoice_status, invoice number/date/evidence or authorized waiver | YES | Tuition is collected without required invoice/chung-tu, or invoice is issued by the wrong party/time |
 | Money input format | IT_DATA + KHTC | PASS_LOCAL | `npm.cmd run audit:vnd-money-format`; P2-10 and P2-17 share `lib/vnd-money.ts`; accept `1000000`, `1 000 000`, `1.000.000`; display `1.000.000 đ` | NO | User enters wrong money amount |
 | P2-13 reconciliation batch | KHTC | DONE | Batch ID, receipt list, period, partner | YES | Receipt omitted or placed in multiple periods |
-| P2-14 review/approve/lock batch | KHTC + BGH | DONE | Locked batch status and approval log | YES | Payment requested from unlocked period |
+| P2-14 review/approve/lock batch | KHTC + BGH | DONE | Locked batch status, approval log, `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md` | YES | Payment requested from unlocked period |
 | P2-15 payment request created | KHTC | DONE | Payment request ID, amount, batch, creator, required evidence link | YES | Missing payment request evidence |
 | P2-15 note/evidence completeness | KHTC | IN_PROGRESS | Required BBNT/partner-invoice dossier link, note corrected or waiver recorded | YES | Weak audit basis for payment request |
 | P2-16 check/approve payment request | KHTC + BGH | DONE | Checked/approved status, approver note | YES | Payment without review/approval |

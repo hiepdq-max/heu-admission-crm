@@ -19,6 +19,7 @@
     "audit:ttgdtx-generic-source-evidence": "node scripts/audit-ttgdtx-generic-source-evidence.mjs",
     "audit:ttgdtx-lead-quick-fix-safety": "node scripts/audit-ttgdtx-lead-quick-fix-safety.mjs",
     "audit:ttgdtx-pilot-open-safety": "node scripts/audit-ttgdtx-pilot-open-safety.mjs",
+    "audit:ttgdtx-period-lock-policy": "node scripts/audit-ttgdtx-period-lock-policy.mjs",
     "audit:ttgdtx-reconciliation-repair-safety": "node scripts/audit-ttgdtx-reconciliation-repair-safety.mjs",
     "audit:ttgdtx-role-scope-access": "node scripts/audit-ttgdtx-role-scope-access.mjs",
     "audit:ttgdtx-step110-safety": "node scripts/audit-ttgdtx-step110-safety.mjs",

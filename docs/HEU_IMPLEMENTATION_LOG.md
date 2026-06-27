@@ -729,3 +729,29 @@
 - P7-01 is PASS_LOCAL for policy and static UI guard only.
 - This does not enable AI automation or production AI.
 - Future AI workflow actions still require prompt/output audit logging, role/scope enforcement and signed UAT.
+
+## 2026-06-27 - Period Lock And Adjustment Policy Guard
+
+### Scope
+
+- Continued TTGDTX finance hardening with P4-05 period lock and adjustment policy.
+- Defined locked-period rules after P2-13/P2-14 review, approval and lock.
+- Required human adjustment request, check, approval, controlled apply and audit traceability for post-lock corrections.
+- Added a local audit so the policy keeps no-direct-edit, no-hard-delete, no-AI-approval and no-silent-overwrite rules.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`
+- `scripts/audit-ttgdtx-period-lock-policy.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `package.json`
+- `AGENTS.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P4-05 is PASS_LOCAL as a policy/control guard.
+- It does not approve production finance operation or production migration.
+- Signed UAT must still prove locked-period behavior and adjustment evidence.

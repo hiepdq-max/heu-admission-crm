@@ -53,6 +53,7 @@ const requiredFiles = [
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
   "docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md",
+  "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
@@ -62,6 +63,7 @@ const requiredFiles = [
   "scripts/audit-heu-backlog-codes.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
+  "scripts/audit-ttgdtx-period-lock-policy.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
 
@@ -83,6 +85,7 @@ const requiredScripts = [
   "audit:ttgdtx-generic-source-evidence",
   "audit:ttgdtx-lead-quick-fix-safety",
   "audit:ttgdtx-pilot-open-safety",
+  "audit:ttgdtx-period-lock-policy",
   "audit:ttgdtx-reconciliation-repair-safety",
   "audit:ttgdtx-role-scope-access",
   "audit:ttgdtx-step110-safety",
