@@ -187,11 +187,21 @@ export function UserCreateForm({
               id="password"
               name="password"
               type="password"
+              autoComplete="new-password"
               required
               minLength={8}
+              aria-describedby="temporary-password-help"
               className={inputClass}
               placeholder="Tối thiểu 8 ký tự"
             />
+            <p
+              id="temporary-password-help"
+              className="text-xs leading-5 text-amber-700"
+            >
+              Dùng mật khẩu tạm riêng cho user mới, không dùng mật khẩu thật,
+              không gửi qua Codex/chat, email thường, ghi chú hay file đính kèm.
+              Yêu cầu đổi mật khẩu qua kênh bảo mật sau lần đăng nhập đầu.
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -279,7 +289,7 @@ export function UserCreateForm({
 
         <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-800">
           {canCreateAuthUser
-            ? "CRM đã có service role key, có thể tạo tài khoản đăng nhập tự động."
+            ? "CRM đã có service role key, có thể tạo tài khoản đăng nhập tự động. Không hiển thị key, không ghi log mật khẩu tạm."
             : "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. Bạn vẫn có thể tạo user thủ công trong Supabase Auth rồi quay lại gắn profile/phạm vi."}
         </div>
 

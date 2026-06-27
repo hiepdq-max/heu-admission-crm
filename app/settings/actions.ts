@@ -13,6 +13,43 @@ function textValue(formData: FormData, key: string) {
 }
 
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
+const unsafeTemporaryPasswords = new Set([
+  "12345678",
+  "123456789",
+  "1234567890",
+  "admin123",
+  "admin1234",
+  "changeme",
+  "heu123456",
+  "password",
+  "password123",
+  "qwerty123",
+  "welcome1",
+]);
+
+function normalizePasswordSignal(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function isUnsafeTemporaryPassword(
+  password: string,
+  email: string,
+  fullName: string,
+) {
+  const normalizedPassword = normalizePasswordSignal(password);
+  const emailLocalPart = normalizePasswordSignal(email.split("@")[0] ?? "");
+  const nameParts = fullName
+    .split(/\s+/)
+    .map(normalizePasswordSignal)
+    .filter((part) => part.length >= 4);
+
+  return (
+    unsafeTemporaryPasswords.has(normalizedPassword) ||
+    /^(.)\1{7,}$/.test(password) ||
+    (emailLocalPart.length >= 4 && normalizedPassword.includes(emailLocalPart)) ||
+    nameParts.some((part) => normalizedPassword.includes(part))
+  );
+}
 
 function isMissingRolePermissionSoftRevokeMigration(message: string) {
   const normalizedMessage = message.toLowerCase();
@@ -143,6 +180,10 @@ export async function createUserAccountAction(formData: FormData) {
 
   if (password.length < 8) {
     redirect(`${returnPath}?error=weak_password`);
+  }
+
+  if (isUnsafeTemporaryPassword(password, email, fullName)) {
+    redirect(`${returnPath}?error=unsafe_temporary_password`);
   }
 
   let adminClient: ReturnType<typeof createAdminClient>;

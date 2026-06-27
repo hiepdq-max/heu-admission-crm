@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - User Account Temporary Password Guard
+
+- Updated `components/settings/user-create-form.tsx` so the create-user form
+  uses `autocomplete="new-password"`, warns that temporary passwords must not
+  be sent through Codex/chat, email notes or attachments, and states the
+  service-role key and temporary password are not displayed or logged.
+- Updated `app/settings/actions.ts` and `app/settings/page.tsx` so common
+  unsafe temporary passwords, repeated characters and passwords containing the
+  user email/name are rejected with a clear operator error.
+- Added `scripts/audit-heu-user-account-security.mjs` and wired it into package
+  scripts, final-handoff commands and release-gate audits.
+- This does not create production accounts, send passwords, rotate keys, enable
+  MFA, accept UAT or mark production GO.
+
 ## 2026-06-28 - P2-10 Quick Finder Invoice Prompt
 
 - Updated `components/ttgdtx/ttgdtx-process-quick-finder.tsx` so the TTGDTX

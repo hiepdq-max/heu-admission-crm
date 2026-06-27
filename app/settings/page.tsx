@@ -102,6 +102,8 @@ const errorMessages: Record<string, string> = {
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
+  unsafe_temporary_password:
+    "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",

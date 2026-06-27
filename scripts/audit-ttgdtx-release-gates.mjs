@@ -124,7 +124,10 @@ const requiredFiles = [
   "components/leads/lead-lifecycle-guard.tsx",
   "components/leads/lead-handover-panel.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
+  "components/settings/user-create-form.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
+  "app/settings/actions.ts",
+  "app/settings/page.tsx",
   "app/finance-desk/page.tsx",
   "database/step111_heu_finance_desk.sql",
   "lib/lead-lifecycle.ts",
@@ -142,6 +145,7 @@ const requiredFiles = [
   "scripts/audit-heu-final-handoff-coverage.mjs",
   "scripts/audit-heu-git-hygiene.mjs",
   "scripts/audit-heu-implementation-log.mjs",
+  "scripts/audit-heu-user-account-security.mjs",
   "scripts/audit-heu-ai-policy.mjs",
   "scripts/audit-heu-lead-handover-policy.mjs",
   "scripts/audit-heu-lead-lifecycle-handover-uat-pack.mjs",
@@ -194,6 +198,7 @@ const requiredScripts = [
   "audit:heu-final-handoff-coverage",
   "audit:heu-git-hygiene",
   "audit:heu-implementation-log",
+  "audit:heu-user-account-security",
   "audit:heu-lead-handover-policy",
   "audit:heu-lead-lifecycle-handover-uat-pack",
   "audit:heu-lead-lifecycle-standard",
@@ -481,6 +486,36 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /P2-10 Natural Invoice Search Fallback[\s\S]*ttgdtx-process-labels\.ts[\s\S]*thu tien co hoa don khong[\s\S]*thu tien co xuat hoa don khong[\s\S]*xuat hoa\s+don[\s\S]*co can hoa don[\s\S]*app\/search\/page\.tsx[\s\S]*merges local TTGDTX process-label\s+matches before remote search results[\s\S]*Thu hoc phi \(P2-10\)[\s\S]*invoice\/chung-tu questions[\s\S]*TTGDTX_PROCESS_CODE_MAP_20260625\.md[\s\S]*audit-ttgdtx-process-labels\.mjs[\s\S]*release-gate audits[\s\S]*This is navigation\/discovery packaging only[\s\S]*does not approve invoice\s+issuance, legal\/tax interpretation, finance posting, UAT acceptance, owner\s+waiver or production GO/i,
   "P2-10 natural invoice search fallback log entry",
+);
+
+requireText(
+  "components/settings/user-create-form.tsx",
+  /id="password"[\s\S]*type="password"[\s\S]*autoComplete="new-password"[\s\S]*minLength=\{8\}[\s\S]*aria-describedby="temporary-password-help"[\s\S]*temporary-password-help[\s\S]*không gửi qua Codex\/chat[\s\S]*kênh bảo mật[\s\S]*Không hiển thị key[\s\S]*không ghi log mật khẩu tạm/i,
+  "user account temporary password UI guard",
+);
+
+requireText(
+  "app/settings/actions.ts",
+  /(?=[\s\S]*unsafeTemporaryPasswords)(?=[\s\S]*password123)(?=[\s\S]*heu123456)(?=[\s\S]*normalizePasswordSignal)(?=[\s\S]*isUnsafeTemporaryPassword)(?=[\s\S]*emailLocalPart)(?=[\s\S]*nameParts)(?=[\s\S]*unsafe_temporary_password)/i,
+  "user account temporary password server guard",
+);
+
+requireText(
+  "app/settings/page.tsx",
+  /unsafe_temporary_password[\s\S]*Mật khẩu tạm quá dễ đoán[\s\S]*email\/tên user[\s\S]*kênh bảo mật/i,
+  "user account temporary password error message",
+);
+
+requireText(
+  "scripts/audit-heu-user-account-security.mjs",
+  /temporary password handling is guarded/i,
+  "user account temporary password security audit script",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /User Account Temporary Password Guard[\s\S]*user-create-form\.tsx[\s\S]*actions\.ts[\s\S]*unsafe temporary passwords[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*does not create production accounts,\s+send passwords, rotate keys, enable\s+MFA, accept UAT or mark production GO/i,
+  "user account temporary password guard log entry",
 );
 
 requireText(

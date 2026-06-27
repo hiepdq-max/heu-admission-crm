@@ -17,6 +17,7 @@
     "audit:heu-final-handoff-coverage": "node scripts/audit-heu-final-handoff-coverage.mjs",
     "audit:heu-git-hygiene": "node scripts/audit-heu-git-hygiene.mjs",
     "audit:heu-implementation-log": "node scripts/audit-heu-implementation-log.mjs",
+    "audit:heu-user-account-security": "node scripts/audit-heu-user-account-security.mjs",
     "audit:heu-lead-handover-policy": "node scripts/audit-heu-lead-handover-policy.mjs",
     "audit:heu-lead-lifecycle-handover-uat-pack": "node scripts/audit-heu-lead-lifecycle-handover-uat-pack.mjs",
     "audit:heu-lead-lifecycle-standard": "node scripts/audit-heu-lead-lifecycle-standard.mjs",
