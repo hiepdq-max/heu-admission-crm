@@ -76,6 +76,7 @@ const requiredFiles = [
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/audit/controlled-evidence-redaction-guard.tsx",
   "components/audit/hard-delete-boundary-guard.tsx",
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-log-uat-evidence-checklist.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
@@ -394,7 +395,7 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
-  /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
   "P6-06 non-TTGDTX cascade review local-only boundary",
 );
 
@@ -412,8 +413,14 @@ requireText(
 
 requireText(
   "app/audit/page.tsx",
-  /HardDeleteBoundaryGuard[\s\S]*<HardDeleteBoundaryGuard \/>[\s\S]*AuditLogTable/i,
-  "audit page mounts hard-delete boundary guard",
+  /<HardDeleteBoundaryGuard\s*\/>[\s\S]*<HardDeleteWaiverEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
+  "audit page mounts hard-delete boundary guard and evidence checklist",
+);
+
+requireText(
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx",
+  /(?=[\s\S]*data-hard-delete-waiver-evidence-checklist="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Conversion or written waiver evidence is still required before\s+P6-06 can move from IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_REVIEW_20260627\.md)(?=[\s\S]*HD-01)(?=[\s\S]*HD-06)(?=[\s\S]*raw student PII, CCCD, bank data, payment data,\s+passwords, OTPs, service-role keys and production credentials)(?=[\s\S]*BGH, IT_DATA, Audit and affected business owners must sign the\s+evidence outside Codex\/chat)/i,
+  "P6-06 hard-delete waiver evidence checklist",
 );
 
 requireText(

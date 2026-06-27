@@ -3,6 +3,8 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const componentPath = "components/audit/hard-delete-boundary-guard.tsx";
+const evidenceChecklistPath =
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx";
 const pagePath = "app/audit/page.tsx";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const failures = [];
@@ -29,6 +31,7 @@ function requireText(contents, pattern, label, file) {
 
 for (const file of [
   componentPath,
+  evidenceChecklistPath,
   pagePath,
   checklistPath,
   "docs/HARD_DELETE_AUDIT.md",
@@ -44,6 +47,9 @@ for (const file of [
 
 const component = existsSync(path.join(repoRoot, componentPath))
   ? read(componentPath)
+  : "";
+const evidenceChecklist = existsSync(path.join(repoRoot, evidenceChecklistPath))
+  ? read(evidenceChecklistPath)
   : "";
 const page = existsSync(path.join(repoRoot, pagePath)) ? read(pagePath) : "";
 const checklist = existsSync(path.join(repoRoot, checklistPath))
@@ -74,17 +80,23 @@ requireText(
   "P6-06 hard-delete boundary guard",
   componentPath,
 );
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-hard-delete-waiver-evidence-checklist="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Conversion or written waiver evidence is still required before\s+P6-06 can move from IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_REVIEW_20260627\.md)(?=[\s\S]*HD-01)(?=[\s\S]*HD-06)(?=[\s\S]*raw student PII, CCCD, bank data, payment data,\s+passwords, OTPs, service-role keys and production credentials)(?=[\s\S]*BGH, IT_DATA, Audit and affected business owners must sign the\s+evidence outside Codex\/chat)/i,
+  "P6-06 hard-delete waiver evidence checklist",
+  evidenceChecklistPath,
+);
 
 requireText(
   page,
-  /HardDeleteBoundaryGuard[\s\S]*<HardDeleteBoundaryGuard \/>[\s\S]*AuditLogTable/i,
-  "audit page mounts hard-delete boundary guard before audit table",
+  /<HardDeleteBoundaryGuard\s*\/>[\s\S]*<HardDeleteWaiverEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
+  "audit page mounts hard-delete boundary guard and evidence checklist before audit table",
   pagePath,
 );
 
 requireText(
   checklist,
-  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
   "production checklist keeps hard-delete review IN_PROGRESS with UI guard evidence",
   checklistPath,
 );
@@ -98,14 +110,14 @@ requireText(
 
 requireText(
   nonTtgdtxReview,
-  /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
   "non-TTGDTX cascade review local-only boundary",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
 );
 
 requireText(
   backlog,
-  /P6-06[\s\S]*PASS_LOCAL[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
+  /P6-06[\s\S]*PASS_LOCAL[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
   "backlog hard-delete boundary evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
@@ -120,6 +132,7 @@ if (!agents.includes("npm.cmd run audit:hard-delete-boundary-guard")) {
 
 for (const needle of [
   componentPath,
+  evidenceChecklistPath,
   "scripts/audit-hard-delete-boundary-guard.mjs",
   "audit:hard-delete-boundary-guard",
 ]) {

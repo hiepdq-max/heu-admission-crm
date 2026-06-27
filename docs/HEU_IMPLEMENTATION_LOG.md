@@ -1794,3 +1794,38 @@
 - P6-03 audit-log UAT evidence checklist is PASS_LOCAL after local audits pass.
 - Signed audit-log UAT and owner approval are still required before audit-log
   completeness can be accepted for production readiness.
+
+## 2026-06-27 - P6-06 Hard-Delete/Cascade Evidence Checklist
+
+### Scope
+
+- Continued P6-06 production-readiness hardening with a small audit page slice.
+- Added `components/audit/hard-delete-waiver-evidence-checklist.tsx` below the
+  hard-delete boundary guard on `/audit`.
+- The checklist lists required redacted evidence for HD-01 through HD-06,
+  including current cascade scan acceptance, protected-record conversion,
+  derived-helper waiver, no hard-delete in protected flows, rollback proof
+  without deletion and owner GO/NO-GO decision.
+- It repeats that raw student PII, CCCD, bank data, payment data, passwords,
+  OTPs, service-role keys and production credentials stay outside
+  Git/Codex/chat.
+- Extended hard-delete boundary and release-gate audits so the checklist,
+  production checklist, backlog and non-TTGDTX cascade review stay aligned.
+
+### Files Updated/Added
+
+- `components/audit/hard-delete-waiver-evidence-checklist.tsx`
+- `app/audit/page.tsx`
+- `scripts/audit-hard-delete-boundary-guard.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- P6-06 hard-delete/cascade evidence checklist is PASS_LOCAL after local audits
+  pass.
+- Non-TTGDTX/base cascade conversion or written waiver remains required before
+  hard-delete review can be accepted for production readiness.

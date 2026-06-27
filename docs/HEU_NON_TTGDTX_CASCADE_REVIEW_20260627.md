@@ -85,3 +85,16 @@ cleanup or production GO.
 The hard-delete checklist remains IN_PROGRESS until every
 REQUIRES_CONVERSION_OR_WAIVER row is converted or signed off by the responsible
 owner group.
+
+## 7. P6-06 Evidence Checklist
+
+The app exposes `components/audit/hard-delete-waiver-evidence-checklist.tsx`
+on `/audit` after the hard-delete boundary guard. The checklist is PASS_LOCAL
+only and covers HD-01 through HD-06: current cascade scan acceptance, protected
+record conversion, derived-helper waiver, no hard-delete in protected flows,
+rollback proof without deletion, and owner GO/NO-GO decision.
+
+Do not attach raw student PII, CCCD, bank data, payment data, passwords, OTPs,
+service-role keys or production credentials in Git/Codex/chat. Conversion or
+written waiver evidence remains required before P6-06 can be accepted for
+production readiness.
