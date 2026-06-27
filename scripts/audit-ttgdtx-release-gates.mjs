@@ -406,6 +406,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Align TTGDTX linked operating spine[\s\S]*PASS_LOCAL[\s\S]*P2-01\/P2-02\/P2-05\/P2-03\/P2-10\/P2-13\/P2-14\/P2-15\/P2-16\/P2-17\/P2-18[\s\S]*signed UAT still required/i,
+  "linked operating spine PASS_LOCAL checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che|P2-10\)[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Pháp chế/i,
   "P2-10 invoice policy PASS_LOCAL checklist row",
 );
@@ -498,6 +504,12 @@ requireText(
   "components/ttgdtx/ttgdtx-operating-control-strip.tsx",
   /data-ttgdtx-operating-control=\{current\.code\}[\s\S]*Owner:[\s\S]*Điều kiện trước khi đi tiếp[\s\S]*Nếu thiếu điều kiện, bước này phải chặn/i,
   "operating-control strip owner and blocker display",
+);
+
+requireText(
+  "lib/ttgdtx-operating-controls.ts",
+  /code: "P2-01"[\s\S]*code: "P2-02"[\s\S]*code: "P2-05"[\s\S]*code: "P2-03"[\s\S]*code: "P2-10"[\s\S]*code: "P2-13"[\s\S]*code: "P2-14"[\s\S]*code: "P2-15"[\s\S]*code: "P2-16"[\s\S]*code: "P2-17"[\s\S]*code: "P2-18"/,
+  "core TTGDTX operating spine order",
 );
 
 requireText(

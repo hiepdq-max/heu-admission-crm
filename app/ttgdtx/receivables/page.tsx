@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { TtgdtxP019GateGuard } from "@/components/ttgdtx/ttgdtx-p019-gate-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -501,6 +502,7 @@ export default async function TtgdtxReceivablesPage({
         </section>
       ) : (
         <div className="space-y-6">
+          <TtgdtxOperatingControlStrip currentCode="P2-03" />
           <TtgdtxP019GateGuard />
 
           {message ? (

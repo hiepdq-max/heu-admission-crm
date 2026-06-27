@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { TtgdtxProductionReadinessGuard } from "@/components/ttgdtx/ttgdtx-production-readiness-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -332,6 +333,7 @@ export default async function TtgdtxPage() {
       ) : (
         <div className="space-y-6">
           <TtgdtxProductionReadinessGuard />
+          <TtgdtxOperatingControlStrip currentCode="P2-01" />
 
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
             <div className="flex items-start gap-3">

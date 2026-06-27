@@ -25,6 +25,14 @@ export const TTGDTX_OPERATING_CONTROLS: TtgdtxOperatingControl[] = [
     blocks: "Tạo công nợ",
   },
   {
+    code: "P2-05",
+    label: "Gate tạo công nợ",
+    href: "/ttgdtx/gate",
+    owner: "KHTC + IT_DATA",
+    mustHave: ["P0-19 ALLOW_FINANCE", "P2-01 active", "P2-02 READY", "lead eligible"],
+    blocks: "Tạo công nợ P2-03",
+  },
+  {
     code: "P2-03",
     label: "Công nợ học sinh",
     href: "/ttgdtx/receivables",

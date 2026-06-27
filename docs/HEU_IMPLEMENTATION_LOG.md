@@ -1323,3 +1323,37 @@
 - P0-19 legal/tuition finance gate guard is PASS_LOCAL only after local audits
   pass.
 - Signed legal/finance UAT is still required before production receivable use.
+
+## 2026-06-27 - TTGDTX Core Operating Spine Coverage
+
+### Scope
+
+- Continued TTGDTX/9+ pilot hardening with a small linked-spine UI slice.
+- Added the operating-control strip to the remaining core TTGDTX screens:
+  P2-01, P2-02, P2-05, P2-03, P2-13, P2-14 and P2-16.
+- Added P2-05 into the operating-control metadata between P2-02 and P2-03 so
+  the P0-19 gate is visible in the chain before receivable creation.
+- Expanded `audit:ttgdtx-operating-control-ui` and release gates to require
+  chain position, owner, must-have conditions and blockers across the full
+  core spine from P2-01 through P2-18.
+
+### Files Updated/Added
+
+- `lib/ttgdtx-operating-controls.ts`
+- `app/ttgdtx/page.tsx`
+- `app/ttgdtx/tuition/page.tsx`
+- `app/ttgdtx/gate/page.tsx`
+- `app/ttgdtx/receivables/page.tsx`
+- `app/ttgdtx/reconciliation/page.tsx`
+- `app/ttgdtx/reconciliation/review/page.tsx`
+- `app/ttgdtx/payment-requests/review/page.tsx`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `scripts/audit-ttgdtx-operating-control-ui.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- TTGDTX linked operating spine is PASS_LOCAL for core screen visibility after
+  local audits pass.
+- Signed role/workflow UAT is still required before production use.

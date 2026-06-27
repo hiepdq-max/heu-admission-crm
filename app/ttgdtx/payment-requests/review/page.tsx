@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { firstParam } from "@/lib/workspace";
@@ -352,6 +353,8 @@ export default async function PaymentRequestReviewPage({
       }
     >
       <div className="space-y-5">
+        <TtgdtxOperatingControlStrip currentCode="P2-16" />
+
         {pageMessage ? (
           <div
             className={`rounded-lg border p-4 text-sm ${

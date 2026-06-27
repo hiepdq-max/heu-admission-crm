@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { firstParam } from "@/lib/workspace";
@@ -436,6 +437,8 @@ export default async function TtgdtxReconciliationPage({
         </section>
       ) : (
         <div className="space-y-6">
+          <TtgdtxOperatingControlStrip currentCode="P2-13" />
+
           {message ? (
             <section
               className={`rounded-lg border p-5 text-sm leading-6 ${
