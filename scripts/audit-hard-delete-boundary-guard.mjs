@@ -88,6 +88,13 @@ requireText(
 );
 
 requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-02)(?=[\s\S]*P6-06-ACCEPT-03)(?=[\s\S]*P6-06-ACCEPT-04)(?=[\s\S]*P6-06-ACCEPT-05)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*Current cascade scan locked and mapped)(?=[\s\S]*Protected records converted before production)(?=[\s\S]*Derived-helper waiver is narrow and written)(?=[\s\S]*Rollback and cleanup do not rely on deletion)(?=[\s\S]*Evidence redaction and owner sign-off)(?=[\s\S]*Production boundary)(?=[\s\S]*PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO)/i,
+  "P6-06 hard-delete/cascade acceptance matrix",
+  evidenceChecklistPath,
+);
+
+requireText(
   page,
   /<HardDeleteBoundaryGuard\s*\/>[\s\S]*<HardDeleteWaiverEvidenceChecklist\s*\/>[\s\S]*AuditLogTable/i,
   "audit page mounts hard-delete boundary guard and evidence checklist before audit table",
@@ -96,7 +103,7 @@ requireText(
 
 requireText(
   checklist,
-  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade acceptance matrix[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
   "production checklist keeps hard-delete review IN_PROGRESS with UI guard evidence",
   checklistPath,
 );
@@ -110,14 +117,14 @@ requireText(
 
 requireText(
   nonTtgdtxReview,
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
   "non-TTGDTX cascade review local-only boundary",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
 );
 
 requireText(
   backlog,
-  /P6-06[\s\S]*PASS_LOCAL[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
+  /P6-06[\s\S]*PASS_LOCAL[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade acceptance matrix[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
   "backlog hard-delete boundary evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );

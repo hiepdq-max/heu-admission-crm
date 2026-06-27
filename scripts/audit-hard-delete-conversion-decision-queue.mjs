@@ -78,21 +78,21 @@ requireText(
 
 requireText(
   review,
-  /(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*HDQ-01)(?=[\s\S]*HDQ-05)(?=[\s\S]*RESTRICT_OR_ARCHIVE)(?=[\s\S]*SOFT_REVOKE_OR_WAIVER)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
+  /(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*HDQ-01)(?=[\s\S]*HDQ-05)(?=[\s\S]*RESTRICT_OR_ARCHIVE)(?=[\s\S]*SOFT_REVOKE_OR_WAIVER)(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
   "non-TTGDTX cascade review decision queue evidence",
   reviewPath,
 );
 
 requireText(
   checklist,
-  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-conversion-decision-queue\.tsx[\s\S]*audit:hard-delete-conversion-decision-queue[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*hard-delete-conversion-decision-queue\.tsx[\s\S]*hard-delete\/cascade acceptance matrix[\s\S]*audit:hard-delete-conversion-decision-queue[\s\S]*non-TTGDTX conversion or written waiver still required/i,
   "production checklist keeps hard-delete review IN_PROGRESS with decision queue",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P6-06[\s\S]*hard-delete-conversion-decision-queue\.tsx[\s\S]*audit:hard-delete-conversion-decision-queue[\s\S]*conversion or written waiver still required/i,
+  /P6-06[\s\S]*hard-delete-conversion-decision-queue\.tsx[\s\S]*hard-delete\/cascade acceptance matrix[\s\S]*audit:hard-delete-conversion-decision-queue[\s\S]*conversion or written waiver still required/i,
   "backlog records hard-delete conversion decision queue",
   backlogPath,
 );

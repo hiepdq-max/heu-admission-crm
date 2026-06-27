@@ -7,6 +7,13 @@ type EvidenceItem = {
   evidence: string;
 };
 
+type HardDeleteAcceptanceItem = {
+  caseId: string;
+  requirement: string;
+  minimumEvidence: string;
+  stopCondition: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "HD-01",
@@ -49,6 +56,57 @@ const evidenceItems: EvidenceItem[] = [
     owner: "BGH + IT_DATA + Audit",
     evidence:
       "Signed GO/NO-GO note confirming all conversion or waiver evidence was accepted outside Codex/chat.",
+  },
+];
+
+const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
+  {
+    caseId: "P6-06-ACCEPT-01",
+    requirement: "Current cascade scan locked and mapped",
+    minimumEvidence:
+      "The 44 non-TTGDTX/base cascade findings are mapped to table, parent relation, risk bucket and owner lane.",
+    stopCondition:
+      "Stop if the scan count changes, an owner lane is missing, or any finding is not classified before review.",
+  },
+  {
+    caseId: "P6-06-ACCEPT-02",
+    requirement: "Protected records converted before production",
+    minimumEvidence:
+      "Finance, evidence, approval, payment, legal, audit, lead and operating-history rows are converted to restrict/archive/status patterns.",
+    stopCondition:
+      "Stop if a protected record can still disappear through parent delete, cascade execution, cleanup or migration.",
+  },
+  {
+    caseId: "P6-06-ACCEPT-03",
+    requirement: "Derived-helper waiver is narrow and written",
+    minimumEvidence:
+      "Any waiver names affected table, derived-only proof, owner reason, rollback note and written approval.",
+    stopCondition:
+      "Stop if waiver is oral, broad, hidden, ownerless or covers finance/evidence/audit/legal/student-operating history.",
+  },
+  {
+    caseId: "P6-06-ACCEPT-04",
+    requirement: "Rollback and cleanup do not rely on deletion",
+    minimumEvidence:
+      "Rollback proof uses backup/restore or reversible state, not truncate, drop table, hard-delete or cascade execution.",
+    stopCondition:
+      "Stop if deletion is presented as rollback proof or cleanup hides evidence required for audit/legal review.",
+  },
+  {
+    caseId: "P6-06-ACCEPT-05",
+    requirement: "Evidence redaction and owner sign-off",
+    minimumEvidence:
+      "BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence outside Codex/chat.",
+    stopCondition:
+      "Stop if raw student PII, CCCD, bank data, payment data, passwords, OTPs, service-role keys or production credentials appear.",
+  },
+  {
+    caseId: "P6-06-ACCEPT-06",
+    requirement: "Production boundary",
+    minimumEvidence:
+      "P6-06 remains IN_PROGRESS until all required conversions or written waivers are signed and owner GO/NO-GO exists.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO.",
   },
 ];
 
@@ -105,6 +163,53 @@ export function HardDeleteWaiverEvidenceChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-hard-delete-cascade-acceptance-matrix="P6-06"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 hard-delete/cascade acceptance matrix: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_ACCEPT / FAIL / BLOCKED
+              </span>
+              . Use this matrix to decide whether conversion/waiver evidence
+              is ready for owner review, not to approve deletion or production.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            Derived-helper waiver is allowed only when no protected finance,
+            legal, audit, evidence or student-operating history is removed.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {hardDeleteAcceptanceItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.requirement}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.minimumEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

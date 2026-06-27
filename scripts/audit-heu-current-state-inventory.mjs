@@ -116,7 +116,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Hard-delete\/cascade[\s\S]*TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion\/waiver decision queue[\s\S]*Conversion or written waiver pending/i,
+  /Hard-delete\/cascade[\s\S]*TTGDTX cascade passes; non-TTGDTX review identifies 44 findings and exposes a conversion\/waiver decision queue plus hard-delete\/cascade acceptance matrix[\s\S]*Conversion or written waiver pending/i,
   "P6-06 hard-delete decision queue control state",
 );
 requireText(

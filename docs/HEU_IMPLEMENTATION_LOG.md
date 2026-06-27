@@ -2218,3 +2218,19 @@
   `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
 - P6-03 remains IN_PROGRESS for production until signed audit-log UAT and owner
   sign-off exist outside Codex/chat.
+
+## 2026-06-27 - P6-06 Hard-Delete Cascade Acceptance Matrix
+
+- Added a PASS_LOCAL P6-06 hard-delete/cascade acceptance matrix to
+  `components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+- The matrix requires the current 44-finding scan to be locked and mapped,
+  protected records to be converted before production, derived-helper waivers
+  to be narrow and written, rollback/cleanup not to rely on deletion, evidence
+  redaction and owner sign-off, and production-boundary proof.
+- Updated `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`, the production
+  checklist, backlog, current-state inventory,
+  `audit:heu-non-ttgdtx-cascade-review`, `audit:hard-delete-boundary-guard`,
+  `audit:hard-delete-conversion-decision-queue`,
+  `audit:ttgdtx-release-gates` and `audit:heu-current-state-inventory`.
+- P6-06 remains IN_PROGRESS for production until every required conversion or
+  written waiver is signed outside Codex/chat.

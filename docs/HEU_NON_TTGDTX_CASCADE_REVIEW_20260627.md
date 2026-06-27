@@ -118,3 +118,25 @@ rollback note and written approval.
 `npm.cmd run audit:hard-delete-conversion-decision-queue` must pass before
 handoff. This does not approve production deletion, cascade execution, waiver,
 conversion migration, cleanup, rollback success or production GO.
+
+## 9. P6-06 Acceptance Matrix
+
+The app also exposes
+`data-hard-delete-cascade-acceptance-matrix="P6-06"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`. The matrix is
+PASS_LOCAL only and is used to decide whether conversion/waiver evidence is
+ready for owner review.
+
+| Case | Requirement | Minimum evidence | Stop condition |
+|---|---|---|---|
+| P6-06-ACCEPT-01 | Current cascade scan locked and mapped | The 44 non-TTGDTX/base cascade findings are mapped to table, parent relation, risk bucket and owner lane | Scan count changes, an owner lane is missing, or any finding is not classified before review |
+| P6-06-ACCEPT-02 | Protected records converted before production | Finance, evidence, approval, payment, legal, audit, lead and operating-history rows are converted to restrict/archive/status patterns | A protected record can still disappear through parent delete, cascade execution, cleanup or migration |
+| P6-06-ACCEPT-03 | Derived-helper waiver is narrow and written | Any waiver names affected table, derived-only proof, owner reason, rollback note and written approval | Waiver is oral, broad, hidden, ownerless or covers finance/evidence/audit/legal/student-operating history |
+| P6-06-ACCEPT-04 | Rollback and cleanup do not rely on deletion | Rollback proof uses backup/restore or reversible state, not truncate, drop table, hard-delete or cascade execution | Deletion is presented as rollback proof or cleanup hides evidence required for audit/legal review |
+| P6-06-ACCEPT-05 | Evidence redaction and owner sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence outside Codex/chat | Raw student PII, CCCD, bank data, payment data, passwords, OTPs, service-role keys or production credentials appear |
+| P6-06-ACCEPT-06 | Production boundary | P6-06 remains IN_PROGRESS until all required conversions or written waivers are signed and owner GO/NO-GO exists | PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO |
+
+Decision value: `P6_06_ACCEPT / FAIL / BLOCKED`.
+
+P6-06 can support production readiness only when P6-06-ACCEPT-01 through
+P6-06-ACCEPT-06 all pass with redacted evidence and signed owner approval.

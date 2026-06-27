@@ -86,6 +86,11 @@ requireText(review, /Do not run production migration from Codex\/chat/i, "Codex/
 requireText(review, /REQUIRES_CONVERSION_OR_WAIVER/i, "conversion or waiver decision");
 requireText(review, /Pure derived join rows may be waived only when they do not carry finance,\s+evidence, approval, legal, audit or student-operating history/i, "derived-only waiver boundary");
 requireText(review, /P6-06 is PASS_LOCAL[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO/i, "PASS_LOCAL non-approval boundary");
+requireText(
+  review,
+  /(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
+  "P6-06 hard-delete/cascade acceptance matrix",
+);
 
 const files = new Set(findings.map((finding) => finding.file));
 for (const file of files) {

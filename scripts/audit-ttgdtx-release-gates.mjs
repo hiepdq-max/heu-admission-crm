@@ -559,6 +559,12 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  /(?=[\s\S]*P6-06 Acceptance Matrix)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
+  "P6-06 hard-delete/cascade acceptance matrix doc",
+);
+
+requireText(
+  "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
   /Current scan count:\s*44/i,
   "P6-06 current cascade count",
 );
@@ -585,6 +591,18 @@ requireText(
   "components/audit/hard-delete-waiver-evidence-checklist.tsx",
   /(?=[\s\S]*data-hard-delete-waiver-evidence-checklist="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Conversion or written waiver evidence is still required before\s+P6-06 can move from IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_REVIEW_20260627\.md)(?=[\s\S]*HD-01)(?=[\s\S]*HD-06)(?=[\s\S]*raw student PII, CCCD, bank data, payment data,\s+passwords, OTPs, service-role keys and production credentials)(?=[\s\S]*BGH, IT_DATA, Audit and affected business owners must sign the\s+evidence outside Codex\/chat)/i,
   "P6-06 hard-delete waiver evidence checklist",
+);
+
+requireText(
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx",
+  /(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade acceptance matrix)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*Protected records converted before production)(?=[\s\S]*Derived-helper waiver is narrow and written)(?=[\s\S]*Production boundary)/i,
+  "P6-06 hard-delete/cascade acceptance matrix UI",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*hard-delete\/cascade acceptance matrix)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
+  "P6-06 production checklist acceptance matrix row",
 );
 
 requireText(
