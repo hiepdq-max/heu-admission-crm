@@ -58,7 +58,7 @@ Build HEU as a controlled operating system for linked TTGDTX work:
 | Receivables | `/ttgdtx/receivables`, Step90/Step91 | Internal-test foundation exists | Add duplicate/no-posting UAT cases |
 | Import and issue routing | `/ttgdtx/import`, `/ttgdtx/import/issues`, Step92-Step95 | Partial | Add multi-section workbook review before real import |
 | Collection evidence | `/ttgdtx/payments`, Step96 | Internal-test foundation exists | Add bank-batch duplicate fingerprint UAT |
-| Collection invoice/receipt | Step96 evidence fields plus P2-10 invoice policy matrix and invoice/chung-tu UAT evidence checklist | PASS_LOCAL, UAT pending | Validate invoice/chung-tu requirement by collection model, payer type and legal/tax policy with signed KHTC/Phap Che UAT |
+| Collection invoice/receipt | Step96 evidence fields plus P2-10 invoice policy matrix, invoice/chung-tu UAT evidence checklist and invoice/chung-tu decision manifest | PASS_LOCAL, UAT pending | Validate invoice/chung-tu requirement by collection model, payer type and legal/tax policy with signed KHTC/Phap Che UAT |
 | Reconciliation | `/ttgdtx/reconciliation`, `/ttgdtx/reconciliation/review`, Step101-Step104 | Internal-test foundation exists | Keep locked-period rule before payment request |
 | BBNT gate | Step110 metadata, source-control checks, Step105 P2-15 blocker and Step107 P2-17 blocker | P2-15/P2-17 gate added, UAT pending | Prove BBNT block/pass cases with signed UAT evidence |
 | Payment request and approval | `/ttgdtx/payment-requests`, `/review`, Step105-Step106, shared payment dossier checklist | PASS_LOCAL with P2-19 blockers, UAT pending | Require accepted-period evidence, partner invoice and formula basis in signed UAT |
@@ -92,8 +92,8 @@ Build next:
    evidence type, PII level, extraction status, Drive file ID, source folder ID
    and manual review status. Status: foundation added.
 2. Add linked dossier view per center/cohort/term.
-3. Keep the collection invoice-control matrix and invoice/chung-tu evidence
-   checklist visible on P2-10 and validate them
+3. Keep the collection invoice-control matrix, invoice/chung-tu evidence
+   checklist and invoice/chung-tu decision manifest visible on P2-10 and validate them
    in signed KHTC/Phap Che UAT; partner-invoice controls still require signed
    payment-flow UAT.
 4. Add BBNT evidence checklist as a blocking requirement before payment request.

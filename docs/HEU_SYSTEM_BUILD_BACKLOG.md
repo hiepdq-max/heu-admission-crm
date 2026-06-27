@@ -49,7 +49,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P2-09 | Department workload board | Department leads + BGH + Audit | PASS_LOCAL | Step95 is migration candidate only; board is read/control, not source edit |
 | P2-11 | Source/legal/evidence control | KHTC + Phap Che + IT/Data + Audit | PASS_LOCAL | Step98 is migration candidate only; scoped RLS, no direct delete policy, source links restrict-protected; signed UAT still required |
 | P2-12 | TTGDTX master/dropdown control | Tuyen sinh + Phap Che + IT/Data | PASS_LOCAL | Step99 is migration candidate only; scoped RLS, no direct delete policy, source links restrict-protected; signed UAT still required |
-| P2-10 | Tuition collection | KHTC | PASS_LOCAL | Step96 is migration candidate only; invoice/receipt decision captured per payment; P2-10 invoice matrix and invoice/chung-tu UAT evidence checklist are visible on the collection page |
+| P2-10 | Tuition collection | KHTC | PASS_LOCAL | Step96 is migration candidate only; invoice/receipt decision captured per payment; P2-10 invoice matrix, invoice/chung-tu UAT evidence checklist and invoice/chung-tu decision manifest are visible on the collection page |
 | P2-13 | Reconciliation | KHTC + Audit | PASS_LOCAL | Step101 is migration candidate only; blocks unresolved invoice/receipt decisions; Step102/Step103 retired no-op |
 | P2-14 | Reconciliation review/lock | KHTC + Audit + BGH | PASS_LOCAL | Step104 is migration candidate only; cannot review/approve/lock unresolved invoice/receipt lines |
 | P2-15 | Partner payment request | KHTC + Phap Che | PASS_LOCAL | Step105 is migration candidate only; BBNT/partner invoice dossier required, no unresolved collection invoice lines; `components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx`; `npm.cmd run audit:ttgdtx-payment-dossier-checklist` |
@@ -71,7 +71,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P4-01 | Receivable/payment status lifecycle | KHTC | PASS_LOCAL | `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`; signed finance UAT still required |
-| P4-02 | Invoice/receipt policy matrix | KHTC + Phap Che | PASS_LOCAL | `lib/ttgdtx-invoice-policy.ts`; `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`; P2-10 invoice/chung-tu UAT evidence checklist; `docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md`; `npm.cmd run audit:ttgdtx-invoice-policy`; needs signed KHTC/Phap Che UAT |
+| P4-02 | Invoice/receipt policy matrix | KHTC + Phap Che | PASS_LOCAL | `lib/ttgdtx-invoice-policy.ts`; `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`; P2-10 invoice/chung-tu UAT evidence checklist; P2-10 invoice/chung-tu decision manifest; `docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md`; `npm.cmd run audit:ttgdtx-invoice-policy`; needs signed KHTC/Phap Che UAT |
 | P4-03 | Bank statement handling policy | KHTC + IT/Data | PASS_LOCAL | `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`; no raw bank data in repo/chat; duplicate fingerprint case in synthetic pack |
 | P4-04 | VND money input/display normalization | IT/Data + KHTC | PASS_LOCAL | `lib/vnd-money.ts`; `npm.cmd run audit:vnd-money-format`; P2-10/P2-17 display `1.000.000 đ` |
 | P4-05 | Period lock and adjustment policy | KHTC + Audit | PASS_LOCAL | `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-period-lock-policy`; human adjustment approval required |

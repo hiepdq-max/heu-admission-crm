@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-10 Invoice Decision Manifest
+
+- Added a PASS_LOCAL P2-10 invoice/chung-tu decision manifest to
+  `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`.
+- Updated `docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`, `docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md`
+  and `docs/HEU_CURRENT_STATE_INVENTORY.md` so invoice/chung-tu decisions are
+  separated from the policy matrix and UAT evidence checklist.
+- Extended invoice-policy, current-state and release-gate audits to require
+  the decision manifest before handoff.
+- This is invoice-decision packaging only. It does not approve invoice
+  issuance, legal/tax interpretation, finance posting, revenue recognition,
+  UAT acceptance or production GO.
+
 ## 2026-06-28 - P0-09 Final Owner Decision Manifest
 
 - Added a PASS_LOCAL P0-09 final owner GO/NO-GO decision manifest to

@@ -108,8 +108,15 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-ttgdtx-invoice-decision-manifest="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*Collection model and payer decision)(?=[\s\S]*Required invoice\/chung-tu issuance decision)(?=[\s\S]*Not-required or waiver basis decision)(?=[\s\S]*Pending policy downstream blocker decision)(?=[\s\S]*Evidence redaction and storage decision)(?=[\s\S]*Final KHTC\/PHAP_CHE sign-off decision)(?=[\s\S]*khong phe duyet xuat hoa don)(?=[\s\S]*PASS_LOCAL is treated as invoice approval)/i,
+  "P2-10 invoice/chung-tu decision manifest",
+  componentPath,
+);
+
+requireText(
   invoiceUatRunbook,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*npm\.cmd run audit:ttgdtx-invoice-policy)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*P2-10 Invoice\/Chung-Tu Decision Manifest)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*npm\.cmd run audit:ttgdtx-invoice-policy)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
   "P2-10 invoice/chung-tu UAT runbook",
   invoiceUatRunbookPath,
 );
@@ -123,21 +130,21 @@ requireText(
 
 requireText(
   checklist,
-  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che/i,
+  /P2-10\)[\s\S]*PASS_LOCAL[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*P2-10 invoice\/chung-tu decision manifest[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy[\s\S]*signed KHTC\/Phap Che/i,
   "production checklist invoice policy PASS_LOCAL row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P4-02[\s\S]*Invoice\/receipt policy matrix[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy/i,
+  /P4-02[\s\S]*Invoice\/receipt policy matrix[\s\S]*invoice\/chung-tu UAT evidence checklist[\s\S]*P2-10 invoice\/chung-tu decision manifest[\s\S]*TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627\.md[\s\S]*audit:ttgdtx-invoice-policy/i,
   "P4-02 backlog audit evidence",
   backlogPath,
 );
 
 requireText(
   linkedReview,
-  /Collection invoice\/receipt[\s\S]*invoice policy matrix and invoice\/chung-tu UAT evidence checklist[\s\S]*PASS_LOCAL/i,
+  /Collection invoice\/receipt[\s\S]*invoice policy matrix, invoice\/chung-tu UAT evidence checklist and invoice\/chung-tu decision manifest[\s\S]*PASS_LOCAL/i,
   "linked operating review invoice matrix status",
   linkedReviewPath,
 );

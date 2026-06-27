@@ -1,4 +1,10 @@
-import { AlertTriangle, FileCheck2, ReceiptText, Scale } from "lucide-react";
+import {
+  AlertTriangle,
+  BadgeCheck,
+  FileCheck2,
+  ReceiptText,
+  Scale,
+} from "lucide-react";
 
 import {
   invoiceRequirementLabels,
@@ -63,6 +69,57 @@ const invoiceEvidenceChecklist = [
       "Signed UAT covers at least REQUIRED, PENDING_POLICY, WAIVED_BY_AUTHORITY and OTHER_COLLECTION_MODEL cases.",
     stopCondition:
       "Stop if PASS_LOCAL is treated as invoice approval, legal/tax advice, UAT acceptance or production GO.",
+  },
+];
+
+const invoiceDecisionManifest = [
+  {
+    caseId: "P2-10-DEC-01",
+    title: "Collection model and payer decision",
+    requiredDecision:
+      "KHTC identifies collection model, payer type, source receivable/payment reference and whether HEU or the center is the issuing party.",
+    stopCondition:
+      "Missing collection model, payer type, source reference or issuing-party decision keeps P2-10 BLOCKED.",
+  },
+  {
+    caseId: "P2-10-DEC-02",
+    title: "Required invoice/chung-tu issuance decision",
+    requiredDecision:
+      "For REQUIRED cases, invoice issuer, invoice number, invoice date and controlled evidence reference are present before downstream reconciliation.",
+    stopCondition:
+      "A REQUIRED case without number/date/evidence, or with uncontrolled evidence, keeps P2-10 NO_GO.",
+  },
+  {
+    caseId: "P2-10-DEC-03",
+    title: "Not-required or waiver basis decision",
+    requiredDecision:
+      "NOT_REQUIRED or WAIVED_BY_AUTHORITY cases cite owner, reason, legal/policy basis, expiry/review date and controlled approval evidence.",
+    stopCondition:
+      "User self-selects not required, waiver lacks authority, or legal/policy basis is unclear.",
+  },
+  {
+    caseId: "P2-10-DEC-04",
+    title: "Pending policy downstream blocker decision",
+    requiredDecision:
+      "Every PENDING_POLICY case blocks P2-13 reconciliation, P2-14 lock and P2-15 payment request until KHTC/PHAP_CHE decide.",
+    stopCondition:
+      "Unresolved invoice/chung-tu policy can continue to reconciliation, period lock or partner payment request.",
+  },
+  {
+    caseId: "P2-10-DEC-05",
+    title: "Evidence redaction and storage decision",
+    requiredDecision:
+      "Evidence is stored in a controlled location and tracked by safe reference only, with raw bank data, CCCD, phones, voucher bodies and credentials excluded.",
+    stopCondition:
+      "Raw sensitive evidence appears in Git/Codex/chat, app notes, screenshots or uncontrolled links.",
+  },
+  {
+    caseId: "P2-10-DEC-06",
+    title: "Final KHTC/PHAP_CHE sign-off decision",
+    requiredDecision:
+      "KHTC and PHAP_CHE sign the final P2-10 invoice/chung-tu result with decision ID, signer, date and controlled evidence references.",
+    stopCondition:
+      "Missing decision ID, unsigned owner, unresolved policy case, raw sensitive evidence, legal/tax ambiguity or PASS_LOCAL treated as approval keeps P2-10 BLOCKED or NO_GO.",
   },
 ];
 
@@ -218,6 +275,59 @@ export function TtgdtxInvoicePolicyMatrix() {
             </article>
           ))}
         </div>
+      </div>
+
+      <div
+        data-ttgdtx-invoice-decision-manifest="P2-10"
+        className="mt-5 rounded-md border border-blue-200 bg-blue-50 p-4"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <BadgeCheck className="mt-0.5 size-4 shrink-0 text-blue-700" />
+            <div>
+              <h3 className="font-semibold text-blue-950">
+                P2-10 invoice/chung-tu decision manifest: PASS_LOCAL only
+              </h3>
+              <p className="mt-2 leading-6 text-blue-900">
+                Manifest nay tach rieng cau hoi thu tien co can hoa don/chung-tu
+                khong, ai phat hanh, bang chung nao duoc chap nhan va buoc nao
+                phai bi chan neu chua ro. No khong phe duyet xuat hoa don,
+                tu van thue/phap ly, hach toan tai chinh, nghiem thu UAT,
+                ghi nhan doanh thu hoac production GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-blue-200 bg-white px-3 py-2 font-mono text-xs text-blue-950">
+            P2_10_INVOICE_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {invoiceDecisionManifest.map((item) => (
+            <article
+              key={item.caseId}
+              className="rounded-md border border-blue-200 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-blue-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Decision evidence: {item.requiredDecision}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-rose-200 bg-white px-3 py-2 leading-6 text-rose-900">
+          Stop immediately if any decision ID is missing, KHTC/PHAP_CHE
+          signature is absent, invoice/chung-tu basis is unresolved,
+          PENDING_POLICY is allowed downstream, raw sensitive evidence is
+          referenced or PASS_LOCAL is treated as invoice approval.
+        </p>
       </div>
     </section>
   );
