@@ -408,7 +408,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*final owner decision manifest[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references/i,
+  /Date:\s*2026-06-27[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P5-03 Finance Desk read-only cockpit guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 final owner decision manifest alignment and P0 Go\/No-Go control paragraph alignment[\s\S]*Production readiness guard[\s\S]*internal UAT closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*final owner decision manifest[\s\S]*owner sign-off handoff evidence path[\s\S]*Production blocker shared source[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with P0-14 evidence binder and P0-15 final handoff summary before owner GO\/NO-GO[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 reliance decision manifest[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*Production is still NO-GO because:[\s\S]*No real production backup\/restore dry-run evidence[\s\S]*Step90-Step110 production migration order is not signed[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -521,9 +521,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P5-03 Finance Desk Reliance Decision Manifest[\s\S]*\/finance-desk[\s\S]*KHTC,\s+BGH, IT_DATA and AUDIT[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Finance Desk, current-state, implementation-log and release-gate\s+audits[\s\S]*This is cockpit-reliance packaging only[\s\S]*does not approve finance action,\s+statutory accounting, voucher posting, bank transfer, UAT acceptance,\s+dashboard production reliance, owner waiver or production GO/i,
+  "Finance Desk reliance decision manifest log entry",
+);
+
+requireText(
   "app/finance-desk/page.tsx",
   /(?=[\s\S]*FinanceDeskPage)(?=[\s\S]*formatVndAmount)(?=[\s\S]*canOpenFinanceDesk)(?=[\s\S]*FinanceDeskReadOnlyBoundary)(?=[\s\S]*data-finance-desk-readonly-boundary="P5-03")(?=[\s\S]*ttgdtx_accounting_dashboard_summary)(?=[\s\S]*ttgdtx_tuition_import_batch_readiness)(?=[\s\S]*ttgdtx_accounting_dashboard_control_board)(?=[\s\S]*dashboard không tự phê duyệt)(?=[\s\S]*không khởi tạo lệnh chuyển tiền)(?=[\s\S]*Production remains NO-GO until)/i,
   "Finance Desk read-only scoped route",
+);
+
+requireText(
+  "app/finance-desk/page.tsx",
+  /(?=[\s\S]*const financeDeskRelianceItems[\s\S]*P5-03-REL-01[\s\S]*P5-03-REL-06)(?=[\s\S]*function FinanceDeskRelianceDecisionManifest\(\)[\s\S]*data-finance-desk-reliance-decision-manifest="P5-03"[\s\S]*P5-03 Finance Desk reliance decision manifest: PASS_LOCAL only[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve\s+finance action, statutory accounting, voucher posting, bank\s+transfer, UAT acceptance, dashboard production reliance, owner\s+waiver or production GO)/i,
+  "Finance Desk reliance decision manifest route",
 );
 
 requireText(
@@ -546,13 +558,13 @@ requireText(
 
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*signed finance\/dashboard UAT still required/i,
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
   "P5-03 Finance Desk backlog row",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT acceptance matrix[\s\S]*does not approve finance action, production migration, UAT acceptance or owner GO/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
   "Finance Desk production checklist row",
 );
 
@@ -560,6 +572,12 @@ requireText(
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   /Status:\s*PASS_LOCAL_TEMPLATE[\s\S]*P5-03-UAT-01[\s\S]*P5-03-UAT-09[\s\S]*P5-03-ACCEPT-01[\s\S]*P5-03-ACCEPT-06[\s\S]*Final result remains NO-GO until all required owners sign/i,
   "Finance Desk UAT runbook matrix",
+);
+
+requireText(
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  /(?=[\s\S]*Finance Desk Reliance Decision Manifest)(?=[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03-REL-01[\s\S]*P5-03-REL-06)(?=[\s\S]*P5-03-ACCEPT-01 through P5-03-ACCEPT-06 and P5-03-REL-01 through\s+P5-03-REL-06)/i,
+  "Finance Desk reliance decision runbook matrix",
 );
 
 requireText(

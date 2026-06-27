@@ -191,28 +191,35 @@ requireText(
 
 requireText(
   page,
-  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chưa đọc được đầy đủ Finance Desk[\s\S]*Step90-Step111[\s\S]*đã backup/i,
+  /(?=[\s\S]*const financeDeskRelianceItems[\s\S]*P5-03-REL-01[\s\S]*Authorized scoped access accepted[\s\S]*P5-03-REL-02[\s\S]*Read-only surface accepted[\s\S]*P5-03-REL-03[\s\S]*Source reconciliation accepted[\s\S]*P5-03-REL-04[\s\S]*Evidence hygiene accepted[\s\S]*P5-03-REL-05[\s\S]*Finance reliance boundary accepted[\s\S]*P5-03-REL-06[\s\S]*Human reliance decision recorded)(?=[\s\S]*function FinanceDeskRelianceDecisionManifest\(\)[\s\S]*data-finance-desk-reliance-decision-manifest="P5-03"[\s\S]*P5-03 Finance Desk reliance decision manifest: PASS_LOCAL only[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve\s+finance action, statutory accounting, voucher posting, bank\s+transfer, UAT acceptance, dashboard production reliance, owner\s+waiver or production GO)/i,
+  "Finance Desk reliance decision manifest",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  page,
+  /<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chưa đọc được đầy đủ Finance Desk[\s\S]*Step90-Step111[\s\S]*đã backup/i,
   "read-only boundary is visible before no-access and missing-view states",
   "app/finance-desk/page.tsx",
 );
 
 requireText(
   backlog,
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*signed finance\/dashboard UAT still required/i,
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
   "P5-03 Finance Desk backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT acceptance matrix[\s\S]*does not approve finance action, production migration, UAT acceptance or owner GO/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
   "production checklist Finance Desk row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Signed browser UAT pending/i,
+  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "current-state Finance Desk evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -281,6 +288,13 @@ requireText(
   uatRunbook,
   /(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*No direct create\/update\/approve\/pay\/import-write form exists inside `\/finance-desk`)(?=[\s\S]*VND values use the shared `lib\/vnd-money\.ts` display)(?=[\s\S]*Anyone treats PASS_LOCAL as production approval)/i,
   "Finance Desk UAT acceptance matrix",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+);
+
+requireText(
+  uatRunbook,
+  /(?=[\s\S]*Finance Desk Reliance Decision Manifest)(?=[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does\s+not approve finance action, statutory accounting, voucher posting, bank\s+transfer, UAT acceptance, dashboard production reliance, owner waiver or\s+production GO)(?=[\s\S]*P5-03-REL-01[\s\S]*Authorized scoped access accepted[\s\S]*P5-03-REL-06[\s\S]*Human reliance decision recorded)(?=[\s\S]*P5-03-ACCEPT-01 through P5-03-ACCEPT-06 and P5-03-REL-01 through\s+P5-03-REL-06)/i,
+  "Finance Desk reliance decision runbook",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
 );
 

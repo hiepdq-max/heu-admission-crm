@@ -9,6 +9,7 @@ import {
   FileSpreadsheet,
   FolderSearch,
   LayoutDashboard,
+  ListChecks,
   ReceiptText,
   RefreshCcw,
   Scale,
@@ -88,6 +89,63 @@ type ControlRow = {
   action_href: string;
   guidance: string;
 };
+
+type FinanceDeskRelianceItem = {
+  caseId: string;
+  title: string;
+  decisionEvidence: string;
+  stopCondition: string;
+};
+
+const financeDeskRelianceItems: FinanceDeskRelianceItem[] = [
+  {
+    caseId: "P5-03-REL-01",
+    title: "Authorized scoped access accepted",
+    decisionEvidence:
+      "KHTC/BGH/AUDIT/Admin can open only within TTGDTX scope; contract-only and out-of-scope users are denied.",
+    stopCondition: "Any out-of-scope or contract-only user sees finance totals.",
+  },
+  {
+    caseId: "P5-03-REL-02",
+    title: "Read-only surface accepted",
+    decisionEvidence:
+      "No create, change, approve, pay, import-write or source-edit action exists inside /finance-desk.",
+    stopCondition:
+      "Finance Desk can approve, pay, unlock, import-write, mutate source data or issue a bank instruction.",
+  },
+  {
+    caseId: "P5-03-REL-03",
+    title: "Source reconciliation accepted",
+    decisionEvidence:
+      "KPIs reconcile to P2-18 dashboard, import readiness, source-control summary and VND formatting.",
+    stopCondition:
+      "Any material mismatch lacks owner note or cannot be traced to source P2 workflow.",
+  },
+  {
+    caseId: "P5-03-REL-04",
+    title: "Evidence hygiene accepted",
+    decisionEvidence:
+      "Evidence uses masked screenshots and controlled references only.",
+    stopCondition:
+      "Raw PII, bank data, voucher, payment evidence, passwords or keys appear in Git/Codex/chat.",
+  },
+  {
+    caseId: "P5-03-REL-05",
+    title: "Finance reliance boundary accepted",
+    decisionEvidence:
+      "Owners record that Finance Desk is advisory/read-only and corrections must happen in source P2 workflows.",
+    stopCondition:
+      "PASS_LOCAL is treated as statutory accounting, finance posting, voucher approval, bank transfer instruction or dashboard production reliance.",
+  },
+  {
+    caseId: "P5-03-REL-06",
+    title: "Human reliance decision recorded",
+    decisionEvidence:
+      "KHTC, BGH, IT_DATA and AUDIT record RELIANCE_READY/NO_GO/BLOCKED with signer, date and controlled evidence refs.",
+    stopCondition:
+      "Missing decision ID, unsigned owner, unresolved source mismatch, uncontrolled evidence or open UAT stop condition remains.",
+  },
+];
 
 const emptyFinanceSummary: FinanceSummaryRow = {
   receivable_total_vnd: 0,
@@ -266,6 +324,58 @@ function FinanceDeskReadOnlyBoundary() {
   );
 }
 
+function FinanceDeskRelianceDecisionManifest() {
+  return (
+    <section
+      className="rounded-lg border border-sky-200 bg-sky-50 p-5 text-sky-950"
+      data-finance-desk-reliance-decision-manifest="P5-03"
+    >
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex gap-3">
+          <ListChecks className="mt-1 size-5 shrink-0" />
+          <div>
+            <h2 className="text-lg font-semibold">
+              P5-03 Finance Desk reliance decision manifest: PASS_LOCAL only
+            </h2>
+            <p className="mt-2 max-w-4xl text-sm leading-6">
+              Use after the acceptance matrix and browser UAT evidence. It
+              prepares a human reliance decision only and does not approve
+              finance action, statutory accounting, voucher posting, bank
+              transfer, UAT acceptance, dashboard production reliance, owner
+              waiver or production GO.
+            </p>
+          </div>
+        </div>
+        <span className="w-fit rounded-lg border border-sky-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-wide text-sky-800">
+          P5_03_RELIANCE_READY / NO_GO / BLOCKED
+        </span>
+      </div>
+
+      <div className="mt-5 grid gap-3 xl:grid-cols-2">
+        {financeDeskRelianceItems.map((item) => (
+          <article
+            className="rounded-lg border border-sky-100 bg-white p-4"
+            key={item.caseId}
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-md bg-sky-100 px-2 py-1 text-xs font-semibold text-sky-800">
+                {item.caseId}
+              </span>
+              <h3 className="text-sm font-semibold">{item.title}</h3>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-sky-900">
+              Evidence: {item.decisionEvidence}
+            </p>
+            <p className="mt-2 text-sm leading-6 text-rose-700">
+              Stop: {item.stopCondition}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default async function FinanceDeskPage() {
   // FinanceDeskPage guard map: formatVndAmount, canOpenFinanceDesk,
   // ttgdtx_accounting_dashboard_summary,
@@ -418,6 +528,7 @@ export default async function FinanceDeskPage() {
     >
       <div className="space-y-6">
         <FinanceDeskReadOnlyBoundary />
+        <FinanceDeskRelianceDecisionManifest />
 
         {!canOpen ? (
           <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm leading-6 text-rose-700">

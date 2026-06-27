@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P5-03 Finance Desk Reliance Decision Manifest
+
+- Added a PASS_LOCAL reliance decision manifest to `/finance-desk` so KHTC,
+  BGH, IT_DATA and AUDIT must record whether the read-only cockpit can be
+  relied on after UAT evidence.
+- Updated `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so reliance is separate from the
+  acceptance matrix and dashboard display.
+- Extended Finance Desk, current-state, implementation-log and release-gate
+  audits to require the reliance decision manifest before handoff.
+- This is cockpit-reliance packaging only. It does not approve finance action,
+  statutory accounting, voucher posting, bank transfer, UAT acceptance,
+  dashboard production reliance, owner waiver or production GO.
+
 ## 2026-06-28 - Account-Control Scope UI Guard
 
 - Added `components/ttgdtx/ttgdtx-account-control-scope-guard.tsx` and mounted

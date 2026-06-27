@@ -81,12 +81,12 @@ requireText(
 );
 requireText(
   inventory,
-  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit[\s\S]*signed finance\/legal UAT still required/i,
+  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit with reliance decision manifest[\s\S]*signed finance\/legal UAT still required/i,
   "M09 P2-01/P2-02 current module state",
 );
 requireText(
   inventory,
-  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard reliance decision manifest, P5-02 action queue and P5-03 Finance Desk read-only cockpit are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
+  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard reliance decision manifest, P5-02 action queue and P5-03 Finance Desk read-only cockpit with reliance decision manifest are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
   "M10 P2-18 dashboard acceptance matrix current module state",
 );
 requireText(
@@ -121,7 +121,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter and `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix[\s\S]*Signed browser UAT pending/i,
+  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "P5-03 Finance Desk current control state",
 );
 requireText(
