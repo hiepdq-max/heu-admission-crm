@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-15 Final Handoff Owner Decision Manifest Alignment
+
+- Updated `AGENTS.md`, `lib/production-readiness.ts`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-15 final handoff summaries must
+  include the P0-09 final owner decision manifest alongside the P0-09
+  sign-off/UAT handoff evidence path.
+- Extended final-handoff, production-blocker-source, production-evidence,
+  current-state, implementation-log and release-gate audits so owner decision
+  manifest evidence cannot be dropped from the final handoff path.
+- This is final-handoff packaging only. It does not collect evidence, accept
+  evidence, execute UAT, approve migration, approve finance action, approve
+  owner waiver or mark production GO.
+
 ## 2026-06-28 - P0-09 Final Owner Decision Manifest Shared Source Alignment
 
 - Updated `lib/production-readiness.ts` so P0-09 and P0-14-09 shared source
