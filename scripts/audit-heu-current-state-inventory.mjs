@@ -56,7 +56,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template and UAT operator handoff sweeps[\s\S]*53 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment[\s\S]*53 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -91,7 +91,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist and owner acceptance matrix[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
+  /Production readiness guard[\s\S]*TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO\/NO-GO checklist, owner acceptance matrix and owner sign-off handoff evidence path[\s\S]*PASS_LOCAL, NO-GO[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
 requireText(
@@ -153,6 +153,11 @@ requireText(
   inventory,
   /P3-01\/P3-02[\s\S]*still require signed evidence[\s\S]*Execute P3-01\/P3-02 lead lifecycle and handover UAT/i,
   "P3-01/P3-02 signed UAT priority",
+);
+requireText(
+  inventory,
+  /Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack\s+and UAT operator handoff references/i,
+  "owner sign-off handoff priority",
 );
 requireText(
   inventory,

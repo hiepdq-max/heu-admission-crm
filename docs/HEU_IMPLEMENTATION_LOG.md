@@ -2404,3 +2404,14 @@
   file in the final owner evidence path.
 - This is evidence-path alignment only. It does not execute UAT, accept raw
   evidence, approve finance action, approve migration or mark production GO.
+
+## 2026-06-27 - Current-State Inventory After Owner Sign-Off Handoff Alignment
+
+- Refreshed `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Stage D / NO-GO
+  snapshot records that the owner GO/NO-GO evidence path now includes the UAT
+  operator handoff.
+- Updated `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates`
+  so the inventory cannot drift behind the owner sign-off handoff alignment.
+- Production remains NO-GO until real backup/restore evidence, signed UAT,
+  signed migration order, hard-delete/cascade closure and final owner
+  GO/NO-GO exist outside Codex/chat.

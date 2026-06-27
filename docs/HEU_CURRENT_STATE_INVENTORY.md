@@ -52,7 +52,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
-| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template and UAT operator handoff sweeps; 53 audit scripts passed |
+| Full `audit:*` suite | PASS after the TTGDTX process quick finder, P5-02 Master Control action queue, P0-14 evidence closure tracker, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps and owner sign-off handoff alignment; 53 audit scripts passed |
 
 Passing local checks proves only local packaging quality. It does not approve
 production, production migration, UAT acceptance, finance action or owner GO.
@@ -78,7 +78,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Area | Current evidence | Readiness |
 |---|---|---|
-| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist and owner acceptance matrix | PASS_LOCAL, NO-GO |
+| Production readiness guard | TTGDTX landing guard, internal UAT closure tracker, UAT execution closure template, UAT operator handoff, execution queue, owner GO/NO-GO checklist, owner acceptance matrix and owner sign-off handoff evidence path | PASS_LOCAL, NO-GO |
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, operator run sheet and restore smoke-check acceptance matrix exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard and audit exist | Signed approval still required |
@@ -133,7 +133,8 @@ Production is still NO-GO because:
 8. Convert or waive remaining non-TTGDTX/base hard-delete/cascade findings.
 9. Keep `npm.cmd run audit:ttgdtx-release-gates`, `npm.cmd run build` and
    `npm.cmd run lint` green before owner review.
-10. Record final owner GO/NO-GO outside Codex/chat.
+10. Record final owner GO/NO-GO outside Codex/chat using the owner sign-off pack
+    and UAT operator handoff references.
 
 ## 9. Current Conclusion
 
