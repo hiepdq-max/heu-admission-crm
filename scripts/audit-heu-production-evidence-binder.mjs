@@ -143,7 +143,7 @@ requireText(
 
 requireText(
   source,
-  /P0-14-09[\s\S]*P0-09[\s\S]*Final owner GO\/NO-GO evidence[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
+  /P0-14-09[\s\S]*P0-09[\s\S]*Final owner GO\/NO-GO evidence[\s\S]*signed decision referencing the owner sign-off pack, final owner decision manifest and UAT operator handoff/i,
   "P0-14-09 owner sign-off UAT handoff proof",
   sourcePath,
 );

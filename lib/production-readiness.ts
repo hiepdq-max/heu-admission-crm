@@ -159,7 +159,7 @@ export const PRODUCTION_BLOCKERS: ProductionBlocker[] = [
     title: "Final owner GO/NO-GO decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
     requiredEvidence:
-      "Final signed multi-owner GO/NO-GO note using the owner sign-off pack, UAT operator handoff and redacted evidence references.",
+      "Final signed multi-owner GO/NO-GO note using the owner sign-off pack, final owner decision manifest, UAT operator handoff and redacted evidence references.",
     href: "/ttgdtx",
   },
 ];
@@ -399,7 +399,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Record final owner decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT",
     proof:
-      "Use the owner sign-off pack and UAT operator handoff references. Production remains NO-GO until every required owner signs GO.",
+      "Use the owner sign-off pack, final owner decision manifest and UAT operator handoff references. Production remains NO-GO until every required owner signs GO.",
   },
 ];
 
@@ -526,7 +526,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     controlledLocation:
       "Final owner sign-off pack outside Codex/chat with redacted checklist references only.",
     requiredProof:
-      "Every blocker closed or explicitly waived by authority, final recommendation and signed decision referencing the owner sign-off pack and UAT operator handoff.",
+      "Every blocker closed or explicitly waived by authority, final recommendation and signed decision referencing the owner sign-off pack, final owner decision manifest and UAT operator handoff.",
     forbiddenContent:
       "No unsigned GO, AI approval, hidden waiver, raw sensitive attachment or oral-only decision.",
     signoff: "All required owners sign final GO/NO-GO; missing evidence keeps production NO-GO.",

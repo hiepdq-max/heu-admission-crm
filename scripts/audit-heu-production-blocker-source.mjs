@@ -130,7 +130,7 @@ requireText(
 
 requireText(
   source,
-  /P0-09[\s\S]*Final signed multi-owner GO\/NO-GO note using the owner sign-off pack, UAT operator handoff and redacted evidence references[\s\S]*Use the owner sign-off pack and UAT operator handoff references[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff/i,
+  /P0-09[\s\S]*Final signed multi-owner GO\/NO-GO note using the owner sign-off pack, final owner decision manifest, UAT operator handoff and redacted evidence references[\s\S]*Use the owner sign-off pack, final owner decision manifest and UAT operator handoff references[\s\S]*signed decision referencing the owner sign-off pack, final owner decision manifest and UAT operator handoff/i,
   "P0-09 owner sign-off handoff source coverage",
   sourcePath,
 );

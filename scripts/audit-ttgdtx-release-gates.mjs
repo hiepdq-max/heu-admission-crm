@@ -557,6 +557,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-09 Final Owner Decision Manifest Shared Source Alignment[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-09 and P0-14-09 shared source\s+wording requires the final owner decision manifest alongside the owner\s+sign-off pack, UAT operator handoff and redacted evidence references[\s\S]*production-blocker-source, production-evidence-binder,\s+implementation-log and release-gate audits[\s\S]*final owner decision cannot\s+drift back to a generic sign-off note[\s\S]*This is shared-source wording and guard alignment only[\s\S]*does not collect\s+evidence, accept evidence, execute UAT, approve migration, approve finance\s+action, approve owner waiver or mark production GO/i,
+  "P0-09 final owner decision manifest shared source alignment log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /P5-02 P0-14 Intake Ledger Action Queue Alignment[\s\S]*Master Control blocker summary and TTGDTX production execution\s+queue[\s\S]*P0-14 intake-ledger evidence\s+binder before P0-15 final handoff and owner GO\/NO-GO[\s\S]*BGH operating dashboard spec, backlog, production checklist and\s+current-state inventory[\s\S]*does not reduce\s+P0-14 to a generic evidence binder[\s\S]*BGH dashboard, current-state, implementation-log, production\s+readiness and release-gate audits[\s\S]*This is management-queue wording and guard alignment only[\s\S]*does not\s+collect evidence, accept evidence, execute UAT, approve migration, approve\s+finance action, approve owner waiver or mark production GO/i,
   "P5-02 P0-14 intake ledger action queue alignment log entry",
 );
@@ -1265,7 +1271,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names)(?=[\s\S]*P0-19\/P3 gate preservation)(?=[\s\S]*P0-14-02)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED decision)(?=[\s\S]*P0-14-06)(?=[\s\S]*Role and workspace UAT evidence)(?=[\s\S]*P0-14-07)(?=[\s\S]*Audit-log traceability evidence)(?=[\s\S]*P0-14-08)(?=[\s\S]*Hard-delete and cascade conversion evidence)(?=[\s\S]*P0-14-09)(?=[\s\S]*signed decision referencing the owner sign-off pack and UAT operator handoff)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
+  /(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*P0-14-01)(?=[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names)(?=[\s\S]*P0-19\/P3 gate preservation)(?=[\s\S]*P0-14-02)(?=[\s\S]*MIGRATION_EVIDENCE_ACCEPTED decision)(?=[\s\S]*P0-14-06)(?=[\s\S]*Role and workspace UAT evidence)(?=[\s\S]*P0-14-07)(?=[\s\S]*Audit-log traceability evidence)(?=[\s\S]*P0-14-08)(?=[\s\S]*Hard-delete and cascade conversion evidence)(?=[\s\S]*P0-14-09)(?=[\s\S]*signed decision referencing the owner sign-off pack, final owner decision manifest and UAT operator handoff)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*raw student PII)(?=[\s\S]*bank statements?)(?=[\s\S]*AI(?:-produced)? approvals?)/i,
   "P0-14 production evidence shared source",
 );
 

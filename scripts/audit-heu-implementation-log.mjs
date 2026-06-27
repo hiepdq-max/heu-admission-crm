@@ -99,6 +99,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-06-28 - P0-09 Final Owner Decision Manifest Shared Source Alignment[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-09 and P0-14-09 shared source\s+wording requires the final owner decision manifest alongside the owner\s+sign-off pack, UAT operator handoff and redacted evidence references[\s\S]*production-blocker-source, production-evidence-binder,\s+implementation-log and release-gate audits[\s\S]*final owner decision cannot\s+drift back to a generic sign-off note[\s\S]*This is shared-source wording and guard alignment only[\s\S]*does not collect\s+evidence, accept evidence, execute UAT, approve migration, approve finance\s+action, approve owner waiver or mark production GO/i,
+  "P0-09 final owner decision manifest shared source alignment log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - P5-02 P0-14 Intake Ledger Action Queue Alignment[\s\S]*Master Control blocker summary and TTGDTX production execution\s+queue[\s\S]*P0-14 intake-ledger evidence\s+binder before P0-15 final handoff and owner GO\/NO-GO[\s\S]*BGH operating dashboard spec, backlog, production checklist and\s+current-state inventory[\s\S]*does not reduce\s+P0-14 to a generic evidence binder[\s\S]*BGH dashboard, current-state, implementation-log, production\s+readiness and release-gate audits[\s\S]*This is management-queue wording and guard alignment only[\s\S]*does not\s+collect evidence, accept evidence, execute UAT, approve migration, approve\s+finance action, approve owner waiver or mark production GO/i,
   "P5-02 P0-14 intake ledger action queue alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

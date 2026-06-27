@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-09 Final Owner Decision Manifest Shared Source Alignment
+
+- Updated `lib/production-readiness.ts` so P0-09 and P0-14-09 shared source
+  wording requires the final owner decision manifest alongside the owner
+  sign-off pack, UAT operator handoff and redacted evidence references.
+- Extended production-blocker-source, production-evidence-binder,
+  implementation-log and release-gate audits so the final owner decision cannot
+  drift back to a generic sign-off note.
+- This is shared-source wording and guard alignment only. It does not collect
+  evidence, accept evidence, execute UAT, approve migration, approve finance
+  action, approve owner waiver or mark production GO.
+
 ## 2026-06-28 - P5-02 P0-14 Intake Ledger Action Queue Alignment
 
 - Updated the Master Control blocker summary and TTGDTX production execution
