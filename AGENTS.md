@@ -82,6 +82,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/STEP110_P2_19_UAT_RUNBOOK.md`
 - `docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md`
 - `docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md`
+- `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`
 - `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`
 - `docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md`
 
@@ -130,6 +131,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-pilot-open-safety`
   - `npm.cmd run audit:ttgdtx-payout-duplicate-guard`
   - `npm.cmd run audit:ttgdtx-period-lock-policy`
+  - `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`
   - `npm.cmd run audit:ttgdtx-production-readiness-guard`
   - `npm.cmd run audit:ttgdtx-process-labels`
   - `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`

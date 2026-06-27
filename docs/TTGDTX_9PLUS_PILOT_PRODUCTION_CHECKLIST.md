@@ -73,11 +73,13 @@ approval.
 | No AI approval | BGH + IT_DATA | PASS_LOCAL | `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; `/ai-assistant` is advisory/read-only and cannot approve, pay, recognize revenue, freeze/release or mark go-live | YES | AI self-approves finance or go-live |
 | Rollback plan | IT_DATA | IN_PROGRESS | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`; `components/settings/supabase-backup-restore-guard.tsx`; restore procedure; tested dry-run; `npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack`; `npm.cmd run audit:ttgdtx-release-gates` | YES | Cannot recover after production migration failure |
 | Internal UAT sign-off | BGH + KHTC + PHAP_CHE + IT_DATA | IN_PROGRESS | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` records preflight/build and unauthenticated browser smoke pass; `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` defines synthetic account setup; `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` defines the route/account matrix; `components/ttgdtx/ttgdtx-production-readiness-guard.tsx`; `components/ttgdtx/ttgdtx-uat-signoff-guard.tsx`; `npm.cmd run audit:ttgdtx-production-readiness-guard`; signed multi-account UAT still required | YES | Real pilot starts before enough testing |
+| Final owner Go/No-Go sign-off | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | IN_PROGRESS | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `npm.cmd run audit:ttgdtx-production-owner-signoff-pack`; signed final GO/NO-GO decision still required | YES | Production starts without accountable owner approval |
 
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include backup, migration order, permission, audit, hard-delete,
-rollback, P2-17 payout, P2-18 dashboard and final UAT sign-off.
+rollback, P2-17 payout, P2-18 dashboard, final UAT sign-off and final owner
+Go/No-Go sign-off.
 
 ## 7. Evidence Required
 

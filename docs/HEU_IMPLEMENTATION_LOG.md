@@ -1529,3 +1529,35 @@
 
 - Internal UAT sign-off guard is PASS_LOCAL after local audits pass.
 - Signed multi-account UAT remains required before production readiness.
+
+## 2026-06-27 - Production Owner Sign-Off Pack
+
+### Scope
+
+- Continued final production-readiness packaging with a small owner sign-off
+  slice.
+- Added `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` as the single
+  owner-facing pack for the remaining final GO/NO-GO decision.
+- The pack lists required owner decisions for backup/restore, Step90-Step110
+  migration order, P0-19 legal/finance gate, P2-17 payout, P2-18 dashboard,
+  role/workspace, audit-log, hard-delete/cascade and internal multi-account UAT.
+- It keeps production NO-GO until every required owner signs GO and no stop
+  condition remains open.
+- Added `audit:ttgdtx-production-owner-signoff-pack` and release-gate coverage
+  so the pack, checklist, backlog and AGENTS handoff stay aligned.
+
+### Files Updated/Added
+
+- `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`
+- `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs`
+- `scripts/audit-ttgdtx-release-gates.mjs`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+- `package.json`
+- `AGENTS.md`
+
+### Decision
+
+- Owner sign-off pack is PASS_LOCAL after local audits pass.
+- Signed final GO/NO-GO decision remains required before production readiness.

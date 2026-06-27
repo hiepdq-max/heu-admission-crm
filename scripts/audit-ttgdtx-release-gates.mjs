@@ -71,6 +71,7 @@ const requiredFiles = [
   "docs/P2_13_RECONCILIATION_REPAIR_SAFETY_UAT_RUNBOOK.md",
   "docs/TTGDTX_LEAD_QUICK_FIX_UAT_RUNBOOK.md",
   "docs/TTGDTX_SYNTHETIC_REAL_LIKE_UAT_PACK_20260627.md",
+  "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
   "fixtures/ttgdtx/synthetic_real_like_uat_pack_20260627.json",
   "components/audit/hard-delete-boundary-guard.tsx",
   "components/audit/ttgdtx-audit-trail-guard.tsx",
@@ -109,6 +110,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-p019-gate-guard.mjs",
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "scripts/audit-ttgdtx-period-lock-policy.mjs",
+  "scripts/audit-ttgdtx-production-owner-signoff-pack.mjs",
   "scripts/audit-ttgdtx-payout-duplicate-guard.mjs",
   "scripts/audit-ttgdtx-production-readiness-guard.mjs",
   "scripts/audit-ttgdtx-process-labels.mjs",
@@ -153,6 +155,7 @@ const requiredScripts = [
   "audit:ttgdtx-pilot-open-safety",
   "audit:ttgdtx-payout-duplicate-guard",
   "audit:ttgdtx-period-lock-policy",
+  "audit:ttgdtx-production-owner-signoff-pack",
   "audit:ttgdtx-production-readiness-guard",
   "audit:ttgdtx-process-labels",
   "audit:ttgdtx-receivable-payment-lifecycle",
@@ -252,6 +255,18 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Current recommendation:\s*NO-GO/i,
   "NO-GO current recommendation",
+);
+
+requireText(
+  "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_PACK)(?=[\s\S]*This document does not approve production)(?=[\s\S]*Production remains NO-GO until the required owners review the evidence,[\s\S]*record\s+their decision, and sign the final Go\/No-Go decision)(?=[\s\S]*Codex\/AI output is\s+advisory only)(?=[\s\S]*Do not run production migration from Codex\/chat)(?=[\s\S]*Do not mark production GO from Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data)(?=[\s\S]*Production backup and restore dry-run)(?=[\s\S]*Step90-Step110 migration order)(?=[\s\S]*P0-19 legal\/finance gate)(?=[\s\S]*P2-17 payout once)(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*Role and workspace permission)(?=[\s\S]*Audit log completeness)(?=[\s\S]*Hard-delete\/cascade risk)(?=[\s\S]*Internal multi-account UAT)(?=[\s\S]*Final production recommendation remains NO-GO until every required owner signs\s+GO and no stop condition remains open)/i,
+  "production owner sign-off pack local-only boundary",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Final owner Go\/No-Go sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*signed final GO\/NO-GO decision still required/i,
+  "final owner Go/No-Go sign-off checklist row",
 );
 
 requireText(
