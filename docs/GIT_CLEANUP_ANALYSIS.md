@@ -8,6 +8,33 @@ Hardening branch: hardening/ttgdtx-9plus-pilot
 Latest known commit: 9d54348 Add TTGDTX tuition policy control  
 Mode: Documentation-only analysis. No files were deleted, committed or pushed.
 
+## 0. Current Snapshot - 2026-06-27
+
+This file keeps the original 2026-06-22 dirty-worktree inventory for audit
+history. The sections below are historical and must not be treated as the
+current dirty list without running a fresh `git status`.
+
+Current verified snapshot before this addendum:
+
+- Branch: `hardening/ttgdtx-9plus-pilot`.
+- `git status --short --branch`: clean worktree, branch ahead of
+  `origin/hardening/ttgdtx-9plus-pilot` by 58 commits.
+- Latest local commit at snapshot time: `cd03030 feat: show hard delete
+  boundary guard`.
+- Recent work has been split into small reviewed commits for production
+  readiness guards, role-scope, audit-log and hard-delete boundaries.
+- No production migration, Supabase SQL execution, hard-delete, reset or
+  destructive cleanup was performed from this cleanup pass.
+
+Current cleanup rule:
+
+1. Keep committing only small, reviewed scopes.
+2. Run `git status --short --branch` before every new slice.
+3. Do not commit runtime logs, local secrets, raw UAT evidence, exported bank
+   statements or temporary SQL scratch files.
+4. Keep production status NO-GO until backup/restore evidence, signed UAT and
+   owner approval exist.
+
 ## 1. Scope
 
 The repo is dirty and contains both modified tracked files and untracked TTGDTX pilot files. The cleanup objective is not to delete anything now. The correct next step is to group changes by business area, review them, then commit only validated TTGDTX 9+ pilot hardening changes.

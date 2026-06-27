@@ -1442,3 +1442,26 @@
 - P6-06 hard-delete boundary guard is PASS_LOCAL after local audits pass.
 - Non-TTGDTX/base cascade conversion or written waiver remains required before
   production readiness.
+
+## 2026-06-27 - Git Cleanup Snapshot Refresh
+
+### Scope
+
+- Refreshed `docs/GIT_CLEANUP_ANALYSIS.md` with a current 2026-06-27 snapshot.
+- Preserved the original 2026-06-22 dirty-worktree inventory as historical
+  evidence instead of deleting or rewriting it.
+- Recorded that the local worktree was clean before the addendum, on
+  `hardening/ttgdtx-9plus-pilot`, ahead of origin by 58 commits at snapshot
+  time, and that work should continue in small reviewed commits.
+- Updated the production checklist row so it no longer reads like the old dirty
+  list is current, while keeping final owner review/push required.
+
+### Files Updated
+
+- `docs/GIT_CLEANUP_ANALYSIS.md`
+- `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/HEU_IMPLEMENTATION_LOG.md`
+
+### Decision
+
+- Git cleanup status is current for local review, but production remains NO-GO.
