@@ -78,13 +78,14 @@ export function TtgdtxSignedUatExecutionRoutingHub() {
 
       <div className="border-t border-zinc-200 p-5">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[1040px] text-left">
+          <table className="w-full min-w-[1180px] text-left">
             <thead className="bg-zinc-50 text-xs font-semibold uppercase text-zinc-500">
               <tr>
                 <th className="px-4 py-3">Order</th>
                 <th className="px-4 py-3">Route</th>
                 <th className="px-4 py-3">Owner</th>
                 <th className="px-4 py-3">Minimum proof</th>
+                <th className="px-4 py-3">Decision lane</th>
                 <th className="px-4 py-3">Stop condition</th>
                 <th className="px-4 py-3">Guard</th>
               </tr>
@@ -116,6 +117,11 @@ export function TtgdtxSignedUatExecutionRoutingHub() {
                   <td className="px-4 py-4 text-zinc-700">{row.owner}</td>
                   <td className="px-4 py-4 leading-6 text-zinc-600">
                     {row.minimumProof}
+                  </td>
+                  <td className="px-4 py-4">
+                    <span className="inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-1 font-mono text-xs font-semibold text-amber-800">
+                      {row.decisionValue}
+                    </span>
                   </td>
                   <td className="px-4 py-4 leading-6 text-rose-700">
                     {row.stopCondition}

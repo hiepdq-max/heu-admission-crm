@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX Signed UAT Route Decision Lane
+
+- Added `decisionValue` to each `SIGNED_UAT_EXECUTION_ROUTES` row in
+  `lib/production-readiness.ts` so every signed UAT route carries the explicit
+  result lane `SIGNED_UAT_READY / NO_GO / BLOCKED`.
+- Updated `components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx` and
+  `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md` so the route table
+  shows the `Decision lane` beside minimum proof and stop conditions.
+- Strengthened `audit:ttgdtx-signed-uat-execution-routing-hub` so the field,
+  document column and visible UI column cannot silently regress.
+- This is UAT routing clarity only. It does not execute UAT, accept evidence,
+  sign owner results, grant access, approve finance action, approve migration,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - P0-19 Legal Finance Immediate Stop Guard
 
 - Added a visible `data-ttgdtx-p019-immediate-stop="P0-19"` panel to

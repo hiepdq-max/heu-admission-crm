@@ -68,6 +68,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /\| Order \| Code \| Route \| Runbook \| Owner \| Minimum proof \| Decision lane \| Stop condition \| Guard \|[\s\S]*UAT-ROUTE-01[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-11[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED/i,
+  "signed UAT route table decision lane",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   /(?=[\s\S]*Operator Handoff Link)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*all routes PENDING until controlled evidence and\s+required owner signature exist)/i,
   "routing hub links handoff and execution-log result tracker",
 );
@@ -86,13 +92,13 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*export type SignedUatExecutionRoute)(?=[\s\S]*export const SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18\/P5-03)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-09)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)/i,
+  /(?=[\s\S]*export type SignedUatExecutionRoute)(?=[\s\S]*decisionValue:\s*string)(?=[\s\S]*export const SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*decisionValue:\s*"SIGNED_UAT_READY \/ NO_GO \/ BLOCKED")(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18\/P5-03)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-09)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)/i,
   "shared signed UAT execution route source",
 );
 
 requireText(
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
-  /(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*TTGDTX signed UAT execution routing hub:\s*PASS_LOCAL only)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*Open route)(?=[\s\S]*Closure rule)(?=[\s\S]*Strict boundary)(?=[\s\S]*PASS_LOCAL does not execute UAT, accept evidence, sign owner\s+results, grant access, approve finance action, approve migration,\s+approve owner GO\/NO-GO or mark production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*TTGDTX signed UAT execution routing hub:\s*PASS_LOCAL only)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*Decision lane)(?=[\s\S]*row\.decisionValue)(?=[\s\S]*Open route)(?=[\s\S]*Closure rule)(?=[\s\S]*Strict boundary)(?=[\s\S]*PASS_LOCAL does not execute UAT, accept evidence, sign owner\s+results, grant access, approve finance action, approve migration,\s+approve owner GO\/NO-GO or mark production GO)/i,
   "visible signed UAT execution routing hub",
 );
 

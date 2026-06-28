@@ -239,6 +239,19 @@ fastSection("2026-06-28 - TTGDTX Signed UAT Execution Routing Hub", [
   "does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO/NO-GO or mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX Signed UAT Route Decision Lane", [
+  "decisionValue",
+  "SIGNED_UAT_EXECUTION_ROUTES",
+  "lib/production-readiness.ts",
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "SIGNED_UAT_READY / NO_GO / BLOCKED",
+  "Decision lane",
+  "audit:ttgdtx-signed-uat-execution-routing-hub",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
   "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",

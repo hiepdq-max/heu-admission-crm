@@ -90,6 +90,7 @@ export type SignedUatExecutionRoute = {
   route: string;
   runbook: string;
   minimumProof: string;
+  decisionValue: string;
   stopCondition: string;
   auditCommand: string;
 };
@@ -370,6 +371,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
     minimumProof:
       "Controlled storage location, redaction class, reviewer and evidence ID before any screenshot, voucher, backup proof or signed result is referenced.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Raw student PII, CCCD, bank data, passwords, OTPs, service-role keys, vouchers or unredacted screenshots are present.",
     auditCommand: "npm.cmd run audit:heu-controlled-evidence-redaction-pack",
@@ -383,6 +385,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
     minimumProof:
       "Backup ID, isolated restore target, preflight/postflight output and restore smoke-check evidence with P0-19/P3 gate preservation.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "No real backup ID, no isolated restore target, failed smoke-check, unsigned restore evidence or production target confusion.",
     auditCommand: "npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack",
@@ -396,6 +399,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
     minimumProof:
       "Signed migration order after accepted backup/restore evidence, rollback point and Step97/Step100/Step109/Step110 decisions.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Migration order is unsigned, backup proof is missing, rollback point is unclear or any owner marks BLOCKED.",
     auditCommand: "npm.cmd run audit:ttgdtx-migration-order-guard",
@@ -409,6 +413,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
     minimumProof:
       "Synthetic ADMIN, BGH, KHTC, TUYEN_SINH, CTHSSV, DAO_TAO, PHAP_CHE, AUDIT and out-of-scope route matrix with blocked negative cases.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Any role leak, broad workspace access, server-side bypass, missing redaction proof or unsigned owner result.",
     auditCommand: "npm.cmd run audit:heu-role-scope-uat-pack",
@@ -422,6 +427,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
     minimumProof:
       "Legal basis, tuition policy, waiver/exception decision and ALLOW_FINANCE gate proof before receivable or collection reliance.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Legal basis, tuition rule, waiver decision, finance gate proof or owner signature is missing.",
     auditCommand: "npm.cmd run audit:ttgdtx-p019-gate-guard",
@@ -435,6 +441,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
     minimumProof:
       "Lifecycle and handover route evidence proving handover cannot create finance facts or bypass P0-19/P2-05/P2-03 gates.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Handover can create receivable facts directly, bypass finance gate, leak scope or lacks signed owner result.",
     auditCommand: "npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack",
@@ -448,6 +455,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
     minimumProof:
       "Duplicate-click, overpay, voucher normalization, RPC-only path and BBNT/partner-invoice dossier evidence.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Payment can run twice, overpay is possible, dossier evidence is missing, voucher proof is raw or owner signature is absent.",
     auditCommand: "npm.cmd run audit:ttgdtx-payout-execution-readiness",
@@ -461,6 +469,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md + docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
     minimumProof:
       "Read-only behavior, source reconciliation, role denial, Finance Desk scope proof and reliance decision for dashboard users.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Dashboard can write, source reconciliation is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-dashboard-source-reconciliation",
@@ -474,6 +483,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
     minimumProof:
       "Trace rows for create, update, check, approve, pay and source-control events with actor, entity, timestamp and controlled evidence reference.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Trace row is missing, generic payload hides the actor/action, source-control trace is absent or evidence is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-audit-trail-guard",
@@ -487,6 +497,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
     minimumProof:
       "Conversion proof or narrow written waiver for unresolved findings plus rollback and closure decision evidence.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Any protected finance, evidence, approval, payment, lead or audit path can be hard-deleted without signed conversion or waiver.",
     auditCommand: "npm.cmd run audit:hard-delete-conversion-decision-queue",
@@ -500,6 +511,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     runbook: "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
     minimumProof:
       "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, audit and risk-closure references.",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
       "Any required owner signs NO-GO/BLOCKED, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
     auditCommand: "npm.cmd run audit:ttgdtx-production-owner-signoff-pack",
