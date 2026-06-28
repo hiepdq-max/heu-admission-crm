@@ -1,5 +1,16 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Vietnamese Business Label Encoding Assertion
+
+- Verified `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` stores the key
+  Vietnamese finance labels as valid UTF-8 even when some terminal output may
+  render them as mojibake.
+- Strengthened `scripts/audit-heu-vietnamese-text-encoding.mjs` so it now
+  requires readable P2-10 tuition collection, invoice/chung-tu, BBNT/nghiem thu
+  and VND suffix labels in the production checklist.
+- This is audit hardening only. It does not approve UAT, finance action,
+  evidence acceptance, owner sign-off, migration or production GO.
+
 ## 2026-06-28 - TTGDTX Signed UAT Route Result Tracker
 
 - Updated `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` with Section 5.2

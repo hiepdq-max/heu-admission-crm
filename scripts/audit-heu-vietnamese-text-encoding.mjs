@@ -24,6 +24,12 @@ function requireText(contents, pattern, label, file) {
   }
 }
 
+function requireIncludes(contents, needle, label, file) {
+  if (!contents.includes(needle)) {
+    fail(`${file}: missing ${label}`);
+  }
+}
+
 const targetRoots = ["app", "components", "docs", "lib", "scripts", "fixtures"];
 const targetExtensions = new Set([".json", ".md", ".mjs", ".ts", ".tsx"]);
 
@@ -142,6 +148,20 @@ requireText(
   "production checklist Vietnamese text encoding row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
+
+for (const [label, needle] of [
+  ["readable P2-10 tuition collection label", "Thu h\u1ecdc ph\u00ed"],
+  ["readable P2-10 invoice/voucher label", "H\u00f3a \u0111\u01a1n/ch\u1ee9ng t\u1eeb"],
+  ["readable BBNT acceptance basis label", "nghi\u1ec7m thu"],
+  ["readable VND display suffix", "1.000.000 \u0111"],
+]) {
+  requireIncludes(
+    checklist,
+    needle,
+    label,
+    "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  );
+}
 
 requireText(
   inventory,

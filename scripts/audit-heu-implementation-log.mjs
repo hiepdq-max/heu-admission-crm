@@ -133,6 +133,18 @@ fastSection("2026-06-28 - TTGDTX Signed UAT Route Result Tracker", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - Vietnamese Business Label Encoding Assertion", [
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "valid UTF-8",
+  "audit-heu-vietnamese-text-encoding.mjs",
+  "P2-10 tuition collection",
+  "invoice/chung-tu",
+  "BBNT/nghiem thu",
+  "VND suffix",
+  "does not approve UAT",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
