@@ -1,5 +1,49 @@
 # HEU Implementation Log
 
+## 2026-06-28 - AI Prompt Output Audit Logging Design
+
+- Added `docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md` as the
+  P7-04 PASS_LOCAL_DESIGN artifact for future prompt/output audit logging.
+- Updated the AI assistant policy, AI agent scope register, backlog,
+  production checklist and AI/release-gate audits so P7-04 requires actor,
+  role/workspace scope, source-scope refs, redaction status, prompt/output
+  hashes when available, forbidden-action flags, human decision status and
+  controlled evidence reference before any AI-assisted workflow can move toward
+  UAT.
+- This is AI audit-log design only. It does not call an AI service, store live
+  prompts, read restricted data, write workflow state, approve finance action,
+  accept UAT, accept evidence, approve owner GO or mark production GO.
+
+## 2026-06-28 - Legal SOP Governance Control Matrix
+
+- Added `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
+  to connect Legal Article Master, SOP Register, evidence class, workflow gate,
+  report view reliance, finance reliance, AI scope and owner decision
+  boundaries.
+- Updated root control, SOP-to-data, risk signoff, module readiness, AGENTS and
+  P0/release-gate audits so the matrix is controlled as DRAFT_CONTROL and
+  cannot be treated as legal approval or official SOP issuance.
+- This is legal/SOP/governance control mapping only. It does not issue legal
+  policy, approve an SOP, move Drive files, accept UAT, accept evidence,
+  approve finance action, waive owner decision or mark production GO.
+
+## 2026-06-28 - Data Master Report View Compatibility Bridge
+
+- Added `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md`
+  as a DRAFT_CONTROL, DESIGN_ONLY bridge between the P0 Data Master register
+  and controlled Report Views.
+- Added `components/reports/data-master-report-view-bridge-panel.tsx` and
+  mounted it on `/reports` so the app shows compatibility objects, required
+  masters, report-view use contracts, DQ-DM-01 through DQ-DM-04 checkpoints and
+  stop conditions for `STUDENT_MASTER`, `CLASS_MASTER` and `COHORT_MASTER`.
+- Updated the backlog, production checklist, current-state inventory, module
+  readiness matrix, P0 register audit and release-gate file coverage so the
+  bridge cannot silently drop from the report governance surface.
+- This is Data Master / Report View compatibility packaging only. It does not
+  create production SQL, merge source data, import real data, approve
+  report-view signoff, approve dashboard reliance, accept evidence, approve
+  migration, approve finance action or mark production GO.
+
 ## 2026-06-28 - Report View Owner Signoff Capture
 
 - Extended `components/reports/report-view-source-map-panel.tsx` with a

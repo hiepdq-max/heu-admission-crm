@@ -39,15 +39,15 @@ This matrix is based on:
 | Area | Current evidence | Classification | Can code now | Must not code now | Required next gate |
 |---|---|---|---|---|---|
 | P0 Governance Control | P0 register pack exists; audit pack is PASS_LOCAL; backlog/checklist/inventory include the register pack | DAT | Registry read-only UI, status badges, audit guards, gap-matrix routing | Owner approval, official issuance, Drive file movement | Folder/File Registry, Version Log, Audit Log and Signoff Register checked in controlled Drive |
-| Legal Gate | P0-19 legal/finance gate, waiver/exception register and decision manifest exist for TTGDTX | CAN_SUA | Legal basis checklist, legal/SOP mapping, missing-basis warnings | Treating P0-19 as final legal approval | Signed PHAP_CHE/KHTC UAT and Legal Article Master |
-| SOP Gate | SOP-to-data register exists as DRAFT_CONTROL | CAN_SUA | SOP-to-data map UI, required-SOP checklist, owner routing | SOP automation or official SOP issuance | Regulation/SOP owner signoff and Version Log |
-| Data Master P0 | Data model, dictionary, SQL object map and P0 master register exist | CAN_SUA | Compatibility-view design, code policy, dictionary hardening | Destructive rename/drop/merge, real-data import | Cross-module `STUDENT_MASTER`, `CLASS_MASTER`, `COHORT_MASTER` compatibility plan |
+| Legal Gate | P0-19 legal/finance gate, waiver/exception register, decision manifest and Legal/SOP/Governance control matrix exist for TTGDTX | CAN_SUA | Legal basis checklist, legal/SOP mapping, missing-basis warnings | Treating P0-19 or the control matrix as final legal approval | Signed PHAP_CHE/KHTC UAT and Legal Article Master |
+| SOP Gate | SOP-to-data register and Legal/SOP/Governance control matrix exist as DRAFT_CONTROL | CAN_SUA | SOP-to-data map UI, required-SOP checklist, owner routing, evidence-class boundary warnings | SOP automation, official SOP issuance or owner signoff inference | Regulation/SOP owner signoff and Version Log |
+| Data Master P0 | Data model, dictionary, SQL object map, P0 master register and Data Master / Report View compatibility draft exist | CAN_SUA | Compatibility-view design, code policy, dictionary hardening and read-only bridge UI | Destructive rename/drop/merge, real-data import | Cross-module `STUDENT_MASTER`, `CLASS_MASTER`, `COHORT_MASTER` owner signoff |
 | TTGDTX/9+ Operating Module | P2-01 through P2-19 and Step111 Finance Desk objects are packaged; many guards PASS_LOCAL | DAT | UAT support, read-only dashboard, issue queue, source/evidence checks | Production migration, real payout reliance, auto debt clearing | Backup/restore evidence, signed migration order, signed P0-19/P2 UAT |
 | Finance Desk | `/finance-desk`, Step111, MVP spec, UAT runbook and reliance decision manifest exist | DAT for read-only cockpit | Read-only filters, evidence checklist, report-view source map, UAT support | Statutory accounting, voucher posting, bank transfer, payment approval | Signed P5-03 browser UAT and reliance decision |
 | Finance Core / Reconciliation | TTGDTX receivable, collection, reconciliation, request, approval and payout chain exists | CAN_SUA | Reconciliation exception views, duplicate-risk warnings, finance UAT scripts | Auto gach no, auto COM, auto payout, auto period lock | Signed finance UAT, real HEU receipt evidence, locked reconciliation proof |
-| Report View Register | Draft register lists TTGDTX, HOU, Short Course, Audit and AI views; source map draft and read-only DQ status capture exist | CAN_SUA | Report View Register UI, source map, KPI dictionary shell, DQ status capture | Dashboard reading raw workbooks/tables or restricted source data | Owner signoff and evidence attachment per report view |
+| Report View Register | Draft register lists TTGDTX, HOU, Short Course, Audit and AI views; source map draft, read-only DQ status capture and Data Master bridge exist | CAN_SUA | Report View Register UI, source map, KPI dictionary shell, DQ status capture and master/report compatibility bridge | Dashboard reading raw workbooks/tables or restricted source data | Owner signoff and evidence attachment per report view |
 | BGH Dashboard | P5-02 spec, action queue, blocker source and read-only controls exist | CAN_SUA | Read-only blocker dashboard and signed-UAT status views | BGH production reliance or finance conclusion | Signed dashboard UAT and Report View signoff |
-| AI Agent Layer | AI policy, task checklist, risk board and scope register are advisory/read-only | DAT for advisory only | Read-only checklist/risk prompts from approved registers | AI approval, AI write, AI payment, AI go-live, AI data deletion | AI scope registry approval, prompt/output audit logging, signed AI UAT |
+| AI Agent Layer | AI policy, task checklist, risk board, scope register and P7-04 prompt/output audit logging design are advisory/read-only | DAT for advisory only | Read-only checklist/risk prompts from approved registers and audit-log design review | AI approval, AI write, AI payment, AI go-live, AI data deletion, AI service call | AI scope registry approval, implemented prompt/output audit logging, signed AI UAT |
 | HOU Partnership Module | HOU UI/components and lead/HOU/COM primitives exist; SQL map references HOU programs, majors, terms, commission payees | CAN_SUA | HOU gap review, handover log, HOU ledger spec, report-view source map | Mixing HOU ledger with TTGDTX, auto COM payout | HOU handover UAT, HOU tuition ledger, HOU commission policy/signoff |
 | Short Course / Day Nghe | Short-course route and data primitives exist; SQL map references short class/student/payment/invoice objects | CAN_SUA | Attendance/payment/BHXH/meal gate mapping, UAT runbook, report-view source map | Closing payroll/payment periods without attendance and audit | Signed attendance/payment UAT and Short Course report view signoff |
 | Audit / Risk | Audit guards, hard-delete/cascade review and evidence binder exist | DAT for local control | Risk dashboard, waiver queue, audit-log UAT support | Waiving findings without owner signature | P6-03/P6-06 signed UAT or written waiver |
@@ -71,10 +71,10 @@ This matrix is based on:
 |---|---|---|---|
 | 1 | TTGDTX/Finance signed UAT execution support | DAT | UAT checklist/status page and evidence routing |
 | 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell, read-only `/reports` source-map panel, Data Quality Check status capture and owner signoff capture created; next build is cross-module Data Master compatibility plan |
-| 3 | Cross-module Data Master compatibility plan | CAN_SUA | Non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` design |
+| 3 | Cross-module Data Master compatibility plan | CAN_SUA | `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md`; `components/reports/data-master-report-view-bridge-panel.tsx`; non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` design |
 | 4 | HOU ledger/handover gap pack | CAN_SUA | HOU handover log, tuition ledger and COM policy runbook |
 | 5 | Short Course attendance/payment gap pack | CAN_SUA | Attendance, meal/BHXH/HR payment and audit UAT runbook |
-| 6 | AI scope logging design | CAN_SUA | Prompt/output audit logging design, no AI write |
+| 6 | AI scope logging design | CAN_SUA | `docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md`; prompt/output audit logging design only, no AI write |
 
 ## 7. Stop Conditions
 
@@ -94,7 +94,8 @@ The build can continue, but only in this order:
 
 1. Signed UAT and evidence routing for TTGDTX/Finance Desk.
 2. Report View Register and Data Quality Check Log.
-3. Cross-module Data Master compatibility design.
+3. Cross-module Data Master compatibility design, now drafted as a read-only
+   `/reports` bridge and still blocked from production SQL or real-data import.
 4. HOU and Short Course gap packs.
 5. AI scope logging design.
 

@@ -38,8 +38,10 @@ const registerFiles = [
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
@@ -53,6 +55,7 @@ for (const file of [
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "app/reports/page.tsx",
   "components/reports/report-view-source-map-panel.tsx",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
   "AGENTS.md",
   "package.json",
   "scripts/audit-ttgdtx-release-gates.mjs",
@@ -76,6 +79,11 @@ requireText(
   /RC-08[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-09[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-10[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*TTGDTX\/Finance[\s\S]*HOU[\s\S]*Short Course/i,
   "root action register module matrix routing",
 );
+requireText(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  /RC-04[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-07A[\s\S]*Legal\/SOP\/Governance control matrix[\s\S]*DRAFT_CONTROL[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate, report view and owner decision boundaries are mapped[\s\S]*signed owner review still required/i,
+  "root action register Legal/SOP/Governance routing",
+);
 
 requireText(
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
@@ -93,6 +101,16 @@ requireText(
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   /Event -> Legal Check -> Regulation -> SOP[\s\S]*Report View -> Dashboard -> Audit[\s\S]*CHUA_DU_DIEU_KIEN/i,
   "SOP-to-data gate chain",
+);
+requireText(
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  /HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Legal Article Master, SOP Register, evidence-class,\s+workflow-gate, report-view, finance-reliance, AI-scope and owner-decision\s+boundaries[\s\S]*cannot be used as official legal\s+approval, official SOP issuance, evidence acceptance, UAT acceptance, finance\s+approval, owner waiver or production GO/i,
+  "SOP-to-data related Legal/SOP/Governance matrix",
+);
+requireText(
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Legal basis -> Regulation\/SOP -> Data source -> Workflow gate -> Evidence\s+class -> Report view -> Audit log -> Signoff register -> Owner decision)(?=[\s\S]*Legal Article Master)(?=[\s\S]*SOP Register)(?=[\s\S]*Evidence Class Boundary)(?=[\s\S]*Workflow Gate)(?=[\s\S]*Report View Reliance)(?=[\s\S]*Finance Reliance Boundary)(?=[\s\S]*AI Scope Boundary)(?=[\s\S]*Owner Decision Boundary)(?=[\s\S]*does not issue legal policy, approve an SOP, accept UAT,\s+accept evidence, approve finance action, approve migration, move Drive files or\s+grant owner Go\/No-Go)/i,
+  "Legal/SOP/Governance control matrix boundary",
 );
 
 requireText(
@@ -132,9 +150,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
+  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*DESIGN_ONLY)(?=[\s\S]*does not approve production SQL,\s+schema migration, UAT acceptance, dashboard reliance, evidence acceptance,\s+finance action or owner Go\/No-Go)/i,
+  "Data Master / Report View compatibility plan boundary",
+);
+
+requireText(
+  "components/reports/data-master-report-view-bridge-panel.tsx",
+  /(?=[\s\S]*data-heu-data-master-report-view-bridge-panel="DM-RV-03")(?=[\s\S]*Data Master \/ Report View Bridge: DESIGN_ONLY)(?=[\s\S]*does not\s+create production SQL, merge source records, import real data or\s+approve dashboard reliance)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*OWNER_SIGNOFF_PENDING)/i,
+  "Data Master / Report View bridge panel",
+);
+
+requireText(
   "app/reports/page.tsx",
-  /ReportViewSourceMapPanel[\s\S]*<ReportViewSourceMapPanel \/>/i,
-  "reports page mounts source-map panel",
+  /(?=[\s\S]*ReportViewSourceMapPanel)(?=[\s\S]*<ReportViewSourceMapPanel \/>)(?=[\s\S]*DataMasterReportViewBridgePanel)(?=[\s\S]*<DataMasterReportViewBridgePanel \/>)/i,
+  "reports page mounts source-map and Data Master / Report View bridge panels",
 );
 
 requireText(
@@ -145,7 +175,7 @@ requireText(
 
 requireText(
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
-  /PASS_LOCAL means local packaging or static audit passed[\s\S]*does not mean:[\s\S]*production ready[\s\S]*owner GO granted[\s\S]*Human signer only/i,
+  /PASS_LOCAL means local packaging or static audit passed[\s\S]*does not mean:[\s\S]*production ready[\s\S]*owner GO granted[\s\S]*Legal\/SOP\/governance chain incomplete[\s\S]*Legal\/SOP\/Governance Control Matrix[\s\S]*Human signer only/i,
   "risk signoff boundary",
 );
 
@@ -179,9 +209,33 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P0-18[\s\S]*Data Master \/ Report View compatibility bridge[\s\S]*PASS_LOCAL[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/data-master-report-view-bridge-panel\.tsx[\s\S]*\/reports[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*DQ-DM-01 through DQ-DM-04[\s\S]*does not create production SQL, merge source data, import real data, approve report-view signoff, approve dashboard reliance or mark production GO/i,
+  "P0-18 Data Master / Report View bridge backlog row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Data Master \/ Report View compatibility bridge[\s\S]*PASS_LOCAL[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/data-master-report-view-bridge-panel\.tsx[\s\S]*\/reports[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*DQ-DM-01 through DQ-DM-04[\s\S]*no production SQL, source merge, real-data import, report-view signoff, dashboard reliance or production GO/i,
+  "Data Master / Report View bridge production checklist row",
+);
+
+requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
   "current-state P0 register evidence",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Data Master \/ Report View bridge[\s\S]*\/reports[\s\S]*compatibility objects, report-view master requirements and DQ-DM-01 through DQ-DM-04 stop conditions[\s\S]*PASS_LOCAL; no production SQL, source merge, real-data import, report-view signoff or dashboard reliance approved/i,
+  "current-state Data Master / Report View bridge row",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Data Master Report View Compatibility Bridge[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*does not\s+create production SQL, merge source data, import real data, approve\s+report-view signoff, approve dashboard reliance, accept evidence, approve\s+migration, approve finance action or mark production GO/i,
+  "Data Master / Report View bridge implementation log entry",
 );
 
 requireText(
@@ -212,6 +266,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /Module Readiness Gap Matrix[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*RC-08, RC-09 and RC-10[\s\S]*review\/control routing only[\s\S]*does not execute UAT, approve\s+migration, approve finance action, accept evidence or mark production GO/i,
   "module readiness gap matrix implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Legal SOP Governance Control Matrix[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate,\s+report view reliance, finance reliance, AI scope and owner decision\s+boundaries[\s\S]*DRAFT_CONTROL[\s\S]*does not issue legal\s+policy, approve an SOP, move Drive files, accept UAT, accept evidence,\s+approve finance action, waive owner decision or mark production GO/i,
+  "Legal/SOP/Governance matrix implementation log entry",
 );
 
 requireText(

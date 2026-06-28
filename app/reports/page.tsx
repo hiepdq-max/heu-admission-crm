@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { RefreshCcw } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { DataMasterReportViewBridgePanel } from "@/components/reports/data-master-report-view-bridge-panel";
 import { ReportViewSourceMapPanel } from "@/components/reports/report-view-source-map-panel";
 import { ReportsOverview } from "@/components/reports/reports-overview";
 import { Button } from "@/components/ui/button";
@@ -311,6 +312,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
           majorRows={majorRows}
         />
         <ReportViewSourceMapPanel />
+        <DataMasterReportViewBridgePanel />
       </div>
     </AppShell>
   );

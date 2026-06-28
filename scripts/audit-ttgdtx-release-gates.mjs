@@ -54,13 +54,16 @@ const requiredFiles = [
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
@@ -106,6 +109,7 @@ const requiredFiles = [
   "components/ai/ai-task-checklist-generator.tsx",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
   "components/reports/report-view-source-map-panel.tsx",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/master-control/production-readiness-blocker-summary.tsx",
   "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
   "components/ttgdtx/ttgdtx-dashboard-readonly-guard.tsx",
@@ -441,7 +445,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*internal UAT closure tracker)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
+  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*internal UAT closure tracker)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -449,6 +453,11 @@ requireText(
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
   /Status:\s*DRAFT_CONTROL[\s\S]*No new level-1 folder is allowed[\s\S]*Folder Registry, File Registry,\s*Version Log, Audit Log and Signoff Register[\s\S]*RC-08[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-09[\s\S]*DRAFT_MATRIX_READY[\s\S]*RC-10[\s\S]*DRAFT_MATRIX_READY[\s\S]*Codex\/AI may draft, check and implement local safe controls[\s\S]*must not\s+approve production, approve migration, accept UAT, approve finance action/i,
   "P0 root control action register boundary",
+);
+requireText(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  /RC-04[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-07A[\s\S]*Legal\/SOP\/Governance control matrix[\s\S]*DRAFT_CONTROL[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate, report view and owner decision boundaries are mapped[\s\S]*signed owner review still required/i,
+  "P0 root Legal/SOP/Governance control matrix routing",
 );
 
 requireText(
@@ -467,6 +476,16 @@ requireText(
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   /Event -> Legal Check -> Regulation -> SOP[\s\S]*Report View -> Dashboard -> Audit[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*does not approve any SOP as officially issued/i,
   "P0 SOP-to-data mapping boundary",
+);
+requireText(
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  /HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Legal Article Master, SOP Register, evidence-class,\s+workflow-gate, report-view, finance-reliance, AI-scope and owner-decision\s+boundaries[\s\S]*cannot be used as official legal\s+approval, official SOP issuance, evidence acceptance, UAT acceptance, finance\s+approval, owner waiver or production GO/i,
+  "P0 SOP-to-data Legal/SOP/Governance matrix reference",
+);
+requireText(
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Legal basis -> Regulation\/SOP -> Data source -> Workflow gate -> Evidence\s+class -> Report view -> Audit log -> Signoff register -> Owner decision)(?=[\s\S]*Legal Article Master)(?=[\s\S]*SOP Register)(?=[\s\S]*Evidence Class Boundary)(?=[\s\S]*Workflow Gate)(?=[\s\S]*Report View Reliance)(?=[\s\S]*Finance Reliance Boundary)(?=[\s\S]*AI Scope Boundary)(?=[\s\S]*Owner Decision Boundary)(?=[\s\S]*does not issue legal policy, approve an SOP, accept UAT,\s+accept evidence, approve finance action, approve migration, move Drive files or\s+grant owner Go\/No-Go)/i,
+  "P0 Legal/SOP/Governance control matrix boundary",
 );
 
 requireText(
@@ -500,9 +519,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
+  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*DESIGN_ONLY)(?=[\s\S]*does not approve production SQL,\s+schema migration, UAT acceptance, dashboard reliance, evidence acceptance,\s+finance action or owner Go\/No-Go)/i,
+  "P0 Data Master / Report View compatibility boundary",
+);
+
+requireText(
+  "components/reports/data-master-report-view-bridge-panel.tsx",
+  /(?=[\s\S]*data-heu-data-master-report-view-bridge-panel="DM-RV-03")(?=[\s\S]*Data Master \/ Report View Bridge: DESIGN_ONLY)(?=[\s\S]*does not\s+create production SQL, merge source records, import real data or\s+approve dashboard reliance)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*OWNER_SIGNOFF_PENDING)/i,
+  "P0 Data Master / Report View bridge panel",
+);
+
+requireText(
   "app/reports/page.tsx",
-  /ReportViewSourceMapPanel[\s\S]*<ReportViewSourceMapPanel \/>/i,
-  "reports page mounts report-view source-map panel",
+  /(?=[\s\S]*ReportViewSourceMapPanel)(?=[\s\S]*<ReportViewSourceMapPanel \/>)(?=[\s\S]*DataMasterReportViewBridgePanel)(?=[\s\S]*<DataMasterReportViewBridgePanel \/>)/i,
+  "reports page mounts report-view source-map and Data Master / Report View bridge panels",
 );
 
 requireText(
@@ -510,10 +541,15 @@ requireText(
   /AI may draft, check, summarize and warn[\s\S]*AI must not\s+approve, pay, post finance records, delete data or mark production GO[\s\S]*Signed UAT proving AI cannot approve, pay, release, delete or go-live/i,
   "P0 AI agent scope register boundary",
 );
+requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /P7-04 prompt\/output audit logging design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor, role, workspace scope, registered agent, source scope,\s+prompt\/output redaction status, prompt\/output hash where available, forbidden\s+action flags, human decision status and controlled evidence reference[\s\S]*does not implement AI logging, enable AI\s+service calls, approve AI-readable data access, accept UAT or approve\s+production AI/i,
+  "P7-04 AI agent scope register boundary",
+);
 
 requireText(
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
-  /PASS_LOCAL means local packaging or static audit passed[\s\S]*does not mean:[\s\S]*production ready[\s\S]*owner GO granted[\s\S]*Human signer only[\s\S]*does not approve production/i,
+  /PASS_LOCAL means local packaging or static audit passed[\s\S]*does not mean:[\s\S]*production ready[\s\S]*owner GO granted[\s\S]*Legal\/SOP\/governance chain incomplete[\s\S]*Legal\/SOP\/Governance Control Matrix[\s\S]*Human signer only[\s\S]*does not approve production/i,
   "P0 risk control signoff register boundary",
 );
 
@@ -521,6 +557,24 @@ requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*HOU Partnership Module[\s\S]*Short Course \/ Day Nghe[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
   "P0 module readiness gap matrix boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /AI Prompt Output Audit Logging Design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor,\s+role\/workspace scope, source-scope refs, redaction status, prompt\/output\s+hashes when available, forbidden-action flags, human decision status and\s+controlled evidence reference[\s\S]*does not call an AI service, store live\s+prompts, read restricted data, write workflow state, approve finance action,\s+accept UAT, accept evidence, approve owner GO or mark production GO/i,
+  "P7-04 AI prompt/output audit logging implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Legal SOP Governance Control Matrix[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate,\s+report view reliance, finance reliance, AI scope and owner decision\s+boundaries[\s\S]*DRAFT_CONTROL[\s\S]*does not issue legal\s+policy, approve an SOP, move Drive files, accept UAT, accept evidence,\s+approve finance action, waive owner decision or mark production GO/i,
+  "Legal/SOP/Governance matrix implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Data Master Report View Compatibility Bridge[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*does not\s+create production SQL, merge source data, import real data, approve\s+report-view signoff, approve dashboard reliance, accept evidence, approve\s+migration, approve finance action or mark production GO/i,
+  "Data Master / Report View bridge implementation log entry",
 );
 
 requireText(
@@ -869,6 +923,16 @@ requireText(
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   /P7-03 Read-Only Risk Suggestion Board[\s\S]*static, read-only and advisory-only[\s\S]*missing evidence[\s\S]*role\/workspace leaks[\s\S]*missing restore proof[\s\S]*duplicate payout[\s\S]*dashboard reconciliation[\s\S]*AI-output misuse[\s\S]*must not:[\s\S]*Score people, hide exceptions or suppress risk[\s\S]*Save risk decisions or write workflow data[\s\S]*Call Supabase, RPC, mutation APIs, AI services or production workflows[\s\S]*Approve finance, accept UAT, waive evidence, run migration or mark production\s+GO[\s\S]*P7-03 remains PASS_LOCAL only/i,
   "P7-03 read-only risk suggestion board policy",
+);
+requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-04 Prompt\/Output Audit Logging Design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*PASS_LOCAL_DESIGN[\s\S]*must not:[\s\S]*Call an AI service[\s\S]*Store live user prompts, files or raw evidence in Git, Codex or chat[\s\S]*Write workflow state, approve finance, accept UAT, waive evidence, run\s+migration or mark production GO[\s\S]*P7-04 remains PASS_LOCAL_DESIGN only/i,
+  "P7-04 prompt/output audit logging policy",
+);
+requireText(
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  /Required Logical Records[\s\S]*AI_PROMPT_OUTPUT_AUDIT_LOG[\s\S]*AI_SCOPE_SOURCE_ACCESS_LOG[\s\S]*AI_ASSISTED_DECISION_LINK[\s\S]*AI_RISK_REVIEW_LOG[\s\S]*Minimum Event Fields[\s\S]*actor_user_id[\s\S]*workspace_scope[\s\S]*source_scope_refs[\s\S]*forbidden_action_flag[\s\S]*human_decision_status[\s\S]*Stop Conditions[\s\S]*AI suggests approval, payment, revenue recognition, account release,\s+deletion, evidence hiding, migration approval or production GO/i,
+  "P7-04 prompt/output audit logging design records and stops",
 );
 
 requireText(

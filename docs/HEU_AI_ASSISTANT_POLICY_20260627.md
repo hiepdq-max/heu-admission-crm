@@ -87,7 +87,26 @@ It must not:
 P7-03 remains PASS_LOCAL only until prompt/output audit logging, role-scoped AI
 data access, risk-review audit logging and signed UAT are complete.
 
-## 7. Evidence Rule
+## 7. P7-04 Prompt/Output Audit Logging Design
+
+`docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md` is allowed as a
+PASS_LOCAL_DESIGN artifact because it defines the future audit log shape,
+required fields, source-scope trace, human decision link, stop conditions and
+AI UAT cases.
+
+It must not:
+
+- Call an AI service.
+- Store live user prompts, files or raw evidence in Git, Codex or chat.
+- Read data outside role/workspace scope.
+- Write workflow state, approve finance, accept UAT, waive evidence, run
+  migration or mark production GO.
+
+P7-04 remains PASS_LOCAL_DESIGN only until a separate implementation has
+approved AI-readable data scope, role-scoped access, prompt/output audit
+storage, human approval gates and signed AI UAT.
+
+## 8. Evidence Rule
 
 Every AI-assisted high-risk workflow must store:
 
@@ -100,10 +119,11 @@ Every AI-assisted high-risk workflow must store:
 
 AI output alone is not approval evidence.
 
-## 8. Current Result
+## 9. Current Result
 
 P7-01 is PASS_LOCAL as a policy and static UI guard. P7-02 is PASS_LOCAL as a
 read-only task checklist helper. P7-03 is PASS_LOCAL as a read-only risk
-suggestion board. This does not enable AI automation. Production AI remains
-locked until the implementation rule, prompt/output audit logging, role-scoped
-AI data access, risk-review audit logging and UAT evidence are complete.
+suggestion board. P7-04 is PASS_LOCAL_DESIGN as a prompt/output audit logging
+design. This does not enable AI automation. Production AI remains locked until
+the implementation rule, prompt/output audit logging, role-scoped AI data
+access, risk-review audit logging and UAT evidence are complete.

@@ -37,7 +37,20 @@ outside the user's role/workspace scope.
 | Short Course Attendance Checker | LEVEL_1 | Warn missing attendance/payment evidence | Approve BHXH/meal/HR payment | DAO_TAO/KHTC signoff |
 | BGH Report Draft Assistant | LEVEL_1 | Draft read-only executive summary | Create official conclusion or owner approval | BGH signoff |
 
-## 4. Production Lock
+## 4. Prompt/Output Audit Logging Scope
+
+P7-04 prompt/output audit logging design is documented in
+`docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md`. Future AI
+features must log actor, role, workspace scope, registered agent, source scope,
+prompt/output redaction status, prompt/output hash where available, forbidden
+action flags, human decision status and controlled evidence reference before
+any AI-assisted workflow can be considered for UAT.
+
+P7-04 is PASS_LOCAL_DESIGN only. It does not implement AI logging, enable AI
+service calls, approve AI-readable data access, accept UAT or approve
+production AI.
+
+## 5. Production Lock
 
 AI remains pilot/read-only until all are complete:
 
@@ -47,8 +60,7 @@ AI remains pilot/read-only until all are complete:
 4. Human approval gate for every AI-assisted workflow.
 5. Signed UAT proving AI cannot approve, pay, release, delete or go-live.
 
-## 5. Boundary
+## 6. Boundary
 
 Codex/AI output is not approval evidence. Human actor, human decision, source
 evidence, timestamp and role/scope context are required for high-risk actions.
-

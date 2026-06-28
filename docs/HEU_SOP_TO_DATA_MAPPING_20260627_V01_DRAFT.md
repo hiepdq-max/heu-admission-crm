@@ -41,3 +41,11 @@ workflow, dashboard and AI automation.
 This mapping does not approve any SOP as officially issued. Official SOPs still
 require owner review, version control, audit log and signoff outside Codex/AI.
 
+## 6. Related Control Matrix
+
+`docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` extends
+this mapping with Legal Article Master, SOP Register, evidence-class,
+workflow-gate, report-view, finance-reliance, AI-scope and owner-decision
+boundaries. It is DRAFT_CONTROL only and cannot be used as official legal
+approval, official SOP issuance, evidence acceptance, UAT acceptance, finance
+approval, owner waiver or production GO.

@@ -32,9 +32,13 @@ for (const file of [
   "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
   "AGENTS.md",
   "package.json",
 ]) {
@@ -62,7 +66,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, production guard shared blocker source alignment, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, production guard shared blocker source alignment, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack[\s\S]*Data Master \/ Report View compatibility bridge[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -86,6 +90,12 @@ requireText(
   "P0-17 user account temporary password backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
+requireText(
+  inventory,
+  /M03 Data Master[\s\S]*Admission programs, majors, TTGDTX master[\s\S]*Partial[\s\S]*Master\/dropdown controls and the Data Master \/ Report View compatibility bridge exist; signed UAT and owner signoff still required/i,
+  "M03 Data Master compatibility bridge state",
+);
+
 requireText(
   inventory,
   /M05 Tuyen sinh CRM[\s\S]*P3-01 lifecycle guard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and P3-01\/P3-02 UAT execution pack exist[\s\S]*finance-gated/i,
@@ -128,7 +138,7 @@ requireText(
 );
 requireText(
   inventory,
-  /M01 Legal[\s\S]*P0-19 legal\/finance gate, acceptance matrix and gate decision manifest are packaged; signed UAT still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist, waiver\/exception register, acceptance matrix and gate decision manifest exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-10 invoice\/chung-tu decision manifest, P2-13 and P2-14 packaged[\s\S]*Local controls pass; signed finance UAT pending/i,
+  /M01 Legal[\s\S]*P0-19 legal\/finance gate, acceptance matrix, gate decision manifest and Legal\/SOP\/Governance control matrix are packaged; signed UAT and PHAP_CHE owner review still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist, waiver\/exception register, acceptance matrix and gate decision manifest exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-10 invoice\/chung-tu decision manifest, P2-13 and P2-14 packaged[\s\S]*Local controls pass; signed finance UAT pending/i,
   "P0-19 legal/finance acceptance matrix control state",
 );
 requireText(
@@ -148,8 +158,13 @@ requireText(
 );
 requireText(
   inventory,
-  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
+  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
+);
+requireText(
+  inventory,
+  /Data Master \/ Report View bridge[\s\S]*\/reports[\s\S]*compatibility objects, report-view master requirements and DQ-DM-01 through DQ-DM-04 stop conditions[\s\S]*PASS_LOCAL; no production SQL, source merge, real-data import, report-view signoff or dashboard reliance approved/i,
+  "Data Master / Report View bridge current control state",
 );
 requireText(
   inventory,
@@ -188,7 +203,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P7-01\/P7-02\/P7-03 are PASS_LOCAL; autonomous AI remains locked/i,
+  /P7-01\/P7-02\/P7-03 are PASS_LOCAL and P7-04 prompt\/output audit logging is PASS_LOCAL_DESIGN; autonomous AI remains locked[\s\S]*AI helper layer[\s\S]*Task checklist and risk board are read-only; P7-04 prompt\/output audit logging design exists[\s\S]*Advisory only; no AI service call, prompt storage, workflow write or autonomous approval/i,
   "AI remains advisory-only",
 );
 requireText(

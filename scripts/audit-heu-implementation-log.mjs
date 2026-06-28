@@ -31,9 +31,13 @@ for (const file of [
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -63,6 +67,27 @@ requireText(
   /scripts\/audit-heu-implementation-log\.mjs[\s\S]*audit:heu-implementation-log/i,
   "release-gate coverage for implementation-log audit",
   "scripts/audit-ttgdtx-release-gates.mjs",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - AI Prompt Output Audit Logging Design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*P7-04 PASS_LOCAL_DESIGN[\s\S]*actor,\s+role\/workspace scope, source-scope refs, redaction status, prompt\/output\s+hashes when available, forbidden-action flags, human decision status and\s+controlled evidence reference[\s\S]*This is AI audit-log design only[\s\S]*does not call an AI service, store live\s+prompts, read restricted data, write workflow state, approve finance action,\s+accept UAT, accept evidence, approve owner GO or mark production GO/i,
+  "AI prompt/output audit logging design log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Legal SOP Governance Control Matrix[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate,\s+report view reliance, finance reliance, AI scope and owner decision\s+boundaries[\s\S]*DRAFT_CONTROL[\s\S]*This is legal\/SOP\/governance control mapping only[\s\S]*does not issue legal\s+policy, approve an SOP, move Drive files, accept UAT, accept evidence,\s+approve finance action, waive owner decision or mark production GO/i,
+  "Legal SOP Governance control matrix log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Data Master Report View Compatibility Bridge[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*backlog, production checklist, current-state inventory, module\s+readiness matrix, P0 register audit and release-gate file coverage[\s\S]*This is Data Master \/ Report View compatibility packaging only[\s\S]*does not\s+create production SQL, merge source data, import real data, approve\s+report-view signoff, approve dashboard reliance, accept evidence, approve\s+migration, approve finance action or mark production GO/i,
+  "Data Master Report View compatibility bridge log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(

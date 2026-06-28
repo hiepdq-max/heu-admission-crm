@@ -26,6 +26,7 @@ PASS_LOCAL means local packaging or static audit passed. It does not mean:
 |---|---|---|---|
 | Folder/file registry drift | Folder/File Registry, Version Log, Audit Log | IT_DATA + Audit | YES |
 | Legal basis missing | Legal Gate and SOP Gate | PHAP_CHE | YES |
+| Legal/SOP/governance chain incomplete | Legal/SOP/Governance Control Matrix | PHAP_CHE + IT_DATA + Audit | YES |
 | Data master inconsistency | Data Master P0 Register and Data Dictionary | IT_DATA + Process owners | YES |
 | Dashboard reads raw/unapproved data | Report View Register and source map | BGH + IT_DATA | YES |
 | Finance gạch nợ without real HEU receipt | Receipt and bank reconciliation gate | KHTC | YES |
@@ -54,4 +55,3 @@ PASS_LOCAL means local packaging or static audit passed. It does not mean:
 This register does not collect real evidence and does not approve production.
 Real signed evidence must be stored in controlled HEU locations outside
 Git/Codex/chat when sensitive.
-

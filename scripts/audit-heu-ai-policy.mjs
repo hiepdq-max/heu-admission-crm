@@ -56,6 +56,11 @@ const policy = requireText(
   /AI output alone is not approval evidence/i,
   "AI output is not approval evidence rule",
 );
+const promptOutputDesign = requireText(
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  /P7-04 is PASS_LOCAL_DESIGN only[\s\S]*does not implement\s+AI logging, enable AI service calls, enable autonomous AI, approve UAT, approve\s+finance, accept evidence, approve owner GO or mark production GO/i,
+  "P7-04 prompt/output audit logging design boundary",
+);
 const checklistGenerator = requireText(
   "components/ai/ai-task-checklist-generator.tsx",
   /data-heu-ai-task-checklist-generator="P7-02"/i,
@@ -87,6 +92,21 @@ requireText(
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   /P7-03 Read-Only Risk Suggestion Board[\s\S]*static, read-only and advisory-only[\s\S]*missing evidence[\s\S]*role\/workspace leaks[\s\S]*missing restore proof[\s\S]*duplicate payout[\s\S]*dashboard reconciliation[\s\S]*AI-output misuse[\s\S]*must not:[\s\S]*Score people, hide exceptions or suppress risk[\s\S]*Save risk decisions or write workflow data[\s\S]*Call Supabase, RPC, mutation APIs, AI services or production workflows[\s\S]*Approve finance, accept UAT, waive evidence, run migration or mark production\s+GO[\s\S]*P7-03 remains PASS_LOCAL only/i,
   "P7-03 read-only risk suggestion board policy",
+);
+requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-04 Prompt\/Output Audit Logging Design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*PASS_LOCAL_DESIGN[\s\S]*must not:[\s\S]*Call an AI service[\s\S]*Store live user prompts, files or raw evidence in Git, Codex or chat[\s\S]*Write workflow state, approve finance, accept UAT, waive evidence, run\s+migration or mark production GO[\s\S]*P7-04 remains PASS_LOCAL_DESIGN only/i,
+  "P7-04 prompt/output audit logging policy",
+);
+requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /P7-04 prompt\/output audit logging design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor, role, workspace scope, registered agent, source scope,\s+prompt\/output redaction status, prompt\/output hash where available, forbidden\s+action flags, human decision status and controlled evidence reference[\s\S]*does not implement AI logging, enable AI\s+service calls, approve AI-readable data access, accept UAT or approve\s+production AI/i,
+  "P7-04 AI scope register boundary",
+);
+requireText(
+  "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  /Required Logical Records[\s\S]*AI_PROMPT_OUTPUT_AUDIT_LOG[\s\S]*AI_SCOPE_SOURCE_ACCESS_LOG[\s\S]*AI_ASSISTED_DECISION_LINK[\s\S]*AI_RISK_REVIEW_LOG[\s\S]*Minimum Event Fields[\s\S]*actor_user_id[\s\S]*workspace_scope[\s\S]*source_scope_refs[\s\S]*forbidden_action_flag[\s\S]*human_decision_status[\s\S]*Stop Conditions[\s\S]*AI suggests approval, payment, revenue recognition, account release,\s+deletion, evidence hiding, migration approval or production GO/i,
+  "P7-04 required records fields and stop conditions",
 );
 
 const aiPage = requireText(
@@ -170,6 +190,17 @@ if (!/P7-02[\s\S]*AI task checklist generator[\s\S]*PASS_LOCAL[\s\S]*ai-task-che
 }
 if (!/P7-03[\s\S]*AI risk suggestion board[\s\S]*PASS_LOCAL[\s\S]*ai-risk-suggestion-board\.tsx[\s\S]*audit:heu-ai-policy[\s\S]*read-only advisory risk prompts/i.test(backlog)) {
   fail("Backlog P7-03 must be PASS_LOCAL and reference the AI risk suggestion board.");
+}
+if (!/P7-04[\s\S]*AI prompt\/output audit logging design[\s\S]*PASS_LOCAL_DESIGN[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md[\s\S]*HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-ai-policy[\s\S]*design only, no AI call, no prompt storage in Git\/Codex\/chat, no workflow write, no production action/i.test(backlog)) {
+  fail("Backlog P7-04 must be PASS_LOCAL_DESIGN and reference prompt/output audit logging design.");
+}
+
+if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*P7-04 is PASS_LOCAL_DESIGN only[\s\S]*cannot call AI services, store live prompts, approve, pay, recognize revenue, freeze\/release or mark go-live/i.test(checklist)) {
+  fail("Production checklist must include P7-04 as design-only under the No AI approval control.");
+}
+
+if (/raw PII|bank statement|service-role key/i.test(promptOutputDesign) && !/forbidden in AI prompts, outputs, logs and Git/i.test(promptOutputDesign)) {
+  fail("P7-04 design must explicitly forbid raw sensitive content in AI logs.");
 }
 
 if (failures.length > 0) {
