@@ -16,6 +16,7 @@ import {
   type ShortCourseKpiRow,
   type ShortCourseSummaryRow,
 } from "@/components/short-course/short-course-dashboard";
+import { ShortCourseAttendancePaymentGapPack } from "@/components/short-course/short-course-attendance-payment-gap-pack";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -703,6 +704,8 @@ export default async function ShortCoursePage({
         </>
       }
     >
+      <ShortCourseAttendancePaymentGapPack />
+
       <ShortCourseDashboard
         kpis={kpis}
         summary={summary}

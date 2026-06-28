@@ -36,10 +36,12 @@ for (const file of [
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -69,6 +71,13 @@ requireText(
   /scripts\/audit-heu-implementation-log\.mjs[\s\S]*audit:heu-implementation-log/i,
   "release-gate coverage for implementation-log audit",
   "scripts/audit-ttgdtx-release-gates.mjs",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Short Course Attendance Payment Gap Pack[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*components\/short-course\/short-course-attendance-payment-gap-pack\.tsx[\s\S]*SC-AP-01 through\s+SC-AP-08[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*This is Short Course control packaging only[\s\S]*does not approve attendance\s+lock[\s\S]*BHXH decision[\s\S]*meal\/allowance payment[\s\S]*HR payment[\s\S]*invoice\/payment\s+verification[\s\S]*period close[\s\S]*statutory accounting[\s\S]*UAT acceptance[\s\S]*evidence\s+acceptance[\s\S]*owner GO[\s\S]*production GO/i,
+  "Short Course attendance payment gap-pack log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(
@@ -164,7 +173,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*59 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*60 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

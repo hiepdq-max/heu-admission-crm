@@ -67,6 +67,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md`
 - `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`
 - `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`
+- `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
 - `docs/HEU_DATA_MODEL_V1.md`
 - `docs/HEU_DATA_DICTIONARY_V1.md`
 - `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`
@@ -140,6 +141,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-production-blocker-source`
   - `npm.cmd run audit:heu-production-evidence-binder`
   - `npm.cmd run audit:heu-role-scope-uat-pack`
+  - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
   - `npm.cmd run audit:heu-sql-object-master-map`
   - `npm.cmd run audit:heu-vietnamese-text-encoding`
   - `npm.cmd run audit:hard-delete`

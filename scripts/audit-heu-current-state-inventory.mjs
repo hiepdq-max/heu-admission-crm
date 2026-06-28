@@ -37,10 +37,12 @@ for (const file of [
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   "AGENTS.md",
   "package.json",
 ]) {
@@ -68,7 +70,7 @@ requireText(
 );
 requireText(
   inventory,
-  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-hou-ledger-handover-gap-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, production guard shared blocker source alignment, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, HOU ledger\/handover gap pack, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack[\s\S]*Data Master \/ Report View compatibility bridge[\s\S]*user account temporary password guard[\s\S]*59 audit scripts passed/i,
+  /npm\.cmd run audit:ttgdtx-release-gates[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-git-hygiene[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-process-labels[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-bgh-dashboard-spec[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-hou-ledger-handover-gap-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-vietnamese-text-encoding[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-blocker-source[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-production-owner-signoff-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-short-course-attendance-payment-gap-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:hard-delete-conversion-decision-queue[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*TTGDTX process quick finder, production guard shared blocker source alignment, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, HOU ledger\/handover gap pack, Short Course attendance\/payment gap pack, P3-01\/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack[\s\S]*Data Master \/ Report View compatibility bridge[\s\S]*user account temporary password guard[\s\S]*60 audit scripts passed/i,
   "current audit evidence",
 );
 requireText(
@@ -172,6 +174,11 @@ requireText(
   inventory,
   /HOU ledger\/handover gap pack[\s\S]*\/hou[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*PASS_LOCAL; no HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance or production GO approved/i,
   "HOU ledger/handover gap-pack current control state",
+);
+requireText(
+  inventory,
+  /Short Course attendance\/payment gap pack[\s\S]*\/short-course[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*SC-AP-01 through SC-AP-08[\s\S]*PASS_LOCAL; no attendance lock, BHXH decision, meal\/allowance payment, HR payment, invoice\/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance or production GO approved/i,
+  "Short Course attendance/payment gap-pack current control state",
 );
 requireText(
   inventory,

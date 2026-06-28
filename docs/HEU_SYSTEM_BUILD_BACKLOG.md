@@ -111,3 +111,9 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | ID | Item | Owner | Status | Gate |
 |---|---|---|---|---|
 | P8-01 | HOU ledger/handover gap pack | HOU owner + KHTC + CTHSSV + Dao tao + Phap Che + Audit | PASS_LOCAL | `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`; `components/hou/hou-ledger-handover-gap-pack.tsx`; `/hou`; HOU-LH-01 through HOU-LH-08; `HOU_LEDGER_READY / NO_GO / BLOCKED`; `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`; keeps HOU ledger, handover, tuition, invoice/chung-tu, COM policy, payment batch and `RV_HOU_LEDGER_SUMMARY` separate from TTGDTX and Short Course; does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO |
+
+## P9 - Short Course / Day Nghe Module
+
+| ID | Item | Owner | Status | Gate |
+|---|---|---|---|---|
+| P9-01 | Short Course attendance/payment gap pack | Dao tao + CTHSSV + KHTC + HR + Phap Che + Audit | PASS_LOCAL | `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`; `components/short-course/short-course-attendance-payment-gap-pack.tsx`; `/short-course`; SC-AP-01 through SC-AP-08; `SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED`; `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`; keeps attendance, BHXH/chinh sach, meal/allowance, HR payment, invoice/payment and `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` UAT-gated; does not approve attendance lock, BHXH decision, meal/allowance payment, HR payment, invoice/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance, owner GO or production GO |

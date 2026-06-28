@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Short Course Attendance Payment Gap Pack
+
+- Added `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
+  as the P9-01 DRAFT_CONTROL package for Short Course attendance,
+  BHXH/chinh sach, meal/allowance, HR payment, invoice/payment and
+  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` report-view reliance.
+- Added `components/short-course/short-course-attendance-payment-gap-pack.tsx`
+  and mounted it on `/short-course` so operators see SC-AP-01 through
+  SC-AP-08, the `SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED` decision lane
+  and current gaps before signed attendance/payment UAT or owner reliance.
+- Added `audit:heu-short-course-attendance-payment-gap-pack` and updated
+  backlog, production checklist, current-state inventory, module readiness,
+  AGENTS and release-gate coverage so the Short Course gap pack cannot drift
+  out of the safe iteration loop.
+- This is Short Course control packaging only. It does not approve attendance
+  lock, BHXH decision, meal/allowance payment, HR payment, invoice/payment
+  verification, period close, statutory accounting, UAT acceptance, evidence
+  acceptance, owner GO or production GO.
+
 ## 2026-06-28 - HOU Ledger Handover Gap Pack
 
 - Added `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`
