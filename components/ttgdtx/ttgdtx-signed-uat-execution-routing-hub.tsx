@@ -28,6 +28,22 @@ const summaryCards = [
   },
 ];
 
+const trackerHandoff = [
+  {
+    label: "Result tracker",
+    value: "TTGDTX_UAT_EXECUTION_LOG_20260625.md Section 5.2",
+  },
+  {
+    label: "Current state",
+    value: "11 UAT-ROUTE rows remain PENDING until signed evidence exists.",
+  },
+  {
+    label: "Required record",
+    value:
+      "Controlled evidence reference, redaction reviewer, result, reviewer and owner signature.",
+  },
+];
+
 export function TtgdtxSignedUatExecutionRoutingHub() {
   return (
     <section
@@ -74,6 +90,26 @@ export function TtgdtxSignedUatExecutionRoutingHub() {
             <p className="mt-3 leading-6 text-zinc-700">{card.detail}</p>
           </article>
         ))}
+      </div>
+
+      <div
+        className="border-t border-zinc-200 bg-sky-50/50 p-5"
+        data-ttgdtx-uat-route-tracker-handoff="SECTION_5_2"
+      >
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase text-sky-800">
+          <FileCheck2 className="size-4" />
+          Operator tracker handoff
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {trackerHandoff.map((item) => (
+            <div key={item.label} className="rounded-md bg-white p-3">
+              <div className="text-[11px] font-semibold uppercase text-zinc-500">
+                {item.label}
+              </div>
+              <div className="mt-2 leading-6 text-zinc-800">{item.value}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="border-t border-zinc-200 p-5">

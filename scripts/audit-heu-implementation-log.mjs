@@ -263,6 +263,17 @@ fastSection("2026-06-28 - TTGDTX UAT Route Decision Lane Per-Route Audit", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX UAT Route Tracker UI Handoff", [
+  "ttgdtx-signed-uat-execution-routing-hub.tsx",
+  "data-ttgdtx-uat-route-tracker-handoff=\"SECTION_5_2\"",
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md Section 5.2",
+  "11",
+  "PENDING",
+  "controlled evidence record",
+  "UI handoff hardening only",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
   "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",

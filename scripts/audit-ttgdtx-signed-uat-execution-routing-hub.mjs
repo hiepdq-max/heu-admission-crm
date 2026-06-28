@@ -138,6 +138,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  /(?=[\s\S]*data-ttgdtx-uat-route-tracker-handoff="SECTION_5_2")(?=[\s\S]*Operator tracker handoff)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md Section 5\.2)(?=[\s\S]*11 UAT-ROUTE rows remain PENDING until signed evidence exists)(?=[\s\S]*Controlled evidence reference, redaction reviewer, result, reviewer and owner signature)/i,
+  "visible route tracker handoff points operators to Section 5.2",
+);
+
+requireText(
   "app/ttgdtx/page.tsx",
   /(?=[\s\S]*TtgdtxSignedUatExecutionRoutingHub)(?=[\s\S]*<TtgdtxUatSignoffGuard \/>[\s\S]*<TtgdtxSignedUatExecutionRoutingHub \/>[\s\S]*<TtgdtxProductionExecutionQueue \/>)/i,
   "TTGDTX page mounts signed UAT routing hub between UAT guard and execution queue",

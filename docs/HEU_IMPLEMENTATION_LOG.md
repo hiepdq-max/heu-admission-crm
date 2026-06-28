@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX UAT Route Tracker UI Handoff
+
+- Added an operator tracker handoff band to
+  `components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx` with the
+  guarded marker `data-ttgdtx-uat-route-tracker-handoff="SECTION_5_2"`.
+- The visible handoff points operators to
+  `TTGDTX_UAT_EXECUTION_LOG_20260625.md Section 5.2`, keeps all 11
+  UAT-ROUTE rows PENDING until signed evidence exists, and names the minimum
+  controlled evidence record required before any result can be relied on.
+- This is UI handoff hardening only. It does not execute UAT, collect evidence,
+  accept evidence, sign owner results, approve finance action, approve
+  migration, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX UAT Route Decision Lane Per-Route Audit
 
 - Strengthened `scripts/audit-ttgdtx-uat-readiness.mjs` and
