@@ -197,6 +197,19 @@ fastSection("2026-06-28 - TTGDTX P0-19/P3 Gate-Handover Decision Stops", [
   "mark production",
 ]);
 
+fastSection("2026-06-28 - TTGDTX P6-04/P6-03 Governance Decision Stops", [
+  "PRODUCTION_GOVERNANCE_ASSURANCE_STEPS",
+  "decision values",
+  "stop conditions",
+  "P6-04 role/workspace",
+  "P6-03 audit-log traceability",
+  "P6_04_SCOPE_READY",
+  "P6_03_TRACE_READY",
+  "ttgdtx-production-execution-queue.tsx",
+  "does not execute role/workspace UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",

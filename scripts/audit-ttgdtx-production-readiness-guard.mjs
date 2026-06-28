@@ -168,7 +168,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*data-ttgdtx-governance-assurance-plan="P6-04_P6-03")(?=[\s\S]*Governance assurance plan: P6-04 \+ P6-03)(?=[\s\S]*role\/workspace scope)(?=[\s\S]*audit-log traceability)(?=[\s\S]*role leak)(?=[\s\S]*missing trace row)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*scope and trace required)(?=[\s\S]*Open governance route)/i,
+  /(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*data-ttgdtx-governance-assurance-plan="P6-04_P6-03")(?=[\s\S]*Governance assurance plan: P6-04 \+ P6-03)(?=[\s\S]*role\/workspace scope)(?=[\s\S]*audit-log traceability)(?=[\s\S]*role leak)(?=[\s\S]*missing trace row)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*scope and trace required)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open governance route)/i,
   "TTGDTX P6-04/P6-03 governance assurance plan",
   executionQueuePath,
 );
@@ -182,7 +182,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*P6-04)(?=[\s\S]*Role and workspace scope UAT)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*audit:heu-role-scope-uat-pack)(?=[\s\S]*P6-03)(?=[\s\S]*Audit-log traceability UAT)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)/i,
+  /(?=[\s\S]*export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*P6-04)(?=[\s\S]*Role and workspace scope UAT)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*P6_04_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any role leak)(?=[\s\S]*audit:heu-role-scope-uat-pack)(?=[\s\S]*P6-03)(?=[\s\S]*Audit-log traceability UAT)(?=[\s\S]*TTGDTX_AUDIT_LOG_UAT_RUNBOOK\.md)(?=[\s\S]*P6_03_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Any required trace row is missing)(?=[\s\S]*audit:ttgdtx-audit-trail-guard)/i,
   "TTGDTX P6-04/P6-03 governance assurance shared source",
   blockerSourcePath,
 );

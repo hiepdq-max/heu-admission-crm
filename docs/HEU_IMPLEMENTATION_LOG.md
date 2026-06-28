@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX P6-04/P6-03 Governance Decision Stops
+
+- Extended `PRODUCTION_GOVERNANCE_ASSURANCE_STEPS` in
+  `lib/production-readiness.ts` with decision values and stop conditions for
+  P6-04 role/workspace scope readiness and P6-03 audit-log traceability
+  readiness.
+- Updated `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the
+  `/ttgdtx` governance assurance plan shows `P6_04_SCOPE_READY / NO_GO /
+  BLOCKED` and `P6_03_TRACE_READY / NO_GO / BLOCKED` before owners rely on
+  role scope or audit traceability evidence.
+- Updated the production checklist, backlog and current-state inventory so the
+  P6-04/P6-03 governance assurance plan stays aligned with the visible UI
+  guard.
+- This is governance assurance guard hardening only. It does not execute role/workspace UAT,
+  grant access, accept audit evidence, waive traceability, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX P0-19/P3 Gate-Handover Decision Stops
 
 - Extended `PRODUCTION_GATE_HANDOVER_STEPS` in `lib/production-readiness.ts`

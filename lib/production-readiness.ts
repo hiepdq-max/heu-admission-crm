@@ -75,6 +75,8 @@ export type ProductionGovernanceAssuranceStep = {
   route: string;
   runbook: string;
   evidence: string;
+  decisionValue: string;
+  stopCondition: string;
   auditCommand: string;
 };
 
@@ -336,6 +338,9 @@ export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS: ProductionGovernanceAssuranc
     runbook: "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
     evidence:
       "Synthetic-account route matrix proving ADMIN, BGH, KHTC, TUYEN_SINH, PHAP_CHE, AUDIT and out-of-scope users see only allowed workspaces.",
+    decisionValue: "P6_04_SCOPE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any role leak, broad workspace access, server-side bypass, missing negative test, missing redaction proof or unsigned owner result remains.",
     auditCommand: "npm.cmd run audit:heu-role-scope-uat-pack",
   },
   {
@@ -346,6 +351,9 @@ export const PRODUCTION_GOVERNANCE_ASSURANCE_STEPS: ProductionGovernanceAssuranc
     runbook: "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
     evidence:
       "Trace rows for create, update, check, approve, pay and source-control events with actor, entity, time and redacted evidence reference.",
+    decisionValue: "P6_03_TRACE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any required trace row is missing, actor/action is unclear, source-control trace is absent, evidence reference is uncontrolled or Audit/KHTC signoff is missing.",
     auditCommand: "npm.cmd run audit:ttgdtx-audit-trail-guard",
   },
 ];
