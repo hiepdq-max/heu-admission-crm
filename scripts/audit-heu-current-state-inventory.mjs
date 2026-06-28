@@ -32,6 +32,8 @@ for (const file of [
   "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "AGENTS.md",
   "package.json",
 ]) {
@@ -145,7 +147,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
+  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
 );
 requireText(

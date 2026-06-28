@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Account-Control Guard Vietnamese Copy Polish
+
+- Updated `components/ttgdtx/ttgdtx-account-control-scope-guard.tsx` so the
+  account-control, phong tỏa/giải tỏa tài khoản and giải chấp separation
+  guidance uses clear Vietnamese with accents.
+- Reworded the rule cards to show Vietnamese titles, `Phạm vi` and `Ranh giới`
+  while preserving metadata-only, no-bank-operation and no-production-GO
+  boundaries.
+- Extended `audit:ttgdtx-account-control-scope-decision` and
+  `audit:ttgdtx-release-gates` so the accented Vietnamese copy and scope
+  boundary cannot silently regress.
+- This is UI copy and audit alignment only. It does not collect evidence,
+  execute UAT, create a bank workflow, approve account freeze/release, approve
+  collateral release, approve finance action or mark production GO.
+
 ## 2026-06-28 - TTGDTX Production Guard Vietnamese Copy Polish
 
 - Updated `components/ttgdtx/ttgdtx-production-readiness-guard.tsx` so the
@@ -805,6 +820,27 @@
   rename schema, move Drive evidence, run migration or authorize production.
 - This is register packaging only. It does not execute UAT, approve migration,
   approve finance action or mark production GO.
+
+## 2026-06-28 - Module Readiness Gap Matrix
+
+- Added `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` to
+  classify HEU modules against the P0 register pack as `DAT`, `CAN_SUA`,
+  `CHUA_DU_DIEU_KIEN` or `CAM_CODE`.
+- Updated the root control action register so RC-08, RC-09 and RC-10 point to
+  the matrix for TTGDTX/Finance, HOU and Short Course follow-up.
+- This is review/control routing only. It does not execute UAT, approve
+  migration, approve finance action, accept evidence or mark production GO.
+
+## 2026-06-28 - Report View Source Map Hardening
+
+- Added `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md` to map each
+  logical report view to current controlled sources for TTGDTX/Finance Desk,
+  HOU, Short Course, Audit and AI.
+- Updated the Report View Register from generic `DRAFT` status to
+  `SOURCE_MAP_DRAFT` and added KPI dictionary plus data-quality-check shells.
+- This is read-only report governance. It does not approve dashboard production
+  reliance, statutory accounting, finance action, UAT acceptance, evidence
+  acceptance or owner GO.
 
 ## 2026-06-27 - Finance Desk No-Data Boundary Guard
 

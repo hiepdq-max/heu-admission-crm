@@ -60,8 +60,10 @@ const requiredFiles = [
   "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MODEL_V1.md",
   "docs/HEU_DATA_DICTIONARY_V1.md",
   "docs/GIT_CLEANUP_ANALYSIS.md",
@@ -437,13 +439,13 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*internal UAT closure tracker)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers exist as DRAFT_CONTROL documents)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
+  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*58 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*internal UAT closure tracker)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
 requireText(
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
-  /Status:\s*DRAFT_CONTROL[\s\S]*No new level-1 folder is allowed[\s\S]*Folder Registry, File Registry,\s*Version Log, Audit Log and Signoff Register[\s\S]*Codex\/AI may draft, check and implement local safe controls[\s\S]*must not\s+approve production, approve migration, accept UAT, approve finance action/i,
+  /Status:\s*DRAFT_CONTROL[\s\S]*No new level-1 folder is allowed[\s\S]*Folder Registry, File Registry,\s*Version Log, Audit Log and Signoff Register[\s\S]*RC-08[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-09[\s\S]*DRAFT_MATRIX_READY[\s\S]*RC-10[\s\S]*DRAFT_MATRIX_READY[\s\S]*Codex\/AI may draft, check and implement local safe controls[\s\S]*must not\s+approve production, approve migration, accept UAT, approve finance action/i,
   "P0 root control action register boundary",
 );
 
@@ -467,8 +469,14 @@ requireText(
 
 requireText(
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
-  /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*RV_AI_ALLOWED_CONTEXT[\s\S]*does not approve production\s+dashboard use or replace signed dashboard UAT/i,
+  /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*SOURCE_MAP_DRAFT[\s\S]*RV_AI_ALLOWED_CONTEXT[\s\S]*does not approve production\s+dashboard use or replace signed dashboard UAT/i,
   "P0 report view register boundary",
+);
+
+requireText(
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*Dashboard -> Report View -> Physical Source -> Data Quality Check -> Owner\s+Signoff -> UAT Evidence[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*RV_TTGDTX_COM_CHI_TRA[\s\S]*RV_HOU_LEDGER_SUMMARY[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT[\s\S]*RV_AI_ALLOWED_CONTEXT[\s\S]*KPI Dictionary Shell[\s\S]*Data Quality Check Log Shell[\s\S]*Report views remain DRAFT_CONTROL until owner signoff and UAT evidence exist/i,
+  "P0 report-view source map boundary",
 );
 
 requireText(
@@ -484,9 +492,27 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*HOU Partnership Module[\s\S]*Short Course \/ Day Nghe[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
+  "P0 module readiness gap matrix boundary",
+);
+
+requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /P0 Register Pack Foundation[\s\S]*HEU P0 register pack as DRAFT_CONTROL documents[\s\S]*audit:heu-p0-register-pack[\s\S]*This is register packaging only[\s\S]*does not execute UAT, approve migration,\s+approve finance action or mark production GO/i,
   "P0 register pack implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Module Readiness Gap Matrix[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*RC-08, RC-09 and RC-10[\s\S]*review\/control routing only[\s\S]*does not execute UAT, approve\s+migration, approve finance action, accept evidence or mark production GO/i,
+  "module readiness gap matrix implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Report View Source Map Hardening[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*TTGDTX\/Finance Desk,\s+HOU, Short Course, Audit and AI[\s\S]*SOURCE_MAP_DRAFT[\s\S]*KPI dictionary plus data-quality-check shells[\s\S]*read-only report governance[\s\S]*does not approve dashboard production\s+reliance, statutory accounting, finance action, UAT acceptance, evidence\s+acceptance or owner GO/i,
+  "report-view source map implementation log entry",
 );
 
 requireText(
@@ -553,6 +579,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /Current State P6-06 Conversion Or Written Waiver Wording[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P6-06 priority action[\s\S]*hard-delete\/cascade findings need conversion or a\s+written waiver[\s\S]*not a generic waiver[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*P6-06 blocker summary loses the conversion-or-written\s+waiver requirement[\s\S]*This is current-state wording alignment only[\s\S]*does not approve production\s+deletion, cascade execution, waiver, conversion migration, data cleanup,\s+evidence acceptance, owner GO\/NO-GO or production GO/i,
   "current-state P6-06 conversion-or-written-waiver wording log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Account-Control Guard Vietnamese Copy Polish[\s\S]*ttgdtx-account-control-scope-guard\.tsx[\s\S]*phong tỏa\/giải tỏa tài khoản and giải chấp separation\s+guidance uses clear Vietnamese with accents[\s\S]*Vietnamese titles, `Phạm vi` and `Ranh giới`[\s\S]*metadata-only, no-bank-operation and no-production-GO\s+boundaries[\s\S]*audit:ttgdtx-account-control-scope-decision[\s\S]*audit:ttgdtx-release-gates[\s\S]*accented Vietnamese copy and scope\s+boundary cannot silently regress[\s\S]*This is UI copy and audit alignment only[\s\S]*does not collect evidence,\s+execute UAT, create a bank workflow, approve account freeze\/release, approve\s+collateral release, approve finance action or mark production GO/i,
+  "account-control guard Vietnamese copy polish log entry",
 );
 
 requireText(
@@ -989,7 +1021,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-account-control-scope-guard.tsx",
-  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong toa\/giai toa tai khoan)(?=[\s\S]*khong gui lenh ngan\s+hang)(?=[\s\S]*khong danh dau tai khoan da phong toa\/giai toa)(?=[\s\S]*khong phe\s+duyet giai chap)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Collateral giai-chap separation)(?=[\s\S]*No bank operation, collateral\s+release, payout, UAT acceptance, data import, production migration\s+or production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong tỏa\/giải tỏa tài khoản)(?=[\s\S]*không gửi lệnh ngân\s+hàng)(?=[\s\S]*không đánh dấu tài khoản đã phong tỏa\/giải tỏa)(?=[\s\S]*không phê\s+duyệt giải chấp)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Tách biệt giải chấp tài sản bảo đảm)(?=[\s\S]*PASS_LOCAL chỉ là quyết định phạm vi)(?=[\s\S]*Không vận hành ngân hàng)(?=[\s\S]*không giải chấp tài sản bảo đảm)(?=[\s\S]*không\s+production GO)/i,
   "account-control scope UI guard",
 );
 

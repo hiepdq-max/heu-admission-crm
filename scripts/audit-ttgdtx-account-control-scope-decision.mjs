@@ -54,7 +54,7 @@ requireText(decision, /ttgdtx-account-control-scope-guard\.tsx[\s\S]*data-ttgdtx
 
 requireText(
   guard,
-  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong toa\/giai toa tai khoan)(?=[\s\S]*khong gui lenh ngan\s+hang)(?=[\s\S]*khong danh dau tai khoan da phong toa\/giai toa)(?=[\s\S]*khong phe\s+duyet giai chap)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Collateral giai-chap separation)(?=[\s\S]*No bank operation, collateral\s+release, payout, UAT acceptance, data import, production migration\s+or production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-account-control-scope-guard="P2-19")(?=[\s\S]*Account-control scope guard: metadata-only)(?=[\s\S]*Phong tỏa\/giải tỏa tài khoản)(?=[\s\S]*không gửi lệnh ngân\s+hàng)(?=[\s\S]*không đánh dấu tài khoản đã phong tỏa\/giải tỏa)(?=[\s\S]*không phê\s+duyệt giải chấp)(?=[\s\S]*ACCT-CTRL-01)(?=[\s\S]*ACCT-CTRL-04)(?=[\s\S]*Tách biệt giải chấp tài sản bảo đảm)(?=[\s\S]*PASS_LOCAL chỉ là quyết định phạm vi)(?=[\s\S]*Không vận hành ngân hàng)(?=[\s\S]*không giải chấp tài sản bảo đảm)(?=[\s\S]*không\s+production GO)/i,
   "account-control scope UI guard",
   guardPath,
 );

@@ -3,34 +3,35 @@ import { Ban, FileLock2, ShieldAlert } from "lucide-react";
 const accountControlRules = [
   {
     caseId: "ACCT-CTRL-01",
-    title: "Tuition-account freeze notice",
+    title: "Thông báo phong tỏa tài khoản học phí",
     scope:
-      "Track only metadata/evidence link, owner, affected scope and communication reference.",
-    boundary: "No bank action, no raw recipient list and no account freeze approval.",
+      "Chỉ theo dõi metadata/evidence link, owner, phạm vi bị ảnh hưởng và mã tham chiếu trao đổi.",
+    boundary:
+      "Không tạo lệnh ngân hàng, không lưu danh sách người nhận thô và không phê duyệt phong tỏa tài khoản.",
   },
   {
     caseId: "ACCT-CTRL-02",
-    title: "Tuition-account release request",
+    title: "Yêu cầu giải tỏa tài khoản học phí",
     scope:
-      "Track only metadata/evidence link, bank-confirmation reference and human finance approval reference.",
+      "Chỉ theo dõi metadata/evidence link, mã xác nhận ngân hàng và mã phê duyệt tài chính của người có thẩm quyền.",
     boundary:
-      "No account release action, no bank instruction and no production operation.",
+      "Không thực hiện giải tỏa tài khoản, không gửi chỉ dẫn ngân hàng và không vận hành production.",
   },
   {
     caseId: "ACCT-CTRL-03",
-    title: "Communication evidence",
+    title: "Bằng chứng trao đổi",
     scope:
-      "Track channel, owner, acknowledgement state and controlled evidence reference.",
+      "Theo dõi kênh trao đổi, owner, trạng thái xác nhận và mã bằng chứng trong nơi lưu trữ kiểm soát.",
     boundary:
-      "No raw phone list, bank-recipient list, CCCD or private message body in Git/Codex/chat.",
+      "Không đưa danh sách số điện thoại thô, danh sách người nhận ngân hàng, CCCD hoặc nội dung tin nhắn riêng vào Git/Codex/chat.",
   },
   {
     caseId: "ACCT-CTRL-04",
-    title: "Collateral giai-chap separation",
+    title: "Tách biệt giải chấp tài sản bảo đảm",
     scope:
-      "Keep collateral release in a separate restricted legal-finance register outside the TTGDTX payment flow.",
+      "Giữ giải chấp tài sản bảo đảm trong sổ đăng ký pháp chế-tài chính hạn chế, tách khỏi luồng thanh toán TTGDTX.",
     boundary:
-      "Never mix collateral release with tuition-account release or partner payment approval.",
+      "Không trộn giải chấp tài sản bảo đảm với giải tỏa tài khoản học phí hoặc phê duyệt thanh toán đối tác.",
   },
 ];
 
@@ -48,19 +49,20 @@ export function TtgdtxAccountControlScopeGuard() {
               Account-control scope guard: metadata-only
             </h2>
             <p className="mt-2 leading-6 text-slate-700">
-              Phong toa/giai toa tai khoan trong TTGDTX 9+ chi duoc theo doi
-              nhu metadata/evidence reference. Ung dung khong gui lenh ngan
-              hang, khong danh dau tai khoan da phong toa/giai toa, khong phe
-              duyet giai chap va khong thay the chu ky KHTC/CTHSSV/Phap Che.
+              Phong tỏa/giải tỏa tài khoản trong TTGDTX 9+ chỉ được theo dõi
+              như metadata/evidence reference. Ứng dụng không gửi lệnh ngân
+              hàng, không đánh dấu tài khoản đã phong tỏa/giải tỏa, không phê
+              duyệt giải chấp và không thay thế chữ ký KHTC/CTHSSV/Pháp chế.
             </p>
           </div>
         </div>
         <div className="flex min-w-64 items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-rose-900">
           <Ban className="mt-0.5 size-4 shrink-0" />
           <p>
-            PASS_LOCAL scope decision only. No bank operation, collateral
-            release, payout, UAT acceptance, data import, production migration
-            or production GO.
+            PASS_LOCAL chỉ là quyết định phạm vi. Không vận hành ngân hàng,
+            không giải chấp tài sản bảo đảm, không payout, không accept UAT,
+            không import dữ liệu, không production migration và không
+            production GO.
           </p>
         </div>
       </div>
@@ -79,10 +81,10 @@ export function TtgdtxAccountControlScopeGuard() {
                 </p>
                 <p className="mt-1 font-medium text-slate-950">{item.title}</p>
                 <p className="mt-2 leading-5 text-slate-700">
-                  Scope: {item.scope}
+                  Phạm vi: {item.scope}
                 </p>
                 <p className="mt-2 leading-5 text-rose-800">
-                  Boundary: {item.boundary}
+                  Ranh giới: {item.boundary}
                 </p>
               </div>
             </div>

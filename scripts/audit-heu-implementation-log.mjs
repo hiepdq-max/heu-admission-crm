@@ -31,6 +31,8 @@ for (const file of [
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -60,6 +62,20 @@ requireText(
   /scripts\/audit-heu-implementation-log\.mjs[\s\S]*audit:heu-implementation-log/i,
   "release-gate coverage for implementation-log audit",
   "scripts/audit-ttgdtx-release-gates.mjs",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Module Readiness Gap Matrix[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*classify HEU modules against the P0 register pack as `DAT`, `CAN_SUA`,\s+`CHUA_DU_DIEU_KIEN` or `CAM_CODE`[\s\S]*RC-08, RC-09 and RC-10 point to\s+the matrix for TTGDTX\/Finance, HOU and Short Course follow-up[\s\S]*This is review\/control routing only[\s\S]*does not execute UAT, approve\s+migration, approve finance action, accept evidence or mark production GO/i,
+  "module readiness gap matrix log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Report View Source Map Hardening[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*logical report view to current controlled sources for TTGDTX\/Finance Desk,\s+HOU, Short Course, Audit and AI[\s\S]*SOURCE_MAP_DRAFT[\s\S]*KPI dictionary plus data-quality-check shells[\s\S]*This is read-only report governance[\s\S]*does not approve dashboard production\s+reliance, statutory accounting, finance action, UAT acceptance, evidence\s+acceptance or owner GO/i,
+  "report-view source map hardening log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(
@@ -95,6 +111,13 @@ requireText(
   /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*58 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Account-Control Guard Vietnamese Copy Polish[\s\S]*ttgdtx-account-control-scope-guard\.tsx[\s\S]*phong tỏa\/giải tỏa tài khoản and giải chấp separation\s+guidance uses clear Vietnamese with accents[\s\S]*Vietnamese titles, `Phạm vi` and `Ranh giới`[\s\S]*metadata-only, no-bank-operation and no-production-GO\s+boundaries[\s\S]*audit:ttgdtx-account-control-scope-decision[\s\S]*audit:ttgdtx-release-gates[\s\S]*accented Vietnamese copy and scope\s+boundary cannot silently regress[\s\S]*This is UI copy and audit alignment only[\s\S]*does not collect evidence,\s+execute UAT, create a bank workflow, approve account freeze\/release, approve\s+collateral release, approve finance action or mark production GO/i,
+  "account-control guard Vietnamese copy polish log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(

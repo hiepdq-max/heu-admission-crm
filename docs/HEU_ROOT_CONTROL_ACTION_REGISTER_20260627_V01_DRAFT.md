@@ -39,9 +39,9 @@ Version Log, Audit Log and Signoff Register before it is treated as official.
 | RC-05 | Lock Report View Register | BGH + IT_DATA + KHTC | DRAFT | Dashboard reads approved report views only |
 | RC-06 | Lock AI Agent Scope Register | BGH + IT_DATA + Audit | DRAFT | AI remains advisory/read-only |
 | RC-07 | Lock Risk Control Signoff Register | Audit + Owners | DRAFT | Human signoff path exists for P0/P1 risks |
-| RC-08 | Review TTGDTX/9+ against P0 registers | KHTC + PHAP_CHE + IT_DATA | TODO | Gap matrix: DAT/CAN_SUA/CHUA_DU_DIEU_KIEN |
-| RC-09 | Review HOU against P0 registers | HOU owner + KHTC + IT_DATA | TODO | Separate HOU ledger and handover controls |
-| RC-10 | Review Short Course against P0 registers | DAO_TAO + KHTC + IT_DATA | TODO | Attendance/payment/BHXH/meal gates mapped |
+| RC-08 | Review TTGDTX/9+ against P0 registers | KHTC + PHAP_CHE + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; signed UAT still required |
+| RC-09 | Review HOU against P0 registers | HOU owner + KHTC + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; separate HOU ledger and handover controls still required |
+| RC-10 | Review Short Course against P0 registers | DAO_TAO + KHTC + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; attendance/payment/BHXH/meal gates still required |
 
 ## 4. 7-30-90 Day Control Roadmap
 
@@ -56,4 +56,3 @@ Version Log, Audit Log and Signoff Register before it is treated as official.
 Codex/AI may draft, check and implement local safe controls. Codex/AI must not
 approve production, approve migration, accept UAT, approve finance action, move
 real evidence, delete source data or mark owner GO.
-

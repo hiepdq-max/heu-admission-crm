@@ -39,8 +39,10 @@ const registerFiles = [
   "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
 ];
 
 for (const file of [
@@ -68,6 +70,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  /RC-08[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-09[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-10[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*TTGDTX\/Finance[\s\S]*HOU[\s\S]*Short Course/i,
+  "root action register module matrix routing",
+);
+
+requireText(
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
   /Data Master comes before workflow, dashboard, automation and AI[\s\S]*STUDENT_MASTER \/ HOC_SINH_MASTER[\s\S]*REPORT_VIEW_REGISTER[\s\S]*SIGNOFF_REGISTER/i,
   "P0 data master ordering and required masters",
@@ -87,8 +95,20 @@ requireText(
 
 requireText(
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
-  /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*RV_AI_ALLOWED_CONTEXT/i,
+  /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*SOURCE_MAP_DRAFT[\s\S]*RV_AI_ALLOWED_CONTEXT/i,
   "report-view source control",
+);
+
+requireText(
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  /Dashboard -> Report View -> Physical Source -> Data Quality Check -> Owner\s+Signoff -> UAT Evidence[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*RV_TTGDTX_CONG_NO_THUC_THU[\s\S]*RV_TTGDTX_COM_CHI_TRA[\s\S]*RV_HOU_LEDGER_SUMMARY[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT[\s\S]*RV_AI_ALLOWED_CONTEXT/i,
+  "report-view source map controlled views",
+);
+
+requireText(
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  /KPI Dictionary Shell[\s\S]*KPI_TTGDTX_ACTUAL_COLLECTION[\s\S]*Does not replace bank reconciliation or HEU actual receipt proof[\s\S]*Data Quality Check Log Shell[\s\S]*DQ-RV-01[\s\S]*DQ-RV-08[\s\S]*Report views remain DRAFT_CONTROL until owner signoff and UAT evidence exist/i,
+  "report-view source map KPI and DQ boundaries",
 );
 
 requireText(
@@ -103,6 +123,18 @@ requireText(
   "risk signoff boundary",
 );
 
+requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /Classify the current HEU build against the P0 register pack[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE/i,
+  "module readiness matrix classifications and finance stop conditions",
+);
+
+requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /Next Build Queue[\s\S]*TTGDTX\/Finance signed UAT execution support[\s\S]*Report View Register hardening[\s\S]*Cross-module Data Master compatibility plan[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*AI scope logging design[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
+  "module readiness matrix next build queue and NO-GO boundary",
+);
+
 const packageJson = JSON.parse(read("package.json"));
 if (!packageJson.scripts?.["audit:heu-p0-register-pack"]) {
   fail("package.json: missing audit:heu-p0-register-pack script");
@@ -110,20 +142,32 @@ if (!packageJson.scripts?.["audit:heu-p0-register-pack"]) {
 
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-16[\s\S]*HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
+  /P0-16[\s\S]*HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
   "P0-16 backlog row",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
+  /HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
   "production checklist P0 register row",
 );
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, AI scope and risk signoff registers/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, AI scope, risk signoff registers and module readiness gap matrix/i,
   "current-state P0 register evidence",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Report View Source Map Hardening[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*TTGDTX\/Finance Desk,\s+HOU, Short Course, Audit and AI[\s\S]*SOURCE_MAP_DRAFT[\s\S]*KPI dictionary plus data-quality-check shells[\s\S]*read-only report governance[\s\S]*does not approve dashboard production\s+reliance, statutory accounting, finance action, UAT acceptance, evidence\s+acceptance or owner GO/i,
+  "report-view source map implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Module Readiness Gap Matrix[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*RC-08, RC-09 and RC-10[\s\S]*review\/control routing only[\s\S]*does not execute UAT, approve\s+migration, approve finance action, accept evidence or mark production GO/i,
+  "module readiness gap matrix implementation log entry",
 );
 
 requireText(
@@ -134,7 +178,7 @@ requireText(
 
 requireText(
   "AGENTS.md",
-  /HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*npm\.cmd run audit:heu-p0-register-pack/i,
+  /HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*npm\.cmd run audit:heu-p0-register-pack/i,
   "AGENTS required reading and handoff command",
 );
 
