@@ -109,7 +109,7 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-ttgdtx-invoice-decision-manifest="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*Collection model and payer decision)(?=[\s\S]*Required invoice\/chung-tu issuance decision)(?=[\s\S]*Not-required or waiver basis decision)(?=[\s\S]*Pending policy downstream blocker decision)(?=[\s\S]*Evidence redaction and storage decision)(?=[\s\S]*Final KHTC\/PHAP_CHE sign-off decision)(?=[\s\S]*khong phe duyet xuat hoa don)(?=[\s\S]*PASS_LOCAL is treated as invoice approval)/i,
+  /(?=[\s\S]*data-ttgdtx-invoice-decision-manifest="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu decision manifest)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*Collection model and payer decision)(?=[\s\S]*Required invoice\/chung-tu issuance decision)(?=[\s\S]*Not-required or waiver basis decision)(?=[\s\S]*Pending policy downstream blocker decision)(?=[\s\S]*Evidence redaction and storage decision)(?=[\s\S]*Final KHTC\/PHAP_CHE sign-off decision)(?=[\s\S]*không phê duyệt xuất hóa đơn)(?=[\s\S]*tư vấn thuế\/pháp lý)(?=[\s\S]*hạch toán tài chính)(?=[\s\S]*nghiệm thu UAT)(?=[\s\S]*PASS_LOCAL is treated as invoice approval)/i,
   "P2-10 invoice/chung-tu decision manifest",
   componentPath,
 );

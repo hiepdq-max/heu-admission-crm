@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-10 Invoice Decision Manifest Vietnamese UX Hardening
+
+- Updated `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx` so the P2-10
+  invoice/chung-tu decision manifest explains invoice issuance, accepted
+  evidence, blocking conditions, tax/legal advice, finance posting, UAT
+  acceptance and revenue recognition boundaries in readable Vietnamese.
+- Tightened `scripts/audit-ttgdtx-invoice-policy.mjs` so the decision manifest
+  must keep the readable Vietnamese production-boundary warning.
+- This is UI/control-text hardening only. It does not approve invoice issuance,
+  tax/legal advice, finance posting, UAT acceptance, revenue recognition,
+  evidence acceptance, owner signoff or production GO.
+
 ## 2026-06-28 - HOU Gap Pack Vietnamese Encoding Repair
 
 - Repaired mojibake Vietnamese text in

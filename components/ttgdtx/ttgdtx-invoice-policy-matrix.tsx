@@ -289,11 +289,11 @@ export function TtgdtxInvoicePolicyMatrix() {
                 P2-10 invoice/chung-tu decision manifest: PASS_LOCAL only
               </h3>
               <p className="mt-2 leading-6 text-blue-900">
-                Manifest nay tach rieng cau hoi thu tien co can hoa don/chung-tu
-                khong, ai phat hanh, bang chung nao duoc chap nhan va buoc nao
-                phai bi chan neu chua ro. No khong phe duyet xuat hoa don,
-                tu van thue/phap ly, hach toan tai chinh, nghiem thu UAT,
-                ghi nhan doanh thu hoac production GO.
+                Manifest này tách riêng câu hỏi thu tiền có cần hóa đơn/chứng
+                từ không, ai phát hành, bằng chứng nào được chấp nhận và bước
+                nào phải bị chặn nếu chưa rõ. Nó không phê duyệt xuất hóa đơn,
+                tư vấn thuế/pháp lý, hạch toán tài chính, nghiệm thu UAT, ghi
+                nhận doanh thu hoặc production GO.
               </p>
             </div>
           </div>

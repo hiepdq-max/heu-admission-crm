@@ -453,6 +453,18 @@ fastSection("2026-06-28 - HOU Gap Pack Vietnamese Encoding Repair", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - P2-10 Invoice Decision Manifest Vietnamese UX Hardening", [
+  "components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx",
+  "audit-ttgdtx-invoice-policy.mjs",
+  "invoice/chung-tu decision manifest",
+  "readable Vietnamese",
+  "tax/legal advice",
+  "finance posting",
+  "UAT acceptance",
+  "revenue recognition",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
