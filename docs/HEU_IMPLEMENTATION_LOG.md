@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-14 Evidence Binder Forbidden Content Prominence
+
+- Updated `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` so each
+  P0-14 evidence requirement card shows the forbidden-content rule before the
+  operator reaches intake or closure details.
+- Strengthened `audit:heu-production-evidence-binder` and
+  `audit:ttgdtx-release-gates` so the binder cannot drop the per-card
+  `Forbidden` boundary for controlled evidence.
+- This is evidence-binder guard hardening only. It does not collect evidence,
+  accept evidence, approve UAT, approve finance action, approve migration,
+  accept owner signoff or mark production GO.
+
 ## 2026-06-28 - TTGDTX Release Gate Execution Queue Decision Lock
 
 - Strengthened `scripts/audit-ttgdtx-release-gates.mjs` so the release gate

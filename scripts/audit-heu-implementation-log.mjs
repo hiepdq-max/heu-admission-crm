@@ -99,6 +99,17 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - P0-14 Evidence Binder Forbidden Content Prominence", [
+  "ttgdtx-production-evidence-binder.tsx",
+  "forbidden-content rule",
+  "audit:heu-production-evidence-binder",
+  "audit:ttgdtx-release-gates",
+  "Forbidden",
+  "controlled evidence",
+  "does not collect evidence",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX Release Gate Execution Queue Decision Lock", [
   "scripts/audit-ttgdtx-release-gates.mjs",
   "Decision",

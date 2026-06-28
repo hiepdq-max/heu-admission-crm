@@ -70,6 +70,10 @@ export function TtgdtxProductionEvidenceBinder() {
                 <p className="mt-2 leading-5 text-zinc-700">
                   <span className="font-medium">Sign-off:</span> {item.signoff}
                 </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  <span className="font-medium">Forbidden:</span>{" "}
+                  {item.forbiddenContent}
+                </p>
                 <p className="mt-2 font-mono text-xs text-cyan-900">
                   {item.evidenceClass}
                 </p>
