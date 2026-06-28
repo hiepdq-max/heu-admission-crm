@@ -33,6 +33,7 @@ for (const file of [
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "components/reports/report-view-source-map-panel.tsx",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -75,6 +76,13 @@ requireText(
   log,
   /## 2026-06-28 - Report View Source Map Hardening[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*logical report view to current controlled sources for TTGDTX\/Finance Desk,\s+HOU, Short Course, Audit and AI[\s\S]*SOURCE_MAP_DRAFT[\s\S]*KPI dictionary plus data-quality-check shells[\s\S]*This is read-only report governance[\s\S]*does not approve dashboard production\s+reliance, statutory accounting, finance action, UAT acceptance, evidence\s+acceptance or owner GO/i,
   "report-view source map hardening log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - Report View Source Map Read-Only UI[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*read-only P0-16 panel[\s\S]*Mounted the panel on `\/reports`[\s\S]*P0 register, current-state, implementation-log and release-gate\s+audits[\s\S]*This is read-only report governance UI only[\s\S]*does not approve dashboard\s+production reliance, statutory accounting, finance action, UAT acceptance,\s+evidence acceptance, owner GO or production GO/i,
+  "report-view source map read-only UI log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

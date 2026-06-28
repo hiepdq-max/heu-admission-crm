@@ -1,5 +1,35 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Report View Data Quality Status Capture
+
+- Extended `components/reports/report-view-source-map-panel.tsx` so the
+  read-only `/reports` P0-16 panel shows Data Quality Check capture status,
+  owner action, evidence state and stop condition for controlled report views.
+- The DQ status capture covers report-view identity/source ownership, actual
+  receipt/reconciliation evidence, COM/payout implication blocking and AI
+  read-only scope checks.
+- Updated the P0 register audit coverage, backlog, production checklist,
+  current-state inventory and module readiness matrix so the DQ status capture
+  cannot silently regress.
+- This is read-only report governance UI only. It does not approve dashboard
+  production reliance, statutory accounting, finance action, UAT acceptance,
+  evidence acceptance, owner GO or production GO.
+
+## 2026-06-28 - Report View Source Map Read-Only UI
+
+- Added `components/reports/report-view-source-map-panel.tsx` to show the
+  controlled report-view source map, KPI dictionary shell and Data Quality
+  Check Log shell as a read-only P0-16 panel.
+- Mounted the panel on `/reports` below the existing admissions reporting
+  overview so BGH/KHTC/Audit can see source, owner, quality-gate and stop
+  conditions before dashboard reliance.
+- Extended P0 register, current-state, implementation-log and release-gate
+  audits so the panel, route mount and no-production-reliance boundary cannot
+  silently regress.
+- This is read-only report governance UI only. It does not approve dashboard
+  production reliance, statutory accounting, finance action, UAT acceptance,
+  evidence acceptance, owner GO or production GO.
+
 ## 2026-06-28 - Account-Control Guard Vietnamese Copy Polish
 
 - Updated `components/ttgdtx/ttgdtx-account-control-scope-guard.tsx` so the

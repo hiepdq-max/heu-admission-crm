@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { RefreshCcw } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { ReportViewSourceMapPanel } from "@/components/reports/report-view-source-map-panel";
 import { ReportsOverview } from "@/components/reports/reports-overview";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -138,22 +139,22 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
     { data: flowRows },
     { data: userRows },
   ] = await Promise.all([
-      applyAdmissionSegmentIds(
-        supabase
-          .from("leads")
-          .select(
-            "id,status,source_id,flow_id,assigned_to,lost_reason,interested_major,next_followup_at,created_at",
-          )
-          .eq("is_deleted", false),
-        segmentFilterIds,
-      )
-        .order("created_at", { ascending: false })
-        .limit(5000)
-        .returns<LeadReportRow[]>(),
-      supabase.from("lead_sources").select("id,source_name"),
-      supabase.from("admission_flows").select("id,flow_name"),
-      supabase.from("users_profile").select("id,full_name"),
-    ]);
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select(
+          "id,status,source_id,flow_id,assigned_to,lost_reason,interested_major,next_followup_at,created_at",
+        )
+        .eq("is_deleted", false),
+      segmentFilterIds,
+    )
+      .order("created_at", { ascending: false })
+      .limit(5000)
+      .returns<LeadReportRow[]>(),
+    supabase.from("lead_sources").select("id,source_name"),
+    supabase.from("admission_flows").select("id,flow_name"),
+    supabase.from("users_profile").select("id,full_name"),
+  ]);
 
   const leadRows = leads ?? [];
   const total = leadRows.length;
@@ -184,7 +185,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const sourceRowsReport = groupRows(
     leadRows,
     (lead) => lead.source_id ?? "UNKNOWN_SOURCE",
-    (key) => (key === "UNKNOWN_SOURCE" ? "Chưa rõ nguồn" : sourceMap.get(key) ?? "Không rõ"),
+    (key) =>
+      key === "UNKNOWN_SOURCE"
+        ? "Chưa rõ nguồn"
+        : sourceMap.get(key) ?? "Không rõ",
     total,
   );
 
@@ -202,9 +206,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
     leadRows.filter((lead) => lead.status === "LOST"),
     (lead) => lead.lost_reason ?? "UNKNOWN_REASON",
     (key) =>
-      key === "UNKNOWN_REASON"
-        ? "Chưa nhập lý do"
-        : lostReasonLabels[key] ?? key,
+      key === "UNKNOWN_REASON" ? "Chưa nhập lý do" : lostReasonLabels[key] ?? key,
     lost || 1,
   );
 
@@ -273,40 +275,43 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
         </Button>
       }
     >
-      <ReportsOverview
-        summary={[
-          {
-            label: "Tổng lead",
-            value: formatNumber(total),
-            note: "Lead đang hoạt động trong CRM",
-            tone: "border-sky-200 bg-sky-50 text-sky-700",
-          },
-          {
-            label: "Lead mới hôm nay",
-            value: formatNumber(newToday),
-            note: "Tạo từ 00:00 hôm nay",
-            tone: "border-emerald-200 bg-emerald-50 text-emerald-700",
-          },
-          {
-            label: "Chuyển đổi",
-            value: conversionRate,
-            note: `${formatNumber(enrolled)} lead đã nhập học`,
-            tone: "border-violet-200 bg-violet-50 text-violet-700",
-          },
-          {
-            label: "Cần chăm sóc",
-            value: formatNumber(openFollowups),
-            note: `${formatNumber(lost)} lead đã mất`,
-            tone: "border-amber-200 bg-amber-50 text-amber-700",
-          },
-        ]}
-        statusRows={statusRows}
-        sourceRows={sourceRowsReport}
-        flowRows={flowRowsReport}
-        counselorRows={counselorRows}
-        lostReasonRows={lostReasonRows}
-        majorRows={majorRows}
-      />
+      <div className="space-y-6">
+        <ReportsOverview
+          summary={[
+            {
+              label: "Tổng lead",
+              value: formatNumber(total),
+              note: "Lead đang hoạt động trong CRM",
+              tone: "border-sky-200 bg-sky-50 text-sky-700",
+            },
+            {
+              label: "Lead mới hôm nay",
+              value: formatNumber(newToday),
+              note: "Tạo từ 00:00 hôm nay",
+              tone: "border-emerald-200 bg-emerald-50 text-emerald-700",
+            },
+            {
+              label: "Chuyển đổi",
+              value: conversionRate,
+              note: `${formatNumber(enrolled)} lead đã nhập học`,
+              tone: "border-violet-200 bg-violet-50 text-violet-700",
+            },
+            {
+              label: "Cần chăm sóc",
+              value: formatNumber(openFollowups),
+              note: `${formatNumber(lost)} lead đã mất`,
+              tone: "border-amber-200 bg-amber-50 text-amber-700",
+            },
+          ]}
+          statusRows={statusRows}
+          sourceRows={sourceRowsReport}
+          flowRows={flowRowsReport}
+          counselorRows={counselorRows}
+          lostReasonRows={lostReasonRows}
+          majorRows={majorRows}
+        />
+        <ReportViewSourceMapPanel />
+      </div>
     </AppShell>
   );
 }

@@ -34,6 +34,7 @@ for (const file of [
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "components/reports/report-view-source-map-panel.tsx",
   "AGENTS.md",
   "package.json",
 ]) {
@@ -147,7 +148,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
+  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
 );
 requireText(
