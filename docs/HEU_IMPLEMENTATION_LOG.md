@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-17 Payout Immediate Stop Guard
+
+- Added a visible `data-ttgdtx-payout-immediate-stop="P2-17"` panel to
+  `components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx`.
+- The panel stops payout evidence recording when the request is not approved,
+  `can_pay` is false, amount/voucher/evidence/dossier checks fail or the
+  bank-transfer boundary is unclear.
+- Strengthened `audit:ttgdtx-payout-execution-readiness` and
+  `audit:ttgdtx-release-gates` so the P2-17 immediate stop conditions remain
+  visible before owner release decision or signed UAT acceptance.
+- This is P2-17 guard hardening only. It does not initiate money movement,
+  approve bank transfer, approve finance action, accept UAT, accept evidence,
+  accept owner signoff or mark production GO.
+
 ## 2026-06-28 - P6-06 Conversion Immediate Stop Guard
 
 - Added a visible `data-hard-delete-conversion-immediate-stop="P6-06"` panel to

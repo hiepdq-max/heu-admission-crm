@@ -1663,7 +1663,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx",
-  /(?=[\s\S]*data-ttgdtx-payout-execution-readiness-checklist="P2-17")(?=[\s\S]*P2-17 payout execution readiness checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-17-EXEC-01)(?=[\s\S]*P2-17-EXEC-08)(?=[\s\S]*Approved request identity)(?=[\s\S]*Remaining amount control)(?=[\s\S]*Voucher uniqueness)(?=[\s\S]*Evidence URL required)(?=[\s\S]*P2-19 dossier blockers)(?=[\s\S]*RPC-only write path)(?=[\s\S]*Double-submit guard)(?=[\s\S]*Audit trace and status)(?=[\s\S]*does not initiate a\s+bank transfer)/i,
+  /(?=[\s\S]*data-ttgdtx-payout-execution-readiness-checklist="P2-17")(?=[\s\S]*P2-17 payout execution readiness checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*data-ttgdtx-payout-immediate-stop="P2-17")(?=[\s\S]*P2-17 immediate payout stop conditions)(?=[\s\S]*P2_17_STOP_CHECK \/ RECORD_READY \/ BLOCKED)(?=[\s\S]*Request not approved or cannot pay)(?=[\s\S]*Amount, voucher, evidence or dossier fails)(?=[\s\S]*Bank-transfer boundary is unclear)(?=[\s\S]*P2-17-EXEC-01)(?=[\s\S]*P2-17-EXEC-08)(?=[\s\S]*Approved request identity)(?=[\s\S]*Remaining amount control)(?=[\s\S]*Voucher uniqueness)(?=[\s\S]*Evidence URL required)(?=[\s\S]*P2-19 dossier blockers)(?=[\s\S]*RPC-only write path)(?=[\s\S]*Double-submit guard)(?=[\s\S]*Audit trace and status)(?=[\s\S]*does not initiate a\s+bank transfer)/i,
   "P2-17 payout execution readiness checklist",
 );
 

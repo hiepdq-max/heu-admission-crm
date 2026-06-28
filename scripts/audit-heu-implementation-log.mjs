@@ -99,6 +99,19 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - P2-17 Payout Immediate Stop Guard", [
+  "data-ttgdtx-payout-immediate-stop",
+  "ttgdtx-payout-execution-readiness-checklist.tsx",
+  "request is not approved",
+  "can_pay",
+  "amount/voucher/evidence/dossier checks fail",
+  "bank-transfer boundary is unclear",
+  "audit:ttgdtx-payout-execution-readiness",
+  "audit:ttgdtx-release-gates",
+  "does not initiate money movement",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P6-06 Conversion Immediate Stop Guard", [
   "data-hard-delete-conversion-immediate-stop",
   "hard-delete-conversion-decision-queue.tsx",

@@ -23,6 +23,24 @@ type PayoutReleaseDecisionItem = {
   stopCondition: string;
 };
 
+const immediateStopItems = [
+  {
+    title: "Request not approved or cannot pay",
+    detail:
+      "Stop if the request is not APPROVED, out of TTGDTX scope, hidden by workspace rules, already PAID or can_pay is false.",
+  },
+  {
+    title: "Amount, voucher, evidence or dossier fails",
+    detail:
+      "Stop if the amount exceeds remaining balance, voucher is missing/duplicated, evidence URL is uncontrolled or BBNT/partner-invoice checks are not PASS.",
+  },
+  {
+    title: "Bank-transfer boundary is unclear",
+    detail:
+      "Stop if the screen is treated as money movement, bank approval, OTP entry or a place to store raw bank statements, vouchers or payment data.",
+  },
+];
+
 const executionReadinessChecks: ExecutionReadinessCheck[] = [
   {
     caseId: "P2-17-EXEC-01",
@@ -190,6 +208,45 @@ export function TtgdtxPayoutExecutionReadinessChecklist() {
           <span className="mt-1 block font-mono text-xs">
             P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md
           </span>
+        </div>
+      </div>
+
+      <div
+        data-ttgdtx-payout-immediate-stop="P2-17"
+        className="mt-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-950"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ShieldAlert className="size-4 shrink-0" />
+              <span>P2-17 immediate payout stop conditions: PASS_LOCAL only</span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this before recording any payout evidence. If any stop
+              condition appears, keep P2-17 NO-GO and do not move to owner
+              release decision or signed UAT acceptance.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-red-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P2_17_STOP_CHECK / RECORD_READY / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {immediateStopItems.map((item) => (
+            <article
+              key={item.title}
+              className="border-l-2 border-red-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-red-700">
+                {item.title}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.detail}</p>
+            </article>
+          ))}
         </div>
       </div>
 
