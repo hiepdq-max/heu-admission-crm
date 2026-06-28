@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - VND Audit P2-18 Coverage
+
+- Extended `scripts/audit-vnd-money-format.mjs` so the shared VND audit now
+  covers `app/ttgdtx/accounting-dashboard/page.tsx` as a display-only P2-18
+  surface.
+- The audit still requires P2-10/P2-17 money forms to use shared parsing and
+  input formatting, while P2-18 must display through `formatVndAmount` and must
+  not replace dot separators with spaces.
+- This is audit coverage hardening only. It does not change finance
+  calculations, collect evidence, execute UAT, approve dashboard reliance,
+  approve finance action or mark production GO.
+
 ## 2026-06-28 - P2-18 Shared VND Formatter Alignment
 
 - Updated `app/ttgdtx/accounting-dashboard/page.tsx` so P2-18 dashboard money

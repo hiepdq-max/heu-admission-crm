@@ -490,6 +490,18 @@ fastSection("2026-06-28 - P2-18 Shared VND Formatter Alignment", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - VND Audit P2-18 Coverage", [
+  "scripts/audit-vnd-money-format.mjs",
+  "app/ttgdtx/accounting-dashboard/page.tsx",
+  "display-only P2-18",
+  "P2-10/P2-17 money forms",
+  "shared parsing",
+  "formatVndAmount",
+  "replace dot separators with spaces",
+  "audit coverage hardening only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

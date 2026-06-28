@@ -49,6 +49,7 @@ const expectedImports = [
   "app/ttgdtx/payments/page.tsx",
   "app/ttgdtx/payment-requests/pay/actions.ts",
   "app/ttgdtx/payment-requests/pay/page.tsx",
+  "app/ttgdtx/accounting-dashboard/page.tsx",
 ];
 
 for (const filePath of expectedImports) {
@@ -73,18 +74,30 @@ for (const filePath of actionFiles) {
   }
 }
 
-const pageFiles = [
+const formPageFiles = [
   "app/ttgdtx/payments/page.tsx",
   "app/ttgdtx/payment-requests/pay/page.tsx",
 ];
 
-for (const filePath of pageFiles) {
+for (const filePath of formPageFiles) {
   const source = read(filePath);
   if (!source.includes("formatVndAmount as money")) {
     fail(`${filePath}: must display VND through formatVndAmount`);
   }
   if (!source.includes("formatVndInput as amountInput")) {
     fail(`${filePath}: must default money inputs through formatVndInput`);
+  }
+  if (/replace\(\s*\/\\\.\//.test(source)) {
+    fail(`${filePath}: must not replace dot separators with spaces`);
+  }
+}
+
+const displayOnlyPageFiles = ["app/ttgdtx/accounting-dashboard/page.tsx"];
+
+for (const filePath of displayOnlyPageFiles) {
+  const source = read(filePath);
+  if (!source.includes("formatVndAmount")) {
+    fail(`${filePath}: must display VND through formatVndAmount`);
   }
   if (/replace\(\s*\/\\\.\//.test(source)) {
     fail(`${filePath}: must not replace dot separators with spaces`);
@@ -99,4 +112,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("VND money format audit passed. P2-10/P2-17 use one parser and display 1.000.000 \u0111.");
+console.log("VND money format audit passed. P2-10/P2-17 parse money and P2-18 displays 1.000.000 \u0111.");
