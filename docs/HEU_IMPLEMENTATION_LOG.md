@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Module Readiness DQ-DM-05 Queue Alignment
+
+- Updated `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so the
+  Data Master P0, Report View Register and Next Build Queue rows reflect the
+  new DQ-DM-05 dashboard reliance lock.
+- The matrix now routes the next Report View/Data Master gate to owner signoff
+  and controlled evidence attachment before any production SQL, real-data import
+  or dashboard reliance.
+- This is queue alignment only. It does not approve report-view signoff,
+  create production SQL, import real data, approve dashboard reliance, approve
+  finance action, accept evidence, approve migration or mark production GO.
+
 ## 2026-06-28 - Data Master Report View DQ-DM-05 Reliance Lock
 
 - Added `DQ-DM-05` dashboard reliance lock to

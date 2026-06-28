@@ -430,6 +430,18 @@ fastSection("2026-06-28 - Data Master Report View DQ-DM-05 Reliance Lock", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - Module Readiness DQ-DM-05 Queue Alignment", [
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "Data Master P0",
+  "Report View Register",
+  "Next Build Queue",
+  "DQ-DM-05",
+  "owner signoff",
+  "controlled evidence attachment",
+  "queue alignment only",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
