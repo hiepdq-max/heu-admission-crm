@@ -245,8 +245,11 @@
 
 - Updated `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` with Section 5.2
   `Signed UAT Route Result Tracker` so UAT-ROUTE-01 through UAT-ROUTE-11 have
-  a controlled place to record current status, source, minimum proof, owner and
-  evidence reference.
+  a controlled place to record current status, decision lane, source, minimum
+  proof, owner and evidence reference.
+- Added the per-route `SIGNED_UAT_READY / NO_GO / BLOCKED` decision lane to the
+  tracker table and strengthened UAT audits so the execution log cannot drift
+  behind the routing hub.
 - Kept every route at PENDING under
   `BLOCKED_PENDING_SIGNED_UAT_ROUTE_EVIDENCE` until controlled evidence,
   redaction reviewer, route result, reviewer name and required owner signature

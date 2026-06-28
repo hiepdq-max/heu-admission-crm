@@ -267,6 +267,8 @@ fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
 fastSection("2026-06-28 - TTGDTX Signed UAT Route Result Tracker", [
   "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "Signed UAT Route Result Tracker",
+  "decision lane",
+  "SIGNED_UAT_READY / NO_GO / BLOCKED",
   "UAT-ROUTE-01",
   "UAT-ROUTE-11",
   "BLOCKED_PENDING_SIGNED_UAT_ROUTE_EVIDENCE",

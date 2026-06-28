@@ -167,6 +167,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|/i,
+  "signed UAT route result tracker includes per-route decision lane",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /No real passwords, OTPs, service keys, bank credentials/i,
   "no secret or real credential rule",
 );
