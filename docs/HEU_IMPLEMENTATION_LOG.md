@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-18 Dashboard Immediate Stop Guard
+
+- Added a visible `data-ttgdtx-dashboard-immediate-stop="P2-18"` panel to
+  `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`.
+- The panel stops dashboard source sign-off or owner reliance when dashboard
+  totals are used for finance approval, statutory accounting, revenue recognition,
+  payment approval, bank-transfer instruction or production GO; when signed browser UAT,
+  source reconciliation, reliance decision, backup/restore proof or owner
+  sign-off is missing; when contract-only or out-of-scope users see finance totals;
+  when source variance, CRITICAL, ownerless REVIEW or wrong exception
+  routing remains open; or when raw sensitive dashboard evidence appears.
+- Updated `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`, backlog,
+  production checklist, current-state inventory,
+  `audit:ttgdtx-dashboard-source-reconciliation`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  P2-18 immediate stop conditions remain visible before dashboard reliance.
+- This is dashboard guard hardening only. It does not execute browser UAT,
+  collect evidence, approve dashboard reliance, approve finance action,
+  approve statutory accounting, issue bank transfer instructions, accept owner
+  signoff or mark production GO.
+
 ## 2026-06-28 - P5-03 Finance Desk Immediate Stop Guard
 
 - Added a visible `data-finance-desk-immediate-stop="P5-03"` panel to

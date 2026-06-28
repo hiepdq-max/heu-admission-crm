@@ -1098,9 +1098,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-18 Dashboard Immediate Stop Guard[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18"[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*finance approval[\s\S]*statutory accounting[\s\S]*revenue\s+recognition[\s\S]*bank-transfer instruction[\s\S]*signed browser UAT[\s\S]*source reconciliation[\s\S]*out-of-scope users see finance totals[\s\S]*source variance[\s\S]*raw sensitive dashboard evidence[\s\S]*audit:ttgdtx-dashboard-source-reconciliation[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:ttgdtx-release-gates[\s\S]*does not execute browser UAT[\s\S]*mark production GO/i,
+  "P2-18 dashboard immediate stop guard log entry",
+);
+
+requireText(
   "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
   /(?=[\s\S]*data-ttgdtx-dashboard-source-reconciliation-checklist="P2-18")(?=[\s\S]*P2-18 source reconciliation checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-18-SRC-01)(?=[\s\S]*P2-18-SRC-06)(?=[\s\S]*P2-03 receivable)(?=[\s\S]*P2-17 payout)(?=[\s\S]*P2-19 source\/evidence metadata)(?=[\s\S]*Signed\s+browser UAT must still prove at least one complete flow and one\s+exception flow)/i,
   "P2-18 dashboard source reconciliation checklist",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18 dashboard immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P2-18-STOP-01)(?=[\s\S]*P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO)(?=[\s\S]*Signed browser UAT, source reconciliation, reliance decision, backup\/restore proof or owner sign-off is missing)(?=[\s\S]*contract-only\/out-of-scope access exposes finance totals)(?=[\s\S]*unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route)(?=[\s\S]*Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys)/i,
+  "P2-18 dashboard immediate stop guard",
 );
 
 requireText(
@@ -1123,7 +1135,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
 );
 
@@ -1135,7 +1147,7 @@ requireText(
 
 requireText(
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
-  /(?=[\s\S]*Dashboard Reliance Decision Manifest)(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive dashboard data keeps\s+P2-18 NO-GO)/i,
+  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18-STOP-01 through\s+P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Dashboard Reliance Decision Manifest)(?=[\s\S]*Immediate stop guard)(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive dashboard data keeps\s+P2-18 NO-GO)/i,
   "P2-18 runbook dashboard reliance decision manifest",
 );
 

@@ -65,6 +65,9 @@ Before signed browser UAT, the repo must keep local guard evidence green:
 - `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`
   shows the source reconciliation checklist for P2-03, P2-10,
   P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata.
+- The same source reconciliation checklist exposes
+  `data-ttgdtx-dashboard-immediate-stop="P2-18"` with P2-18-STOP-01 through
+  P2-18-STOP-05 and decision value `P2_18_STOP_CHECK / GO_NEXT / BLOCKED`.
 - `app/ttgdtx/accounting-dashboard/page.tsx` mounts the guard and only queries
   dashboard views after `canOpen` is true.
 - `scripts/audit-ttgdtx-dashboard-access.mjs` confirms contract-only permission
@@ -128,6 +131,15 @@ exist.
 Decision value: `P2_18_ACCEPT / FAIL / BLOCKED`.
 
 ## 8. Dashboard Reliance Decision Manifest
+
+Immediate stop guard: do not proceed to source sign-off or owner reliance when
+dashboard totals are used for finance approval, statutory accounting, revenue
+recognition, payment approval, bank transfer instruction or production GO; when
+signed browser UAT, source reconciliation, reliance decision, backup/restore
+proof or owner sign-off is missing; when contract-only/out-of-scope access sees
+finance totals; when source variance, `CRITICAL`, ownerless `REVIEW` or wrong
+exception routing remains open; or when raw PII, CCCD, bank accounts, vouchers,
+bank statements, passwords, OTPs or service keys appear in evidence.
 
 Before BGH/KHTC rely on any P2-18 dashboard number for internal review,
 complete the reliance decision manifest exposed on the dashboard through

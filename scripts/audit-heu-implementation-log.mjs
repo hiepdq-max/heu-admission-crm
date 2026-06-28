@@ -112,6 +112,26 @@ fastSection("2026-06-28 - P2-17 Payout Immediate Stop Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - P2-18 Dashboard Immediate Stop Guard", [
+  "data-ttgdtx-dashboard-immediate-stop",
+  "ttgdtx-dashboard-source-reconciliation-checklist.tsx",
+  "finance approval",
+  "statutory accounting",
+  "revenue recognition",
+  "bank-transfer instruction",
+  "signed browser UAT",
+  "source reconciliation",
+  "contract-only",
+  "out-of-scope users see finance totals",
+  "source variance",
+  "raw sensitive dashboard evidence",
+  "audit:ttgdtx-dashboard-source-reconciliation",
+  "audit:heu-current-state-inventory",
+  "audit:ttgdtx-release-gates",
+  "does not execute browser UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P5-03 Finance Desk Immediate Stop Guard", [
   "data-finance-desk-immediate-stop",
   "finance-desk-uat-evidence-checklist.tsx",

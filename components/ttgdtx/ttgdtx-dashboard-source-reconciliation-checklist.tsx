@@ -17,6 +17,12 @@ type DashboardRelianceDecisionItem = {
   stopCondition: string;
 };
 
+type DashboardImmediateStopItem = {
+  stopId: string;
+  condition: string;
+  operatorAction: string;
+};
+
 const reconciliationChecks: ReconciliationCheck[] = [
   {
     caseId: "P2-18-SRC-01",
@@ -77,6 +83,44 @@ const reconciliationChecks: ReconciliationCheck[] = [
     owner: "IT_DATA + Audit",
     stopCondition:
       "Raw PII, bank data, voucher image, password, OTP or service key in evidence blocks UAT.",
+  },
+];
+
+const dashboardImmediateStopItems: DashboardImmediateStopItem[] = [
+  {
+    stopId: "P2-18-STOP-01",
+    condition:
+      "Any dashboard total is used for finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO.",
+    operatorAction:
+      "Stop dashboard reliance and route the decision back to the source P2 workflow.",
+  },
+  {
+    stopId: "P2-18-STOP-02",
+    condition:
+      "Signed browser UAT, source reconciliation, reliance decision, backup/restore proof or owner sign-off is missing.",
+    operatorAction:
+      "Keep P2-18 BLOCKED until controlled evidence and owner signatures exist outside Codex/chat.",
+  },
+  {
+    stopId: "P2-18-STOP-03",
+    condition:
+      "A dashboard query runs before canOpen, a write action appears, or contract-only/out-of-scope access exposes finance totals.",
+    operatorAction:
+      "Stop the run and fix read-only role/workspace scope before continuing UAT.",
+  },
+  {
+    stopId: "P2-18-STOP-04",
+    condition:
+      "Any KPI has unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route.",
+    operatorAction:
+      "Record NO_GO or BLOCKED; correction must happen in the source P2 workflow.",
+  },
+  {
+    stopId: "P2-18-STOP-05",
+    condition:
+      "Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys appear in dashboard evidence.",
+    operatorAction:
+      "Reject the evidence and move it to controlled redaction handling outside Git/Codex/chat.",
   },
 ];
 
@@ -162,6 +206,46 @@ export function TtgdtxDashboardSourceReconciliationChecklist() {
           <span className="mt-1 block font-mono text-xs">
             P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md
           </span>
+        </div>
+      </div>
+
+      <div
+        data-ttgdtx-dashboard-immediate-stop="P2-18"
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4 text-rose-950"
+      >
+        <div className="flex items-start gap-3">
+          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold">
+              P2-18 dashboard immediate stop guard: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-rose-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P2_18_STOP_CHECK / GO_NEXT / BLOCKED
+              </span>
+              . Stop before source sign-off or owner reliance if any condition
+              below is open.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {dashboardImmediateStopItems.map((item) => (
+            <article
+              key={item.stopId}
+              className="border-l-2 border-rose-300 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.stopId}
+              </p>
+              <p className="mt-2 leading-5 text-rose-950">
+                Stop: {item.condition}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Action: {item.operatorAction}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 
