@@ -21,6 +21,7 @@ import { TtgdtxDashboardUatEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { formatVndAmount } from "@/lib/vnd-money";
 
 type SegmentRow = {
   id: string;
@@ -196,13 +197,7 @@ const issueDisplayLabels: Record<string, string> = {
 };
 
 function money(value: number | string | null | undefined) {
-  const numeric = Number(value ?? 0);
-  const safeValue = Number.isFinite(numeric) ? numeric : 0;
-  const formatted = new Intl.NumberFormat("vi-VN", {
-    maximumFractionDigits: 0,
-  }).format(safeValue);
-
-  return `${formatted.replace(/\./g, " ")} đ`;
+  return formatVndAmount(value);
 }
 
 function count(value: number | string | null | undefined) {

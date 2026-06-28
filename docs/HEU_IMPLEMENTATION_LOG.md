@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P2-18 Shared VND Formatter Alignment
+
+- Updated `app/ttgdtx/accounting-dashboard/page.tsx` so P2-18 dashboard money
+  values render through the shared `formatVndAmount` helper from
+  `lib/vnd-money.ts`, matching P2-10, P2-17 and Finance Desk display.
+- Tightened `scripts/audit-ttgdtx-dashboard-source-reconciliation.mjs` and
+  `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md` so P2-18 cannot silently
+  return to a page-local formatter or replace dot separators with spaces.
+- This is display/control hardening only. It does not change finance
+  calculations, source data, UAT evidence, dashboard reliance, finance action,
+  statutory accounting, owner signoff or production GO.
+
 ## 2026-06-28 - P0-19 Gate Guard Vietnamese UX Hardening
 
 - Updated `components/ttgdtx/ttgdtx-p019-gate-guard.tsx` so the visible

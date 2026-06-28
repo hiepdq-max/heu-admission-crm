@@ -95,6 +95,17 @@ requireText(
 );
 
 requireText(
+  page,
+  /import \{ formatVndAmount \} from "@\/lib\/vnd-money"[\s\S]*function money\([\s\S]*return formatVndAmount\(value\)/i,
+  "P2-18 dashboard uses shared VND formatter",
+  pagePath,
+);
+
+if (/replace\(\s*\/\\\.\//.test(page)) {
+  fail(`${pagePath}: must not replace dot separators with spaces for VND display`);
+}
+
+requireText(
   runbook,
   /(?=[\s\S]*source reconciliation checklist)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*P2-03)(?=[\s\S]*P2-10)(?=[\s\S]*P2-13\/P2-14)(?=[\s\S]*P2-15\/P2-16)(?=[\s\S]*P2-17)(?=[\s\S]*P2-19)(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18-STOP-01 through\s+P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Dashboard Reliance Decision Manifest)(?=[\s\S]*Immediate stop guard)(?=[\s\S]*data-ttgdtx-dashboard-reliance-decision-manifest="P2-18")(?=[\s\S]*P2-18-REL-01)(?=[\s\S]*P2-18-REL-06)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)/i,
   "P2-18 runbook source reconciliation checklist reference",

@@ -70,6 +70,9 @@ Before signed browser UAT, the repo must keep local guard evidence green:
   P2-18-STOP-05 and decision value `P2_18_STOP_CHECK / GO_NEXT / BLOCKED`.
 - `app/ttgdtx/accounting-dashboard/page.tsx` mounts the guard and only queries
   dashboard views after `canOpen` is true.
+- `app/ttgdtx/accounting-dashboard/page.tsx` renders VND values through the
+  shared `formatVndAmount` helper from `lib/vnd-money.ts`; P2-18 must show the
+  same `1.000.000 đ` style used by P2-10, P2-17 and Finance Desk.
 - `scripts/audit-ttgdtx-dashboard-access.mjs` confirms contract-only permission
   is not used as finance-dashboard access.
 - `npm.cmd run audit:ttgdtx-dashboard-readonly-guard` must pass.
