@@ -171,6 +171,19 @@ fastSection("2026-06-28 - TTGDTX P6-06/P2-17 Risk Closure Decision Stops", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX P0-03/Step90-Step110 Infra Decision Stops", [
+  "PRODUCTION_INFRA_READINESS_STEPS",
+  "decision values",
+  "stop conditions",
+  "P0-03 backup/restore",
+  "Step90-Step110 migration-order",
+  "P0_03_RESTORE_READY / NO_GO / BLOCKED",
+  "STEP90_110_MIGRATION_READY / NO_GO / BLOCKED",
+  "ttgdtx-production-execution-queue.tsx",
+  "does not execute backup",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",

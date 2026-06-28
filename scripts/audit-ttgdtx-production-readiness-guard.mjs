@@ -133,7 +133,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*data-ttgdtx-infra-readiness-plan="P0-03_STEP90_STEP110")(?=[\s\S]*Infra readiness plan: P0-03 \+ Step90-Step110)(?=[\s\S]*backup\/restore dry-run first)(?=[\s\S]*sign the migration order)(?=[\s\S]*No production migration runs from Codex\/chat)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*backup proof first)(?=[\s\S]*Open infra route)/i,
+  /(?=[\s\S]*PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*data-ttgdtx-infra-readiness-plan="P0-03_STEP90_STEP110")(?=[\s\S]*Infra readiness plan: P0-03 \+ Step90-Step110)(?=[\s\S]*backup\/restore dry-run first)(?=[\s\S]*sign the migration order)(?=[\s\S]*No production migration runs from Codex\/chat)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*backup proof first)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open infra route)/i,
   "TTGDTX P0-03/Step90-Step110 infra readiness plan",
   executionQueuePath,
 );
@@ -154,7 +154,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
+  /(?=[\s\S]*export const PRODUCTION_INFRA_READINESS_STEPS)(?=[\s\S]*P0-03)(?=[\s\S]*Backup and restore dry-run evidence)(?=[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md)(?=[\s\S]*P0_03_RESTORE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Backup ID is missing)(?=[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\s\S]*Step90-Step110)(?=[\s\S]*Signed production migration order)(?=[\s\S]*STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627\.md)(?=[\s\S]*STEP90_110_MIGRATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Migration order is unsigned)(?=[\s\S]*audit:ttgdtx-migration-order-guard)/i,
   "TTGDTX P0-03/Step90-Step110 infra readiness shared source",
   blockerSourcePath,
 );

@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX P0-03/Step90-Step110 Infra Decision Stops
+
+- Extended `PRODUCTION_INFRA_READINESS_STEPS` in `lib/production-readiness.ts`
+  with decision values and stop conditions for P0-03 backup/restore readiness
+  and Step90-Step110 migration-order readiness.
+- Updated `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the
+  `/ttgdtx` infra readiness plan shows `P0_03_RESTORE_READY / NO_GO / BLOCKED`
+  and `STEP90_110_MIGRATION_READY / NO_GO / BLOCKED` before owners accept
+  backup/restore proof or sign the migration order.
+- Updated the production checklist, backlog and current-state inventory so the
+  P0-03/Step90-Step110 infra readiness plan stays aligned with the visible UI
+  guard.
+- This is infra readiness guard hardening only. It does not execute backup,
+  restore a database, accept restore evidence, sign migration order, run SQL,
+  approve migration, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX P6-06/P2-17 Risk Closure Decision Stops
 
 - Extended `PRODUCTION_RISK_CLOSURE_STEPS` in `lib/production-readiness.ts`

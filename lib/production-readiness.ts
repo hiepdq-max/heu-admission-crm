@@ -51,6 +51,8 @@ export type ProductionInfraReadinessStep = {
   route: string;
   runbook: string;
   evidence: string;
+  decisionValue: string;
+  stopCondition: string;
   auditCommand: string;
 };
 
@@ -274,6 +276,9 @@ export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = 
     runbook: "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
     evidence:
       "Target identity lock, backup ID, isolated restore target, preflight/postflight output, restore smoke-check and P0-19/P3 gate-preservation proof.",
+    decisionValue: "P0_03_RESTORE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Backup ID is missing, restore target is not isolated, smoke-check fails, P0-19/P3 gate preservation is unproven or IT_DATA/Audit evidence is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack",
   },
   {
@@ -284,6 +289,9 @@ export const PRODUCTION_INFRA_READINESS_STEPS: ProductionInfraReadinessStep[] = 
     runbook: "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
     evidence:
       "MIGRATION_EVIDENCE_ACCEPTED decision, signed Step90-Step110 order, rollback point, Step97/Step100/Step109/Step110 decisions and owner acceptance after backup/restore proof.",
+    decisionValue: "STEP90_110_MIGRATION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Migration order is unsigned, backup/restore proof is not accepted, rollback point is unclear, Step decisions are missing or any owner marks NO-GO/BLOCKED.",
     auditCommand: "npm.cmd run audit:ttgdtx-migration-order-guard",
   },
 ];
