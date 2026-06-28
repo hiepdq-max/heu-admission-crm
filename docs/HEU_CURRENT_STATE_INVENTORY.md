@@ -70,7 +70,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 
 | Module | Scope | Current status | Evidence |
 |---|---|---|---|
-| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate, acceptance matrix, gate decision manifest and Legal/SOP/Governance control matrix are packaged; signed UAT and PHAP_CHE owner review still required |
+| M01 Legal | Legal registry, rules, gates | Partial | P0-19 legal/finance gate, immediate stop guard, acceptance matrix, gate decision manifest and Legal/SOP/Governance control matrix are packaged; signed UAT and PHAP_CHE owner review still required |
 | M02 HR | Users, roles, managers, scopes | Partial | Role/scope pages, P6-04 UAT pack and create-user temporary password guard exist |
 | M03 Data Master | Admission programs, majors, TTGDTX master | Partial | Master/dropdown controls and the Data Master / Report View compatibility bridge exist; signed UAT and owner signoff still required |
 | M04 SOP/Workflow | Workflow/request engine, gates | Partial | Master Control workflow and approval patterns exist |
@@ -93,7 +93,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Process discovery/navigation | Shared TTGDTX process labels, Search suggestions and `/ttgdtx` quick finder show business name before P2 code | PASS_LOCAL; signed browser UAT pending |
 | Backup/restore | Evidence pack, UI guard, target identity lock, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19/P3 gate preservation and backup/restore closure decision manifest exist | Template ready; real backup/restore evidence missing |
 | Migration order | Step90-Step110 guard, migration evidence acceptance lock and audit exist | Signed approval still required |
-| Legal/finance gate | P0-19 guard, UAT checklist, waiver/exception register, acceptance matrix and gate decision manifest exist | Signed legal/finance UAT still required |
+| Legal/finance gate | P0-19 guard, UAT checklist, immediate stop guard, waiver/exception register, acceptance matrix and gate decision manifest exist | Signed legal/finance UAT still required |
 | Contract/tuition master | P2-01/P2-02 master guard exists | PASS_LOCAL; signed legal/finance/KHTC UAT pending |
 | Lead lifecycle/handover | P3-01 lifecycle standard, P3-01 acceptance matrix, P3-02 handover policy, P3-02 acceptance matrix, handover decision manifest and `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` exist | PASS_LOCAL; signed role/workflow UAT and handover decision pending |
 | Receivable/collection/reconciliation | P2-03, P2-10, P2-10 invoice/chung-tu UAT evidence checklist, P2-10 invoice/chung-tu decision manifest, P2-13 and P2-14 packaged | Local controls pass; signed finance UAT pending |

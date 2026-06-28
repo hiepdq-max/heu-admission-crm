@@ -1764,6 +1764,18 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-19 Legal Finance Immediate Stop Guard[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19"[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*legal scope[\s\S]*program\/major[\s\S]*tuition amount[\s\S]*invoice\/chung-tu[\s\S]*P2-05\/P2-03 can create a[\s\S]*sandbox data[\s\S]*Step100[\s\S]*oral, ownerless[\s\S]*signed legal\/finance UAT[\s\S]*controlled redacted evidence[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:ttgdtx-release-gates[\s\S]*does not execute UAT[\s\S]*mark production GO/i,
+  "P0-19 immediate stop guard log entry",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19 legal\/finance immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P0-19-STOP-01)(?=[\s\S]*P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Legal scope, center, program\/major, effective period or approving owner is unclear)(?=[\s\S]*Tuition amount, term, due rule, payer model, invoice\/chung-tu responsibility or waiver basis is unresolved)(?=[\s\S]*P2-05 or P2-03 can create receivable while P0-19 is missing)(?=[\s\S]*Step100 or any legal\/tuition\/finance exception is oral, ownerless, expired, broad or treated as production authority)(?=[\s\S]*Signed legal\/finance UAT or owner sign-off is missing)(?=[\s\S]*private contracts, raw PII, CCCD, bank data, credentials, vouchers or payment data)/i,
+  "P0-19 immediate stop guard",
+);
+
+requireText(
   "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
   /(?=[\s\S]*data-ttgdtx-p019-waiver-exception-register="P0-19")(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-19-WAIVE-01)(?=[\s\S]*P0-19-WAIVE-04)(?=[\s\S]*Step100 sandbox pilot open)(?=[\s\S]*Legal basis exception)(?=[\s\S]*Tuition\/invoice policy exception)(?=[\s\S]*Finance gate override request)(?=[\s\S]*P0_19_WAIVER_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not approve a legal waiver, tuition exception, finance\s+override, Step100 production use, receivable creation, revenue\s+recognition or production GO)/i,
   "P0-19 waiver/exception register",
@@ -1783,7 +1795,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P0-19 legal\/finance gate ready)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-p019-gate-guard\.tsx)(?=[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx)(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*P0-19 acceptance matrix)(?=[\s\S]*P0-19 gate decision manifest)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*signed legal\/finance UAT still required)/i,
+  /(?=[\s\S]*P0-19 legal\/finance gate ready)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-p019-gate-guard\.tsx)(?=[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx)(?=[\s\S]*P0-19 immediate stop guard)(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*P0-19 acceptance matrix)(?=[\s\S]*P0-19 gate decision manifest)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*signed legal\/finance UAT still required)/i,
   "P0-19 guard checklist row",
 );
 

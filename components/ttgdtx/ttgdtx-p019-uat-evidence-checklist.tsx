@@ -29,6 +29,12 @@ type GateDecisionItem = {
   stopCondition: string;
 };
 
+type ImmediateStopItem = {
+  stopId: string;
+  condition: string;
+  operatorAction: string;
+};
+
 const evidenceItems: EvidenceItem[] = [
   {
     caseId: "P0-19-01",
@@ -71,6 +77,44 @@ const evidenceItems: EvidenceItem[] = [
     owner: "PHAP_CHE + KHTC + BGH + Audit",
     evidence:
       "Signed UAT reference using controlled redaction; raw contracts, student PII, CCCD, bank data and credentials stay outside Git/Codex/chat.",
+  },
+];
+
+const immediateStopItems: ImmediateStopItem[] = [
+  {
+    stopId: "P0-19-STOP-01",
+    condition:
+      "Legal scope, center, program/major, effective period or approving owner is unclear, expired or assumed from pilot notes.",
+    operatorAction:
+      "Stop legal/finance gate reliance and route the case back to PHAP_CHE/BGH owner review.",
+  },
+  {
+    stopId: "P0-19-STOP-02",
+    condition:
+      "Tuition amount, term, due rule, payer model, invoice/chung-tu responsibility or waiver basis is unresolved.",
+    operatorAction:
+      "Keep P0-19 BLOCKED until KHTC/PHAP_CHE resolve the policy basis in controlled evidence.",
+  },
+  {
+    stopId: "P0-19-STOP-03",
+    condition:
+      "P2-05 or P2-03 can create receivable while P0-19 is missing, blocked, unsigned, waived broadly or based only on sandbox data.",
+    operatorAction:
+      "Stop the run and fix the finance gate before any receivable or revenue reliance.",
+  },
+  {
+    stopId: "P0-19-STOP-04",
+    condition:
+      "Step100 or any legal/tuition/finance exception is oral, ownerless, expired, broad or treated as production authority.",
+    operatorAction:
+      "Record NO_GO or BLOCKED; require written owner scope, expiry, risk note and NO-GO boundary.",
+  },
+  {
+    stopId: "P0-19-STOP-05",
+    condition:
+      "Signed legal/finance UAT or owner sign-off is missing, or private contracts, raw PII, CCCD, bank data, credentials, vouchers or payment data appear.",
+    operatorAction:
+      "Reject the evidence and move sensitive material to controlled redaction handling outside Git/Codex/chat.",
   },
 ];
 
@@ -242,6 +286,46 @@ export function TtgdtxP019UatEvidenceChecklist() {
           <span className="mt-1 block font-mono text-xs">
             P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md
           </span>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-ttgdtx-p019-immediate-stop="P0-19"
+      >
+        <div className="flex items-start gap-3">
+          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-rose-950">
+              P0-19 legal/finance immediate stop guard: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-rose-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P0_19_STOP_CHECK / GO_NEXT / BLOCKED
+              </span>
+              . Stop before evidence recording, waiver review or gate reliance
+              if any condition below is open.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {immediateStopItems.map((item) => (
+            <article
+              key={item.stopId}
+              className="border-l-2 border-rose-300 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.stopId}
+              </p>
+              <p className="mt-2 leading-5 text-rose-950">
+                Stop: {item.condition}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Action: {item.operatorAction}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 

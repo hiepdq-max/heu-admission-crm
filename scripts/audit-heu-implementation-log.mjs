@@ -112,6 +112,26 @@ fastSection("2026-06-28 - P2-17 Payout Immediate Stop Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - P0-19 Legal Finance Immediate Stop Guard", [
+  "data-ttgdtx-p019-immediate-stop",
+  "ttgdtx-p019-uat-evidence-checklist.tsx",
+  "legal scope",
+  "program/major",
+  "tuition amount",
+  "invoice/chung-tu",
+  "P2-05/P2-03 can create a",
+  "sandbox data",
+  "Step100",
+  "oral, ownerless",
+  "signed legal/finance UAT",
+  "controlled redacted evidence",
+  "audit:ttgdtx-p019-gate-guard",
+  "audit:heu-current-state-inventory",
+  "audit:ttgdtx-release-gates",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P2-18 Dashboard Immediate Stop Guard", [
   "data-ttgdtx-dashboard-immediate-stop",
   "ttgdtx-dashboard-source-reconciliation-checklist.tsx",

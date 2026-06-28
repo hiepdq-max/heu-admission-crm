@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-19 Legal Finance Immediate Stop Guard
+
+- Added a visible `data-ttgdtx-p019-immediate-stop="P0-19"` panel to
+  `components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx`.
+- The panel stops P0-19 evidence recording, waiver review or gate reliance when
+  legal scope, center, program/major, effective period or approving owner is
+  unclear; when tuition amount, term, due rule, payer model, invoice/chung-tu
+  responsibility or waiver basis is unresolved; when P2-05/P2-03 can create a
+  receivable while P0-19 is missing, blocked, unsigned, broadly waived or based
+  only on sandbox data; when Step100 or any exception is oral, ownerless,
+  expired, broad or treated as production authority; or when signed legal/finance UAT,
+  owner sign-off or controlled redacted evidence is missing.
+- Updated `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md`, backlog,
+  production checklist, current-state inventory, `audit:ttgdtx-p019-gate-guard`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  P0-19 immediate stop conditions remain visible before receivable or revenue
+  reliance.
+- This is legal/finance gate hardening only. It does not execute UAT, collect
+  evidence, approve legal waiver, approve finance action, create receivables,
+  approve revenue recognition, accept owner signoff or mark production GO.
+
 ## 2026-06-28 - P2-18 Dashboard Immediate Stop Guard
 
 - Added a visible `data-ttgdtx-dashboard-immediate-stop="P2-18"` panel to

@@ -80,10 +80,23 @@ and covers P0-19-01 through P0-19-07: legal basis, tuition policy, missing or
 blocked finance gate, Step100 sandbox boundary, receivable creation trace and
 owner sign-off.
 
+The same checklist exposes `data-ttgdtx-p019-immediate-stop="P0-19"` with
+P0-19-STOP-01 through P0-19-STOP-05 and decision value
+`P0_19_STOP_CHECK / GO_NEXT / BLOCKED`. Use this guard before evidence
+recording, waiver review or gate reliance.
+
 Do not attach private contract bodies, raw student PII, CCCD, bank data,
 passwords, OTPs, service-role keys or production credentials in Git/Codex/chat.
 Signed legal/finance UAT remains required before P0-19 can be accepted for
 production receivable use.
+
+Immediate stop guard: do not proceed when legal scope, center, program/major,
+effective period or owner is unclear; when tuition, payer, invoice/chung-tu or
+waiver basis is unresolved; when P2-05/P2-03 can create receivable while P0-19
+is missing, blocked, unsigned, broadly waived or sandbox-only; when Step100 or
+an exception is oral, ownerless, expired, broad or treated as production
+authority; or when signed UAT/owner sign-off is missing or raw sensitive
+evidence appears.
 
 ## P0-19 Waiver/Exception Register
 

@@ -88,6 +88,12 @@ requireText(
 );
 requireText(
   evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19 legal\/finance immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P0-19-STOP-01)(?=[\s\S]*P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Legal scope, center, program\/major, effective period or approving owner is unclear)(?=[\s\S]*Tuition amount, term, due rule, payer model, invoice\/chung-tu responsibility or waiver basis is unresolved)(?=[\s\S]*P2-05 or P2-03 can create receivable while P0-19 is missing)(?=[\s\S]*Step100 or any legal\/tuition\/finance exception is oral, ownerless, expired, broad or treated as production authority)(?=[\s\S]*Signed legal\/finance UAT or owner sign-off is missing)(?=[\s\S]*private contracts, raw PII, CCCD, bank data, credentials, vouchers or payment data)/i,
+  "P0-19 immediate stop guard",
+  evidenceChecklistPath,
+);
+requireText(
+  evidenceChecklist,
   /(?=[\s\S]*data-ttgdtx-p019-waiver-exception-register="P0-19")(?=[\s\S]*P0-19 waiver\/exception register)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-19-WAIVE-01)(?=[\s\S]*P0-19-WAIVE-04)(?=[\s\S]*Step100 sandbox pilot open)(?=[\s\S]*Legal basis exception)(?=[\s\S]*Tuition\/invoice policy exception)(?=[\s\S]*Finance gate override request)(?=[\s\S]*P0_19_WAIVER_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not approve a legal waiver, tuition exception, finance\s+override, Step100 production use, receivable creation, revenue\s+recognition or production GO)/i,
   "P0-19 waiver/exception register",
   evidenceChecklistPath,
@@ -126,6 +132,12 @@ requireText(
 );
 requireText(
   runbook,
+  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19-STOP-01 through P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Immediate stop guard)(?=[\s\S]*legal scope, center, program\/major,\s+effective period or owner is unclear)(?=[\s\S]*tuition, payer, invoice\/chung-tu or\s+waiver basis is unresolved)(?=[\s\S]*P2-05\/P2-03 can create receivable while P0-19\s+is missing, blocked, unsigned, broadly waived or sandbox-only)(?=[\s\S]*signed UAT\/owner sign-off is missing or raw sensitive\s+evidence appears)/i,
+  "P0-19 immediate stop guard in runbook",
+  "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
+);
+requireText(
+  runbook,
   /(?=[\s\S]*P0-19 Waiver\/Exception Register)(?=[\s\S]*data-ttgdtx-p019-waiver-exception-register="P0-19")(?=[\s\S]*P0-19-WAIVE-01)(?=[\s\S]*P0-19-WAIVE-04)(?=[\s\S]*P0_19_WAIVER_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL does not approve a legal waiver, tuition exception, finance override,\s+Step100 production use, receivable creation, revenue recognition or production\s+GO)/i,
   "P0-19 waiver/exception register in runbook",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
@@ -146,13 +158,13 @@ requireText(
 
 requireText(
   checklist,
-  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
+  /P0-19 legal\/finance gate ready[\s\S]*IN_PROGRESS[\s\S]*ttgdtx-p019-gate-guard\.tsx[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 immediate stop guard[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard[\s\S]*signed legal\/finance UAT still required/i,
   "P0-19 checklist row remains signed-UAT gated",
   checklistPath,
 );
 requireText(
   backlog,
-  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard/i,
+  /P2-00[\s\S]*P0-19 major legal\/tuition finance gate[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-p019-uat-evidence-checklist\.tsx[\s\S]*P0-19 immediate stop guard[\s\S]*P0-19 waiver\/exception register[\s\S]*P0-19 acceptance matrix[\s\S]*P0-19 gate decision manifest[\s\S]*audit:ttgdtx-p019-gate-guard/i,
   "P2-00 backlog guard evidence",
   backlogPath,
 );
