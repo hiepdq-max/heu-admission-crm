@@ -158,6 +158,19 @@ fastSection("2026-06-28 - TTGDTX P2-18/P5-03 UAT Launch Decision Stops", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX P6-06/P2-17 Risk Closure Decision Stops", [
+  "PRODUCTION_RISK_CLOSURE_STEPS",
+  "decision values",
+  "stop conditions",
+  "P6-06 hard-delete/cascade",
+  "P2-17 payout release readiness",
+  "P6_06_CLOSURE_READY / NO_GO / BLOCKED",
+  "P2_17_RELEASE_READY / NO_GO / BLOCKED",
+  "ttgdtx-production-execution-queue.tsx",
+  "does not convert database paths",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",

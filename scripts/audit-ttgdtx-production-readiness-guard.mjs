@@ -196,14 +196,14 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS)(?=[\s\S]*data-ttgdtx-risk-closure-plan="P6-06_P2-17")(?=[\s\S]*Next risk closure plan: P6-06 \+ P2-17)(?=[\s\S]*hard-delete\/cascade conversion-or-waiver)(?=[\s\S]*payout\s+duplicate\/dossier evidence)(?=[\s\S]*Missing proof\s+keeps production NO-GO)(?=[\s\S]*closure proof required)(?=[\s\S]*Open closure route)/i,
+  /(?=[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS)(?=[\s\S]*data-ttgdtx-risk-closure-plan="P6-06_P2-17")(?=[\s\S]*Next risk closure plan: P6-06 \+ P2-17)(?=[\s\S]*hard-delete\/cascade conversion-or-waiver)(?=[\s\S]*payout\s+duplicate\/dossier evidence)(?=[\s\S]*Missing proof\s+keeps production NO-GO)(?=[\s\S]*closure proof required)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open closure route)/i,
   "TTGDTX P6-06/P2-17 risk closure plan",
   executionQueuePath,
 );
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export const PRODUCTION_RISK_CLOSURE_STEPS)(?=[\s\S]*P6-06)(?=[\s\S]*Hard-delete and cascade conversion or waiver)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*P2-17)(?=[\s\S]*Payout duplicate-click and dossier UAT)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)/i,
+  /(?=[\s\S]*export const PRODUCTION_RISK_CLOSURE_STEPS)(?=[\s\S]*P6-06)(?=[\s\S]*Hard-delete and cascade conversion or waiver)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*protected finance, evidence, approval, payment, lead or audit path)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*P2-17)(?=[\s\S]*Payout duplicate-click and dossier UAT)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Payment can run twice)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)/i,
   "TTGDTX P6-06/P2-17 risk closure shared source",
   blockerSourcePath,
 );

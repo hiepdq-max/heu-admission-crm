@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX P6-06/P2-17 Risk Closure Decision Stops
+
+- Extended `PRODUCTION_RISK_CLOSURE_STEPS` in `lib/production-readiness.ts`
+  with decision values and stop conditions for P6-06 hard-delete/cascade
+  closure and P2-17 payout release readiness.
+- Updated `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the
+  `/ttgdtx` risk closure plan shows `P6_06_CLOSURE_READY / NO_GO / BLOCKED`
+  and `P2_17_RELEASE_READY / NO_GO / BLOCKED` before owners close risks.
+- Updated the production checklist, backlog and current-state inventory so the
+  P6-06/P2-17 risk closure plan stays aligned with the visible UI guard.
+- This is risk-closure guard hardening only. It does not convert database paths,
+  waive findings, execute payout UAT, accept evidence, release payment, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX P2-18/P5-03 UAT Launch Decision Stops
 
 - Extended `PRODUCTION_UAT_LAUNCH_STEPS` in `lib/production-readiness.ts` with

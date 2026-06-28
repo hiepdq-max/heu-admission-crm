@@ -39,6 +39,8 @@ export type ProductionRiskClosureStep = {
   route: string;
   runbook: string;
   evidence: string;
+  decisionValue: string;
+  stopCondition: string;
   auditCommand: string;
 };
 
@@ -243,6 +245,9 @@ export const PRODUCTION_RISK_CLOSURE_STEPS: ProductionRiskClosureStep[] = [
     runbook: "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
     evidence:
       "Conversion proof or narrow written waiver for unresolved non-TTGDTX/base cascade findings, with closure decision and rollback note.",
+    decisionValue: "P6_06_CLOSURE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any protected finance, evidence, approval, payment, lead or audit path can still hard-delete without signed conversion or narrow written waiver.",
     auditCommand: "npm.cmd run audit:hard-delete-conversion-decision-queue",
   },
   {
@@ -253,6 +258,9 @@ export const PRODUCTION_RISK_CLOSURE_STEPS: ProductionRiskClosureStep[] = [
     runbook: "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
     evidence:
       "Duplicate-click result, overpay guard, voucher normalization, RPC-only path and BBNT/partner-invoice dossier proof.",
+    decisionValue: "P2_17_RELEASE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Payment can run twice, overpay is possible, voucher evidence is raw, dossier proof is missing or KHTC/BGH/Audit release decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-payout-execution-readiness",
   },
 ];
