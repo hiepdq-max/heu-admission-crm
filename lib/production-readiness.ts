@@ -27,6 +27,8 @@ export type ProductionUatLaunchStep = {
   route: string;
   runbook: string;
   evidence: string;
+  decisionValue: string;
+  stopCondition: string;
   auditCommand: string;
 };
 
@@ -212,6 +214,9 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
     evidence:
       "Authorized access, blocked out-of-scope access, no-write behavior, source comparison and dashboard reliance decision.",
+    decisionValue: "P2_18_RELIANCE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Dashboard can write, a source total is unreconciled, contract-only access exposes finance totals or owner reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan",
   },
   {
@@ -222,6 +227,9 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     runbook: "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
     evidence:
       "Scoped access, read-only cockpit behavior, source reconciliation, no-secret screenshots and human reliance decision.",
+    decisionValue: "P5_03_RELIANCE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Finance Desk can mutate source facts, leaks TTGDTX scope, shows raw sensitive evidence or KHTC/BGH/Audit reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:heu-finance-desk",
   },
 ];

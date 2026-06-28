@@ -145,6 +145,19 @@ fastSection("2026-06-28 - Vietnamese Business Label Encoding Assertion", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX P2-18/P5-03 UAT Launch Decision Stops", [
+  "PRODUCTION_UAT_LAUNCH_STEPS",
+  "decision values",
+  "stop conditions",
+  "P2-18 dashboard reliance",
+  "P5-03 Finance Desk reliance",
+  "ttgdtx-production-execution-queue.tsx",
+  "production checklist",
+  "current-state inventory",
+  "does not execute browser UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
