@@ -1,5 +1,16 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX UAT Route Decision Lane Per-Route Audit
+
+- Strengthened `scripts/audit-ttgdtx-uat-readiness.mjs` and
+  `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs` so each
+  UAT-ROUTE-01 through UAT-ROUTE-11 row in
+  `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` must carry the per-route
+  `SIGNED_UAT_READY / NO_GO / BLOCKED` decision lane.
+- This is audit hardening only. It does not execute UAT, accept evidence,
+  sign owner results, approve finance action, approve migration, approve
+  owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX Signed UAT Route Decision Lane
 
 - Added `decisionValue` to each `SIGNED_UAT_EXECUTION_ROUTES` row in

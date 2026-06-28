@@ -252,6 +252,17 @@ fastSection("2026-06-28 - TTGDTX Signed UAT Route Decision Lane", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX UAT Route Decision Lane Per-Route Audit", [
+  "audit-ttgdtx-uat-readiness.mjs",
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "UAT-ROUTE-01",
+  "UAT-ROUTE-11",
+  "SIGNED_UAT_READY / NO_GO / BLOCKED",
+  "audit hardening only",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
   "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",

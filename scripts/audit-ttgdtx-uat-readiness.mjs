@@ -33,6 +33,10 @@ function requireText(relativePath, pattern, label) {
   }
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 const requiredFiles = [
   "components/ttgdtx/ttgdtx-uat-signoff-guard.tsx",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
@@ -99,6 +103,20 @@ const requiredRoutes = [
   "/ttgdtx/master",
   "/ttgdtx/source-control",
   "/ttgdtx/simulation",
+];
+
+const signedUatRouteResultRows = [
+  "UAT-ROUTE-01 P0-10 controlled evidence redaction intake",
+  "UAT-ROUTE-02 P0-03 backup/restore dry-run proof",
+  "UAT-ROUTE-03 Step90-Step110 signed production migration order",
+  "UAT-ROUTE-04 P6-04 role/workspace scope UAT",
+  "UAT-ROUTE-05 P0-19 legal and finance gate UAT",
+  "UAT-ROUTE-06 P3-01/P3-02 lead lifecycle and handover UAT",
+  "UAT-ROUTE-07 P2-17 payout duplicate and dossier UAT",
+  "UAT-ROUTE-08 P2-18/P5-03 dashboard and Finance Desk browser UAT",
+  "UAT-ROUTE-09 P6-03 audit-log traceability UAT",
+  "UAT-ROUTE-10 P6-06 hard-delete/cascade closure proof",
+  "UAT-ROUTE-11 P0-09 final owner GO/NO-GO decision",
 ];
 
 for (const route of requiredRoutes) {
@@ -170,6 +188,17 @@ requireText(
   /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|/i,
   "signed UAT route result tracker includes per-route decision lane",
 );
+
+for (const row of signedUatRouteResultRows) {
+  requireText(
+    "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+    new RegExp(
+      `\\|\\s*${escapeRegExp(row)}\\s*\\|\\s*PENDING\\s*\\|\\s*SIGNED_UAT_READY / NO_GO / BLOCKED\\s*\\|`,
+      "i",
+    ),
+    `decision lane for ${row}`,
+  );
+}
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
