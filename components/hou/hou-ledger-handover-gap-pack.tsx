@@ -136,7 +136,7 @@ export function HouLedgerHandoverGapPack() {
             Handover
           </div>
           <p className="mt-3 text-sm leading-6 text-zinc-700">
-            CTHSSV, Dao tao và HOU owner phải có quyết định nhận hoặc trả lại
+            CTHSSV, Đào tạo và HOU owner phải có quyết định nhận hoặc trả lại
             gói bàn giao trước khi finance dựa vào dữ liệu.
           </p>
         </div>

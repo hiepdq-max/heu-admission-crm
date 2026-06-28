@@ -127,6 +127,11 @@ const releaseGateAudit = existsSync(
 )
   ? read("scripts/audit-ttgdtx-release-gates.mjs")
   : "";
+const houGapPack = existsSync(
+  path.join(repoRoot, "components/hou/hou-ledger-handover-gap-pack.tsx"),
+)
+  ? read("components/hou/hou-ledger-handover-gap-pack.tsx")
+  : "";
 
 requireText(
   agents,
@@ -160,6 +165,20 @@ for (const [label, needle] of [
     needle,
     label,
     "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  );
+}
+
+for (const [label, needle] of [
+  ["readable HOU separation label", "h\u1ecdc ph\u00ed v\u00e0 COM t\u00e1ch ri\u00eang"],
+  ["readable HOU handover label", "\u0110\u00e0o t\u1ea1o v\u00e0 HOU owner"],
+  ["readable HOU invoice/evidence label", "ch\u1ee9ng t\u1eeb ri\u00eang"],
+  ["readable HOU report-view trust label", "ch\u1ec9 \u0111\u01b0\u1ee3c tin c\u1eady"],
+]) {
+  requireIncludes(
+    houGapPack,
+    needle,
+    label,
+    "components/hou/hou-ledger-handover-gap-pack.tsx",
   );
 }
 

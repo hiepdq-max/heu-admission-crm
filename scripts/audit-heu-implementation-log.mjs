@@ -442,6 +442,17 @@ fastSection("2026-06-28 - Module Readiness DQ-DM-05 Queue Alignment", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - HOU Gap Pack Vietnamese Encoding Repair", [
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
+  "audit-heu-vietnamese-text-encoding.mjs",
+  "HOU separation",
+  "handover",
+  "invoice/evidence",
+  "report-view trust",
+  "UI text encoding hardening only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

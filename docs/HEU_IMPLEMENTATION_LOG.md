@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - HOU Gap Pack Vietnamese Encoding Repair
+
+- Repaired mojibake Vietnamese text in
+  `components/hou/hou-ledger-handover-gap-pack.tsx` so HOU handover, tuition
+  ledger, invoice/chung-tu, COM policy and report-view trust warnings render
+  readably for operators.
+- Strengthened `scripts/audit-heu-vietnamese-text-encoding.mjs` with HOU-specific
+  readable-text assertions for HOU separation, handover, invoice/evidence and
+  report-view trust labels.
+- This is UI text encoding hardening only. It does not approve HOU handover,
+  tuition ledger posting, invoice issuance, COM payout, finance action, UAT
+  acceptance, evidence acceptance, owner GO or production GO.
+
 ## 2026-06-28 - Module Readiness DQ-DM-05 Queue Alignment
 
 - Updated `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so the
