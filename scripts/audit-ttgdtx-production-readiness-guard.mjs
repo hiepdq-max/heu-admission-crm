@@ -119,7 +119,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit-log traceability,\s+hard-delete conversion\/waiver, P0-14 intake-ledger evidence\s+binder, P0-15 final handoff summary, then final owner Go\/No-Go)(?=[\s\S]*Do not skip\s+ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)/i,
+  /(?=[\s\S]*data-ttgdtx-production-execution-queue="TTGDTX_9PLUS")(?=[\s\S]*TTGDTX production execution queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*redaction, backup\/restore, migration order,\s+role UAT, P0-19, P2-17, P2-18, audit-log traceability,\s+hard-delete conversion\/waiver, P0-14 intake-ledger evidence\s+binder, P0-15 final handoff summary, then final owner Go\/No-Go)(?=[\s\S]*Do not skip\s+ahead)(?=[\s\S]*Final result stays NO-GO until signed owner GO exists)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)/i,
   "TTGDTX production execution queue UI shell",
   executionQueuePath,
 );
@@ -217,6 +217,13 @@ requireText(
 
 requireText(
   blockerSource,
+  /(?=[\s\S]*export const PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*P0_10_REDACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0_03_RESTORE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*STEP90_110_MIGRATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6_04_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2_17_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6_03_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0_14_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0_15_HANDOFF_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*OWNER_GO_NO_GO_SIGNED \/ NO_GO \/ BLOCKED)(?=[\s\S]*stored only in Codex\/chat)/i,
+  "TTGDTX production execution shared source decision stops",
+  blockerSourcePath,
+);
+
+requireText(
+  blockerSource,
   /P0-15[\s\S]*Prepare final handoff summary[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "TTGDTX P0-15 final handoff split evidence source",
   blockerSourcePath,
@@ -231,14 +238,14 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*main execution queue with decision values and stop conditions[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );

@@ -375,6 +375,12 @@ export function TtgdtxProductionExecutionQueue() {
                   Owner: {step.owner}
                 </p>
                 <p className="mt-2 leading-5 text-zinc-700">{step.proof}</p>
+                <p className="mt-2 text-xs font-semibold uppercase text-indigo-700">
+                  Decision: {step.decisionValue}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-zinc-600">
+                  Stop: {step.stopCondition}
+                </p>
                 {step.href ? (
                   <Link
                     href={step.href}

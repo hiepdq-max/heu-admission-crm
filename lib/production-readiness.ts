@@ -11,6 +11,8 @@ export type ProductionExecutionStep = {
   title: string;
   owner: string;
   proof: string;
+  decisionValue: string;
+  stopCondition: string;
   href?: string;
 };
 
@@ -511,6 +513,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + Audit",
     proof:
       "Use the redaction pack before any UAT screenshot, backup proof, voucher or signed evidence is referenced.",
+    decisionValue: "P0_10_REDACTION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any raw PII, bank account, voucher, password, service key, backup dump or unsigned evidence is stored in Git/Codex/chat or lacks redaction reviewer proof.",
     href: "/audit",
   },
   {
@@ -519,6 +524,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + Audit",
     proof:
       "Complete the target identity lock and operator run sheet, then attach backup ID, restore target, preflight/postflight output and smoke-check evidence outside Git.",
+    decisionValue: "P0_03_RESTORE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Backup ID is missing, restore target is not isolated, smoke-check fails, P0-19/P3 gate preservation is unproven or IT_DATA/Audit evidence is unsigned.",
     href: "/settings/supabase-check",
   },
   {
@@ -527,6 +535,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + KHTC + PHAP_CHE",
     proof:
       "Approve migration evidence acceptance lock, migration order and Step97, Step100, Step109 and Step110 decisions after backup/restore evidence.",
+    decisionValue: "STEP90_110_MIGRATION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Migration order is unsigned, backup/restore proof is not accepted, rollback point is unclear, Step decisions are missing or any owner marks NO-GO/BLOCKED.",
   },
   {
     code: "P6-04",
@@ -534,6 +545,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + TRUONG_PHONG + Audit",
     proof:
       "Test ADMIN, BGH, KHTC, TUYEN_SINH, PHAP_CHE, AUDIT and out-of-scope accounts with synthetic users.",
+    decisionValue: "P6_04_SCOPE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any role leak, broad workspace access, server-side bypass, missing negative test, missing redaction proof or unsigned owner result remains.",
     href: "/settings/scopes",
   },
   {
@@ -542,6 +556,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "PHAP_CHE + KHTC + BGH",
     proof:
       "Prove legal basis, tuition policy and ALLOW_FINANCE gate before any receivable or payment trust.",
+    decisionValue: "P0_19_GATE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Legal basis, tuition policy, waiver/exception decision, invoice/chung-tu expectation or ALLOW_FINANCE gate result is missing or unsigned.",
     href: "/ttgdtx/gate",
   },
   {
@@ -550,6 +567,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "KHTC + BGH + Audit",
     proof:
       "Run duplicate-click, overpay, voucher normalization, RPC-only and required dossier UAT.",
+    decisionValue: "P2_17_RELEASE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Payment can run twice, dossier proof is incomplete, voucher normalization fails, RPC bypass exists or KHTC/BGH/Audit signoff is missing.",
     href: "/ttgdtx/payment-requests/pay",
   },
   {
@@ -558,6 +578,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "KHTC + BGH + IT_DATA",
     proof:
       "Compare dashboard totals to source workflows and prove role-scoped, read-only behavior.",
+    decisionValue: "P2_18_RELIANCE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Dashboard can write, totals do not reconcile to source workflows, scope leaks or KHTC/BGH reliance signoff is missing.",
     href: "/ttgdtx/accounting-dashboard",
   },
   {
@@ -566,6 +589,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "Audit + IT_DATA + KHTC",
     proof:
       "Attach traceability rows for create, update, check, approve, pay and source-control events before owner review.",
+    decisionValue: "P6_03_TRACE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any required trace row is missing, actor/action is unclear, source-control trace is absent, evidence reference is uncontrolled or Audit/KHTC signoff is missing.",
     href: "/audit",
   },
   {
@@ -574,6 +600,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + Audit + business owners",
     proof:
       "Convert protected cascade paths to restrict/archive/status patterns or attach narrow written waiver for derived-only rows.",
+    decisionValue: "P6_06_CLOSURE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any protected finance, evidence, approval, payment, lead or audit path can still cascade-delete, or written waiver/conversion proof is missing.",
     href: "/audit",
   },
   {
@@ -582,6 +611,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + Audit + process owners",
     proof:
       "Verify every required proof, controlled location, controlled evidence intake ledger, redaction reviewer, owner signature state, forbidden-content check and owner signoff path before owner review.",
+    decisionValue: "P0_14_EVIDENCE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any required proof is uncontrolled, redaction reviewer is missing, owner signature state is unclear, forbidden content is present or intake-ledger reference is absent.",
     href: "/ttgdtx",
   },
   {
@@ -590,6 +622,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "IT_DATA + Audit",
     proof:
       "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation and the P0-09 final owner decision manifest, with P0-14 controlled evidence intake ledger, redaction reviewer, owner signature state, P6-04/P6-03/P6-06 proof paths and the P6-06 finding register, before owner decision.",
+    decisionValue: "P0_15_HANDOFF_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Live git state, local checks, Stage D/NO-GO, evidence paths or proof owners are missing, or the handoff summary claims production GO before signed owner decision.",
     href: "/master-control",
   },
   {
@@ -598,6 +633,9 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT",
     proof:
       "Use the owner sign-off pack, final owner decision manifest and UAT operator handoff references. Production remains NO-GO until every required owner signs GO.",
+    decisionValue: "OWNER_GO_NO_GO_SIGNED / NO_GO / BLOCKED",
+    stopCondition:
+      "Any required owner signature is missing, any owner marks NO-GO/BLOCKED, any prerequisite UAT/evidence/migration/risk closure remains open or the decision is stored only in Codex/chat.",
   },
 ];
 

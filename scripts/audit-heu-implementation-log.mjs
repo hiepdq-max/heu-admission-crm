@@ -99,6 +99,19 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - TTGDTX Main Execution Queue Decision Stops", [
+  "PRODUCTION_EXECUTION_STEPS",
+  "decision values",
+  "stop conditions",
+  "P0-10 redaction",
+  "final owner",
+  "GO/NO-GO",
+  "ttgdtx-production-execution-queue.tsx",
+  "main execution queue",
+  "does not collect evidence",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX Signed UAT Execution Routing Hub", [
   "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",

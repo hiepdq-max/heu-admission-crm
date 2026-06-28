@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX Main Execution Queue Decision Stops
+
+- Extended `PRODUCTION_EXECUTION_STEPS` in `lib/production-readiness.ts` with
+  decision values and stop conditions from P0-10 redaction through final owner
+  GO/NO-GO.
+- Updated `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the
+  `/ttgdtx` main execution queue shows each decision boundary and stop
+  condition before owners rely on the execution order.
+- Updated the production checklist, backlog and current-state inventory so the
+  main execution queue remains aligned with the visible TTGDTX production guard.
+- This is execution-queue guard hardening only. It does not collect evidence,
+  execute backup/restore, run migration, execute UAT, approve finance action,
+  accept owner signoff or mark production GO.
+
 ## 2026-06-28 - TTGDTX P6-04/P6-03 Governance Decision Stops
 
 - Extended `PRODUCTION_GOVERNANCE_ASSURANCE_STEPS` in
