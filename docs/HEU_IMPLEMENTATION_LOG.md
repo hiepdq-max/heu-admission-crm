@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-03 Backup Restore Immediate Stop Guard
+
+- Added a visible `data-p003-backup-restore-immediate-stop="P0-03"` panel to
+  `components/settings/supabase-backup-restore-guard.tsx`.
+- The panel forces operators to stop before evidence collection when target identity
+  is unclear, backup/restore proof is incomplete or secrets/raw PII, bank data,
+  vouchers or payment data appear in evidence.
+- Strengthened `audit:ttgdtx-backup-restore-dry-run-pack` and
+  `audit:ttgdtx-release-gates` so the immediate stop conditions remain visible.
+- This is P0-03 guard hardening only. It does not execute backup, restore,
+  migration dry-run, UAT, rollback, evidence acceptance, owner signoff or
+  production GO.
+
 ## 2026-06-28 - P0-14 Evidence Binder Forbidden Content Prominence
 
 - Updated `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` so each

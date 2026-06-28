@@ -99,6 +99,19 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
+  "data-p003-backup-restore-immediate-stop",
+  "supabase-backup-restore-guard.tsx",
+  "target identity",
+  "is unclear",
+  "backup/restore proof is incomplete",
+  "secrets/raw PII",
+  "audit:ttgdtx-backup-restore-dry-run-pack",
+  "audit:ttgdtx-release-gates",
+  "does not execute backup",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - P0-14 Evidence Binder Forbidden Content Prominence", [
   "ttgdtx-production-evidence-binder.tsx",
   "forbidden-content rule",

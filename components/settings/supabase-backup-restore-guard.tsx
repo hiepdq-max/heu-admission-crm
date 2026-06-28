@@ -8,6 +8,24 @@ const evidenceItems = [
   "Human sign-off",
 ];
 
+const immediateStopItems = [
+  {
+    title: "Target identity unclear",
+    detail:
+      "Stop if production project/ref, restore project/ref, SQL editor, CLI profile or app banner cannot be distinguished.",
+  },
+  {
+    title: "Backup or restore proof incomplete",
+    detail:
+      "Stop if backup ID, isolated restore target, restore completion, checker confirmation or controlled evidence reference is missing.",
+  },
+  {
+    title: "Secret or raw evidence exposure",
+    detail:
+      "Stop if service-role keys, passwords, OTPs, raw dumps, bank data, vouchers, CCCD, raw PII or payment data appear in evidence.",
+  },
+];
+
 const targetIdentityLockItems = [
   {
     caseId: "P0-03-TARGET-01",
@@ -362,6 +380,47 @@ export function SupabaseBackupRestoreGuard() {
           <span className="mt-1 block font-mono text-xs">
             STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md
           </span>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-950"
+        data-p003-backup-restore-immediate-stop="P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ShieldAlert className="size-4 shrink-0" />
+              <span>
+                P0-03 immediate operator stop conditions: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this before collecting or uploading any backup/restore
+              evidence. If any stop condition appears, keep P0-03 NO-GO and do
+              not continue to migration-order review.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-red-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P0_03_STOP_CHECK / GO_NEXT / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {immediateStopItems.map((item) => (
+            <article
+              key={item.title}
+              className="border-l-2 border-red-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-red-700">
+                {item.title}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.detail}</p>
+            </article>
+          ))}
         </div>
       </div>
 
