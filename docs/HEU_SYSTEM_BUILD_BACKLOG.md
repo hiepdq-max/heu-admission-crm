@@ -105,3 +105,9 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P7-02 | AI task checklist generator | IT/Data | PASS_LOCAL | `components/ai/ai-task-checklist-generator.tsx`; `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; read-only checklist templates only, no AI call, no prompt save, no production action |
 | P7-03 | AI risk suggestion board | Audit + IT/Data | PASS_LOCAL | `components/ai/ai-risk-suggestion-board.tsx`; `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `npm.cmd run audit:heu-ai-policy`; read-only advisory risk prompts only, no scoring, no suppression, no autonomous approval |
 | P7-04 | AI prompt/output audit logging design | BGH + IT/Data + Audit | PASS_LOCAL_DESIGN | `docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md`; `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`; `docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md`; `npm.cmd run audit:heu-ai-policy`; design only, no AI call, no prompt storage in Git/Codex/chat, no workflow write, no production action |
+
+## P8 - HOU Partnership Module
+
+| ID | Item | Owner | Status | Gate |
+|---|---|---|---|---|
+| P8-01 | HOU ledger/handover gap pack | HOU owner + KHTC + CTHSSV + Dao tao + Phap Che + Audit | PASS_LOCAL | `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`; `components/hou/hou-ledger-handover-gap-pack.tsx`; `/hou`; HOU-LH-01 through HOU-LH-08; `HOU_LEDGER_READY / NO_GO / BLOCKED`; `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`; keeps HOU ledger, handover, tuition, invoice/chung-tu, COM policy, payment batch and `RV_HOU_LEDGER_SUMMARY` separate from TTGDTX and Short Course; does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO |

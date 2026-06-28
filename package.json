@@ -16,6 +16,7 @@
     "audit:heu-finance-desk": "node scripts/audit-heu-finance-desk.mjs",
     "audit:heu-final-handoff-coverage": "node scripts/audit-heu-final-handoff-coverage.mjs",
     "audit:heu-git-hygiene": "node scripts/audit-heu-git-hygiene.mjs",
+    "audit:heu-hou-ledger-handover-gap-pack": "node scripts/audit-heu-hou-ledger-handover-gap-pack.mjs",
     "audit:heu-implementation-log": "node scripts/audit-heu-implementation-log.mjs",
     "audit:heu-user-account-security": "node scripts/audit-heu-user-account-security.mjs",
     "audit:heu-lead-handover-policy": "node scripts/audit-heu-lead-handover-policy.mjs",

@@ -48,7 +48,7 @@ This matrix is based on:
 | Report View Register | Draft register lists TTGDTX, HOU, Short Course, Audit and AI views; source map draft, read-only DQ status capture and Data Master bridge exist | CAN_SUA | Report View Register UI, source map, KPI dictionary shell, DQ status capture and master/report compatibility bridge | Dashboard reading raw workbooks/tables or restricted source data | Owner signoff and evidence attachment per report view |
 | BGH Dashboard | P5-02 spec, action queue, blocker source and read-only controls exist | CAN_SUA | Read-only blocker dashboard and signed-UAT status views | BGH production reliance or finance conclusion | Signed dashboard UAT and Report View signoff |
 | AI Agent Layer | AI policy, task checklist, risk board, scope register and P7-04 prompt/output audit logging design are advisory/read-only | DAT for advisory only | Read-only checklist/risk prompts from approved registers and audit-log design review | AI approval, AI write, AI payment, AI go-live, AI data deletion, AI service call | AI scope registry approval, implemented prompt/output audit logging, signed AI UAT |
-| HOU Partnership Module | HOU UI/components and lead/HOU/COM primitives exist; SQL map references HOU programs, majors, terms, commission payees | CAN_SUA | HOU gap review, handover log, HOU ledger spec, report-view source map | Mixing HOU ledger with TTGDTX, auto COM payout | HOU handover UAT, HOU tuition ledger, HOU commission policy/signoff |
+| HOU Partnership Module | HOU UI/components and lead/HOU/COM primitives exist; SQL map references HOU programs, majors, terms, commission payees; `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md` and `/hou` gap panel now expose HOU-LH-01 through HOU-LH-08 | CAN_SUA | HOU gap review, handover log, HOU ledger spec, report-view source map, UAT support panel | Mixing HOU ledger with TTGDTX, auto COM payout | HOU handover UAT, HOU tuition ledger, HOU commission policy/signoff |
 | Short Course / Day Nghe | Short-course route and data primitives exist; SQL map references short class/student/payment/invoice objects | CAN_SUA | Attendance/payment/BHXH/meal gate mapping, UAT runbook, report-view source map | Closing payroll/payment periods without attendance and audit | Signed attendance/payment UAT and Short Course report view signoff |
 | Audit / Risk | Audit guards, hard-delete/cascade review and evidence binder exist | DAT for local control | Risk dashboard, waiver queue, audit-log UAT support | Waiving findings without owner signature | P6-03/P6-06 signed UAT or written waiver |
 | Backup / Rollback | Backup/restore run sheet and evidence pack exist | CHUA_DU_DIEU_KIEN for production | Operator checklist and evidence manifest support | Production migration | Real backup ID, restore dry-run proof, owner acceptance |
@@ -72,7 +72,7 @@ This matrix is based on:
 | 1 | TTGDTX/Finance signed UAT execution support | DAT | UAT checklist/status page and evidence routing |
 | 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell, read-only `/reports` source-map panel, Data Quality Check status capture and owner signoff capture created; next build is cross-module Data Master compatibility plan |
 | 3 | Cross-module Data Master compatibility plan | CAN_SUA | `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md`; `components/reports/data-master-report-view-bridge-panel.tsx`; non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` design |
-| 4 | HOU ledger/handover gap pack | CAN_SUA | HOU handover log, tuition ledger and COM policy runbook |
+| 4 | HOU ledger/handover gap pack | CAN_SUA | `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`; `components/hou/hou-ledger-handover-gap-pack.tsx`; `/hou`; `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`; next gate is signed HOU handover UAT, tuition ledger proof and COM policy/signoff |
 | 5 | Short Course attendance/payment gap pack | CAN_SUA | Attendance, meal/BHXH/HR payment and audit UAT runbook |
 | 6 | AI scope logging design | CAN_SUA | `docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md`; prompt/output audit logging design only, no AI write |
 
@@ -96,8 +96,10 @@ The build can continue, but only in this order:
 2. Report View Register and Data Quality Check Log.
 3. Cross-module Data Master compatibility design, now drafted as a read-only
    `/reports` bridge and still blocked from production SQL or real-data import.
-4. HOU and Short Course gap packs.
-5. AI scope logging design.
+4. HOU gap pack is drafted as PASS_LOCAL; signed HOU handover UAT, tuition
+   ledger proof and COM policy/signoff are still required before reliance.
+5. Short Course gap pack.
+6. AI scope logging design.
 
 Production remains NO-GO until backup/restore, migration order, signed UAT,
 hard-delete/cascade closure and final owner Go/No-Go are complete.

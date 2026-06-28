@@ -17,6 +17,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { HouClaimReviewForm } from "@/components/hou/hou-claim-review-form";
+import { HouLedgerHandoverGapPack } from "@/components/hou/hou-ledger-handover-gap-pack";
 import {
   HouPaymentBatches,
   type HouPaymentBatchRow,
@@ -1466,6 +1467,8 @@ export default async function HouControlPage() {
           BGH, Trưởng phòng tuyển sinh hoặc Kế toán sẽ thấy đầy đủ hơn.
         </section>
       ) : null}
+
+      <HouLedgerHandoverGapPack />
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard
