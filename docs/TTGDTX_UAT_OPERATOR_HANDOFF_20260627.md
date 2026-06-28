@@ -31,7 +31,7 @@ approval evidence.
 | UAT-HANDOFF-02 | Create or reset synthetic accounts in Supabase Auth | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` | Accounts exist; no real passwords shared |
 | UAT-HANDOFF-03 | Open the signed UAT execution routing hub and confirm route list | `/ttgdtx`; `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`; `data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING"` | UAT-ROUTE-01 through UAT-ROUTE-11 visible with route, runbook, owner, minimum proof, stop condition and guard |
 | UAT-HANDOFF-04 | Execute the browser route/account matrix and signed UAT route list | `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`; Section 2.1 below | ALLOWED, BLOCKED, EMPTY_SCOPED_STATE, SIGNED_UAT_READY, NO_GO or BLOCKED recorded |
-| UAT-HANDOFF-05 | Record each test result and redacted evidence reference | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | Account, route, result, evidence reference and reviewer recorded |
+| UAT-HANDOFF-05 | Record each test result and redacted evidence reference | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 | Account, route, result, evidence reference, redaction reviewer and reviewer recorded |
 | UAT-HANDOFF-06 | Complete closure rows UAT-CLOSE-01 through UAT-CLOSE-06 | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | UAT_PASS, UAT_FAIL or BLOCKED |
 | UAT-HANDOFF-07 | Get required owner signatures outside Codex/chat | BGH, KHTC, PHAP_CHE, IT_DATA and Audit evidence pack | Signed PASS, FAIL or BLOCKED |
 

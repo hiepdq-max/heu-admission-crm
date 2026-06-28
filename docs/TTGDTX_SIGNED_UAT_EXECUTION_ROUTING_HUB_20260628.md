@@ -80,6 +80,9 @@ handoff must include:
 - `UAT-HANDOFF-04` executing the browser route/account matrix and this signed
   UAT route list together.
 - `UAT-ROUTE-01` through `UAT-ROUTE-11` as the ordered route checklist.
+- `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 as the signed UAT
+  route result tracker, with all routes PENDING until controlled evidence and
+  required owner signature exist.
 - The same strict boundary: the handoff and hub do not execute UAT, accept
   evidence, sign owner results, grant access, approve finance action, approve
   migration, approve owner GO/NO-GO or mark production GO.

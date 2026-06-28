@@ -161,13 +161,19 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*Signed UAT Route Result Tracker)(?=[\s\S]*BLOCKED_PENDING_SIGNED_UAT_ROUTE_EVIDENCE)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*controlled evidence reference, redaction reviewer,\s+route result, reviewer name and required owner signature)(?=[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-02 P0-03 backup\/restore dry-run proof[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-03 Step90-Step110 signed production migration order[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-04 P6-04 role\/workspace scope UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-05 P0-19 legal and finance gate UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-06 P3-01\/P3-02 lead lifecycle and handover UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-07 P2-17 payout duplicate and dossier UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-09 P6-03 audit-log traceability UAT[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-10 P6-06 hard-delete\/cascade closure proof[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision[\s\S]*PENDING)(?=[\s\S]*PASS_LOCAL does not mean any UAT route was executed, accepted, signed,\s+evidence-approved, finance-approved, migration-approved or production-approved)/i,
+  "signed UAT route result tracker remains pending until external evidence and owner signatures",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /No real passwords, OTPs, service keys, bank credentials/i,
   "no secret or real credential rule",
 );
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, OTPs, reset links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, OTPs, reset links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
   "operator handoff keeps UAT run order and no-secret boundary",
 );
 
@@ -215,7 +221,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /\|\s*Internal UAT sign-off\s*\|[\s\S]*\|\s*IN_PROGRESS\s*\|[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*UAT-HANDOFF-03\/UAT-HANDOFF-04[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md/i,
+  /\|\s*Internal UAT sign-off\s*\|[\s\S]*\|\s*IN_PROGRESS\s*\|[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*UAT-HANDOFF-03\/UAT-HANDOFF-04[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2 signed UAT route result tracker[\s\S]*all routes PENDING until controlled evidence and required owner signatures exist/i,
   "internal UAT sign-off IN_PROGRESS with execution log",
 );
 

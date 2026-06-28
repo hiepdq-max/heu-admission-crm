@@ -120,6 +120,19 @@ fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX Signed UAT Route Result Tracker", [
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "Signed UAT Route Result Tracker",
+  "UAT-ROUTE-01",
+  "UAT-ROUTE-11",
+  "BLOCKED_PENDING_SIGNED_UAT_ROUTE_EVIDENCE",
+  "PENDING",
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
