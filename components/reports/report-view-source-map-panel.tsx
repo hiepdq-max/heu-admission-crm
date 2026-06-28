@@ -31,6 +31,14 @@ type DataQualityCheck = {
   stopCondition: string;
 };
 
+type OwnerSignoffCapture = {
+  id: string;
+  reportView: string;
+  requiredOwners: string;
+  signoffState: string;
+  blocker: string;
+};
+
 const reportViewSources: ReportViewSource[] = [
   {
     code: "RV_TTGDTX_FINANCE_SUMMARY",
@@ -150,6 +158,44 @@ const dataQualityChecks: DataQualityCheck[] = [
     ownerAction: "IT/Data confirms approved context and prompt audit need",
     evidenceState: "AI production action remains blocked",
     stopCondition: "AI reads raw restricted data or writes workflow state",
+  },
+];
+
+const ownerSignoffCaptures: OwnerSignoffCapture[] = [
+  {
+    id: "RV-SIGN-01",
+    reportView: "RV_TTGDTX_FINANCE_SUMMARY",
+    requiredOwners: "KHTC + BGH + IT_DATA + Audit",
+    signoffState: "OWNER_SIGNOFF_PENDING",
+    blocker: "P2-18 and P5-03 signed browser UAT are still missing",
+  },
+  {
+    id: "RV-SIGN-02",
+    reportView: "RV_TTGDTX_COM_CHI_TRA",
+    requiredOwners: "KHTC + PHAP_CHE + BGH + Audit",
+    signoffState: "PAYOUT_SIGNOFF_REQUIRED",
+    blocker: "P2-17 payout UAT and duplicate guard proof are still missing",
+  },
+  {
+    id: "RV-SIGN-03",
+    reportView: "RV_HOU_LEDGER_SUMMARY",
+    requiredOwners: "HOU owner + KHTC + IT_DATA + Audit",
+    signoffState: "HOU_OWNER_SIGNOFF_REQUIRED",
+    blocker: "HOU ledger, handover and commission policy signoff are missing",
+  },
+  {
+    id: "RV-SIGN-04",
+    reportView: "RV_SHORT_COURSE_ATTENDANCE_PAYMENT",
+    requiredOwners: "DAO_TAO + KHTC + IT_DATA + Audit",
+    signoffState: "SHORT_COURSE_SIGNOFF_REQUIRED",
+    blocker: "Attendance/payment UAT and report-view signoff are missing",
+  },
+  {
+    id: "RV-SIGN-05",
+    reportView: "RV_AI_ALLOWED_CONTEXT",
+    requiredOwners: "BGH + IT_DATA + Audit",
+    signoffState: "AI_SCOPE_SIGNOFF_REQUIRED",
+    blocker: "AI scope registry approval and signed AI UAT are missing",
   },
 ];
 
@@ -318,6 +364,52 @@ export function ReportViewSourceMapPanel() {
           </div>
         </section>
       </div>
+
+      <section className="rounded-lg border border-zinc-200">
+        <div className="border-b border-zinc-200 p-4">
+          <h3 className="flex items-center gap-2 text-sm font-semibold">
+            <ShieldCheck className="size-4 text-emerald-700" />
+            Owner signoff capture
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-zinc-600">
+            This queue shows which owner signatures must be captured outside
+            Git/Codex/chat before report views can support signed UAT or
+            dashboard reliance. It is read-only and does not collect signatures.
+          </p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px] text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="px-4 py-3">Signoff ID</th>
+                <th className="px-4 py-3">Report view</th>
+                <th className="px-4 py-3">Required owners</th>
+                <th className="px-4 py-3">State</th>
+                <th className="px-4 py-3">Blocker</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {ownerSignoffCaptures.map((item) => (
+                <tr key={item.id}>
+                  <td className="px-4 py-4 font-mono text-xs text-zinc-950">
+                    {item.id}
+                  </td>
+                  <td className="px-4 py-4 font-mono text-xs text-zinc-700">
+                    {item.reportView}
+                  </td>
+                  <td className="px-4 py-4 text-zinc-700">
+                    {item.requiredOwners}
+                  </td>
+                  <td className="px-4 py-4">
+                    <StatusBadge>{item.signoffState}</StatusBadge>
+                  </td>
+                  <td className="px-4 py-4 text-rose-700">{item.blocker}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
   );
 }

@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Report View Owner Signoff Capture
+
+- Extended `components/reports/report-view-source-map-panel.tsx` with a
+  read-only owner signoff capture queue for TTGDTX finance summary, payout,
+  HOU ledger, Short Course attendance/payment and AI allowed context views.
+- The queue shows required owner groups, signoff state and blockers before any
+  signed UAT or dashboard reliance.
+- Updated current-state, P0 register and release-gate audits so owner signoff
+  capture cannot be dropped from the report-view control surface.
+- This is read-only report governance UI only. It does not collect signatures,
+  approve dashboard production reliance, statutory accounting, finance action,
+  UAT acceptance, evidence acceptance, owner GO or production GO.
+
 ## 2026-06-28 - Report View Data Quality Status Capture
 
 - Extended `components/reports/report-view-source-map-panel.tsx` so the

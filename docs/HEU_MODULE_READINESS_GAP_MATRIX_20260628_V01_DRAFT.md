@@ -70,7 +70,7 @@ This matrix is based on:
 | Priority | Work item | Classification | Output |
 |---|---|---|---|
 | 1 | TTGDTX/Finance signed UAT execution support | DAT | UAT checklist/status page and evidence routing |
-| 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell and read-only `/reports` source-map panel with Data Quality Check status capture created; next build is owner signoff capture |
+| 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell, read-only `/reports` source-map panel, Data Quality Check status capture and owner signoff capture created; next build is cross-module Data Master compatibility plan |
 | 3 | Cross-module Data Master compatibility plan | CAN_SUA | Non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` design |
 | 4 | HOU ledger/handover gap pack | CAN_SUA | HOU handover log, tuition ledger and COM policy runbook |
 | 5 | Short Course attendance/payment gap pack | CAN_SUA | Attendance, meal/BHXH/HR payment and audit UAT runbook |

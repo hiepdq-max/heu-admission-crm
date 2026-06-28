@@ -94,6 +94,13 @@ requireText(
 );
 
 requireText(
+  log,
+  /## 2026-06-28 - Report View Owner Signoff Capture[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*owner signoff capture queue[\s\S]*required owner groups[\s\S]*signoff state and blockers[\s\S]*current-state, P0 register and release-gate audits[\s\S]*This is read-only report governance UI only[\s\S]*does not collect signatures,\s+approve dashboard production reliance, statutory accounting, finance action,\s+UAT acceptance, evidence acceptance, owner GO or production GO/i,
+  "report-view owner signoff capture log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
   backlog,
   /P0-05[\s\S]*Record every phase in `HEU_IMPLEMENTATION_LOG\.md`[\s\S]*PASS_LOCAL[\s\S]*docs\/HEU_IMPLEMENTATION_LOG\.md[\s\S]*audit:heu-implementation-log[\s\S]*log before commit[\s\S]*does not approve production/i,
   "P0-05 implementation-log backlog guard",
