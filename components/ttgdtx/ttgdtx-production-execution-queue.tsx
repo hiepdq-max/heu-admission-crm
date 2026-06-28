@@ -164,6 +164,12 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 leading-5 text-zinc-700">{step.evidence}</p>
               <p className="mt-2 text-xs font-medium text-zinc-600">
+                Decision: {step.decisionValue}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {step.stopCondition}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
                 Runbook: {step.runbook}
               </p>
               <p className="mt-1 text-xs font-medium text-zinc-600">

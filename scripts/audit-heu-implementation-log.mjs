@@ -184,6 +184,19 @@ fastSection("2026-06-28 - TTGDTX P0-03/Step90-Step110 Infra Decision Stops", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX P0-19/P3 Gate-Handover Decision Stops", [
+  "PRODUCTION_GATE_HANDOVER_STEPS",
+  "decision values",
+  "stop conditions",
+  "P0-19 legal/finance",
+  "P3-01/P3-02 lead lifecycle",
+  "P0_19_GATE_READY",
+  "P3_01_P3_02_HANDOVER_READY",
+  "ttgdtx-production-execution-queue.tsx",
+  "does not accept legal basis",
+  "mark production",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",

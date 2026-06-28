@@ -161,7 +161,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*data-ttgdtx-gate-handover-plan="P0-19_P3-01_P3-02")(?=[\s\S]*Gate and handover readiness: P0-19 \+ P3-01\/P3-02)(?=[\s\S]*legal\/finance basis)(?=[\s\S]*lead handover UAT)(?=[\s\S]*Handover cannot bypass P0-19\/P2-05\/P2-03)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*finance gate first)(?=[\s\S]*Open gate route)/i,
+  /(?=[\s\S]*PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*data-ttgdtx-gate-handover-plan="P0-19_P3-01_P3-02")(?=[\s\S]*Gate and handover readiness: P0-19 \+ P3-01\/P3-02)(?=[\s\S]*legal\/finance basis)(?=[\s\S]*lead handover UAT)(?=[\s\S]*Handover cannot bypass P0-19\/P2-05\/P2-03)(?=[\s\S]*keeps production NO-GO)(?=[\s\S]*finance gate first)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open gate route)/i,
   "TTGDTX P0-19/P3 gate-handover readiness plan",
   executionQueuePath,
 );
@@ -175,7 +175,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export const PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*P0-19)(?=[\s\S]*Legal and finance gate UAT)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*Lead lifecycle and handover UAT)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)(?=[\s\S]*bypass P0-19\/P2-05\/P2-03 finance gates)/i,
+  /(?=[\s\S]*export const PRODUCTION_GATE_HANDOVER_STEPS)(?=[\s\S]*P0-19)(?=[\s\S]*Legal and finance gate UAT)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Legal basis, tuition policy, waiver\/exception decision)(?=[\s\S]*audit:ttgdtx-p019-gate-guard)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*Lead lifecycle and handover UAT)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3_01_P3_02_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*bypass P0-19\/P2-05\/P2-03 gates)(?=[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)/i,
   "TTGDTX P0-19/P3 gate-handover shared source",
   blockerSourcePath,
 );

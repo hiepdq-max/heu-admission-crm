@@ -63,6 +63,8 @@ export type ProductionGateHandoverStep = {
   route: string;
   runbook: string;
   evidence: string;
+  decisionValue: string;
+  stopCondition: string;
   auditCommand: string;
 };
 
@@ -305,6 +307,9 @@ export const PRODUCTION_GATE_HANDOVER_STEPS: ProductionGateHandoverStep[] = [
     runbook: "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
     evidence:
       "Legal basis, tuition policy, waiver/exception decision and ALLOW_FINANCE gate proof before any receivable or payment reliance.",
+    decisionValue: "P0_19_GATE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Legal basis, tuition policy, waiver/exception decision, finance gate proof or PHAP_CHE/KHTC/BGH owner signature is missing.",
     auditCommand: "npm.cmd run audit:ttgdtx-p019-gate-guard",
   },
   {
@@ -315,6 +320,9 @@ export const PRODUCTION_GATE_HANDOVER_STEPS: ProductionGateHandoverStep[] = [
     runbook: "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
     evidence:
       "Signed lifecycle and handover UAT proving handover cannot create finance facts or bypass P0-19/P2-05/P2-03 finance gates.",
+    decisionValue: "P3_01_P3_02_HANDOVER_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Lead handover can create receivable facts, bypass P0-19/P2-05/P2-03 gates, leak role/workspace scope or lacks signed owner decision.",
     auditCommand: "npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack",
   },
 ];
