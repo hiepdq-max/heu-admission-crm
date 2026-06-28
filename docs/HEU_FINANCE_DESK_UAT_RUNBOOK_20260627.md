@@ -47,6 +47,11 @@ P5-03-UAT-09, `data-finance-desk-acceptance-matrix="P5-03"` and
 P5-03-ACCEPT-01 through P5-03-ACCEPT-06 so the browser UAT evidence pack is
 visible inside the cockpit before any owner reliance decision.
 
+The same checklist also exposes
+`data-finance-desk-immediate-stop="P5-03"` with P5-03-STOP-01 through
+P5-03-STOP-05 and decision value `P5_03_STOP_CHECK / GO_NEXT / BLOCKED`.
+Use this guard before recording any reliance decision.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |
@@ -99,6 +104,14 @@ trail.
 | P5-03-ACCEPT-06 | Production boundary | Owners record signed PASS/FAIL/BLOCKED outside Codex/chat | Anyone treats PASS_LOCAL as production approval |
 
 ## 8. Finance Desk Reliance Decision Manifest
+
+Immediate stop guard: do not proceed to owner reliance when Finance Desk totals
+are used for statutory accounting, voucher posting, finance approval or bank
+transfer instruction; when signed browser UAT, source reconciliation,
+workspace-scope denial or owner reliance decision is missing; when
+contract-only/out-of-scope users can see totals; when dashboard/import/source
+totals differ without owner notes; or when raw PII, CCCD, bank data, vouchers,
+payment evidence, passwords, OTPs or service-role keys appear in evidence.
 
 Decision value: `P5_03_RELIANCE_READY / NO_GO / BLOCKED`
 

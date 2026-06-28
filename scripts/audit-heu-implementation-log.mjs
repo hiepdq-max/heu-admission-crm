@@ -112,6 +112,23 @@ fastSection("2026-06-28 - P2-17 Payout Immediate Stop Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-28 - P5-03 Finance Desk Immediate Stop Guard", [
+  "data-finance-desk-immediate-stop",
+  "finance-desk-uat-evidence-checklist.tsx",
+  "statutory accounting",
+  "voucher posting",
+  "bank-transfer",
+  "signed browser UAT",
+  "workspace-scope denial",
+  "contract-only/out-of-scope users see totals",
+  "raw sensitive evidence",
+  "audit:heu-finance-desk",
+  "audit:heu-current-state-inventory",
+  "audit:ttgdtx-release-gates",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P6-06 Conversion Immediate Stop Guard", [
   "data-hard-delete-conversion-immediate-stop",
   "hard-delete-conversion-decision-queue.tsx",

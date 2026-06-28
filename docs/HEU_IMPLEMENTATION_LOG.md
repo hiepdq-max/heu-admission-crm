@@ -1,5 +1,23 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P5-03 Finance Desk Immediate Stop Guard
+
+- Added a visible `data-finance-desk-immediate-stop="P5-03"` panel to
+  `components/finance/finance-desk-uat-evidence-checklist.tsx`.
+- The panel stops owner reliance when Finance Desk totals are used for
+  statutory accounting, voucher posting, finance approval or bank-transfer
+  instruction; when signed browser UAT, source reconciliation,
+  workspace-scope denial or owner reliance decision is missing; when
+  contract-only/out-of-scope users see totals; when source totals differ
+  without owner notes; or when raw sensitive evidence appears.
+- Updated `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`, backlog,
+  production checklist, current-state inventory, `audit:heu-finance-desk`,
+  `audit:heu-current-state-inventory` and `audit:ttgdtx-release-gates` so the
+  P5-03 immediate stop conditions remain visible before owner reliance.
+- This is Finance Desk guard hardening only. It does not execute UAT, collect
+  evidence, approve finance action, approve statutory accounting, issue bank
+  transfer instructions, accept owner signoff or mark production GO.
+
 ## 2026-06-28 - P2-17 Payout Immediate Stop Guard
 
 - Added a visible `data-ttgdtx-payout-immediate-stop="P2-17"` panel to

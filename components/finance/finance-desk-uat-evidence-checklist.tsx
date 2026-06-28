@@ -13,6 +13,12 @@ type FinanceDeskAcceptanceItem = {
   stopCondition: string;
 };
 
+type FinanceDeskImmediateStopItem = {
+  stopId: string;
+  condition: string;
+  operatorAction: string;
+};
+
 const uatItems: FinanceDeskUatItem[] = [
   {
     caseId: "P5-03-UAT-01",
@@ -67,6 +73,44 @@ const uatItems: FinanceDeskUatItem[] = [
     user: "UAT_ADMIN",
     expectedEvidence:
       "Inspect action links and confirm they route back to source P2 screens without mutating facts.",
+  },
+];
+
+const immediateStopItems: FinanceDeskImmediateStopItem[] = [
+  {
+    stopId: "P5-03-STOP-01",
+    condition:
+      "Any Finance Desk total is used for statutory accounting, voucher posting, finance approval or a bank-transfer instruction.",
+    operatorAction:
+      "Stop owner reliance and route the decision back to the source P2 workflow.",
+  },
+  {
+    stopId: "P5-03-STOP-02",
+    condition:
+      "Signed browser UAT, source reconciliation, workspace-scope denial or the owner reliance decision is missing.",
+    operatorAction:
+      "Keep P5-03 BLOCKED until controlled evidence and owner signatures exist outside Codex/chat.",
+  },
+  {
+    stopId: "P5-03-STOP-03",
+    condition:
+      "Contract-only or out-of-scope users can see unrestricted Finance Desk totals.",
+    operatorAction:
+      "Stop the run and fix role/workspace scope before continuing UAT.",
+  },
+  {
+    stopId: "P5-03-STOP-04",
+    condition:
+      "Dashboard/import/source-control totals differ without an owner note and source P2 correction route.",
+    operatorAction:
+      "Record NO_GO or BLOCKED; do not adjust Finance Desk output directly.",
+  },
+  {
+    stopId: "P5-03-STOP-05",
+    condition:
+      "Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, OTPs or service-role keys appear in evidence.",
+    operatorAction:
+      "Reject the evidence and move it to controlled redaction handling outside Git/Codex/chat.",
   },
 ];
 
@@ -143,6 +187,45 @@ export function FinanceDeskUatEvidenceChecklist() {
           <span className="mt-1 block font-mono text-xs">
             HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md
           </span>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-finance-desk-immediate-stop="P5-03"
+      >
+        <div className="flex items-start gap-3">
+          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-rose-950">
+              P5-03 Finance Desk immediate stop guard: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-rose-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P5_03_STOP_CHECK / GO_NEXT / BLOCKED
+              </span>
+              . Stop before owner reliance if any condition below is open.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {immediateStopItems.map((item) => (
+            <article
+              className="border-l-2 border-rose-300 bg-rose-50 px-3 py-3"
+              key={item.stopId}
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.stopId}
+              </p>
+              <p className="mt-2 leading-5 text-rose-950">
+                Stop: {item.condition}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Action: {item.operatorAction}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 
