@@ -99,6 +99,18 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - TTGDTX Release Gate Execution Queue Decision Lock", [
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "Decision",
+  "Stop",
+  "step.decisionValue",
+  "step.stopCondition",
+  "main execution queue with decision values and stop conditions",
+  "P0-03/Step90-Step110",
+  "does not collect evidence",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - TTGDTX Main Execution Queue Decision Stops", [
   "PRODUCTION_EXECUTION_STEPS",
   "decision values",

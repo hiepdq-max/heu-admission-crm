@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX Release Gate Execution Queue Decision Lock
+
+- Strengthened `scripts/audit-ttgdtx-release-gates.mjs` so the release gate
+  now requires the TTGDTX main execution queue to render each `Decision` and
+  `Stop` value from `step.decisionValue` and `step.stopCondition`.
+- Updated the release-gate checklist assertion so the internal UAT row must
+  mention the main execution queue with decision values and stop conditions
+  before P0-03/Step90-Step110, P0-19/P3-01/P3-02, P6-04/P6-03, P2-18/P5-03
+  and P6-06/P2-17 reliance plans.
+- This is release-gate audit hardening only. It does not collect evidence,
+  execute backup/restore, run migration, execute UAT, approve finance action,
+  accept owner signoff or mark production GO.
+
 ## 2026-06-28 - TTGDTX Main Execution Queue Decision Stops
 
 - Extended `PRODUCTION_EXECUTION_STEPS` in `lib/production-readiness.ts` with
