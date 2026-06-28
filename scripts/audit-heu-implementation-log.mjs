@@ -99,6 +99,18 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-28 - P6-06 Conversion Immediate Stop Guard", [
+  "data-hard-delete-conversion-immediate-stop",
+  "hard-delete-conversion-decision-queue.tsx",
+  "protected row can still cascade-delete",
+  "waiver is broad/oral/ownerless",
+  "rollback relies on truncate",
+  "audit:hard-delete-conversion-decision-queue",
+  "audit:ttgdtx-release-gates",
+  "does not execute deletion",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",

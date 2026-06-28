@@ -78,6 +78,24 @@ const decisionQueue: DecisionQueueItem[] = [
   },
 ];
 
+const immediateStopItems = [
+  {
+    title: "Protected row can still cascade-delete",
+    detail:
+      "Stop if finance, evidence, approval, payment, legal, audit, lead or operating-history rows can disappear through parent deletion.",
+  },
+  {
+    title: "Waiver is broad, oral or ownerless",
+    detail:
+      "Stop if a waiver is not written, does not name the table and owner, lacks derived-only proof or hides finance/legal/audit risk.",
+  },
+  {
+    title: "Rollback relies on deletion",
+    detail:
+      "Stop if truncate, drop table, hard-delete or cascade execution is presented as cleanup, rollback proof or a production-safe path.",
+  },
+];
+
 export function HardDeleteConversionDecisionQueue() {
   return (
     <section
@@ -105,6 +123,47 @@ export function HardDeleteConversionDecisionQueue() {
           <span className="mt-1 block font-mono text-xs">
             HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md
           </span>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-rose-200 bg-rose-50 p-4 text-rose-950"
+        data-hard-delete-conversion-immediate-stop="P6-06"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ShieldAlert className="size-4 shrink-0" />
+              <span>
+                P6-06 immediate conversion stop conditions: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this before accepting any conversion lane or waiver. If any
+              stop condition appears, keep P6-06 NO-GO and do not move the
+              finding into owner GO/NO-GO review.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-rose-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P6_06_STOP_CHECK / CONVERT_OR_WAIVE / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {immediateStopItems.map((item) => (
+            <article
+              key={item.title}
+              className="border-l-2 border-rose-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.title}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.detail}</p>
+            </article>
+          ))}
         </div>
       </div>
 

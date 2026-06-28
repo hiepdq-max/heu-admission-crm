@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P6-06 Conversion Immediate Stop Guard
+
+- Added a visible `data-hard-delete-conversion-immediate-stop="P6-06"` panel to
+  `components/audit/hard-delete-conversion-decision-queue.tsx`.
+- The panel stops owner review when a protected row can still cascade-delete,
+  a waiver is broad/oral/ownerless or rollback relies on truncate, drop table,
+  hard-delete or cascade execution.
+- Strengthened `audit:hard-delete-conversion-decision-queue` and
+  `audit:ttgdtx-release-gates` so the immediate stop conditions remain visible.
+- This is P6-06 guard hardening only. It does not execute deletion, cascade,
+  waiver, conversion migration, cleanup, rollback, evidence acceptance, owner
+  signoff or production GO.
+
 ## 2026-06-28 - P0-03 Backup Restore Immediate Stop Guard
 
 - Added a visible `data-p003-backup-restore-immediate-stop="P0-03"` panel to
