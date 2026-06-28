@@ -76,6 +76,7 @@ Read these documents before changing TTGDTX finance or migration logic:
 - `docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md`
 - `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`
 - `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+- `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`
 - `docs/REMAINING_CHANGE_AUDIT_20260622.md`
 - `docs/MIGRATION_ORDER_AUDIT.md`
 - `docs/HARD_DELETE_AUDIT.md`
@@ -177,6 +178,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`
   - `npm.cmd run audit:ttgdtx-reconciliation-repair-safety`
   - `npm.cmd run audit:ttgdtx-role-scope-access`
+  - `npm.cmd run audit:ttgdtx-signed-uat-execution-routing-hub`
   - `npm.cmd run audit:ttgdtx-step110-safety`
   - `npm.cmd run audit:ttgdtx-synthetic-uat-pack`
   - `npm.cmd run audit:ttgdtx-uat-readiness`

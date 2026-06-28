@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX Signed UAT Execution Routing Hub
+
+- Added `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`
+  as the P0-08 DRAFT_CONTROL routing package for remaining TTGDTX/Finance
+  signed UAT work.
+- Added `components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx`
+  and mounted it on `/ttgdtx` between the UAT sign-off guard and production
+  execution queue so operators see `SIGNED_UAT_READY / NO_GO / BLOCKED`,
+  UAT-ROUTE-01 through UAT-ROUTE-11, route, runbook, owner, minimum proof,
+  stop condition and local guard before owner reliance.
+- Added `audit:ttgdtx-signed-uat-execution-routing-hub` and updated backlog,
+  production checklist, current-state inventory, module readiness, AGENTS and
+  release-gate coverage so signed UAT routing cannot drift out of the safe
+  iteration loop.
+- This is signed UAT routing only. It does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - Short Course Attendance Payment Gap Pack
 
 - Added `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`

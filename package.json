@@ -63,6 +63,7 @@
     "audit:ttgdtx-receivable-payment-lifecycle": "node scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
     "audit:ttgdtx-reconciliation-repair-safety": "node scripts/audit-ttgdtx-reconciliation-repair-safety.mjs",
     "audit:ttgdtx-role-scope-access": "node scripts/audit-ttgdtx-role-scope-access.mjs",
+    "audit:ttgdtx-signed-uat-execution-routing-hub": "node scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
     "audit:ttgdtx-step110-safety": "node scripts/audit-ttgdtx-step110-safety.mjs",
     "audit:ttgdtx-synthetic-uat-pack": "node scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
     "audit:ttgdtx-uat-readiness": "node scripts/audit-ttgdtx-uat-readiness.mjs",

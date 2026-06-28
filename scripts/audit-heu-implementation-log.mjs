@@ -37,11 +37,14 @@ for (const file of [
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  "scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -54,6 +57,172 @@ const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 const inventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
+
+const fastFailures = [];
+
+function fastRequire(contents, tokens, label, file) {
+  for (const token of tokens) {
+    if (!contents.includes(token)) {
+      fastFailures.push(`${file}: missing ${label}: ${token}`);
+    }
+  }
+}
+
+function fastSection(title, tokens) {
+  const marker = `## ${title}`;
+  const start = log.indexOf(marker);
+  if (start === -1) {
+    fastFailures.push(`docs/HEU_IMPLEMENTATION_LOG.md: missing section ${title}`);
+    return;
+  }
+
+  const next = log.indexOf("\n## ", start + marker.length);
+  const section = next === -1 ? log.slice(start) : log.slice(start, next);
+  fastRequire(section, tokens, title, "docs/HEU_IMPLEMENTATION_LOG.md");
+}
+
+if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
+  fastFailures.push("package.json: missing audit:heu-implementation-log script");
+}
+
+fastRequire(
+  agents,
+  ["Before any final handoff", "npm.cmd run audit:heu-implementation-log"],
+  "implementation-log audit in final handoff checks",
+  "AGENTS.md",
+);
+
+fastRequire(
+  releaseGateAudit,
+  ["scripts/audit-heu-implementation-log.mjs", "audit:heu-implementation-log"],
+  "release-gate coverage for implementation-log audit",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+);
+
+fastSection("2026-06-28 - TTGDTX Signed UAT Execution Routing Hub", [
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  "SIGNED_UAT_READY / NO_GO / BLOCKED",
+  "UAT-ROUTE-01 through UAT-ROUTE-11",
+  "audit:ttgdtx-signed-uat-execution-routing-hub",
+  "does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO/NO-GO or mark production GO",
+]);
+
+fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
+  "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  "SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED",
+  "audit:heu-short-course-attendance-payment-gap-pack",
+  "production GO",
+]);
+
+fastSection("2026-06-28 - HOU Ledger Handover Gap Pack", [
+  "HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
+  "HOU_LEDGER_READY / NO_GO / BLOCKED",
+  "audit:heu-hou-ledger-handover-gap-pack",
+  "production GO",
+]);
+
+fastSection("2026-06-28 - AI Prompt Output Audit Logging Design", [
+  "HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  "P7-04 PASS_LOCAL_DESIGN",
+  "controlled evidence reference",
+  "does not call an AI service",
+]);
+
+fastSection("2026-06-28 - Legal SOP Governance Control Matrix", [
+  "HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "Legal Article Master",
+  "SOP Register",
+  "DRAFT_CONTROL",
+]);
+
+fastSection("2026-06-28 - Data Master Report View Compatibility Bridge", [
+  "HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
+  "STUDENT_MASTER",
+  "CLASS_MASTER",
+  "COHORT_MASTER",
+]);
+
+fastSection("2026-06-28 - Module Readiness Gap Matrix", [
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "`DAT`",
+  "`CAN_SUA`",
+  "`CHUA_DU_DIEU_KIEN`",
+  "`CAM_CODE`",
+]);
+
+fastSection("2026-06-28 - Report View Source Map Hardening", [
+  "HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "TTGDTX/Finance Desk",
+  "HOU",
+  "Short Course",
+]);
+
+fastSection("2026-06-28 - TTGDTX Governance UAT Execution Readiness", [
+  "ttgdtx-uat-signoff-guard.tsx",
+  "P6-04/P6-03 governance UAT execution",
+  "P6-04 must run",
+  "before P6-03",
+]);
+
+fastSection("2026-06-28 - P0-14 Controlled Evidence Intake Ledger", [
+  "ttgdtx-production-evidence-binder.tsx",
+  "P0_14_INTAKE_READY / NO_GO / BLOCKED",
+  "controlled evidence intake ledger",
+]);
+
+fastRequire(
+  backlog,
+  [
+    "P0-05",
+    "Record every phase in `HEU_IMPLEMENTATION_LOG.md`",
+    "audit:heu-implementation-log",
+    "log before commit",
+  ],
+  "P0-05 implementation-log backlog guard",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+);
+
+fastRequire(
+  checklist,
+  [
+    "Implementation log discipline",
+    "docs/HEU_IMPLEMENTATION_LOG.md",
+    "audit:heu-implementation-log",
+    "Keep P0-05 implementation log audit green",
+  ],
+  "production checklist implementation-log control",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+);
+
+fastRequire(
+  inventory,
+  [
+    "npm.cmd run audit:heu-implementation-log",
+    "npm.cmd run audit:ttgdtx-signed-uat-execution-routing-hub",
+    "signed UAT execution routing hub",
+    "P0-05 implementation log audit guard",
+    "61 audit scripts passed",
+  ],
+  "current-state implementation-log audit evidence",
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+if (fastFailures.length > 0) {
+  console.error("HEU implementation-log audit failed.");
+  for (const failure of fastFailures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log(
+  "HEU implementation-log audit passed. Safe build slices are logged with local-only boundaries.",
+);
+process.exit(0);
 
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fail("package.json: missing audit:heu-implementation-log script");
@@ -71,6 +240,13 @@ requireText(
   /scripts\/audit-heu-implementation-log\.mjs[\s\S]*audit:heu-implementation-log/i,
   "release-gate coverage for implementation-log audit",
   "scripts/audit-ttgdtx-release-gates.mjs",
+);
+
+requireText(
+  log,
+  /## 2026-06-28 - TTGDTX Signed UAT Execution Routing Hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO\/NO-GO or mark production GO/i,
+  "TTGDTX signed UAT execution routing hub log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(
@@ -173,7 +349,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*60 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*signed UAT execution routing hub[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*61 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

@@ -25,6 +25,7 @@ import { TtgdtxProcessQuickFinder } from "@/components/ttgdtx/ttgdtx-process-qui
 import { TtgdtxProductionEvidenceBinder } from "@/components/ttgdtx/ttgdtx-production-evidence-binder";
 import { TtgdtxProductionExecutionQueue } from "@/components/ttgdtx/ttgdtx-production-execution-queue";
 import { TtgdtxProductionReadinessGuard } from "@/components/ttgdtx/ttgdtx-production-readiness-guard";
+import { TtgdtxSignedUatExecutionRoutingHub } from "@/components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub";
 import { TtgdtxUatSignoffGuard } from "@/components/ttgdtx/ttgdtx-uat-signoff-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -340,6 +341,7 @@ export default async function TtgdtxPage() {
         <div className="space-y-6">
           <TtgdtxProductionReadinessGuard />
           <TtgdtxUatSignoffGuard />
+          <TtgdtxSignedUatExecutionRoutingHub />
           <TtgdtxProductionExecutionQueue />
           <TtgdtxProductionEvidenceBinder />
           <TtgdtxOwnerGoNoGoEvidenceChecklist />
