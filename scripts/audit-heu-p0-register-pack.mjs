@@ -120,6 +120,12 @@ requireText(
 );
 
 requireText(
+  "components/reports/report-view-source-map-panel.tsx",
+  /(?=[\s\S]*Data Quality Check status capture)(?=[\s\S]*CAPTURE_REQUIRED)(?=[\s\S]*Owner action:)(?=[\s\S]*Evidence state:)(?=[\s\S]*RECON_EVIDENCE_REQUIRED)(?=[\s\S]*PAYOUT_LOCK_REQUIRED)(?=[\s\S]*READ_ONLY_SCOPE_REQUIRED)(?=[\s\S]*AI production action remains blocked)/i,
+  "report-view data-quality status capture",
+);
+
+requireText(
   "app/reports/page.tsx",
   /ReportViewSourceMapPanel[\s\S]*<ReportViewSourceMapPanel \/>/i,
   "reports page mounts source-map panel",
@@ -145,7 +151,7 @@ requireText(
 
 requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
-  /Next Build Queue[\s\S]*TTGDTX\/Finance signed UAT execution support[\s\S]*Report View Register hardening[\s\S]*Cross-module Data Master compatibility plan[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*AI scope logging design[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
+  /Next Build Queue[\s\S]*TTGDTX\/Finance signed UAT execution support[\s\S]*Report View Register hardening[\s\S]*Data Quality Check status capture[\s\S]*next build is owner signoff capture[\s\S]*Cross-module Data Master compatibility plan[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*AI scope logging design[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
   "module readiness matrix next build queue and NO-GO boundary",
 );
 
@@ -168,8 +174,14 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel, AI scope, risk signoff registers and module readiness gap matrix/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, AI scope, risk signoff registers and module readiness gap matrix/i,
   "current-state P0 register evidence",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Report View Data Quality Status Capture[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*Data Quality Check capture status[\s\S]*owner action[\s\S]*evidence state[\s\S]*stop condition[\s\S]*actual\s+receipt\/reconciliation evidence[\s\S]*AI\s+read-only scope checks[\s\S]*read-only report governance UI only[\s\S]*does not approve dashboard\s+production reliance, statutory accounting, finance action, UAT acceptance,\s+evidence acceptance, owner GO or production GO/i,
+  "report-view data-quality status capture implementation log entry",
 );
 
 requireText(

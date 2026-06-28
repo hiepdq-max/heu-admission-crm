@@ -148,7 +148,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
+  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
 );
 requireText(
