@@ -532,13 +532,13 @@ requireText(
 
 requireText(
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
-  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*DESIGN_ONLY)(?=[\s\S]*does not approve production SQL,\s+schema migration, UAT acceptance, dashboard reliance, evidence acceptance,\s+finance action or owner Go\/No-Go)/i,
+  /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*DQ-DM-05[\s\S]*Dashboard reliance lock)(?=[\s\S]*DESIGN_ONLY)(?=[\s\S]*does not approve production SQL,\s+schema migration, UAT acceptance, dashboard reliance, evidence acceptance,\s+finance action or owner Go\/No-Go)/i,
   "P0 Data Master / Report View compatibility boundary",
 );
 
 requireText(
   "components/reports/data-master-report-view-bridge-panel.tsx",
-  /(?=[\s\S]*data-heu-data-master-report-view-bridge-panel="DM-RV-03")(?=[\s\S]*Data Master \/ Report View Bridge: DESIGN_ONLY)(?=[\s\S]*does not\s+create production SQL, merge source records, import real data or\s+approve dashboard reliance)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*OWNER_SIGNOFF_PENDING)/i,
+  /(?=[\s\S]*data-heu-data-master-report-view-bridge-panel="DM-RV-03")(?=[\s\S]*Data Master \/ Report View Bridge: DESIGN_ONLY)(?=[\s\S]*does not\s+create production SQL, merge source records, import real data or\s+approve dashboard reliance)(?=[\s\S]*CV_STUDENT_MASTER_UNIFIED)(?=[\s\S]*CV_CLASS_MASTER_UNIFIED)(?=[\s\S]*CV_COHORT_MASTER_UNIFIED)(?=[\s\S]*REPORT_VIEW_MASTER_CONTRACT)(?=[\s\S]*DQ-DM-01)(?=[\s\S]*DQ-DM-04)(?=[\s\S]*DQ-DM-05)(?=[\s\S]*Dashboard reliance lock)(?=[\s\S]*OWNER_SIGNOFF_PENDING)/i,
   "P0 Data Master / Report View bridge panel",
 );
 

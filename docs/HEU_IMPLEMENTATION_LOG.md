@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Data Master Report View DQ-DM-05 Reliance Lock
+
+- Added `DQ-DM-05` dashboard reliance lock to
+  `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md` and
+  `components/reports/data-master-report-view-bridge-panel.tsx`.
+- Updated P0 register, production checklist, current-state inventory and audits
+  so the Data Master / Report View bridge now requires DQ-DM-01 through
+  DQ-DM-05, including the rule that `/reports`, `/finance-desk` and
+  `/ttgdtx/accounting-dashboard` cannot be used for management, finance or
+  statutory reliance before approved report-view contract, owner signoff and
+  controlled evidence reference exist.
+- This is report-view reliance hardening only. It does not create production
+  SQL, merge source data, import real data, approve report-view signoff,
+  approve dashboard reliance, accept evidence, approve migration, approve
+  finance action or mark production GO.
+
 ## 2026-06-28 - TTGDTX UAT Route Tracker UI Handoff
 
 - Added an operator tracker handoff band to
@@ -388,7 +404,7 @@
   and controlled Report Views.
 - Added `components/reports/data-master-report-view-bridge-panel.tsx` and
   mounted it on `/reports` so the app shows compatibility objects, required
-  masters, report-view use contracts, DQ-DM-01 through DQ-DM-04 checkpoints and
+  masters, report-view use contracts, DQ-DM-01 through DQ-DM-05 checkpoints and
   stop conditions for `STUDENT_MASTER`, `CLASS_MASTER` and `COHORT_MASTER`.
 - Updated the backlog, production checklist, current-state inventory, module
   readiness matrix, P0 register audit and release-gate file coverage so the

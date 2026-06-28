@@ -61,6 +61,7 @@ reliance.
 | DQ-DM-02 | Class and cohort boundary | Dao Tao, TTGDTX and Short Course owners confirm class/cohort meaning per module | Owner signoff pending | A class or cohort key is reused across modules with different meaning |
 | DQ-DM-03 | Report-view contract | BGH, KHTC, IT/Data and Audit confirm dashboard reads approved report views only | Report-view source map is DRAFT_CONTROL | Dashboard reads raw workbook, raw bank file, voucher or unrestricted table |
 | DQ-DM-04 | Sensitive data and AI boundary | Audit verifies restricted data is not exposed to AI or broad dashboards | AI production action remains blocked | AI reads raw restricted data, writes workflow state or implies approval |
+| DQ-DM-05 | Dashboard reliance lock | BGH + KHTC confirm each dashboard/Finance Desk reliance path has an approved report-view contract, owner signoff and controlled evidence reference | Reliance signoff pending; dashboard remains read-only/UAT-only | `/reports`, `/finance-desk` or `/ttgdtx/accounting-dashboard` is used for management, finance or statutory reliance before owner signoff |
 
 ## 6. Allowed Next Build
 

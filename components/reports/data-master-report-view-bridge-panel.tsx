@@ -158,6 +158,15 @@ const compatibilityCheckpoints: CompatibilityCheckpoint[] = [
     evidenceState: "AI production action remains blocked",
     stopCondition: "AI reads raw restricted data, writes workflow state or implies approval",
   },
+  {
+    id: "DQ-DM-05",
+    checkpoint: "Dashboard reliance lock",
+    ownerAction:
+      "BGH + KHTC confirm each dashboard/Finance Desk reliance path has an approved report-view contract, owner signoff and controlled evidence reference",
+    evidenceState: "Reliance signoff pending; dashboard remains read-only/UAT-only",
+    stopCondition:
+      "/reports, /finance-desk or /ttgdtx/accounting-dashboard is used for management, finance or statutory reliance before owner signoff",
+  },
 ];
 
 function StatusBadge({ children }: { children: string }) {
@@ -197,7 +206,7 @@ export function DataMasterReportViewBridgePanel() {
       </div>
 
       <div
-        data-heu-data-master-report-view-bridge-audit="STUDENT_MASTER CLASS_MASTER COHORT_MASTER CV_STUDENT_MASTER_UNIFIED CV_CLASS_MASTER_UNIFIED CV_COHORT_MASTER_UNIFIED REPORT_VIEW_MASTER_CONTRACT RV_TTGDTX_FINANCE_SUMMARY RV_HOU_LEDGER_SUMMARY RV_SHORT_COURSE_ATTENDANCE_PAYMENT DQ-DM-01 DQ-DM-04 DESIGN_ONLY DRAFT_CONTROL NON_DESTRUCTIVE NO_PRODUCTION_RELIANCE"
+        data-heu-data-master-report-view-bridge-audit="STUDENT_MASTER CLASS_MASTER COHORT_MASTER CV_STUDENT_MASTER_UNIFIED CV_CLASS_MASTER_UNIFIED CV_COHORT_MASTER_UNIFIED REPORT_VIEW_MASTER_CONTRACT RV_TTGDTX_FINANCE_SUMMARY RV_HOU_LEDGER_SUMMARY RV_SHORT_COURSE_ATTENDANCE_PAYMENT DQ-DM-01 DQ-DM-04 DQ-DM-05 DESIGN_ONLY DRAFT_CONTROL NON_DESTRUCTIVE NO_PRODUCTION_RELIANCE"
         hidden
       />
 

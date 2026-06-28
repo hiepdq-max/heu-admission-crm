@@ -416,6 +416,20 @@ fastSection("2026-06-28 - Data Master Report View Compatibility Bridge", [
   "COHORT_MASTER",
 ]);
 
+fastSection("2026-06-28 - Data Master Report View DQ-DM-05 Reliance Lock", [
+  "DQ-DM-05",
+  "dashboard reliance lock",
+  "HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
+  "components/reports/data-master-report-view-bridge-panel.tsx",
+  "DQ-DM-01 through",
+  "/reports",
+  "/finance-desk",
+  "/ttgdtx/accounting-dashboard",
+  "controlled evidence reference",
+  "report-view reliance hardening only",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
