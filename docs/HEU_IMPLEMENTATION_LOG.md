@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment
+
+- Updated `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` so the human
+  operator uses `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`
+  and `/ttgdtx` as the ordered route checklist before signed UAT reliance.
+- Added UAT-HANDOFF-03/UAT-HANDOFF-04 and Section 2.1 so UAT-ROUTE-01
+  through UAT-ROUTE-11 are run in order with route, runbook, owner, minimum
+  proof, stop condition, redaction reviewer and required owner signature.
+- Extended `audit:ttgdtx-uat-readiness` and
+  `audit:ttgdtx-signed-uat-execution-routing-hub` so operator handoff and
+  routing hub cannot drift apart.
+- This is operator handoff alignment only. It does not execute UAT, accept
+  evidence, sign owner results, grant access, approve finance action, approve
+  migration, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-06-28 - TTGDTX Signed UAT Execution Routing Hub
 
 - Added `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`

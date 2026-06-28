@@ -69,3 +69,17 @@ This routing hub must not:
 PASS_LOCAL means the routing structure, visible panel and audit guard exist.
 Production remains NO-GO until controlled external evidence and required owner
 signatures exist.
+
+## 6. Operator Handoff Link
+
+The human operator follows
+`docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` after static preflight. The
+handoff must include:
+
+- `UAT-HANDOFF-03` opening `/ttgdtx` and confirming the routing hub is visible.
+- `UAT-HANDOFF-04` executing the browser route/account matrix and this signed
+  UAT route list together.
+- `UAT-ROUTE-01` through `UAT-ROUTE-11` as the ordered route checklist.
+- The same strict boundary: the handoff and hub do not execute UAT, accept
+  evidence, sign owner results, grant access, approve finance action, approve
+  migration, approve owner GO/NO-GO or mark production GO.

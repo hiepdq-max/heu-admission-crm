@@ -108,6 +108,18 @@ fastSection("2026-06-28 - TTGDTX Signed UAT Execution Routing Hub", [
   "does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO/NO-GO or mark production GO",
 ]);
 
+fastSection("2026-06-28 - TTGDTX UAT Operator Handoff Routing Alignment", [
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "UAT-HANDOFF-03/UAT-HANDOFF-04",
+  "UAT-ROUTE-01",
+  "UAT-ROUTE-11",
+  "audit:ttgdtx-uat-readiness",
+  "audit:ttgdtx-signed-uat-execution-routing-hub",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - Short Course Attendance Payment Gap Pack", [
   "HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",

@@ -40,6 +40,8 @@ const requiredFiles = [
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 ];
 
@@ -165,8 +167,20 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*UAT-HANDOFF-06)(?=[\s\S]*Do not paste passwords, OTPs, reset links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof,\s+reviewer or owner signature keeps production NO-GO)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, OTPs, reset links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
   "operator handoff keeps UAT run order and no-secret boundary",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /(?=[\s\S]*Operator Handoff Link)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*handoff and hub do not execute UAT, accept\s+evidence, sign owner results, grant access, approve finance action, approve\s+migration, approve owner GO\/NO-GO or mark production GO)/i,
+  "signed UAT routing hub links back to operator handoff",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  /(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*Closure rule)(?=[\s\S]*Strict boundary)/i,
+  "visible signed UAT routing hub remains mounted and bounded",
 );
 
 requireText(
@@ -201,7 +215,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /\|\s*Internal UAT sign-off\s*\|[\s\S]*\|\s*IN_PROGRESS\s*\|[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md/i,
+  /\|\s*Internal UAT sign-off\s*\|[\s\S]*\|\s*IN_PROGRESS\s*\|[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*UAT-HANDOFF-03\/UAT-HANDOFF-04[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md/i,
   "internal UAT sign-off IN_PROGRESS with execution log",
 );
 
