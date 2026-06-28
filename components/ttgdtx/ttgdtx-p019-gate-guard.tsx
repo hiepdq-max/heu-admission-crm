@@ -18,23 +18,23 @@ type P019GuardItem = {
 
 const guardItems: P019GuardItem[] = [
   {
-    title: "Legal basis",
+    title: "Căn cứ pháp lý",
     detail:
-      "Co hop dong, pham vi lien ket, nganh/nghe va can cu phap ly duoc Phap Che/BGH chap nhan.",
+      "Có hợp đồng, phạm vi liên kết, ngành/nghề và căn cứ pháp lý được Pháp chế/BGH chấp nhận.",
     href: "/ttgdtx",
     icon: "legal",
   },
   {
-    title: "Tuition policy",
+    title: "Chính sách học phí",
     detail:
-      "Co P2-02 READY dung TTGDTX, dung nganh, dung nam hoc/ky, dung so tien va han thu.",
+      "Có P2-02 READY đúng TTGDTX, đúng ngành, đúng năm học/kỳ, đúng số tiền và hạn thu.",
     href: "/ttgdtx/tuition",
     icon: "tuition",
   },
   {
-    title: "Finance gate",
+    title: "Cửa kiểm soát tài chính",
     detail:
-      "Chi khi P0-19 la ALLOW_FINANCE thi P2-03 moi duoc tao cong no phai thu.",
+      "Chỉ khi P0-19 là ALLOW_FINANCE thì P2-03 mới được tạo công nợ phải thu.",
     href: "/ttgdtx/gate",
     icon: "finance",
   },
@@ -66,10 +66,10 @@ export function TtgdtxP019GateGuard() {
               P0-19 legal/tuition finance gate
             </h2>
             <p className="mt-2 leading-6 text-zinc-600">
-              P0-19 tra loi mot cau hoi van hanh: nganh nay da du can cu phap
-              ly, da co chinh sach hoc phi dung, va da duoc phep ke toan tao
-              cong no hay chua. Neu P0-19 chua san sang, P2-05/P2-03 phai chan
-              truoc khi ghi cong no.
+              P0-19 trả lời một câu hỏi vận hành: ngành này đã đủ căn cứ pháp
+              lý, đã có chính sách học phí đúng, và đã được phép kế toán tạo
+              công nợ hay chưa. Nếu P0-19 chưa sẵn sàng, P2-05/P2-03 phải chặn
+              trước khi ghi công nợ.
             </p>
           </div>
         </div>
@@ -77,9 +77,9 @@ export function TtgdtxP019GateGuard() {
         <div className="flex min-w-64 items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
           <LockKeyhole className="mt-0.5 size-4 shrink-0" />
           <p>
-            Step100 chi la sandbox/UAT pilot open. Khong dung Step100 lam bang
-            chung production, khong de AI phe duyet gate va khong tao cong no
-            khi thieu chu ky owner.
+            Step100 chỉ là sandbox/UAT pilot open. Không dùng Step100 làm bằng
+            chứng production, không để AI phê duyệt gate và không tạo công nợ
+            khi thiếu chữ ký owner.
           </p>
         </div>
       </div>
@@ -109,10 +109,10 @@ export function TtgdtxP019GateGuard() {
       <div className="mt-5 flex items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-rose-800">
         <AlertTriangle className="mt-0.5 size-4 shrink-0" />
         <p>
-          Stop neu thay P0_19_MAJOR_GATE_MISSING,
-          P0_19_MAJOR_FINANCE_GATE_NOT_READY, thieu P2-01, thieu P2-02, thieu
-          signed UAT, hoac chi co pilot waiver. Sua dung cho thieu, khong nhap
-          lai du lieu da dung.
+          Stop nếu thấy P0_19_MAJOR_GATE_MISSING,
+          P0_19_MAJOR_FINANCE_GATE_NOT_READY, thiếu P2-01, thiếu P2-02, thiếu
+          signed UAT, hoặc chỉ có pilot waiver. Sửa đúng chỗ thiếu, không nhập
+          lại dữ liệu đã đúng.
         </p>
       </div>
     </section>

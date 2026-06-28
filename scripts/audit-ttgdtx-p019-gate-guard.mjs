@@ -64,7 +64,7 @@ requireText(
 );
 requireText(
   component,
-  /(?=[\s\S]*P0-19)(?=[\s\S]*Legal basis)(?=[\s\S]*Tuition policy)(?=[\s\S]*Finance gate)(?=[\s\S]*ALLOW_FINANCE)/i,
+  /(?=[\s\S]*P0-19)(?=[\s\S]*(Legal basis|Căn cứ pháp lý))(?=[\s\S]*(Tuition policy|Chính sách học phí))(?=[\s\S]*(Finance gate|Cửa kiểm soát tài chính))(?=[\s\S]*ALLOW_FINANCE)(?=[\s\S]*công nợ phải thu)/i,
   "P0-19 legal tuition finance explanation",
   componentPath,
 );
@@ -76,7 +76,7 @@ requireText(
 );
 requireText(
   component,
-  /Step100[\s\S]*sandbox\/UAT[\s\S]*Khong dung Step100 lam bang\s+chung production/i,
+  /Step100[\s\S]*sandbox\/UAT[\s\S]*(Khong dung Step100 lam bang\s+chung production|Không dùng Step100 làm bằng\s+chứng production)/i,
   "Step100 sandbox-only warning",
   componentPath,
 );

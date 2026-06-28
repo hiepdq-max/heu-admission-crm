@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - P0-19 Gate Guard Vietnamese UX Hardening
+
+- Updated `components/ttgdtx/ttgdtx-p019-gate-guard.tsx` so the visible
+  P0-19 legal/tuition/finance gate, Step100 sandbox warning and stop-condition
+  copy render in readable Vietnamese for operators.
+- Tightened `scripts/audit-ttgdtx-p019-gate-guard.mjs` so the guard keeps the
+  readable Vietnamese finance-gate explanation and Step100 production-boundary
+  warning.
+- This is UI/control-text hardening only. It does not accept legal evidence,
+  approve finance action, create receivables, accept UAT, waive owner signoff,
+  accept evidence or mark production GO.
+
 ## 2026-06-28 - P2-10 Invoice Decision Manifest Vietnamese UX Hardening
 
 - Updated `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx` so the P2-10

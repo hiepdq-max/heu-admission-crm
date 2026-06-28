@@ -465,6 +465,18 @@ fastSection("2026-06-28 - P2-10 Invoice Decision Manifest Vietnamese UX Hardenin
   "production GO",
 ]);
 
+fastSection("2026-06-28 - P0-19 Gate Guard Vietnamese UX Hardening", [
+  "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
+  "audit-ttgdtx-p019-gate-guard.mjs",
+  "legal/tuition/finance gate",
+  "Step100 sandbox warning",
+  "stop-condition",
+  "readable Vietnamese",
+  "create receivables",
+  "owner signoff",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

@@ -1741,7 +1741,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
-  /(?=[\s\S]*data-ttgdtx-p019-gate-guard="P0-19")(?=[\s\S]*Legal basis)(?=[\s\S]*Tuition policy)(?=[\s\S]*Finance gate)(?=[\s\S]*ALLOW_FINANCE)/i,
+  /(?=[\s\S]*data-ttgdtx-p019-gate-guard="P0-19")(?=[\s\S]*(Legal basis|Căn cứ pháp lý))(?=[\s\S]*(Tuition policy|Chính sách học phí))(?=[\s\S]*(Finance gate|Cửa kiểm soát tài chính))(?=[\s\S]*ALLOW_FINANCE)(?=[\s\S]*công nợ phải thu)/i,
   "P0-19 legal tuition finance guard display",
 );
 
