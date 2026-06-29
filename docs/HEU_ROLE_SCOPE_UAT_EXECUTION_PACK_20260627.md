@@ -83,6 +83,22 @@ Start with these accounting users, record only redacted user labels, route
 results and evidence IDs, then expand department by department after signed
 P6-04, P2-18 and P5-03 evidence exists.
 
+The user scope panel also exposes
+`data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"` for the
+controlled evidence result format. Store the filled result outside
+Git/Codex/chat and reference only the evidence ID in local docs.
+
+Required result fields:
+
+| Field | Required value |
+|---|---|
+| Evidence ID | Stable controlled-evidence ID such as `REAL-ACC-EVID-001` |
+| Redacted account label | Role/persona label only; no real passwords, reset links, invite links, OTPs or raw email screenshots |
+| Profile and scope | Redacted Auth/profile reference, role code, department, segment scope and partner scope |
+| Route and expected result | P6-04 route family plus P2-18/P5-03/P2-10/P2-17 where relevant |
+| Actual result | `ALLOWED`, `BLOCKED`, `EMPTY_SCOPED_STATE`, `NO_GO` or `BLOCKED_PENDING_OWNER_SIGNOFF` |
+| Human sign-off | Operator, checker, process owner and redaction reviewer outside Codex/chat |
+
 ## 5. Route Families To Test
 
 At minimum, browser UAT must cover:

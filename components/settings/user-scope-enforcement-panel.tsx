@@ -261,6 +261,39 @@ const realAccountingUserUatQueueItems = [
   },
 ];
 
+const realAccountingUserResultTemplateItems = [
+  {
+    field: "Evidence ID",
+    required:
+      "Stable controlled-evidence ID, for example REAL-ACC-EVID-001.",
+  },
+  {
+    field: "Redacted account label",
+    required:
+      "Use role/persona labels only; do not record real passwords, reset links, invite links, OTPs or raw email screenshots.",
+  },
+  {
+    field: "Profile and scope",
+    required:
+      "Record redacted Auth/profile reference, role code, department, segment scope and partner scope.",
+  },
+  {
+    field: "Route and expected result",
+    required:
+      "Map each test to P6-04 route family plus P2-18/P5-03/P2-10/P2-17 where relevant.",
+  },
+  {
+    field: "Actual result",
+    required:
+      "Use ALLOWED, BLOCKED, EMPTY_SCOPED_STATE, NO_GO or BLOCKED_PENDING_OWNER_SIGNOFF.",
+  },
+  {
+    field: "Human sign-off",
+    required:
+      "Record operator, checker, process owner and redaction reviewer outside Codex/chat.",
+  },
+];
+
 const roleScopeAcceptanceItems = [
   {
     caseId: "P6-04-ACCEPT-01",
@@ -592,6 +625,48 @@ export function UserScopeEnforcementPanel({
                 </p>
                 <p className="mt-2 leading-5 text-rose-800">
                   Stop: {item.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm leading-6 text-teal-950"
+          data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <FileCheck2 className="size-4 shrink-0" />
+                <span>
+                  Real accounting user result template: controlled evidence only
+                </span>
+              </div>
+              <p className="mt-2">
+                Use this template after running REAL-ACC-01 through
+                REAL-ACC-06. Store the filled evidence outside Git/Codex/chat in
+                the controlled evidence location, then reference only the
+                evidence ID here.
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-teal-200 bg-white px-3 py-2">
+              Result decision:
+              <span className="mt-1 block font-mono text-xs">
+                ALLOWED / BLOCKED / EMPTY_SCOPED_STATE / NO_GO
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-3">
+            {realAccountingUserResultTemplateItems.map((item) => (
+              <article
+                key={item.field}
+                className="border-l-2 border-teal-300 bg-white px-3 py-3"
+              >
+                <p className="font-medium text-zinc-950">{item.field}</p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  {item.required}
                 </p>
               </article>
             ))}

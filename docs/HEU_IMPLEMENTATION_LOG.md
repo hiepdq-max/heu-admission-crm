@@ -5,6 +5,10 @@
 - Added `data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"` to
   `components/settings/user-scope-enforcement-panel.tsx` and documented the
   same queue in `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`.
+- Added `data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"`
+  so real-accounting UAT results have a controlled-evidence format for
+  evidence ID, redacted account label, profile/scope, route, actual result and
+  human sign-off.
 - The queue covers REAL-ACC-01 through REAL-ACC-06: Auth/profile link
   preflight, KHTC accounting operator, BGH read-only reviewer, Audit read-only
   reviewer, Phap Che legal reviewer and Out-of-scope negative account.
@@ -12,7 +16,7 @@
   `scripts/audit-heu-current-state-inventory.mjs` and
   `scripts/audit-ttgdtx-release-gates.mjs`; updated backlog, production
   checklist and current-state evidence so P6-04 cannot omit the accounting
-  user queue before P2-18/P5-03 reliance.
+  user queue/result template before P2-18/P5-03 reliance.
 - This does not create accounts, transmit passwords, approve role grants,
   accept UAT, approve finance action or mark production GO.
 

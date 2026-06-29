@@ -570,9 +570,12 @@ fastSection("2026-06-29 - Real User Accounting Onboarding Guard", [
 
 fastSection("2026-06-29 - P6-04 Real Accounting User UAT Queue", [
   "data-heu-real-accounting-user-uat-queue=\"P6-04-P2-18-P5-03\"",
+  "data-heu-real-accounting-user-result-template=\"P6-04-P2-18-P5-03\"",
   "user-scope-enforcement-panel.tsx",
   "HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   "REAL-ACC-01 through REAL-ACC-06",
+  "evidence ID",
+  "redacted account label",
   "KHTC accounting operator",
   "BGH read-only reviewer",
   "Audit read-only",
@@ -580,6 +583,7 @@ fastSection("2026-06-29 - P6-04 Real Accounting User UAT Queue", [
   "Out-of-scope negative account",
   "audit-heu-role-scope-uat-pack.mjs",
   "audit-ttgdtx-release-gates.mjs",
+  "queue/result template",
   "does not create accounts",
   "mark production GO",
 ]);
