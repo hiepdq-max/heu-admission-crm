@@ -106,7 +106,7 @@ const auditLogAcceptanceItems: AuditLogAcceptanceItem[] = [
     minimumEvidence:
       "Screenshots/exports are redacted and signed by Audit, KHTC, IT_DATA, PHAP_CHE and BGH outside Codex/chat.",
     stopCondition:
-      "Stop if passwords, OTPs, service-role keys, raw student identity data, CCCD, bank accounts, raw payment data or raw vouchers appear.",
+      "Stop if passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys, raw student identity data, CCCD, bank accounts, raw payment data or raw vouchers appear.",
   },
   {
     caseId: "P6-03-ACCEPT-06",
@@ -191,9 +191,10 @@ export function TtgdtxAuditLogUatEvidenceChecklist() {
             <p className="mt-2 leading-6 text-cyan-900">
               Signed audit-log UAT is still required before P6-03 can move from
               IN_PROGRESS. Collect only redacted screenshots, count queries or
-              evidence references; passwords, OTPs, service-role keys, raw
-              student identity data, CCCD, bank accounts and raw payment data
-              stay outside Git/Codex/chat.
+              evidence references; passwords, temporary passwords, OTPs,
+              password reset links, account activation/invite links,
+              service-role keys, raw student identity data, CCCD, bank accounts
+              and raw payment data stay outside Git/Codex/chat.
             </p>
           </div>
         </div>

@@ -86,7 +86,7 @@ const auditTraceAcceptanceItems: AuditTraceAcceptanceItem[] = [
       "Audit row aligns with evidence_url, source document or controlled evidence note without exposing secrets or raw personal data.",
     reviewer: "PHAP_CHE + Audit",
     stopCondition:
-      "Stop if passwords, OTPs, service-role keys, CCCD, bank accounts, raw student identity data, raw payment data or raw vouchers appear in evidence.",
+      "Stop if passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys, CCCD, bank accounts, raw student identity data, raw payment data or raw vouchers appear in evidence.",
   },
   {
     caseId: "AUD-TRACE-05",
@@ -146,9 +146,10 @@ export function TtgdtxAuditTrailGuard() {
           source-control events.
         </p>
         <p className="mt-2">
-          Do not paste passwords, OTPs, service-role keys, CCCD, bank accounts
-          or raw student identity data into audit screenshots, UAT notes or
-          Codex prompts.
+          Do not paste passwords, temporary passwords, OTPs, password reset
+          links, account activation/invite links, service-role keys, CCCD, bank
+          accounts or raw student identity data into audit screenshots, UAT
+          notes or Codex prompts.
         </p>
       </div>
 
@@ -170,9 +171,10 @@ export function TtgdtxAuditTrailGuard() {
               being treated as financial traceability.
             </p>
             <p className="mt-2 leading-6 text-emerald-900">
-              Do not include passwords, OTPs, service-role keys, CCCD, bank
-              accounts, raw student identity data, raw payment data or raw
-              vouchers in audit evidence.
+              Do not include passwords, temporary passwords, OTPs, password
+              reset links, account activation/invite links, service-role keys,
+              CCCD, bank accounts, raw student identity data, raw payment data
+              or raw vouchers in audit evidence.
             </p>
           </div>
         </div>

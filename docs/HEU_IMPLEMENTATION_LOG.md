@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-03 Audit Log Account Secret Boundary
+
+- Updated the TTGDTX audit-log UAT runbook, audit-log UAT evidence checklist
+  and audit-trail guard so P6-03 trace/evidence proof explicitly forbids
+  temporary passwords, password reset links and account activation/invite links
+  in Git/Codex/chat and audit evidence.
+- Tightened `scripts/audit-ttgdtx-audit-trail-guard.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so audit-log traceability packaging
+  cannot claim a no-secret evidence boundary while omitting temporary account
+  secrets.
+- This is audit-log UAT/evidence packaging only. It does not execute UAT,
+  collect evidence, accept audit traceability, approve finance action, approve
+  migration, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P5-03 Finance Desk Account Secret Boundary
 
 - Updated the Finance Desk UAT runbook and evidence checklist so P5-03 browser

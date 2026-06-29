@@ -569,6 +569,20 @@ fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P6-03 Audit Log Account Secret Boundary", [
+  "TTGDTX audit-log UAT runbook",
+  "audit-log UAT evidence checklist",
+  "audit-trail guard",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-audit-trail-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "audit-log UAT/evidence packaging only",
+  "record owner GO/NO-GO",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P0-09 Owner Signoff Account Secret Boundary", [
   "P0-09 production owner sign-off pack",
   "owner GO/NO-GO evidence",
