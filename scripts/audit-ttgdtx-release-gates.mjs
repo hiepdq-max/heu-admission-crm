@@ -1099,7 +1099,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
-  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
+  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*service-role keys stay outside Git\/Codex\/chat)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
   "P2-18 dashboard UAT evidence checklist",
 );
 
@@ -1123,7 +1123,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx",
-  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18 dashboard immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P2-18-STOP-01)(?=[\s\S]*P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO)(?=[\s\S]*Signed browser UAT, source reconciliation, reliance decision, backup\/restore proof or owner sign-off is missing)(?=[\s\S]*contract-only\/out-of-scope access exposes finance totals)(?=[\s\S]*unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route)(?=[\s\S]*Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys)/i,
+  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18 dashboard immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P2-18-STOP-01)(?=[\s\S]*P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO)(?=[\s\S]*Signed browser UAT, source reconciliation, reliance decision, backup\/restore proof or owner sign-off is missing)(?=[\s\S]*contract-only\/out-of-scope access exposes finance totals)(?=[\s\S]*unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route)(?=[\s\S]*Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links or service-role keys)/i,
   "P2-18 dashboard immediate stop guard",
 );
 

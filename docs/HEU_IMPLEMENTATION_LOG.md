@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P2-18 Dashboard Account Secret Boundary
+
+- Updated the P2-18 accounting dashboard UAT runbook, dashboard role UAT plan,
+  dashboard UAT evidence checklist and source reconciliation checklist so
+  dashboard evidence explicitly forbids temporary passwords, password reset links
+  and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-ttgdtx-dashboard-readonly-guard.mjs`,
+  `scripts/audit-ttgdtx-dashboard-source-reconciliation.mjs`,
+  `scripts/audit-ttgdtx-accounting-dashboard-uat-plan.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P2-18 dashboard packaging cannot
+  claim a no-secret evidence boundary while omitting temporary account secrets.
+- This is dashboard UAT/evidence packaging only. It does not execute browser
+  UAT, collect evidence, approve finance action, approve dashboard reliance,
+  approve statutory accounting, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P6-03 Audit Log Account Secret Boundary
 
 - Updated the TTGDTX audit-log UAT runbook, audit-log UAT evidence checklist

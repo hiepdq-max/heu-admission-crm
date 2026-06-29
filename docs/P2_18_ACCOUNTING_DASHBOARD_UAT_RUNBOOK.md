@@ -128,7 +128,7 @@ exist.
 | P2-18-ACCEPT-02 | Source-total reconciliation | Summary, control and partner totals reconcile to P2-03, P2-10, P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata | Any accepted KPI lacks source query evidence or cannot be tied back to an approved source workflow |
 | P2-18-ACCEPT-03 | Role and contract-only denial | Out-of-scope and contract-only users are blocked or scoped; `ttgdtx.contract.read` alone does not expose finance totals | Contract-only permission or out-of-scope access exposes unrestricted dashboard data |
 | P2-18-ACCEPT-04 | Exception and movement traceability | Each exception row links to the correct source workflow and recent movement rows match source records | An exception or movement row cannot be traced to the source step and owner |
-| P2-18-ACCEPT-05 | Evidence redaction and owner sign-off | Screenshots or exports use redacted, non-secret references; KHTC, BGH, IT_DATA and Audit sign outside Codex/chat | Raw PII, CCCD, bank accounts, vouchers, passwords, OTPs or service-role keys are exposed |
+| P2-18-ACCEPT-05 | Evidence redaction and owner sign-off | Screenshots or exports use redacted, non-secret references; KHTC, BGH, IT_DATA and Audit sign outside Codex/chat | Raw PII, CCCD, bank accounts, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys are exposed |
 | P2-18-ACCEPT-06 | Production boundary | P2-18 stays an advisory read-only cockpit until backup/restore evidence, UAT evidence and owner GO/NO-GO are signed | PASS_LOCAL is treated as dashboard UAT pass, finance approval, dashboard reliance or production GO |
 
 Decision value: `P2_18_ACCEPT / FAIL / BLOCKED`.
@@ -142,7 +142,8 @@ signed browser UAT, source reconciliation, reliance decision, backup/restore
 proof or owner sign-off is missing; when contract-only/out-of-scope access sees
 finance totals; when source variance, `CRITICAL`, ownerless `REVIEW` or wrong
 exception routing remains open; or when raw PII, CCCD, bank accounts, vouchers,
-bank statements, passwords, OTPs or service keys appear in evidence.
+bank statements, passwords, temporary passwords, OTPs, password reset links,
+account activation/invite links or service-role keys appear in evidence.
 
 Before BGH/KHTC rely on any P2-18 dashboard number for internal review,
 complete the reliance decision manifest exposed on the dashboard through
@@ -156,7 +157,7 @@ production reliance or production GO.
 | P2-18-REL-01 | Authorized read-only access | BGH/KHTC can open the dashboard only after permission and TTGDTX scope checks pass; the page exposes no write action | A query runs before `canOpen`, a write button exists, or contract-only/out-of-scope access exposes finance totals |
 | P2-18-REL-02 | Source-total reconciliation | Dashboard totals reconcile to P2-03, P2-10, P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 controlled references | Any accepted KPI cannot be traced to the approved source workflow, query or evidence reference |
 | P2-18-REL-03 | Control-board status | All intentional completed flows are `PASS`; `REVIEW` items have owner notes; `CRITICAL` rows are explained or block reliance | A `CRITICAL` row is unexplained, a `REVIEW` row has no owner, or an exception route points to the wrong workflow |
-| P2-18-REL-04 | Evidence redaction and storage | Screenshots, exports and source comparisons use controlled redacted evidence IDs outside Git/Codex/chat | Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys appear |
+| P2-18-REL-04 | Evidence redaction and storage | Screenshots, exports and source comparisons use controlled redacted evidence IDs outside Git/Codex/chat | Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys appear |
 | P2-18-REL-05 | Dashboard reliance boundary | Owners record whether the dashboard can support internal review only, with no finance action or statutory-accounting reliance | Dashboard `PASS_LOCAL` is treated as finance approval, statutory accounting, UAT acceptance or production GO |
 | P2-18-REL-06 | Human reliance decision | Operator, checker, owner signers, timestamp, evidence IDs and final decision are recorded as `P2_18_RELIANCE_READY`, `NO_GO` or `BLOCKED` | Signed browser UAT, owner sign-off, backup/restore proof or final GO/NO-GO evidence is missing |
 

@@ -20,8 +20,9 @@ users see correct totals and unauthorized or out-of-scope users are blocked.
 Use only synthetic, redacted or approved UAT data.
 
 Do not put real student, parent, CCCD, phone, bank account, voucher, password,
-OTP, credential, service key or production screenshot data into Git, Codex/chat
-or public issue trackers. Tester names may be role labels such as
+temporary password, OTP, password reset link, account activation/invite link,
+credential, service key or production screenshot data into Git, Codex/chat or
+public issue trackers. Tester names may be role labels such as
 `UAT_KHTC_OPERATOR`, not real credentials.
 
 The dashboard must not:
@@ -46,7 +47,8 @@ The dashboard must not:
 | `UAT_OUT_OF_SCOPE_STAFF` | Has no TTGDTX segment/partner finance scope | Blocked or sees empty scoped state |
 | `UAT_PARTNER_VIEWER` | External/partner-like scope if enabled in UAT | Must not see HEU-wide finance totals |
 
-Never paste account passwords, OTPs or reset links into the evidence log.
+Never paste account passwords, temporary passwords, OTPs, reset links or
+activation/invite links into the evidence log.
 
 ## 4. Execution Steps
 
@@ -90,7 +92,8 @@ Stop UAT and fix before continuing if:
 1. A contract-only or out-of-scope user can see unrestricted finance totals.
 2. Dashboard data is queried before the role/scope gate.
 3. The dashboard exposes create, update, approve, pay or delete controls.
-4. Real passwords, OTPs, CCCD, bank data or student private data appears in
+4. Real passwords, temporary passwords, OTPs, password reset links,
+   activation/invite links, CCCD, bank data or student private data appears in
    screenshots, Git, Codex/chat or evidence notes.
 5. A completed flow total differs from P2-03/P2-10/P2-13/P2-17 source data
    without a documented exception.

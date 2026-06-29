@@ -40,7 +40,8 @@ const plan = exists(planPath) ? read(planPath) : "";
 requireText(plan, /P2-18 remains IN_PROGRESS/i, "P2-18 remains IN_PROGRESS boundary");
 requireText(plan, /signed browser UAT evidence/i, "signed browser UAT evidence requirement");
 requireText(plan, /Use only synthetic, redacted or approved UAT data/i, "synthetic/redacted data boundary");
-requireText(plan, /Do not put real student, parent, CCCD, phone, bank account, voucher, password,\s+OTP, credential, service key or production screenshot data/i, "secret and PII boundary");
+requireText(plan, /Do not put real student, parent, CCCD, phone, bank account, voucher, password,\s+temporary password, OTP, password reset link, account activation\/invite link,\s+credential, service key or production screenshot data/i, "secret and PII boundary");
+requireText(plan, /Never paste account passwords, temporary passwords, OTPs, reset links or\s+activation\/invite links into the evidence log/i, "account-secret evidence-log boundary");
 requireText(plan, /The dashboard must not:[\s\S]*Create receivables[\s\S]*Collect tuition[\s\S]*Issue invoice or receipt[\s\S]*Reconcile money[\s\S]*Approve payment request[\s\S]*Execute payout[\s\S]*Edit evidence[\s\S]*Mark production GO/i, "read-only dashboard boundary");
 requireText(plan, /UAT_ADMIN_OR_BGH_TTGDTX[\s\S]*Can open dashboard/i, "authorized BGH/Admin account case");
 requireText(plan, /UAT_KHTC_TTGDTX_OPERATOR[\s\S]*no money movement action is available/i, "KHTC read-only account case");
@@ -50,6 +51,7 @@ requireText(plan, /UAT_OUT_OF_SCOPE_STAFF[\s\S]*Blocked or sees empty scoped sta
 requireText(plan, /audit:ttgdtx-dashboard-access[\s\S]*audit:ttgdtx-data-fetch-gate[\s\S]*audit:ttgdtx-role-scope-access[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan/i, "required local audit commands");
 requireText(plan, /Source comparison[\s\S]*Summary\/control-board source check result/i, "source comparison evidence field");
 requireText(plan, /Stop UAT and fix/i, "stop condition section");
+requireText(plan, /Real passwords, temporary passwords, OTPs, password reset links,\s+activation\/invite links, CCCD, bank data or student private data appears in\s+screenshots, Git, Codex\/chat or evidence notes/i, "account-secret stop condition");
 requireText(plan, /P5-01 is PASS_LOCAL/i, "PASS_LOCAL result");
 requireText(plan, /not production-approved/i, "production NO-GO boundary");
 

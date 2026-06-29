@@ -556,6 +556,23 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
+  "P2-18 accounting dashboard UAT runbook",
+  "dashboard role UAT plan",
+  "dashboard UAT evidence checklist",
+  "source reconciliation checklist",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-dashboard-readonly-guard.mjs",
+  "audit-ttgdtx-dashboard-source-reconciliation.mjs",
+  "audit-ttgdtx-accounting-dashboard-uat-plan.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "dashboard UAT/evidence packaging only",
+  "dashboard reliance",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

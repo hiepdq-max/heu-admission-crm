@@ -82,7 +82,7 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18 dashboard immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P2-18-STOP-01)(?=[\s\S]*P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO)(?=[\s\S]*Signed browser UAT, source reconciliation, reliance decision, backup\/restore proof or owner sign-off is missing)(?=[\s\S]*contract-only\/out-of-scope access exposes finance totals)(?=[\s\S]*unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route)(?=[\s\S]*Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys)/i,
+  /(?=[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18")(?=[\s\S]*P2-18 dashboard immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P2-18-STOP-01)(?=[\s\S]*P2-18-STOP-05)(?=[\s\S]*P2_18_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*finance approval, statutory accounting, revenue recognition, payment approval, bank transfer instruction or production GO)(?=[\s\S]*Signed browser UAT, source reconciliation, reliance decision, backup\/restore proof or owner sign-off is missing)(?=[\s\S]*contract-only\/out-of-scope access exposes finance totals)(?=[\s\S]*unresolved source variance, unexplained CRITICAL status, ownerless REVIEW status or a wrong exception route)(?=[\s\S]*Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links or service-role keys)/i,
   "P2-18 dashboard immediate stop guard UI",
   componentPath,
 );

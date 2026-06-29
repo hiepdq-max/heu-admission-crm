@@ -77,7 +77,7 @@ requireText(
 
 requireText(
   evidenceChecklist,
-  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*raw student PII, CCCD,\s+bank accounts, vouchers, passwords, OTPs and service-role keys\s+stay outside Git\/Codex\/chat)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-02)(?=[\s\S]*P2-18-03)(?=[\s\S]*P2-18-04\/P2-18-05)(?=[\s\S]*P2-18-06\/P2-18-07)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
+  /(?=[\s\S]*data-ttgdtx-dashboard-uat-evidence-checklist="P2-18")(?=[\s\S]*P2-18 UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed browser UAT is still required before P2-18 can move from\s+IN_PROGRESS)(?=[\s\S]*raw student PII, CCCD,\s+bank accounts, vouchers, passwords, temporary passwords, OTPs,\s+password reset links, account activation\/invite links and\s+service-role keys stay outside Git\/Codex\/chat)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P2-18-01)(?=[\s\S]*P2-18-02)(?=[\s\S]*P2-18-03)(?=[\s\S]*P2-18-04\/P2-18-05)(?=[\s\S]*P2-18-06\/P2-18-07)(?=[\s\S]*P2-18-08)(?=[\s\S]*KHTC, BGH, IT_DATA and Audit\s+must sign the evidence outside Codex\/chat)/i,
   "P2-18 UAT evidence checklist",
   evidenceChecklistPath,
 );

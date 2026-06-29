@@ -82,7 +82,7 @@ const reconciliationChecks: ReconciliationCheck[] = [
       "Movement and exception evidence links point to controlled redacted references only.",
     owner: "IT_DATA + Audit",
     stopCondition:
-      "Raw PII, bank data, voucher image, password, OTP or service key in evidence blocks UAT.",
+      "Raw PII, bank data, voucher image, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys in evidence block UAT.",
   },
 ];
 
@@ -118,7 +118,7 @@ const dashboardImmediateStopItems: DashboardImmediateStopItem[] = [
   {
     stopId: "P2-18-STOP-05",
     condition:
-      "Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys appear in dashboard evidence.",
+      "Raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys appear in dashboard evidence.",
     operatorAction:
       "Reject the evidence and move it to controlled redaction handling outside Git/Codex/chat.",
   },
@@ -159,7 +159,7 @@ const dashboardRelianceDecisionItems: DashboardRelianceDecisionItem[] = [
       "Screenshots, exports and source comparisons use controlled redacted evidence IDs outside Git/Codex/chat.",
     owner: "IT_DATA + Audit",
     stopCondition:
-      "Stop if raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, OTPs or service keys appear.",
+      "Stop if raw PII, CCCD, bank accounts, vouchers, bank statements, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys appear.",
   },
   {
     caseId: "P2-18-REL-05",

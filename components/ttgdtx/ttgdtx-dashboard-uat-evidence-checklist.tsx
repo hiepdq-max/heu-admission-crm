@@ -92,7 +92,7 @@ const dashboardAcceptanceItems: DashboardAcceptanceItem[] = [
     minimumEvidence:
       "Screenshots or exports use redacted, non-secret references; KHTC, BGH, IT_DATA and Audit sign outside Codex/chat.",
     stopCondition:
-      "Stop if raw PII, CCCD, bank accounts, vouchers, passwords, OTPs or service-role keys are exposed.",
+      "Stop if raw PII, CCCD, bank accounts, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys are exposed.",
   },
   {
     caseId: "P2-18-ACCEPT-06",
@@ -121,8 +121,9 @@ export function TtgdtxDashboardUatEvidenceChecklist() {
               Signed browser UAT is still required before P2-18 can move from
               IN_PROGRESS. Collect only redacted screenshots or non-secret
               evidence references; raw source files, raw student PII, CCCD,
-              bank accounts, vouchers, passwords, OTPs and service-role keys
-              stay outside Git/Codex/chat.
+              bank accounts, vouchers, passwords, temporary passwords, OTPs,
+              password reset links, account activation/invite links and
+              service-role keys stay outside Git/Codex/chat.
             </p>
           </div>
         </div>
