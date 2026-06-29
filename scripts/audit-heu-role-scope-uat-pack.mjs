@@ -50,6 +50,7 @@ requireText(pack, /audit:permission-soft-revoke[\s\S]*audit:ttgdtx-role-scope-ac
 requireText(pack, /UAT_ADMIN[\s\S]*UAT_BGH[\s\S]*UAT_KHTC_TTGDTX_OPERATOR[\s\S]*UAT_TUYEN_SINH_TTGDTX[\s\S]*UAT_CTHSSV[\s\S]*UAT_DAO_TAO[\s\S]*UAT_PHAP_CHE[\s\S]*UAT_AUDIT[\s\S]*UAT_OUT_OF_SCOPE_STAFF/i, "role matrix coverage");
 requireText(pack, /Lead list\/detail[\s\S]*TTGDTX contract\/source[\s\S]*TTGDTX receivable, collection, reconciliation and payment[\s\S]*TTGDTX accounting dashboard[\s\S]*Master\/settings[\s\S]*Audit log/i, "route family coverage");
 requireText(pack, /data-heu-role-scope-route-matrix="P6-04"[\s\S]*P6-04-ROUTE-01[\s\S]*P6-04-ROUTE-07[\s\S]*ALLOWED[\s\S]*BLOCKED[\s\S]*EMPTY_SCOPED_STATE[\s\S]*UI-only hide is not enough/i, "role-scope route matrix coverage");
+requireText(pack, /(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*REAL-ACC-01)(?=[\s\S]*REAL-ACC-06)(?=[\s\S]*REAL_USER_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che legal reviewer)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04, P2-18 and P5-03 evidence exists)/i, "real accounting user UAT queue coverage");
 requireText(pack, /data-heu-role-scope-acceptance-matrix="P6-04"[\s\S]*P6-04-ACCEPT-01[\s\S]*P6-04-ACCEPT-06[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED[\s\S]*signed owner approval/i, "role-scope acceptance matrix coverage");
 requireText(pack, /data-heu-role-scope-access-decision-manifest="P6-04"[\s\S]*P6-04-DEC-01[\s\S]*P6-04-DEC-06[\s\S]*P6_04_ACCESS_READY \/ NO_GO \/ BLOCKED[\s\S]*raw sensitive role-scope evidence keeps P6-04 NO-GO/i, "role-scope access decision manifest coverage");
 requireText(pack, /Expected result[\s\S]*ALLOWED, BLOCKED or EMPTY_SCOPED_STATE/i, "evidence expected result field");
@@ -88,6 +89,14 @@ if (
 }
 
 if (
+  !/(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*Real accounting user UAT queue:\s*PASS_LOCAL only)(?=[\s\S]*REAL-ACC-01)(?=[\s\S]*REAL-ACC-06)(?=[\s\S]*REAL_USER_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che legal reviewer)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04, P2-18 and P5-03 evidence exists)(?=[\s\S]*No real passwords, reset links, invite links, OTPs, service-role\s+keys, raw PII, CCCD, bank data, vouchers or screenshots with\s+secrets may enter Git\/Codex\/chat)/i.test(panel)
+) {
+  fail(
+    "components/settings/user-scope-enforcement-panel.tsx: missing real accounting user UAT queue or no-secret boundary.",
+  );
+}
+
+if (
   !/(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04 role-scope acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*Static preflight and synthetic-account boundary)(?=[\s\S]*Positive role access is scoped)(?=[\s\S]*Negative and out-of-scope denial)(?=[\s\S]*Server-side enforcement)(?=[\s\S]*Admin delegation and broad access control)(?=[\s\S]*Signed evidence and production boundary)(?=[\s\S]*PASS_LOCAL does not approve production access, broad permissions,\s+real-data UAT, finance action or production GO)/i.test(panel)
 ) {
   fail(
@@ -120,12 +129,12 @@ if (!packageJson.scripts?.["audit:heu-role-scope-uat-pack"]) {
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
+if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
   fail("Backlog P6-04 must be PASS_LOCAL and reference the role-scope UAT pack audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff/.test(checklist)) {
+if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff/.test(checklist)) {
   fail("Production checklist must keep role/workspace permission IN_PROGRESS and reference the P6-04 pack.");
 }
 

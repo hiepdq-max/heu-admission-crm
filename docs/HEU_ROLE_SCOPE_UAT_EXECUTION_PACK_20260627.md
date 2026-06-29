@@ -56,6 +56,33 @@ All commands must pass before signed role-scope UAT.
 | `UAT_AUDIT` | Audit/risk review | Audit logs, evidence checks and read-only risk views | Money movement and data ownership changes |
 | `UAT_OUT_OF_SCOPE_STAFF` | Negative control | Login and empty/blocked state only | Any unrestricted TTGDTX finance, lead, source or dashboard data |
 
+## 4.1 Real Accounting User UAT Queue
+
+The user scope panel exposes
+`data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"` for the first
+real-accounting user route. This queue is PASS_LOCAL only. It does not create
+accounts, transmit passwords, approve role grants, accept UAT, approve finance
+action or mark production GO.
+
+Run this queue only after real users are created or invited in Supabase Auth
+outside Codex/chat through an approved secure channel and then linked into HEU
+with approved role, department, manager and business scope.
+
+Decision value: `REAL_USER_SCOPE_READY / NO_GO / BLOCKED`.
+
+| Case | Account class | Expected result | Stop condition |
+|---|---|---|---|
+| REAL-ACC-01 | Auth/profile link preflight | Real user is created/invited outside Codex/chat and linked into HEU profile with approved role, department, manager and scope | Passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or raw identity data enter Git/Codex/chat |
+| REAL-ACC-02 | KHTC accounting operator | Opens P2-10, P2-13, P2-17, P2-18 and P5-03 only inside assigned TTGDTX finance scope | User sees unrestricted dashboard totals, payout actions, source evidence or non-assigned partner/student finance data |
+| REAL-ACC-03 | BGH read-only reviewer | Opens P2-18, P5-03 and Master Control in read-only/review posture | User can execute daily entry, approve/pay, edit source evidence, see hidden raw evidence or trigger production GO |
+| REAL-ACC-04 | Audit read-only reviewer | Reviews audit logs, redacted evidence checks, P2-18 and P5-03 traceability without changing ownership or finance facts | User can move money, grant roles, mutate source data, bypass redaction or view raw secret/PII evidence |
+| REAL-ACC-05 | Phap Che legal reviewer | Reviews P0-19 legal/source/contract evidence and approved legal gate status without unrestricted finance totals | Legal-only access exposes unrestricted finance totals, payment execution, dashboard reliance or private contract bodies beyond approved scope |
+| REAL-ACC-06 | Out-of-scope negative account | Login succeeds but TTGDTX finance, lead, source, dashboard and audit routes return `BLOCKED` or `EMPTY_SCOPED_STATE` | Any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible |
+
+Start with these accounting users, record only redacted user labels, route
+results and evidence IDs, then expand department by department after signed
+P6-04, P2-18 and P5-03 evidence exists.
+
 ## 5. Route Families To Test
 
 At minimum, browser UAT must cover:

@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-04 Real Accounting User UAT Queue
+
+- Added `data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"` to
+  `components/settings/user-scope-enforcement-panel.tsx` and documented the
+  same queue in `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`.
+- The queue covers REAL-ACC-01 through REAL-ACC-06: Auth/profile link
+  preflight, KHTC accounting operator, BGH read-only reviewer, Audit read-only
+  reviewer, Phap Che legal reviewer and Out-of-scope negative account.
+- Tightened `scripts/audit-heu-role-scope-uat-pack.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`; updated backlog, production
+  checklist and current-state evidence so P6-04 cannot omit the accounting
+  user queue before P2-18/P5-03 reliance.
+- This does not create accounts, transmit passwords, approve role grants,
+  accept UAT, approve finance action or mark production GO.
+
 ## 2026-06-29 - Real User Accounting Onboarding Guard
 
 - Added `components/settings/real-user-onboarding-panel.tsx` and mounted it on

@@ -204,6 +204,63 @@ const roleScopeRouteMatrixItems = [
   },
 ];
 
+const realAccountingUserUatQueueItems = [
+  {
+    caseId: "REAL-ACC-01",
+    accountClass: "Auth/profile link preflight",
+    owner: "IT_DATA + ADMIN",
+    expected:
+      "Create/invite the real user in Supabase Auth outside Codex/chat, then link the HEU profile with role, department, manager and approved scope.",
+    stopCondition:
+      "Stop if passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or raw identity data enter Git/Codex/chat.",
+  },
+  {
+    caseId: "REAL-ACC-02",
+    accountClass: "KHTC accounting operator",
+    owner: "KHTC + IT_DATA",
+    expected:
+      "Open P2-10, P2-13, P2-17, P2-18 and P5-03 only inside assigned TTGDTX finance scope.",
+    stopCondition:
+      "Stop if the user sees unrestricted dashboard totals, payout actions, source evidence or non-assigned partner/student finance data.",
+  },
+  {
+    caseId: "REAL-ACC-03",
+    accountClass: "BGH read-only reviewer",
+    owner: "BGH + IT_DATA",
+    expected:
+      "Open P2-18, P5-03 and Master Control in read-only/review posture for approved summary and blocker review.",
+    stopCondition:
+      "Stop if the user can execute daily entry, approve/pay, edit source evidence, see hidden raw evidence or trigger production GO.",
+  },
+  {
+    caseId: "REAL-ACC-04",
+    accountClass: "Audit read-only reviewer",
+    owner: "Audit + IT_DATA",
+    expected:
+      "Review audit logs, redacted evidence checks, P2-18 and P5-03 traceability without changing ownership or finance facts.",
+    stopCondition:
+      "Stop if the user can move money, grant roles, mutate source data, bypass redaction or view raw secret/PII evidence.",
+  },
+  {
+    caseId: "REAL-ACC-05",
+    accountClass: "Phap Che legal reviewer",
+    owner: "PHAP_CHE + IT_DATA",
+    expected:
+      "Review P0-19 legal/source/contract evidence and approved legal gate status without unrestricted finance totals.",
+    stopCondition:
+      "Stop if legal-only access exposes unrestricted finance totals, payment execution, dashboard reliance or private contract bodies beyond approved scope.",
+  },
+  {
+    caseId: "REAL-ACC-06",
+    accountClass: "Out-of-scope negative account",
+    owner: "IT_DATA + Audit",
+    expected:
+      "Login succeeds but TTGDTX finance, lead, source, dashboard and audit routes return BLOCKED or EMPTY_SCOPED_STATE.",
+    stopCondition:
+      "Stop if any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible.",
+  },
+];
+
 const roleScopeAcceptanceItems = [
   {
     caseId: "P6-04-ACCEPT-01",
@@ -478,6 +535,66 @@ export function UserScopeEnforcementPanel({
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div
+          className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-950"
+          data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"
+        >
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-2 font-semibold">
+                <ClipboardCheck className="size-4 shrink-0" />
+                <span>
+                  Real accounting user UAT queue: PASS_LOCAL only
+                </span>
+              </div>
+              <p className="mt-2">
+                Run this queue only after real accounts are created or invited
+                through an approved secure channel outside Codex/chat and then
+                linked into HEU. Record only redacted user labels, route
+                results and evidence IDs.
+              </p>
+              <p className="mt-2">
+                Decision value:{" "}
+                <span className="font-mono text-xs">
+                  REAL_USER_SCOPE_READY / NO_GO / BLOCKED
+                </span>
+                . Start with accounting users, then expand department by
+                department after signed P6-04, P2-18 and P5-03 evidence exists.
+              </p>
+            </div>
+            <div className="min-w-64 rounded-md border border-emerald-200 bg-white px-3 py-2">
+              No real passwords, reset links, invite links, OTPs, service-role
+              keys, raw PII, CCCD, bank data, vouchers or screenshots with
+              secrets may enter Git/Codex/chat.
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-2">
+            {realAccountingUserUatQueueItems.map((item) => (
+              <article
+                key={item.caseId}
+                className="border-l-2 border-emerald-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-emerald-700">
+                  {item.caseId}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {item.accountClass}
+                </p>
+                <p className="mt-2 text-xs font-medium text-zinc-500">
+                  Owner: {item.owner}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  {item.expected}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop: {item.stopCondition}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
 
