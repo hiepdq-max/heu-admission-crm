@@ -54,7 +54,7 @@ outside Git/Codex/chat before it can move to `SIGNED_UAT_READY`.
 | UAT-ROUTE-08 P2-18/P5-03 dashboard and Finance Desk browser UAT | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`; `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` | Dashboard stays read-only, Finance Desk stays scoped and reliance decision is signed |
 | UAT-ROUTE-09 P6-03 audit-log traceability UAT | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md` | Trace rows show actor, entity, timestamp and controlled evidence reference for create/update/check/approve/pay/source-control events |
 | UAT-ROUTE-10 P6-06 hard-delete/cascade closure proof | `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | Conversion proof or written waiver exists for unresolved protected paths |
-| UAT-ROUTE-11 P0-09 final owner GO/NO-GO decision | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` | Final owner decision manifest references signed UAT, evidence binder, migration, backup, role, audit and risk-closure proof |
+| UAT-ROUTE-11 P0-09 final owner GO/NO-GO decision | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` | Final owner decision manifest references signed UAT, evidence binder, migration, backup, role, P0-17 access closure decision, audit and risk-closure proof |
 
 ## 3. Stop Conditions
 

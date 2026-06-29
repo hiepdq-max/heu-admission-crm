@@ -185,7 +185,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
-  /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|/i,
+  /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*P0-17 access closure decision/i,
   "signed UAT route result tracker includes per-route decision lane",
 );
 
@@ -208,7 +208,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-02[\s\S]*no real\/temporary passwords, password reset links or account\s+activation\/invite links shared)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, temporary passwords, OTPs, password reset\s+links,\s+account\s+activation\/invite links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-02[\s\S]*no real\/temporary passwords, password reset links or account\s+activation\/invite links shared)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, temporary passwords, OTPs, password reset\s+links,\s+account\s+activation\/invite links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
   "operator handoff keeps UAT run order and no-secret boundary",
 );
 

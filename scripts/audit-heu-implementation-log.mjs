@@ -722,6 +722,25 @@ fastSection("2026-06-29 - P0-09 Owner Signoff Access Closure Decision Gate", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-08 UAT Route 11 Access Closure Handoff", [
+  "lib/production-readiness.ts",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "UAT-ROUTE-11 P0-09 final owner GO/NO-GO",
+  "P0-17 access closure decision",
+  "evidence binder, migration, backup, role, audit and risk-closure references",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "audit-ttgdtx-uat-readiness.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not execute UAT",
+  "revoke live users",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint", [
   "data-p014-finance-reliance-evidence-checkpoint=\"P2-18_P5-03_P6-04\"",
   "ttgdtx-production-evidence-binder.tsx",
@@ -1310,6 +1329,13 @@ requireText(
   log,
   /## 2026-06-29 - Real User Access Closure Guard[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04"[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*ACCESS_RETAIN[\s\S]*REVOKE_OR_REDUCE[\s\S]*BLOCKED[\s\S]*signed P6-04, P2-18 and P5-03\s+route results[\s\S]*soft-revoke[\s\S]*INACTIVE[\s\S]*safe evidence IDs outside\s+Git\/Codex\/chat[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is account-lifecycle packaging only[\s\S]*does not create accounts,\s+revoke live users, send passwords, approve role scope, accept UAT, approve\s+finance action or mark production GO/i,
   "real-user access closure guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-08 UAT Route 11 Access Closure Handoff[\s\S]*lib\/production-readiness\.ts[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*UAT-ROUTE-11 P0-09 final\s+owner GO\/NO-GO carries the P0-17 access closure decision with signed UAT,\s+evidence binder, migration, backup, role, audit and risk-closure references[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*UAT-ROUTE-11 carries access closure into final owner GO\/NO-GO[\s\S]*audit-ttgdtx-signed-uat-execution-routing-hub\.mjs[\s\S]*audit-ttgdtx-uat-readiness\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is route-handoff packaging only[\s\S]*does not execute UAT, create\s+accounts, revoke live users, collect evidence, accept evidence, approve role\s+scope, approve owner GO\/NO-GO or mark production GO/i,
+  "P0-08 UAT route 11 access closure handoff log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

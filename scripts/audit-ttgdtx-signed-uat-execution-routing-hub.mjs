@@ -86,7 +86,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
-  /\| Order \| Code \| Route \| Runbook \| Owner \| Minimum proof \| Decision lane \| Stop condition \| Guard \|[\s\S]*UAT-ROUTE-01[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-11[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED/i,
+  /\| Order \| Code \| Route \| Runbook \| Owner \| Minimum proof \| Decision lane \| Stop condition \| Guard \|[\s\S]*UAT-ROUTE-01[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-11[\s\S]*P0-17 access closure decision[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*P0-17 access closure is missing/i,
   "signed UAT route table decision lane",
 );
 
@@ -104,7 +104,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*\/ttgdtx)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*Section 5\.2)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*does not execute UAT, approve production, create accounts, collect evidence or\s+record owner GO\/NO-GO)/i,
+  /(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*\/ttgdtx)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*Section 5\.2)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*does not execute UAT, approve production, create accounts, collect evidence or\s+record owner GO\/NO-GO)/i,
   "operator handoff is aligned to signed UAT routing hub",
 );
 
@@ -116,7 +116,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
-  /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|/i,
+  /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*P0-17 access closure decision/i,
   "execution log route tracker exposes per-route decision lane",
 );
 
@@ -133,7 +133,7 @@ for (const row of signedUatRouteResultRows) {
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*export type SignedUatExecutionRoute)(?=[\s\S]*decisionValue:\s*string)(?=[\s\S]*export const SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*decisionValue:\s*"SIGNED_UAT_READY \/ NO_GO \/ BLOCKED")(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18\/P5-03)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-09)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)/i,
+  /(?=[\s\S]*export type SignedUatExecutionRoute)(?=[\s\S]*decisionValue:\s*string)(?=[\s\S]*export const SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*decisionValue:\s*"SIGNED_UAT_READY \/ NO_GO \/ BLOCKED")(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18\/P5-03)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-09)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*P0-17 access closure is missing)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)/i,
   "shared signed UAT execution route source",
 );
 
@@ -175,7 +175,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
+  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*UAT-ROUTE-11 carries the P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
   "current-state signed UAT routing evidence",
 );
 

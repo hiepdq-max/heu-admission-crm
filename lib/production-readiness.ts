@@ -510,10 +510,10 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     route: "/ttgdtx",
     runbook: "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
     minimumProof:
-      "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, audit and risk-closure references.",
+      "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, P0-17 access closure decision, audit and risk-closure references.",
     decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Any required owner signs NO-GO/BLOCKED, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
+      "Any required owner signs NO-GO/BLOCKED, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
     auditCommand: "npm.cmd run audit:ttgdtx-production-owner-signoff-pack",
   },
 ];
