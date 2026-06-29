@@ -15,10 +15,11 @@ transfers, accept UAT or mark production GO.
 
 ## 2. No-Secret Boundary
 
-Use synthetic or redacted UAT accounts only. Do not paste passwords, OTPs,
-reset links, service-role keys, API keys, bank credentials, raw CCCD, raw phone
-numbers, raw student PII, raw bank account numbers, bank statements, vouchers
-or raw payment evidence into Git, Codex/chat or this runbook.
+Use synthetic or redacted UAT accounts only. Do not paste passwords, temporary
+passwords, OTPs, password reset links, account activation/invite links,
+service-role keys, API keys, bank credentials, raw CCCD, raw phone numbers, raw
+student PII, raw bank account numbers, bank statements, vouchers or raw payment
+evidence into Git, Codex/chat or this runbook.
 
 Evidence should contain only controlled references, masked screenshots, role
 labels, route names, result status and owner notes.
@@ -100,7 +101,7 @@ trail.
 | P5-03-ACCEPT-02 | Read-only behavior | No direct create/update/approve/pay/import-write form exists inside `/finance-desk` | Route can approve, pay, unlock, import-write or edit source data |
 | P5-03-ACCEPT-03 | Source consistency | KPIs reconcile to P2-18, import and source-control views | Any material mismatch lacks an owner note |
 | P5-03-ACCEPT-04 | Money format | VND values use the shared `lib/vnd-money.ts` display | Money appears as raw number, wrong separator or ASCII `d` suffix |
-| P5-03-ACCEPT-05 | Evidence hygiene | Evidence is masked, controlled and references approved storage only | Raw PII, bank, password, voucher or payment evidence is pasted into Git/Codex/chat |
+| P5-03-ACCEPT-05 | Evidence hygiene | Evidence is masked, controlled and references approved storage only | Raw PII, bank, password, temporary password, account activation/invite link, voucher or payment evidence is pasted into Git/Codex/chat |
 | P5-03-ACCEPT-06 | Production boundary | Owners record signed PASS/FAIL/BLOCKED outside Codex/chat | Anyone treats PASS_LOCAL as production approval |
 
 ## 8. Finance Desk Reliance Decision Manifest
@@ -111,7 +112,8 @@ transfer instruction; when signed browser UAT, source reconciliation,
 workspace-scope denial or owner reliance decision is missing; when
 contract-only/out-of-scope users can see totals; when dashboard/import/source
 totals differ without owner notes; or when raw PII, CCCD, bank data, vouchers,
-payment evidence, passwords, OTPs or service-role keys appear in evidence.
+payment evidence, passwords, temporary passwords, OTPs, password reset links,
+account activation/invite links or service-role keys appear in evidence.
 
 Decision value: `P5_03_RELIANCE_READY / NO_GO / BLOCKED`
 
@@ -126,7 +128,7 @@ production GO.
 | P5-03-REL-01 | Authorized scoped access accepted: KHTC/BGH/AUDIT/Admin can open only within TTGDTX scope; contract-only and out-of-scope users are denied | Any out-of-scope or contract-only user sees finance totals |
 | P5-03-REL-02 | Read-only surface accepted: no create, change, approve, pay, import-write or source-edit action exists inside `/finance-desk` | Finance Desk can approve, pay, unlock, import-write, mutate source data or issue a bank instruction |
 | P5-03-REL-03 | Source reconciliation accepted: KPIs reconcile to P2-18 dashboard, import readiness, source-control summary and VND formatting | Any material mismatch lacks owner note or cannot be traced to source P2 workflow |
-| P5-03-REL-04 | Evidence hygiene accepted: evidence uses masked screenshots and controlled references only | Raw PII, bank data, voucher, payment evidence, passwords or keys appear in Git/Codex/chat |
+| P5-03-REL-04 | Evidence hygiene accepted: evidence uses masked screenshots and controlled references only | Raw PII, bank data, voucher, payment evidence, passwords, temporary passwords, account activation/invite links or keys appear in Git/Codex/chat |
 | P5-03-REL-05 | Finance reliance boundary accepted: owners record that Finance Desk is advisory/read-only and corrections must happen in source P2 workflows | PASS_LOCAL is treated as statutory accounting, finance posting, voucher approval, bank transfer instruction or dashboard production reliance |
 | P5-03-REL-06 | Human reliance decision recorded: KHTC, BGH, IT_DATA and AUDIT record RELIANCE_READY/NO_GO/BLOCKED with signer, date and controlled evidence refs | Missing decision ID, unsigned owner, unresolved source mismatch, uncontrolled evidence or open UAT stop condition remains |
 

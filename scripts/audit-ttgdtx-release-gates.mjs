@@ -843,13 +843,13 @@ requireText(
 
 requireText(
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
-  /(?=[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03")(?=[\s\S]*P5-03 Finance Desk UAT evidence checklist: PASS_LOCAL only)(?=[\s\S]*P5-03-UAT-01)(?=[\s\S]*P5-03-UAT-09)(?=[\s\S]*data-finance-desk-acceptance-matrix="P5-03")(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*Signed browser UAT is still required)(?=[\s\S]*service-role keys stay\s+outside Git\/Codex\/chat)(?=[\s\S]*PASS_LOCAL does not mean Finance Desk UAT passed)/i,
+  /(?=[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03")(?=[\s\S]*P5-03 Finance Desk UAT evidence checklist: PASS_LOCAL only)(?=[\s\S]*P5-03-UAT-01)(?=[\s\S]*P5-03-UAT-09)(?=[\s\S]*data-finance-desk-acceptance-matrix="P5-03")(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*Signed browser UAT is still required)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*service-role keys stay outside Git\/Codex\/chat)(?=[\s\S]*PASS_LOCAL does not mean Finance Desk UAT passed)/i,
   "Finance Desk UAT evidence checklist component",
 );
 
 requireText(
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
-  /(?=[\s\S]*data-finance-desk-immediate-stop="P5-03")(?=[\s\S]*P5-03 Finance Desk immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P5-03-STOP-01)(?=[\s\S]*P5-03-STOP-05)(?=[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*statutory accounting, voucher posting, finance approval or a bank-transfer instruction)(?=[\s\S]*Signed browser UAT, source reconciliation, workspace-scope denial or the owner reliance decision is missing)(?=[\s\S]*Contract-only or out-of-scope users can see unrestricted Finance Desk totals)(?=[\s\S]*Dashboard\/import\/source-control totals differ without an owner note)(?=[\s\S]*Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, OTPs or service-role keys)/i,
+  /(?=[\s\S]*data-finance-desk-immediate-stop="P5-03")(?=[\s\S]*P5-03 Finance Desk immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P5-03-STOP-01)(?=[\s\S]*P5-03-STOP-05)(?=[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*statutory accounting, voucher posting, finance approval or a bank-transfer instruction)(?=[\s\S]*Signed browser UAT, source reconciliation, workspace-scope denial or the owner reliance decision is missing)(?=[\s\S]*Contract-only or out-of-scope users can see unrestricted Finance Desk totals)(?=[\s\S]*Dashboard\/import\/source-control totals differ without an owner note)(?=[\s\S]*Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links or service-role keys)/i,
   "Finance Desk immediate stop guard component",
 );
 

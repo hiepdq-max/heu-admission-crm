@@ -624,6 +624,19 @@ fastSection("2026-06-29 - Step90-Step110 Migration Order Account Secret Boundary
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P5-03 Finance Desk Account Secret Boundary", [
+  "Finance Desk UAT runbook",
+  "evidence checklist",
+  "temporary passwords",
+  "password reset",
+  "account activation/invite links",
+  "audit-heu-finance-desk.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "Finance Desk UAT/evidence packaging only",
+  "bank-transfer instructions",
+  "mark production",
+]);
+
 fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "TTGDTX UAT operator handoff",
   "execution log",

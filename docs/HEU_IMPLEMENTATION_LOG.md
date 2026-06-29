@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P5-03 Finance Desk Account Secret Boundary
+
+- Updated the Finance Desk UAT runbook and evidence checklist so P5-03 browser
+  UAT/reliance evidence explicitly forbids temporary passwords, password reset
+  links and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-heu-finance-desk.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so Finance Desk UAT packaging cannot
+  claim a no-secret evidence boundary while omitting temporary account secrets.
+- This is Finance Desk UAT/evidence packaging only. It does not execute UAT,
+  collect evidence, approve finance action, approve statutory accounting,
+  approve voucher posting, issue bank-transfer instructions or mark production
+  GO.
+
 ## 2026-06-29 - Step90-Step110 Migration Order Account Secret Boundary
 
 - Updated the Step90-Step110 migration order sign-off guard so migration-order

@@ -204,14 +204,14 @@ requireText(
 
 requireText(
   uatChecklist,
-  /(?=[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03")(?=[\s\S]*P5-03 Finance Desk UAT evidence checklist: PASS_LOCAL only)(?=[\s\S]*P5-03-UAT-01)(?=[\s\S]*P5-03-UAT-09)(?=[\s\S]*data-finance-desk-acceptance-matrix="P5-03")(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*Signed browser UAT is still required)(?=[\s\S]*raw source files)(?=[\s\S]*service-role keys stay\s+outside Git\/Codex\/chat)(?=[\s\S]*PASS_LOCAL does not mean Finance Desk UAT passed)/i,
+  /(?=[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03")(?=[\s\S]*P5-03 Finance Desk UAT evidence checklist: PASS_LOCAL only)(?=[\s\S]*P5-03-UAT-01)(?=[\s\S]*P5-03-UAT-09)(?=[\s\S]*data-finance-desk-acceptance-matrix="P5-03")(?=[\s\S]*P5-03-ACCEPT-01)(?=[\s\S]*P5-03-ACCEPT-06)(?=[\s\S]*Signed browser UAT is still required)(?=[\s\S]*raw source files)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*service-role keys stay outside Git\/Codex\/chat)(?=[\s\S]*PASS_LOCAL does not mean Finance Desk UAT passed)/i,
   "Finance Desk UAT evidence checklist component",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
 );
 
 requireText(
   uatChecklist,
-  /(?=[\s\S]*data-finance-desk-immediate-stop="P5-03")(?=[\s\S]*P5-03 Finance Desk immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P5-03-STOP-01)(?=[\s\S]*P5-03-STOP-05)(?=[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*statutory accounting, voucher posting, finance approval or a bank-transfer instruction)(?=[\s\S]*Signed browser UAT, source reconciliation, workspace-scope denial or the owner reliance decision is missing)(?=[\s\S]*Contract-only or out-of-scope users can see unrestricted Finance Desk totals)(?=[\s\S]*Dashboard\/import\/source-control totals differ without an owner note)(?=[\s\S]*Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, OTPs or service-role keys)/i,
+  /(?=[\s\S]*data-finance-desk-immediate-stop="P5-03")(?=[\s\S]*P5-03 Finance Desk immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P5-03-STOP-01)(?=[\s\S]*P5-03-STOP-05)(?=[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*statutory accounting, voucher posting, finance approval or a bank-transfer instruction)(?=[\s\S]*Signed browser UAT, source reconciliation, workspace-scope denial or the owner reliance decision is missing)(?=[\s\S]*Contract-only or out-of-scope users can see unrestricted Finance Desk totals)(?=[\s\S]*Dashboard\/import\/source-control totals differ without an owner note)(?=[\s\S]*Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links or service-role keys)/i,
   "Finance Desk immediate stop guard",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
 );
@@ -334,7 +334,7 @@ requireText(
 
 requireText(
   uatRunbook,
-  /Do not paste passwords, OTPs,\s+reset links, service-role keys, API keys, bank credentials, raw CCCD, raw phone\s+numbers, raw student PII, raw bank account numbers, bank statements, vouchers\s+or raw payment evidence into Git, Codex\/chat or this runbook/i,
+  /Do not paste passwords, temporary\s+passwords, OTPs, password reset links, account activation\/invite links,\s+service-role keys, API keys, bank credentials, raw CCCD, raw phone numbers, raw\s+student PII, raw bank account numbers, bank statements, vouchers or raw payment\s+evidence into Git, Codex\/chat or this runbook/i,
   "Finance Desk UAT no-secret boundary",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
 );

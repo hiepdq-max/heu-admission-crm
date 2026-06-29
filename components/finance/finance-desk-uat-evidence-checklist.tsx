@@ -108,7 +108,7 @@ const immediateStopItems: FinanceDeskImmediateStopItem[] = [
   {
     stopId: "P5-03-STOP-05",
     condition:
-      "Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, OTPs or service-role keys appear in evidence.",
+      "Raw PII, CCCD, bank data, vouchers, payment evidence, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys appear in evidence.",
     operatorAction:
       "Reject the evidence and move it to controlled redaction handling outside Git/Codex/chat.",
   },
@@ -149,7 +149,7 @@ const acceptanceItems: FinanceDeskAcceptanceItem[] = [
     passCondition:
       "Evidence is masked, controlled and references approved storage only.",
     stopCondition:
-      "Raw PII, bank data, passwords, OTPs, service-role keys, vouchers or payment evidence appears in Git/Codex/chat.",
+      "Raw PII, bank data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys, vouchers or payment evidence appears in Git/Codex/chat.",
   },
   {
     caseId: "P5-03-ACCEPT-06",
@@ -177,8 +177,9 @@ export function FinanceDeskUatEvidenceChecklist() {
               Signed browser UAT is still required before Finance Desk can be
               relied on. Collect only redacted screenshots or non-secret
               evidence references; raw source files, student PII, CCCD, bank
-              accounts, vouchers, passwords, OTPs and service-role keys stay
-              outside Git/Codex/chat.
+              accounts, vouchers, passwords, temporary passwords, OTPs,
+              password reset links, account activation/invite links and
+              service-role keys stay outside Git/Codex/chat.
             </p>
           </div>
         </div>
