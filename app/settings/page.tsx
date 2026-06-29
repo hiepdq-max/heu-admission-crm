@@ -59,6 +59,7 @@ import {
 } from "@/components/settings/user-settings-overview";
 import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
+import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
 import {
   UserBusinessScopeSettings,
   type BusinessScopeDepartmentRow,
@@ -536,6 +537,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
           </section>
         ) : null}
 
+        <RealUserOnboardingPanel />
         <UserCreateForm
           roles={roles ?? []}
           departments={departments ?? []}

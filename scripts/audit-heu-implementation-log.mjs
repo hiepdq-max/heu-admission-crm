@@ -556,6 +556,18 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Real User Accounting Onboarding Guard", [
+  "real-user-onboarding-panel.tsx",
+  "UserAuthProfileLinkForm",
+  "KHTC/BGH/Audit/Phap Che",
+  "Out-of-scope negative account",
+  "P6-04",
+  "P2-18",
+  "P5-03",
+  "does not create production accounts",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
   "P2-18 accounting dashboard UAT runbook",
   "dashboard role UAT plan",

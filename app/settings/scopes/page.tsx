@@ -12,6 +12,7 @@ import {
 } from "@/components/settings/user-business-scope-settings";
 import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
+import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
 import {
   UserScopeEnforcementPanel,
   type UserScopeEffectiveAccessRow,
@@ -216,6 +217,7 @@ export default async function ScopeSettingsPage({
 
       {currentRoleCode === "ADMIN" ? (
         <>
+          <RealUserOnboardingPanel />
           <UserCreateForm
             roles={roles ?? []}
             departments={departments ?? []}

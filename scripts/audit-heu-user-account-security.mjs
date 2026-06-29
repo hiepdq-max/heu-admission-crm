@@ -25,8 +25,10 @@ function requireText(contents, pattern, label, file) {
 }
 
 const formPath = "components/settings/user-create-form.tsx";
+const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
+const scopePagePath = "app/settings/scopes/page.tsx";
 const packagePath = "package.json";
 const agentsPath = "AGENTS.md";
 const releaseGatePath = "scripts/audit-ttgdtx-release-gates.mjs";
@@ -34,8 +36,10 @@ const logPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
 for (const file of [
   formPath,
+  onboardingPath,
   actionsPath,
   settingsPagePath,
+  scopePagePath,
   packagePath,
   agentsPath,
   releaseGatePath,
@@ -45,8 +49,10 @@ for (const file of [
 }
 
 const form = read(formPath);
+const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
+const scopePage = read(scopePagePath);
 const packageJson = JSON.parse(read(packagePath));
 const agents = read(agentsPath);
 const releaseGate = read(releaseGatePath);
@@ -80,6 +86,34 @@ requireText(
   settingsPagePath,
 );
 
+requireText(
+  onboarding,
+  /(?=[\s\S]*data-heu-real-user-onboarding-panel="P0-17")(?=[\s\S]*Real user onboarding for accounting)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*USER-REAL-01)(?=[\s\S]*USER-REAL-05)(?=[\s\S]*Supabase Auth)(?=[\s\S]*User Scope Enforcement)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links,\s+account activation\/invite links)(?=[\s\S]*production GO)/i,
+  "real-user accounting onboarding guard",
+  onboardingPath,
+);
+
+requireText(
+  onboarding,
+  /(?=[\s\S]*data-heu-real-user-finance-lanes="P0-17-P5-03")(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che contract\/legal reviewer)(?=[\s\S]*Out-of-scope negative account)/i,
+  "real-user finance-accounting lanes",
+  onboardingPath,
+);
+
+requireText(
+  settingsPage,
+  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
+  "real-user onboarding panel before create-user form",
+  settingsPagePath,
+);
+
+requireText(
+  scopePage,
+  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
+  "real-user onboarding panel before scoped create-user form",
+  scopePagePath,
+);
+
 if (!packageJson.scripts?.["audit:heu-user-account-security"]) {
   fail(`${packagePath}: missing audit:heu-user-account-security script`);
 }
@@ -105,6 +139,13 @@ requireText(
   logPath,
 );
 
+requireText(
+  implementationLog,
+  /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
+  "real-user accounting onboarding log boundary",
+  logPath,
+);
+
 if (failures.length > 0) {
   console.error("HEU user-account security audit failed.");
   for (const failure of failures) {
@@ -114,5 +155,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "HEU user-account security audit passed. Temporary password handling is guarded.",
+  "HEU user-account security audit passed. Temporary password and real-user onboarding handling are guarded.",
 );

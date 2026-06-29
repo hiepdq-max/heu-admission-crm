@@ -140,9 +140,11 @@ const requiredFiles = [
   "components/leads/lead-handover-panel.tsx",
   "components/settings/supabase-backup-restore-guard.tsx",
   "components/settings/user-create-form.tsx",
+  "components/settings/real-user-onboarding-panel.tsx",
   "components/settings/user-scope-enforcement-panel.tsx",
   "app/settings/actions.ts",
   "app/settings/page.tsx",
+  "app/settings/scopes/page.tsx",
   "app/finance-desk/page.tsx",
   "database/step111_heu_finance_desk.sql",
   "lib/lead-lifecycle.ts",
@@ -681,7 +683,7 @@ requireText(
 
 requireText(
   "scripts/audit-heu-user-account-security.mjs",
-  /temporary password handling is guarded/i,
+  /Temporary password and real-user onboarding handling are guarded/i,
   "user account temporary password security audit script",
 );
 
@@ -692,8 +694,38 @@ requireText(
 );
 
 requireText(
+  "components/settings/real-user-onboarding-panel.tsx",
+  /(?=[\s\S]*data-heu-real-user-onboarding-panel="P0-17")(?=[\s\S]*Real user onboarding for accounting)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*USER-REAL-01)(?=[\s\S]*USER-REAL-05)(?=[\s\S]*Supabase Auth)(?=[\s\S]*User Scope Enforcement)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links,\s+account activation\/invite links)(?=[\s\S]*production GO)/i,
+  "P0-17 real-user accounting onboarding guard",
+);
+
+requireText(
+  "components/settings/real-user-onboarding-panel.tsx",
+  /(?=[\s\S]*data-heu-real-user-finance-lanes="P0-17-P5-03")(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che contract\/legal reviewer)(?=[\s\S]*Out-of-scope negative account)/i,
+  "P0-17 real-user finance-accounting lanes",
+);
+
+requireText(
+  "app/settings/page.tsx",
+  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
+  "settings page mounts real-user onboarding before create-user form",
+);
+
+requireText(
+  "app/settings/scopes/page.tsx",
+  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
+  "scopes page mounts real-user onboarding before create-user form",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
+  "P0-17 real-user accounting onboarding log entry",
+);
+
+requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords/i,
+  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03/i,
   "P0-17 user account temporary password backlog row",
 );
 

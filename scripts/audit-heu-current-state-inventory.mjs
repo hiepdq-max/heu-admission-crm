@@ -87,12 +87,12 @@ requireText(
 );
 requireText(
   inventory,
-  /M02 HR[\s\S]*Role\/scope pages, P6-04 UAT pack and create-user temporary password guard exist/i,
+  /M02 HR[\s\S]*Role\/scope pages, P6-04 UAT pack, create-user temporary password guard and real-user accounting onboarding guard exist/i,
   "M02 user account temporary password current module state",
 );
 requireText(
   backlog,
-  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords/i,
+  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03/i,
   "P0-17 user account temporary password backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
@@ -209,7 +209,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, governance UAT execution readiness, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
+  /Role\/workspace scope[\s\S]*P6-04 pack, scope UI guard, create-user temporary password guard, real-user accounting onboarding guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, governance UAT execution readiness, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist[\s\S]*Multi-account signed UAT pending/i,
   "P6-04 role-scope route matrix control state",
 );
 requireText(

@@ -1,5 +1,23 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Real User Accounting Onboarding Guard
+
+- Added `components/settings/real-user-onboarding-panel.tsx` and mounted it on
+  Settings and Scopes so admins follow the real-user route for accounting:
+  create/invite Auth outside Codex/chat, link profile with
+  `UserAuthProfileLinkForm`, assign role/scope, then run P6-04, P2-18 and
+  P5-03 checks before real use.
+- Locked the first finance-accounting user lanes to KHTC/BGH/Audit/Phap Che
+  plus an Out-of-scope negative account before expanding to other departments.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`, and updated P0-17 backlog/current-state
+  evidence so the real-user sequence cannot omit the no-secret boundary,
+  scope/UAT checks or finance-user lanes.
+- This does not create production accounts, send passwords, approve role scope,
+  accept UAT, approve finance action or mark production GO.
+
 ## 2026-06-29 - Step90-Step110 Backup Rollback Runbook Canonical Name
 
 - Renamed `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` to
