@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Current-State P2-17 Duplicate Payout Evidence
+
+- Added `npm.cmd run audit:ttgdtx-payout-duplicate-guard` to
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P2-17 duplicate, overpay, direct-write and evidence guard
+  is visible as explicit current-state evidence.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
+  cannot drop the P2-17 duplicate-payout guard while still claiming current
+  local checks pass.
+- This is inventory evidence alignment only. It does not execute payout UAT,
+  collect evidence, approve finance action, initiate a bank transfer, move
+  money or mark production GO.
+
 ## 2026-06-28 - Finance Desk VND Audit Coverage
 
 - Extended `scripts/audit-vnd-money-format.mjs` so P5-03 Finance Desk joins

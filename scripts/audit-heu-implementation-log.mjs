@@ -535,6 +535,16 @@ fastSection("2026-06-28 - Finance Desk VND Audit Coverage", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Current-State P2-17 Duplicate Payout Evidence", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "npm.cmd run audit:ttgdtx-payout-duplicate-guard",
+  "P2-17 duplicate, overpay, direct-write and evidence guard",
+  "scripts/audit-heu-current-state-inventory.mjs",
+  "explicit current-state evidence",
+  "inventory evidence alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
