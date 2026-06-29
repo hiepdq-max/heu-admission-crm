@@ -48,6 +48,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-finance-desk` | PASS |
 | `npm.cmd run audit:heu-hou-ledger-handover-gap-pack` | PASS |
 | `npm.cmd run audit:heu-vietnamese-text-encoding` | PASS |
+| `npm.cmd run audit:vnd-money-format` | PASS |
 | `npm.cmd run audit:heu-production-blocker-source` | PASS |
 | `npm.cmd run audit:heu-production-evidence-binder` | PASS |
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |

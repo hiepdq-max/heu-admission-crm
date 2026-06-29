@@ -514,6 +514,16 @@ fastSection("2026-06-28 - VND Control Documentation Alignment", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - Current-State VND Audit Evidence", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "npm.cmd run audit:vnd-money-format",
+  "P4-04 VND money input/display normalization",
+  "scripts/audit-heu-current-state-inventory.mjs",
+  "explicit current-state evidence",
+  "inventory evidence alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

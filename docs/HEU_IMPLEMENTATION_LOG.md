@@ -1,5 +1,16 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Current-State VND Audit Evidence
+
+- Added `npm.cmd run audit:vnd-money-format` to
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P4-04 VND money input/display normalization
+  appears as explicit current-state evidence.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
+  cannot drop the VND audit line while still claiming current local checks pass.
+- This is inventory evidence alignment only. It does not change finance
+  calculations, collect evidence, execute UAT, approve dashboard reliance,
+  approve finance action or mark production GO.
+
 ## 2026-06-28 - VND Control Documentation Alignment
 
 - Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
