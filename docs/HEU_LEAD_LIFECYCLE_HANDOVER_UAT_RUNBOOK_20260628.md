@@ -71,7 +71,7 @@ Use synthetic or redacted UAT accounts only.
 | Actual result | PASS / FAIL / BLOCKED |
 | Screenshot/reference | Controlled external folder only |
 | Audit row reference | Masked row/sample reference only |
-| Data exposure check | No raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs or keys |
+| Data exposure check | No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or API keys |
 | Signers | Tuyen Sinh / CTHSSV / Dao Tao / KHTC / IT_DATA / Audit |
 | Decision | P3_01_ACCEPT, P3_02_HANDOVER_READY, NO_GO or BLOCKED |
 
@@ -96,7 +96,7 @@ P3-02 can support downstream CTHSSV/Dao Tao/KHTC reliance only when:
 | P3-02-ACCEPT-02 | Receiver role and workspace scope are valid | Out-of-scope receiver can read or act |
 | P3-02-ACCEPT-03 | Accept/reject trace is auditable | Missing actor, timestamp, status or rejection reason |
 | P3-02-ACCEPT-04 | Finance boundary is preserved | Handover creates receivable, collection, invoice, payment or revenue |
-| P3-02-ACCEPT-05 | Evidence is redacted and controlled | Raw PII, CCCD, phone, bank data or credentials appear |
+| P3-02-ACCEPT-05 | Evidence is redacted and controlled | Raw PII, CCCD, phone, bank data, credentials, temporary passwords, password reset links or account activation/invite links appear |
 | P3-02-ACCEPT-06 | Human approval and AI boundary are explicit | AI or PASS_LOCAL is treated as acceptance or GO |
 
 ## 6. Human Decision Manifest

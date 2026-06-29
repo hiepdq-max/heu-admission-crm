@@ -44,7 +44,7 @@ const leadLifecycleAcceptanceItems: LeadLifecycleAcceptanceItem[] = [
     minimumEvidence:
       "DOCUMENT_PENDING and DOCUMENT_SUBMITTED show checklist state and redacted source/evidence reference.",
     stopCondition:
-      "Stop if raw PII, CCCD, phone, bank data, vouchers, credentials or private forms are pasted into Git/Codex/chat.",
+      "Stop if raw PII, CCCD, phone, bank data, vouchers, credentials, temporary passwords, password reset links, account activation/invite links or private forms are pasted into Git/Codex/chat.",
   },
   {
     caseId: "P3-01-ACCEPT-04",
@@ -176,9 +176,10 @@ export function LeadLifecycleGuard() {
           <div className="flex items-start gap-2">
             <AlertTriangle className="mt-0.5 size-4 shrink-0" />
             <p>
-              No raw form dump into AI. Không paste passwords, OTPs,
-              service-role keys, raw student PII, CCCD, phone, bank data,
-              vouchers or payment evidence vào Git/Codex/chat.
+              No raw form dump into AI. Không paste passwords, temporary
+              passwords, OTPs, password reset links, account activation/invite
+              links, service-role keys, raw student PII, CCCD, phone, bank
+              data, vouchers or payment evidence vào Git/Codex/chat.
             </p>
           </div>
         </div>

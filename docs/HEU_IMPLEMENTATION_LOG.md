@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P3 Handover UAT Account Secret Boundary
+
+- Updated the P3-01/P3-02 lead lifecycle handover UAT runbook and visible lead lifecycle guard
+  so UAT evidence explicitly forbids temporary passwords,
+  password reset links and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-heu-lead-lifecycle-handover-uat-pack.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P3 handover UAT packaging cannot
+  claim a no-secret evidence boundary while omitting temporary account secrets.
+- This is P3 handover UAT packaging only. It does not execute UAT, accept handover,
+  create receivable, approve finance action, collect evidence,
+  create accounts, transmit passwords, waive owner sign-off or mark production GO.
+
 ## 2026-06-29 - Signed UAT Routing Account Secret Boundary
 
 - Updated the TTGDTX signed UAT execution routing hub and shared

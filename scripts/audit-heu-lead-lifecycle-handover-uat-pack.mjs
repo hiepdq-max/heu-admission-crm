@@ -95,7 +95,7 @@ for (const caseId of [
 
 requireText(
   runbookPath,
-  /Evidence Record Template[\s\S]*Lead or packet reference[\s\S]*Use masked\/reference ID only[\s\S]*Data exposure check[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs or keys[\s\S]*Signers[\s\S]*Tuyen Sinh \/ CTHSSV \/ Dao Tao \/ KHTC \/ IT_DATA \/ Audit/i,
+  /Evidence Record Template[\s\S]*Lead or packet reference[\s\S]*Use masked\/reference ID only[\s\S]*Data exposure check[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys or API keys[\s\S]*Signers[\s\S]*Tuyen Sinh \/ CTHSSV \/ Dao Tao \/ KHTC \/ IT_DATA \/ Audit/i,
   "evidence record template and no-secret rule",
 );
 requireText(
@@ -123,6 +123,12 @@ requireText(
   componentPath,
   /PASS_LOCAL does not accept UAT, approve handover reliance, create\s+finance facts, waive evidence, approve owner sign-off or mark\s+production GO/i,
   "visible non-approval boundary",
+);
+
+requireText(
+  componentPath,
+  /No raw form dump into AI[\s\S]*passwords, temporary\s+passwords, OTPs, password reset links, account activation\/invite\s+links, service-role keys, raw student PII, CCCD, phone, bank\s+data, vouchers or payment evidence[\s\S]*Git\/Codex\/chat/i,
+  "visible P3 account-secret and raw-evidence warning",
 );
 
 const packageJson = JSON.parse(read("package.json"));

@@ -681,6 +681,22 @@ fastSection("2026-06-29 - Signed UAT Routing Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P3 Handover UAT Account Secret Boundary", [
+  "P3-01/P3-02 lead lifecycle handover UAT runbook",
+  "visible lead lifecycle guard",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-heu-lead-lifecycle-handover-uat-pack.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "P3 handover UAT packaging only",
+  "execute UAT",
+  "accept handover",
+  "collect evidence",
+  "transmit passwords",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

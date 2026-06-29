@@ -1987,7 +1987,7 @@ requireText(
 
 requireText(
   "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*P3-01 lead lifecycle and P3-02 lead-to-student handover)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P3-UAT-01)(?=[\s\S]*P3-UAT-08)(?=[\s\S]*P3-UAT-DEC-01)(?=[\s\S]*P3-UAT-DEC-06)(?=[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs or keys)(?=[\s\S]*P3-01\/P3-02 remain pending until every P3-UAT case is executed with redacted\s+evidence)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*P3-01 lead lifecycle and P3-02 lead-to-student handover)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P3-UAT-01)(?=[\s\S]*P3-UAT-08)(?=[\s\S]*P3-UAT-DEC-01)(?=[\s\S]*P3-UAT-DEC-06)(?=[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys or API keys)(?=[\s\S]*P3-01\/P3-02 remain pending until every P3-UAT case is executed with redacted\s+evidence)/i,
   "P3-01/P3-02 UAT runbook and closure rule",
 );
 
