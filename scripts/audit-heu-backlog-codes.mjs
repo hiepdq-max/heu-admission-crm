@@ -30,6 +30,14 @@ if (!seen.has("P4-04")) {
   failures.push("Missing P4-04 VND money input/display normalization backlog row");
 }
 
+if (
+  !/P4-04[\s\S]*VND money input\/display normalization[\s\S]*P2-10\/P2-17 forms[\s\S]*P2-18 dashboard displays[\s\S]*shared formatter/i.test(
+    backlog,
+  )
+) {
+  failures.push("P4-04 backlog row must cover P2-10/P2-17 forms and P2-18 dashboard VND display");
+}
+
 if (!seen.has("P4-05")) {
   failures.push("Missing P4-05 period lock and adjustment policy backlog row");
 }

@@ -75,7 +75,7 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P4-01 | Receivable/payment status lifecycle | KHTC | PASS_LOCAL | `docs/TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`; signed finance UAT still required |
 | P4-02 | Invoice/receipt policy matrix | KHTC + Phap Che | PASS_LOCAL | `lib/ttgdtx-invoice-policy.ts`; `components/ttgdtx/ttgdtx-invoice-policy-matrix.tsx`; P2-10 invoice/chung-tu UAT evidence checklist; P2-10 invoice/chung-tu decision manifest; `docs/TTGDTX_P2_10_INVOICE_POLICY_UAT_RUNBOOK_20260627.md`; `npm.cmd run audit:ttgdtx-invoice-policy`; needs signed KHTC/Phap Che UAT |
 | P4-03 | Bank statement handling policy | KHTC + IT/Data | PASS_LOCAL | `docs/TTGDTX_BANK_RECEIPT_BATCH_POLICY_20260627.md`; no raw bank data in repo/chat; duplicate fingerprint case in synthetic pack |
-| P4-04 | VND money input/display normalization | IT/Data + KHTC | PASS_LOCAL | `lib/vnd-money.ts`; `npm.cmd run audit:vnd-money-format`; P2-10/P2-17 display `1.000.000 đ` |
+| P4-04 | VND money input/display normalization | IT/Data + KHTC | PASS_LOCAL | `lib/vnd-money.ts`; `npm.cmd run audit:vnd-money-format`; P2-10/P2-17 forms parse and format inputs through the shared helper; P2-18 dashboard displays `1.000.000 đ` through the shared formatter without replacing dot separators with spaces |
 | P4-05 | Period lock and adjustment policy | KHTC + Audit | PASS_LOCAL | `docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md`; `npm.cmd run audit:ttgdtx-period-lock-policy`; human adjustment approval required |
 
 ## P5 - Dashboard/BGH

@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-28 - VND Control Documentation Alignment
+
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P4-04 now matches the current VND
+  audit scope: P2-10/P2-17 money forms use shared parsing/input formatting and
+  P2-18 dashboard display uses the shared formatter.
+- Added guard coverage so the P4-04 backlog row and TTGDTX checklist cannot
+  drift back to the older P2-10/P2-17-only wording.
+- This is documentation and audit alignment only. It does not change finance
+  calculations, collect evidence, execute UAT, approve dashboard reliance,
+  approve finance action or mark production GO.
+
 ## 2026-06-28 - VND Audit P2-18 Coverage
 
 - Extended `scripts/audit-vnd-money-format.mjs` so the shared VND audit now

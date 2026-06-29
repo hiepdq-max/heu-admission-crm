@@ -502,6 +502,18 @@ fastSection("2026-06-28 - VND Audit P2-18 Coverage", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - VND Control Documentation Alignment", [
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "P4-04",
+  "P2-10/P2-17 money forms",
+  "P2-18 dashboard display",
+  "guard coverage",
+  "documentation and audit alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
