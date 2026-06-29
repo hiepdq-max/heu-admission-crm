@@ -312,6 +312,30 @@ fastSection("2026-06-29 - P2-18 P5-03 First Finance UAT Checklist", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-30 - Finance Day-1 Real-Run Rehearsal Guard", [
+  "PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS",
+  "lib/production-readiness.ts",
+  "ttgdtx-production-execution-queue.tsx",
+  "data-ttgdtx-finance-day-one-run-rehearsal=\"P0-17_P6-04_P2-18_P5-03_P2-17\"",
+  "real-user-onboarding-panel.tsx",
+  "data-heu-finance-day-one-run-rehearsal=\"P0-17-P6-04-P2-18-P5-03-P2-17\"",
+  "FIN-DAY1-01 through FIN-DAY1-05",
+  "secure account activation",
+  "P6-04 scope proof",
+  "P2-18/P5-03",
+  "P2-17 payout rehearsal",
+  "P0-17 access closure",
+  "FIN_DAY1_READY / NO_GO / BLOCKED",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "send passwords",
+  "initiate bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",

@@ -8,6 +8,8 @@ import {
   UserCheck,
 } from "lucide-react";
 
+import { PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS } from "@/lib/production-readiness";
+
 const onboardingSteps = [
   {
     code: "USER-REAL-01",
@@ -165,6 +167,39 @@ export function RealUserOnboardingPanel() {
               <p className="font-medium text-zinc-950">{lane.label}</p>
               <p className="mt-1 text-xs text-zinc-500">{lane.route}</p>
               <p className="mt-2 text-rose-700">Stop: {lane.stop}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-4 rounded-lg border border-cyan-200 bg-white p-4"
+        data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-center gap-2 font-semibold text-cyan-950">
+            <ClipboardCheck className="size-4 text-cyan-700" />
+            Finance Day-1 real-run rehearsal before expansion
+          </div>
+          <div className="rounded-md border border-cyan-200 bg-cyan-50 px-3 py-1 text-xs font-medium text-cyan-900">
+            Decision: FIN_DAY1_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+        <p className="mt-2 text-cyan-900">
+          Use approved real-accounting account labels only after signed UAT is
+          ready. This checklist does not create accounts, approve access, accept
+          UAT, move money or mark production GO.
+        </p>
+        <div className="mt-3 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS.map((step) => (
+            <article key={step.code} className="border-l-2 border-cyan-300 px-3">
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs text-zinc-500">Owner: {step.owner}</p>
+              <p className="mt-2 text-zinc-700">{step.requiredAction}</p>
+              <p className="mt-2 text-rose-700">Stop: {step.stopCondition}</p>
             </article>
           ))}
         </div>

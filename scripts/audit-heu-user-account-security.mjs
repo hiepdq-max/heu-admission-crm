@@ -29,6 +29,7 @@ const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
 const scopePagePath = "app/settings/scopes/page.tsx";
+const readinessPath = "lib/production-readiness.ts";
 const packagePath = "package.json";
 const agentsPath = "AGENTS.md";
 const releaseGatePath = "scripts/audit-ttgdtx-release-gates.mjs";
@@ -40,6 +41,7 @@ for (const file of [
   actionsPath,
   settingsPagePath,
   scopePagePath,
+  readinessPath,
   packagePath,
   agentsPath,
   releaseGatePath,
@@ -53,6 +55,7 @@ const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
+const readinessSource = read(readinessPath);
 const packageJson = JSON.parse(read(packagePath));
 const agents = read(agentsPath);
 const releaseGate = read(releaseGatePath);
@@ -105,6 +108,20 @@ requireText(
   /(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*Real-user access closure after pilot\/UAT)(?=[\s\S]*USER-CLOSE-01)(?=[\s\S]*USER-CLOSE-04)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*soft-revoke\/INACTIVE)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links)(?=[\s\S]*account activation\/invite links)/i,
   "real-user access closure guard",
   onboardingPath,
+);
+
+requireText(
+  onboarding,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
+  "finance Day-1 real-run rehearsal guard",
+  onboardingPath,
+);
+
+requireText(
+  readinessSource,
+  /(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*blocked users keep active finance access)/i,
+  "finance Day-1 real-run rehearsal shared source",
+  readinessPath,
 );
 
 requireText(

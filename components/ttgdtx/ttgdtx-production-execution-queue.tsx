@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
@@ -339,6 +340,57 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 leading-5 text-zinc-700">
                 {step.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {step.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-cyan-200 bg-white p-4"
+        data-ttgdtx-finance-day-one-run-rehearsal="P0-17_P6-04_P2-18_P5-03_P2-17"
+        data-ttgdtx-finance-day-one-run-range="FIN-DAY1-01_FIN-DAY1-05"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-cyan-950">
+              Finance Day-1 real-run rehearsal: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-cyan-900">
+              After the first signed finance UAT is ready, rehearse the real
+              accounting route with approved account labels only. Keep account
+              activation, evidence and owner signatures outside Git/Codex/chat,
+              and do not initiate a bank instruction.
+            </p>
+          </div>
+          <span className="rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs font-semibold uppercase text-cyan-800">
+            FIN_DAY1_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-cyan-300 bg-cyan-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {step.requiredAction}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Proof: {step.requiredProof}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Decision: {step.decisionValue}
               </p>
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}

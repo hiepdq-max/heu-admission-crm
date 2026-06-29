@@ -42,6 +42,16 @@ export type ProductionFinanceUatFirstPassStep = {
   owner: string;
 };
 
+export type ProductionFinanceDayOneRunStep = {
+  code: string;
+  title: string;
+  owner: string;
+  requiredAction: string;
+  requiredProof: string;
+  decisionValue: string;
+  stopCondition: string;
+};
+
 export type ProductionRiskClosureStep = {
   code: string;
   title: string;
@@ -298,6 +308,69 @@ export const PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS: ProductionFinanceUatFirstP
       "Finance reliance evidence checkpoint, P0-17 access closure decision and P0-14 controlled evidence intake ledger are referenced before owner review.",
     stopCondition:
       "Evidence ID, redaction reviewer, owner signature state or access closure decision is missing.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS: ProductionFinanceDayOneRunStep[] = [
+  {
+    code: "FIN-DAY1-01",
+    title: "Secure account activation outside Codex",
+    owner: "IT_DATA + ADMIN",
+    requiredAction:
+      "Create or invite the KHTC, BGH, Audit, Phap Che and negative-control accounts in Supabase Auth through the approved secure channel only.",
+    requiredProof:
+      "Controlled evidence ID for account creation/invite status, redacted account label, profile link and assigned owner; no credential material in Git/Codex/chat.",
+    decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Passwords, temporary passwords, OTPs, reset links, account activation/invite links, service-role keys or raw identity screenshots enter Git/Codex/chat.",
+  },
+  {
+    code: "FIN-DAY1-02",
+    title: "Scope proof before first finance login",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    requiredAction:
+      "Run P6-04 role/workspace checks for each real-accounting user label before any user reviews finance totals.",
+    requiredProof:
+      "REAL-ACC route result for KHTC, BGH, Audit, Phap Che and out-of-scope negative account with ALLOWED, BLOCKED or EMPTY_SCOPED_STATE result.",
+    decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any finance user sees unrestricted dashboard totals, source evidence, payout action, lead data or audit data outside the approved scope.",
+  },
+  {
+    code: "FIN-DAY1-03",
+    title: "Read-only dashboard confidence check",
+    owner: "KHTC + BGH + IT_DATA",
+    requiredAction:
+      "Open P2-18 and P5-03 with the approved accounting users and compare displayed totals against source workflow evidence.",
+    requiredProof:
+      "P2-18/P5-03 redacted screenshots, source reconciliation ID, read-only behavior result and reliance decision draft outside Git/Codex/chat.",
+    decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Dashboard or Finance Desk can write, totals are unreconciled, screenshots expose raw PII/bank/voucher data or reliance is ownerless.",
+  },
+  {
+    code: "FIN-DAY1-04",
+    title: "Payout rehearsal with no bank action",
+    owner: "KHTC + BGH + Audit",
+    requiredAction:
+      "Use the P2-17 runbook to rehearse duplicate-click, overpay, voucher normalization, dossier and RPC-only controls without initiating a bank transfer.",
+    requiredProof:
+      "P2-17 release decision draft, duplicate/overpay result, dossier evidence ID and explicit no-bank-instruction note.",
+    decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "A bank instruction is initiated, payout can run twice, dossier proof is missing, voucher proof is raw or KHTC/BGH/Audit signature is missing.",
+  },
+  {
+    code: "FIN-DAY1-05",
+    title: "Access closure before expansion",
+    owner: "IT_DATA + Audit + KHTC",
+    requiredAction:
+      "Before adding the next department, record P0-17 ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED for every Day-1 account.",
+    requiredProof:
+      "Access closure decision ID, owner sign-off state, reduced-scope note for temporary pilot access and soft-revoke/INACTIVE proof for blocked users.",
+    decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Day-1 access remains broad, unsigned, not tied to P6-04/P2-18/P5-03 results, or blocked users keep active finance access.",
   },
 ];
 

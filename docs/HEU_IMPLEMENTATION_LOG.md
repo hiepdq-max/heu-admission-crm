@@ -1,5 +1,32 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Real-Run Rehearsal Guard
+
+- Added `PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS` to
+  `lib/production-readiness.ts` so the finance real-run path has a Day-1
+  rehearsal sequence before expanding to the next department.
+- Mounted the rehearsal in `components/ttgdtx/ttgdtx-production-execution-queue.tsx`
+  with `data-ttgdtx-finance-day-one-run-rehearsal="P0-17_P6-04_P2-18_P5-03_P2-17"`
+  and in `components/settings/real-user-onboarding-panel.tsx` with
+  `data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17"`.
+- The guard covers FIN-DAY1-01 through FIN-DAY1-05: secure account activation
+  outside Codex, P6-04 scope proof before first finance login, P2-18/P5-03
+  read-only dashboard confidence check, P2-17 payout rehearsal with no bank
+  action and P0-17 access closure before expansion.
+- Synced `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the real accounting user path
+  cannot omit `FIN_DAY1_READY / NO_GO / BLOCKED`.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is real-run rehearsal packaging only. It does not create accounts, send passwords,
+  grant production access, execute UAT, initiate bank instructions, accept
+  evidence, approve dashboard reliance, approve finance action, approve access
+  closure, expand users, accept owner review or mark production GO.
+
 ## 2026-06-29 - P6-06 Batch 5 Derived Helper Waiver Checklist
 
 - Updated `components/audit/hard-delete-waiver-evidence-checklist.tsx` so
