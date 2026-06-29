@@ -697,6 +697,23 @@ fastSection("2026-06-29 - P3 Handover UAT Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P2-10 Invoice Evidence Account Secret Boundary", [
+  "P2-10 invoice/chung-tu UAT runbook",
+  "invoice policy matrix",
+  "invoice evidence",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-invoice-policy.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "P2-10 invoice/chung-tu evidence packaging only",
+  "issue invoices",
+  "legal/tax advice",
+  "collect evidence",
+  "transmit passwords",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

@@ -102,7 +102,7 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-ttgdtx-invoice-evidence-checklist="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*PENDING_POLICY chan doi soat va chi tiep)(?=[\s\S]*KHTC\/Phap Che ky UAT truoc production)(?=[\s\S]*raw bank data, CCCD, phone, password, key or voucher body)(?=[\s\S]*PASS_LOCAL is treated as invoice approval, legal\/tax advice, UAT acceptance or production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-invoice-evidence-checklist="P2-10")(?=[\s\S]*P2-10 invoice\/chung-tu UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2_10_INVOICE_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*PENDING_POLICY chan doi soat va chi tiep)(?=[\s\S]*KHTC\/Phap Che ky UAT truoc production)(?=[\s\S]*raw bank data, CCCD, phone, password, temporary password, OTP, password reset link, account activation\/invite link, service-role key or voucher body)(?=[\s\S]*PASS_LOCAL is treated as invoice approval, legal\/tax advice, UAT acceptance or production GO)/i,
   "P2-10 invoice/chung-tu UAT evidence checklist",
   componentPath,
 );
@@ -116,7 +116,7 @@ requireText(
 
 requireText(
   invoiceUatRunbook,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*P2-10 Invoice\/Chung-Tu Decision Manifest)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*npm\.cmd run audit:ttgdtx-invoice-policy)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*does not approve invoice issuance, tax\/legal interpretation,\s+finance posting, UAT acceptance or production GO)(?=[\s\S]*P2-10-INV-01)(?=[\s\S]*P2-10-INV-06)(?=[\s\S]*Downstream blocking check)(?=[\s\S]*Final KHTC\/PHAP_CHE UAT sign-off)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links,\s+account activation\/invite links, service-role keys)(?=[\s\S]*P2-10 Invoice\/Chung-Tu Decision Manifest)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-10-DEC-01)(?=[\s\S]*P2-10-DEC-06)(?=[\s\S]*npm\.cmd run audit:ttgdtx-invoice-policy)(?=[\s\S]*P2-10 invoice\/chung-tu policy remains production NO-GO)/i,
   "P2-10 invoice/chung-tu UAT runbook",
   invoiceUatRunbookPath,
 );

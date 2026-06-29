@@ -58,7 +58,7 @@ const invoiceEvidenceChecklist = [
     caseId: "P2-10-INV-05",
     title: "Bang chung duoc redact va luu dung noi",
     evidence:
-      "Evidence reference uses a controlled storage location and does not expose raw bank data, CCCD, phone, password, key or voucher body in Git/Codex/chat.",
+      "Evidence reference uses a controlled storage location and does not expose raw bank data, CCCD, phone, password, temporary password, OTP, password reset link, account activation/invite link, service-role key or voucher body in Git/Codex/chat.",
     stopCondition:
       "Stop if raw sensitive evidence is pasted into the app note, Git, Codex/chat or UAT screenshot.",
   },
@@ -109,7 +109,7 @@ const invoiceDecisionManifest = [
     caseId: "P2-10-DEC-05",
     title: "Evidence redaction and storage decision",
     requiredDecision:
-      "Evidence is stored in a controlled location and tracked by safe reference only, with raw bank data, CCCD, phones, voucher bodies and credentials excluded.",
+      "Evidence is stored in a controlled location and tracked by safe reference only, with raw bank data, CCCD, phones, voucher bodies, temporary passwords, password reset links, account activation/invite links and credentials excluded.",
     stopCondition:
       "Raw sensitive evidence appears in Git/Codex/chat, app notes, screenshots or uncontrolled links.",
   },

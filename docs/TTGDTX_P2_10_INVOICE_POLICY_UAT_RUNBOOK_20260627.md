@@ -11,8 +11,9 @@ and sign the evidence outside Codex/chat before production use.
 
 - Use anonymized or controlled redacted evidence only.
 - Do not paste raw bank statement bodies, raw voucher images, CCCD, phone
-  numbers, passwords, OTPs, service-role keys, bank credentials or raw payment
-  evidence into Git/Codex/chat.
+  numbers, passwords, temporary passwords, OTPs, password reset links,
+  account activation/invite links, service-role keys, bank credentials or raw
+  payment evidence into Git/Codex/chat.
 - A P2-10 payment is not complete for downstream reconciliation until the
   invoice/chung-tu decision path is resolved or formally blocked.
 - `PASS_LOCAL` means the software checklist and audit are aligned; it is not a
@@ -55,7 +56,7 @@ recognition, UAT acceptance or production GO.
 | P2-10-DEC-02 | Required invoice/chung-tu issuance decision | For REQUIRED cases, invoice issuer, invoice number, invoice date and controlled evidence reference are present before downstream reconciliation | A REQUIRED case without number/date/evidence, or with uncontrolled evidence, keeps P2-10 NO_GO |
 | P2-10-DEC-03 | Not-required or waiver basis decision | NOT_REQUIRED or WAIVED_BY_AUTHORITY cases cite owner, reason, legal/policy basis, expiry/review date and controlled approval evidence | User self-selects not required, waiver lacks authority, or legal/policy basis is unclear |
 | P2-10-DEC-04 | Pending policy downstream blocker decision | Every PENDING_POLICY case blocks P2-13 reconciliation, P2-14 lock and P2-15 payment request until KHTC/PHAP_CHE decide | Unresolved invoice/chung-tu policy can continue to reconciliation, period lock or partner payment request |
-| P2-10-DEC-05 | Evidence redaction and storage decision | Evidence is stored in a controlled location and tracked by safe reference only, with raw bank data, CCCD, phones, voucher bodies and credentials excluded | Raw sensitive evidence appears in Git/Codex/chat, app notes, screenshots or uncontrolled links |
+| P2-10-DEC-05 | Evidence redaction and storage decision | Evidence is stored in a controlled location and tracked by safe reference only, with raw bank data, CCCD, phones, voucher bodies, temporary passwords, password reset links, account activation/invite links and credentials excluded | Raw sensitive evidence or temporary account secret appears in Git/Codex/chat, app notes, screenshots or uncontrolled links |
 | P2-10-DEC-06 | Final KHTC/PHAP_CHE sign-off decision | KHTC and PHAP_CHE sign the final P2-10 invoice/chung-tu result with decision ID, signer, date and controlled evidence references | Missing decision ID, unsigned owner, unresolved policy case, raw sensitive evidence, legal/tax ambiguity or PASS_LOCAL treated as approval keeps P2-10 BLOCKED or NO_GO |
 
 Stop immediately if any decision ID is missing, KHTC/PHAP_CHE signature is

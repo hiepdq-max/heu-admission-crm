@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P2-10 Invoice Evidence Account Secret Boundary
+
+- Updated the P2-10 invoice/chung-tu UAT runbook and invoice policy matrix so
+  invoice evidence explicitly forbids temporary passwords, password reset links
+  and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-ttgdtx-invoice-policy.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P2-10 invoice evidence packaging
+  cannot claim a no-secret boundary while omitting temporary account secrets.
+- This is P2-10 invoice/chung-tu evidence packaging only. It does not issue invoices,
+  provide legal/tax advice, approve finance posting, accept UAT,
+  collect evidence, create accounts, transmit passwords or mark production GO.
+
 ## 2026-06-29 - P3 Handover UAT Account Secret Boundary
 
 - Updated the P3-01/P3-02 lead lifecycle handover UAT runbook and visible lead lifecycle guard
