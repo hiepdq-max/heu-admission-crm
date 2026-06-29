@@ -197,6 +197,26 @@ Batch 2 is PASS_LOCAL packaging only. It does not convert rows, approve a
 waiver, accept evidence, execute cleanup, accept rollback success or mark
 production GO.
 
+### 8A.3 Batch 3 Workspace/Access-Scope Closure Checklist
+
+The audit UI exposes
+`data-hard-delete-access-scope-batch="P6-06-TRIAGE-03"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+
+Decision value: `P6_06_BATCH3_READY / NO_GO / BLOCKED`.
+
+| Case | Scope | Required proof | Stop condition |
+|---|---|---|---|
+| P6-06-B3-01 | User admission segment scope rows: P6-06-FIND-019 and P6-06-FIND-020 | Soft-revoke/status-transition design, segment-scope owner lane, P0-17 access closure compatibility and rollback note | Segment access history can disappear or a user can retain/lose scope without auditable closure |
+| P6-06-B3-02 | User partner scope rows: P6-06-FIND-021 and P6-06-FIND-022 | Partner-scope retention decision, owner lane, access closure proof and redacted evidence ID | Partner-scope history can be deleted before TRUONG_PHONG/Audit review |
+| P6-06-B3-03 | Lead visibility scope and workspace preference rows: P6-06-FIND-024 and P6-06-FIND-032 | Visibility-scope and workspace preference classification, derived-only waiver proof if applicable, and rollback note | Lead visibility or workspace preference cleanup can hide who could see leads |
+| P6-06-B3-04 | P0-17 access closure compatibility before owner GO/NO-GO | ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED compatibility note, role leak check and soft-revoke evidence reference | P0-17 closure state, role history or workspace scope proof can be hidden by delete |
+| P6-06-B3-05 | Batch 3 workspace/access-scope closure record | Decision value, owner signatures, controlled evidence location, redaction reviewer and no forbidden credential content | Broad waiver, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat |
+
+Batch 3 is PASS_LOCAL packaging only. It does not convert rows, approve a
+waiver, accept evidence, execute cleanup, accept rollback success or mark
+production GO.
+
 ## 9. P6-06 Acceptance Matrix
 
 The app also exposes

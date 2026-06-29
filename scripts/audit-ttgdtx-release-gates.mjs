@@ -1347,13 +1347,13 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*data-hard-delete-conversion-owner-triage="P6-06")(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P6_06_TRIAGE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*P6_06_BATCH1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*P6_06_BATCH2_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*data-hard-delete-conversion-owner-triage="P6-06")(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P6_06_TRIAGE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*P6_06_BATCH1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*P6_06_BATCH2_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Batch 3 Workspace\/Access-Scope Closure Checklist)(?=[\s\S]*P6-06-B3-01)(?=[\s\S]*P6-06-B3-05)(?=[\s\S]*P6_06_BATCH3_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
   "P6-06 non-TTGDTX cascade review local-only boundary",
 );
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production\s+migration, data\s+deletion, cascade execution, waiver, conversion migration,\s+cleanup, rollback\s+success or production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*Batch 3 Workspace\/Access-Scope Closure Checklist)(?=[\s\S]*P6-06-B3-01)(?=[\s\S]*P6-06-B3-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production\s+migration, data\s+deletion, cascade execution, waiver, conversion migration,\s+cleanup, rollback\s+success or production GO)/i,
   "P6-06 cascade finding register",
 );
 
@@ -1407,6 +1407,12 @@ requireText(
 
 requireText(
   "components/audit/hard-delete-waiver-evidence-checklist.tsx",
+  /(?=[\s\S]*data-hard-delete-access-scope-batch="P6-06-TRIAGE-03")(?=[\s\S]*P6-06 batch 3 workspace\/access-scope closure checklist)(?=[\s\S]*P6_06_BATCH3_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-06-B3-01)(?=[\s\S]*P6-06-B3-05)(?=[\s\S]*P6-06-FIND-019 and P6-06-FIND-020)(?=[\s\S]*P6-06-FIND-021 and P6-06-FIND-022)(?=[\s\S]*P6-06-FIND-024 and P6-06-FIND-032)(?=[\s\S]*P0-17 access closure compatibility)/i,
+  "P6-06 batch 3 workspace/access-scope checklist UI",
+);
+
+requireText(
+  "components/audit/hard-delete-waiver-evidence-checklist.tsx",
   /(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade acceptance matrix)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*Protected records converted before production)(?=[\s\S]*Derived-helper waiver is narrow and written)(?=[\s\S]*Production boundary)/i,
   "P6-06 hard-delete/cascade acceptance matrix UI",
 );
@@ -1419,7 +1425,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, acceptance matrix and closure decision manifest)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
+  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, batch 3 workspace\/access-scope closure checklist, acceptance matrix and closure decision manifest)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
   "P6-06 production checklist acceptance matrix row",
 );
 

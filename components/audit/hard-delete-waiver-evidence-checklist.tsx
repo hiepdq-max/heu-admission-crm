@@ -166,6 +166,51 @@ const secondClosureBatchItems: FirstClosureBatchItem[] = [
   },
 ];
 
+const thirdClosureBatchItems: FirstClosureBatchItem[] = [
+  {
+    caseId: "P6-06-B3-01",
+    scope:
+      "User admission segment scope rows: P6-06-FIND-019 and P6-06-FIND-020.",
+    requiredProof:
+      "Soft-revoke/status-transition design, segment-scope owner lane, P0-17 access closure compatibility and rollback note.",
+    stopCondition:
+      "Stop if segment access history can disappear or a user can retain/lose scope without auditable closure.",
+  },
+  {
+    caseId: "P6-06-B3-02",
+    scope: "User partner scope rows: P6-06-FIND-021 and P6-06-FIND-022.",
+    requiredProof:
+      "Partner-scope retention decision, owner lane, access closure proof and redacted evidence ID.",
+    stopCondition:
+      "Stop if partner-scope history can be deleted before TRUONG_PHONG/Audit review.",
+  },
+  {
+    caseId: "P6-06-B3-03",
+    scope:
+      "Lead visibility scope and workspace preference rows: P6-06-FIND-024 and P6-06-FIND-032.",
+    requiredProof:
+      "Visibility-scope and workspace preference classification, derived-only waiver proof if applicable, and rollback note.",
+    stopCondition:
+      "Stop if lead visibility or workspace preference cleanup can hide who could see leads.",
+  },
+  {
+    caseId: "P6-06-B3-04",
+    scope: "P0-17 access closure compatibility before owner GO/NO-GO.",
+    requiredProof:
+      "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED compatibility note, role leak check and soft-revoke evidence reference.",
+    stopCondition:
+      "Stop if P0-17 closure state, role history or workspace scope proof can be hidden by delete.",
+  },
+  {
+    caseId: "P6-06-B3-05",
+    scope: "Batch 3 workspace/access-scope closure record.",
+    requiredProof:
+      "Decision value, owner signatures, controlled evidence location, redaction reviewer and no forbidden credential content.",
+    stopCondition:
+      "Stop if broad waiver, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat.",
+  },
+];
+
 const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
   {
     caseId: "P6-06-ACCEPT-01",
@@ -398,6 +443,53 @@ export function HardDeleteWaiverEvidenceChecklist() {
 
         <div className="mt-4 grid gap-3 xl:grid-cols-2">
           {secondClosureBatchItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.scope}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        data-hard-delete-access-scope-batch="P6-06-TRIAGE-03"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 batch 3 workspace/access-scope closure checklist:
+              PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_BATCH3_READY / NO_GO / BLOCKED
+              </span>
+              . This batch protects role, workspace, partner and lead
+              visibility history before user/scope cleanup or waiver review.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            Access-scope rows are controlled through soft-revoke/status
+            patterns and P0-17 access closure compatibility, not hard-delete
+            cleanup.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {thirdClosureBatchItems.map((item) => (
             <article
               key={item.caseId}
               className="border-l-2 border-orange-300 bg-white px-3 py-3"
