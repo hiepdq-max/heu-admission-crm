@@ -340,10 +340,11 @@ export function TtgdtxOwnerGoNoGoEvidenceChecklist() {
         <p>
           PASS_LOCAL does not approve backup, restore, migration, legal waiver,
           finance action, UAT acceptance, payout, dashboard reliance or
-          production GO. Do not paste secrets, passwords, OTPs, service-role
-          keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,
-          raw bank account numbers, bank statements, vouchers or raw payment
-          data into Git/Codex/chat.
+          production GO. Do not paste secrets, passwords, temporary passwords,
+          OTPs, password reset links, account activation/invite links,
+          service-role keys, bank credentials, raw student PII, raw CCCD, raw
+          phone numbers, raw bank account numbers, bank statements, vouchers or
+          raw payment data into Git/Codex/chat.
         </p>
       </div>
     </section>

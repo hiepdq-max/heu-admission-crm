@@ -81,7 +81,7 @@ requireText(pack, /Production remains NO-GO until the required owners review the
 requireText(pack, /Codex\/AI output is\s+advisory only/i, "AI advisory boundary");
 requireText(pack, /Do not run production migration from Codex\/chat/i, "Codex/chat migration boundary");
 requireText(pack, /Do not mark production GO from Codex\/chat/i, "Codex/chat GO boundary");
-requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i, "secret and PII boundary");
+requireText(pack, /Do not paste secrets, passwords, temporary passwords, OTPs, password reset\s+links, account activation\/invite links, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i, "secret and PII boundary");
 requireText(pack, /PASS_LOCAL does not mean backup was executed, restore was executed, UAT passed,\s+production migration is approved, owner waiver is approved, finance action is\s+approved, or production GO is approved/i, "PASS_LOCAL non-approval boundary");
 requireText(pack, /HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*Raw evidence stays outside Git/i, "controlled evidence redaction reference");
 
@@ -131,7 +131,7 @@ requireText(
 
 requireText(
   pack,
-  /Stop Conditions[\s\S]*Any required owner decision is unsigned[\s\S]*Backup exists but restore dry-run is missing[\s\S]*P3-01\/P3-02 lead lifecycle or handover UAT is unsigned[\s\S]*P0-19\/P2-05\/P2-03 finance gates[\s\S]*P2-17 can pay twice[\s\S]*P2-18 dashboard can write data[\s\S]*Any real password, OTP, service-role key, bank credential, raw student PII/i,
+  /Stop Conditions[\s\S]*Any required owner decision is unsigned[\s\S]*Backup exists but restore dry-run is missing[\s\S]*P3-01\/P3-02 lead lifecycle or handover UAT is unsigned[\s\S]*P0-19\/P2-05\/P2-03 finance gates[\s\S]*P2-17 can pay twice[\s\S]*P2-18 dashboard can write data[\s\S]*Any real password, temporary password, OTP, password reset link, account\s+activation\/invite link, service-role key, bank credential, raw student PII/i,
   "stop conditions",
 );
 
@@ -155,7 +155,7 @@ requireText(
 
 requireText(
   ownerChecklist,
-  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3-01\/P3-02 lead lifecycle and handover UAT)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, OTPs, service-role\s+keys, bank credentials, raw student PII, raw CCCD, raw phone numbers,\s+raw bank account numbers, bank statements, vouchers or raw payment\s+data)/i,
+  /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3-01\/P3-02 lead lifecycle and handover UAT)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, temporary passwords,\s+OTPs, password reset links, account activation\/invite links,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
   "P0-09 owner GO/NO-GO evidence checklist",
   ownerChecklistPath,
 );

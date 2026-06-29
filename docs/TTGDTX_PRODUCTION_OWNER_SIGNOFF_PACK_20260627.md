@@ -13,7 +13,8 @@ advisory only.
 - Do not mark production GO from Codex/chat.
 - Do not approve revenue, receivable creation, payment request approval,
   payout, account freeze/release, collateral release or legal waiver from AI.
-- Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,
+- Do not paste secrets, passwords, temporary passwords, OTPs, password reset
+  links, account activation/invite links, service-role keys, bank credentials,
   raw student PII, raw CCCD, raw phone numbers or raw payment data into this
   pack, Codex/chat, screenshots or browser notes.
 - Store sensitive backup/UAT evidence outside Git in the controlled evidence
@@ -89,8 +90,9 @@ owner decision is visible in the operating surface, not only in this pack.
 | P0-09-05 | IT_DATA + Audit + process owners | Role/workspace UAT evidence; audit-log trace rows; `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and hard-delete/cascade conversion evidence or narrow written waiver for every unresolved P6-06 finding | NO-GO |
 | P0-09-06 | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final signed multi-owner GO/NO-GO note referencing controlled redacted evidence only | NO-GO |
 
-Do not paste secrets, passwords, OTPs, service-role keys, bank credentials, raw
-student PII, raw CCCD, raw phone numbers, raw bank account numbers, bank
+Do not paste secrets, passwords, temporary passwords, OTPs, password reset
+links, account activation/invite links, service-role keys, bank credentials,
+raw student PII, raw CCCD, raw phone numbers, raw bank account numbers, bank
 statements, vouchers or raw payment data into Git/Codex/chat. PASS_LOCAL does
 not approve backup, restore, migration, legal waiver, finance action, UAT
 acceptance, payout, dashboard reliance or production GO.
@@ -149,9 +151,10 @@ Keep production NO-GO if any condition below is true:
 8. Any finance/evidence/audit row can be hard-deleted without written waiver,
    or any P6-06 finding lacks conversion/waiver decision.
 9. Any HIGH or BLOCKER exception is unresolved.
-10. Any real password, OTP, service-role key, bank credential, raw student PII,
-   raw CCCD, raw phone number or raw payment data is exposed in Git, Codex/chat
-   or UAT screenshots.
+10. Any real password, temporary password, OTP, password reset link, account
+   activation/invite link, service-role key, bank credential, raw student PII,
+   raw CCCD, raw phone number or raw payment data is exposed in Git,
+   Codex/chat or UAT screenshots.
 11. Any owner asks for more evidence.
 
 ## 9. Final Decision Record

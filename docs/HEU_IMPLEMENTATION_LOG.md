@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-09 Owner Signoff Account Secret Boundary
+
+- Updated the P0-09 production owner sign-off pack and owner GO/NO-GO evidence
+  checklist so temporary passwords, password reset links and account
+  activation/invite links are forbidden in Git/Codex/chat, screenshots and
+  browser notes.
+- Tightened `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so final owner sign-off packaging
+  cannot claim a no-secret boundary while omitting temporary account secrets.
+- This is owner sign-off packaging only. It does not collect evidence, create
+  or reset accounts, transmit passwords, accept UAT, approve finance action,
+  approve migration, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P6-04 Role-Scope Account Secret Boundary
 
 - Updated the P6-04 role-scope UAT execution pack, TTGDTX role-scope runbook
