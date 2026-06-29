@@ -635,6 +635,21 @@ fastSection("2026-06-29 - P5-02 Production Blocker Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-14 Evidence Binder Account Secret Boundary", [
+  "P0-14 production evidence binder",
+  "shared production evidence",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-heu-production-evidence-binder.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "P0-14 binder",
+  "collect evidence",
+  "accept evidence",
+  "approve finance action",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

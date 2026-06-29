@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-14 Evidence Binder Account Secret Boundary
+
+- Updated the P0-14 production evidence binder and shared production evidence
+  requirement source so every blocker evidence card explicitly forbids temporary passwords,
+  password reset links and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-heu-production-evidence-binder.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the P0-14 binder cannot claim a
+  no-secret evidence boundary while omitting temporary account secrets.
+- This is P0-14 evidence binder packaging only. It does not collect evidence,
+  accept evidence, execute UAT, approve migration, approve finance action,
+  approve owner waiver or mark production GO.
+
 ## 2026-06-29 - P5-02 Production Blocker Account Secret Boundary
 
 - Updated the P5-02 BGH operating dashboard spec and production blocker summary

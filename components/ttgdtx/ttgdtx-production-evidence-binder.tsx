@@ -247,9 +247,10 @@ export function TtgdtxProductionEvidenceBinder() {
         <LockKeyhole className="mt-0.5 size-4 shrink-0" />
         <p>
           Forbidden content stays out of Git/Codex/chat: service-role keys,
-          passwords, OTPs, private connection strings, raw student PII, raw
-          CCCD, bank accounts, bank statements, raw vouchers, raw payment data,
-          unsigned GO decisions and AI-produced approvals.
+          passwords, temporary passwords, OTPs, password reset links, account
+          activation/invite links, private connection strings, raw student PII,
+          raw CCCD, bank accounts, bank statements, raw vouchers, raw payment
+          data, unsigned GO decisions and AI-produced approvals.
         </p>
       </div>
     </section>

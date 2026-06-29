@@ -663,7 +663,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Target identity lock, operator run sheet, backup ID, restore target, preflight/postflight result, restore smoke-check result proving P0-19 and P3-01/P3-02 gate preservation, and operator/checker names.",
     forbiddenContent:
-      "No service-role key, database URL, password, OTP, raw dump, private connection string or raw backup file.",
+      "No service-role key, database URL, password, temporary password, OTP, password reset link, account activation/invite link, raw dump, private connection string or raw backup file.",
     signoff:
       "IT_DATA and Audit accept restore evidence, including P0-19/P3 gate preservation, before migration order sign-off.",
   },
@@ -678,7 +678,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "MIGRATION_EVIDENCE_ACCEPTED decision, Step90-Step110 order, Step97/Step100/Step109/Step110 decisions, rollback point and owner signatures.",
     forbiddenContent:
-      "No production SQL scratch, service secrets, raw credentials or unsigned verbal approval.",
+      "No production SQL scratch, service secrets, raw credentials, temporary password, password reset link, account activation/invite link or unsigned verbal approval.",
     signoff: "IT_DATA, KHTC and PHAP_CHE sign before any production migration.",
   },
   {
@@ -692,7 +692,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Legal basis, tuition policy, finance-gate verdict, pass/fail notes and signed UAT result.",
     forbiddenContent:
-      "No private contract terms, raw student PII, raw CCCD or hidden finance waiver.",
+      "No private contract terms, raw student PII, raw CCCD, temporary password, password reset link, account activation/invite link or hidden finance waiver.",
     signoff: "PHAP_CHE, KHTC and BGH accept before receivable/payment reliance.",
   },
   {
@@ -706,7 +706,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Duplicate-click result, overpay guard, voucher normalization, RPC-only path and BBNT/partner-invoice dossier check.",
     forbiddenContent:
-      "No raw bank account, raw voucher, bank statement, payment password, OTP or payment-token screenshot.",
+      "No raw bank account, raw voucher, bank statement, payment password, temporary password, OTP, password reset link, account activation/invite link or payment-token screenshot.",
     signoff: "KHTC, BGH and Audit accept before payout is production-trusted.",
   },
   {
@@ -720,7 +720,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Authorized access, blocked out-of-scope access, no-write behavior and totals tied to source workflows.",
     forbiddenContent:
-      "No row-level PII, bank data, raw payment evidence, password, OTP or AI-produced approval.",
+      "No row-level PII, bank data, raw payment evidence, password, temporary password, OTP, password reset link, account activation/invite link or AI-produced approval.",
     signoff: "KHTC, BGH, IT_DATA and Audit accept before dashboard reliance.",
   },
   {
@@ -734,7 +734,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Synthetic-account role/workspace test matrix, blocked out-of-scope cases and signed route results.",
     forbiddenContent:
-      "No real credentials, private profile data, reset links, passwords, OTPs or broad-access screenshots.",
+      "No real credentials, private profile data, password reset links, account activation/invite links, passwords, temporary passwords, OTPs or broad-access screenshots.",
     signoff: "IT_DATA, TRUONG_PHONG and Audit accept role/workspace evidence before owner GO/NO-GO.",
   },
   {
@@ -748,7 +748,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Trace rows for create, update, check, approve, pay and source-control events.",
     forbiddenContent:
-      "No unrestricted audit export, raw profile data, raw payment evidence, passwords or service-role keys.",
+      "No unrestricted audit export, raw profile data, raw payment evidence, passwords, temporary passwords, OTPs, password reset links, account activation/invite links or service-role keys.",
     signoff: "Audit, IT_DATA and KHTC accept traceability evidence before owner GO/NO-GO.",
   },
   {
@@ -762,7 +762,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Protected cascade paths converted to restrict/archive/status patterns, or derived-only waiver signed with rollback note.",
     forbiddenContent:
-      "No hidden hard-delete approval, raw sensitive row export, broad waiver or deletion-based rollback proof.",
+      "No hidden hard-delete approval, raw sensitive row export, temporary password, password reset link, account activation/invite link, broad waiver or deletion-based rollback proof.",
     signoff: "IT_DATA, Audit and affected business owners accept conversion or narrow waiver before owner GO/NO-GO.",
   },
   {
@@ -776,7 +776,7 @@ export const PRODUCTION_EVIDENCE_REQUIREMENTS: ProductionEvidenceRequirement[] =
     requiredProof:
       "Every blocker closed or explicitly waived by authority, final recommendation and signed decision referencing the owner sign-off pack, final owner decision manifest and UAT operator handoff.",
     forbiddenContent:
-      "No unsigned GO, AI approval, hidden waiver, raw sensitive attachment or oral-only decision.",
+      "No unsigned GO, AI approval, hidden waiver, raw sensitive attachment, temporary password, password reset link, account activation/invite link or oral-only decision.",
     signoff: "All required owners sign final GO/NO-GO; missing evidence keeps production NO-GO.",
   },
 ];
