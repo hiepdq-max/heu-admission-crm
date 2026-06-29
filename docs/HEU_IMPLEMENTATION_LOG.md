@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Real User Access Closure Guard
+
+- Added `data-heu-real-user-access-closure="P0-17-P6-04"` to
+  `components/settings/real-user-onboarding-panel.tsx` so real accounting
+  users have an explicit post-UAT/pilot decision: `ACCESS_RETAIN`,
+  `REVOKE_OR_REDUCE` or `BLOCKED`.
+- The closure checklist requires review against signed P6-04, P2-18 and P5-03
+  route results, removal of broad pilot scope unless approved, soft-revoke or
+  `INACTIVE` handling for blocked users and safe evidence IDs outside
+  Git/Codex/chat.
+- Updated P0-17 backlog and current-state inventory, then tightened
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is account-lifecycle packaging only. It does not create accounts,
+  revoke live users, send passwords, approve role scope, accept UAT, approve
+  finance action or mark production GO.
+
 ## 2026-06-29 - P0-15 Final Handoff Finance Reliance Proof Alignment
 
 - Updated `AGENTS.md` and `lib/production-readiness.ts` so P0-15 final handoff

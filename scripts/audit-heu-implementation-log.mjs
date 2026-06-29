@@ -556,6 +556,26 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Real User Access Closure Guard", [
+  "data-heu-real-user-access-closure=\"P0-17-P6-04\"",
+  "real-user-onboarding-panel.tsx",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "P6-04",
+  "P2-18",
+  "P5-03",
+  "soft-revoke",
+  "INACTIVE",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "revoke live users",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - Real User Accounting Onboarding Guard", [
   "real-user-onboarding-panel.tsx",
   "UserAuthProfileLinkForm",
@@ -1221,6 +1241,13 @@ requireText(
   log,
   /## 2026-06-28 - TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
   "TTGDTX production guard shared blocker source log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - Real User Access Closure Guard[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04"[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*ACCESS_RETAIN[\s\S]*REVOKE_OR_REDUCE[\s\S]*BLOCKED[\s\S]*signed P6-04, P2-18 and P5-03\s+route results[\s\S]*soft-revoke[\s\S]*INACTIVE[\s\S]*safe evidence IDs outside\s+Git\/Codex\/chat[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is account-lifecycle packaging only[\s\S]*does not create accounts,\s+revoke live users, send passwords, approve role scope, accept UAT, approve\s+finance action or mark production GO/i,
+  "real-user access closure guard log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
