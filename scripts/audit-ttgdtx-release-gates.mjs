@@ -927,7 +927,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Money input\/display format[\s\S]*audit:vnd-money-format[\s\S]*P2-10 and P2-17 money forms share `lib\/vnd-money\.ts`[\s\S]*P2-18 dashboard displays `1\.000\.000 đ`[\s\S]*without replacing dot separators with spaces/i,
+  /Money input\/display format[\s\S]*audit:vnd-money-format[\s\S]*P2-10 and P2-17 money forms share `lib\/vnd-money\.ts`[\s\S]*P2-18 dashboard and P5-03 Finance Desk display `1\.000\.000 đ`[\s\S]*without replacing dot separators with spaces/i,
   "P4-04 VND money input/display checklist row",
 );
 

@@ -524,6 +524,17 @@ fastSection("2026-06-28 - Current-State VND Audit Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-28 - Finance Desk VND Audit Coverage", [
+  "scripts/audit-vnd-money-format.mjs",
+  "P5-03 Finance Desk",
+  "display-only VND surface",
+  "formatVndAmount",
+  "P2-10/P2-17 money-form parsing",
+  "P2-18/P5-03 shared VND display",
+  "display/control audit hardening only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

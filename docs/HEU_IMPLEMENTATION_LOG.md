@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-28 - Finance Desk VND Audit Coverage
+
+- Extended `scripts/audit-vnd-money-format.mjs` so P5-03 Finance Desk joins
+  P2-18 as a display-only VND surface guarded by the shared `formatVndAmount`
+  helper.
+- Updated backlog, production checklist and current-state inventory wording so
+  P4-04 explicitly covers P2-10/P2-17 money-form parsing/input formatting plus
+  P2-18/P5-03 shared VND display.
+- This is display/control audit hardening only. It does not change finance
+  calculations, collect evidence, execute UAT, approve dashboard reliance,
+  approve finance action or mark production GO.
+
 ## 2026-06-28 - Current-State VND Audit Evidence
 
 - Added `npm.cmd run audit:vnd-money-format` to

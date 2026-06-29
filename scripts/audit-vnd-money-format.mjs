@@ -50,6 +50,7 @@ const expectedImports = [
   "app/ttgdtx/payment-requests/pay/actions.ts",
   "app/ttgdtx/payment-requests/pay/page.tsx",
   "app/ttgdtx/accounting-dashboard/page.tsx",
+  "app/finance-desk/page.tsx",
 ];
 
 for (const filePath of expectedImports) {
@@ -92,7 +93,10 @@ for (const filePath of formPageFiles) {
   }
 }
 
-const displayOnlyPageFiles = ["app/ttgdtx/accounting-dashboard/page.tsx"];
+const displayOnlyPageFiles = [
+  "app/ttgdtx/accounting-dashboard/page.tsx",
+  "app/finance-desk/page.tsx",
+];
 
 for (const filePath of displayOnlyPageFiles) {
   const source = read(filePath);
@@ -112,4 +116,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("VND money format audit passed. P2-10/P2-17 parse money and P2-18 displays 1.000.000 \u0111.");
+console.log(
+  "VND money format audit passed. P2-10/P2-17 parse money and P2-18/P5-03 display 1.000.000 \u0111.",
+);

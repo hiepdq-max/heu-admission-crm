@@ -31,11 +31,11 @@ if (!seen.has("P4-04")) {
 }
 
 if (
-  !/P4-04[\s\S]*VND money input\/display normalization[\s\S]*P2-10\/P2-17 forms[\s\S]*P2-18 dashboard displays[\s\S]*shared formatter/i.test(
+  !/P4-04[\s\S]*VND money input\/display normalization[\s\S]*P2-10\/P2-17 forms[\s\S]*P2-18 dashboard and P5-03 Finance Desk display[\s\S]*shared formatter/i.test(
     backlog,
   )
 ) {
-  failures.push("P4-04 backlog row must cover P2-10/P2-17 forms and P2-18 dashboard VND display");
+  failures.push("P4-04 backlog row must cover P2-10/P2-17 forms plus P2-18/P5-03 VND display");
 }
 
 if (!seen.has("P4-05")) {
