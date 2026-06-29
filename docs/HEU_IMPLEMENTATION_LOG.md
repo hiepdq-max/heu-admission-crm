@@ -240,7 +240,7 @@
 
 - Added `audit:heu-controlled-evidence-redaction-pack` to current-state audit
   evidence.
-- Surfaced the P0-10 temporary password and account activation/invite link
+- Surfaced the P0-10 temporary password, password reset link and account activation/invite link
   forbidden-content boundary in the controlled-evidence and privacy-risk rows.
 - Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
   cannot omit the account-secret boundary while claiming current P0-10 evidence.
@@ -250,8 +250,8 @@
 
 ## 2026-06-29 - P0-10 Temporary Account Secret Evidence Guard
 
-- Added explicit temporary password and account activation/invite link wording
-  to the P0-10 controlled evidence redaction pack and Audit UI guard.
+- Added explicit temporary password, password reset link and account activation/invite link
+  wording to the P0-10 controlled evidence redaction pack and Audit UI guard.
 - Surfaced the same forbidden-content boundary in the production checklist and
   system backlog P0-10 rows.
 - Tightened `scripts/audit-heu-controlled-evidence-redaction-pack.mjs` so

@@ -127,14 +127,14 @@ requireText(
 
 requireText(
   checklist,
-  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
+  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords, password reset links and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
   "production checklist redaction row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
+  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords, password reset links and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
   "backlog P0-10 redaction row",
   backlogPath,
 );

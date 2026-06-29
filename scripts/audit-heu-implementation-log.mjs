@@ -827,6 +827,7 @@ fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
 fastSection("2026-06-29 - Current-State P0-10 Account Secret Evidence", [
   "audit:heu-controlled-evidence-redaction-pack",
   "temporary password",
+  "password reset link",
   "account activation/invite link",
   "controlled-evidence and privacy-risk rows",
   "audit-heu-current-state-inventory.mjs",
@@ -837,6 +838,7 @@ fastSection("2026-06-29 - Current-State P0-10 Account Secret Evidence", [
 
 fastSection("2026-06-29 - P0-10 Temporary Account Secret Evidence Guard", [
   "temporary password",
+  "password reset link",
   "account activation/invite link",
   "P0-10 controlled evidence redaction pack",
   "Audit UI guard",

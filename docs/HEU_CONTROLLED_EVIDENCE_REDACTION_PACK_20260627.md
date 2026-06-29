@@ -19,8 +19,8 @@ signed by the required owners.
 - Do not store raw controlled evidence in Git.
 - Store sensitive backup/UAT/bank/source evidence outside Git in the
   access-controlled evidence location selected by IT_DATA and Audit.
-- Temporary passwords and account activation/invite links are forbidden in
-  Git/Codex/chat.
+- Temporary passwords, password reset links and account activation/invite links
+  are forbidden in Git/Codex/chat.
 - Codex/AI may draft templates, check local files and warn about missing
   controls. Codex/AI must not receive raw credentials or raw private data.
 
