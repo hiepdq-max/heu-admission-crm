@@ -47,8 +47,8 @@ The dashboard must not:
 | `UAT_OUT_OF_SCOPE_STAFF` | Has no TTGDTX segment/partner finance scope | Blocked or sees empty scoped state |
 | `UAT_PARTNER_VIEWER` | External/partner-like scope if enabled in UAT | Must not see HEU-wide finance totals |
 
-Never paste account passwords, temporary passwords, OTPs, reset links or
-activation/invite links into the evidence log.
+Never paste account passwords, temporary passwords, OTPs, password reset links
+or account activation/invite links into the evidence log.
 
 ## 4. Execution Steps
 
@@ -93,7 +93,7 @@ Stop UAT and fix before continuing if:
 2. Dashboard data is queried before the role/scope gate.
 3. The dashboard exposes create, update, approve, pay or delete controls.
 4. Real passwords, temporary passwords, OTPs, password reset links,
-   activation/invite links, CCCD, bank data or student private data appears in
+   account activation/invite links, CCCD, bank data or student private data appears in
    screenshots, Git, Codex/chat or evidence notes.
 5. A completed flow total differs from P2-03/P2-10/P2-13/P2-17 source data
    without a documented exception.
