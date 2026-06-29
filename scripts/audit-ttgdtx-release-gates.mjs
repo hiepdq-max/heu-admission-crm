@@ -1347,13 +1347,13 @@ requireText(
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*hard-delete-conversion-decision-queue\.tsx)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*Decision Queue Evidence)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*data-hard-delete-conversion-owner-triage="P6-06")(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P6_06_TRIAGE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*does not approve production deletion, cascade execution, waiver,\s+conversion\s+migration, cleanup, rollback success or production GO)/i,
   "P6-06 non-TTGDTX cascade review local-only boundary",
 );
 
 requireText(
   "docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production\s+migration, data\s+deletion, cascade execution, waiver, conversion migration,\s+cleanup, rollback\s+success or production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production\s+migration, data\s+deletion, cascade execution, waiver, conversion migration,\s+cleanup, rollback\s+success or production GO)/i,
   "P6-06 cascade finding register",
 );
 
@@ -1383,7 +1383,7 @@ requireText(
 
 requireText(
   "components/audit/hard-delete-conversion-decision-queue.tsx",
-  /(?=[\s\S]*data-hard-delete-conversion-decision-queue="P6-06")(?=[\s\S]*P6-06 hard-delete conversion decision queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*44 non-TTGDTX\/base cascade findings)(?=[\s\S]*data-hard-delete-conversion-immediate-stop="P6-06")(?=[\s\S]*P6-06 immediate conversion stop conditions)(?=[\s\S]*P6_06_STOP_CHECK \/ CONVERT_OR_WAIVE \/ BLOCKED)(?=[\s\S]*Protected row can still cascade-delete)(?=[\s\S]*Waiver is broad, oral or ownerless)(?=[\s\S]*Rollback relies on deletion)(?=[\s\S]*HDQ-01)(?=[\s\S]*HDQ-05)(?=[\s\S]*Base identity and CRM lead children)(?=[\s\S]*HOU finance and evidence)(?=[\s\S]*Workspace and scope helpers)(?=[\s\S]*Master, control and dynamic configuration)(?=[\s\S]*Legal, tuition and short-course operations)(?=[\s\S]*RESTRICT_OR_ARCHIVE)(?=[\s\S]*SOFT_REVOKE_OR_WAIVER)(?=[\s\S]*does not\s+approve production deletion, cascade execution, waiver, conversion\s+migration, cleanup, rollback success or production GO)/i,
+  /(?=[\s\S]*data-hard-delete-conversion-decision-queue="P6-06")(?=[\s\S]*P6-06 hard-delete conversion decision queue)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*44 non-TTGDTX\/base cascade findings)(?=[\s\S]*data-hard-delete-conversion-immediate-stop="P6-06")(?=[\s\S]*P6-06 immediate conversion stop conditions)(?=[\s\S]*P6_06_STOP_CHECK \/ CONVERT_OR_WAIVE \/ BLOCKED)(?=[\s\S]*Protected row can still cascade-delete)(?=[\s\S]*Waiver is broad, oral or ownerless)(?=[\s\S]*Rollback relies on deletion)(?=[\s\S]*data-hard-delete-conversion-owner-triage="P6-06")(?=[\s\S]*P6-06 owner triage batch plan)(?=[\s\S]*first closure batch)(?=[\s\S]*P6_06_TRIAGE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P0-17 access closure compatibility)(?=[\s\S]*expiry\/review date)(?=[\s\S]*HDQ-01)(?=[\s\S]*HDQ-05)(?=[\s\S]*Base identity and CRM lead children)(?=[\s\S]*HOU finance and evidence)(?=[\s\S]*Workspace and scope helpers)(?=[\s\S]*Master, control and dynamic configuration)(?=[\s\S]*Legal, tuition and short-course operations)(?=[\s\S]*RESTRICT_OR_ARCHIVE)(?=[\s\S]*SOFT_REVOKE_OR_WAIVER)(?=[\s\S]*does not\s+approve production deletion, cascade execution, waiver, conversion\s+migration, cleanup, rollback success or production GO)/i,
   "P6-06 hard-delete conversion decision queue",
 );
 
@@ -1407,7 +1407,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*hard-delete\/cascade finding register, acceptance matrix and closure decision manifest)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
+  /(?=[\s\S]*Hard delete review)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, acceptance matrix and closure decision manifest)(?=[\s\S]*audit:hard-delete-boundary-guard)(?=[\s\S]*audit:hard-delete-conversion-decision-queue)(?=[\s\S]*non-TTGDTX conversion or written waiver still required)/i,
   "P6-06 production checklist acceptance matrix row",
 );
 

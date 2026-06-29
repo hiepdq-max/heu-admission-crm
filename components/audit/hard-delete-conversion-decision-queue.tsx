@@ -11,6 +11,15 @@ type DecisionQueueItem = {
   stopCondition: string;
 };
 
+type OwnerTriageItem = {
+  batchId: string;
+  lane: string;
+  firstAction: string;
+  proofNeeded: string;
+  owner: string;
+  stopCondition: string;
+};
+
 const decisionQueue: DecisionQueueItem[] = [
   {
     queueId: "HDQ-01",
@@ -96,6 +105,64 @@ const immediateStopItems = [
   },
 ];
 
+const ownerTriagePlan: OwnerTriageItem[] = [
+  {
+    batchId: "P6-06-TRIAGE-01",
+    lane: "Finance, legal and evidence protected rows",
+    firstAction:
+      "Convert or block HOU finance, payment, evidence, tuition/legal and short-course operating rows before any waiver review.",
+    proofNeeded:
+      "Restrict/archive/status-transition design, owner lane, rollback note and redacted evidence ID.",
+    owner: "KHTC + PHAP_CHE + DAO_TAO + IT_DATA + Audit",
+    stopCondition:
+      "Any finance, legal, evidence, attendance or payment row still depends on cascade delete.",
+  },
+  {
+    batchId: "P6-06-TRIAGE-02",
+    lane: "CRM lead and handover history",
+    firstAction:
+      "Protect lead, follow-up, document, checklist and handover child rows before parent lead/user delete behavior is accepted.",
+    proofNeeded:
+      "Restrict/archive design or written owner waiver proving the row is derived-only.",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO + IT_DATA + Audit",
+    stopCondition:
+      "Lead history, handover decision or payment/evidence trail can disappear.",
+  },
+  {
+    batchId: "P6-06-TRIAGE-03",
+    lane: "Workspace, role and access-scope history",
+    firstAction:
+      "Prefer soft-revoke/status handling for user scope and visibility helpers.",
+    proofNeeded:
+      "Soft-revoke/status-transition proof, P0-17 access closure compatibility and rollback note.",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    stopCondition:
+      "Access scope, role history or P0-17 closure state can be hidden by delete.",
+  },
+  {
+    batchId: "P6-06-TRIAGE-04",
+    lane: "Master, governance and dynamic configuration",
+    firstAction:
+      "Convert master/control/configuration cascades to restrict/archive unless proven derived-only.",
+    proofNeeded:
+      "Governance owner decision, config impact note, rollback note and evidence ID.",
+    owner: "IT_DATA + process owner + Audit",
+    stopCondition:
+      "Gate, form, catalog, module or governance history can be removed.",
+  },
+  {
+    batchId: "P6-06-TRIAGE-05",
+    lane: "Derived-helper waiver candidates",
+    firstAction:
+      "Review derived-only helpers last; waive only with table-specific, owner-signed, expiry/review date written waiver.",
+    proofNeeded:
+      "Written waiver with affected table, reason, owner, rollback note, expiry/review date and no protected-row impact.",
+    owner: "IT_DATA + Audit + affected owner",
+    stopCondition:
+      "Waiver is broad, oral, ownerless, lacks expiry/review date or covers protected records.",
+  },
+];
+
 export function HardDeleteConversionDecisionQueue() {
   return (
     <section
@@ -162,6 +229,73 @@ export function HardDeleteConversionDecisionQueue() {
                 {item.title}
               </p>
               <p className="mt-2 leading-5 text-zinc-700">{item.detail}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-sky-200 bg-sky-50 p-4 text-sky-950"
+        data-hard-delete-conversion-owner-triage="P6-06"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ListChecks className="size-4 shrink-0" />
+              <span>
+                P6-06 owner triage batch plan: first closure batch before waiver
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Run the first closure batch on finance/legal/evidence protected
+              rows first, then lead history, access-scope history, master/config
+              history and only then derived-helper waiver candidates. This
+              keeps protected records out of owner GO/NO-GO while conversion,
+              P0-17 access closure compatibility or written waiver proof is
+              missing.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-sky-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P6_06_TRIAGE_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3">
+          {ownerTriagePlan.map((item) => (
+            <article
+              key={item.batchId}
+              className="border-l-2 border-sky-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-sky-700">
+                {item.batchId} - {item.lane}
+              </p>
+              <div className="mt-3 grid gap-2 lg:grid-cols-3">
+                <p className="rounded-md border border-sky-100 bg-sky-50 px-3 py-2 leading-5 text-zinc-700">
+                  <span className="block text-xs font-semibold uppercase text-zinc-500">
+                    First action
+                  </span>
+                  {item.firstAction}
+                </p>
+                <p className="rounded-md border border-sky-100 bg-sky-50 px-3 py-2 leading-5 text-zinc-700">
+                  <span className="block text-xs font-semibold uppercase text-zinc-500">
+                    Proof needed
+                  </span>
+                  {item.proofNeeded}
+                </p>
+                <p className="rounded-md border border-sky-100 bg-sky-50 px-3 py-2 leading-5 text-zinc-700">
+                  <span className="block text-xs font-semibold uppercase text-zinc-500">
+                    Owner
+                  </span>
+                  {item.owner}
+                </p>
+              </div>
+              <p className="mt-3 flex items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 leading-5 text-rose-700">
+                <ShieldAlert className="mt-0.5 size-4 shrink-0" />
+                Stop: {item.stopCondition}
+              </p>
             </article>
           ))}
         </div>

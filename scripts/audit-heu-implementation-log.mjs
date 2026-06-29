@@ -181,6 +181,21 @@ fastSection("2026-06-28 - P6-06 Conversion Immediate Stop Guard", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Owner Triage Batch Plan", [
+  "hard-delete-conversion-decision-queue.tsx",
+  "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+  "HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "owner triage batch plan",
+  "finance/legal/evidence protected rows",
+  "first closure batch",
+  "conversion or written waiver review",
+  "audit-hard-delete-conversion-decision-queue.mjs",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not convert rows",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",

@@ -116,7 +116,7 @@ requireText(
 
 requireText(
   checklist,
-  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
   "production checklist keeps hard-delete review IN_PROGRESS with UI guard evidence",
   checklistPath,
 );
@@ -130,21 +130,21 @@ requireText(
 
 requireText(
   nonTtgdtxReview,
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
   "non-TTGDTX cascade review local-only boundary",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
 );
 
 requireText(
   register,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production migration, data\s+deletion, cascade execution, waiver, conversion migration, cleanup, rollback\s+success or production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production migration, data\s+deletion, cascade execution, waiver, conversion migration, cleanup, rollback\s+success or production GO)/i,
   "P6-06 finding register local-only boundary",
   registerPath,
 );
 
 requireText(
   backlog,
-  /P6-06[\s\S]*PASS_LOCAL[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
+  /P6-06[\s\S]*PASS_LOCAL[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
   "backlog hard-delete boundary evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );

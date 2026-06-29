@@ -75,7 +75,28 @@ success or production GO.
 | P6-06-FIND-043 | `database/step62_short_course_data_foundation.sql:291` | `short_attendance_records` | `session_id -> short_attendance_sessions` | HDQ-05 Legal, tuition and short-course operations | REQUIRES_CONVERSION_OR_WAIVER; attendance record history is protected |
 | P6-06-FIND-044 | `database/step62_short_course_data_foundation.sql:292` | `short_attendance_records` | `enrollment_id -> short_enrollments` | HDQ-05 Legal, tuition and short-course operations | REQUIRES_CONVERSION_OR_WAIVER; enrollment attendance evidence is protected |
 
-## 4. Closure Rule
+## 4. Owner Triage Batch Plan
+
+The audit UI exposes `data-hard-delete-conversion-owner-triage="P6-06"` in
+`components/audit/hard-delete-conversion-decision-queue.tsx`. The plan turns
+the 44 findings into owner triage batches before any conversion or written
+waiver can be discussed.
+
+Decision value: `P6_06_TRIAGE_READY / NO_GO / BLOCKED`.
+
+| Batch | Lane | First action | Minimum proof | Stop condition |
+|---|---|---|---|---|
+| P6-06-TRIAGE-01 | Finance, legal and evidence protected rows | Convert or block HOU finance, payment, evidence, tuition/legal and short-course operating rows before any waiver review | Restrict/archive/status-transition design, owner lane, rollback note and redacted evidence ID | Any finance, legal, evidence, attendance or payment row still depends on cascade delete |
+| P6-06-TRIAGE-02 | CRM lead and handover history | Protect lead, follow-up, document, checklist and handover child rows before parent lead/user delete behavior is accepted | Restrict/archive design or written owner waiver proving the row is derived-only | Lead history, handover decision or payment/evidence trail can disappear |
+| P6-06-TRIAGE-03 | Workspace, role and access-scope history | Prefer soft-revoke/status handling for user scope and visibility helpers | Soft-revoke/status-transition proof, P0-17 access closure compatibility and rollback note | Access scope, role history or P0-17 closure state can be hidden by delete |
+| P6-06-TRIAGE-04 | Master, governance and dynamic configuration | Convert master/control/configuration cascades to restrict/archive unless proven derived-only | Governance owner decision, config impact note, rollback note and evidence ID | Gate, form, catalog, module or governance history can be removed |
+| P6-06-TRIAGE-05 | Derived-helper waiver candidates | Review derived-only helpers last; waive only with table-specific, owner-signed, expiry/review date written waiver | Written waiver with affected table, reason, owner, rollback note, expiry/review date and no protected-row impact | Waiver is broad, oral, ownerless, lacks expiry/review date or covers protected records |
+
+The first closure batch is finance/legal/evidence protected rows first. This
+does not approve production deletion, cascade execution, waiver, conversion
+migration, cleanup, rollback success or production GO.
+
+## 5. Closure Rule
 
 P6-06 remains IN_PROGRESS until every `REQUIRES_CONVERSION_OR_WAIVER` row above
 has one of these outcomes:

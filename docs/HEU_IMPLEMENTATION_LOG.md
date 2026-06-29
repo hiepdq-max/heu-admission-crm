@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-06 Owner Triage Batch Plan
+
+- Updated `components/audit/hard-delete-conversion-decision-queue.tsx`,
+  `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and
+  `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md` so the 44 non-TTGDTX/base
+  cascade findings are grouped into an owner triage batch plan before
+  conversion or written waiver review.
+- The plan makes finance/legal/evidence protected rows the first closure batch,
+  then lead history, access-scope history, master/configuration history and
+  derived-helper waiver candidates.
+- Synced `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P6-06 cannot claim local packaging
+  while omitting the owner triage batch plan.
+- Tightened `scripts/audit-hard-delete-conversion-decision-queue.mjs`,
+  `scripts/audit-hard-delete-boundary-guard.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is hard-delete/cascade triage packaging only. It does not convert rows,
+  waive findings, execute migration, delete data, cleanup evidence, accept UAT,
+  accept owner review or mark production GO.
+
 ## 2026-06-29 - P0-03 Restore Access Closure State Preservation
 
 - Updated `components/settings/supabase-backup-restore-guard.tsx` and
