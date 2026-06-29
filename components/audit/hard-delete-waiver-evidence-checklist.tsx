@@ -258,6 +258,52 @@ const fourthClosureBatchItems: FirstClosureBatchItem[] = [
   },
 ];
 
+const fifthClosureBatchItems: FirstClosureBatchItem[] = [
+  {
+    caseId: "P6-06-B5-01",
+    scope:
+      "HOU academic term, exam-date and graduation-round waiver candidates: P6-06-FIND-007 through P6-06-FIND-009.",
+    requiredProof:
+      "Derived-only proof, HOU/process owner reason, rollback note, expiry/review date and evidence that no tuition, exam or graduation record is lost.",
+    stopCondition:
+      "Stop if an academic term, exam-date or graduation-round row is evidence-bearing or used for finance/legal reliance.",
+  },
+  {
+    caseId: "P6-06-B5-02",
+    scope:
+      "Evidence-location and workspace-preference waiver candidates: P6-06-FIND-016 and P6-06-FIND-032.",
+    requiredProof:
+      "Table-specific derived-only proof, affected-owner reason, rollback note, expiry/review date and no protected evidence or access-history impact.",
+    stopCondition:
+      "Stop if evidence location or workspace preference deletion can hide evidence custody, access history or owner accountability.",
+  },
+  {
+    caseId: "P6-06-B5-03",
+    scope:
+      "Review-or-convert governance rows before any waiver: P6-06-FIND-001 and P6-06-FIND-025.",
+    requiredProof:
+      "Governance owner review, derived-helper proof if waiver is proposed, impact note and rollback note.",
+    stopCondition:
+      "Stop if permission or data-dictionary history is waived without governance owner sign-off.",
+  },
+  {
+    caseId: "P6-06-B5-04",
+    scope: "Written waiver quality gate for every remaining derived helper.",
+    requiredProof:
+      "Affected table, owner, reason, derived-only proof, rollback approach, expiry/review date and explicit no-protected-record impact statement.",
+    stopCondition:
+      "Stop if waiver is broad, oral, ownerless, lacks expiry/review date or covers finance/evidence/audit/legal/student-operating history.",
+  },
+  {
+    caseId: "P6-06-B5-05",
+    scope: "Batch 5 final waiver register before owner GO/NO-GO.",
+    requiredProof:
+      "Decision value, owner signatures, controlled evidence location, redaction reviewer, waiver register reference and no forbidden sensitive content.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as waiver approval, conversion migration approval, cleanup approval or production GO.",
+  },
+];
+
 const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
   {
     caseId: "P6-06-ACCEPT-01",
@@ -584,6 +630,52 @@ export function HardDeleteWaiverEvidenceChecklist() {
 
         <div className="mt-4 grid gap-3 xl:grid-cols-2">
           {fourthClosureBatchItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.scope}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        data-hard-delete-derived-helper-waiver-batch="P6-06-TRIAGE-05"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 batch 5 derived-helper waiver checklist: PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_BATCH5_READY / NO_GO / BLOCKED
+              </span>
+              . Review waiver candidates last, only after protected finance,
+              legal, evidence, lead, access-scope and configuration paths have
+              been converted, blocked or tied to owner proof.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            A waiver is valid only when it is table-specific, written,
+            owner-signed, dated and proves no protected record can be removed.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {fifthClosureBatchItems.map((item) => (
             <article
               key={item.caseId}
               className="border-l-2 border-orange-300 bg-white px-3 py-3"

@@ -274,6 +274,27 @@ fastSection("2026-06-29 - P6-06 Batch 4 Master Governance Config Checklist", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Batch 5 Derived Helper Waiver Checklist", [
+  "hard-delete-waiver-evidence-checklist.tsx",
+  "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+  "HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "P6-06-TRIAGE-05",
+  "derived-helper waiver checklist",
+  "P6-06-B5-01 through P6-06-B5-05",
+  "HOU academic",
+  "evidence-location",
+  "workspace",
+  "review-or-convert governance rows",
+  "written waiver quality",
+  "final waiver register",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-hard-delete-conversion-decision-queue.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not convert rows",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 P5-03 First Finance UAT Checklist", [
   "lib/production-readiness.ts",
   "ttgdtx-production-execution-queue.tsx",

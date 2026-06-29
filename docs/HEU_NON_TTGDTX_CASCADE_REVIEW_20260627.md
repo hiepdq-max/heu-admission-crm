@@ -237,6 +237,26 @@ Batch 4 is PASS_LOCAL packaging only. It does not convert rows, approve a
 waiver, accept evidence, execute cleanup, accept rollback success or mark
 production GO.
 
+### 8A.5 Batch 5 Derived-Helper Waiver Checklist
+
+The audit UI exposes
+`data-hard-delete-derived-helper-waiver-batch="P6-06-TRIAGE-05"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+
+Decision value: `P6_06_BATCH5_READY / NO_GO / BLOCKED`.
+
+| Case | Scope | Required proof | Stop condition |
+|---|---|---|---|
+| P6-06-B5-01 | HOU academic term, exam-date and graduation-round waiver candidates: P6-06-FIND-007 through P6-06-FIND-009 | Derived-only proof, HOU/process owner reason, rollback note, expiry/review date and evidence that no tuition, exam or graduation record is lost | Academic term, exam-date or graduation-round row is evidence-bearing or used for finance/legal reliance |
+| P6-06-B5-02 | Evidence-location and workspace-preference waiver candidates: P6-06-FIND-016 and P6-06-FIND-032 | Table-specific derived-only proof, affected-owner reason, rollback note, expiry/review date and no protected evidence or access-history impact | Evidence location or workspace preference deletion can hide evidence custody, access history or owner accountability |
+| P6-06-B5-03 | Review-or-convert governance rows before any waiver: P6-06-FIND-001 and P6-06-FIND-025 | Governance owner review, derived-helper proof if waiver is proposed, impact note and rollback note | Permission or data-dictionary history is waived without governance owner sign-off |
+| P6-06-B5-04 | Written waiver quality gate for every remaining derived helper | Affected table, owner, reason, derived-only proof, rollback approach, expiry/review date and explicit no-protected-record impact statement | Waiver is broad, oral, ownerless, lacks expiry/review date or covers finance/evidence/audit/legal/student-operating history |
+| P6-06-B5-05 | Batch 5 final waiver register before owner GO/NO-GO | Decision value, owner signatures, controlled evidence location, redaction reviewer, waiver register reference and no forbidden sensitive content | PASS_LOCAL is treated as waiver approval, conversion migration approval, cleanup approval or production GO |
+
+Batch 5 is PASS_LOCAL packaging only. It does not convert rows, approve a
+waiver, accept evidence, execute cleanup, accept rollback success or mark
+production GO.
+
 ## 9. P6-06 Acceptance Matrix
 
 The app also exposes
