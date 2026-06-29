@@ -177,6 +177,26 @@ Batch 1 is PASS_LOCAL packaging only. It does not convert rows, approve a
 waiver, accept evidence, execute cleanup, accept rollback success or mark
 production GO.
 
+### 8A.2 Batch 2 CRM Lead/Handover Closure Checklist
+
+The audit UI exposes
+`data-hard-delete-crm-lead-handover-batch="P6-06-TRIAGE-02"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+
+Decision value: `P6_06_BATCH2_READY / NO_GO / BLOCKED`.
+
+| Case | Scope | Required proof | Stop condition |
+|---|---|---|---|
+| P6-06-B2-01 | User/profile accountability row: P6-06-FIND-002 | Soft-revoke or inactive-profile design, P0-17 access closure compatibility, accountable owner lane and rollback note | Deleting an auth user can erase profile accountability, role history or access-closure evidence |
+| P6-06-B2-02 | Lead activity, follow-up, document and custom-field rows: P6-06-FIND-003 through P6-06-FIND-005 and P6-06-FIND-038 | Restrict/archive design preserving lifecycle history, lead-document evidence, custom-field evidence and redacted evidence ID | Lead activity, follow-up, document or custom-field evidence can disappear through parent lead delete |
+| P6-06-B2-03 | Admission payment and evidence-document rows tied to leads: P6-06-FIND-006 and P6-06-FIND-029 | KHTC/Audit evidence-retention decision, lead-to-payment trace proof, rollback note and controlled evidence reference | Payment evidence or evidence-document history can be removed before finance or audit review |
+| P6-06-B2-04 | Lead condition checks and handover responsibility rows: P6-06-FIND-018 and P6-06-FIND-023 | P3-01/P3-02 handover compatibility note, owner lane, checklist retention proof and redacted evidence ID | Handover responsibility, condition-check evidence or lead-to-student decision history can disappear |
+| P6-06-B2-05 | Batch 2 CRM lead/handover closure record before owner GO/NO-GO | Decision value, owner signatures, controlled evidence location, redaction reviewer, P3-01/P3-02 reference and P0-17 compatibility note | Broad waiver, raw PII, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat |
+
+Batch 2 is PASS_LOCAL packaging only. It does not convert rows, approve a
+waiver, accept evidence, execute cleanup, accept rollback success or mark
+production GO.
+
 ## 9. P6-06 Acceptance Matrix
 
 The app also exposes

@@ -102,6 +102,13 @@ requireText(
 
 requireText(
   evidenceChecklist,
+  /(?=[\s\S]*data-hard-delete-crm-lead-handover-batch="P6-06-TRIAGE-02")(?=[\s\S]*P6-06 batch 2 CRM lead\/handover closure checklist)(?=[\s\S]*PASS_LOCAL\s+only)(?=[\s\S]*P6_06_BATCH2_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*P6-06-FIND-002)(?=[\s\S]*P6-06-FIND-003 through P6-06-FIND-005 and P6-06-FIND-038)(?=[\s\S]*P6-06-FIND-006 and P6-06-FIND-029)(?=[\s\S]*P6-06-FIND-018 and P6-06-FIND-023)(?=[\s\S]*P3-01\/P3-02 handover compatibility note)/i,
+  "P6-06 batch 2 CRM lead/handover closure checklist",
+  evidenceChecklistPath,
+);
+
+requireText(
+  evidenceChecklist,
   /(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*P6-06 hard-delete\/cascade acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-02)(?=[\s\S]*P6-06-ACCEPT-03)(?=[\s\S]*P6-06-ACCEPT-04)(?=[\s\S]*P6-06-ACCEPT-05)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*Current cascade scan locked and mapped)(?=[\s\S]*Protected records converted before production)(?=[\s\S]*Derived-helper waiver is narrow and written)(?=[\s\S]*Rollback and cleanup do not rely on deletion)(?=[\s\S]*Evidence redaction and owner sign-off)(?=[\s\S]*Production boundary)(?=[\s\S]*PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO)/i,
   "P6-06 hard-delete/cascade acceptance matrix",
   evidenceChecklistPath,
@@ -123,7 +130,7 @@ requireText(
 
 requireText(
   checklist,
-  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
+  /Hard delete review[\s\S]*IN_PROGRESS[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*non-TTGDTX conversion or written waiver still required/i,
   "production checklist keeps hard-delete review IN_PROGRESS with UI guard evidence",
   checklistPath,
 );
@@ -137,21 +144,21 @@ requireText(
 
 requireText(
   nonTtgdtxReview,
-  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
+  /(?=[\s\S]*P6-06 is PASS_LOCAL)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*hard-delete-waiver-evidence-checklist\.tsx)(?=[\s\S]*data-hard-delete-cascade-acceptance-matrix="P6-06")(?=[\s\S]*data-hard-delete-cascade-closure-decision-manifest="P6-06")(?=[\s\S]*P6-06-ACCEPT-01)(?=[\s\S]*P6-06-ACCEPT-06)(?=[\s\S]*P6-06-DEC-01)(?=[\s\S]*P6-06-DEC-06)(?=[\s\S]*does not approve\s+production migration, production deletion, cascade execution, waiver, data\s+cleanup or production GO)/i,
   "non-TTGDTX cascade review local-only boundary",
   "docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
 );
 
 requireText(
   register,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production migration, data\s+deletion, cascade execution, waiver, conversion migration, cleanup, rollback\s+success or production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_REGISTER)(?=[\s\S]*Current scan count:\s*44)(?=[\s\S]*P6-06-FIND-001)(?=[\s\S]*P6-06-FIND-044)(?=[\s\S]*child tables, parent references and owner lanes)(?=[\s\S]*Owner Triage Batch Plan)(?=[\s\S]*P6-06-TRIAGE-01)(?=[\s\S]*P6-06-TRIAGE-05)(?=[\s\S]*Batch 1 Finance\/Legal\/Evidence Closure Checklist)(?=[\s\S]*P6-06-B1-01)(?=[\s\S]*P6-06-B1-05)(?=[\s\S]*Batch 2 CRM Lead\/Handover Closure Checklist)(?=[\s\S]*P6-06-B2-01)(?=[\s\S]*P6-06-B2-05)(?=[\s\S]*P6-06 remains IN_PROGRESS)(?=[\s\S]*does not approve production migration, data\s+deletion, cascade execution, waiver, conversion migration, cleanup, rollback\s+success or production GO)/i,
   "P6-06 finding register local-only boundary",
   registerPath,
 );
 
 requireText(
   backlog,
-  /P6-06[\s\S]*PASS_LOCAL[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
+  /P6-06[\s\S]*PASS_LOCAL[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*hard-delete-boundary-guard\.tsx[\s\S]*hard-delete-waiver-evidence-checklist\.tsx[\s\S]*hard-delete\/cascade finding register, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, acceptance matrix and closure decision manifest[\s\S]*audit:hard-delete-boundary-guard[\s\S]*conversion or written waiver still required/i,
   "backlog hard-delete boundary evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );

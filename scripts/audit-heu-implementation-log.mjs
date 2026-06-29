@@ -214,6 +214,25 @@ fastSection("2026-06-29 - P6-06 Batch 1 Finance Legal Evidence Checklist", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Batch 2 CRM Lead Handover Checklist", [
+  "hard-delete-waiver-evidence-checklist.tsx",
+  "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+  "HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "P6-06-TRIAGE-02",
+  "CRM lead/handover closure checklist",
+  "P6-06-B2-01 through P6-06-B2-05",
+  "user/profile",
+  "lead activity",
+  "admission payment/evidence-document rows",
+  "P3-01/P3-02 handover responsibility",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-hard-delete-conversion-decision-queue.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not convert rows",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 P5-03 First Finance UAT Checklist", [
   "lib/production-readiness.ts",
   "ttgdtx-production-execution-queue.tsx",

@@ -119,6 +119,53 @@ const firstClosureBatchItems: FirstClosureBatchItem[] = [
   },
 ];
 
+const secondClosureBatchItems: FirstClosureBatchItem[] = [
+  {
+    caseId: "P6-06-B2-01",
+    scope:
+      "User/profile accountability row: P6-06-FIND-002.",
+    requiredProof:
+      "Soft-revoke or inactive-profile design, P0-17 access closure compatibility, accountable owner lane and rollback note.",
+    stopCondition:
+      "Stop if deleting an auth user can erase profile accountability, role history or access-closure evidence.",
+  },
+  {
+    caseId: "P6-06-B2-02",
+    scope:
+      "Lead activity, follow-up, document and custom-field rows: P6-06-FIND-003 through P6-06-FIND-005 and P6-06-FIND-038.",
+    requiredProof:
+      "Restrict/archive design preserving lifecycle history, lead-document evidence, custom-field evidence and redacted evidence ID.",
+    stopCondition:
+      "Stop if lead activity, follow-up, document or custom-field evidence can disappear through parent lead delete.",
+  },
+  {
+    caseId: "P6-06-B2-03",
+    scope:
+      "Admission payment and evidence-document rows tied to leads: P6-06-FIND-006 and P6-06-FIND-029.",
+    requiredProof:
+      "KHTC/Audit evidence-retention decision, lead-to-payment trace proof, rollback note and controlled evidence reference.",
+    stopCondition:
+      "Stop if payment evidence or evidence-document history can be removed before finance or audit review.",
+  },
+  {
+    caseId: "P6-06-B2-04",
+    scope:
+      "Lead condition checks and handover responsibility rows: P6-06-FIND-018 and P6-06-FIND-023.",
+    requiredProof:
+      "P3-01/P3-02 handover compatibility note, owner lane, checklist retention proof and redacted evidence ID.",
+    stopCondition:
+      "Stop if handover responsibility, condition-check evidence or lead-to-student decision history can disappear.",
+  },
+  {
+    caseId: "P6-06-B2-05",
+    scope: "Batch 2 CRM lead/handover closure record before owner GO/NO-GO.",
+    requiredProof:
+      "Decision value, owner signatures, controlled evidence location, redaction reviewer, P3-01/P3-02 reference and P0-17 compatibility note.",
+    stopCondition:
+      "Stop if broad waiver, raw PII, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat.",
+  },
+];
+
 const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
   {
     caseId: "P6-06-ACCEPT-01",
@@ -304,6 +351,53 @@ export function HardDeleteWaiverEvidenceChecklist() {
 
         <div className="mt-4 grid gap-3 xl:grid-cols-2">
           {firstClosureBatchItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.scope}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        data-hard-delete-crm-lead-handover-batch="P6-06-TRIAGE-02"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 batch 2 CRM lead/handover closure checklist: PASS_LOCAL
+              only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_BATCH2_READY / NO_GO / BLOCKED
+              </span>
+              . This batch protects lead, payment, evidence and handover
+              history before a parent lead or user delete can be accepted.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            CRM lead and handover rows are protected because they carry
+            admission evidence, finance traces and P3-01/P3-02 handover
+            decisions.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {secondClosureBatchItems.map((item) => (
             <article
               key={item.caseId}
               className="border-l-2 border-orange-300 bg-white px-3 py-3"

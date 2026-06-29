@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-06 Batch 2 CRM Lead Handover Checklist
+
+- Updated `components/audit/hard-delete-waiver-evidence-checklist.tsx` so
+  P6-06-TRIAGE-02 has a CRM lead/handover closure checklist.
+- The checklist covers P6-06-B2-01 through P6-06-B2-05 for user/profile
+  accountability, lead activity/follow-up/document/custom-field history,
+  admission payment/evidence-document rows, lead condition checks and
+  P3-01/P3-02 handover responsibility.
+- Synced `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`,
+  `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Tightened `scripts/audit-hard-delete-boundary-guard.mjs`,
+  `scripts/audit-hard-delete-conversion-decision-queue.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is PASS_LOCAL packaging only. It does not convert rows, approve a
+  waiver, accept evidence, execute cleanup, accept rollback success or mark production GO.
+
 ## 2026-06-29 - P2-18 P5-03 First Finance UAT Checklist
 
 - Updated `lib/production-readiness.ts` and
