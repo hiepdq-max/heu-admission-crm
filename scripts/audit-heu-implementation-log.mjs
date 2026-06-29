@@ -253,6 +253,27 @@ fastSection("2026-06-29 - P6-06 Batch 3 Workspace Access Scope Checklist", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Batch 4 Master Governance Config Checklist", [
+  "hard-delete-waiver-evidence-checklist.tsx",
+  "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+  "HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "P6-06-TRIAGE-04",
+  "master/governance/config closure checklist",
+  "P6-06-B4-01 through P6-06-B4-05",
+  "role permission",
+  "data dictionary",
+  "admission segment workspace",
+  "approval evidence",
+  "dynamic form",
+  "catalog gate",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-hard-delete-conversion-decision-queue.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not convert rows",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 P5-03 First Finance UAT Checklist", [
   "lib/production-readiness.ts",
   "ttgdtx-production-execution-queue.tsx",

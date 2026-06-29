@@ -211,6 +211,53 @@ const thirdClosureBatchItems: FirstClosureBatchItem[] = [
   },
 ];
 
+const fourthClosureBatchItems: FirstClosureBatchItem[] = [
+  {
+    caseId: "P6-06-B4-01",
+    scope:
+      "Role-permission and data-dictionary control rows: P6-06-FIND-001 and P6-06-FIND-025.",
+    requiredProof:
+      "Governance owner decision, restrict/archive or derived-helper waiver proof, impact note and rollback note.",
+    stopCondition:
+      "Stop if permission or dictionary history can be removed without governance owner review.",
+  },
+  {
+    caseId: "P6-06-B4-02",
+    scope:
+      "Admission segment workspace, operation-step and field-rule rows: P6-06-FIND-026 through P6-06-FIND-028.",
+    requiredProof:
+      "Operating-model retention design, process owner lane, configuration impact note and redacted evidence ID.",
+    stopCondition:
+      "Stop if workspace, operation-step or field-rule history can disappear through segment delete.",
+  },
+  {
+    caseId: "P6-06-B4-03",
+    scope:
+      "Approval evidence and master-governance request rows: P6-06-FIND-030 and P6-06-FIND-031.",
+    requiredProof:
+      "Approval evidence retention decision, governance request retention proof, rollback note and controlled evidence reference.",
+    stopCondition:
+      "Stop if approval evidence or master-data change history can be deleted before Audit/governance review.",
+  },
+  {
+    caseId: "P6-06-B4-04",
+    scope:
+      "Program rules, dynamic form configs, condition-rule configs and segment form evidence: P6-06-FIND-033 through P6-06-FIND-037 and P6-06-FIND-039.",
+    requiredProof:
+      "Configuration retention classification, derived-only waiver proof if applicable, process owner lane and rollback note.",
+    stopCondition:
+      "Stop if admission rule, form config or segment form evidence can be hidden by cleanup.",
+  },
+  {
+    caseId: "P6-06-B4-05",
+    scope: "Catalog gate row and batch 4 closure: P6-06-FIND-041.",
+    requiredProof:
+      "Catalog gate retention proof, owner signatures, controlled evidence location, redaction reviewer and no production-secret content.",
+    stopCondition:
+      "Stop if catalog gate history can be removed, waived broadly, or used as production cleanup proof.",
+  },
+];
+
 const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
   {
     caseId: "P6-06-ACCEPT-01",
@@ -490,6 +537,53 @@ export function HardDeleteWaiverEvidenceChecklist() {
 
         <div className="mt-4 grid gap-3 xl:grid-cols-2">
           {thirdClosureBatchItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.scope}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        data-hard-delete-master-governance-batch="P6-06-TRIAGE-04"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 batch 4 master/governance/config closure checklist:
+              PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_BATCH4_READY / NO_GO / BLOCKED
+              </span>
+              . This batch protects master data, governance, catalog, rule and
+              dynamic-configuration history before any derived-helper waiver
+              can be reviewed.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            Configuration rows are protected because they explain why a gate,
+            form, permission, rule or catalog decision existed.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {fourthClosureBatchItems.map((item) => (
             <article
               key={item.caseId}
               className="border-l-2 border-orange-300 bg-white px-3 py-3"

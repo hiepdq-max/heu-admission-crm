@@ -194,7 +194,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Hard-delete\/cascade[\s\S]*TTGDTX cascade passes; non-TTGDTX review identifies 44 findings, locks P6-06-FIND-001 through P6-06-FIND-044 in `docs\/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md`, and exposes a conversion\/waiver decision queue, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, batch 3 workspace\/access-scope closure checklist, hard-delete\/cascade acceptance matrix and closure decision manifest[\s\S]*Conversion or written waiver pending/i,
+  /Hard-delete\/cascade[\s\S]*TTGDTX cascade passes; non-TTGDTX review identifies 44 findings, locks P6-06-FIND-001 through P6-06-FIND-044 in `docs\/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md`, and exposes a conversion\/waiver decision queue, owner triage batch plan, batch 1 finance\/legal\/evidence closure checklist, batch 2 CRM lead\/handover closure checklist, batch 3 workspace\/access-scope closure checklist, batch 4 master\/governance\/config closure checklist, hard-delete\/cascade acceptance matrix and closure decision manifest[\s\S]*Conversion or written waiver pending/i,
   "P6-06 hard-delete decision queue control state",
 );
 requireText(

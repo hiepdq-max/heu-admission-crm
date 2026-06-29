@@ -156,6 +156,26 @@ Batch 3 is PASS_LOCAL packaging only. It does not convert rows, approve a
 waiver, accept evidence, execute cleanup, accept rollback success or mark
 production GO.
 
+### 4.4 Batch 4 Master/Governance/Config Closure Checklist
+
+The audit UI exposes
+`data-hard-delete-master-governance-batch="P6-06-TRIAGE-04"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+
+Decision value: `P6_06_BATCH4_READY / NO_GO / BLOCKED`.
+
+| Case | Scope | Required proof | Stop condition |
+|---|---|---|---|
+| P6-06-B4-01 | Role-permission and data-dictionary control rows: P6-06-FIND-001 and P6-06-FIND-025 | Governance owner decision, restrict/archive or derived-helper waiver proof, impact note and rollback note | Permission or dictionary history can be removed without governance owner review |
+| P6-06-B4-02 | Admission segment workspace, operation-step and field-rule rows: P6-06-FIND-026 through P6-06-FIND-028 | Operating-model retention design, process owner lane, configuration impact note and redacted evidence ID | Workspace, operation-step or field-rule history can disappear through segment delete |
+| P6-06-B4-03 | Approval evidence and master-governance request rows: P6-06-FIND-030 and P6-06-FIND-031 | Approval evidence retention decision, governance request retention proof, rollback note and controlled evidence reference | Approval evidence or master-data change history can be deleted before Audit/governance review |
+| P6-06-B4-04 | Program rules, dynamic form configs, condition-rule configs and segment form evidence: P6-06-FIND-033 through P6-06-FIND-037 and P6-06-FIND-039 | Configuration retention classification, derived-only waiver proof if applicable, process owner lane and rollback note | Admission rule, form config or segment form evidence can be hidden by cleanup |
+| P6-06-B4-05 | Catalog gate row and batch 4 closure: P6-06-FIND-041 | Catalog gate retention proof, owner signatures, controlled evidence location, redaction reviewer and no production-secret content | Catalog gate history can be removed, waived broadly, or used as production cleanup proof |
+
+Batch 4 is PASS_LOCAL packaging only. It does not convert rows, approve a
+waiver, accept evidence, execute cleanup, accept rollback success or mark
+production GO.
+
 ## 5. Closure Rule
 
 P6-06 remains IN_PROGRESS until every `REQUIRES_CONVERSION_OR_WAIVER` row above
