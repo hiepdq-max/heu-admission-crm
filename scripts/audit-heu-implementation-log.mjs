@@ -556,6 +556,17 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-03 Backup Restore Local Check Alignment", [
+  "audit:ttgdtx-migration-order-guard",
+  "npm.cmd run lint",
+  "P0-03 backup/restore UI local-check list",
+  "operator run",
+  "sheet preflight",
+  "audit-ttgdtx-backup-restore-dry-run-pack.mjs",
+  "UI/checklist alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - Current-State P6 Governance Guard Evidence", [
   "audit:permission-soft-revoke",
   "audit:ttgdtx-role-scope-access",

@@ -343,7 +343,9 @@ const operatorRunSheetItems = [
 
 const localChecks = [
   "audit:ttgdtx-backup-restore-dry-run-pack",
+  "audit:ttgdtx-migration-order-guard",
   "audit:ttgdtx-release-gates",
+  "npm.cmd run lint",
   "npm.cmd run build",
 ];
 

@@ -1,5 +1,16 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-03 Backup Restore Local Check Alignment
+
+- Added `audit:ttgdtx-migration-order-guard` and `npm.cmd run lint` to the
+  P0-03 backup/restore UI local-check list so the app matches the operator run
+  sheet preflight.
+- Tightened `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs` so the UI
+  cannot drop migration-order or lint checks while claiming P0-03 local
+  readiness.
+- This is UI/checklist alignment only. It does not execute backup, restore,
+  migration, rollback, UAT acceptance, owner sign-off or production GO.
+
 ## 2026-06-29 - Current-State P6 Governance Guard Evidence
 
 - Added explicit current-state evidence lines for `audit:permission-soft-revoke`,
