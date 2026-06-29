@@ -17,8 +17,8 @@ dashboard data only because they have a broad workspace assignment.
 
 ## 2. Hard Rules
 
-- Do not test with real passwords, temporary passwords, account activation/invite
-  links, OTPs, service keys or bank credentials.
+- Do not test with real passwords, temporary passwords, password reset links,
+  account activation/invite links, OTPs, service keys or bank credentials.
 - Do not use real student, parent, CCCD or bank data in screenshots.
 - Do not grant broad permissions only to make a test pass.
 - Do not mark production GO from this runbook. Update the production checklist
@@ -43,8 +43,8 @@ All five commands must pass before signed UAT.
 Create or select synthetic UAT accounts only:
 
 Use `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` before browser testing. Do not
-send real passwords, temporary passwords or account activation/invite links into
-Codex/chat.
+send real passwords, temporary passwords, password reset links or account
+activation/invite links into Codex/chat.
 Use `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` as the route/account execution
 matrix.
 

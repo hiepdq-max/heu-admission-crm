@@ -719,7 +719,7 @@ fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "TTGDTX role-scope runbook",
   "Settings role-scope UI guard",
   "temporary passwords",
-  "account",
+  "password reset links",
   "activation/invite links",
   "audit-heu-role-scope-uat-pack.mjs",
   "audit-ttgdtx-release-gates.mjs",
