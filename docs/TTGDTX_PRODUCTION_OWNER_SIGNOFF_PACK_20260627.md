@@ -37,7 +37,7 @@ approved, or production GO is approved.
 | P3-01/P3-02 lead lifecycle and handover UAT | TUYEN_SINH + CTHSSV + DAO_TAO + KHTC + IT_DATA + Audit | `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md`, signed P3-UAT-01 through P3-UAT-08 evidence, P3_01/P3_02 owner decisions and proof that P3 handover cannot bypass P0-19/P2-05/P2-03 finance gates | NO-GO |
 | P2-17 payout once | KHTC + BGH + Audit | `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`, payout evidence, duplicate-click evidence and required dossier proof | NO-GO |
 | P2-18 accounting dashboard | KHTC + BGH + IT_DATA | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`, `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`, source comparison and read-only evidence | NO-GO |
-| Role and workspace permission | IT_DATA + TRUONG_PHONG + Audit | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`, `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`, multi-role browser evidence | NO-GO |
+| Role and workspace permission | IT_DATA + TRUONG_PHONG + Audit | `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`, `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`, multi-role browser evidence and P0-17 access closure decision | NO-GO |
 | Audit log completeness | Audit + IT_DATA + KHTC | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`, audit rows for create, update, check, approve, pay and source-control events | NO-GO |
 | Hard-delete/cascade risk | IT_DATA + Audit + affected business owner | `docs/HARD_DELETE_AUDIT.md`, `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md`, `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, P6-06-FIND-001 through P6-06-FIND-044 conversion evidence or written waiver | NO-GO |
 | Internal multi-account UAT | BGH + KHTC + PHAP_CHE + IT_DATA | `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`, `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`, `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`, `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | NO-GO |
@@ -70,6 +70,7 @@ The local preflight must pass, but passing it is not owner approval.
 | P2-17 duplicate payout UAT |  |  | PENDING |
 | P2-18 dashboard UAT |  |  | PENDING |
 | Role/workspace browser UAT |  |  | PENDING |
+| P0-17 access closure decision |  |  | PENDING |
 | Audit-log UAT |  |  | PENDING |
 | Hard-delete/cascade finding register and conversion or waiver |  |  | PENDING |
 | Internal UAT operator handoff and signed run closure |  |  | PENDING |
@@ -87,7 +88,7 @@ owner decision is visible in the operating surface, not only in this pack.
 | P0-09-02 | IT_DATA + KHTC + PHAP_CHE | Signed Step90-Step110 migration order with P0-03 restore proof | NO-GO |
 | P0-09-03 | PHAP_CHE + KHTC + BGH | P0-19 legal basis, tuition policy and finance-gate UAT evidence | NO-GO |
 | P0-09-04 | TUYEN_SINH + CTHSSV + DAO_TAO + KHTC + BGH + Audit + IT_DATA | Signed P3-01/P3-02 lead lifecycle and handover UAT, P2-17 duplicate-payout UAT and P2-18 read-only dashboard reconciliation | NO-GO |
-| P0-09-05 | IT_DATA + Audit + process owners | Role/workspace UAT evidence; audit-log trace rows; `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and hard-delete/cascade conversion evidence or narrow written waiver for every unresolved P6-06 finding | NO-GO |
+| P0-09-05 | IT_DATA + Audit + process owners | Role/workspace UAT evidence; P0-17 access closure decision; audit-log trace rows; `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and hard-delete/cascade conversion evidence or narrow written waiver for every unresolved P6-06 finding | NO-GO |
 | P0-09-06 | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final signed multi-owner GO/NO-GO note referencing controlled redacted evidence only | NO-GO |
 
 Do not paste secrets, passwords, temporary passwords, OTPs, password reset
@@ -109,7 +110,7 @@ final owner decision remains NO-GO.
 |---|---|---|---|
 | P0-09-ACCEPT-01 | Evidence pack completeness and redaction | Every required evidence item has a controlled external location, owner initials, result and no raw sensitive data in Git/Codex/chat | Any evidence is missing, stored in an uncontrolled location or contains raw sensitive data |
 | P0-09-ACCEPT-02 | Backup/restore and migration readiness | Backup ID, restore target, smoke-check, preflight/postflight and signed Step90-Step110 migration order are accepted | Restore proof is missing, app connection to restore target is not proven or migration order is unsigned |
-| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P3-01/P3-02 lifecycle and handover UAT, P2-17, P2-18, role/workspace UAT, audit-log trace rows and UAT operator handoff are signed; `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` and `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` are cited; every unresolved P6-06 finding is converted or narrowly waived in writing | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P3-01/P3-02 is unsigned, leaks role/workspace scope or lets handover bypass P0-19/P2-05/P2-03 finance gates, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists, audit trace is incomplete or a P6-06 finding lacks conversion/waiver decision |
+| P0-09-ACCEPT-03 | Finance, legal and UAT blockers closed | P0-19, P3-01/P3-02 lifecycle and handover UAT, P2-17, P2-18, role/workspace UAT, P0-17 access closure decision, audit-log trace rows and UAT operator handoff are signed; `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` and `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` are cited; every unresolved P6-06 finding is converted or narrowly waived in writing | Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P3-01/P3-02 is unsigned, leaks role/workspace scope or lets handover bypass P0-19/P2-05/P2-03 finance gates, P2-17 can pay twice, P2-18 can write or cannot reconcile, role leak exists, P0-17 access closure is missing, audit trace is incomplete or a P6-06 finding lacks conversion/waiver decision |
 | P0-09-ACCEPT-04 | Owner decision quorum and accountability | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, evidence ref, signature and date | Any owner is missing, approval is oral-only, role is ambiguous, waiver is hidden or one owner asks for more evidence |
 | P0-09-ACCEPT-05 | Production boundary and AI/Codex limitation | Decision record states Codex/AI is advisory only; no production migration or production GO is approved from Codex/chat | PASS_LOCAL is treated as production GO, or AI/Codex is used to approve finance action, migration, UAT, waiver or production |
 | P0-09-ACCEPT-06 | Final outcome stays NO-GO until every stop condition is closed | All stop conditions in this sign-off pack are explicitly closed, otherwise the final decision remains NO-GO | Any open stop condition, unsigned evidence, missing backup/restore proof, unresolved exception or raw evidence exposure remains |
@@ -129,7 +130,7 @@ acceptance, payout, dashboard reliance or production GO.
 | P0-09-DEC-02 | Backup/restore and migration authority decision | Owner decision cites P0-03 backup/restore closure, restore smoke-check, target isolation and signed Step90-Step110 migration order | Missing actual backup proof, restore-target proof, smoke-check result, rollback note or migration order keeps NO_GO |
 | P0-09-DEC-03 | Legal, tuition and finance gate decision | PHAP_CHE, KHTC and BGH decision cites P0-19 legal basis, tuition/invoice policy, waiver register and signed finance-gate UAT evidence | Unsigned legal/finance evidence, unresolved invoice/chung-tu basis, hidden waiver or finance override request keeps NO_GO |
 | P0-09-DEC-04 | UAT and operating proof decision | Owner decision cites signed P3-01/P3-02 lifecycle and handover UAT, P2-17 payout UAT, P2-18 dashboard UAT, P5-03 Finance Desk UAT and UAT operator handoff closure | Any unsigned browser UAT, missing P3 handover closure, P3 handover bypass of P0-19/P2-05/P2-03, duplicate payout risk, dashboard write path, unreconciled total or missing handoff closure keeps NO_GO |
-| P0-09-DEC-05 | Role, audit and hard-delete proof decision | Owner decision cites P6-04 role/workspace UAT, P6-03 audit traceability, `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and P6-06 hard-delete/cascade conversion or written waiver | Role leak, missing audit trace, generic audit payload, unresolved cascade finding, missing finding-register citation or unsigned waiver keeps NO_GO |
+| P0-09-DEC-05 | Role, audit and hard-delete proof decision | Owner decision cites P6-04 role/workspace UAT, P0-17 access closure decision, P6-03 audit traceability, `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and P6-06 hard-delete/cascade conversion or written waiver | Role leak, missing P0-17 access closure decision, missing audit trace, generic audit payload, unresolved cascade finding, missing finding-register citation or unsigned waiver keeps NO_GO |
 | P0-09-DEC-06 | Final multi-owner accountability decision | BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and TRUONG_PHONG/process owner each record GO/NO-GO, signer, date and controlled evidence refs | Missing decision ID, unsigned owner, unresolved blocker, raw sensitive evidence, AI/Codex approval or PASS_LOCAL treated as production GO keeps BLOCKED or NO_GO |
 
 Stop immediately if any decision ID is missing, any owner signature is absent,
@@ -143,7 +144,7 @@ Keep production NO-GO if any condition below is true:
 1. Any required owner decision is unsigned.
 2. Backup exists but restore dry-run is missing or unverified.
 3. App connection to the restore target is not proven.
-4. Any UAT account sees data outside its role/workspace scope.
+4. Any UAT account sees data outside its role/workspace scope or lacks P0-17 access closure decision.
 5. P3-01/P3-02 lead lifecycle or handover UAT is unsigned, leaks role/workspace
    scope or lets P3 evidence bypass P0-19/P2-05/P2-03 finance gates.
 6. P2-17 can pay twice, overpay, pay without required evidence or bypass RPC.

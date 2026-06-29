@@ -704,6 +704,24 @@ fastSection("2026-06-29 - P0-15 Final Handoff Access Closure Proof Alignment", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-09 Owner Signoff Access Closure Decision Gate", [
+  "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  "ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  "P0-09 owner GO/NO-GO review",
+  "P0-17 access closure decision",
+  "P6-04 role/workspace UAT",
+  "P6-03 audit traceability",
+  "P6-06 hard-delete/cascade proof",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "audit-ttgdtx-production-owner-signoff-pack.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "revoke live users",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint", [
   "data-p014-finance-reliance-evidence-checkpoint=\"P2-18_P5-03_P6-04\"",
   "ttgdtx-production-evidence-binder.tsx",
@@ -1292,6 +1310,13 @@ requireText(
   log,
   /## 2026-06-29 - Real User Access Closure Guard[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04"[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*ACCESS_RETAIN[\s\S]*REVOKE_OR_REDUCE[\s\S]*BLOCKED[\s\S]*signed P6-04, P2-18 and P5-03\s+route results[\s\S]*soft-revoke[\s\S]*INACTIVE[\s\S]*safe evidence IDs outside\s+Git\/Codex\/chat[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is account-lifecycle packaging only[\s\S]*does not create accounts,\s+revoke live users, send passwords, approve role scope, accept UAT, approve\s+finance action or mark production GO/i,
   "real-user access closure guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-09 Owner Signoff Access Closure Decision Gate[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*P0-09\s+owner GO\/NO-GO review requires the P0-17 access closure decision alongside\s+P6-04 role\/workspace UAT, P6-03 audit traceability and P6-06\s+hard-delete\/cascade proof[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*owner sign-off row\s+cannot omit access closure while still claiming PASS_LOCAL packaging[\s\S]*audit-ttgdtx-production-owner-signoff-pack\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is owner-signoff packaging only[\s\S]*does not create accounts, revoke\s+live users, collect evidence, accept UAT, approve role scope, approve finance\s+action, accept owner review or mark production GO/i,
+  "P0-09 owner signoff access closure decision gate log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
