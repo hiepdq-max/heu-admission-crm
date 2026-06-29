@@ -18,9 +18,10 @@ launch and it does not approve production access.
 
 Use synthetic, redacted or approved UAT data only.
 
-Do not paste passwords, OTPs, reset links, API keys, service-role keys, CCCD,
-private phone numbers, bank accounts, bank statements, vouchers or raw student
-identity data into Git, Codex/chat, screenshots or public issue trackers.
+Do not paste passwords, temporary passwords, OTPs, reset links, account
+activation/invite links, API keys, service-role keys, CCCD, private phone
+numbers, bank accounts, bank statements, vouchers or raw student identity data
+into Git, Codex/chat, screenshots or public issue trackers.
 
 Use account labels such as `UAT_KHTC_TTGDTX_OPERATOR` instead of real account
 credentials.
@@ -98,7 +99,8 @@ Stop UAT and fix before continuing if:
 4. A non-admin receives broad lead visibility `ALL` without approved control.
 5. Finance, evidence, approval, payment, lead or audit rows can be hard-deleted.
 6. AI can approve, pay, release, delete, mark revenue or mark production GO.
-7. Real secrets or raw sensitive data appear in UAT evidence.
+7. Real secrets, temporary passwords, activation/invite links or raw sensitive
+   data appear in UAT evidence.
 
 ## 8. Sign-Off Rule
 
@@ -120,9 +122,10 @@ boundaries, KHTC TTGDTX operator scope, admission/student-service denial,
 legal/audit read-only scope, out-of-scope denial and no-secret signed evidence.
 
 Evidence must use expected results `ALLOWED`, `BLOCKED` or
-`EMPTY_SCOPED_STATE`. Do not attach passwords, OTPs, reset links, API keys,
-service-role keys, CCCD, bank accounts, bank statements, vouchers or raw
-student identity data in Git/Codex/chat.
+`EMPTY_SCOPED_STATE`. Do not attach passwords, temporary passwords, OTPs, reset
+links, account activation/invite links, API keys, service-role keys, CCCD, bank
+accounts, bank statements, vouchers or raw student identity data in
+Git/Codex/chat.
 
 The same panel exposes `data-heu-role-scope-route-matrix="P6-04"` for route
 UAT. The route matrix is PASS_LOCAL only and covers P6-04-ROUTE-01 through
@@ -140,7 +143,7 @@ role-scope UAT evidence and owner sign-off exist.
 
 | Case | Requirement | Minimum evidence | Stop condition |
 |---|---|---|---|
-| P6-04-ACCEPT-01 | Static preflight and synthetic-account boundary | Required role-scope, data-fetch, dashboard-access and release-gate audits pass; UAT evidence uses synthetic account labels only | Real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
+| P6-04-ACCEPT-01 | Static preflight and synthetic-account boundary | Required role-scope, data-fetch, dashboard-access and release-gate audits pass; UAT evidence uses synthetic account labels only | Real passwords, temporary passwords, OTPs, reset links, activation/invite links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
 | P6-04-ACCEPT-02 | Positive role access is scoped | Approved ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles can open only the routes and records owned by their role/scope | An approved user cannot perform required scoped work or sees production GO/daily finance actions outside scope |
 | P6-04-ACCEPT-03 | Negative and out-of-scope denial | UAT_OUT_OF_SCOPE_STAFF, contract-only, admission-only and non-finance accounts receive `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any out-of-scope account sees unrestricted TTGDTX finance, lead, source, dashboard or audit data |
 | P6-04-ACCEPT-04 | Server-side enforcement | Protected pages and server actions check auth, permission and scope before query or write; UI-only hide is not the control | A route queries sensitive data before canOpen/scope checks or a server action writes despite blocked UI |
@@ -163,7 +166,7 @@ finance action or production GO.
 
 | Case | Decision gate | Required decision | Stop condition |
 |---|---|---|---|
-| P6-04-DEC-01 | Static preflight complete | Permission soft-revoke, role-scope access, data-fetch, dashboard-access, UAT-plan, role-scope pack and release-gate audits pass before browser UAT evidence is trusted | Any preflight audit fails or real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
+| P6-04-DEC-01 | Static preflight complete | Permission soft-revoke, role-scope access, data-fetch, dashboard-access, UAT-plan, role-scope pack and release-gate audits pass before browser UAT evidence is trusted | Any preflight audit fails or real passwords, temporary passwords, OTPs, reset links, activation/invite links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence |
 | P6-04-DEC-02 | Positive role access decision | ADMIN, BGH, KHTC, PHAP_CHE, Audit and process roles are marked `ALLOWED` only for approved route families and scoped records | A positive account sees daily finance actions, hidden evidence, production GO controls or records outside approved scope |
 | P6-04-DEC-03 | Negative denial decision | Out-of-scope, contract-only, admission-only and non-finance accounts are marked `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any negative account sees unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data |
 | P6-04-DEC-04 | Server-side enforcement decision | Protected pages and server actions prove auth, permission and scope checks happen before sensitive query or write behavior | UI hiding is the only control, a query runs before `canOpen`/scope checks, or a blocked user can still write through a server action |

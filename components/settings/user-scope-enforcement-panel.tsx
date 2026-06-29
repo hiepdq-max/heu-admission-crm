@@ -134,7 +134,7 @@ const roleScopeEvidenceItems = [
     title: "No-secret signed evidence",
     owner: "IT_DATA + process owners",
     evidence:
-      "Signed evidence references use synthetic labels only; passwords, OTPs, reset links, keys, CCCD, bank accounts and raw identity data stay outside Git/Codex/chat.",
+      "Signed evidence references use synthetic labels only; passwords, temporary passwords, account activation/invite links, OTPs, reset links, keys, CCCD, bank accounts and raw identity data stay outside Git/Codex/chat.",
   },
 ];
 
@@ -211,7 +211,7 @@ const roleScopeAcceptanceItems = [
     minimumEvidence:
       "Required role-scope, data-fetch, dashboard-access and release-gate audits pass; UAT evidence uses synthetic account labels only.",
     stopCondition:
-      "Stop if real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
+      "Stop if real passwords, temporary passwords, activation/invite links, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
   },
   {
     caseId: "P6-04-ACCEPT-02",
@@ -263,7 +263,7 @@ const roleScopeAccessDecisionItems = [
       "Permission soft-revoke, role-scope access, data-fetch, dashboard-access, UAT-plan, role-scope pack and release-gate audits pass before browser UAT evidence is trusted.",
     owner: "IT_DATA + Audit",
     stopCondition:
-      "Stop if any preflight audit fails or real passwords, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
+      "Stop if any preflight audit fails or real passwords, temporary passwords, activation/invite links, OTPs, reset links, service-role keys, raw PII, CCCD, bank data or voucher data enter evidence.",
   },
   {
     caseId: "P6-04-DEC-02",
@@ -450,7 +450,8 @@ export function UserScopeEnforcementPanel({
                 out-of-scope denial checks.
               </p>
               <p className="mt-2">
-                Do not paste passwords, OTPs, service-role keys, CCCD, bank
+                Do not paste passwords, temporary passwords, account
+                activation/invite links, OTPs, service-role keys, CCCD, bank
                 accounts or raw student identity data into Codex, browser UAT
                 notes or screenshots.
               </p>
@@ -495,7 +496,8 @@ export function UserScopeEnforcementPanel({
               <p className="mt-2">
                 Signed role-scope UAT is still required before P6-04 can move
                 from IN_PROGRESS. Use only synthetic account labels and redacted
-                evidence references; passwords, OTPs, reset links, API keys,
+                evidence references; passwords, temporary passwords, account
+                activation/invite links, OTPs, reset links, API keys,
                 service-role keys, CCCD, bank accounts, bank statements,
                 vouchers and raw student identity data stay outside
                 Git/Codex/chat.
@@ -601,9 +603,10 @@ export function UserScopeEnforcementPanel({
           <div className="mt-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
             <ShieldAlert className="mt-0.5 size-4 shrink-0" />
             <p>
-              Do not paste passwords, OTPs, reset links, API keys,
-              service-role keys, CCCD, bank accounts, bank statements,
-              vouchers or raw student identity data into route UAT evidence.
+              Do not paste passwords, temporary passwords, account
+              activation/invite links, OTPs, reset links, API keys,
+              service-role keys, CCCD, bank accounts, bank statements, vouchers
+              or raw student identity data into route UAT evidence.
             </p>
           </div>
         </div>

@@ -556,6 +556,19 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
+  "P6-04 role-scope UAT execution pack",
+  "TTGDTX role-scope runbook",
+  "Settings role-scope UI guard",
+  "temporary passwords",
+  "account",
+  "activation/invite links",
+  "audit-heu-role-scope-uat-pack.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "role-scope UAT packaging only",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "TTGDTX UAT operator handoff",
   "execution log",

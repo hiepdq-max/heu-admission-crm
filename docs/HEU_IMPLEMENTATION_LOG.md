@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-04 Role-Scope Account Secret Boundary
+
+- Updated the P6-04 role-scope UAT execution pack, TTGDTX role-scope runbook
+  and Settings role-scope UI guard so temporary passwords and account
+  activation/invite links are forbidden in Git/Codex/chat, screenshots and UAT
+  evidence.
+- Tightened `scripts/audit-heu-role-scope-uat-pack.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P6-04 cannot claim a no-secret
+  UAT boundary while omitting temporary account secrets.
+- This is role-scope UAT packaging only. It does not create accounts, transmit
+  passwords, grant access, execute UAT, accept evidence, approve broad
+  permissions, approve finance action or mark production GO.
+
 ## 2026-06-29 - UAT Handoff Account Secret Boundary
 
 - Updated TTGDTX UAT operator handoff, execution log, browser matrix and
