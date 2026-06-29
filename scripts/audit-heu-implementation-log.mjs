@@ -644,6 +644,26 @@ fastSection("2026-06-29 - P6-04 Post-UAT Access Closure Handoff", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-03 Restore Access Closure State Preservation", [
+  "supabase-backup-restore-guard.tsx",
+  "STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  "P0-17 access closure states",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "P0-17 access closure state preservation",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-ttgdtx-backup-restore-dry-run-pack.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not execute backup",
+  "access revocation",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 P5-03 Real Accounting User Evidence Bridge", [
   "data-ttgdtx-dashboard-real-user-evidence-bridge=\"P2-18-P6-04\"",
   "data-finance-desk-real-user-evidence-bridge=\"P5-03-P6-04\"",
@@ -1352,6 +1372,13 @@ requireText(
   log,
   /## 2026-06-29 - P6-04 Post-UAT Access Closure Handoff[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*P6-04\/P2-18\/P5-03 real-user route results hand off to the P0-17 access\s+closure review[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*post-UAT access closure[\s\S]*audit-heu-role-scope-uat-pack\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is role-scope handoff packaging only[\s\S]*does not create accounts,\s+revoke live users, collect evidence, accept UAT, approve role scope, approve\s+finance action, accept owner review or mark production GO/i,
   "P6-04 post-UAT access closure handoff log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-03 Restore Access Closure State Preservation[\s\S]*supabase-backup-restore-guard\.tsx[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*P0-17 access closure states[\s\S]*ACCESS_RETAIN[\s\S]*REVOKE_OR_REDUCE[\s\S]*BLOCKED[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*P0-17 access closure state preservation[\s\S]*audit-ttgdtx-backup-restore-dry-run-pack\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is backup\/restore control packaging only[\s\S]*does not execute backup,\s+restore, migration, UAT, access revocation, evidence acceptance, owner\s+review or production GO/i,
+  "P0-03 restore access closure state preservation log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

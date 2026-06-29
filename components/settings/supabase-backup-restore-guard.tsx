@@ -203,8 +203,9 @@ const restoreSmokeCheckItems = [
     title: "Role and workspace scope preserved",
     owner: "IT_DATA + TRUONG_PHONG",
     evidence:
-      "Authorized, out-of-scope and inactive/revoked test users return the expected read/write boundaries.",
-    stopCondition: "Stop if an out-of-scope user can see restricted TTGDTX finance or evidence data.",
+      "Authorized, out-of-scope and inactive/revoked test users return the expected read/write boundaries, and P0-17 access closure states remain ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED after restore.",
+    stopCondition:
+      "Stop if an out-of-scope user can see restricted TTGDTX finance/evidence data or a soft-revoked/INACTIVE user regains access after restore.",
   },
   {
     caseId: "P0-03-SMOKE-05",
@@ -262,9 +263,9 @@ const backupRestoreClosureItems = [
     caseId: "P0-03-CLOSE-04",
     title: "Smoke-check and UAT index accepted",
     evidence:
-      "Restore smoke-check matrix, P0-19 gate UAT, P3-01/P3-02 lifecycle and handover UAT, role/workspace UAT, payout UAT, dashboard UAT and audit-log UAT references are complete.",
+      "Restore smoke-check matrix, P0-19 gate UAT, P3-01/P3-02 lifecycle and handover UAT, role/workspace UAT, P0-17 access closure decision, payout UAT, dashboard UAT and audit-log UAT references are complete.",
     blocker:
-      "Block closure if smoke-check, P0-19/P3 gate evidence, UAT evidence or source reconciliation is missing or unresolved.",
+      "Block closure if smoke-check, P0-19/P3 gate evidence, P0-17 access closure evidence, UAT evidence or source reconciliation is missing or unresolved.",
   },
   {
     caseId: "P0-03-CLOSE-05",
