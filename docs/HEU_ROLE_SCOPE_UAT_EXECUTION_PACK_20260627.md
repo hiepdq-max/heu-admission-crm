@@ -99,6 +99,21 @@ Required result fields:
 | Actual result | `ALLOWED`, `BLOCKED`, `EMPTY_SCOPED_STATE`, `NO_GO` or `BLOCKED_PENDING_OWNER_SIGNOFF` |
 | Human sign-off | Operator, checker, process owner and redaction reviewer outside Codex/chat |
 
+## 4.2 Post-UAT Access Closure Handoff
+
+After P6-04, P2-18 and P5-03 route results are signed, the real accounting
+user must move into the P0-17 access closure review exposed by
+`data-heu-real-user-access-closure="P0-17-P6-04"`.
+
+Decision value: `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED`.
+
+| Case | Required handoff | Stop condition |
+|---|---|---|
+| P6-04-CLOSE-01 | Compare signed P6-04, P2-18 and P5-03 route results before deciding whether access is retained, reduced or blocked | Any route result is unsigned, `NO_GO`/`BLOCKED` or missing controlled evidence ID |
+| P6-04-CLOSE-02 | Remove temporary pilot scope and broad finance visibility unless owner signs `ACCESS_RETAIN` for exact role, workspace and partner scope | Pilot access remains broad, undocumented or owner-unsigned |
+| P6-04-CLOSE-03 | Soft-revoke or mark `INACTIVE` for blocked users, with controlled evidence reference outside Git/Codex/chat | Blocked users keep active access, or evidence contains passwords, reset links, invite links or OTPs |
+| P6-04-CLOSE-04 | Record only redacted account labels, decision, owner and evidence ID in local handoff docs | Real passwords, temporary passwords, OTPs, password reset links, account activation/invite links or raw account screenshots enter Git/Codex/chat |
+
 ## 5. Route Families To Test
 
 At minimum, browser UAT must cover:
@@ -155,6 +170,8 @@ P6-04 can support production readiness only when:
 4. Process owners sign their scope results.
 5. IT/Data confirms no server-side bypass.
 6. Audit confirms evidence is redacted and traceable.
+7. P0-17 access closure review is queued or completed for every real
+   accounting user before owner reliance.
 
 ## 9. Role-Scope Evidence Checklist
 
@@ -191,12 +208,13 @@ role-scope UAT evidence and owner sign-off exist.
 | P6-04-ACCEPT-03 | Negative and out-of-scope denial | UAT_OUT_OF_SCOPE_STAFF, contract-only, admission-only and non-finance accounts receive `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any out-of-scope account sees unrestricted TTGDTX finance, lead, source, dashboard or audit data |
 | P6-04-ACCEPT-04 | Server-side enforcement | Protected pages and server actions check auth, permission and scope before query or write; UI-only hide is not the control | A route queries sensitive data before canOpen/scope checks or a server action writes despite blocked UI |
 | P6-04-ACCEPT-05 | Admin delegation and broad access control | Broad lead visibility `ALL`, scope grants and protected role changes remain admin/delegated-only and respect soft-revoke state | A non-admin grants broad access, changes protected roles, bypasses soft revoke or hard-deletes evidence rows |
-| P6-04-ACCEPT-06 | Signed evidence and production boundary | IT/Data, Audit and process owners sign redacted role-scope results outside Codex/chat before P6-04 supports production review | PASS_LOCAL is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval or production GO |
+| P6-04-ACCEPT-06 | Signed evidence and production boundary | IT/Data, Audit and process owners sign redacted role-scope results outside Codex/chat before P6-04 supports production review, then hand off to P0-17 access closure review | PASS_LOCAL is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval or production GO, or the P0-17 access closure handoff is missing |
 
 Decision value: `P6_04_ACCEPT / FAIL / BLOCKED`.
 
 P6-04 can support production readiness only when P6-04-ACCEPT-01 through
-P6-04-ACCEPT-06 all pass with redacted evidence and signed owner approval.
+P6-04-ACCEPT-06 all pass with redacted evidence, signed owner approval and the
+P0-17 access closure handoff.
 
 ## 11. Role-Scope Access Decision Manifest
 
@@ -214,12 +232,13 @@ finance action or production GO.
 | P6-04-DEC-03 | Negative denial decision | Out-of-scope, contract-only, admission-only and non-finance accounts are marked `BLOCKED` or `EMPTY_SCOPED_STATE` where required | Any negative account sees unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data |
 | P6-04-DEC-04 | Server-side enforcement decision | Protected pages and server actions prove auth, permission and scope checks happen before sensitive query or write behavior | UI hiding is the only control, a query runs before `canOpen`/scope checks, or a blocked user can still write through a server action |
 | P6-04-DEC-05 | Broad access and delegation decision | Broad lead visibility, scope grants, protected role changes and delegation remain admin/delegated-only and respect soft-revoke state | A non-admin grants broad access, changes protected roles, bypasses soft revoke, hard-deletes evidence or receives unexpired unsafe delegation |
-| P6-04-DEC-06 | Human access decision | Operator, checker, process owner, evidence IDs, route results and final decision are recorded as `P6_04_ACCESS_READY`, `NO_GO` or `BLOCKED` | `PASS_LOCAL` is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval, owner GO or production GO |
+| P6-04-DEC-06 | Human access decision | Operator, checker, process owner, evidence IDs, route results, P0-17 access closure decision and final decision are recorded as `P6_04_ACCESS_READY`, `NO_GO` or `BLOCKED` | `PASS_LOCAL` is treated as production access approval, broad-permission approval, real-data UAT pass, finance approval, owner GO or production GO, or the P0-17 closure handoff is missing |
 
 Final access decision: `P6_04_ACCESS_READY / NO_GO / BLOCKED`.
 
 Missing access decision ID, unsigned owner decision, unresolved route result,
-server-side bypass or raw sensitive role-scope evidence keeps P6-04 NO-GO.
+missing P0-17 closure handoff, server-side bypass or raw sensitive role-scope
+evidence keeps P6-04 NO-GO.
 
 ## 12. Current Result
 

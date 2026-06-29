@@ -465,7 +465,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-11 carries the P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
+  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-11 carries the P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Role\/workspace scope[\s\S]*post-UAT access closure handoff)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -793,6 +793,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
   "TTGDTX production guard shared blocker source log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P6-04 Post-UAT Access Closure Handoff[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*P0-17 access\s+closure review[\s\S]*post-UAT access closure[\s\S]*audit-heu-role-scope-uat-pack\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*role-scope handoff packaging only[\s\S]*does not create accounts[\s\S]*revoke live users[\s\S]*mark production GO/i,
+  "P6-04 post-UAT access closure handoff log entry",
 );
 
 requireText(
@@ -1401,19 +1407,19 @@ requireText(
 
 requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
-  /(?=[\s\S]*P6-04 is PASS_LOCAL)(?=[\s\S]*role-scope evidence checklist)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until signed UAT evidence exists)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)/i,
+  /(?=[\s\S]*P6-04 is PASS_LOCAL)(?=[\s\S]*role-scope evidence checklist)(?=[\s\S]*Post-UAT Access Closure Handoff)(?=[\s\S]*P0-17 access closure review)(?=[\s\S]*Signed role-scope UAT evidence is still required)(?=[\s\S]*NO-GO until signed UAT evidence exists)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)/i,
   "P6-04 role-scope UAT pack stays local-only",
 );
 
 requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
-  /(?=[\s\S]*Role-Scope Acceptance Matrix)(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
+  /(?=[\s\S]*Role-Scope Acceptance Matrix)(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*P0-17 access closure handoff)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i,
   "P6-04 role-scope acceptance matrix doc",
 );
 
 requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
-  /(?=[\s\S]*Role-Scope Access Decision Manifest)(?=[\s\S]*data-heu-role-scope-access-decision-manifest="P6-04")(?=[\s\S]*P6-04-DEC-01)(?=[\s\S]*P6-04-DEC-06)(?=[\s\S]*P6_04_ACCESS_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*raw sensitive role-scope evidence keeps P6-04 NO-GO)/i,
+  /(?=[\s\S]*Role-Scope Access Decision Manifest)(?=[\s\S]*data-heu-role-scope-access-decision-manifest="P6-04")(?=[\s\S]*P6-04-DEC-01)(?=[\s\S]*P6-04-DEC-06)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*P6_04_ACCESS_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*missing P0-17 closure handoff)(?=[\s\S]*raw sensitive role-scope\s+evidence keeps P6-04 NO-GO)/i,
   "P6-04 role-scope access decision manifest doc",
 );
 
@@ -1427,6 +1433,12 @@ requireText(
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   /(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*Evidence ID)(?=[\s\S]*Redacted account label)(?=[\s\S]*Profile and scope)(?=[\s\S]*Route and expected result)(?=[\s\S]*Actual result)(?=[\s\S]*Human sign-off)(?=[\s\S]*BLOCKED_PENDING_OWNER_SIGNOFF)/i,
   "P6-04 real accounting user result template doc",
+);
+
+requireText(
+  "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
+  /(?=[\s\S]*Post-UAT Access Closure Handoff)(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P6-04-CLOSE-01)(?=[\s\S]*P6-04-CLOSE-04)(?=[\s\S]*Soft-revoke)(?=[\s\S]*INACTIVE)(?=[\s\S]*Real passwords, temporary passwords, OTPs, password reset links, account activation\/invite links)/i,
+  "P6-04 post-UAT access closure handoff doc",
 );
 
 requireText(
@@ -1473,7 +1485,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*real accounting user UAT queue and result template)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff)(?=[\s\S]*signed UAT still required)/i,
+  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*real accounting user UAT queue and result template)(?=[\s\S]*post-UAT access closure handoff)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff)(?=[\s\S]*signed UAT still required)/i,
   "P6-04 production checklist acceptance matrix row",
 );
 
