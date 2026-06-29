@@ -59,7 +59,8 @@ It must not:
 - Call Supabase, RPC, mutation APIs or production workflows.
 - Approve finance, accept UAT, waive evidence, run migration or mark production
   GO.
-- Ask users to paste secrets, passwords, OTPs, service-role keys, bank
+- Ask users to paste secrets, passwords, temporary passwords, OTPs, password
+  reset links, account activation/invite links, service-role keys, bank
   credentials, raw student PII, raw CCCD, raw phone numbers, raw bank account
   numbers, bank statements, vouchers or raw payment data.
 
@@ -80,7 +81,8 @@ It must not:
 - Call Supabase, RPC, mutation APIs, AI services or production workflows.
 - Approve finance, accept UAT, waive evidence, run migration or mark production
   GO.
-- Ask users to paste secrets, passwords, OTPs, service-role keys, bank
+- Ask users to paste secrets, passwords, temporary passwords, OTPs, password
+  reset links, account activation/invite links, service-role keys, bank
   credentials, raw student PII, raw CCCD, raw phone numbers, raw bank account
   numbers, bank statements, vouchers or raw payment data.
 

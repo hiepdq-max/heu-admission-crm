@@ -107,11 +107,12 @@ export function AiRiskSuggestionBoard() {
       <div className="mt-5 flex items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-rose-900">
         <AlertTriangle className="mt-0.5 size-4 shrink-0" />
         <p>
-          Do not paste secrets, passwords, OTPs, service-role keys, bank
+          Do not paste secrets, passwords, temporary passwords, OTPs, password
+          reset links, account activation/invite links, service-role keys, bank
           credentials, raw student PII, raw CCCD, raw phone numbers, raw bank
           account numbers, bank statements, vouchers or raw payment data.
-          PASS_LOCAL does not enable autonomous AI, risk scoring, production AI,
-          finance action, UAT acceptance, owner waiver or production GO.
+          PASS_LOCAL does not enable autonomous AI, risk scoring, production
+          AI, finance action, UAT acceptance, owner waiver or production GO.
         </p>
       </div>
     </section>

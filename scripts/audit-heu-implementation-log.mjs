@@ -596,6 +596,21 @@ fastSection("2026-06-29 - P0-03 Backup Restore Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P7 AI Account Secret Prompt Boundary", [
+  "AI assistant policy",
+  "P7-02 task checklist generator",
+  "P7-03",
+  "risk suggestion board",
+  "temporary",
+  "password reset links",
+  "activation/invite links",
+  "audit-heu-ai-policy.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "AI/Codex prompt-boundary packaging only",
+  "store prompts",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "TTGDTX UAT operator handoff",
   "execution log",

@@ -93,9 +93,11 @@ export function AiTaskChecklistGenerator() {
         <div className="min-w-72 rounded-md border border-cyan-200 bg-white px-3 py-2 text-cyan-950">
           Data rule:
           <span className="mt-1 block text-xs">
-            Do not paste secrets, passwords, OTPs, service-role keys, bank
-            credentials, raw student PII, raw CCCD, raw phone numbers, raw bank
-            account numbers, bank statements, vouchers or raw payment data.
+            Do not paste secrets, passwords, temporary passwords, OTPs,
+            password reset links, account activation/invite links, service-role
+            keys, bank credentials, raw student PII, raw CCCD, raw phone
+            numbers, raw bank account numbers, bank statements, vouchers or raw
+            payment data.
           </span>
         </div>
       </div>

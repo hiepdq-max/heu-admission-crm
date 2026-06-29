@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P7 AI Account Secret Prompt Boundary
+
+- Updated the AI assistant policy, P7-02 task checklist generator and P7-03
+  risk suggestion board so prompts and UI guidance explicitly forbid temporary
+  passwords, password reset links and account activation/invite links in
+  Git/Codex/chat.
+- Tightened `scripts/audit-heu-ai-policy.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so AI/Codex helper packaging cannot
+  claim a no-secret prompt boundary while omitting temporary account secrets.
+- This is AI/Codex prompt-boundary packaging only. It does not call AI
+  services, store prompts, approve AI-readable data access, execute UAT, accept
+  evidence, approve finance action, run migration or mark production GO.
+
 ## 2026-06-29 - P0-03 Backup Restore Account Secret Boundary
 
 - Updated the P0-03 backup/restore dry-run evidence pack, operator run sheet
