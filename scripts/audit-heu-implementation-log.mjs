@@ -611,6 +611,19 @@ fastSection("2026-06-29 - P7 AI Account Secret Prompt Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Step90-Step110 Migration Order Account Secret Boundary", [
+  "Step90-Step110 migration order sign-off guard",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "Git/Codex/chat or audit documents",
+  "audit-ttgdtx-migration-order-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "migration-order packaging only",
+  "production migration",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "TTGDTX UAT operator handoff",
   "execution log",

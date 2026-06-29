@@ -421,6 +421,12 @@ requireText(
 
 requireText(
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  /Do not paste secrets, passwords, temporary passwords, OTPs, password reset\s+links, account activation\/invite links, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i,
+  "migration-order account secret and sensitive-data boundary",
+);
+
+requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   /Step100[\s\S]*formally approved as pilot\s+waiver/i,
   "migration-order Step100 waiver boundary",
 );

@@ -98,6 +98,11 @@ requireText(
 );
 requireText(
   guardDoc,
+  /Do not paste secrets, passwords, temporary passwords, OTPs, password reset\s+links, account activation\/invite links, service-role keys, bank credentials,\s+raw student PII, raw CCCD, raw phone numbers or raw payment data/i,
+  "account secret and sensitive-data boundary",
+);
+requireText(
+  guardDoc,
   /npm\.cmd run audit:ttgdtx-migration-order-guard/i,
   "local guard command",
 );

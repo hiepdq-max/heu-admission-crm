@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Step90-Step110 Migration Order Account Secret Boundary
+
+- Updated the Step90-Step110 migration order sign-off guard so migration-order
+  review explicitly forbids temporary passwords, password reset links and
+  account activation/invite links in Git/Codex/chat or audit documents.
+- Tightened `scripts/audit-ttgdtx-migration-order-guard.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so migration-order packaging cannot
+  claim a no-secret boundary while omitting temporary account secrets.
+- This is migration-order packaging only. It does not execute backup, restore,
+  production migration, rollback, UAT acceptance, evidence acceptance, owner
+  waiver, finance action or production GO.
+
 ## 2026-06-29 - P7 AI Account Secret Prompt Boundary
 
 - Updated the AI assistant policy, P7-02 task checklist generator and P7-03

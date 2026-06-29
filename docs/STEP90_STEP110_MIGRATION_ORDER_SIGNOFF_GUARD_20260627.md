@@ -23,7 +23,8 @@ Production remains NO-GO.
   attached outside Git when sensitive.
 - Do not run Step90-Step110 on production until IT_DATA, KHTC and PHAP_CHE sign
   the migration order, waiver decisions and rollback plan.
-- Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,
+- Do not paste secrets, passwords, temporary passwords, OTPs, password reset
+  links, account activation/invite links, service-role keys, bank credentials,
   raw student PII, raw CCCD, raw phone numbers or raw payment data into this
   repo, Codex, chat or audit documents.
 - Do not use hard-delete, table drop or truncate as rollback proof for finance,
