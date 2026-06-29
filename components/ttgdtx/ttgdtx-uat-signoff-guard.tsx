@@ -7,7 +7,7 @@ const uatClosureItems = [
     caseId: "UAT-CLOSE-01",
     title: "Synthetic accounts prepared",
     evidence:
-      "UAT_ADMIN, UAT_BGH, UAT_KHTC, UAT_TUYEN_SINH, UAT_PHAP_CHE and UAT_OUT_OF_SCOPE exist with no real passwords shared in Codex/chat.",
+      "UAT_ADMIN, UAT_BGH, UAT_KHTC, UAT_TUYEN_SINH, UAT_PHAP_CHE and UAT_OUT_OF_SCOPE exist with no real passwords, temporary passwords or activation/invite links shared in Codex/chat.",
   },
   {
     caseId: "UAT-CLOSE-02",
@@ -31,7 +31,7 @@ const uatClosureItems = [
     caseId: "UAT-CLOSE-05",
     title: "Sensitive evidence controlled",
     evidence:
-      "Screenshots and notes are redacted; passwords, OTPs, service-role keys, raw PII, bank accounts and raw payment evidence stay outside Git/Codex/chat.",
+      "Screenshots and notes are redacted; passwords, temporary passwords, account activation/invite links, OTPs, service-role keys, raw PII, bank accounts and raw payment evidence stay outside Git/Codex/chat.",
   },
   {
     caseId: "UAT-CLOSE-06",
@@ -77,9 +77,10 @@ export function TtgdtxUatSignoffGuard() {
               Go/No-Go.
             </p>
             <p className="mt-2 leading-6 text-sky-900">
-              Do not paste real passwords, OTPs, service-role keys, student
-              PII, CCCD, phone numbers, bank accounts or raw payment evidence
-              into Codex/chat, browser notes or screenshots.
+              Do not paste real passwords, temporary passwords, account
+              activation/invite links, OTPs, service-role keys, student PII,
+              CCCD, phone numbers, bank accounts or raw payment evidence into
+              Codex/chat, browser notes or screenshots.
             </p>
           </div>
         </div>

@@ -13,8 +13,8 @@ It covers:
 3. Browser smoke test for unauthenticated access.
 4. Remaining multi-account role/workspace UAT that still needs synthetic users.
 
-No real passwords, OTPs, service keys, bank credentials, student PII or production
-data were used.
+No real passwords, temporary passwords, account activation/invite links, OTPs,
+service keys, bank credentials, student PII or production data were used.
 
 ## 2. Preflight Result
 
@@ -85,9 +85,10 @@ synthetic Auth users:
 | `UAT_PHAP_CHE` | PENDING |
 | `UAT_OUT_OF_SCOPE` | PENDING |
 
-Use synthetic accounts only. Do not send real passwords into Codex/chat. The
-human operator should create or reset these accounts in Supabase Auth, then log
-in in the browser and run `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`.
+Use synthetic accounts only. Do not send real passwords, temporary passwords or
+account activation/invite links into Codex/chat. The human operator should create
+or reset these accounts in Supabase Auth, then log in in the browser and run
+`docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`.
 Use `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` as the account setup guide.
 Use `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` as the route/account execution
 matrix.
@@ -110,7 +111,7 @@ owner signature keeps production NO-GO.
 | UAT-CLOSE-02 Route matrix executed | PASS/BLOCKED | PENDING | `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md` route/account results, redacted | IT_DATA + process owners |
 | UAT-CLOSE-03 Finance and dashboard negative tests pass | PASS/BLOCKED | PENDING | Out-of-scope and non-finance denial screenshots/references, redacted | KHTC + BGH + IT_DATA |
 | UAT-CLOSE-04 Execution log completed | PASS/BLOCKED | PENDING | This log records account, route, result, evidence reference and reviewer | IT_DATA + Audit |
-| UAT-CLOSE-05 Sensitive evidence controlled | PASS/BLOCKED | PENDING | No passwords, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git/Codex/chat | IT_DATA + Audit |
+| UAT-CLOSE-05 Sensitive evidence controlled | PASS/BLOCKED | PENDING | No passwords, temporary passwords, account activation/invite links, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git/Codex/chat | IT_DATA + Audit |
 | UAT-CLOSE-06 Owners sign UAT result | PASS/BLOCKED | PENDING | BGH, KHTC, PHAP_CHE and IT_DATA sign PASS, FAIL or BLOCKED outside Codex/chat | Required owners |
 
 ## 5.1 Governance UAT Execution Readiness

@@ -556,6 +556,20 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
+  "TTGDTX UAT operator handoff",
+  "execution log",
+  "browser matrix",
+  "synthetic account setup",
+  "temporary passwords",
+  "account activation/invite",
+  "internal UAT sign-off guard",
+  "audit-ttgdtx-uat-readiness.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "UAT handoff/account-secret alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - Current-State P0-10 Account Secret Evidence", [
   "audit:heu-controlled-evidence-redaction-pack",
   "temporary password",

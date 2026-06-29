@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - UAT Handoff Account Secret Boundary
+
+- Updated TTGDTX UAT operator handoff, execution log, browser matrix and
+  synthetic account setup so temporary passwords and account activation/invite
+  links are forbidden in Git/Codex/chat.
+- Surfaced the same boundary in the internal UAT sign-off guard so operators
+  see it while running browser UAT.
+- Tightened `scripts/audit-ttgdtx-uat-readiness.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so UAT packaging cannot claim a
+  no-secret boundary while omitting temporary account secrets.
+- This is UAT handoff/account-secret alignment only. It does not create or reset
+  accounts, transmit passwords, execute UAT, accept evidence, grant access,
+  approve finance action, approve migration or mark production GO.
+
 ## 2026-06-29 - Current-State P0-10 Account Secret Evidence
 
 - Added `audit:heu-controlled-evidence-redaction-pack` to current-state audit

@@ -14,9 +14,10 @@ approval evidence.
 
 ## 1. Hard Boundaries
 
-- Do not paste passwords, OTPs, reset links, service-role keys, API keys, raw
-  student PII, CCCD, private phone numbers, bank accounts, bank statements,
-  vouchers or raw payment data into Git, Codex or chat.
+- Do not paste passwords, temporary passwords, OTPs, reset links, account
+  activation/invite links, service-role keys, API keys, raw student PII, CCCD,
+  private phone numbers, bank accounts, bank statements, vouchers or raw payment
+  data into Git, Codex or chat.
 - Use synthetic UAT accounts only.
 - Store screenshots and signed evidence in controlled storage outside Git.
 - Only redacted evidence references may be copied into docs or issue notes.
@@ -28,7 +29,7 @@ approval evidence.
 | Step | Operator action | File/source | Required result |
 |---|---|---|---|
 | UAT-HANDOFF-01 | Run static preflight before browser testing | `npm.cmd run audit:ttgdtx-uat-readiness`; `npm.cmd run audit:ttgdtx-signed-uat-execution-routing-hub`; `npm.cmd run audit:heu-role-scope-uat-pack`; `npm.cmd run audit:ttgdtx-release-gates` | PASS or stop |
-| UAT-HANDOFF-02 | Create or reset synthetic accounts in Supabase Auth | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` | Accounts exist; no real passwords shared |
+| UAT-HANDOFF-02 | Create or reset synthetic accounts in Supabase Auth | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` | Accounts exist; no real/temporary passwords or activation/invite links shared |
 | UAT-HANDOFF-03 | Open the signed UAT execution routing hub and confirm route list | `/ttgdtx`; `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`; `data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING"` | UAT-ROUTE-01 through UAT-ROUTE-11 visible with route, runbook, owner, minimum proof, stop condition and guard |
 | UAT-HANDOFF-04 | Execute the browser route/account matrix and signed UAT route list | `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`; Section 2.1 below | ALLOWED, BLOCKED, EMPTY_SCOPED_STATE, SIGNED_UAT_READY, NO_GO or BLOCKED recorded |
 | UAT-HANDOFF-05 | Record each test result and redacted evidence reference | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 | Account, route, result, evidence reference, redaction reviewer and reviewer recorded |
@@ -63,8 +64,9 @@ Stop UAT and keep production NO-GO if any of these occur:
 - A finance, payout, dashboard or source-control page relies only on hidden UI
   instead of server-side permission/scope checks.
 - Out-of-scope or non-finance users can view restricted finance evidence.
-- Any screenshot contains raw secrets, raw student identity data, bank account
-  data, bank statements, vouchers or raw payment evidence.
+- Any screenshot contains raw secrets, temporary passwords, activation/invite
+  links, raw student identity data, bank account data, bank statements, vouchers
+  or raw payment evidence.
 - Owner sign-off is missing, unclear or recorded inside Codex/chat only.
 - Any `UAT-ROUTE-*` row is missing minimum proof, has raw evidence, lacks
   redaction review, lacks required owner signature or is marked NO_GO/BLOCKED.

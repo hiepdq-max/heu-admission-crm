@@ -7,14 +7,15 @@ Mode: UAT/staging only. This document does not approve production access.
 ## 1. Purpose
 
 This setup prepares synthetic users for `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`.
-It exists so the browser UAT can continue without sharing real passwords or
-using production staff accounts.
+It exists so the browser UAT can continue without sharing real passwords,
+temporary passwords, activation/invite links or using production staff accounts.
 
 ## 2. Safety Rules
 
 - Use synthetic UAT users only.
 - Do not use real student, parent, CCCD, bank or staff private data.
-- Do not send real passwords into Codex/chat.
+- Do not send real passwords, temporary passwords or account activation/invite
+  links into Codex/chat.
 - Do not paste service-role keys into Codex/chat.
 - Do not reuse production passwords.
 - Do not mark production GO from this setup. It only prepares test accounts.
@@ -40,7 +41,8 @@ UAT evidence.
 
 1. In Supabase Auth, create the six synthetic users.
 2. Set temporary UAT-only passwords in the password manager controlled by
-   IT/Data. Do not paste those passwords into Codex/chat.
+   IT/Data. Do not paste those passwords or activation/invite links into
+   Codex/chat.
 3. In the application or SQL console, link each Auth user to `public.users_profile`
    with the target role.
 4. Assign the active `TC9_TTGDTX_LINKED` segment in

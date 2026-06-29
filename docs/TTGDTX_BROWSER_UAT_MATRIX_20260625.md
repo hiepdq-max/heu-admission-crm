@@ -10,8 +10,9 @@ Use this matrix after completing
 at a time, open every route, and record the observed result in
 `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` or the signed UAT evidence pack.
 
-Do not send real passwords into Codex/chat. Do not use real student, bank or
-staff private data in screenshots.
+Do not send real passwords, temporary passwords or account activation/invite
+links into Codex/chat. Do not use real student, bank or staff private data in
+screenshots.
 
 ## 2. Result Codes
 
