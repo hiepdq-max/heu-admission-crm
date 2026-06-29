@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P2-17 Payout Account Secret Boundary
+
+- Updated the P2-17 duplicate payout UAT runbook, payout UAT evidence checklist
+  and payout execution readiness checklist so payout evidence explicitly
+  forbids temporary passwords, password reset links and account
+  activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-ttgdtx-payout-duplicate-guard.mjs`,
+  `scripts/audit-ttgdtx-payout-execution-readiness.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P2-17 payout packaging cannot
+  claim a no-secret evidence boundary while omitting temporary account secrets.
+- This is payout UAT/evidence packaging only. It does not execute payout UAT,
+  collect evidence, approve bank transfer, approve finance action, move money,
+  record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P2-18 Dashboard Account Secret Boundary
 
 - Updated the P2-18 accounting dashboard UAT runbook, dashboard role UAT plan,

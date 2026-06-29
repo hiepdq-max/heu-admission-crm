@@ -31,8 +31,9 @@ off by KHTC/Audit, and linked in the production checklist.
 5. Prepare P2-19 source-control check states for both block and pass cases:
    - `P2_19_ACCEPTANCE_BEFORE_PAYOUT`
    - `P2_19_PARTNER_INVOICE_BEFORE_PAYOUT`
-6. Do not paste passwords, banking login credentials, or real card/account
-   secrets into Codex, tickets, screenshots, or notes.
+6. Do not paste passwords, temporary passwords, OTPs, password reset links,
+   account activation/invite links, banking login credentials, or real
+   card/account secrets into Codex, tickets, screenshots, or notes.
 
 ## 4. Test Matrix
 
@@ -64,7 +65,8 @@ Before signed UAT, the repo must keep local guard evidence green:
   transfer.
 - `components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx` shows the
   required redacted evidence set for P2-17-01 through P2-17-11 and keeps raw
-  bank statements, vouchers, payment data, student PII and credentials out of
+  bank statements, vouchers, payment data, student PII, credentials, temporary
+  passwords, password reset links and account activation/invite links out of
   Git/Codex/chat.
 - The same checklist exposes `data-ttgdtx-payout-acceptance-matrix="P2-17"`
   with P2-17-ACCEPT-01 through P2-17-ACCEPT-06 and decision value

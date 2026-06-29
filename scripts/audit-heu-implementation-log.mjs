@@ -573,6 +573,22 @@ fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P2-17 Payout Account Secret Boundary", [
+  "P2-17 duplicate payout UAT runbook",
+  "payout UAT evidence checklist",
+  "payout execution readiness checklist",
+  "temporary passwords",
+  "password reset links",
+  "activation/invite links",
+  "audit-ttgdtx-payout-duplicate-guard.mjs",
+  "audit-ttgdtx-payout-execution-readiness.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "payout UAT/evidence packaging only",
+  "bank transfer",
+  "move money",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

@@ -74,7 +74,7 @@ requireText(
 
 requireText(
   evidenceChecklist,
-  /(?=[\s\S]*data-ttgdtx-payout-uat-evidence-checklist="P2-17")(?=[\s\S]*P2-17 payout UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed payout UAT is still required before P2-17 can move from\s+IN_PROGRESS)(?=[\s\S]*raw bank statements, raw bank\s+accounts, vouchers, passwords, OTPs, service-role keys, raw\s+payment data, student PII and CCCD stay outside Git\/Codex\/chat)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2-17-01\/P2-17-02)(?=[\s\S]*P2-17-03)(?=[\s\S]*P2-17-04\/P2-17-05\/P2-17-07)(?=[\s\S]*P2-17-06)(?=[\s\S]*P2-17-08)(?=[\s\S]*P2-17-09\/P2-17-10\/P2-17-11)(?=[\s\S]*KHTC, PHAP_CHE, BGH and Audit must sign the evidence outside\s+Codex\/chat)/i,
+  /(?=[\s\S]*data-ttgdtx-payout-uat-evidence-checklist="P2-17")(?=[\s\S]*P2-17 payout UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed payout UAT is still required before P2-17 can move from\s+IN_PROGRESS)(?=[\s\S]*raw bank statements, raw bank\s+accounts, vouchers, passwords, temporary passwords, OTPs,\s+password reset links, account activation\/invite links,\s+service-role keys, raw payment data, student PII and CCCD stay\s+outside Git\/Codex\/chat)(?=[\s\S]*P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK\.md)(?=[\s\S]*P2-17-01\/P2-17-02)(?=[\s\S]*P2-17-03)(?=[\s\S]*P2-17-04\/P2-17-05\/P2-17-07)(?=[\s\S]*P2-17-06)(?=[\s\S]*P2-17-08)(?=[\s\S]*P2-17-09\/P2-17-10\/P2-17-11)(?=[\s\S]*KHTC, PHAP_CHE, BGH and Audit must sign the evidence outside\s+Codex\/chat)/i,
   "P2-17 payout UAT evidence checklist",
   evidenceChecklistPath,
 );

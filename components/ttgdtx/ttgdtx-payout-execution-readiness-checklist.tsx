@@ -77,7 +77,7 @@ const executionReadinessChecks: ExecutionReadinessCheck[] = [
     check: "Evidence URL required",
     source: "evidence_url on the payout form and RPC payload",
     passRule:
-      "The evidence link points to a controlled redacted reference; raw bank statements, vouchers and credentials stay outside Git/Codex/chat.",
+      "The evidence link points to a controlled redacted reference; raw bank statements, vouchers, credentials, temporary passwords, password reset links and account activation/invite links stay outside Git/Codex/chat.",
     owner: "KHTC + Audit",
     stopCondition:
       "Missing evidence link or raw sensitive evidence in the working area blocks payout recording.",
@@ -351,9 +351,10 @@ export function TtgdtxPayoutExecutionReadinessChecklist() {
         <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
           <ShieldAlert className="mt-0.5 size-4 shrink-0" />
           <p>
-            Do not paste passwords, OTPs, service-role keys, raw student PII,
-            CCCD, bank accounts, raw bank statements, raw vouchers or raw
-            payment data into Git, Codex or chat.
+            Do not paste passwords, temporary passwords, OTPs, password reset
+            links, account activation/invite links, service-role keys, raw
+            student PII, CCCD, bank accounts, raw bank statements, raw vouchers
+            or raw payment data into Git, Codex or chat.
           </p>
         </div>
       </div>

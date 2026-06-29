@@ -126,8 +126,10 @@ export function TtgdtxPayoutUatEvidenceChecklist() {
               Signed payout UAT is still required before P2-17 can move from
               IN_PROGRESS. Collect only redacted screenshots, database snippets
               or non-secret evidence references; raw bank statements, raw bank
-              accounts, vouchers, passwords, OTPs, service-role keys, raw
-              payment data, student PII and CCCD stay outside Git/Codex/chat.
+              accounts, vouchers, passwords, temporary passwords, OTPs,
+              password reset links, account activation/invite links,
+              service-role keys, raw payment data, student PII and CCCD stay
+              outside Git/Codex/chat.
             </p>
           </div>
         </div>
