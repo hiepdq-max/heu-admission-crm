@@ -373,7 +373,7 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
       "Controlled storage location, redaction class, reviewer and evidence ID before any screenshot, voucher, backup proof or signed result is referenced.",
     decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Raw student PII, CCCD, bank data, passwords, OTPs, service-role keys, vouchers or unredacted screenshots are present.",
+      "Raw student PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys, vouchers or unredacted screenshots are present.",
     auditCommand: "npm.cmd run audit:heu-controlled-evidence-redaction-pack",
   },
   {

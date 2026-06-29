@@ -468,6 +468,18 @@ requireText(
 );
 
 requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /UAT-ROUTE-01[\s\S]*Raw PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys, vouchers or unredacted screenshots are present/i,
+  "signed UAT routing hub account-secret stop condition",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /UAT-ROUTE-01[\s\S]*Raw student PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys, vouchers or unredacted screenshots are present/i,
+  "shared signed UAT routing account-secret stop condition",
+);
+
+requireText(
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
   /Status:\s*DRAFT_CONTROL[\s\S]*No new level-1 folder is allowed[\s\S]*Folder Registry, File Registry,\s*Version Log, Audit Log and Signoff Register[\s\S]*RC-08[\s\S]*DRAFT_MATRIX_READY[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-09[\s\S]*DRAFT_MATRIX_READY[\s\S]*RC-10[\s\S]*DRAFT_MATRIX_READY[\s\S]*Codex\/AI may draft, check and implement local safe controls[\s\S]*must not\s+approve production, approve migration, accept UAT, approve finance action/i,
   "P0 root control action register boundary",

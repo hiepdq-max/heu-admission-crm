@@ -665,6 +665,22 @@ fastSection("2026-06-29 - Internal UAT Signoff Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Signed UAT Routing Account Secret Boundary", [
+  "TTGDTX signed UAT execution routing hub",
+  "SIGNED_UAT_EXECUTION_ROUTES",
+  "P0-10 route stop condition",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "signed UAT routing packaging only",
+  "collect evidence",
+  "create accounts",
+  "transmit passwords",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

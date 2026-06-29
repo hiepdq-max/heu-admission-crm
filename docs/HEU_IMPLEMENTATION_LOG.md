@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Signed UAT Routing Account Secret Boundary
+
+- Updated the TTGDTX signed UAT execution routing hub and shared
+  `SIGNED_UAT_EXECUTION_ROUTES` source so the P0-10 route stop condition
+  explicitly forbids temporary passwords, password reset links and account activation/invite links
+  before any signed UAT evidence can be routed.
+- Tightened `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so signed UAT routing cannot claim
+  a controlled-evidence stop condition while omitting temporary account secrets.
+- This is signed UAT routing packaging only. It does not execute UAT, collect evidence,
+  accept evidence, create accounts, transmit passwords, grant access, approve
+  finance action, approve migration, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - Internal UAT Signoff Account Secret Boundary
 
 - Updated the TTGDTX internal UAT sign-off guard so multi-account UAT evidence
