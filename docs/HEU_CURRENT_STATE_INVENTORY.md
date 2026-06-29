@@ -54,6 +54,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
 | `npm.cmd run audit:heu-user-account-security` | PASS |
+| `npm.cmd run audit:heu-controlled-evidence-redaction-pack` | PASS |
 | `npm.cmd run audit:permission-soft-revoke` | PASS |
 | `npm.cmd run audit:ttgdtx-role-scope-access` | PASS |
 | `npm.cmd run audit:ttgdtx-data-fetch-gate` | PASS |
@@ -119,7 +120,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Role/workspace scope | P6-04 pack, scope UI guard, create-user temporary password guard, evidence checklist, route matrix, acceptance matrix, access decision manifest, governance UAT execution readiness, internal UAT run closure tracker, execution-log closure template and UAT operator handoff exist | Multi-account signed UAT pending |
 | Audit log | Static coverage, audit trace acceptance matrix, audit-log evidence acceptance matrix, audit traceability decision manifest and governance UAT execution readiness pass locally | Signed audit-log UAT pending |
 | Hard-delete/cascade | TTGDTX cascade passes; non-TTGDTX review identifies 44 findings, locks P6-06-FIND-001 through P6-06-FIND-044 in `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, and exposes a conversion/waiver decision queue, hard-delete/cascade acceptance matrix and closure decision manifest | Conversion or written waiver pending |
-| Controlled evidence | Redaction/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint and closure tracker exist, including the P0-03 operator run sheet proof, P0-03 restore smoke-check proof for P0-19/P3 gate preservation, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff/final owner decision manifest proof with P3-01/P3-02 runbook evidence | Real evidence must stay outside Git/Codex/chat |
+| Controlled evidence | Redaction/intake pack, audit guard, controlled evidence acceptance matrix, P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint and closure tracker exist, including the P0-03 operator run sheet proof, P0-03 restore smoke-check proof for P0-19/P3 gate preservation, separate P6-04 role/workspace proof, P6-03 audit-log proof, P6-06 hard-delete/cascade conversion-or-waiver proof and P0-09 owner sign-off/UAT handoff/final owner decision manifest proof with P3-01/P3-02 runbook evidence; temporary passwords and account activation/invite links are forbidden in Git/Codex/chat | Real evidence must stay outside Git/Codex/chat |
 | Final handoff coverage | `AGENTS.md` final handoff summary requires live git state, local check results, Stage D/NO-GO, the P0-03 operator run sheet evidence path, P0-03 restore smoke-check proof for P0-19/P3 gate preservation, P0-09 owner sign-off/UAT handoff evidence path, P0-09 final owner decision manifest, P3-01/P3-02 UAT requirement, P0-13 blocker source and P0-14 evidence binder, including controlled evidence intake ledger, redaction reviewer, owner signature state, separate P6-04 role/workspace, P6-03 audit-log and P6-06 hard-delete/cascade proof paths with `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | PASS_LOCAL; cannot override production NO-GO |
 | AI helper layer | Task checklist and risk board are read-only; P7-04 prompt/output audit logging design exists | Advisory only; no AI service call, prompt storage, workflow write or autonomous approval |
 
@@ -132,7 +133,7 @@ production, production migration, UAT acceptance, finance action or owner GO.
 | Migration order unsigned | CRITICAL | Step90-Step110 approval must be signed by IT_DATA, KHTC and PHAP_CHE |
 | Signed UAT missing | CRITICAL | P3-01/P3-02, P0-19, P2-17, P2-18, P6-03, P6-04, the internal UAT run closure tracker, the UAT execution closure template and UAT operator handoff still require signed evidence |
 | Hard-delete/cascade residual risk | HIGH | Non-TTGDTX/base cascade findings need conversion or written waiver |
-| Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, temporary passwords, service-role keys and vouchers must stay outside Git/Codex/chat |
+| Real evidence/privacy exposure | HIGH | Raw PII, bank data, passwords, temporary passwords, account activation/invite links, service-role keys and vouchers must stay outside Git/Codex/chat |
 | AI misuse | MEDIUM | AI remains advisory-only; prompt/output logging and role-scoped AI data are not enabled |
 
 ## 7. Production Readiness Assessment

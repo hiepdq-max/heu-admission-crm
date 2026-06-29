@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Current-State P0-10 Account Secret Evidence
+
+- Added `audit:heu-controlled-evidence-redaction-pack` to current-state audit
+  evidence.
+- Surfaced the P0-10 temporary password and account activation/invite link
+  forbidden-content boundary in the controlled-evidence and privacy-risk rows.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
+  cannot omit the account-secret boundary while claiming current P0-10 evidence.
+- This is inventory/evidence alignment only. It does not collect evidence,
+  create users, transmit passwords, accept UAT, approve migration, approve
+  finance action or mark production GO.
+
 ## 2026-06-29 - P0-10 Temporary Account Secret Evidence Guard
 
 - Added explicit temporary password and account activation/invite link wording

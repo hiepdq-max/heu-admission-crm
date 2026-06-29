@@ -556,6 +556,17 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Current-State P0-10 Account Secret Evidence", [
+  "audit:heu-controlled-evidence-redaction-pack",
+  "temporary password",
+  "account activation/invite link",
+  "controlled-evidence and privacy-risk rows",
+  "audit-heu-current-state-inventory.mjs",
+  "account-secret boundary",
+  "inventory/evidence alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P0-10 Temporary Account Secret Evidence Guard", [
   "temporary password",
   "account activation/invite link",
