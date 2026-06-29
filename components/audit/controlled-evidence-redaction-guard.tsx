@@ -34,7 +34,7 @@ const redactionAcceptanceItems = [
     caseId: "P0-10-ACCEPT-03",
     requirement: "Redaction preserves proof while removing private data",
     minimumEvidence:
-      "Names, CCCD/passport, phone, bank account, credentials, temporary passwords, reset/activation/invite links, vouchers and raw payment data are masked or removed.",
+      "Names, CCCD/passport, phone, bank account, credentials, temporary passwords, password reset links, account activation/invite links, vouchers and raw payment data are masked or removed.",
     stopCondition:
       "Stop if the redacted copy leaks private data or no longer proves the intended control.",
   },

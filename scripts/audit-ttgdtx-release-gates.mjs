@@ -1015,7 +1015,7 @@ requireText(
 
 requireText(
   "components/audit/controlled-evidence-redaction-guard.tsx",
-  /(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10 controlled evidence acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)/i,
+  /(?=[\s\S]*data-heu-controlled-evidence-acceptance-matrix="P0-10")(?=[\s\S]*P0-10 controlled evidence acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0_10_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-10-ACCEPT-01)(?=[\s\S]*P0-10-ACCEPT-06)(?=[\s\S]*Evidence classified before use)(?=[\s\S]*Sensitive originals stay outside Git\/Codex)(?=[\s\S]*Redaction preserves proof while removing private data)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*Owner and Audit review recorded)(?=[\s\S]*Only safe references enter tracked work)(?=[\s\S]*Production boundary acknowledged)/i,
   "controlled evidence acceptance matrix UI",
 );
 
