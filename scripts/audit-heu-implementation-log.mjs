@@ -588,6 +588,27 @@ fastSection("2026-06-29 - P6-04 Real Accounting User UAT Queue", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P2-18 P5-03 Real Accounting User Evidence Bridge", [
+  "data-ttgdtx-dashboard-real-user-evidence-bridge=\"P2-18-P6-04\"",
+  "data-finance-desk-real-user-evidence-bridge=\"P5-03-P6-04\"",
+  "ttgdtx-dashboard-uat-evidence-checklist.tsx",
+  "finance-desk-uat-evidence-checklist.tsx",
+  "P2_18_REAL_USER_READY / NO_GO / BLOCKED",
+  "P5_03_REAL_USER_READY / NO_GO / BLOCKED",
+  "P6-04 real accounting user queue/result template",
+  "KHTC accounting operator",
+  "BGH read-only reviewer",
+  "Audit and Phap Che reviewers",
+  "Out-of-scope negative account",
+  "audit-ttgdtx-dashboard-readonly-guard.mjs",
+  "audit-heu-finance-desk.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "approve bank transfer",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
   "P2-18 accounting dashboard UAT runbook",
   "dashboard role UAT plan",

@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P2-18 P5-03 Real Accounting User Evidence Bridge
+
+- Added `data-ttgdtx-dashboard-real-user-evidence-bridge="P2-18-P6-04"` to
+  `components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx` and
+  documented the same bridge in `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`.
+- Added `data-finance-desk-real-user-evidence-bridge="P5-03-P6-04"` to
+  `components/finance/finance-desk-uat-evidence-checklist.tsx` and documented
+  the same bridge in `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`.
+- Both bridges require the P6-04 real accounting user queue/result template
+  before P2-18 dashboard reliance or P5-03 Finance Desk reliance. Required
+  lanes cover KHTC accounting operator, BGH read-only reviewer, Audit and Phap Che reviewers, plus an Out-of-scope negative account. Decision values are
+  `P2_18_REAL_USER_READY / NO_GO / BLOCKED` and
+  `P5_03_REAL_USER_READY / NO_GO / BLOCKED`.
+- Tightened `scripts/audit-ttgdtx-dashboard-readonly-guard.mjs`,
+  `scripts/audit-heu-finance-desk.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`; updated backlog, production
+  checklist and current-state evidence so P2-18/P5-03 cannot omit the P6-04
+  real-accounting proof bridge.
+- This does not create accounts, transmit passwords, accept UAT, approve
+  dashboard reliance, approve finance action, approve statutory accounting,
+  approve bank transfer, waive owner approval or mark production GO.
+
 ## 2026-06-29 - P6-04 Real Accounting User UAT Queue
 
 - Added `data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"` to

@@ -114,12 +114,12 @@ requireText(
 );
 requireText(
   inventory,
-  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit with reliance decision manifest[\s\S]*signed finance\/legal UAT still required/i,
+  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit with real accounting user evidence bridge and reliance decision manifest[\s\S]*signed finance\/legal UAT still required/i,
   "M09 P2-01/P2-02 current module state",
 );
 requireText(
   inventory,
-  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard immediate stop guard, dashboard reliance decision manifest, P5-02 action queue with safe iteration loop and P5-03 Finance Desk read-only cockpit with reliance decision manifest are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
+  /M10 Dashboard[\s\S]*P2-18 read-only guard, source reconciliation, dashboard acceptance matrix, dashboard immediate stop guard, real accounting user evidence bridge, dashboard reliance decision manifest, P5-02 action queue with safe iteration loop and P5-03 Finance Desk read-only cockpit with real accounting user evidence bridge and reliance decision manifest are UAT-gated and include P0-14\/P0-15 before owner GO\/NO-GO/i,
   "M10 P2-18 dashboard acceptance matrix current module state",
 );
 requireText(
@@ -154,12 +154,12 @@ requireText(
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard immediate stop guard, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard immediate stop guard, real accounting user evidence bridge to P6-04 queue\/result proof, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
   "P2-18 dashboard and P5-02 action queue control state",
 );
 requireText(
   inventory,
-  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, UAT evidence checklist, immediate stop guard, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
+  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, UAT evidence checklist, immediate stop guard, real accounting user evidence bridge to P6-04 queue\/result proof, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "P5-03 Finance Desk current control state",
 );
 requireText(

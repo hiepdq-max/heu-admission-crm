@@ -62,6 +62,11 @@ Before signed browser UAT, the repo must keep local guard evidence green:
   `data-ttgdtx-dashboard-acceptance-matrix="P2-18"` with
   P2-18-ACCEPT-01 through P2-18-ACCEPT-06 and decision value
   `P2_18_ACCEPT / FAIL / BLOCKED`.
+- The same checklist exposes
+  `data-ttgdtx-dashboard-real-user-evidence-bridge="P2-18-P6-04"` with
+  P2-18-REAL-01 through P2-18-REAL-05 and decision value
+  `P2_18_REAL_USER_READY / NO_GO / BLOCKED`. It requires the P6-04 real
+  accounting user queue and result template before P2-18 dashboard reliance.
 - `components/ttgdtx/ttgdtx-dashboard-source-reconciliation-checklist.tsx`
   shows the source reconciliation checklist for P2-03, P2-10,
   P2-13/P2-14, P2-15/P2-16, P2-17 and P2-19 evidence metadata.
@@ -81,7 +86,26 @@ Before signed browser UAT, the repo must keep local guard evidence green:
 This local evidence does not replace signed browser UAT. It only proves the
 dashboard guard is packaged before the UAT team executes the matrix above.
 
-## 6. Evidence Queries
+## 6. Real Accounting User Evidence Bridge
+
+Before BGH/KHTC rely on P2-18 dashboard numbers, the UAT pack must cite:
+
+- `data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"`
+- `data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"`
+
+| Case | Required proof | Stop condition |
+|---|---|---|
+| P2-18-REAL-01 | REAL-ACC-01 through REAL-ACC-06 are recorded with controlled evidence IDs | P6-04 queue/result template is missing, unsigned or stored in Git/Codex/chat |
+| P2-18-REAL-02 | KHTC opens P2-18 only inside assigned TTGDTX finance scope and reconciles KPIs to source P2 workflows | KHTC sees unrestricted partner/student finance data, payout actions or source evidence outside scope |
+| P2-18-REAL-03 | BGH reviews dashboard totals and blockers without create, update, approve, pay or production GO controls | BGH can mutate finance facts, approve payment, see hidden raw evidence or trigger production GO |
+| P2-18-REAL-04 | Audit and Phap Che review trace/legal context without raw secrets or unrestricted finance totals | Audit/legal review exposes raw secrets, private contracts beyond scope, unrestricted totals or money movement |
+| P2-18-REAL-05 | Out-of-scope account returns `BLOCKED` or `EMPTY_SCOPED_STATE` for P2-18 dashboard data | Any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible |
+
+Do not paste real passwords, temporary passwords, OTPs, password reset links,
+account activation/invite links, service-role keys, raw PII, CCCD, bank data,
+vouchers or screenshots with secrets into dashboard evidence.
+
+## 7. Evidence Queries
 
 Use these only against UAT/test data.
 
@@ -116,7 +140,7 @@ limit 30;
 
 Expected: each exception points to the correct next workflow step.
 
-## 7. Dashboard Acceptance Matrix
+## 8. Dashboard Acceptance Matrix
 
 Use the P2-18 dashboard acceptance matrix after the test matrix and evidence
 queries. The matrix is local-only until signed browser UAT and owner sign-off
@@ -133,7 +157,7 @@ exist.
 
 Decision value: `P2_18_ACCEPT / FAIL / BLOCKED`.
 
-## 8. Dashboard Reliance Decision Manifest
+## 9. Dashboard Reliance Decision Manifest
 
 Immediate stop guard: do not proceed to source sign-off or owner reliance when
 dashboard totals are used for finance approval, statutory accounting, revenue
@@ -166,7 +190,7 @@ Final reliance decision: `P2_18_RELIANCE_READY / NO_GO / BLOCKED`.
 Missing reliance decision ID, unresolved variance, unsigned owner decision,
 uncontrolled evidence or raw sensitive dashboard data keeps P2-18 NO-GO.
 
-## 9. Sign-Off Rule
+## 10. Sign-Off Rule
 
 Mark P2-18 as `DONE` only when:
 

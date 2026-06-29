@@ -53,6 +53,12 @@ The same checklist also exposes
 P5-03-STOP-05 and decision value `P5_03_STOP_CHECK / GO_NEXT / BLOCKED`.
 Use this guard before recording any reliance decision.
 
+The same checklist exposes
+`data-finance-desk-real-user-evidence-bridge="P5-03-P6-04"` with
+P5-03-REAL-01 through P5-03-REAL-05 and decision value
+`P5_03_REAL_USER_READY / NO_GO / BLOCKED`. It requires the P6-04 real
+accounting user queue and result template before Finance Desk reliance.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |
@@ -93,7 +99,26 @@ If any total differs, mark the case `FAIL` or `BLOCKED`; do not manually adjust
 Finance Desk output. Correction must happen in the source P2 workflow with audit
 trail.
 
-## 7. Acceptance Matrix
+## 7. Real Accounting User Evidence Bridge
+
+Before KHTC/BGH rely on Finance Desk, the UAT pack must cite:
+
+- `data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"`
+- `data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"`
+
+| Case | Required proof | Stop condition |
+|---|---|---|
+| P5-03-REAL-01 | REAL-ACC-01 through REAL-ACC-06 are recorded with controlled evidence IDs | P6-04 queue/result template is missing, unsigned or stored in Git/Codex/chat |
+| P5-03-REAL-02 | KHTC opens Finance Desk only inside assigned TTGDTX scope and compares dashboard/import/source-control totals | KHTC sees unrestricted totals, source evidence outside assigned scope, payment execution or edit actions |
+| P5-03-REAL-03 | BGH reviews Finance Desk indicators and reliance blockers without write, approval, pay or production GO controls | BGH can mutate finance facts, approve payment, see hidden raw evidence or trigger production GO |
+| P5-03-REAL-04 | Audit and Phap Che review trace/legal context without raw secrets or unrestricted finance totals | Audit/legal review exposes raw secrets, private contracts beyond scope, unrestricted totals or money movement |
+| P5-03-REAL-05 | Out-of-scope account returns `BLOCKED` or `EMPTY_SCOPED_STATE` for Finance Desk totals and action links | Any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible |
+
+Do not paste real passwords, temporary passwords, OTPs, password reset links,
+account activation/invite links, service-role keys, raw PII, CCCD, bank data,
+vouchers or screenshots with secrets into Finance Desk evidence.
+
+## 8. Acceptance Matrix
 
 | Acceptance ID | Requirement | PASS condition | STOP condition |
 |---|---|---|---|
@@ -104,7 +129,7 @@ trail.
 | P5-03-ACCEPT-05 | Evidence hygiene | Evidence is masked, controlled and references approved storage only | Raw PII, bank, password, temporary password, account activation/invite link, voucher or payment evidence is pasted into Git/Codex/chat |
 | P5-03-ACCEPT-06 | Production boundary | Owners record signed PASS/FAIL/BLOCKED outside Codex/chat | Anyone treats PASS_LOCAL as production approval |
 
-## 8. Finance Desk Reliance Decision Manifest
+## 9. Finance Desk Reliance Decision Manifest
 
 Immediate stop guard: do not proceed to owner reliance when Finance Desk totals
 are used for statutory accounting, voucher posting, finance approval or bank
@@ -132,7 +157,7 @@ production GO.
 | P5-03-REL-05 | Finance reliance boundary accepted: owners record that Finance Desk is advisory/read-only and corrections must happen in source P2 workflows | PASS_LOCAL is treated as statutory accounting, finance posting, voucher approval, bank transfer instruction or dashboard production reliance |
 | P5-03-REL-06 | Human reliance decision recorded: KHTC, BGH, IT_DATA and AUDIT record RELIANCE_READY/NO_GO/BLOCKED with signer, date and controlled evidence refs | Missing decision ID, unsigned owner, unresolved source mismatch, uncontrolled evidence or open UAT stop condition remains |
 
-## 9. Evidence Log Template
+## 10. Evidence Log Template
 
 | Case | Tester role | Result | Controlled evidence reference | Owner note |
 |---|---|---|---|---|
@@ -146,7 +171,7 @@ production GO.
 | P5-03-UAT-08 |  | PENDING |  |  |
 | P5-03-UAT-09 |  | PENDING |  |  |
 
-## 10. Owner Sign-Off
+## 11. Owner Sign-Off
 
 | Owner | Decision | Evidence reference | Date |
 |---|---|---|---|

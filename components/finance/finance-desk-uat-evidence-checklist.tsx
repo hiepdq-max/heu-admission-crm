@@ -19,6 +19,18 @@ type FinanceDeskImmediateStopItem = {
   operatorAction: string;
 };
 
+type FinanceDeskRealUserBridgeItem = {
+  caseId: string;
+  accountClass: string;
+  requiredEvidence: string;
+  stopCondition: string;
+};
+
+const realAccountingQueueMarker =
+  'data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"';
+const realAccountingResultMarker =
+  'data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"';
+
 const uatItems: FinanceDeskUatItem[] = [
   {
     caseId: "P5-03-UAT-01",
@@ -73,6 +85,49 @@ const uatItems: FinanceDeskUatItem[] = [
     user: "UAT_ADMIN",
     expectedEvidence:
       "Inspect action links and confirm they route back to source P2 screens without mutating facts.",
+  },
+];
+
+const realUserBridgeItems: FinanceDeskRealUserBridgeItem[] = [
+  {
+    caseId: "P5-03-REAL-01",
+    accountClass: "P6-04 real-accounting preflight",
+    requiredEvidence:
+      "REAL-ACC-01 through REAL-ACC-06 are recorded with controlled evidence IDs before Finance Desk reliance.",
+    stopCondition:
+      "Stop if the P6-04 real accounting user UAT queue or result template is missing, unsigned or stored in Git/Codex/chat.",
+  },
+  {
+    caseId: "P5-03-REAL-02",
+    accountClass: "KHTC accounting operator",
+    requiredEvidence:
+      "KHTC can open Finance Desk only inside assigned TTGDTX scope and compare dashboard/import/source-control totals.",
+    stopCondition:
+      "Stop if KHTC sees unrestricted totals, source evidence outside assigned scope, payment execution or edit actions.",
+  },
+  {
+    caseId: "P5-03-REAL-03",
+    accountClass: "BGH read-only reviewer",
+    requiredEvidence:
+      "BGH can review Finance Desk indicators and reliance blockers without write, approval, pay or production GO controls.",
+    stopCondition:
+      "Stop if BGH can mutate finance facts, approve payment, see hidden raw evidence or trigger production GO.",
+  },
+  {
+    caseId: "P5-03-REAL-04",
+    accountClass: "Audit and Phap Che reviewers",
+    requiredEvidence:
+      "Audit can inspect traceability and Phap Che can review approved legal/source context without unrestricted finance totals.",
+    stopCondition:
+      "Stop if audit/legal review exposes raw secrets, private contracts beyond scope, unrestricted totals or money movement.",
+  },
+  {
+    caseId: "P5-03-REAL-05",
+    accountClass: "Out-of-scope negative account",
+    requiredEvidence:
+      "Out-of-scope account returns BLOCKED or EMPTY_SCOPED_STATE for Finance Desk totals and action links.",
+    stopCondition:
+      "Stop if any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible.",
   },
 ];
 
@@ -189,6 +244,66 @@ export function FinanceDeskUatEvidenceChecklist() {
             HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md
           </span>
         </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-emerald-200 bg-white p-4"
+        data-finance-desk-real-user-evidence-bridge="P5-03-P6-04"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-emerald-950">
+              P5-03 real accounting user evidence bridge: PASS_LOCAL only
+            </h3>
+            <p className="mt-2 leading-6 text-emerald-900">
+              Before Finance Desk reliance, cite the P6-04 real accounting user
+              queue and result template:
+              <span className="ml-1 font-mono text-xs">
+                {realAccountingQueueMarker}
+              </span>{" "}
+              and
+              <span className="ml-1 font-mono text-xs">
+                {realAccountingResultMarker}
+              </span>
+              .
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-950">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              P5_03_REAL_USER_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {realUserBridgeItems.map((item) => (
+            <article
+              className="border-l-2 border-emerald-300 bg-emerald-50 px-3 py-3"
+              key={item.caseId}
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.accountClass}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+          Do not paste real passwords, temporary passwords, OTPs, password
+          reset links, account activation/invite links, service-role keys, raw
+          PII, CCCD, bank data, vouchers or screenshots with secrets into
+          Finance Desk evidence.
+        </p>
       </div>
 
       <div

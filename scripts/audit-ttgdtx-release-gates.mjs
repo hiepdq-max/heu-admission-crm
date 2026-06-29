@@ -923,13 +923,13 @@ requireText(
 
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*immediate stop guard[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
   "P5-03 Finance Desk backlog row",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 immediate stop guard[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
   "Finance Desk production checklist row",
 );
 
@@ -941,19 +941,31 @@ requireText(
 
 requireText(
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
-  /finance-desk-uat-evidence-checklist\.tsx[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03"[\s\S]*P5-03-UAT-01 through\s+P5-03-UAT-09[\s\S]*data-finance-desk-acceptance-matrix="P5-03"[\s\S]*P5-03-ACCEPT-01 through P5-03-ACCEPT-06[\s\S]*data-finance-desk-immediate-stop="P5-03"[\s\S]*P5-03-STOP-01 through\s+P5-03-STOP-05[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED/i,
+  /finance-desk-uat-evidence-checklist\.tsx[\s\S]*data-finance-desk-uat-evidence-checklist="P5-03"[\s\S]*P5-03-UAT-01 through\s+P5-03-UAT-09[\s\S]*data-finance-desk-acceptance-matrix="P5-03"[\s\S]*P5-03-ACCEPT-01 through P5-03-ACCEPT-06[\s\S]*data-finance-desk-immediate-stop="P5-03"[\s\S]*P5-03-STOP-01 through\s+P5-03-STOP-05[\s\S]*P5_03_STOP_CHECK \/ GO_NEXT \/ BLOCKED[\s\S]*data-finance-desk-real-user-evidence-bridge="P5-03-P6-04"[\s\S]*P5-03-REAL-01 through P5-03-REAL-05[\s\S]*P5_03_REAL_USER_READY \/ NO_GO \/ BLOCKED/i,
   "Finance Desk UAT checklist component reference",
 );
 
 requireText(
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-finance-desk-real-user-evidence-bridge="P5-03-P6-04")(?=[\s\S]*P5-03 real accounting user evidence bridge)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P5_03_REAL_USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03-REAL-01)(?=[\s\S]*P5-03-REAL-05)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*Do not paste real passwords)/i,
+  "Finance Desk real accounting user evidence bridge UI",
+);
+
+requireText(
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  /(?=[\s\S]*Real Accounting User Evidence Bridge)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P5-03-REAL-01)(?=[\s\S]*P5-03-REAL-05)(?=[\s\S]*Finance Desk evidence)/i,
+  "Finance Desk real accounting user evidence bridge runbook",
+);
+
+requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P5-03[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*P5-03 reliance decision manifest/i,
+  /P5-03[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 reliance decision manifest/i,
   "P5-03 Finance Desk UAT checklist backlog reference",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /HEU Finance Desk read-only cockpit[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 immediate stop guard[\s\S]*P5-03 UAT acceptance matrix/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 UAT acceptance matrix/i,
   "Finance Desk production checklist UAT evidence checklist reference",
 );
 
@@ -1154,6 +1166,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-dashboard-uat-evidence-checklist.tsx",
+  /(?=[\s\S]*data-ttgdtx-dashboard-real-user-evidence-bridge="P2-18-P6-04")(?=[\s\S]*P2-18 real accounting user evidence bridge)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P2_18_REAL_USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-18-REAL-01)(?=[\s\S]*P2-18-REAL-05)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*Do not paste real passwords)/i,
+  "P2-18 real accounting user evidence bridge UI",
+);
+
+requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /P2-18 Dashboard Immediate Stop Guard[\s\S]*data-ttgdtx-dashboard-immediate-stop="P2-18"[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*finance approval[\s\S]*statutory accounting[\s\S]*revenue\s+recognition[\s\S]*bank-transfer instruction[\s\S]*signed browser UAT[\s\S]*source reconciliation[\s\S]*out-of-scope users see finance totals[\s\S]*source variance[\s\S]*raw sensitive dashboard evidence[\s\S]*audit:ttgdtx-dashboard-source-reconciliation[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:ttgdtx-release-gates[\s\S]*does not execute browser UAT[\s\S]*mark production GO/i,
   "P2-18 dashboard immediate stop guard log entry",
@@ -1191,7 +1209,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
 );
 
@@ -1199,6 +1217,12 @@ requireText(
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
   /(?=[\s\S]*Dashboard Acceptance Matrix)(?=[\s\S]*P2-18-ACCEPT-01)(?=[\s\S]*P2-18-ACCEPT-06)(?=[\s\S]*P2_18_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P2-18-ACCEPT-01 through P2-18-ACCEPT-06 all pass with redacted evidence)/i,
   "P2-18 runbook dashboard acceptance matrix",
+);
+
+requireText(
+  "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
+  /(?=[\s\S]*Real Accounting User Evidence Bridge)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P2-18-REAL-01)(?=[\s\S]*P2-18-REAL-05)(?=[\s\S]*dashboard evidence)/i,
+  "P2-18 real accounting user evidence bridge runbook",
 );
 
 requireText(

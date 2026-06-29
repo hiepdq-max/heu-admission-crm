@@ -89,6 +89,13 @@ requireText(
   evidenceChecklistPath,
 );
 
+requireText(
+  evidenceChecklist,
+  /(?=[\s\S]*data-ttgdtx-dashboard-real-user-evidence-bridge="P2-18-P6-04")(?=[\s\S]*P2-18 real accounting user evidence bridge)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P2_18_REAL_USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2-18-REAL-01)(?=[\s\S]*P2-18-REAL-02)(?=[\s\S]*P2-18-REAL-03)(?=[\s\S]*P2-18-REAL-04)(?=[\s\S]*P2-18-REAL-05)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit and Phap Che reviewers)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*passwords, temporary passwords, OTPs, password\s+reset links, account activation\/invite links, service-role keys, raw\s+PII, CCCD, bank data, vouchers or screenshots with secrets)/i,
+  "P2-18 real accounting user evidence bridge",
+  evidenceChecklistPath,
+);
+
 for (const uatCase of [
   "P2-18-01",
   "P2-18-02",
@@ -101,6 +108,27 @@ for (const uatCase of [
 ]) {
   requireText(component, new RegExp(uatCase), `${uatCase} UI guard reference`, componentPath);
   requireText(runbook, new RegExp(`\\| ${uatCase} \\|`), `${uatCase} runbook case`, runbookPath);
+}
+
+for (const bridgeCase of [
+  "P2-18-REAL-01",
+  "P2-18-REAL-02",
+  "P2-18-REAL-03",
+  "P2-18-REAL-04",
+  "P2-18-REAL-05",
+]) {
+  requireText(
+    evidenceChecklist,
+    new RegExp(bridgeCase),
+    `${bridgeCase} real-user bridge UI reference`,
+    evidenceChecklistPath,
+  );
+  requireText(
+    runbook,
+    new RegExp(`\\| ${bridgeCase} \\|`),
+    `${bridgeCase} real-user bridge runbook case`,
+    runbookPath,
+  );
 }
 
 requireText(
@@ -161,15 +189,22 @@ requireText(
 );
 
 requireText(
+  runbook,
+  /(?=[\s\S]*Real Accounting User Evidence Bridge)(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*P2-18-REAL-01)(?=[\s\S]*P2-18-REAL-05)(?=[\s\S]*Do not paste real passwords, temporary passwords, OTPs, password reset links,\s+account activation\/invite links, service-role keys, raw PII, CCCD, bank data,\s+vouchers or screenshots with secrets into dashboard evidence)/i,
+  "runbook real accounting user evidence bridge",
+  runbookPath,
+);
+
+requireText(
   checklist,
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
   "production checklist keeps P2-18 IN_PROGRESS with read-only guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-18[\s\S]*dashboard acceptance matrix[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
+  /P2-18[\s\S]*dashboard acceptance matrix[\s\S]*real accounting user evidence bridge[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
   "backlog records P2-18 read-only guard audit",
   backlogPath,
 );
