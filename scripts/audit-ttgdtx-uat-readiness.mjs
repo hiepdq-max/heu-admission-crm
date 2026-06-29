@@ -161,7 +161,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
-  /(?=[\s\S]*Internal UAT Run Closure Tracker)(?=[\s\S]*BLOCKED_PENDING_MULTI_ACCOUNT_UAT)(?=[\s\S]*UAT_PASS)(?=[\s\S]*UAT-CLOSE-01 Synthetic accounts prepared)(?=[\s\S]*UAT-CLOSE-06 Owners sign UAT result)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof or\s+owner signature keeps production NO-GO)(?=[\s\S]*No passwords, temporary passwords, account activation\/invite links, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git\/Codex\/chat)/i,
+  /(?=[\s\S]*Internal UAT Run Closure Tracker)(?=[\s\S]*BLOCKED_PENDING_MULTI_ACCOUNT_UAT)(?=[\s\S]*UAT_PASS)(?=[\s\S]*UAT-CLOSE-01 Synthetic accounts prepared)(?=[\s\S]*UAT-CLOSE-06 Owners sign UAT result)(?=[\s\S]*Any missing account, route result, negative-test result, redaction proof or\s+owner signature keeps production NO-GO)(?=[\s\S]*No passwords, temporary passwords, password reset links, account activation\/invite links, OTPs, service-role keys, raw PII, bank accounts or raw payment evidence in Git\/Codex\/chat)/i,
   "internal UAT run closure tracker remains blocked until signed evidence",
 );
 
@@ -202,13 +202,13 @@ for (const row of signedUatRouteResultRows) {
 
 requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
-  /No real passwords, temporary passwords, account activation\/invite links, OTPs,\s+service keys, bank credentials/i,
+  /No real passwords, temporary passwords, password reset links, account\s+activation\/invite links, OTPs, service keys, bank credentials/i,
   "no secret or real credential rule",
 );
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-02[\s\S]*no real\/temporary passwords or activation\/invite links shared)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, temporary passwords, OTPs, reset links, account\s+activation\/invite links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_HANDOFF)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-HANDOFF-01)(?=[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub)(?=[\s\S]*UAT-HANDOFF-02[\s\S]*no real\/temporary passwords, password reset links or account\s+activation\/invite links shared)(?=[\s\S]*UAT-HANDOFF-03)(?=[\s\S]*data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING")(?=[\s\S]*UAT-HANDOFF-04)(?=[\s\S]*UAT-HANDOFF-05[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md` Section 5\.2)(?=[\s\S]*UAT-HANDOFF-07)(?=[\s\S]*Do not paste passwords, temporary passwords, OTPs, password reset\s+links,\s+account\s+activation\/invite links, service-role keys, API keys)(?=[\s\S]*TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP\.md)(?=[\s\S]*TTGDTX_BROWSER_UAT_MATRIX_20260625\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*UAT-ROUTE-01 P0-10)(?=[\s\S]*UAT-ROUTE-11 P0-09)(?=[\s\S]*controlled evidence reference,\s+redaction reviewer, route result, reviewer name and required owner signature)(?=[\s\S]*Any `UAT-ROUTE-\*` row is missing minimum proof)(?=[\s\S]*production remains NO-GO until backup\/restore evidence)/i,
   "operator handoff keeps UAT run order and no-secret boundary",
 );
 
@@ -226,13 +226,13 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
-  /Do not send real passwords, temporary passwords or account activation\/invite\s+links into Codex\/chat/i,
+  /Do not send real passwords, temporary passwords, password reset links or\s+account\s+activation\/invite links into Codex\/chat/i,
   "Codex password boundary",
 );
 
 requireText(
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
-  /Do not send real passwords, temporary passwords or account activation\/invite\s+links into Codex\/chat/i,
+  /Do not send real passwords, temporary passwords, password reset links or\s+account\s+activation\/invite links into Codex\/chat/i,
   "browser matrix account-secret boundary",
 );
 

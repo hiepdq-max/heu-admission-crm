@@ -1369,13 +1369,13 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md",
-  /Do not send real passwords, temporary passwords or account activation\/invite\s+links into Codex\/chat/i,
+  /Do not send real passwords, temporary passwords, password reset links or\s+account\s+activation\/invite links into Codex\/chat/i,
   "synthetic account password boundary",
 );
 
 requireText(
   "docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md",
-  /Do not send real passwords, temporary passwords or account activation\/invite\s+links into Codex\/chat/i,
+  /Do not send real passwords, temporary passwords, password reset links or\s+account\s+activation\/invite links into Codex\/chat/i,
   "browser UAT matrix account-secret boundary",
 );
 

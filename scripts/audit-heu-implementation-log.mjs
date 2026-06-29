@@ -815,6 +815,7 @@ fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "browser matrix",
   "synthetic account setup",
   "temporary passwords",
+  "password reset links",
   "account activation/invite",
   "internal UAT sign-off guard",
   "audit-ttgdtx-uat-readiness.mjs",

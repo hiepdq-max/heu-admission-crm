@@ -7,7 +7,7 @@ const uatClosureItems = [
     caseId: "UAT-CLOSE-01",
     title: "Synthetic accounts prepared",
     evidence:
-      "UAT_ADMIN, UAT_BGH, UAT_KHTC, UAT_TUYEN_SINH, UAT_PHAP_CHE and UAT_OUT_OF_SCOPE exist with no real passwords, temporary passwords, password reset links or activation/invite links shared in Codex/chat.",
+      "UAT_ADMIN, UAT_BGH, UAT_KHTC, UAT_TUYEN_SINH, UAT_PHAP_CHE and UAT_OUT_OF_SCOPE exist with no real passwords, temporary passwords, password reset links or account activation/invite links shared in Codex/chat.",
   },
   {
     caseId: "UAT-CLOSE-02",

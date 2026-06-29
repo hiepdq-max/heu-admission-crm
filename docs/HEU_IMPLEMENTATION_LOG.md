@@ -225,8 +225,8 @@
 ## 2026-06-29 - UAT Handoff Account Secret Boundary
 
 - Updated TTGDTX UAT operator handoff, execution log, browser matrix and
-  synthetic account setup so temporary passwords and account activation/invite
-  links are forbidden in Git/Codex/chat.
+  synthetic account setup so temporary passwords, password reset links and
+  account activation/invite links are forbidden in Git/Codex/chat.
 - Surfaced the same boundary in the internal UAT sign-off guard so operators
   see it while running browser UAT.
 - Tightened `scripts/audit-ttgdtx-uat-readiness.mjs` and
