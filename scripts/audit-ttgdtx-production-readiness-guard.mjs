@@ -140,7 +140,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*data-ttgdtx-uat-launch-plan="P2-18_P5-03")(?=[\s\S]*First UAT launch plan: P2-18 \+ P5-03)(?=[\s\S]*signed browser UAT)(?=[\s\S]*Use synthetic accounts)(?=[\s\S]*store proof outside Git\/Codex\/chat)(?=[\s\S]*signed evidence required)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open UAT route)/i,
+  /(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*data-ttgdtx-uat-launch-plan="P2-18_P5-03")(?=[\s\S]*First UAT launch plan: P2-18 \+ P5-03)(?=[\s\S]*signed browser UAT)(?=[\s\S]*Use synthetic accounts plus P6-04 real-accounting\s+queue\/result proof)(?=[\s\S]*store proof outside Git\/Codex\/chat)(?=[\s\S]*signed evidence required)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)(?=[\s\S]*Open UAT route)/i,
   "TTGDTX P2-18/P5-03 UAT launch plan",
   executionQueuePath,
 );
@@ -189,7 +189,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Dashboard can write)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Finance Desk can mutate source facts)(?=[\s\S]*audit:heu-finance-desk)/i,
+  /(?=[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*P6-04 real accounting user queue\/result proof)(?=[\s\S]*P2_18_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Dashboard can write)(?=[\s\S]*P6-04 real-accounting proof is missing)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5_03_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Finance Desk can mutate source facts)(?=[\s\S]*lacks P6-04 real-accounting proof)(?=[\s\S]*audit:heu-finance-desk)/i,
   "TTGDTX P2-18/P5-03 UAT launch shared source",
   blockerSourcePath,
 );
@@ -238,14 +238,14 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*main execution queue with decision values and stop conditions[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*main execution queue with decision values and stop conditions[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );

@@ -255,8 +255,9 @@ export function TtgdtxProductionExecutionQueue() {
             </h3>
             <p className="mt-1 leading-6 text-indigo-900">
               Start signed browser UAT with the dashboard and Finance Desk
-              tracks. Use synthetic accounts, store proof outside Git/Codex/chat
-              and keep production NO-GO until owners sign.
+              tracks. Use synthetic accounts plus P6-04 real-accounting
+              queue/result proof, store proof outside Git/Codex/chat and keep
+              production NO-GO until owners sign.
             </p>
           </div>
           <span className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold uppercase text-amber-800">

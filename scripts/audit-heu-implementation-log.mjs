@@ -609,6 +609,27 @@ fastSection("2026-06-29 - P2-18 P5-03 Real Accounting User Evidence Bridge", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - TTGDTX UAT Launch Real Accounting Proof Gate", [
+  "PRODUCTION_UAT_LAUNCH_STEPS",
+  "UAT-ROUTE-08",
+  "production-readiness.ts",
+  "ttgdtx-production-execution-queue.tsx",
+  "P2-18 dashboard",
+  "P5-03 Finance Desk",
+  "P6-04 real accounting user queue/result proof",
+  "P6-04 real-accounting queue/result proof",
+  "P0-08 backlog",
+  "production checklist",
+  "current-state inventory",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not execute browser UAT",
+  "create accounts",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
   "P2-18 accounting dashboard UAT runbook",
   "dashboard role UAT plan",

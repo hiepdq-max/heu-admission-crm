@@ -1515,7 +1515,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
-  /(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*data-ttgdtx-uat-launch-plan="P2-18_P5-03")(?=[\s\S]*First UAT launch plan: P2-18 \+ P5-03)(?=[\s\S]*signed browser UAT)(?=[\s\S]*Use synthetic accounts)(?=[\s\S]*store proof outside Git\/Codex\/chat)(?=[\s\S]*signed evidence required)(?=[\s\S]*Open UAT route)/i,
+  /(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*data-ttgdtx-uat-launch-plan="P2-18_P5-03")(?=[\s\S]*First UAT launch plan: P2-18 \+ P5-03)(?=[\s\S]*signed browser UAT)(?=[\s\S]*Use synthetic accounts plus P6-04 real-accounting\s+queue\/result proof)(?=[\s\S]*store proof outside Git\/Codex\/chat)(?=[\s\S]*signed evidence required)(?=[\s\S]*Open UAT route)/i,
   "TTGDTX P2-18/P5-03 UAT launch plan",
 );
 
@@ -1545,7 +1545,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*audit:heu-finance-desk)/i,
+  /(?=[\s\S]*export const PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*P2-18)(?=[\s\S]*Accounting dashboard browser UAT)(?=[\s\S]*docs\/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK\.md)(?=[\s\S]*P6-04 real accounting user queue\/result proof)(?=[\s\S]*P6-04 real-accounting proof is missing)(?=[\s\S]*audit:ttgdtx-accounting-dashboard-uat-plan)(?=[\s\S]*P5-03)(?=[\s\S]*Finance Desk browser UAT)(?=[\s\S]*docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*lacks P6-04 real-accounting proof)(?=[\s\S]*audit:heu-finance-desk)/i,
   "TTGDTX P2-18/P5-03 UAT launch shared source",
 );
 
@@ -1635,7 +1635,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "internal UAT readiness guard checklist row",
 );
 

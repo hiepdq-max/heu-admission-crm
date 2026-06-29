@@ -224,10 +224,10 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     route: "/ttgdtx/accounting-dashboard",
     runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
     evidence:
-      "Authorized access, blocked out-of-scope access, no-write behavior, source comparison and dashboard reliance decision.",
+      "Authorized access, blocked out-of-scope access, no-write behavior, source comparison, P6-04 real accounting user queue/result proof and dashboard reliance decision.",
     decisionValue: "P2_18_RELIANCE_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Dashboard can write, a source total is unreconciled, contract-only access exposes finance totals or owner reliance decision is unsigned.",
+      "Dashboard can write, P6-04 real-accounting proof is missing, a source total is unreconciled, contract-only access exposes finance totals or owner reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan",
   },
   {
@@ -237,10 +237,10 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     route: "/finance-desk",
     runbook: "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
     evidence:
-      "Scoped access, read-only cockpit behavior, source reconciliation, no-secret screenshots and human reliance decision.",
+      "Scoped access, read-only cockpit behavior, source reconciliation, P6-04 real accounting user queue/result proof, no-secret screenshots and human reliance decision.",
     decisionValue: "P5_03_RELIANCE_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Finance Desk can mutate source facts, leaks TTGDTX scope, shows raw sensitive evidence or KHTC/BGH/Audit reliance decision is unsigned.",
+      "Finance Desk can mutate source facts, leaks TTGDTX scope, lacks P6-04 real-accounting proof, shows raw sensitive evidence or KHTC/BGH/Audit reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:heu-finance-desk",
   },
 ];
@@ -468,10 +468,10 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     route: "/ttgdtx/accounting-dashboard",
     runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md + docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
     minimumProof:
-      "Read-only behavior, source reconciliation, role denial, Finance Desk scope proof and reliance decision for dashboard users.",
+      "Read-only behavior, source reconciliation, role denial, P6-04 real accounting user queue/result proof, Finance Desk scope proof and reliance decision for dashboard users.",
     decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Dashboard can write, source reconciliation is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned.",
+      "Dashboard can write, source reconciliation is missing, P6-04 real-accounting proof is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-dashboard-source-reconciliation",
   },
   {
