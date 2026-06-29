@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Step90-Step110 Backup Rollback Runbook Canonical Name
+
+- Renamed `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` to
+  `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` so the filename
+  matches the actual Step90-Step110 scope used by the P0-03 backup/restore and
+  migration-order controls.
+- Updated P0-03 references in AGENTS, backup/restore evidence docs,
+  production checklist, migration audit and release/audit guards.
+- This is document routing and audit alignment only. It does not execute
+  backup, restore, rollback, migration, UAT acceptance, owner waiver or
+  production GO.
+
 ## 2026-06-29 - P2-10 Invoice Evidence Account Secret Boundary
 
 - Updated the P2-10 invoice/chung-tu UAT runbook and invoice policy matrix so
@@ -2132,7 +2144,7 @@
 - `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md`
 - `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`
 - `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md`
-- `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
 - `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md`
 - `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`
 - `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md`
@@ -2722,7 +2734,7 @@
 - `scripts/audit-ttgdtx-release-gates.mjs`
 - `package.json`
 - `AGENTS.md`
-- `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
+- `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`
 - `docs/HEU_SYSTEM_BUILD_BACKLOG.md`
 - `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
 - `docs/HEU_IMPLEMENTATION_LOG.md`

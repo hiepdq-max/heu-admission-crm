@@ -39,7 +39,7 @@ const requiredFiles = [
   "docs/MIGRATION_ORDER_AUDIT.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   "AGENTS.md",
   "package.json",
@@ -139,7 +139,7 @@ requireText(
   "P0-03 backlog guard evidence",
 );
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Do not run production migration from Codex\/chat/i,
   "runbook Codex/chat migration boundary",
 );

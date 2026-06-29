@@ -34,7 +34,7 @@ and human sign-off.
 | Document | Required use |
 |---|---|
 | `docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md` | One-page operator/checker run sheet before execution |
-| `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` | Procedure owner and execution order |
+| `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` | Procedure owner and execution order |
 | `docs/MIGRATION_ORDER_AUDIT.md` | Migration ordering and waiver review |
 | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` | Final Go/No-Go control |
 | `docs/HARD_DELETE_AUDIT.md` | Rollback/hard-delete boundary |

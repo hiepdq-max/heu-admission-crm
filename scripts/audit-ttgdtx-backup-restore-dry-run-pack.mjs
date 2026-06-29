@@ -3,7 +3,7 @@ import path from "node:path";
 
 const repoRoot = process.cwd();
 const packPath = "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md";
-const runbookPath = "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md";
+const runbookPath = "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md";
 const operatorRunSheetPath =
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";

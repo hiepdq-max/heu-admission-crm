@@ -43,7 +43,7 @@ const requiredFiles = [
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/TTGDTX_ACCOUNT_CONTROL_SCOPE_DECISION_20260627.md",
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
@@ -283,36 +283,36 @@ requireText(
 
 requireText(
   "docs/MIGRATION_ORDER_AUDIT.md",
-  /STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK\.md/,
+  /STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK\.md/,
   "backup/rollback runbook reference",
 );
 
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Production remains NO-GO/i,
   "NO-GO production statement",
 );
 
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Backup Evidence Template/i,
   "backup evidence template",
 );
 
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Restore Dry-Run Flow/i,
   "restore dry-run flow",
 );
 
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*Complete the operator run sheet through P0-03-RUN-03/i,
   "backup/restore operator run sheet integration",
 );
 
 requireText(
-  "docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
+  "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   /Do not run production migration from Codex\/chat/i,
   "Codex/chat production migration boundary",
 );

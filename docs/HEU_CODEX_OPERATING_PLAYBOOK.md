@@ -90,7 +90,7 @@ nghi chi. Duoc sua code va docs, khong chay migration production, chay lint/buil
 | `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md` | UAT chong chi trung P2-17 |
 | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md` | UAT dashboard ke toan P2-18 |
 | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md` | UAT audit log tai chinh TTGDTX |
-| `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` | Runbook backup, rollback va dry-run truoc production |
+| `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md` | Runbook backup, rollback va dry-run truoc production |
 | `docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md` | UAT quyen theo role va workspace TTGDTX |
 
 ## 7. Mo Hinh Nhieu Nguoi Dung

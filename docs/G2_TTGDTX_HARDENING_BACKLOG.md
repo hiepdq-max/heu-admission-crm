@@ -61,7 +61,7 @@ Dua G2 tu trang thai G2_NEEDS_FIX sang G2_COMMIT_READY ma khong chay migration, 
 
 | Blocker | Applies to | Risk | Required evidence | Owner | Status |
 |---|---|---:|---|---|---|
-| Backup/rollback dry-run for step91/97/98/99/100 | G2b/G2c | HIGH | `docs/STEP90_STEP109_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; restore dry-run evidence | Tech Lead | IN_PROGRESS |
+| Backup/rollback dry-run for step91/97/98/99/100 | G2b/G2c | HIGH | `docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md`; restore dry-run evidence | Tech Lead | IN_PROGRESS |
 | step100 pilot-open needs final approval | G2c | HIGH | Approval record | Final Authority | BLOCKED |
 | DAT_TAM_THOI/pilot markers need classification | G2b/G2c | MEDIUM-HIGH | Classification note | Product Owner | NOT_STARTED |
 | RLS needs role/scope test | G2a/G2b | HIGH | Test matrix result | Tech Lead | NOT_STARTED |
