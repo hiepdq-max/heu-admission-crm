@@ -49,8 +49,9 @@ export function TtgdtxContractTuitionMasterGuard() {
             <p>
               Signed UAT and human owner approval are still required. Do not
               paste private contract bodies, raw student PII, CCCD, bank data,
-              passwords, OTPs, service-role keys or production credentials into
-              Git/Codex/chat.
+              passwords, temporary passwords, OTPs, password reset links,
+              account activation/invite links, service-role keys or production
+              credentials into Git/Codex/chat.
             </p>
           </div>
         </div>

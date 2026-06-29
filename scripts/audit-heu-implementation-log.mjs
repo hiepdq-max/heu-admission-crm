@@ -589,6 +589,22 @@ fastSection("2026-06-29 - P2-17 Payout Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-19 Legal Finance Account Secret Boundary", [
+  "P0-19/P2-01/P2-02 pilot-open UAT runbook",
+  "P0-19 legal/finance",
+  "contract/tuition master guard",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-p019-gate-guard.mjs",
+  "audit-ttgdtx-contract-tuition-master-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "legal/finance gate UAT/evidence packaging only",
+  "create receivables",
+  "recognize revenue",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

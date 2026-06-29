@@ -27,7 +27,7 @@ If the flag is missing, Step100 must raise an exception before updating pilot co
 Use pilot metadata only:
 
 - OK: pilot center code, pilot contract marker, pilot tuition amount, gate status, readiness counters.
-- Not OK: real student identities, real bank data, private contract body, production invoice credentials, passwords, OTP, API keys.
+- Not OK: real student identities, real bank data, private contract body, production invoice credentials, passwords, temporary passwords, OTP, password reset links, account activation/invite links, API keys.
 - Any Phu-Xuyen-like center is a reference scenario only. The logic must remain reusable for many TTGDTX centers.
 
 ## UAT Cases
@@ -86,7 +86,9 @@ P0-19-STOP-01 through P0-19-STOP-05 and decision value
 recording, waiver review or gate reliance.
 
 Do not attach private contract bodies, raw student PII, CCCD, bank data,
-passwords, OTPs, service-role keys or production credentials in Git/Codex/chat.
+passwords, temporary passwords, OTPs, password reset links, account
+activation/invite links, service-role keys or production credentials in
+Git/Codex/chat.
 Signed legal/finance UAT remains required before P0-19 can be accepted for
 production receivable use.
 
@@ -136,7 +138,8 @@ redacted evidence. Any stop condition keeps production NO-GO.
 Decision value: P0_19_ACCEPT / FAIL / BLOCKED.
 
 Do not attach private contract bodies, raw student PII, CCCD, bank data,
-credentials, passwords, OTPs, service-role keys, raw vouchers or raw payment
+credentials, passwords, temporary passwords, OTPs, password reset links,
+account activation/invite links, service-role keys, raw vouchers or raw payment
 data. Missing owner signature keeps production NO-GO.
 
 ## P0-19 Gate Decision Manifest
@@ -153,7 +156,7 @@ creation, revenue recognition, finance action or production GO.
 | P0-19-DEC-02 | Tuition and invoice policy aligned | Tuition amount, term, due rule, payer model, invoice/chung-tu responsibility and waiver basis match the legal authority | Tuition, payer, invoice/chung-tu responsibility or waiver basis is unresolved |
 | P0-19-DEC-03 | Finance gate blocks then allows | Negative evidence blocks P2-05/P2-03 before readiness; positive evidence allows only after P0-19, P2-01, P2-02 and P2-05 pass | P2-03 can create receivable while the gate is missing, blocked, unsigned or based only on sandbox data |
 | P0-19-DEC-04 | Step100 and exceptions controlled | Any Step100 sandbox use or legal/tuition/finance exception has written owner decision, scope, expiry and NO-GO boundary | Step100 or any exception is treated as production legal, tuition, finance, revenue or payout authority |
-| P0-19-DEC-05 | Redacted evidence and owner signatures complete | PHAP_CHE, KHTC, BGH and Audit sign redacted controlled evidence references outside Git/Codex/chat | Private contract bodies, raw student PII, CCCD, bank data, credentials, raw vouchers or raw payment data appear |
+| P0-19-DEC-05 | Redacted evidence and owner signatures complete | PHAP_CHE, KHTC, BGH and Audit sign redacted controlled evidence references outside Git/Codex/chat | Private contract bodies, raw student PII, CCCD, bank data, credentials, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, raw vouchers or raw payment data appear |
 | P0-19-DEC-06 | Human gate decision recorded | The gate record states P0_19_GATE_READY, NO_GO or BLOCKED before any P2-03 production reliance | PASS_LOCAL is treated as legal approval, finance approval, UAT acceptance, receivable approval, revenue recognition or production GO |
 
 Decision value: P0_19_GATE_READY / NO_GO / BLOCKED.

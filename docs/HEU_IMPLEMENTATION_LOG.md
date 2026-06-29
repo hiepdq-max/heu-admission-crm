@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-19 Legal Finance Account Secret Boundary
+
+- Updated the P0-19/P2-01/P2-02 pilot-open UAT runbook, P0-19 legal/finance
+  UAT evidence checklist and contract/tuition master guard so legal/finance
+  gate evidence explicitly forbids temporary passwords, password reset links and
+  account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-ttgdtx-p019-gate-guard.mjs`,
+  `scripts/audit-ttgdtx-contract-tuition-master-guard.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P0-19 gate packaging cannot claim
+  a no-secret evidence boundary while omitting temporary account secrets.
+- This is legal/finance gate UAT/evidence packaging only. It does not execute
+  UAT, collect evidence, accept legal basis, approve finance action, create receivables,
+  recognize revenue, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P2-17 Payout Account Secret Boundary
 
 - Updated the P2-17 duplicate payout UAT runbook, payout UAT evidence checklist

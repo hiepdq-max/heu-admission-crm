@@ -54,7 +54,8 @@ action, production migration, UAT acceptance, owner waiver or production GO.
 ## 5. Sensitive Data Boundary
 
 Do not paste private contract bodies, raw student PII, CCCD, bank data,
-passwords, OTPs, service-role keys, production credentials, bank statements,
+passwords, temporary passwords, OTPs, password reset links, account
+activation/invite links, service-role keys, production credentials, bank statements,
 vouchers or payment evidence into Git, Codex/chat, screenshots or UAT notes.
 Use controlled evidence links or redacted references.
 

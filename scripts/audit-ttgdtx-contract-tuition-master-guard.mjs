@@ -86,14 +86,14 @@ requireText(
 );
 requireText(
   guardDoc,
-  /Do not paste private contract bodies, raw student PII, CCCD, bank data,\s+passwords, OTPs, service-role keys, production credentials/i,
+  /Do not paste private contract bodies, raw student PII, CCCD, bank data,\s+passwords, temporary passwords, OTPs, password reset links, account\s+activation\/invite links, service-role keys, production credentials/i,
   "sensitive-data boundary",
 );
 requireText(guardDoc, /P2-01 and P2-02 are PASS_LOCAL/i, "PASS_LOCAL result");
 
 requireText(
   guardComponent,
-  /(?=[\s\S]*data-ttgdtx-contract-tuition-master-guard="P2-01-P2-02")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-01 contract must be ACTIVE)(?=[\s\S]*P2-02 tuition policy must be READY)(?=[\s\S]*P0-19 legal\/tuition finance gate)(?=[\s\S]*P2-05)(?=[\s\S]*P2-03 creates receivable only after)(?=[\s\S]*does not approve legal\s+contract, tuition policy, finance action, UAT acceptance, owner waiver\s+or production GO)/i,
+  /(?=[\s\S]*data-ttgdtx-contract-tuition-master-guard="P2-01-P2-02")(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P2-01 contract must be ACTIVE)(?=[\s\S]*P2-02 tuition policy must be READY)(?=[\s\S]*P0-19 legal\/tuition finance gate)(?=[\s\S]*P2-05)(?=[\s\S]*P2-03 creates receivable only after)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*does not approve legal\s+contract, tuition policy, finance action, UAT acceptance, owner waiver\s+or production GO)/i,
   "visible P2-01/P2-02 guard",
   "components/ttgdtx/ttgdtx-contract-tuition-master-guard.tsx",
 );

@@ -82,13 +82,13 @@ requireText(
 );
 requireText(
   evidenceChecklist,
-  /(?=[\s\S]*data-ttgdtx-p019-uat-evidence-checklist="P0-19")(?=[\s\S]*P0-19 legal\/finance UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed legal\/finance UAT is still required before P0-19 can move\s+from IN_PROGRESS)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*P0-19-01)(?=[\s\S]*P0-19-07)(?=[\s\S]*PHAP_CHE, KHTC, BGH and\s+Audit must sign the evidence outside Codex\/chat)/i,
+  /(?=[\s\S]*data-ttgdtx-p019-uat-evidence-checklist="P0-19")(?=[\s\S]*P0-19 legal\/finance UAT evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed legal\/finance UAT is still required before P0-19 can move\s+from IN_PROGRESS)(?=[\s\S]*P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK\.md)(?=[\s\S]*P0-19-01)(?=[\s\S]*P0-19-07)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)(?=[\s\S]*service-role keys and production\s+credentials)(?=[\s\S]*PHAP_CHE, KHTC, BGH and\s+Audit must sign the evidence outside Codex\/chat)/i,
   "P0-19 UAT evidence checklist",
   evidenceChecklistPath,
 );
 requireText(
   evidenceChecklist,
-  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19 legal\/finance immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P0-19-STOP-01)(?=[\s\S]*P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Legal scope, center, program\/major, effective period or approving owner is unclear)(?=[\s\S]*Tuition amount, term, due rule, payer model, invoice\/chung-tu responsibility or waiver basis is unresolved)(?=[\s\S]*P2-05 or P2-03 can create receivable while P0-19 is missing)(?=[\s\S]*Step100 or any legal\/tuition\/finance exception is oral, ownerless, expired, broad or treated as production authority)(?=[\s\S]*Signed legal\/finance UAT or owner sign-off is missing)(?=[\s\S]*private contracts, raw PII, CCCD, bank data, credentials, vouchers or payment data)/i,
+  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19 legal\/finance immediate stop guard: PASS_LOCAL only)(?=[\s\S]*P0-19-STOP-01)(?=[\s\S]*P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Legal scope, center, program\/major, effective period or approving owner is unclear)(?=[\s\S]*Tuition amount, term, due rule, payer model, invoice\/chung-tu responsibility or waiver basis is unresolved)(?=[\s\S]*P2-05 or P2-03 can create receivable while P0-19 is missing)(?=[\s\S]*Step100 or any legal\/tuition\/finance exception is oral, ownerless, expired, broad or treated as production authority)(?=[\s\S]*Signed legal\/finance UAT or owner sign-off is missing)(?=[\s\S]*private contracts, raw PII, CCCD, bank data, credentials, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, vouchers or payment data)/i,
   "P0-19 immediate stop guard",
   evidenceChecklistPath,
 );
@@ -132,7 +132,7 @@ requireText(
 );
 requireText(
   runbook,
-  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19-STOP-01 through P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Immediate stop guard)(?=[\s\S]*legal scope, center, program\/major,\s+effective period or owner is unclear)(?=[\s\S]*tuition, payer, invoice\/chung-tu or\s+waiver basis is unresolved)(?=[\s\S]*P2-05\/P2-03 can create receivable while P0-19\s+is missing, blocked, unsigned, broadly waived or sandbox-only)(?=[\s\S]*signed UAT\/owner sign-off is missing or raw sensitive\s+evidence appears)/i,
+  /(?=[\s\S]*data-ttgdtx-p019-immediate-stop="P0-19")(?=[\s\S]*P0-19-STOP-01 through P0-19-STOP-05)(?=[\s\S]*P0_19_STOP_CHECK \/ GO_NEXT \/ BLOCKED)(?=[\s\S]*Immediate stop guard)(?=[\s\S]*legal scope, center, program\/major,\s+effective period or owner is unclear)(?=[\s\S]*tuition, payer, invoice\/chung-tu or\s+waiver basis is unresolved)(?=[\s\S]*P2-05\/P2-03 can create receivable while P0-19\s+is missing, blocked, unsigned, broadly waived or sandbox-only)(?=[\s\S]*signed UAT\/owner sign-off is missing or raw sensitive\s+evidence appears)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account activation\/invite links)/i,
   "P0-19 immediate stop guard in runbook",
   "docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md",
 );

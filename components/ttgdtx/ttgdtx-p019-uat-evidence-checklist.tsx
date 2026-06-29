@@ -76,7 +76,7 @@ const evidenceItems: EvidenceItem[] = [
     title: "Owner sign-off and no-secret evidence",
     owner: "PHAP_CHE + KHTC + BGH + Audit",
     evidence:
-      "Signed UAT reference using controlled redaction; raw contracts, student PII, CCCD, bank data and credentials stay outside Git/Codex/chat.",
+      "Signed UAT reference using controlled redaction; raw contracts, student PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys and production credentials stay outside Git/Codex/chat.",
   },
 ];
 
@@ -112,7 +112,7 @@ const immediateStopItems: ImmediateStopItem[] = [
   {
     stopId: "P0-19-STOP-05",
     condition:
-      "Signed legal/finance UAT or owner sign-off is missing, or private contracts, raw PII, CCCD, bank data, credentials, vouchers or payment data appear.",
+      "Signed legal/finance UAT or owner sign-off is missing, or private contracts, raw PII, CCCD, bank data, credentials, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, vouchers or payment data appear.",
     operatorAction:
       "Reject the evidence and move sensitive material to controlled redaction handling outside Git/Codex/chat.",
   },
@@ -247,7 +247,7 @@ const gateDecisionItems: GateDecisionItem[] = [
     requiredEvidence:
       "PHAP_CHE, KHTC, BGH and Audit sign redacted controlled evidence references outside Git/Codex/chat.",
     stopCondition:
-      "Stop if private contract bodies, raw student PII, CCCD, bank data, credentials, raw vouchers or raw payment data appear.",
+      "Stop if private contract bodies, raw student PII, CCCD, bank data, credentials, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, raw vouchers or raw payment data appear.",
   },
   {
     caseId: "P0-19-DEC-06",
@@ -276,8 +276,9 @@ export function TtgdtxP019UatEvidenceChecklist() {
               Signed legal/finance UAT is still required before P0-19 can move
               from IN_PROGRESS. Collect only redacted evidence references;
               private contract bodies, raw student PII, CCCD, bank data,
-              passwords, OTPs, service-role keys and production credentials stay
-              outside Git/Codex/chat.
+              passwords, temporary passwords, OTPs, password reset links,
+              account activation/invite links, service-role keys and production
+              credentials stay outside Git/Codex/chat.
             </p>
           </div>
         </div>
@@ -474,8 +475,9 @@ export function TtgdtxP019UatEvidenceChecklist() {
 
         <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
           Do not attach private contract bodies, raw student PII, CCCD, bank
-          data, credentials, passwords, OTPs, service-role keys, raw vouchers or
-          raw payment data. Missing owner signature keeps production NO-GO.
+          data, credentials, passwords, temporary passwords, OTPs, password
+          reset links, account activation/invite links, service-role keys, raw
+          vouchers or raw payment data. Missing owner signature keeps production NO-GO.
         </div>
       </div>
 
