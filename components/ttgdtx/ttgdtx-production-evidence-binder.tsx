@@ -214,9 +214,10 @@ export function TtgdtxProductionEvidenceBinder() {
               </h3>
               <p className="mt-2 leading-6 text-zinc-700">
                 Dashboard and Finance Desk evidence must cite the P6-04 real
-                accounting user queue/result proof before owner review. Missing
-                P6-04 proof, unsigned reliance or uncontrolled screenshots keep
-                P0-14 NO-GO.
+                accounting user queue/result proof and P0-17 real-user access
+                closure decision before owner review. Missing P6-04 proof,
+                unsigned reliance, open access closure or uncontrolled
+                screenshots keep P0-14 NO-GO.
               </p>
             </div>
           </div>
@@ -243,6 +244,14 @@ export function TtgdtxProductionEvidenceBinder() {
                 data-heu-real-accounting-user-uat-queue and
                 data-heu-real-accounting-user-result-template controlled
                 evidence references outside Git/Codex/chat.
+              </p>
+              <p
+                className="mt-2 leading-5 text-zinc-700"
+                data-p014-real-user-access-closure-proof="P0-17-P6-04"
+              >
+                <span className="font-medium">Access closure:</span> cite the
+                ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED decision from
+                data-heu-real-user-access-closure before final owner review.
               </p>
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}

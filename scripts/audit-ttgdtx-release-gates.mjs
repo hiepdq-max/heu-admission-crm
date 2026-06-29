@@ -725,6 +725,12 @@ requireText(
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-14 Real User Access Closure Proof[\s\S]*data-p014-real-user-access-closure-proof="P0-17-P6-04"[\s\S]*ttgdtx-production-evidence-binder\.tsx[\s\S]*P0-17 access-closure decision[\s\S]*P2-18\/P5-03 real-accounting reliance proof[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*does not create accounts[\s\S]*revoke live users[\s\S]*mark production GO/i,
+  "P0-14 real-user access closure proof log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
   /(?=[\s\S]*Real User Access Closure Guard)(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*BLOCKED)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*soft-revoke)(?=[\s\S]*INACTIVE)(?=[\s\S]*does not create accounts[\s\S]*revoke live users[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
   "P0-17 real-user access closure log entry",
 );
@@ -827,7 +833,7 @@ requireText(
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint[\s\S]*Run P0-15 final handoff coverage[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*Keep P0-05 implementation log audit green[\s\S]*Complete role\/workspace permission tests/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint with P0-17 access closure decision[\s\S]*Run P0-15 final handoff coverage[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*Keep P0-05 implementation log audit green[\s\S]*Complete role\/workspace permission tests/i,
   "priority blocker list includes P0-14/P0-15/P0-05 before role tests",
 );
 
@@ -1581,7 +1587,7 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
-  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*Forbidden:[\s\S]*item\.forbiddenContent)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0-14 controlled evidence intake ledger)(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*evidence ID, controlled folder reference,\s+evidence class, redaction reviewer, owner signature state and\s+blocker decision)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*data-p014-finance-reliance-evidence-checkpoint="P2-18_P5-03_P6-04")(?=[\s\S]*P0-14 finance reliance evidence checkpoint: P2-18 \+ P5-03 \+ P6-04)(?=[\s\S]*P6-04 real\s+accounting user queue\/result proof)(?=[\s\S]*P2_18_P5_03_FINANCE_PROOF \/ NO_GO \/ BLOCKED)(?=[\s\S]*data-heu-real-accounting-user-uat-queue)(?=[\s\S]*data-heu-real-accounting-user-result-template)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account\s+activation\/invite links)/i,
+  /(?=[\s\S]*data-ttgdtx-production-evidence-binder="P0-14")(?=[\s\S]*P0-14 production evidence binder)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*PRODUCTION_EVIDENCE_REQUIREMENTS)(?=[\s\S]*PRODUCTION_GOVERNANCE_ASSURANCE_STEPS)(?=[\s\S]*PRODUCTION_UAT_LAUNCH_STEPS)(?=[\s\S]*NO-GO until signed)(?=[\s\S]*Forbidden:[\s\S]*item\.forbiddenContent)(?=[\s\S]*data-p014-controlled-evidence-intake-ledger="P0-14")(?=[\s\S]*P0-14 controlled evidence intake ledger)(?=[\s\S]*P0_14_INTAKE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*evidence ID, controlled folder reference,\s+evidence class, redaction reviewer, owner signature state and\s+blocker decision)(?=[\s\S]*data-p014-governance-evidence-checkpoint="P6-04_P6-03")(?=[\s\S]*P0-14 governance evidence checkpoint: P6-04 \+ P6-03)(?=[\s\S]*role leak, missing trace row, broad\s+access path or unsigned evidence keeps P0-14 NO-GO)(?=[\s\S]*data-p014-finance-reliance-evidence-checkpoint="P2-18_P5-03_P6-04")(?=[\s\S]*P0-14 finance reliance evidence checkpoint: P2-18 \+ P5-03 \+ P6-04)(?=[\s\S]*P6-04 real\s+accounting user queue\/result proof)(?=[\s\S]*P0-17 real-user access\s+closure decision)(?=[\s\S]*data-p014-real-user-access-closure-proof="P0-17-P6-04")(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P2_18_P5_03_FINANCE_PROOF \/ NO_GO \/ BLOCKED)(?=[\s\S]*data-heu-real-accounting-user-uat-queue)(?=[\s\S]*data-heu-real-accounting-user-result-template)(?=[\s\S]*data-p014-production-evidence-closure-tracker="P0-14")(?=[\s\S]*P0-14 production evidence closure tracker)(?=[\s\S]*P0_14_CLOSE \/ NO_GO \/ BLOCKED)(?=[\s\S]*Missing proof keeps production NO-GO)(?=[\s\S]*Forbidden content stays out of Git\/Codex\/chat)(?=[\s\S]*temporary passwords)(?=[\s\S]*password reset links)(?=[\s\S]*account\s+activation\/invite links)/i,
   "P0-14 production evidence binder UI",
 );
 

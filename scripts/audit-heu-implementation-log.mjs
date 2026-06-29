@@ -556,6 +556,26 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-14 Real User Access Closure Proof", [
+  "data-p014-real-user-access-closure-proof=\"P0-17-P6-04\"",
+  "ttgdtx-production-evidence-binder.tsx",
+  "P0-17 access-closure decision",
+  "P2-18/P5-03 real-accounting reliance proof",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-heu-production-evidence-binder.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "revoke live users",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - Real User Access Closure Guard", [
   "data-heu-real-user-access-closure=\"P0-17-P6-04\"",
   "real-user-onboarding-panel.tsx",
@@ -1241,6 +1261,13 @@ requireText(
   log,
   /## 2026-06-28 - TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
   "TTGDTX production guard shared blocker source log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-14 Real User Access Closure Proof[\s\S]*data-p014-real-user-access-closure-proof="P0-17-P6-04"[\s\S]*ttgdtx-production-evidence-binder\.tsx[\s\S]*P0-14 finance\s+reliance evidence requires the P0-17 access-closure decision before final\s+owner review[\s\S]*P2-18\/P5-03 real-accounting reliance proof[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*audit-heu-production-evidence-binder\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is evidence-binder packaging only[\s\S]*does not create accounts, revoke\s+live users, collect evidence, accept UAT, approve dashboard reliance, approve\s+finance action or mark production GO/i,
+  "P0-14 real-user access closure proof log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
