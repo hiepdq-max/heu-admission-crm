@@ -605,6 +605,21 @@ fastSection("2026-06-29 - P0-19 Legal Finance Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Hard Delete Account Secret Boundary", [
+  "P6-06 hard-delete/cascade evidence checklist",
+  "non-TTGDTX cascade review",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "hard-delete/cascade evidence packaging only",
+  "deletion",
+  "cascade execution",
+  "conversion migration",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

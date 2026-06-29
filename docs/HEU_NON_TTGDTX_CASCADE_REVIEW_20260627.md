@@ -109,10 +109,11 @@ only and covers HD-01 through HD-06: current cascade scan acceptance, protected
 record conversion, derived-helper waiver, no hard-delete in protected flows,
 rollback proof without deletion, and owner GO/NO-GO decision.
 
-Do not attach raw student PII, CCCD, bank data, payment data, passwords, OTPs,
-service-role keys or production credentials in Git/Codex/chat. Conversion or
-written waiver evidence remains required before P6-06 can be accepted for
-production readiness.
+Do not attach raw student PII, CCCD, bank data, payment data, passwords,
+temporary passwords, OTPs, password reset links, account activation/invite
+links, service-role keys or production credentials in Git/Codex/chat.
+Conversion or written waiver evidence remains required before P6-06 can be
+accepted for production readiness.
 
 ## 8. Decision Queue Evidence
 
@@ -148,7 +149,7 @@ ready for owner review.
 | P6-06-ACCEPT-02 | Protected records converted before production | Finance, evidence, approval, payment, legal, audit, lead and operating-history rows are converted to restrict/archive/status patterns | A protected record can still disappear through parent delete, cascade execution, cleanup or migration |
 | P6-06-ACCEPT-03 | Derived-helper waiver is narrow and written | Any waiver names affected table, derived-only proof, owner reason, rollback note and written approval | Waiver is oral, broad, hidden, ownerless or covers finance/evidence/audit/legal/student-operating history |
 | P6-06-ACCEPT-04 | Rollback and cleanup do not rely on deletion | Rollback proof uses backup/restore or reversible state, not truncate, drop table, hard-delete or cascade execution | Deletion is presented as rollback proof or cleanup hides evidence required for audit/legal review |
-| P6-06-ACCEPT-05 | Evidence redaction and owner sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence outside Codex/chat | Raw student PII, CCCD, bank data, payment data, passwords, OTPs, service-role keys or production credentials appear |
+| P6-06-ACCEPT-05 | Evidence redaction and owner sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence outside Codex/chat | Raw student PII, CCCD, bank data, payment data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or production credentials appear |
 | P6-06-ACCEPT-06 | Production boundary | P6-06 remains IN_PROGRESS until all required conversions or written waivers are signed and owner GO/NO-GO exists | PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO |
 
 Decision value: `P6_06_ACCEPT / FAIL / BLOCKED`.
@@ -170,7 +171,7 @@ evidence is reviewed.
 | P6-06-DEC-02 | Protected rows converted | Finance, evidence, approval, payment, legal, audit, lead and operating-history rows use restrict, archive or status-transition behavior | Protected records can still be removed by parent delete, cascade execution, cleanup or migration |
 | P6-06-DEC-03 | Derived-helper waiver controlled | Every remaining derived-helper cascade has a narrow written waiver with table, reason, owner, rollback note and affected scope | Waiver is broad, oral, ownerless, hidden or covers protected finance/evidence/audit/legal/student-operating history |
 | P6-06-DEC-04 | Rollback and cleanup proof independent of deletion | Rollback evidence uses backup/restore or reversible state and cleanup evidence preserves legal, finance and audit records | Truncate, drop table, hard-delete or cascade execution is presented as rollback proof |
-| P6-06-DEC-05 | Redacted evidence and human sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence in the controlled evidence location | Raw sensitive data or credentials appear in Git, Codex/chat or public notes |
+| P6-06-DEC-05 | Redacted evidence and human sign-off | BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence in the controlled evidence location | Raw sensitive data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or production credentials appear in Git, Codex/chat or public notes |
 | P6-06-DEC-06 | Production boundary acknowledged | The closure record states P6-06 is only ready for owner GO/NO-GO review after all stop conditions are cleared | PASS_LOCAL is treated as production deletion approval, cascade execution approval, waiver approval, conversion migration approval, rollback success or production GO |
 
 Decision value: `P6_06_CLOSURE_READY / NO_GO / BLOCKED`.

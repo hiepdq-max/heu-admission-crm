@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-06 Hard Delete Account Secret Boundary
+
+- Updated the P6-06 hard-delete/cascade evidence checklist and non-TTGDTX cascade review
+  so conversion/waiver evidence explicitly forbids temporary passwords, password reset links
+  and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-hard-delete-boundary-guard.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so P6-06 hard-delete/cascade
+  packaging cannot claim a no-secret evidence boundary while omitting temporary
+  account secrets.
+- This is hard-delete/cascade evidence packaging only. It does not execute
+  deletion, cascade execution, waiver approval, conversion migration, cleanup,
+  rollback, evidence acceptance, owner GO/NO-GO or production GO.
+
 ## 2026-06-29 - P0-19 Legal Finance Account Secret Boundary
 
 - Updated the P0-19/P2-01/P2-02 pilot-open UAT runbook, P0-19 legal/finance

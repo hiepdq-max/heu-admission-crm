@@ -105,7 +105,7 @@ const hardDeleteAcceptanceItems: HardDeleteAcceptanceItem[] = [
     minimumEvidence:
       "BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence outside Codex/chat.",
     stopCondition:
-      "Stop if raw student PII, CCCD, bank data, payment data, passwords, OTPs, service-role keys or production credentials appear.",
+      "Stop if raw student PII, CCCD, bank data, payment data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or production credentials appear.",
   },
   {
     caseId: "P6-06-ACCEPT-06",
@@ -156,7 +156,7 @@ const hardDeleteClosureDecisionItems: HardDeleteClosureDecisionItem[] = [
     requiredProof:
       "BGH, IT_DATA, Audit and affected owners sign redacted conversion/waiver evidence in the controlled evidence location.",
     blocker:
-      "Block closure if raw sensitive data or credentials appear in Git, Codex/chat or public notes.",
+      "Block closure if raw sensitive data, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, service-role keys or production credentials appear in Git, Codex/chat or public notes.",
   },
   {
     caseId: "P6-06-DEC-06",
@@ -185,8 +185,9 @@ export function HardDeleteWaiverEvidenceChecklist() {
               Conversion or written waiver evidence is still required before
               P6-06 can move from IN_PROGRESS. Collect only redacted evidence
               references; raw student PII, CCCD, bank data, payment data,
-              passwords, OTPs, service-role keys and production credentials stay
-              outside Git/Codex/chat.
+              passwords, temporary passwords, OTPs, password reset links,
+              account activation/invite links, service-role keys and production
+              credentials stay outside Git/Codex/chat.
             </p>
           </div>
         </div>
