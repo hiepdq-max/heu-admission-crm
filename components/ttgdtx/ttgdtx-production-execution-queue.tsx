@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
   PRODUCTION_INFRA_READINESS_STEPS,
@@ -297,6 +298,51 @@ export function TtgdtxProductionExecutionQueue() {
                 Open UAT route
                 <ArrowRight className="size-3" />
               </Link>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-amber-200 bg-white p-4"
+        data-ttgdtx-finance-first-uat-checklist="P2-18_P5-03"
+        data-ttgdtx-finance-first-uat-range="FIN-UAT-01_FIN-UAT-05"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-amber-950">
+              First signed finance UAT checklist: P2-18 + P5-03
+            </h3>
+            <p className="mt-1 leading-6 text-amber-900">
+              Before running real-accounting browser UAT, confirm P0-10
+              evidence redaction, P6-04 real users, dashboard reconciliation,
+              Finance Desk read-only behavior and P0-14/P0-17 handoff are
+              ready. This is a launch checklist only, not UAT acceptance.
+            </p>
+          </div>
+          <span className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold uppercase text-amber-800">
+            P2_18_P5_03_FIRST_UAT_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS.map((step) => (
+            <article
+              key={step.code}
+              className="border-l-2 border-amber-300 bg-amber-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-amber-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {step.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {step.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {step.stopCondition}
+              </p>
             </article>
           ))}
         </div>

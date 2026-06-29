@@ -34,6 +34,14 @@ export type ProductionUatLaunchStep = {
   auditCommand: string;
 };
 
+export type ProductionFinanceUatFirstPassStep = {
+  code: string;
+  title: string;
+  requiredProof: string;
+  stopCondition: string;
+  owner: string;
+};
+
 export type ProductionRiskClosureStep = {
   code: string;
   title: string;
@@ -242,6 +250,54 @@ export const PRODUCTION_UAT_LAUNCH_STEPS: ProductionUatLaunchStep[] = [
     stopCondition:
       "Finance Desk can mutate source facts, leaks TTGDTX scope, lacks P6-04 real-accounting proof, shows raw sensitive evidence or KHTC/BGH/Audit reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:heu-finance-desk",
+  },
+];
+
+export const PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS: ProductionFinanceUatFirstPassStep[] = [
+  {
+    code: "FIN-UAT-01",
+    title: "P0-10 evidence redaction is ready",
+    owner: "IT_DATA + Audit",
+    requiredProof:
+      "Controlled evidence folder, redaction reviewer, evidence ID convention and forbidden-content check are prepared before any screenshot.",
+    stopCondition:
+      "Raw PII, CCCD, bank data, vouchers, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat.",
+  },
+  {
+    code: "FIN-UAT-02",
+    title: "P6-04 real-accounting accounts are ready",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    requiredProof:
+      "KHTC operator, BGH reviewer, Audit reviewer, Phap Che reviewer and out-of-scope negative account have queue/result evidence IDs.",
+    stopCondition:
+      "Any password/reset/invite link is recorded, any role scope leaks, or the out-of-scope account can see finance data.",
+  },
+  {
+    code: "FIN-UAT-03",
+    title: "P2-18 dashboard route is ready",
+    owner: "KHTC + BGH + IT_DATA",
+    requiredProof:
+      "Read-only route, source-total reconciliation, contract-only denial and P2_18_RELIANCE_READY/NO_GO/BLOCKED decision shell are visible.",
+    stopCondition:
+      "Dashboard can write, source totals are unreconciled, contract-only access exposes totals or reliance decision is ownerless.",
+  },
+  {
+    code: "FIN-UAT-04",
+    title: "P5-03 Finance Desk route is ready",
+    owner: "KHTC + BGH + IT_DATA",
+    requiredProof:
+      "Read-only cockpit, P5-03 immediate stop guard, real-user evidence bridge, acceptance matrix and reliance decision shell are visible.",
+    stopCondition:
+      "Finance Desk can mutate facts, leaks scope, issues bank instructions or stores uncontrolled evidence.",
+  },
+  {
+    code: "FIN-UAT-05",
+    title: "P0-14/P0-17 handoff is ready",
+    owner: "IT_DATA + Audit + KHTC",
+    requiredProof:
+      "Finance reliance evidence checkpoint, P0-17 access closure decision and P0-14 controlled evidence intake ledger are referenced before owner review.",
+    stopCondition:
+      "Evidence ID, redaction reviewer, owner signature state or access closure decision is missing.",
   },
 ];
 

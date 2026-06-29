@@ -214,6 +214,23 @@ fastSection("2026-06-29 - P6-06 Batch 1 Finance Legal Evidence Checklist", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P2-18 P5-03 First Finance UAT Checklist", [
+  "lib/production-readiness.ts",
+  "ttgdtx-production-execution-queue.tsx",
+  "first signed finance UAT checklist",
+  "FIN-UAT-01 through FIN-UAT-05",
+  "P0-10 evidence",
+  "P6-04 real-accounting accounts",
+  "P2-18 dashboard route",
+  "P5-03 Finance Desk route",
+  "P0-14/P0-17 handoff",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not execute UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",
