@@ -687,6 +687,23 @@ fastSection("2026-06-29 - P0-15 Final Handoff Finance Reliance Proof Alignment",
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-15 Final Handoff Access Closure Proof Alignment", [
+  "AGENTS.md",
+  "lib/production-readiness.ts",
+  "P0-17 access closure decision",
+  "P2-18/P5-03 real-accounting finance reliance proof",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-heu-final-handoff-coverage.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "revoke live users",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint", [
   "data-p014-finance-reliance-evidence-checkpoint=\"P2-18_P5-03_P6-04\"",
   "ttgdtx-production-evidence-binder.tsx",
@@ -1275,6 +1292,13 @@ requireText(
   log,
   /## 2026-06-29 - Real User Access Closure Guard[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04"[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*ACCESS_RETAIN[\s\S]*REVOKE_OR_REDUCE[\s\S]*BLOCKED[\s\S]*signed P6-04, P2-18 and P5-03\s+route results[\s\S]*soft-revoke[\s\S]*INACTIVE[\s\S]*safe evidence IDs outside\s+Git\/Codex\/chat[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is account-lifecycle packaging only[\s\S]*does not create accounts,\s+revoke live users, send passwords, approve role scope, accept UAT, approve\s+finance action or mark production GO/i,
   "real-user access closure guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-15 Final Handoff Access Closure Proof Alignment[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-15 final handoff\s+summaries must include the P0-17 access closure decision alongside\s+P2-18\/P5-03 real-accounting finance reliance proof before owner decision[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*final handoff cannot omit the\s+access closure decision while still claiming PASS_LOCAL readiness[\s\S]*audit-heu-final-handoff-coverage\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is final-handoff packaging only[\s\S]*does not create accounts, revoke\s+live users, collect evidence, accept UAT, approve dashboard reliance,\s+approve finance action, accept owner review or mark production GO/i,
+  "P0-15 final handoff access closure proof alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
