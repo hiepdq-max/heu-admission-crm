@@ -556,6 +556,20 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-10 Temporary Account Secret Evidence Guard", [
+  "temporary password",
+  "account activation/invite link",
+  "P0-10 controlled evidence redaction pack",
+  "Audit UI guard",
+  "production checklist",
+  "system backlog P0-10",
+  "audit-heu-controlled-evidence-redaction-pack.mjs",
+  "TTGDTX release gate",
+  "temporary account secrets",
+  "evidence-security guard alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P0-03 Backup Restore Local Check Alignment", [
   "audit:ttgdtx-migration-order-guard",
   "npm.cmd run lint",

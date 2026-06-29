@@ -66,7 +66,7 @@ requireText(pack, /Controlled Evidence Redaction Pack/i, "pack title");
 requireText(pack, /Status:\s*PASS_LOCAL_PACK/i, "PASS_LOCAL_PACK status");
 requireText(pack, /This document does not approve\s+production, UAT pass, backup completion, migration, finance action or owner\s+Go\/No-Go/i, "non-approval boundary");
 requireText(pack, /Production remains NO-GO until required evidence is collected/i, "production NO-GO boundary");
-requireText(pack, /Do not paste secrets, passwords, OTPs, service-role keys, API keys, private\s+keys, bank credentials, reset links, raw student PII, raw CCCD, raw phone\s+numbers, raw bank account numbers, bank statements, vouchers or raw payment\s+data/i, "secret and sensitive-data boundary");
+requireText(pack, /Do not paste secrets, passwords, temporary passwords, OTPs, service-role\s+keys, API keys, private keys, bank credentials, password reset links, account\s+activation\/invite links, raw student PII, raw CCCD, raw phone numbers, raw\s+bank account numbers, bank statements, vouchers or raw payment data/i, "secret and sensitive-data boundary");
 requireText(pack, /Do not store raw controlled evidence in Git/i, "no raw evidence in Git rule");
 requireText(pack, /Store sensitive backup\/UAT\/bank\/source evidence outside Git/i, "controlled evidence location rule");
 requireText(pack, /PUBLIC_CONTROL[\s\S]*CONTROLLED_REDACTED[\s\S]*CONTROLLED_SENSITIVE[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX/i, "evidence classification levels");
@@ -83,7 +83,7 @@ requireText(
   /P6-04 role\/workspace browser UAT screenshots[\s\S]*IT_DATA \+ TRUONG_PHONG \+ Audit[\s\S]*P6-03 audit-log UAT trace evidence[\s\S]*Audit \+ IT_DATA \+ KHTC[\s\S]*P6-06 hard-delete\/cascade conversion or narrow waiver evidence[\s\S]*IT_DATA \+ Audit \+ affected business owner/i,
   "P6 evidence redaction owner split",
 );
-requireText(pack, /Stop Conditions[\s\S]*password, OTP, reset link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
+requireText(pack, /Stop Conditions[\s\S]*password, temporary password, OTP, password reset link[\s\S]*account\s+activation\/invite link[\s\S]*Raw student PII[\s\S]*Evidence has no owner[\s\S]*Backup\/restore proof is stored only in the repo/i, "stop conditions");
 requireText(pack, /Local Preflight[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*audit:ttgdtx-release-gates[\s\S]*npm\.cmd run lint[\s\S]*npm\.cmd run build/i, "local preflight commands");
 requireText(pack, /Passing these checks proves only that local documentation and gates are aligned/i, "PASS_LOCAL local-only statement");
 requireText(
@@ -99,7 +99,7 @@ requireText(
 
 requireText(
   component,
-  /(?=[\s\S]*data-heu-controlled-evidence-redaction-guard="P0-10")(?=[\s\S]*P0-10 controlled evidence redaction\/intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Production remains NO-GO until evidence is collected in the\s+controlled location, redacted where needed, reviewed by Audit and\s+signed by the required human owners)(?=[\s\S]*Raw evidence stays outside\s+Git\/Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, OTPs, service-role keys, API\s+keys, private keys, bank credentials, reset links, raw student\s+PII, raw CCCD, raw phone numbers, raw bank account numbers, bank\s+statements, vouchers or raw payment data)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*does not\s+prove evidence was collected, accepted, signed, or production-approved)/i,
+  /(?=[\s\S]*data-heu-controlled-evidence-redaction-guard="P0-10")(?=[\s\S]*P0-10 controlled evidence redaction\/intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Production remains NO-GO until evidence is collected in the\s+controlled location, redacted where needed, reviewed by Audit and\s+signed by the required human owners)(?=[\s\S]*Raw evidence stays outside\s+Git\/Codex\/chat)(?=[\s\S]*Do not paste secrets, passwords, temporary passwords, OTPs,\s+service-role keys, API keys, private keys, bank credentials,\s+password reset links, account activation\/invite links, raw\s+student PII, raw CCCD, raw phone numbers, raw bank account\s+numbers, bank statements, vouchers or raw payment data)(?=[\s\S]*PUBLIC_CONTROL)(?=[\s\S]*CONTROLLED_REDACTED)(?=[\s\S]*CONTROLLED_SENSITIVE)(?=[\s\S]*FORBIDDEN_IN_GIT_OR_CODEX)(?=[\s\S]*audit:heu-controlled-evidence-redaction-pack)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)(?=[\s\S]*audit:ttgdtx-release-gates)(?=[\s\S]*does not\s+prove evidence was collected, accepted, signed, or production-approved)/i,
   "controlled evidence redaction UI guard",
   componentPath,
 );
@@ -127,14 +127,14 @@ requireText(
 
 requireText(
   checklist,
-  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  /Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
   "production checklist redaction row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git/i,
+  /P0-10[\s\S]*Controlled evidence redaction\/intake[\s\S]*PASS_LOCAL[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md[\s\S]*controlled evidence acceptance matrix[\s\S]*audit:heu-controlled-evidence-redaction-pack[\s\S]*raw evidence stays outside Git[\s\S]*temporary passwords and account activation\/invite links are forbidden in Git\/Codex\/chat/i,
   "backlog P0-10 redaction row",
   backlogPath,
 );

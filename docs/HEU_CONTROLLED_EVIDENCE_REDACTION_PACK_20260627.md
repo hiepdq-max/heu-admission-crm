@@ -11,13 +11,16 @@ signed by the required owners.
 
 ## 1. Non-Negotiable Boundary
 
-- Do not paste secrets, passwords, OTPs, service-role keys, API keys, private
-  keys, bank credentials, reset links, raw student PII, raw CCCD, raw phone
-  numbers, raw bank account numbers, bank statements, vouchers or raw payment
-  data into Git, Codex/chat, docs, issues, screenshots or browser notes.
+- Do not paste secrets, passwords, temporary passwords, OTPs, service-role
+  keys, API keys, private keys, bank credentials, password reset links, account
+  activation/invite links, raw student PII, raw CCCD, raw phone numbers, raw
+  bank account numbers, bank statements, vouchers or raw payment data into Git,
+  Codex/chat, docs, issues, screenshots or browser notes.
 - Do not store raw controlled evidence in Git.
 - Store sensitive backup/UAT/bank/source evidence outside Git in the
   access-controlled evidence location selected by IT_DATA and Audit.
+- Temporary passwords and account activation/invite links are forbidden in
+  Git/Codex/chat.
 - Codex/AI may draft templates, check local files and warn about missing
   controls. Codex/AI must not receive raw credentials or raw private data.
 
@@ -33,7 +36,7 @@ production GO is approved.
 | PUBLIC_CONTROL | Static audit output, non-sensitive runbook text, empty templates, synthetic data | Git/docs allowed | YES |
 | CONTROLLED_REDACTED | Masked screenshots, masked log snippets, masked evidence index, non-secret evidence reference | Git/docs allowed after owner review | YES, only after review |
 | CONTROLLED_SENSITIVE | Backup ID, restore target detail, signed UAT evidence, bank statement, voucher, source workbook, raw screenshot, contract-sensitive file | Approved controlled evidence location outside Git | NO |
-| FORBIDDEN_IN_GIT_OR_CODEX | Password, OTP, reset link, API key, service-role key, private key, bank credential, raw CCCD, raw bank account, raw student PII, raw payment data | Password manager or approved secure system only | NEVER |
+| FORBIDDEN_IN_GIT_OR_CODEX | Password, temporary password, OTP, password reset link, account activation/invite link, API key, service-role key, private key, bank credential, raw CCCD, raw bank account, raw student PII, raw payment data | Password manager or approved secure system only | NEVER |
 
 ## 3. Redaction Rules
 
@@ -44,8 +47,9 @@ browser note:
 2. Mask CCCD/passport/private identifiers as `********1234`.
 3. Mask phone numbers as `*******123`.
 4. Mask bank accounts as `************1234`.
-5. Remove passwords, OTPs, reset links, API keys, service-role keys, private
-   keys and bank credentials entirely.
+5. Remove passwords, temporary passwords, OTPs, password reset links, account
+   activation/invite links, API keys, service-role keys, private keys and bank
+   credentials entirely.
 6. Use evidence references instead of raw bank statements, vouchers, signed
    documents or source workbooks.
 7. Keep only the minimum visible fields needed to prove the control.
@@ -82,7 +86,8 @@ browser note:
 Keep production NO-GO and stop evidence handling if any condition below is
 true:
 
-1. A password, OTP, reset link, API key, service-role key, private key or bank
+1. A password, temporary password, OTP, password reset link, account
+   activation/invite link, API key, service-role key, private key or bank
    credential appears in Git, Codex/chat, docs, issue text or browser notes.
 2. Raw student PII, raw CCCD, raw phone, raw bank account, bank statement,
    voucher or raw payment data is visible in a Git-tracked file.
@@ -122,7 +127,7 @@ not accept evidence or approve production.
 |---|---|---|---|
 | P0-10-ACCEPT-01 | Evidence classified before use | Each item is marked PUBLIC_CONTROL, CONTROLLED_REDACTED, CONTROLLED_SENSITIVE or FORBIDDEN_IN_GIT_OR_CODEX | Classification is missing, guessed, or a forbidden item is treated as redacted evidence |
 | P0-10-ACCEPT-02 | Sensitive originals stay outside Git/Codex | Backup, UAT, bank, voucher, source workbook and signed evidence originals live only in the controlled evidence location | Raw controlled evidence is stored in Git, docs, screenshots, browser notes, issues or Codex/chat |
-| P0-10-ACCEPT-03 | Redaction preserves proof while removing private data | Names, CCCD/passport, phone, bank account, credentials, reset links, vouchers and raw payment data are masked or removed | The redacted copy leaks private data or no longer proves the intended control |
+| P0-10-ACCEPT-03 | Redaction preserves proof while removing private data | Names, CCCD/passport, phone, bank account, credentials, temporary passwords, reset/activation/invite links, vouchers and raw payment data are masked or removed | The redacted copy leaks private data or no longer proves the intended control |
 | P0-10-ACCEPT-04 | Owner and Audit review recorded | Evidence owner, Audit reviewer, date, controlled storage reference and required business owner review are recorded | Evidence has no owner, reviewer, date, controlled storage reference or business owner review |
 | P0-10-ACCEPT-05 | Only safe references enter tracked work | Git/docs/Codex contain only non-secret evidence IDs, masked snippets or reviewed redacted copies | A secret, raw PII, bank statement, voucher, source workbook or signed sensitive document enters tracked work |
 | P0-10-ACCEPT-06 | Production boundary acknowledged | The evidence note states PASS_LOCAL proves structure only and does not accept evidence, UAT, migration, finance action or GO | PASS_LOCAL is treated as evidence acceptance, UAT pass, backup completion, finance approval, owner waiver or production GO |

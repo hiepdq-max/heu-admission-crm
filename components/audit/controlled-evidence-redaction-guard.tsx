@@ -34,7 +34,7 @@ const redactionAcceptanceItems = [
     caseId: "P0-10-ACCEPT-03",
     requirement: "Redaction preserves proof while removing private data",
     minimumEvidence:
-      "Names, CCCD/passport, phone, bank account, credentials, reset links, vouchers and raw payment data are masked or removed.",
+      "Names, CCCD/passport, phone, bank account, credentials, temporary passwords, reset/activation/invite links, vouchers and raw payment data are masked or removed.",
     stopCondition:
       "Stop if the redacted copy leaks private data or no longer proves the intended control.",
   },
@@ -84,11 +84,12 @@ export function ControlledEvidenceRedactionGuard() {
               Git/Codex/chat.
             </p>
             <p className="mt-2 leading-6 text-emerald-900">
-              Do not paste secrets, passwords, OTPs, service-role keys, API
-              keys, private keys, bank credentials, reset links, raw student
-              PII, raw CCCD, raw phone numbers, raw bank account numbers, bank
-              statements, vouchers or raw payment data into screenshots, docs,
-              browser notes or Codex prompts.
+              Do not paste secrets, passwords, temporary passwords, OTPs,
+              service-role keys, API keys, private keys, bank credentials,
+              password reset links, account activation/invite links, raw
+              student PII, raw CCCD, raw phone numbers, raw bank account
+              numbers, bank statements, vouchers or raw payment data into
+              screenshots, docs, browser notes or Codex prompts.
             </p>
           </div>
         </div>

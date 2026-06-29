@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-10 Temporary Account Secret Evidence Guard
+
+- Added explicit temporary password and account activation/invite link wording
+  to the P0-10 controlled evidence redaction pack and Audit UI guard.
+- Surfaced the same forbidden-content boundary in the production checklist and
+  system backlog P0-10 rows.
+- Tightened `scripts/audit-heu-controlled-evidence-redaction-pack.mjs` so
+  future P0-10 evidence handling cannot claim the secret boundary while
+  omitting temporary account secrets, and aligned the TTGDTX release gate to the
+  same boundary.
+- This is evidence-security guard alignment only. It does not collect evidence,
+  create users, transmit passwords, accept UAT, approve migration, approve
+  finance action or mark production GO.
+
 ## 2026-06-29 - P0-03 Backup Restore Local Check Alignment
 
 - Added `audit:ttgdtx-migration-order-guard` and `npm.cmd run lint` to the
