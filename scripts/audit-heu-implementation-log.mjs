@@ -630,6 +630,23 @@ fastSection("2026-06-29 - TTGDTX UAT Launch Real Accounting Proof Gate", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-15 Final Handoff Finance Reliance Proof Alignment", [
+  "AGENTS.md",
+  "lib/production-readiness.ts",
+  "P0-14 finance reliance evidence checkpoint",
+  "P2-18/P5-03 real-accounting finance reliance proof",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-heu-final-handoff-coverage.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not collect evidence",
+  "create accounts",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint", [
   "data-p014-finance-reliance-evidence-checkpoint=\"P2-18_P5-03_P6-04\"",
   "ttgdtx-production-evidence-binder.tsx",
@@ -1204,6 +1221,13 @@ requireText(
   log,
   /## 2026-06-28 - TTGDTX Production Guard Shared Blocker Source[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders `PRODUCTION_BLOCKERS` from\s+`lib\/production-readiness\.ts` instead of maintaining a shorter local blocker\s+list[\s\S]*backlog, production checklist and current-state inventory[\s\S]*TTGDTX guard, Master Control blocker summary and production execution queue\s+remain tied to the same shared blocker source[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*local\s+`readinessBlockers` array cannot silently reappear[\s\S]*This is UI\/source alignment only[\s\S]*does not collect evidence, execute UAT,\s+approve migration, approve finance action, approve owner waiver or mark\s+production GO/i,
   "TTGDTX production guard shared blocker source log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-29 - P0-15 Final Handoff Finance Reliance Proof Alignment[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-15 final handoff\s+summaries must include the P0-14 finance reliance evidence checkpoint and\s+P2-18\/P5-03 real-accounting finance reliance proof before owner decision[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*final handoff cannot omit the\s+real-accounting reliance proof while still claiming PASS_LOCAL readiness[\s\S]*audit-heu-final-handoff-coverage\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*This is final-handoff packaging only[\s\S]*does not collect evidence, execute\s+UAT, create accounts, approve dashboard reliance, approve finance action,\s+accept owner review or mark production GO/i,
+  "P0-15 final handoff finance reliance proof alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

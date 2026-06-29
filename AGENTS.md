@@ -195,8 +195,9 @@ Read these documents before changing TTGDTX finance or migration logic:
     evidence path, P0-09 final owner decision manifest, P0-13 production
     blocker shared source and P0-14 production evidence binder, including
     controlled evidence intake ledger, redaction reviewer, owner signature
-    state, separate P6-04 role/workspace, P6-03 audit-log and P6-06
-    hard-delete/cascade proof paths, including
+    state, P2-18/P5-03 real-accounting finance reliance proof, separate P6-04
+    role/workspace, P6-03 audit-log and P6-06 hard-delete/cascade proof paths,
+    including
     `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`;
   - the boundary that real evidence stays outside Git/Codex/chat and that
     Codex output does not approve production, migration, finance action or
