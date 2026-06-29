@@ -650,6 +650,21 @@ fastSection("2026-06-29 - P0-14 Evidence Binder Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Internal UAT Signoff Account Secret Boundary", [
+  "TTGDTX internal UAT sign-off guard",
+  "multi-account UAT evidence",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "internal UAT sign-off packaging only",
+  "create accounts",
+  "transmit passwords",
+  "execute UAT",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Internal UAT Signoff Account Secret Boundary
+
+- Updated the TTGDTX internal UAT sign-off guard so multi-account UAT evidence
+  explicitly forbids temporary passwords, password reset links and account activation/invite links
+  in Git/Codex/chat.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so internal UAT packaging cannot
+  claim a no-secret evidence boundary while omitting temporary account secrets.
+- This is internal UAT sign-off packaging only. It does not create accounts,
+  transmit passwords, execute UAT, accept evidence, grant access, approve
+  finance action, approve migration, record owner GO/NO-GO or mark production GO.
+
 ## 2026-06-29 - P0-14 Evidence Binder Account Secret Boundary
 
 - Updated the P0-14 production evidence binder and shared production evidence
