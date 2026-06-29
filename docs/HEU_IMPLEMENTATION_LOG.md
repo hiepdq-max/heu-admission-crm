@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint
+
+- Added `data-p014-finance-reliance-evidence-checkpoint="P2-18_P5-03_P6-04"`
+  to `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` so owner review
+  must see P2-18 dashboard, P5-03 Finance Desk and P6-04 real-accounting
+  queue/result proof together before relying on finance screens.
+- The checkpoint renders P2-18 and P5-03 from `PRODUCTION_UAT_LAUNCH_STEPS`,
+  cites the P6-04 real accounting user queue/result template and keeps
+  screenshots/evidence references outside Git/Codex/chat. Required markers are
+  `data-heu-real-accounting-user-uat-queue` and
+  `data-heu-real-accounting-user-result-template`.
+- Updated P0-14 backlog, production checklist and current-state inventory so
+  the evidence binder cannot omit the P2-18/P5-03 real-accounting reliance
+  proof while still claiming PASS_LOCAL packaging.
+- Tightened `scripts/audit-heu-production-evidence-binder.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is evidence-binder packaging only. It does not collect evidence, execute
+  UAT, create accounts, approve dashboard reliance, approve finance action,
+  accept owner review or mark production GO.
+
 ## 2026-06-29 - TTGDTX UAT Launch Real Accounting Proof Gate
 
 - Updated `PRODUCTION_UAT_LAUNCH_STEPS` and UAT-ROUTE-08 in

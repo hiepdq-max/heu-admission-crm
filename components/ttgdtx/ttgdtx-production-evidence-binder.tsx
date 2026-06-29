@@ -9,10 +9,15 @@ import {
 import {
   PRODUCTION_EVIDENCE_REQUIREMENTS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
+  PRODUCTION_UAT_LAUNCH_STEPS,
 } from "@/lib/production-readiness";
 
 const governanceEvidenceCases = PRODUCTION_EVIDENCE_REQUIREMENTS.filter(
   (item) => item.blockerCode === "P6-04" || item.blockerCode === "P6-03",
+);
+
+const financeRelianceEvidenceCases = PRODUCTION_UAT_LAUNCH_STEPS.filter(
+  (item) => item.code === "P2-18" || item.code === "P5-03",
 );
 
 export function TtgdtxProductionEvidenceBinder() {
@@ -193,6 +198,60 @@ export function TtgdtxProductionEvidenceBinder() {
               </article>
             );
           })}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-indigo-200 bg-white p-4"
+        data-p014-finance-reliance-evidence-checkpoint="P2-18_P5-03_P6-04"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-2">
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-indigo-700" />
+            <div>
+              <h3 className="font-semibold text-indigo-950">
+                P0-14 finance reliance evidence checkpoint: P2-18 + P5-03 + P6-04
+              </h3>
+              <p className="mt-2 leading-6 text-zinc-700">
+                Dashboard and Finance Desk evidence must cite the P6-04 real
+                accounting user queue/result proof before owner review. Missing
+                P6-04 proof, unsigned reliance or uncontrolled screenshots keep
+                P0-14 NO-GO.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 font-mono text-xs text-indigo-950">
+            P2_18_P5_03_FINANCE_PROOF / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {financeRelianceEvidenceCases.map((step) => (
+            <article
+              key={`${step.code}-p014-finance-checkpoint`}
+              className="border-l-2 border-indigo-300 bg-indigo-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-indigo-700">
+                {step.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{step.title}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                <span className="font-medium">Evidence:</span> {step.evidence}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                <span className="font-medium">P6-04 bridge:</span> cite
+                data-heu-real-accounting-user-uat-queue and
+                data-heu-real-accounting-user-result-template controlled
+                evidence references outside Git/Codex/chat.
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {step.stopCondition}
+              </p>
+              <p className="mt-2 text-xs font-medium text-indigo-800">
+                Guard: {step.auditCommand}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 

@@ -630,6 +630,28 @@ fastSection("2026-06-29 - TTGDTX UAT Launch Real Accounting Proof Gate", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P0-14 Finance Reliance Evidence Checkpoint", [
+  "data-p014-finance-reliance-evidence-checkpoint=\"P2-18_P5-03_P6-04\"",
+  "ttgdtx-production-evidence-binder.tsx",
+  "P2-18 dashboard",
+  "P5-03 Finance Desk",
+  "P6-04 real-accounting",
+  "queue/result proof",
+  "PRODUCTION_UAT_LAUNCH_STEPS",
+  "data-heu-real-accounting-user-uat-queue",
+  "data-heu-real-accounting-user-result-template",
+  "P0-14 backlog",
+  "production checklist",
+  "current-state inventory",
+  "audit-heu-production-evidence-binder.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not collect evidence",
+  "create accounts",
+  "mark production GO",
+]);
+
 fastSection("2026-06-29 - P2-18 Dashboard Account Secret Boundary", [
   "P2-18 accounting dashboard UAT runbook",
   "dashboard role UAT plan",
