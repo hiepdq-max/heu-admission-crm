@@ -1,5 +1,17 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Current-State P6 Governance Guard Evidence
+
+- Added explicit current-state evidence lines for `audit:permission-soft-revoke`,
+  `audit:ttgdtx-role-scope-access`, `audit:ttgdtx-data-fetch-gate`,
+  `audit:heu-role-scope-uat-pack`, `audit:ttgdtx-audit-log` and
+  `audit:ttgdtx-audit-trail-guard`.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so P6-04 role/workspace scope and
+  P6-03 audit-log guard evidence cannot disappear from the inventory while
+  current local checks are claimed as pass.
+- This is governance evidence alignment only. It does not grant access, execute
+  signed UAT, accept audit evidence, approve finance action or mark production GO.
+
 ## 2026-06-29 - Current-State P2-18 Dashboard Guard Evidence
 
 - Added `audit:ttgdtx-dashboard-access`, `audit:ttgdtx-dashboard-readonly-guard`

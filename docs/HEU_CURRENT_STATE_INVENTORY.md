@@ -54,6 +54,12 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:heu-final-handoff-coverage` | PASS |
 | `npm.cmd run audit:heu-implementation-log` | PASS |
 | `npm.cmd run audit:heu-user-account-security` | PASS |
+| `npm.cmd run audit:permission-soft-revoke` | PASS |
+| `npm.cmd run audit:ttgdtx-role-scope-access` | PASS |
+| `npm.cmd run audit:ttgdtx-data-fetch-gate` | PASS |
+| `npm.cmd run audit:heu-role-scope-uat-pack` | PASS |
+| `npm.cmd run audit:ttgdtx-audit-log` | PASS |
+| `npm.cmd run audit:ttgdtx-audit-trail-guard` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-handover-uat-pack` | PASS |
 | `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` | PASS |
 | `npm.cmd run audit:heu-p0-register-pack` | PASS |

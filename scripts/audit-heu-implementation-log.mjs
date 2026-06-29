@@ -556,6 +556,19 @@ fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Current-State P6 Governance Guard Evidence", [
+  "audit:permission-soft-revoke",
+  "audit:ttgdtx-role-scope-access",
+  "audit:ttgdtx-data-fetch-gate",
+  "audit:heu-role-scope-uat-pack",
+  "audit:ttgdtx-audit-log",
+  "audit:ttgdtx-audit-trail-guard",
+  "P6-04 role/workspace scope",
+  "P6-03 audit-log guard evidence",
+  "governance evidence alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",
