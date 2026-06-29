@@ -196,6 +196,24 @@ fastSection("2026-06-29 - P6-06 Owner Triage Batch Plan", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-29 - P6-06 Batch 1 Finance Legal Evidence Checklist", [
+  "hard-delete-waiver-evidence-checklist.tsx",
+  "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+  "HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md",
+  "P6-06-TRIAGE-01",
+  "batch 1 finance/legal/evidence closure checklist",
+  "P6-06-B1-01 through P6-06-B1-05",
+  "HOU commission and",
+  "legal/tuition gate",
+  "short-course attendance/enrollment",
+  "payment/evidence bridge rows",
+  "audit-hard-delete-boundary-guard.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not convert rows",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",

@@ -14,6 +14,13 @@ type HardDeleteAcceptanceItem = {
   stopCondition: string;
 };
 
+type FirstClosureBatchItem = {
+  caseId: string;
+  scope: string;
+  requiredProof: string;
+  stopCondition: string;
+};
+
 type HardDeleteClosureDecisionItem = {
   caseId: string;
   decisionGate: string;
@@ -63,6 +70,52 @@ const evidenceItems: EvidenceItem[] = [
     owner: "BGH + IT_DATA + Audit",
     evidence:
       "Signed GO/NO-GO note confirming all conversion or waiver evidence was accepted outside Codex/chat.",
+  },
+];
+
+const firstClosureBatchItems: FirstClosureBatchItem[] = [
+  {
+    caseId: "P6-06-B1-01",
+    scope:
+      "HOU commission policy, claim, payment-line and evidence rows: P6-06-FIND-010 through P6-06-FIND-017.",
+    requiredProof:
+      "Restrict/archive/status-transition design, rollback note, KHTC owner lane and redacted evidence ID.",
+    stopCondition:
+      "Stop if any commission, payment-line, claim or HOU evidence row can still vanish through parent delete.",
+  },
+  {
+    caseId: "P6-06-B1-02",
+    scope: "Legal/tuition gate row: P6-06-FIND-040.",
+    requiredProof:
+      "PHAP_CHE and KHTC classification, legal/tuition gate retention proof and rollback note.",
+    stopCondition:
+      "Stop if legal or tuition gate history can be removed, waived broadly or hidden in cleanup.",
+  },
+  {
+    caseId: "P6-06-B1-03",
+    scope:
+      "Short-course attendance and enrollment rows: P6-06-FIND-042 through P6-06-FIND-044.",
+    requiredProof:
+      "DAO_TAO/KHTC conversion plan preserving class, session, attendance and enrollment history.",
+    stopCondition:
+      "Stop if attendance, payment support or enrollment evidence can disappear through cascade delete.",
+  },
+  {
+    caseId: "P6-06-B1-04",
+    scope:
+      "Payment/evidence bridge rows: P6-06-FIND-006, P6-06-FIND-015 through P6-06-FIND-017, P6-06-FIND-029 and P6-06-FIND-030.",
+    requiredProof:
+      "Owner mapping, evidence-retention decision, rollback note and redacted controlled-evidence reference.",
+    stopCondition:
+      "Stop if payment, approval or evidence documents can be deleted before finance/legal review.",
+  },
+  {
+    caseId: "P6-06-B1-05",
+    scope: "Batch 1 closure record before owner GO/NO-GO.",
+    requiredProof:
+      "Decision value, owner signatures, controlled evidence location, redaction reviewer and no forbidden secret or raw PII content.",
+    stopCondition:
+      "Stop if raw data, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat.",
   },
 ];
 
@@ -222,6 +275,52 @@ export function HardDeleteWaiverEvidenceChecklist() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        data-hard-delete-finance-legal-evidence-batch="P6-06-TRIAGE-01"
+        className="mt-5 border-t border-orange-200 pt-5"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-orange-950">
+              P6-06 batch 1 finance/legal/evidence closure checklist:
+              PASS_LOCAL only
+            </h3>
+            <p className="mt-1 leading-6 text-orange-900">
+              Decision value:{" "}
+              <span className="font-mono text-xs">
+                P6_06_BATCH1_READY / NO_GO / BLOCKED
+              </span>
+              . This is the first closure batch from the owner triage plan and
+              must clear before any broad waiver or owner GO/NO-GO discussion.
+            </p>
+          </div>
+          <div className="min-w-64 rounded-md border border-orange-200 bg-white px-3 py-2 text-orange-950">
+            Finance/legal/evidence rows are protected first because they affect
+            money, statutory/legal records, attendance and audit evidence.
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {firstClosureBatchItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-orange-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-orange-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.scope}</p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div

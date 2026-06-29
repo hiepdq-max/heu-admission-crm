@@ -157,6 +157,26 @@ The first closure batch is finance/legal/evidence protected rows first. This
 does not execute conversion migration, approve waiver, cleanup evidence, accept
 rollback success or mark production GO.
 
+### 8A.1 Batch 1 Finance/Legal/Evidence Closure Checklist
+
+The app also exposes
+`data-hard-delete-finance-legal-evidence-batch="P6-06-TRIAGE-01"` in
+`components/audit/hard-delete-waiver-evidence-checklist.tsx`.
+
+Decision value: `P6_06_BATCH1_READY / NO_GO / BLOCKED`.
+
+| Case | Scope | Required proof | Stop condition |
+|---|---|---|---|
+| P6-06-B1-01 | HOU commission policy, claim, payment-line and evidence rows: P6-06-FIND-010 through P6-06-FIND-017 | Restrict/archive/status-transition design, rollback note, KHTC owner lane and redacted evidence ID | Any commission, payment-line, claim or HOU evidence row can still vanish through parent delete |
+| P6-06-B1-02 | Legal/tuition gate row: P6-06-FIND-040 | PHAP_CHE and KHTC classification, legal/tuition gate retention proof and rollback note | Legal or tuition gate history can be removed, waived broadly or hidden in cleanup |
+| P6-06-B1-03 | Short-course attendance and enrollment rows: P6-06-FIND-042 through P6-06-FIND-044 | DAO_TAO/KHTC conversion plan preserving class, session, attendance and enrollment history | Attendance, payment support or enrollment evidence can disappear through cascade delete |
+| P6-06-B1-04 | Payment/evidence bridge rows: P6-06-FIND-006, P6-06-FIND-015 through P6-06-FIND-017, P6-06-FIND-029 and P6-06-FIND-030 | Owner mapping, evidence-retention decision, rollback note and redacted controlled-evidence reference | Payment, approval or evidence documents can be deleted before finance/legal review |
+| P6-06-B1-05 | Batch 1 closure record before owner GO/NO-GO | Decision value, owner signatures, controlled evidence location, redaction reviewer and no forbidden secret or raw PII content | Raw data, passwords, temporary passwords, OTPs, reset links, invite links or service-role keys appear in Git/Codex/chat |
+
+Batch 1 is PASS_LOCAL packaging only. It does not convert rows, approve a
+waiver, accept evidence, execute cleanup, accept rollback success or mark
+production GO.
+
 ## 9. P6-06 Acceptance Matrix
 
 The app also exposes

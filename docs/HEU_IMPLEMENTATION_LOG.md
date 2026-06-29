@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P6-06 Batch 1 Finance Legal Evidence Checklist
+
+- Updated `components/audit/hard-delete-waiver-evidence-checklist.tsx`,
+  `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` and
+  `docs/HEU_NON_TTGDTX_CASCADE_REVIEW_20260627.md` so P6-06-TRIAGE-01 has a
+  batch 1 finance/legal/evidence closure checklist before owner GO/NO-GO.
+- The checklist covers P6-06-B1-01 through P6-06-B1-05 for HOU commission and
+  evidence rows, legal/tuition gate, short-course attendance/enrollment,
+  payment/evidence bridge rows and the batch 1 closure record.
+- Synced `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P6-06 local packaging cannot omit
+  the batch 1 finance/legal/evidence closure checklist.
+- Tightened `scripts/audit-hard-delete-boundary-guard.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is evidence-checklist packaging only. It does not convert rows, approve
+  a waiver, accept evidence, execute cleanup, accept rollback success, accept
+  owner review or mark production GO.
+
 ## 2026-06-29 - P6-06 Owner Triage Batch Plan
 
 - Updated `components/audit/hard-delete-conversion-decision-queue.tsx`,
