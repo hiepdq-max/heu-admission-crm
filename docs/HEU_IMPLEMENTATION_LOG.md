@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - Current-State P2-18 Dashboard Guard Evidence
+
+- Added `audit:ttgdtx-dashboard-access`, `audit:ttgdtx-dashboard-readonly-guard`
+  and `audit:ttgdtx-accounting-dashboard-uat-plan` to
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P2-18 access, read-only and UAT plan guards
+  are visible beside source reconciliation evidence.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
+  cannot drop the P2-18 dashboard guard evidence while still claiming current
+  local checks pass.
+- This is inventory evidence alignment only. It does not execute browser UAT,
+  collect evidence, accept dashboard reliance, approve finance action or mark
+  production GO.
+
 ## 2026-06-29 - Current-State P2-17 Duplicate Payout Evidence
 
 - Added `npm.cmd run audit:ttgdtx-payout-duplicate-guard` to

@@ -545,6 +545,17 @@ fastSection("2026-06-29 - Current-State P2-17 Duplicate Payout Evidence", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - Current-State P2-18 Dashboard Guard Evidence", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit:ttgdtx-dashboard-access",
+  "audit:ttgdtx-dashboard-readonly-guard",
+  "audit:ttgdtx-accounting-dashboard-uat-plan",
+  "P2-18 access, read-only and UAT plan guards",
+  "source reconciliation evidence",
+  "inventory evidence alignment only",
+  "production GO",
+]);
+
 fastSection("2026-06-28 - Module Readiness Gap Matrix", [
   "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "`DAT`",

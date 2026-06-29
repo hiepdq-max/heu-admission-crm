@@ -62,6 +62,9 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run audit:hard-delete-conversion-decision-queue` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-duplicate-guard` | PASS |
 | `npm.cmd run audit:ttgdtx-payout-execution-readiness` | PASS |
+| `npm.cmd run audit:ttgdtx-dashboard-access` | PASS |
+| `npm.cmd run audit:ttgdtx-dashboard-readonly-guard` | PASS |
+| `npm.cmd run audit:ttgdtx-accounting-dashboard-uat-plan` | PASS |
 | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` | PASS |
 | Full `audit:*` suite | PASS after the TTGDTX process quick finder, production guard shared blocker source alignment, signed UAT execution routing hub, P5-02 Master Control action queue and safe iteration loop, P5-03 Finance Desk read-only cockpit guard, HOU ledger/handover gap pack, Short Course attendance/payment gap pack, P3-01/P3-02 UAT execution pack guard, P0-05 implementation log audit guard, P0-13 blocker source evidence-path alignment, P0-14 evidence closure tracker, P0-15 final handoff summary guard, P0 register pack, Data Master / Report View compatibility bridge, internal UAT run closure tracker, UAT execution closure template, UAT operator handoff sweeps, owner sign-off handoff alignment, P0-09 owner signoff P3 UAT alignment, P0-09 final owner decision manifest alignment, P0 Go/No-Go control paragraph alignment, P6-03/P6-06 execution-queue split and user account temporary password guard; 61 audit scripts passed |
 
