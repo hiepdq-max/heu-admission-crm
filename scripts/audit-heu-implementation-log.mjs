@@ -620,6 +620,21 @@ fastSection("2026-06-29 - P6-06 Hard Delete Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P5-02 Production Blocker Account Secret Boundary", [
+  "P5-02 BGH operating dashboard spec",
+  "production blocker summary",
+  "temporary passwords",
+  "password reset links",
+  "account activation/invite links",
+  "audit-heu-bgh-dashboard-spec.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "read-only production blocker",
+  "production BGH dashboard",
+  "accept UAT",
+  "approve finance action",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - P6-04 Role-Scope Account Secret Boundary", [
   "P6-04 role-scope UAT execution pack",
   "TTGDTX role-scope runbook",

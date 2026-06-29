@@ -61,7 +61,9 @@ BGH dashboard access must obey these rules:
 1. BGH sees governance summaries and approved/controlled dashboard views.
 2. BGH should not be the daily data-entry role.
 3. BGH dashboard must not expose row-level PII, raw bank data, credentials,
-   service keys, OTPs, unredacted source files or private contract terms.
+   passwords, temporary passwords, OTPs, password reset links, account
+   activation/invite links, service keys, unredacted source files or private
+   contract terms.
 4. Drill-down links must go to permissioned source workflows.
 5. Finance/legal/evidence data must preserve the source owner and audit trail.
 6. Out-of-scope users must be blocked or see empty scoped states.

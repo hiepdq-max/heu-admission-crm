@@ -174,10 +174,11 @@ export function ProductionReadinessBlockerSummary() {
         <p>
           No GO button is provided here. PASS_LOCAL does not approve production
           dashboard use, finance actions, production migration, UAT acceptance,
-          owner waiver or production GO. Do not paste secrets, passwords, OTPs,
-          service-role keys, bank credentials, raw student PII, raw CCCD, raw
-          phone numbers, raw bank account numbers, bank statements, vouchers or
-          raw payment data into Git/Codex/chat.
+          owner waiver or production GO. Do not paste secrets, passwords,
+          temporary passwords, OTPs, password reset links, account
+          activation/invite links, service-role keys, bank credentials, raw
+          student PII, raw CCCD, raw phone numbers, raw bank account numbers,
+          bank statements, vouchers or raw payment data into Git/Codex/chat.
         </p>
       </div>
     </section>

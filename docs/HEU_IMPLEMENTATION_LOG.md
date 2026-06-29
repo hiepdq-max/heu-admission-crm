@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P5-02 Production Blocker Account Secret Boundary
+
+- Updated the P5-02 BGH operating dashboard spec and production blocker summary
+  so owner-facing production readiness evidence explicitly forbids temporary passwords,
+  password reset links and account activation/invite links in Git/Codex/chat.
+- Tightened `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the read-only production blocker
+  surface cannot claim a no-secret evidence boundary while omitting temporary
+  account secrets.
+- This is BGH/owner read-only blocker packaging only. It does not implement a
+  production BGH dashboard, collect evidence, accept UAT, approve finance action,
+  approve owner waiver, approve migration or mark production GO.
+
 ## 2026-06-29 - P6-06 Hard Delete Account Secret Boundary
 
 - Updated the P6-06 hard-delete/cascade evidence checklist and non-TTGDTX cascade review
