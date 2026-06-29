@@ -10,7 +10,8 @@ human IT_DATA operator and Audit checker to fill outside Codex/chat.
 ## 1. Non-Negotiable Boundaries
 
 - Do not run production migration from Codex/chat.
-- Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,
+- Do not paste secrets, passwords, temporary passwords, OTPs, password reset
+  links, account activation/invite links, service-role keys, bank credentials,
   raw student PII, raw CCCD, raw phone numbers, raw bank account numbers,
   vouchers, exports or raw payment data into Git/Codex/chat.
 - Do not continue if the current browser tab, SQL editor, CLI profile or

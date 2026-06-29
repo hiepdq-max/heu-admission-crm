@@ -19,7 +19,8 @@ and human sign-off.
 ## 2. Hard Boundaries
 
 - Do not run production migration from Codex/chat.
-- Do not paste secrets, passwords, OTPs, service-role keys, bank credentials,
+- Do not paste secrets, passwords, temporary passwords, OTPs, password reset
+  links, account activation/invite links, service-role keys, bank credentials,
   raw student PII, raw CCCD, raw phone numbers or raw payment data into this
   pack.
 - Do not treat screenshots with visible credentials, raw bank data or raw PII
@@ -238,7 +239,8 @@ BACKUP_RESTORE_RUN_READY / STOP / BLOCKED so the operator/checker must confirm
 execution window, target identity, backup evidence, isolated restore, migration
 step decisions and postflight owner review before any production discussion.
 
-Do not attach secrets, passwords, OTPs, service-role keys, bank credentials,
+Do not attach secrets, passwords, temporary passwords, OTPs, password reset
+links, account activation/invite links, service-role keys, bank credentials,
 raw student PII, raw CCCD, raw phone numbers or raw payment data in
 Git/Codex/chat. Actual backup, restore dry-run, signed UAT and owner GO/NO-GO
 evidence remain required before production migration can be considered.

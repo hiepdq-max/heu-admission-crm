@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-06-29 - P0-03 Backup Restore Account Secret Boundary
+
+- Updated the P0-03 backup/restore dry-run evidence pack, operator run sheet
+  and Supabase backup/restore UI guard so temporary passwords, password reset
+  links and account activation/invite links are forbidden in Git/Codex/chat and
+  evidence notes.
+- Tightened `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so backup/restore evidence
+  packaging cannot claim a no-secret boundary while omitting temporary account
+  secrets.
+- This is backup/restore evidence packaging only. It does not execute backup,
+  restore, migration dry-run, rollback, UAT acceptance, account reset, password
+  transmission, owner sign-off or production GO.
+
 ## 2026-06-29 - P0-09 Owner Signoff Account Secret Boundary
 
 - Updated the P0-09 production owner sign-off pack and owner GO/NO-GO evidence

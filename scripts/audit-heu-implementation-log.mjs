@@ -582,6 +582,20 @@ fastSection("2026-06-29 - P0-09 Owner Signoff Account Secret Boundary", [
   "production GO",
 ]);
 
+fastSection("2026-06-29 - P0-03 Backup Restore Account Secret Boundary", [
+  "P0-03 backup/restore dry-run evidence pack",
+  "operator run sheet",
+  "Supabase backup/restore UI guard",
+  "temporary passwords",
+  "password reset",
+  "activation/invite links",
+  "audit-ttgdtx-backup-restore-dry-run-pack.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "backup/restore evidence packaging only",
+  "owner sign-off",
+  "production GO",
+]);
+
 fastSection("2026-06-29 - UAT Handoff Account Secret Boundary", [
   "TTGDTX UAT operator handoff",
   "execution log",

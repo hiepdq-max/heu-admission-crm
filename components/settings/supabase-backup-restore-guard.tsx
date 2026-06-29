@@ -22,7 +22,7 @@ const immediateStopItems = [
   {
     title: "Secret or raw evidence exposure",
     detail:
-      "Stop if service-role keys, passwords, OTPs, raw dumps, bank data, vouchers, CCCD, raw PII or payment data appear in evidence.",
+      "Stop if service-role keys, passwords, temporary passwords, OTPs, password reset links, account activation/invite links, raw dumps, bank data, vouchers, CCCD, raw PII or payment data appear in evidence.",
   },
 ];
 
@@ -371,8 +371,10 @@ export function SupabaseBackupRestoreGuard() {
             </p>
             <p className="mt-2 leading-6 text-amber-900">
               Do not run production migration from Codex/chat. Do not paste
-              secrets, passwords, OTPs, service-role keys, bank credentials,
-              raw student PII, raw CCCD, raw phone numbers or raw payment data.
+              secrets, passwords, temporary passwords, OTPs, password reset
+              links, account activation/invite links, service-role keys, bank
+              credentials, raw student PII, raw CCCD, raw phone numbers or raw
+              payment data.
             </p>
           </div>
         </div>
@@ -619,9 +621,10 @@ export function SupabaseBackupRestoreGuard() {
         <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
           PASS_LOCAL does not prove backup was executed, restore was executed,
           migration is safe, UAT passed, rollback is proven or production GO is
-          approved. Do not paste secrets, passwords, OTPs, service-role keys,
-          bank credentials, raw student PII, raw CCCD, raw phone numbers or raw
-          payment data.
+          approved. Do not paste secrets, passwords, temporary passwords, OTPs,
+          password reset links, account activation/invite links, service-role
+          keys, bank credentials, raw student PII, raw CCCD, raw phone numbers
+          or raw payment data.
         </div>
       </div>
 
