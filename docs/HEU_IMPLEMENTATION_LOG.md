@@ -3584,7 +3584,7 @@
   P6-04-SCOPE-006, including admin/BGH boundaries, KHTC TTGDTX operator scope,
   admission/student-service denial, legal/audit read-only scope,
   out-of-scope denial and no-secret signed evidence.
-- It repeats that passwords, OTPs, reset links, API keys, service-role keys,
+- It repeats that passwords, OTPs, password reset links, API keys, service-role keys,
   CCCD, bank accounts, bank statements, vouchers and raw student identity data
   stay outside Git/Codex/chat.
 - Extended role-scope and release-gate audits so the panel, production
