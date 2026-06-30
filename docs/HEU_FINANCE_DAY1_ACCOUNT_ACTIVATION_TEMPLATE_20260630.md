@@ -49,7 +49,22 @@ Record only redacted account labels and controlled evidence IDs.
 | FIN-ACT-04 Business scope is assigned before login | Narrow segment, TTGDTX partner/workspace and lead visibility scope | Broad workspace, unrestricted finance visibility, payout action, source evidence or audit/settings access without owner approval |
 | FIN-ACT-05 P6-04 pre-login route check is recorded | P6-04 route result and negative-control result with controlled evidence IDs | Route result missing, out-of-scope access visible, raw evidence or missing owner/redaction reviewer sign-off |
 
-## 5. Final Rule
+## 5. P6-04 Pre-Login Matrix Handoff
+
+After the activation row is filled, use
+`docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md` to record the
+allowed route family, blocked route family, expected result, actual result,
+negative-control account denial and owner decision for each real-accounting
+Day-1 label.
+
+Decision value: `P6_04_PRELOGIN_READY / NO_GO / BLOCKED`.
+
+Do not open P2-18, P5-03 or P2-17 if any P6-04 pre-login row is missing,
+ownerless, raw, unsigned, `NO_GO/BLOCKED`, or if
+`REAL_OUT_OF_SCOPE_NEGATIVE_01` can see protected finance, lead, source,
+dashboard, audit, settings or evidence data.
+
+## 6. Final Rule
 
 Do not open P2-18, P5-03 or P2-17 with a real-accounting account until its
 activation row is `FIN_ACTIVATION_READY`, the P6-04 pre-login result is recorded

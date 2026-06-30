@@ -83,6 +83,19 @@ Start with these accounting users, record only redacted user labels, route
 results and evidence IDs, then expand department by department after signed
 P6-04, P2-18 and P5-03 evidence exists.
 
+Before the Day-1 real-accounting route opens P2-18, P5-03 or P2-17, record the
+finance pre-login matrix in
+`docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md`. The matrix is
+PASS_LOCAL only and exposes the decision value
+`P6_04_PRELOGIN_READY / NO_GO / BLOCKED` for `REAL_KHTC_TTGDTX_OPERATOR_01`,
+`REAL_BGH_READONLY_01`, `REAL_AUDIT_READONLY_01`,
+`REAL_PHAP_CHE_REVIEW_01` and `REAL_OUT_OF_SCOPE_NEGATIVE_01`.
+
+The pre-login matrix must prove the allowed route family, blocked route family,
+required result and negative-control denial before any finance route is opened
+with a real-accounting account. Store the filled matrix outside Git/Codex/chat
+and reference only controlled evidence IDs.
+
 The user scope panel also exposes
 `data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"` for the
 controlled evidence result format. Store the filled result outside

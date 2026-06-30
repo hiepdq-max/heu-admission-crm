@@ -12,6 +12,8 @@ import {
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
+  PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS,
+  PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
@@ -210,6 +212,50 @@ export function RealUserOnboardingPanel() {
               <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
               <p className="mt-2 text-xs text-zinc-500">Owner: {item.owner}</p>
               <p className="mt-2 text-zinc-700">{item.requiredProof}</p>
+              <p className="mt-2 text-rose-700">Stop: {item.stopCondition}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-4 rounded-lg border border-violet-200 bg-white p-4"
+        data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-center gap-2 font-semibold text-violet-950">
+            <LockKeyhole className="size-4 text-violet-700" />
+            Finance Day-1 P6-04 pre-login route matrix
+          </div>
+          <div className="rounded-md border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-medium text-violet-900">
+            Decision: P6_04_PRELOGIN_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+        <p className="mt-2 text-violet-900">
+          Record one P6-04 route/scope result before any real-accounting account opens P2-18, P5-03 or P2-17. Negative-control account must be BLOCKED/EMPTY_SCOPED_STATE before finance work expands.
+        </p>
+        <p className="mt-1 text-xs font-medium text-violet-800">
+          Matrix: {PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX}
+        </p>
+        <div className="mt-3 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS.map((item) => (
+            <article key={item.code} className="border-l-2 border-violet-300 px-3">
+              <p className="text-xs font-semibold uppercase text-violet-700">
+                {item.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">
+                {item.accountLabel}
+              </p>
+              <p className="mt-2 text-xs text-zinc-500">Owner: {item.owner}</p>
+              <p className="mt-2 text-zinc-700">
+                Allow: {item.allowedBeforeFinanceLogin}
+              </p>
+              <p className="mt-2 text-zinc-700">
+                Block: {item.blockedBeforeFinanceLogin}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Result: {item.requiredResult}
+              </p>
               <p className="mt-2 text-rose-700">Stop: {item.stopCondition}</p>
             </article>
           ))}

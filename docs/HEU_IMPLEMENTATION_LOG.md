@@ -1,5 +1,42 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 P6-04 Pre-Login Matrix
+
+- Added `docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md` as the
+  PASS_LOCAL_TEMPLATE for recording per-account P6-04 route/scope results
+  before real-accounting accounts open P2-18, P5-03 or P2-17.
+- Added the matrix to `AGENTS.md` required reading and
+  `scripts/audit-ttgdtx-release-gates.mjs` required file coverage; extended
+  `scripts/audit-heu-role-scope-uat-pack.mjs` so AGENTS cannot omit it.
+- Added `PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX` and
+  `PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS` to
+  `lib/production-readiness.ts`.
+- Mounted the matrix in `components/ttgdtx/ttgdtx-production-execution-queue.tsx`
+  with `data-ttgdtx-finance-day-one-p6-04-prelogin-matrix="P6-04_P0-17"`
+  and in `components/settings/real-user-onboarding-panel.tsx` with
+  `data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17"`.
+- The matrix covers `P6-04-PRELOGIN-01` through `P6-04-PRELOGIN-05`,
+  `REAL_KHTC_TTGDTX_OPERATOR_01`, `REAL_BGH_READONLY_01`,
+  `REAL_AUDIT_READONLY_01`, `REAL_PHAP_CHE_REVIEW_01` and
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01`, with
+  `P6_04_PRELOGIN_READY / NO_GO / BLOCKED`.
+- Synced `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md`,
+  `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md`,
+  `docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Updated `scripts/audit-heu-current-state-inventory.mjs` so the current-state
+  guard requires the P6-04 pre-login matrix in the production readiness and
+  role/workspace scope snapshot.
+- Follow-up aligned the real-user onboarding UI wording and account activation
+  template handoff wording so `audit:heu-user-account-security` requires the
+  negative-control account, allowed route family and blocked route family before
+  any real-accounting Day-1 login.
+- This is P6-04 pre-login packaging only. It does not create accounts, send
+  invites, store passwords, execute UAT, grant access, accept route evidence,
+  approve finance action, move money, accept owner review or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Account Activation Handoff
 
 - Added `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md` as the

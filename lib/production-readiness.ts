@@ -61,11 +61,24 @@ export const PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE =
 export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE =
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md";
 
+export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX =
+  "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md";
+
 export type ProductionFinanceDayOneAccountActivationCheck = {
   code: string;
   title: string;
   owner: string;
   requiredProof: string;
+  stopCondition: string;
+};
+
+export type ProductionFinanceDayOnePreloginRouteCheck = {
+  code: string;
+  accountLabel: string;
+  owner: string;
+  allowedBeforeFinanceLogin: string;
+  blockedBeforeFinanceLogin: string;
+  requiredResult: string;
   stopCondition: string;
 };
 
@@ -498,6 +511,69 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS: ProductionFin
       "P6-04 route result and negative-control result are recorded with controlled evidence IDs before P2-18/P5-03/P2-17 are opened.",
     stopCondition:
       "Route result is missing, out-of-scope access is visible, evidence is raw or owner/redaction reviewer sign-off is missing.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinanceDayOnePreloginRouteCheck[] = [
+  {
+    code: "P6-04-PRELOGIN-01",
+    accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    owner: "KHTC + IT_DATA + Audit",
+    allowedBeforeFinanceLogin:
+      "P6-04 scope proof, P2-10, P2-13, P2-17, P2-18 and P5-03 inside the assigned TTGDTX finance scope only.",
+    blockedBeforeFinanceLogin:
+      "Unassigned partner/workspace, unrestricted dashboard totals, hidden raw evidence, admin settings and out-of-scope lead data.",
+    requiredResult: "ALLOWED inside assigned TTGDTX scope only",
+    stopCondition:
+      "Stop if the route opens before P6-04 proof, scope is broad, payout action is available outside approval or evidence is raw/unsigned.",
+  },
+  {
+    code: "P6-04-PRELOGIN-02",
+    accountLabel: "REAL_BGH_READONLY_01",
+    owner: "BGH + IT_DATA + Audit",
+    allowedBeforeFinanceLogin:
+      "P6-04 scope proof plus read-only P2-18, P5-03 and Master Control review routes.",
+    blockedBeforeFinanceLogin:
+      "Daily entry, payment execution, source evidence edit, role grant, owner GO action and raw sensitive evidence.",
+    requiredResult: "READ_ONLY or BLOCKED where write/action is attempted",
+    stopCondition:
+      "Stop if BGH can create, approve, pay, edit evidence, grant scope or mark production GO.",
+  },
+  {
+    code: "P6-04-PRELOGIN-03",
+    accountLabel: "REAL_AUDIT_READONLY_01",
+    owner: "Audit + IT_DATA",
+    allowedBeforeFinanceLogin:
+      "P6-04 scope proof plus read-only audit, redacted evidence review, P2-18 and P5-03 traceability checks.",
+    blockedBeforeFinanceLogin:
+      "Money movement, role grant, source fact mutation, redaction bypass and raw secret/PII evidence.",
+    requiredResult: "READ_ONLY with redacted evidence references only",
+    stopCondition:
+      "Stop if Audit can mutate finance facts, bypass redaction, grant access, move money or see secrets outside approved evidence class.",
+  },
+  {
+    code: "P6-04-PRELOGIN-04",
+    accountLabel: "REAL_PHAP_CHE_REVIEW_01",
+    owner: "PHAP_CHE + IT_DATA + KHTC",
+    allowedBeforeFinanceLogin:
+      "P6-04 scope proof plus P0-19 legal/source/contract review inside approved legal scope.",
+    blockedBeforeFinanceLogin:
+      "Unrestricted finance totals, payout action, dashboard reliance, private contract bodies and non-approved source evidence.",
+    requiredResult: "LEGAL_REVIEW_ONLY or BLOCKED outside approved legal scope",
+    stopCondition:
+      "Stop if legal review exposes unrestricted finance totals, private contract bodies or payment execution without written owner approval.",
+  },
+  {
+    code: "P6-04-PRELOGIN-05",
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    owner: "IT_DATA + Audit",
+    allowedBeforeFinanceLogin:
+      "Login and blocked or empty scoped state only, with P6-04 negative-control result recorded.",
+    blockedBeforeFinanceLogin:
+      "Any TTGDTX finance, lead, source, dashboard, audit, settings, evidence or payout data.",
+    requiredResult: "BLOCKED or EMPTY_SCOPED_STATE",
+    stopCondition:
+      "Stop if the negative-control account sees any protected route, row, total, evidence link, audit row or settings data.",
   },
 ];
 

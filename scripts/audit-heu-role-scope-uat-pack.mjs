@@ -34,13 +34,21 @@ requireFile("docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md");
 requireFile("docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md");
 requireFile("docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md");
 requireFile("docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md");
+requireFile("docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md");
 requireFile("components/settings/user-scope-enforcement-panel.tsx");
+requireFile("components/settings/real-user-onboarding-panel.tsx");
 requireFile("scripts/audit-ttgdtx-role-scope-access.mjs");
 requireFile("scripts/audit-ttgdtx-data-fetch-gate.mjs");
 
 const pack = exists(packPath) ? read(packPath) : "";
+const preloginMatrix = exists("docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md")
+  ? read("docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md")
+  : "";
 const panel = exists("components/settings/user-scope-enforcement-panel.tsx")
   ? read("components/settings/user-scope-enforcement-panel.tsx")
+  : "";
+const onboarding = exists("components/settings/real-user-onboarding-panel.tsx")
+  ? read("components/settings/real-user-onboarding-panel.tsx")
   : "";
 
 requireText(pack, /P6-04 role-scope UAT/i, "P6-04 scope");
@@ -51,6 +59,7 @@ requireText(pack, /UAT_ADMIN[\s\S]*UAT_BGH[\s\S]*UAT_KHTC_TTGDTX_OPERATOR[\s\S]*
 requireText(pack, /Lead list\/detail[\s\S]*TTGDTX contract\/source[\s\S]*TTGDTX receivable, collection, reconciliation and payment[\s\S]*TTGDTX accounting dashboard[\s\S]*Master\/settings[\s\S]*Audit log/i, "route family coverage");
 requireText(pack, /data-heu-role-scope-route-matrix="P6-04"[\s\S]*P6-04-ROUTE-01[\s\S]*P6-04-ROUTE-07[\s\S]*ALLOWED[\s\S]*BLOCKED[\s\S]*EMPTY_SCOPED_STATE[\s\S]*UI-only hide is not enough/i, "role-scope route matrix coverage");
 requireText(pack, /(?=[\s\S]*data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03")(?=[\s\S]*REAL-ACC-01)(?=[\s\S]*REAL-ACC-06)(?=[\s\S]*REAL_USER_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che legal reviewer)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04, P2-18 and P5-03 evidence exists)/i, "real accounting user UAT queue coverage");
+requireText(pack, /(?=[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*allowed route family)(?=[\s\S]*blocked route family)(?=[\s\S]*negative-control denial)(?=[\s\S]*outside Git\/Codex\/chat)/i, "finance Day-1 P6-04 pre-login matrix handoff coverage");
 requireText(pack, /(?=[\s\S]*data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03")(?=[\s\S]*Evidence ID)(?=[\s\S]*Redacted account label)(?=[\s\S]*Profile and scope)(?=[\s\S]*Route and expected result)(?=[\s\S]*Actual result)(?=[\s\S]*Human sign-off)(?=[\s\S]*ALLOWED)(?=[\s\S]*BLOCKED)(?=[\s\S]*EMPTY_SCOPED_STATE)(?=[\s\S]*BLOCKED_PENDING_OWNER_SIGNOFF)/i, "real accounting user result template coverage");
 requireText(pack, /(?=[\s\S]*Post-UAT Access Closure Handoff)(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P6-04-CLOSE-01)(?=[\s\S]*P6-04-CLOSE-04)(?=[\s\S]*Soft-revoke)(?=[\s\S]*INACTIVE)(?=[\s\S]*Real passwords, temporary passwords, OTPs, password reset links, account activation\/invite links)/i, "post-UAT access closure handoff coverage");
 requireText(pack, /(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*P0-17 access closure review)(?=[\s\S]*P0-17 access closure handoff)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*signed owner approval)/i, "role-scope acceptance matrix coverage");
@@ -107,6 +116,14 @@ if (
 }
 
 if (
+  !/(?=[\s\S]*data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17")(?=[\s\S]*Finance Day-1 P6-04 pre-login route matrix)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*item\.allowedBeforeFinanceLogin)(?=[\s\S]*item\.blockedBeforeFinanceLogin)(?=[\s\S]*item\.requiredResult)(?=[\s\S]*item\.stopCondition)/i.test(onboarding)
+) {
+  fail(
+    "components/settings/real-user-onboarding-panel.tsx: missing finance Day-1 P6-04 pre-login matrix handoff.",
+  );
+}
+
+if (
   !/(?=[\s\S]*data-heu-role-scope-acceptance-matrix="P6-04")(?=[\s\S]*P6-04 role-scope acceptance matrix)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P6_04_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6-04-ACCEPT-01)(?=[\s\S]*P6-04-ACCEPT-06)(?=[\s\S]*Static preflight and synthetic-account boundary)(?=[\s\S]*Positive role access is scoped)(?=[\s\S]*Negative and out-of-scope denial)(?=[\s\S]*Server-side enforcement)(?=[\s\S]*Admin delegation and broad access control)(?=[\s\S]*Signed evidence and production boundary)(?=[\s\S]*PASS_LOCAL does not approve production access, broad permissions,\s+real-data UAT, finance action or production GO)/i.test(panel)
 ) {
   fail(
@@ -133,24 +150,35 @@ if (!/UAT_OUT_OF_SCOPE[\s\S]*Cannot open scoped TTGDTX data/i.test(runbook)) {
   fail("TTGDTX role-scope runbook must include out-of-scope denial.");
 }
 
+if (
+  !/(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*P6-04-PRELOGIN-EVID-001)(?=[\s\S]*P6-04-PRELOGIN-EVID-005)(?=[\s\S]*Allowed before finance login)(?=[\s\S]*Must be blocked before finance login)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i.test(preloginMatrix)
+) {
+  fail(
+    "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md: missing PASS_LOCAL matrix, decision values or stop rule.",
+  );
+}
+
 const packageJson = JSON.parse(read("package.json"));
 if (!packageJson.scripts?.["audit:heu-role-scope-uat-pack"]) {
   fail("package.json: missing audit:heu-role-scope-uat-pack script");
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue and result template[\s\S]*post-UAT access closure handoff[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
+if (!/P6-04[\s\S]*PASS_LOCAL[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue and result template[\s\S]*finance Day-1 P6-04 pre-login matrix[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED[\s\S]*post-UAT access closure handoff[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff[\s\S]*audit:heu-role-scope-uat-pack/.test(backlog)) {
   fail("Backlog P6-04 must be PASS_LOCAL and reference the role-scope UAT pack audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue and result template[\s\S]*post-UAT access closure handoff[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff/.test(checklist)) {
+if (!/Permission by role and workspace[\s\S]*IN_PROGRESS[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*components\/settings\/user-scope-enforcement-panel\.tsx[\s\S]*real accounting user UAT queue and result template[\s\S]*finance Day-1 P6-04 pre-login matrix[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED[\s\S]*post-UAT access closure handoff[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff/.test(checklist)) {
   fail("Production checklist must keep role/workspace permission IN_PROGRESS and reference the P6-04 pack.");
 }
 
 const agents = read("AGENTS.md");
 if (!agents.includes("docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md")) {
   fail("AGENTS.md: missing role-scope UAT pack in required reading.");
+}
+if (!agents.includes("docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md")) {
+  fail("AGENTS.md: missing finance Day-1 P6-04 pre-login matrix in required reading.");
 }
 if (!agents.includes("npm.cmd run audit:heu-role-scope-uat-pack")) {
   fail("AGENTS.md: missing role-scope UAT pack audit in final handoff checks.");
