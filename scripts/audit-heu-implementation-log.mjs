@@ -99,6 +99,36 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Desk Day-1 Start Gate Evidence Checkpoint", [
+  "data-finance-desk-day-one-start-gate-evidence=\"P5-03-FIN-START\"",
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "FIN_ACTIVATION_READY",
+  "P6_04_PRELOGIN_READY",
+  "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "scripts/audit-heu-finance-desk.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-14 Finance Day-1 Start Gate Evidence Binder Link", [
   "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
   "ttgdtx-production-evidence-binder.tsx",

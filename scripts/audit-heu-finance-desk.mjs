@@ -24,6 +24,14 @@ function requireText(contents, pattern, label, file) {
   }
 }
 
+function requireAllText(contents, tokens, label, file) {
+  for (const token of tokens) {
+    if (!contents.includes(token)) {
+      fail(`${file}: missing ${label}: ${token}`);
+    }
+  }
+}
+
 for (const file of [
   "app/finance-desk/page.tsx",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
@@ -32,6 +40,7 @@ for (const file of [
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "components/layout/app-shell.tsx",
@@ -241,9 +250,65 @@ requireText(
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
 );
 
-requireText(
+requireAllText(
   uatChecklist,
-  /(?=[\s\S]*data-finance-desk-controlled-trial-plan="P5-03")(?=[\s\S]*P5-03 Finance Desk controlled trial plan:\s*PASS_LOCAL only)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_ACTIVATION_READY \+ P6_04_PRELOGIN_READY)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-06)(?=[\s\S]*P5-03-TRIAL-07)(?=[\s\S]*P5-03-TRIAL-08)(?=[\s\S]*P5-03-TRIAL-EVID-001)(?=[\s\S]*P5-03-TRIAL-EVID-005)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*no auto gach no)(?=[\s\S]*no COM production\s+calculation)(?=[\s\S]*no payment execution)(?=[\s\S]*no production GO)/i,
+  [
+    "financeDayOneStartGateChecklistPath",
+    'data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"',
+    "Finance Day-1 start-gate evidence before Finance Desk trial",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "P0-03 backup and restore evidence accepted",
+    "signed finance UAT route readiness",
+    "P0-10 controlled evidence redaction storage ready",
+    "P0-14/P0-17 result and access-closure paths ready",
+    "human owner boundary accepted",
+    "does not create accounts",
+    "send invites",
+    "store",
+    "passwords",
+    "grant access",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "move money",
+    "issue bank",
+    "instructions",
+    "mark production GO",
+  ],
+  "Finance Desk Day-1 start-gate evidence panel",
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+);
+
+requireAllText(
+  uatChecklist,
+  [
+    'data-finance-desk-controlled-trial-plan="P5-03"',
+    "P5-03 Finance Desk controlled trial plan: PASS_LOCAL only",
+    "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+    "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+    "FIN_START_READY + FIN_ACTIVATION_READY + P6_04_PRELOGIN_READY",
+    "P5-03-TRIAL-01",
+    "P5-03-TRIAL-06",
+    "P5-03-TRIAL-07",
+    "P5-03-TRIAL-08",
+    "P5-03-TRIAL-EVID-001",
+    "P5-03-TRIAL-EVID-005",
+    "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "No bulk real-data import",
+    "no auto gach no",
+    "no COM production",
+    "no payment execution",
+    "no production GO",
+  ],
   "Finance Desk controlled trial UI panel",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
 );
@@ -269,23 +334,87 @@ requireText(
   "app/finance-desk/page.tsx",
 );
 
-requireText(
+requireAllText(
   backlog,
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*audit:heu-finance-desk[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
+  [
+    "P5-03",
+    "HEU Finance Desk read-only cockpit",
+    "PASS_LOCAL",
+    "app/finance-desk/page.tsx",
+    "finance-desk-uat-evidence-checklist.tsx",
+    "database/step111_heu_finance_desk.sql",
+    "HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
+    "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "audit:heu-finance-desk",
+    "UAT evidence checklist",
+    "immediate stop guard",
+    "real accounting user evidence bridge",
+    "Finance Day-1 start-gate evidence checkpoint",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "Finance Day-1 result ledger",
+    "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+    "P5-03 reliance decision manifest",
+    "signed finance/dashboard UAT and reliance decision still required",
+  ],
   "P5-03 Finance Desk backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
-requireText(
+requireAllText(
   checklist,
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
+  [
+    "HEU Finance Desk read-only cockpit",
+    "PASS_LOCAL",
+    "app/finance-desk/page.tsx",
+    "finance-desk-uat-evidence-checklist.tsx",
+    "database/step111_heu_finance_desk.sql",
+    "HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
+    "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "audit:heu-finance-desk",
+    "P5-03 UAT evidence checklist",
+    "P5-03 immediate stop guard",
+    "real accounting user evidence bridge",
+    "Finance Day-1 start-gate evidence checkpoint",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "Finance Day-1 result ledger",
+    "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+    "P5-03 UAT acceptance matrix and P5-03 reliance decision manifest",
+    "does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO",
+  ],
   "production checklist Finance Desk row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
-requireText(
+requireAllText(
   inventory,
-  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
+  [
+    "npm.cmd run audit:heu-finance-desk",
+    "PASS",
+    "Finance Desk / KHTC cockpit",
+    "read-only cockpit",
+    "permission and workspace-scope gate",
+    "UAT evidence checklist",
+    "immediate stop guard",
+    "real accounting user evidence bridge",
+    "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    "Finance Day-1 start-gate evidence checkpoint",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "Finance Day-1 result ledger",
+    "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+    "P5-03 reliance decision manifest",
+    "Signed browser UAT and reliance decision pending",
+  ],
   "current-state Finance Desk evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -365,9 +494,37 @@ requireText(
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
 );
 
-requireText(
+requireAllText(
   controlledTrialPlan,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_PLAN)(?=[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*\/finance-desk)(?=[\s\S]*\/ttgdtx\/accounting-dashboard)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-08)(?=[\s\S]*Evidence To Capture)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*No auto gach no)(?=[\s\S]*No COM production calculation)(?=[\s\S]*No payment execution)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*Production remains NO-GO)/i,
+  [
+    "Status: PASS_LOCAL_PLAN",
+    "P5-03 Finance Desk controlled trial",
+    "Production status: NO-GO",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "/finance-desk",
+    "/ttgdtx/accounting-dashboard",
+    "FIN_START_READY",
+    "FIN_ACTIVATION_READY",
+    "P6_04_PRELOGIN_READY",
+    "P5-03-TRIAL-01",
+    "P5-03-TRIAL-08",
+    "Evidence To Capture",
+    "No bulk real-data import",
+    "No auto gach no",
+    "no COM production calculation",
+    "no payment execution",
+    "outside Git/Codex/chat",
+    "Production remains NO-GO",
+  ],
   "Finance Desk controlled trial plan",
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
 );
@@ -379,9 +536,28 @@ requireText(
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
 );
 
-requireText(
+requireAllText(
   uatRunbook,
-  /(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*redacted account label)(?=[\s\S]*route visibility)(?=[\s\S]*read-only evidence)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*bulk real-data import)(?=[\s\S]*COM production\s+calculation)(?=[\s\S]*payment execution)(?=[\s\S]*production GO)/i,
+  [
+    'data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"',
+    "`FIN-START-EVID-001` through `FIN-START-EVID-005`",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+    "redacted account label",
+    "route visibility",
+    "read-only evidence",
+    "FIN_START_READY",
+    "FIN_ACTIVATION_READY",
+    "P6_04_PRELOGIN_READY",
+    "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "bulk real-data import",
+    "COM production",
+    "payment execution",
+    "production GO",
+  ],
   "Finance Desk controlled trial plan runbook handoff",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
 );
@@ -447,6 +623,42 @@ requireText(
   /Finance Desk \/ KHTC cockpit[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md[\s\S]*controlled real-accounting user labels[\s\S]*route visibility[\s\S]*read-only evidence[\s\S]*Signed browser UAT and reliance decision pending/i,
   "Finance Desk controlled trial current-state reference",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+requireAllText(
+  read("docs/HEU_IMPLEMENTATION_LOG.md"),
+  [
+    "## 2026-06-30 - Finance Desk Day-1 Start Gate Evidence Checkpoint",
+    'data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"',
+    "components/finance/finance-desk-uat-evidence-checklist.tsx",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "FIN_ACTIVATION_READY",
+    "P6_04_PRELOGIN_READY",
+    "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+    "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    "HEU_SYSTEM_BUILD_BACKLOG.md",
+    "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+    "HEU_CURRENT_STATE_INVENTORY.md",
+    "audit-heu-finance-desk.mjs",
+    "audit-ttgdtx-release-gates.mjs",
+    "audit-heu-implementation-log.mjs",
+    "does not create accounts",
+    "send invites",
+    "store passwords",
+    "grant access",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "move money",
+    "issue bank instructions",
+    "mark production GO",
+  ],
+  "Finance Desk Day-1 start-gate evidence checkpoint implementation log",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 requireText(

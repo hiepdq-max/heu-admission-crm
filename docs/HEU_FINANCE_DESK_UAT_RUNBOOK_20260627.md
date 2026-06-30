@@ -59,10 +59,18 @@ P5-03-REAL-01 through P5-03-REAL-05 and decision value
 `P5_03_REAL_USER_READY / NO_GO / BLOCKED`. It requires the P6-04 real
 accounting user queue and result template before Finance Desk reliance.
 
+The same checklist exposes
+`data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"` with
+`FIN-START-EVID-001` through `FIN-START-EVID-005` and decision value
+`FIN_START_READY / NO_GO / BLOCKED`. It requires
+`docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` before Finance Desk
+controlled trial, reliance review or owner decision.
+
 The controlled trial wrapper for real-accounting Finance Desk users is
 `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`. Use it to identify
 the redacted account label, route visibility, read-only evidence and stop
-conditions before signed UAT. Decision value:
+conditions after `FIN_START_READY`, `FIN_ACTIVATION_READY` and
+`P6_04_PRELOGIN_READY` exist outside Git/Codex/chat. Decision value:
 `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`. The plan covers
 `REAL_KHTC_TTGDTX_OPERATOR_01` through `REAL_OUT_OF_SCOPE_NEGATIVE_01` and
 does not approve bulk real-data import, auto debt clearing, COM production

@@ -42,6 +42,7 @@ for (const file of [
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
   "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
@@ -167,7 +168,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, UAT evidence checklist, immediate stop guard, real accounting user evidence bridge to P6-04 queue\/result proof, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix, Finance Day-1 result ledger with `FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED` and `ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED`, and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
+  /Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate, read-only TTGDTX views, shared VND formatter, UAT evidence checklist, immediate stop guard, real accounting user evidence bridge to P6-04 queue\/result proof, `docs\/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md` acceptance matrix, Finance Day-1 start-gate evidence checkpoint with `docs\/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md`, `FIN_START_READY \/ NO_GO \/ BLOCKED` and `FIN-START-EVID-001` through `FIN-START-EVID-005`, Finance Day-1 result ledger with `FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED` and `ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED`, and P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "P5-03 Finance Desk current control state",
 );
 requireText(

@@ -1,5 +1,35 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk Day-1 Start Gate Evidence Checkpoint
+
+- Added `data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"` to
+  `components/finance/finance-desk-uat-evidence-checklist.tsx` so P5-03
+  Finance Desk controlled trial, reliance review and owner decision must cite
+  `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` first.
+- The panel displays `FIN_START_READY / NO_GO / BLOCKED` and
+  `FIN-START-EVID-001` through `FIN-START-EVID-005` before
+  `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`.
+- Updated `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` and
+  `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` so the controlled trial
+  requires the Finance Day-1 start-gate checklist before any real-accounting
+  label opens `/finance-desk`.
+- Synced `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P5-03 status includes the
+  start-gate evidence checkpoint.
+- Tightened `scripts/audit-heu-finance-desk.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the P5-03 start-gate evidence
+  checkpoint cannot be dropped silently.
+- This is Finance Desk guard packaging only. It does not create accounts,
+  send invites, store passwords, grant access, execute UAT, accept evidence,
+  approve finance reliance, approve access closure, move money, issue bank
+  instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-06-30 - P0-14 Finance Day-1 Start Gate Evidence Binder Link
 
 - Linked `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` into

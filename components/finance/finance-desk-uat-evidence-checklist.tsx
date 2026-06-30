@@ -26,6 +26,13 @@ type FinanceDeskRealUserBridgeItem = {
   stopCondition: string;
 };
 
+type FinanceDeskStartGateEvidenceItem = {
+  evidenceId: string;
+  gate: string;
+  requiredEvidence: string;
+  stopCondition: string;
+};
+
 type FinanceDeskControlledTrialItem = {
   trialId: string;
   accountLabel: string;
@@ -56,6 +63,8 @@ const realAccountingResultMarker =
 
 const controlledTrialPlanPath =
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md";
+const financeDayOneStartGateChecklistPath =
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md";
 const financeDayOneResultLedgerTemplatePath =
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
 
@@ -156,6 +165,49 @@ const realUserBridgeItems: FinanceDeskRealUserBridgeItem[] = [
       "Out-of-scope account returns BLOCKED or EMPTY_SCOPED_STATE for Finance Desk totals and action links.",
     stopCondition:
       "Stop if any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible.",
+  },
+];
+
+const startGateEvidenceItems: FinanceDeskStartGateEvidenceItem[] = [
+  {
+    evidenceId: "FIN-START-EVID-001",
+    gate: "FIN-START-01 P0-03 backup and restore evidence accepted",
+    requiredEvidence:
+      "Backup ID, restore target, operator run sheet, preflight/postflight and restore smoke-check evidence are recorded outside Git/Codex/chat.",
+    stopCondition:
+      "Stop if backup/restore proof is missing, unsigned, untested, raw or stored in Git/Codex/chat.",
+  },
+  {
+    evidenceId: "FIN-START-EVID-002",
+    gate: "FIN-START-02 signed finance UAT route readiness",
+    requiredEvidence:
+      "Signed route readiness cites UAT-ROUTE-08 for P2-18/P5-03 and the owner required to accept or block the route.",
+    stopCondition:
+      "Stop if dashboard/Finance Desk signed UAT route is missing, ownerless, NO_GO or BLOCKED.",
+  },
+  {
+    evidenceId: "FIN-START-EVID-003",
+    gate: "FIN-START-03 P0-10 controlled evidence redaction storage ready",
+    requiredEvidence:
+      "Controlled evidence folder, redaction class, reviewer and forbidden-content rule are recorded before any screenshot or result row.",
+    stopCondition:
+      "Stop if raw PII, CCCD, bank data, vouchers, passwords, OTPs, invite/reset links or service-role keys can enter Git/Codex/chat.",
+  },
+  {
+    evidenceId: "FIN-START-EVID-004",
+    gate: "FIN-START-04 P0-14/P0-17 result and access-closure paths ready",
+    requiredEvidence:
+      "Evidence binder path, Day-1 result ledger path and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED path are cited before reliance review.",
+    stopCondition:
+      "Stop if P0-14 evidence binder, Day-1 result ledger or P0-17 access closure decision path is missing.",
+  },
+  {
+    evidenceId: "FIN-START-EVID-005",
+    gate: "FIN-START-05 human owner boundary accepted",
+    requiredEvidence:
+      "KHTC, BGH, IT_DATA, Audit and Phap Che understand this is PASS_LOCAL packaging and not finance reliance or production GO.",
+    stopCondition:
+      "Stop if anyone treats local checks as access approval, UAT acceptance, finance reliance, money movement or production GO.",
   },
 ];
 
@@ -493,6 +545,68 @@ export function FinanceDeskUatEvidenceChecklist() {
       </div>
 
       <div
+        className="mt-5 rounded-md border border-amber-200 bg-white p-4"
+        data-finance-desk-day-one-start-gate-evidence="P5-03-FIN-START"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-amber-950">
+              Finance Day-1 start-gate evidence before Finance Desk trial
+            </h3>
+            <p className="mt-2 leading-6 text-amber-900">
+              P5-03 cannot start controlled trial, reliance review or Finance
+              Desk owner decision until the start-gate checklist is recorded
+              outside Git/Codex/chat. Checklist:{" "}
+              <span className="font-mono text-xs">
+                {financeDayOneStartGateChecklistPath}
+              </span>
+              .
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-950">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              FIN_START_READY / NO_GO / BLOCKED
+            </span>
+            <span className="mt-2 block font-mono text-xs">
+              FIN-START-EVID-001 through FIN-START-EVID-005
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {startGateEvidenceItems.map((item) => (
+            <article
+              className="border-l-2 border-amber-300 bg-amber-50 px-3 py-3"
+              key={item.evidenceId}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-md bg-white px-2 py-1 font-mono text-xs font-semibold text-amber-800">
+                  {item.evidenceId}
+                </span>
+                <span className="text-sm font-semibold text-amber-950">
+                  {item.gate}
+                </span>
+              </div>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required: {item.requiredEvidence}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-rose-900">
+          This checkpoint does not create accounts, send invites, store
+          passwords, grant access, execute UAT, accept evidence, approve
+          finance reliance, approve access closure, move money, issue bank
+          instructions or mark production GO.
+        </p>
+      </div>
+
+      <div
         className="mt-5 rounded-md border border-cyan-200 bg-white p-4"
         data-finance-desk-controlled-trial-plan="P5-03"
       >
@@ -513,7 +627,7 @@ export function FinanceDeskUatEvidenceChecklist() {
           <div className="min-w-72 rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-950">
             Required preconditions:
             <span className="mt-1 block font-mono text-xs">
-              FIN_ACTIVATION_READY + P6_04_PRELOGIN_READY
+              FIN_START_READY + FIN_ACTIVATION_READY + P6_04_PRELOGIN_READY
             </span>
           </div>
         </div>

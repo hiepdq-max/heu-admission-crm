@@ -22,6 +22,9 @@ accept UAT, approve finance reliance or mark production GO.
 Complete these preconditions before opening `/finance-desk` with a
 real-accounting user label:
 
+- Use `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` to record
+  `FIN_START_READY / NO_GO / BLOCKED` with `FIN-START-EVID-001` through
+  `FIN-START-EVID-005` before any controlled Finance Desk trial.
 - Use `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md` to record
   secure account activation outside Git/Codex/chat.
 - Use `docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md` to record the
@@ -43,10 +46,10 @@ evidence location. Git/Codex/chat may store only the redacted labels below.
 
 | Account label | Owner | Trial role | Required pre-login state | Trial decision |
 |---|---|---|---|---|
-| `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | TTGDTX accounting operator | `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY` inside assigned TTGDTX finance scope only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
-| `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only management reviewer | `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; no write or GO controls | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
-| `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only trace/evidence reviewer | `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; redacted evidence only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
-| `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA + KHTC | Legal/source reviewer | `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; legal/source review scope only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
+| `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | TTGDTX accounting operator | `FIN_START_READY`, `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY` inside assigned TTGDTX finance scope only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
+| `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only management reviewer | `FIN_START_READY`, `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; no write or GO controls | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
+| `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only trace/evidence reviewer | `FIN_START_READY`, `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; redacted evidence only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
+| `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA + KHTC | Legal/source reviewer | `FIN_START_READY`, `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; legal/source review scope only | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
 | `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | Negative-control user | Login may occur only to prove `BLOCKED` or `EMPTY_SCOPED_STATE` | `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` |
 
 ## 4. Route Visibility And Read-Only Matrix
@@ -64,7 +67,7 @@ evidence location. Git/Codex/chat may store only the redacted labels below.
 | Check ID | Required check | PASS condition | STOP condition |
 |---|---|---|---|
 | P5-03-TRIAL-01 | Confirm redacted account label and owner | Account label, owner, role, manager and TTGDTX scope are recorded outside Git/Codex/chat | Real email screenshot, password, OTP, invite/reset link or uncontrolled identity evidence is used |
-| P5-03-TRIAL-02 | Confirm P6-04 pre-login result | `P6_04_PRELOGIN_READY` exists for the account label and negative-control row | Missing route/scope proof, broad scope or unsigned owner decision |
+| P5-03-TRIAL-02 | Confirm Day-1 start gate and P6-04 pre-login result | `FIN_START_READY`, `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY` exist for the account label and negative-control row | Missing start-gate checklist, route/scope proof, broad scope or unsigned owner decision |
 | P5-03-TRIAL-03 | Open `/finance-desk` with KHTC scoped user | Scoped KPIs load and action links route back to source P2 screens | User sees unrestricted totals or Finance Desk can mutate facts |
 | P5-03-TRIAL-04 | Verify read-only behavior | No create, update, approve, pay, import-write, source-edit, unlock or bank-instruction control appears | Any write, pay, approve, import or source edit control is available |
 | P5-03-TRIAL-05 | Compare controlled sources | Finance Desk totals reconcile to P2-18 dashboard, import readiness and source-control summary with owner variance notes | Material mismatch lacks source P2 correction route or owner note |
@@ -91,6 +94,8 @@ Stop the trial and record `NO_GO` or `BLOCKED` when any of these occurs:
 
 - The actual user identity is not approved by KHTC/IT_DATA or is recorded in
   Git/Codex/chat instead of controlled evidence.
+- `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` is missing,
+  ownerless, unsigned, raw, `NO_GO` or `BLOCKED`.
 - P6-04 pre-login proof is missing, broad, unsigned, raw, `NO_GO` or `BLOCKED`.
 - A contract-only or out-of-scope user sees Finance Desk totals.
 - Finance Desk exposes create, update, approve, pay, import-write, source-edit,
