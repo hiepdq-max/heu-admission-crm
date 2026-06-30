@@ -1,5 +1,18 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-14 P5-03 Binder Scope Guard
+
+- Scoped the P5-03 controlled-trial evidence reminder in
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` to
+  `step.code === "P5-03"` so P2-18 dashboard evidence does not inherit a
+  Finance Desk-only trial instruction.
+- Tightened `scripts/audit-heu-production-evidence-binder.mjs` to require
+  `step.code === "P5-03"` beside
+  `data-p014-finance-controlled-trial-evidence="P5-03-TRIAL-EVID"`.
+- This is evidence-binder scoping only. It does not collect raw evidence,
+  create accounts, store passwords, execute UAT, accept evidence, approve
+  finance reliance, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - P0-14 Finance Controlled Trial Evidence Binder Link
 
 - Linked the P5-03 controlled-trial evidence IDs into

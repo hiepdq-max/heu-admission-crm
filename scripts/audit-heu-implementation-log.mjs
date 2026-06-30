@@ -99,6 +99,21 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-14 P5-03 Binder Scope Guard", [
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  "step.code === \"P5-03\"",
+  "P2-18 dashboard evidence does not inherit",
+  "scripts/audit-heu-production-evidence-binder.mjs",
+  "data-p014-finance-controlled-trial-evidence=\"P5-03-TRIAL-EVID\"",
+  "does not collect raw evidence",
+  "create accounts",
+  "store passwords",
+  "execute UAT",
+  "accept evidence",
+  "finance reliance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-14 Finance Controlled Trial Evidence Binder Link", [
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   "data-p014-finance-controlled-trial-evidence=\"P5-03-TRIAL-EVID\"",
