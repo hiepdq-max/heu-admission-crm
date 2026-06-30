@@ -17,9 +17,15 @@
   `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
   `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-09, P0-14 and P0-15 all carry
   the Day-1 ledger and access retain/revoke/block decision.
+- Synchronized `AGENTS.md` and `lib/production-readiness.ts` so P0-15 final
+  handoff summaries also require the Finance Day-1 result ledger before owner
+  decision.
 - Tightened `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs`,
   `scripts/audit-heu-production-evidence-binder.mjs`,
   `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-production-blocker-source.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
   `scripts/audit-heu-implementation-log.mjs` and
   `scripts/audit-ttgdtx-release-gates.mjs` so the owner signoff path cannot
   silently drop the Day-1 result ledger.
