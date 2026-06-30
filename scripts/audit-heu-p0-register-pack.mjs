@@ -132,6 +132,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  /Evidence Attachment Queue[\s\S]*RV-EVID-01[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-02[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-03[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-04[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-05[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-06[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*does not upload files,\s+accept evidence, approve signoff, waive blockers or store raw evidence/i,
+  "report-view evidence attachment queue doc",
+);
+
+requireText(
   "components/reports/report-view-source-map-panel.tsx",
   /(?=[\s\S]*data-heu-report-view-source-map-panel="P0-16")(?=[\s\S]*Report View Source Map: PASS_LOCAL only)(?=[\s\S]*does not approve production\s+reliance, statutory accounting, finance action, UAT acceptance,\s+evidence acceptance or owner GO)(?=[\s\S]*RV_TTGDTX_FINANCE_SUMMARY)(?=[\s\S]*RV_TTGDTX_CONG_NO_THUC_THU)(?=[\s\S]*RV_TTGDTX_COM_CHI_TRA)(?=[\s\S]*RV_TTGDTX_UAT_READINESS)(?=[\s\S]*RV_HOU_LEDGER_SUMMARY)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*RV_AUDIT_RISK_CONTROL)(?=[\s\S]*RV_AI_ALLOWED_CONTEXT)(?=[\s\S]*KPI_TTGDTX_ACTUAL_COLLECTION)(?=[\s\S]*DQ-RV-01)(?=[\s\S]*DQ-RV-02)(?=[\s\S]*DQ-RV-03)(?=[\s\S]*DQ-RV-04)(?=[\s\S]*DQ-RV-05)(?=[\s\S]*DQ-RV-06)(?=[\s\S]*DQ-RV-07)(?=[\s\S]*DQ-RV-08)/i,
   "report-view source map read-only UI panel",
@@ -147,6 +153,12 @@ requireText(
   "components/reports/report-view-source-map-panel.tsx",
   /(?=[\s\S]*Owner signoff capture)(?=[\s\S]*RV-SIGN-01)(?=[\s\S]*RV_TTGDTX_FINANCE_SUMMARY)(?=[\s\S]*OWNER_SIGNOFF_PENDING)(?=[\s\S]*PAYOUT_SIGNOFF_REQUIRED)(?=[\s\S]*HOU_OWNER_SIGNOFF_REQUIRED)(?=[\s\S]*SHORT_COURSE_SIGNOFF_REQUIRED)(?=[\s\S]*AI_SCOPE_SIGNOFF_REQUIRED)(?=[\s\S]*does not collect signatures)/i,
   "report-view owner signoff capture",
+);
+
+requireText(
+  "components/reports/report-view-source-map-panel.tsx",
+  /(?=[\s\S]*data-heu-report-view-evidence-attachment-queue="RV-EVID-01)(?=[\s\S]*Evidence attachment queue)(?=[\s\S]*RV-EVID-01)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-02)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-03)(?=[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-04)(?=[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-05)(?=[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-06)(?=[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*It does not upload files,\s+accept evidence or waive blockers)/i,
+  "report-view evidence attachment queue UI",
 );
 
 requireText(
@@ -222,7 +234,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
   "current-state P0 register evidence",
 );
 
@@ -242,6 +254,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /Report View Owner Signoff Capture[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*owner signoff capture queue[\s\S]*required owner groups[\s\S]*signoff state and blockers[\s\S]*current-state, P0 register and release-gate audits[\s\S]*read-only report governance UI only[\s\S]*does not collect signatures,\s+approve dashboard production reliance, statutory accounting, finance action,\s+UAT acceptance, evidence acceptance, owner GO or production GO/i,
   "report-view owner signoff capture implementation log entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Report View Evidence Attachment Queue[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*RV-EVID-01 through RV-EVID-06[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED[\s\S]*Data Quality Check status capture, owner signoff\s+capture and controlled evidence attachment queue[\s\S]*read-only report governance UI packaging only[\s\S]*does not upload\s+files, collect signatures, accept evidence, approve signoff, waive blockers,\s+approve finance action, approve report-view reliance, accept UAT or mark\s+production GO/i,
+  "report-view evidence attachment queue implementation log entry",
 );
 
 requireText(

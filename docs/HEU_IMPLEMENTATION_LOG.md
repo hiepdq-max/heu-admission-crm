@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Report View Evidence Attachment Queue
+
+- Added a read-only Evidence Attachment Queue to
+  `components/reports/report-view-source-map-panel.tsx` and
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`.
+- The queue requires RV-EVID-01 through RV-EVID-06 across TTGDTX Finance,
+  UAT readiness, COM/payout, HOU, Short Course, Audit and AI, including
+  P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 and
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`.
+- Synchronized P0-16 backlog, production checklist and current-state inventory
+  so `/reports` now exposes Data Quality Check status capture, owner signoff
+  capture and controlled evidence attachment queue together.
+- Tightened `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the queue cannot silently drop.
+- This is read-only report governance UI packaging only. It does not upload
+  files, collect signatures, accept evidence, approve signoff, waive blockers,
+  approve finance action, approve report-view reliance, accept UAT or mark
+  production GO.
+
 ## 2026-06-30 - Current State Finance Report View Sync
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the current-state view now

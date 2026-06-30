@@ -99,6 +99,33 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Report View Evidence Attachment Queue", [
+  "components/reports/report-view-source-map-panel.tsx",
+  "HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "RV-EVID-01 through RV-EVID-06",
+  "P5-03-TRIAL-EVID-001 through",
+  "P5-03-TRIAL-EVID-005",
+  "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+  "P0-16 backlog",
+  "production checklist",
+  "current-state inventory",
+  "Data Quality Check status capture",
+  "owner signoff",
+  "controlled evidence attachment queue",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "read-only report governance",
+  "does not upload",
+  "collect signatures",
+  "accept evidence",
+  "approve signoff",
+  "waive blockers",
+  "approve finance",
+  "report-view reliance",
+  "accept UAT",
+  "production GO",
+]);
+
 fastSection("2026-06-30 - Current State Finance Report View Sync", [
   "HEU_CURRENT_STATE_INVENTORY.md",
   "npm.cmd run audit:heu-sql-object-master-map",

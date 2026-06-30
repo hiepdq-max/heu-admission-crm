@@ -63,7 +63,22 @@ unapproved sensitive data.
 | DQ-RV-07 | Audit/Risk | Audit log and owner decision references are visible | Waiver is shown without signed owner decision |
 | DQ-RV-08 | AI | AI source is approved read-only context only | AI reads raw restricted data or writes workflow state |
 
-## 6. Allowed Next Build
+## 6. Evidence Attachment Queue
+
+| Evidence ID | Report view | Required evidence | Decision value | Stop condition |
+|---|---|---|---|---|
+| RV-EVID-01 | RV_TTGDTX_FINANCE_SUMMARY | P2-18 source reconciliation; P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 | P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED | Finance Desk or accounting dashboard is used for reliance before signed evidence and owner decision exist |
+| RV-EVID-02 | RV_TTGDTX_UAT_READINESS | P0-03 backup/restore proof; P0-09 owner signoff pack; P0-14 evidence binder; P0-15 final handoff | SIGNED_UAT_READY / NO_GO / BLOCKED | Owner Go/No-Go is requested before UAT routes and blocker proof are attached |
+| RV-EVID-03 | RV_TTGDTX_COM_CHI_TRA | BBNT; partner invoice dossier; duplicate payout proof; payout release decision | PAYOUT_RELEASE_READY / NO_GO / BLOCKED | COM finalization or payout is implied before P2-17 evidence and owner approval |
+| RV-EVID-04 | RV_HOU_LEDGER_SUMMARY | HOU handover UAT; tuition ledger proof; commission policy signoff | HOU_LEDGER_READY / NO_GO / BLOCKED | HOU ledger is mixed with TTGDTX or Short Course before HOU owner signoff |
+| RV-EVID-05 | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | Short Course attendance/payment UAT; BHXH policy proof; report-view signoff | SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED | Payment period is relied on before attendance lock and finance evidence are signed |
+| RV-EVID-06 | RV_AUDIT_RISK_CONTROL / RV_AI_ALLOWED_CONTEXT | P6-03 audit-log UAT; P6-06 conversion-or-waiver decision; AI scope approval | AUDIT_AI_SCOPE_READY / NO_GO / BLOCKED | Risk waiver, AI scope or audit trace is treated as accepted without owner evidence |
+
+The queue names controlled evidence references only. It does not upload files,
+accept evidence, approve signoff, waive blockers or store raw evidence in
+Git/Codex/chat.
+
+## 7. Allowed Next Build
 
 | Build item | Allowed scope | Not allowed |
 |---|---|---|
@@ -72,7 +87,7 @@ unapproved sensitive data.
 | Data Quality Check Log UI | Record local/UAT check results and blockers | Accept real evidence or waive blocker |
 | Dashboard source badge | Show which report view a dashboard reads | Hide raw-source dependency or bypass scope |
 
-## 7. Production Boundary
+## 8. Production Boundary
 
 Report views remain DRAFT_CONTROL until owner signoff and UAT evidence exist.
 Production remains NO-GO until backup/restore, migration order, signed UAT,

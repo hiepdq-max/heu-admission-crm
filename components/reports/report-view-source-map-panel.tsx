@@ -39,6 +39,14 @@ type OwnerSignoffCapture = {
   blocker: string;
 };
 
+type EvidenceAttachmentCapture = {
+  id: string;
+  reportView: string;
+  requiredEvidence: string;
+  decisionValue: string;
+  stopCondition: string;
+};
+
 const reportViewSources: ReportViewSource[] = [
   {
     code: "RV_TTGDTX_FINANCE_SUMMARY",
@@ -249,9 +257,66 @@ const ownerSignoffCaptures: OwnerSignoffCapture[] = [
   },
 ];
 
+const evidenceAttachmentCaptures: EvidenceAttachmentCapture[] = [
+  {
+    id: "RV-EVID-01",
+    reportView: "RV_TTGDTX_FINANCE_SUMMARY",
+    requiredEvidence:
+      "P2-18 source reconciliation, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005",
+    decisionValue: "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Finance Desk or accounting dashboard is used for reliance before signed evidence and owner decision exist",
+  },
+  {
+    id: "RV-EVID-02",
+    reportView: "RV_TTGDTX_UAT_READINESS",
+    requiredEvidence:
+      "P0-03 backup/restore proof, P0-09 owner signoff pack, P0-14 evidence binder and P0-15 final handoff",
+    decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Owner Go/No-Go is requested before UAT routes and blocker proof are attached",
+  },
+  {
+    id: "RV-EVID-03",
+    reportView: "RV_TTGDTX_COM_CHI_TRA",
+    requiredEvidence:
+      "BBNT, partner invoice dossier, duplicate payout proof and payout release decision",
+    decisionValue: "PAYOUT_RELEASE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "COM finalization or payout is implied before P2-17 evidence and owner approval",
+  },
+  {
+    id: "RV-EVID-04",
+    reportView: "RV_HOU_LEDGER_SUMMARY",
+    requiredEvidence:
+      "HOU handover UAT, tuition ledger proof and commission policy signoff",
+    decisionValue: "HOU_LEDGER_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "HOU ledger is mixed with TTGDTX or Short Course before HOU owner signoff",
+  },
+  {
+    id: "RV-EVID-05",
+    reportView: "RV_SHORT_COURSE_ATTENDANCE_PAYMENT",
+    requiredEvidence:
+      "Short Course attendance/payment UAT, BHXH policy proof and report-view signoff",
+    decisionValue: "SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Payment period is relied on before attendance lock and finance evidence are signed",
+  },
+  {
+    id: "RV-EVID-06",
+    reportView: "RV_AUDIT_RISK_CONTROL / RV_AI_ALLOWED_CONTEXT",
+    requiredEvidence:
+      "P6-03 audit-log UAT, P6-06 conversion-or-waiver decision and AI scope approval",
+    decisionValue: "AUDIT_AI_SCOPE_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Risk waiver, AI scope or audit trace is treated as accepted without owner evidence",
+  },
+];
+
 function StatusBadge({ children }: { children: string }) {
   return (
-    <span className="inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-1 font-mono text-xs font-medium text-amber-800">
+    <span className="inline-flex max-w-full whitespace-normal break-words rounded-md border border-amber-200 bg-amber-50 px-2 py-1 font-mono text-xs font-medium text-amber-800">
       {children}
     </span>
   );
@@ -288,6 +353,10 @@ export function ReportViewSourceMapPanel() {
 
       <div
         data-heu-report-view-source-map-audit="RV_TTGDTX_FINANCE_SUMMARY RV_TTGDTX_CONG_NO_THUC_THU RV_TTGDTX_COM_CHI_TRA RV_TTGDTX_UAT_READINESS RV_HOU_LEDGER_SUMMARY RV_SHORT_COURSE_ATTENDANCE_PAYMENT RV_AUDIT_RISK_CONTROL RV_AI_ALLOWED_CONTEXT KPI_TTGDTX_ACTUAL_COLLECTION DQ-RV-01 DQ-RV-02 DQ-RV-03 DQ-RV-04 DQ-RV-05 DQ-RV-06 DQ-RV-07 DQ-RV-08 CAPTURE_REQUIRED SOURCE_RECON_REQUIRED OWNER_SIGNOFF_PENDING RECON_EVIDENCE_REQUIRED MODULE_SEPARATION_REQUIRED ATTENDANCE_LOCK_REQUIRED OWNER_DECISION_REQUIRED"
+        hidden
+      />
+      <div
+        data-heu-report-view-evidence-attachment-queue="RV-EVID-01 RV-EVID-02 RV-EVID-03 RV-EVID-04 RV-EVID-05 RV-EVID-06 P5-03-TRIAL-EVID-001 P5-03-TRIAL-EVID-005 P5_03_CONTROLLED_TRIAL_READY SIGNED_UAT_READY PAYOUT_RELEASE_READY HOU_LEDGER_READY SC_ATTENDANCE_PAYMENT_READY AUDIT_AI_SCOPE_READY NO_GO BLOCKED"
         hidden
       />
 
@@ -454,6 +523,55 @@ export function ReportViewSourceMapPanel() {
                     <StatusBadge>{item.signoffState}</StatusBadge>
                   </td>
                   <td className="px-4 py-4 text-rose-700">{item.blocker}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-zinc-200">
+        <div className="border-b border-zinc-200 p-4">
+          <h3 className="flex items-center gap-2 text-sm font-semibold">
+            <ListChecks className="size-4 text-blue-700" />
+            Evidence attachment queue
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-zinc-600">
+            This queue names the controlled evidence references and decision
+            values that must exist outside Git/Codex/chat before a report view
+            can be used for signed UAT or reliance. It does not upload files,
+            accept evidence or waive blockers.
+          </p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="px-4 py-3">Evidence ID</th>
+                <th className="px-4 py-3">Report view</th>
+                <th className="px-4 py-3">Required evidence</th>
+                <th className="px-4 py-3">Decision value</th>
+                <th className="px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {evidenceAttachmentCaptures.map((item) => (
+                <tr key={item.id}>
+                  <td className="px-4 py-4 font-mono text-xs text-zinc-950">
+                    {item.id}
+                  </td>
+                  <td className="px-4 py-4 font-mono text-xs text-zinc-700">
+                    {item.reportView}
+                  </td>
+                  <td className="px-4 py-4 text-zinc-700">
+                    {item.requiredEvidence}
+                  </td>
+                  <td className="px-4 py-4">
+                    <StatusBadge>{item.decisionValue}</StatusBadge>
+                  </td>
+                  <td className="px-4 py-4 text-rose-700">
+                    {item.stopCondition}
+                  </td>
                 </tr>
               ))}
             </tbody>
