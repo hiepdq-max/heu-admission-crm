@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-03 Backup Restore Migration Guard Release Gate Alignment
+
+- Tightened `scripts/audit-ttgdtx-release-gates.mjs` so the
+  `components/settings/supabase-backup-restore-guard.tsx` P0-03 UI guard must
+  show `audit:ttgdtx-migration-order-guard` together with
+  `audit:ttgdtx-backup-restore-dry-run-pack`, `audit:ttgdtx-release-gates` and
+  `npm.cmd run build`.
+- This aligns the release-gates total audit with the dedicated
+  `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs` requirement that
+  backup/restore proof must lead into the signed Step90-Step110 migration-order
+  guard.
+- Updated `scripts/audit-heu-implementation-log.mjs` so the implementation log
+  cannot omit this P0-03 release-gate alignment.
+- This is P0-03/P0-03-to-Step90-Step110 guard alignment only. It does not
+  execute backup, execute restore, run migration, accept restore evidence,
+  approve migration order, execute UAT, accept evidence, approve owner GO or
+  mark production GO.
+- Boundary phrase: does not execute backup, execute restore, run migration,
+  accept restore evidence, approve migration order, execute UAT, accept
+  evidence, approve owner GO or mark production GO.
+
 ## 2026-06-30 - Finance Desk Controlled Trial Release Gate Lock
 
 - Added `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` to the

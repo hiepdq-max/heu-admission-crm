@@ -99,6 +99,29 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-03 Backup Restore Migration Guard Release Gate Alignment", [
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "components/settings/supabase-backup-restore-guard.tsx",
+  "P0-03 UI guard",
+  "audit:ttgdtx-migration-order-guard",
+  "audit:ttgdtx-backup-restore-dry-run-pack",
+  "audit:ttgdtx-release-gates",
+  "npm.cmd run build",
+  "audit-ttgdtx-backup-restore-dry-run-pack.mjs",
+  "signed Step90-Step110 migration-order",
+  "audit-heu-implementation-log.mjs",
+  "P0-03-to-Step90-Step110 guard alignment",
+  "does not execute backup",
+  "execute restore",
+  "run migration",
+  "accept restore evidence",
+  "approve migration order",
+  "execute UAT",
+  "accept evidence",
+  "approve owner GO",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Desk Controlled Trial Release Gate Lock", [
   "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
   "scripts/audit-ttgdtx-release-gates.mjs",
