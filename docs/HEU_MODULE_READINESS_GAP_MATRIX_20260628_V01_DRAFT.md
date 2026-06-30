@@ -45,7 +45,7 @@ This matrix is based on:
 | TTGDTX/9+ Operating Module | P2-01 through P2-19 and Step111 Finance Desk objects are packaged; many guards PASS_LOCAL | DAT | UAT support, read-only dashboard, issue queue, source/evidence checks | Production migration, real payout reliance, auto debt clearing | Backup/restore evidence, signed migration order, signed P0-19/P2 UAT |
 | Finance Desk | `/finance-desk`, Step111, MVP spec, UAT runbook and reliance decision manifest exist | DAT for read-only cockpit | Read-only filters, evidence checklist, report-view source map, UAT support | Statutory accounting, voucher posting, bank transfer, payment approval | Signed P5-03 browser UAT and reliance decision |
 | Finance Core / Reconciliation | TTGDTX receivable, collection, reconciliation, request, approval and payout chain exists | CAN_SUA | Reconciliation exception views, duplicate-risk warnings, finance UAT scripts | Auto gach no, auto COM, auto payout, auto period lock | Signed finance UAT, real HEU receipt evidence, locked reconciliation proof |
-| Report View Register | Draft register lists TTGDTX, HOU, Short Course, Audit and AI views; source map draft, read-only DQ status capture, Data Master bridge and DQ-DM-05 reliance lock exist | CAN_SUA | Report View Register UI, source map, KPI dictionary shell, DQ status capture and master/report compatibility bridge | Dashboard reading raw workbooks/tables or restricted source data | Owner signoff and evidence attachment per report view |
+| Report View Register | Draft register lists TTGDTX, HOU, Short Course, Audit and AI views; source map draft, read-only DQ status capture, owner signoff capture, controlled evidence attachment queue, Data Master bridge and DQ-DM-05 reliance lock exist | CAN_SUA | Report View Register UI, source map, KPI dictionary shell, DQ status capture, owner signoff queue, evidence attachment queue and master/report compatibility bridge | Dashboard reading raw workbooks/tables or restricted source data; accepting uploaded evidence or signatures inside Codex/Git | Actual owner signoff and external controlled evidence attachment per report view |
 | BGH Dashboard | P5-02 spec, action queue, blocker source and read-only controls exist | CAN_SUA | Read-only blocker dashboard and signed-UAT status views | BGH production reliance or finance conclusion | Signed dashboard UAT and Report View signoff |
 | AI Agent Layer | AI policy, task checklist, risk board, scope register and P7-04 prompt/output audit logging design are advisory/read-only | DAT for advisory only | Read-only checklist/risk prompts from approved registers and audit-log design review | AI approval, AI write, AI payment, AI go-live, AI data deletion, AI service call | AI scope registry approval, implemented prompt/output audit logging, signed AI UAT |
 | HOU Partnership Module | HOU UI/components and lead/HOU/COM primitives exist; SQL map references HOU programs, majors, terms, commission payees; `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md` and `/hou` gap panel now expose HOU-LH-01 through HOU-LH-08 | CAN_SUA | HOU gap review, handover log, HOU ledger spec, report-view source map, UAT support panel | Mixing HOU ledger with TTGDTX, auto COM payout | HOU handover UAT, HOU tuition ledger, HOU commission policy/signoff |
@@ -58,7 +58,7 @@ This matrix is based on:
 | Finance action | Classification | Reason |
 |---|---|---|
 | Read-only Finance Desk | DAT | Permission/workspace gate and read-only sources exist |
-| Cong no dashboard from approved view | CAN_SUA | Report View Register and DQ-DM-05 reliance lock exist, but signoff and controlled evidence reference are still draft |
+| Cong no dashboard from approved view | CAN_SUA | Report View Register, DQ-DM-05 reliance lock and controlled evidence attachment queue exist, but actual signoff and external controlled evidence references are still missing |
 | Gach no from receipt | CAM_CODE | Requires real HEU receipt, reconciliation and signed finance UAT |
 | COM calculation preview | CAN_SUA | Can be simulated/read-only with clear disclaimer |
 | COM payable finalization | CAM_CODE | Requires contract, policy, BBNT, reconciliation lock and approval |
@@ -70,7 +70,7 @@ This matrix is based on:
 | Priority | Work item | Classification | Output |
 |---|---|---|---|
 | 1 | TTGDTX/Finance signed UAT execution support | DAT | `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`; `components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx`; `/ttgdtx`; `SIGNED_UAT_READY / NO_GO / BLOCKED`; UAT-ROUTE-01 through UAT-ROUTE-11; signed UAT and owner signatures still required |
-| 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell, read-only `/reports` source-map panel, Data Quality Check status capture, owner signoff capture and DQ-DM-05 reliance lock are created; next gate is report-view owner signoff and evidence attachment |
+| 2 | Report View Register hardening | CAN_SUA | Source map draft, KPI dictionary shell, read-only `/reports` source-map panel, Data Quality Check status capture, owner signoff capture, controlled evidence attachment queue and DQ-DM-05 reliance lock are created; next gate is actual report-view owner signoff and external controlled evidence attachment |
 | 3 | Cross-module Data Master compatibility plan | CAN_SUA | `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md`; `components/reports/data-master-report-view-bridge-panel.tsx`; non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` design with DQ-DM-01 through DQ-DM-05; next gate is owner signoff before any production SQL or dashboard reliance |
 | 4 | HOU ledger/handover gap pack | CAN_SUA | `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`; `components/hou/hou-ledger-handover-gap-pack.tsx`; `/hou`; `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`; next gate is signed HOU handover UAT, tuition ledger proof and COM policy/signoff |
 | 5 | Short Course attendance/payment gap pack | CAN_SUA | `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`; `components/short-course/short-course-attendance-payment-gap-pack.tsx`; `/short-course`; `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`; next gate is signed attendance/payment UAT, BHXH/policy signoff, source reconciliation and report-view owner signoff |
@@ -93,8 +93,10 @@ Stop and do not code deep workflow when any of these are true:
 The build can continue, but only in this order:
 
 1. Signed UAT and evidence routing for TTGDTX/Finance Desk.
-2. Report View Register and Data Quality Check Log, including DQ-DM-05
-   dashboard reliance lock.
+2. Report View Register and Data Quality Check Log, including owner signoff
+   capture, controlled evidence attachment queue and DQ-DM-05 dashboard
+   reliance lock; actual owner signatures and external controlled evidence are
+   still required before reliance.
 3. Cross-module Data Master compatibility design, now drafted as a read-only
    `/reports` bridge and still blocked from production SQL, real-data import or
    dashboard reliance until owner signoff and controlled evidence references

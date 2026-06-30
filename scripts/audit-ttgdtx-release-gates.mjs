@@ -634,7 +634,7 @@ requireText(
 
 requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
-  /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*HOU Partnership Module[\s\S]*Short Course \/ Day Nghe[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
+  /Status:\s*DRAFT_CONTROL[\s\S]*Production status:\s*NO-GO[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*Report View Register[\s\S]*controlled evidence attachment queue[\s\S]*Actual owner signoff and external controlled evidence attachment per report view[\s\S]*HOU Partnership Module[\s\S]*Short Course \/ Day Nghe[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
   "P0 module readiness gap matrix boundary",
 );
 

@@ -126,6 +126,27 @@ fastSection("2026-06-30 - Report View Evidence Attachment Queue", [
   "production GO",
 ]);
 
+fastSection("2026-06-30 - Module Readiness Report View Evidence Queue Sync", [
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "Report View Register",
+  "Data Quality Check status capture",
+  "owner signoff capture",
+  "controlled evidence attachment queue",
+  "DQ-DM-05",
+  "actual report-view owner signoff",
+  "external controlled evidence attachment",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-implementation-log.mjs",
+  "PASS_LOCAL",
+  "does not upload",
+  "collect signatures",
+  "accept evidence",
+  "approve signoff",
+  "approve dashboard reliance",
+  "approve finance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Current State Finance Report View Sync", [
   "HEU_CURRENT_STATE_INVENTORY.md",
   "npm.cmd run audit:heu-sql-object-master-map",

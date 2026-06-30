@@ -199,8 +199,14 @@ requireText(
 
 requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
-  /Next Build Queue[\s\S]*TTGDTX\/Finance signed UAT execution support[\s\S]*Report View Register hardening[\s\S]*Data Quality Check status capture, owner signoff capture and DQ-DM-05 reliance lock are created[\s\S]*next gate is report-view owner signoff and evidence attachment[\s\S]*Cross-module Data Master compatibility plan[\s\S]*DQ-DM-01 through DQ-DM-05[\s\S]*next gate is owner signoff before any production SQL or dashboard reliance[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*AI scope logging design[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
+  /Next Build Queue[\s\S]*TTGDTX\/Finance signed UAT execution support[\s\S]*Report View Register hardening[\s\S]*Data Quality Check status capture, owner signoff capture, controlled evidence attachment queue and DQ-DM-05 reliance lock are created[\s\S]*next gate is actual report-view owner signoff and external controlled evidence attachment[\s\S]*Cross-module Data Master compatibility plan[\s\S]*DQ-DM-01 through DQ-DM-05[\s\S]*next gate is owner signoff before any production SQL or dashboard reliance[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*AI scope logging design[\s\S]*Production remains NO-GO until backup\/restore, migration order, signed UAT,\s+hard-delete\/cascade closure and final owner Go\/No-Go are complete/i,
   "module readiness matrix next build queue and NO-GO boundary",
+);
+
+requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /Report View Register[\s\S]*owner signoff capture, controlled evidence attachment queue[\s\S]*evidence attachment queue and master\/report compatibility bridge[\s\S]*Actual owner signoff and external controlled evidence attachment per report view[\s\S]*Cong no dashboard from approved view[\s\S]*controlled evidence attachment queue exist, but actual signoff and external controlled evidence references are still missing/i,
+  "module readiness report-view controlled evidence queue sync",
 );
 
 const packageJson = JSON.parse(read("package.json"));
