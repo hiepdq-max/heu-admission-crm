@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Current State Finance Report View Sync
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the current-state view now
+  includes `npm.cmd run audit:heu-sql-object-master-map`, the
+  REPORT_VIEW-classified `heu_finance_desk_summary`, the P5-03
+  controlled-trial evidence gate and the `REPORT_VIEW_MASTER_CONTRACT`
+  alignment for P2-18/Step111.
+- Tightened `scripts/audit-heu-current-state-inventory.mjs` so the inventory
+  cannot silently lose the Finance Desk report-view classification, P5-03
+  evidence decision value or SQL object map alignment.
+- This is current-state inventory synchronization only. It does not run
+  production migration, create schema, import real data, create accounts,
+  store passwords, accept UAT, accept evidence, approve finance action,
+  approve report-view reliance, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - SQL Object Map Finance Report View Classification
 
 - Updated `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` so

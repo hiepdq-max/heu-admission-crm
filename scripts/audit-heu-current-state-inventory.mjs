@@ -84,6 +84,11 @@ requireText(
 );
 requireText(
   inventory,
+  /npm\.cmd run audit:heu-sql-object-master-map[\s\S]*PASS/i,
+  "SQL object master map audit evidence",
+);
+requireText(
+  inventory,
   /npm\.cmd run audit:ttgdtx-contract-tuition-master-guard[\s\S]*PASS/i,
   "P2-01/P2-02 master guard audit evidence",
 );
@@ -116,7 +121,7 @@ requireText(
 );
 requireText(
   inventory,
-  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit with real accounting user evidence bridge and reliance decision manifest[\s\S]*signed finance\/legal UAT still required/i,
+  /M09 Tai chinh\/Cong no[\s\S]*P2-01\/P2-02 master guard[\s\S]*P2-03 through P2-18[\s\S]*P5-03 Finance Desk read-only cockpit with real accounting user evidence bridge[\s\S]*reliance decision manifest[\s\S]*REPORT_VIEW-classified `heu_finance_desk_summary`[\s\S]*signed finance\/legal UAT still required/i,
   "M09 P2-01/P2-02 current module state",
 );
 requireText(
@@ -166,6 +171,11 @@ requireText(
 );
 requireText(
   inventory,
+  /Finance Desk \/ KHTC cockpit[\s\S]*HEU_SQL_OBJECT_MASTER_MAP_20260627\.md[\s\S]*heu_finance_desk_summary[\s\S]*REPORT_VIEW[\s\S]*P5-03 controlled-trial evidence[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED[\s\S]*Signed browser UAT and reliance decision pending/i,
+  "P5-03 Finance Desk report-view classification state",
+);
+requireText(
+  inventory,
   /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture and owner signoff capture, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
 );
@@ -173,6 +183,11 @@ requireText(
   inventory,
   /Data Master \/ Report View bridge[\s\S]*\/reports[\s\S]*compatibility objects, report-view master requirements and DQ-DM-01 through DQ-DM-05 stop conditions[\s\S]*dashboard reliance lock[\s\S]*PASS_LOCAL; no production SQL, source merge, real-data import, report-view signoff or dashboard reliance approved/i,
   "Data Master / Report View bridge current control state",
+);
+requireText(
+  inventory,
+  /Data Master \/ Report View bridge[\s\S]*SQL object mapping aligns P2-18 and Step111 to `REPORT_VIEW_MASTER_CONTRACT` without schema rename[\s\S]*no production SQL, source merge, real-data import, report-view signoff or dashboard reliance approved/i,
+  "Data Master / Report View SQL object map alignment state",
 );
 requireText(
   inventory,

@@ -99,6 +99,28 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Current State Finance Report View Sync", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "npm.cmd run audit:heu-sql-object-master-map",
+  "REPORT_VIEW-classified",
+  "heu_finance_desk_summary",
+  "controlled-trial evidence",
+  "REPORT_VIEW_MASTER_CONTRACT",
+  "P2-18/Step111",
+  "audit-heu-current-state-inventory.mjs",
+  "does not run",
+  "production migration",
+  "create schema",
+  "import real data",
+  "create accounts",
+  "store passwords",
+  "accept UAT",
+  "accept evidence",
+  "approve finance",
+  "report-view reliance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - SQL Object Map Finance Report View Classification", [
   "HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "FINANCE_DESK_WORKBENCH",
