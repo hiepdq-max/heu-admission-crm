@@ -2535,25 +2535,25 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
-  /(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger lacks)(?=[\s\S]*missing Finance Day-1 result ledger)(?=[\s\S]*missing access-retain\/revoke\/block decision)/i,
+  /(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 start-gate checklist lacks)(?=[\s\S]*Finance Day-1 result ledger lacks)(?=[\s\S]*missing Finance Day-1 start-gate checklist)(?=[\s\S]*missing Finance Day-1 result ledger)(?=[\s\S]*missing access-retain\/revoke\/block decision)/i,
   "P0-09 Finance Day-1 result ledger owner checklist",
 );
 
 requireText(
   "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
-  /(?=[\s\S]*P5-03 Finance Desk controlled trial and UAT)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*access-retain\/revoke\/block decision is missing)/i,
+  /(?=[\s\S]*P5-03 Finance Desk controlled trial and UAT)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 start-gate checklist is missing)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*access-retain\/revoke\/block decision is missing)/i,
   "P0-09 Finance Day-1 result ledger owner signoff pack",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Final owner Go\/No-Go sign-off[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  /Final owner Go\/No-Go sign-off[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
   "production checklist P0-09 Finance Day-1 result ledger owner evidence",
 );
 
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
   "backlog P0-09 Finance Day-1 result ledger owner evidence",
 );
 
@@ -2591,6 +2591,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /P0-09 Finance Day-1 Result Ledger Owner Signoff Link[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001[\s\S]*FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID"[\s\S]*owner-signoff and evidence-binder packaging[\s\S]*does not create accounts[\s\S]*mark production GO/i,
   "implementation log P0-09 Finance Day-1 owner signoff link",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-09 Owner Signoff Finance Day-1 Start Gate Alignment[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md[\s\S]*FIN-START-EVID-001[\s\S]*FIN-START-EVID-005[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*Finance Day-1 result ledger[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*audit-ttgdtx-production-owner-signoff-pack\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*does not create accounts[\s\S]*approve owner GO\/NO-GO[\s\S]*mark production GO/i,
+  "implementation log P0-09 Finance Day-1 start-gate owner signoff link",
 );
 
 requireText(

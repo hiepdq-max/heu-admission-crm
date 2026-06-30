@@ -99,6 +99,38 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-09 Owner Signoff Finance Day-1 Start Gate Alignment", [
+  "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  "P0-09",
+  "owner GO/NO-GO",
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "Finance Day-1 result ledger",
+  "access closure decision",
+  "owner decision manifest",
+  "ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "scripts/audit-ttgdtx-production-owner-signoff-pack.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "approve owner GO/NO-GO",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-15 Finance Day-1 Start Gate Final Handoff Alignment", [
   "AGENTS.md",
   "lib/production-readiness.ts",
