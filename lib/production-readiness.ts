@@ -1103,12 +1103,13 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     title: "Dashboard and Finance Desk browser UAT",
     owner: "KHTC + BGH + IT_DATA",
     route: "/ttgdtx/accounting-dashboard",
-    runbook: "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md + docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+    runbook:
+      "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md + docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md + docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md + docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
     minimumProof:
-      "Read-only behavior, source reconciliation, role denial, P6-04 real accounting user queue/result proof, Finance Desk scope proof, Finance Day-1 result ledger and reliance decision for dashboard users.",
+      "Read-only behavior, source reconciliation, role denial, P6-04 real accounting user queue/result proof, Finance Desk scope proof, Finance Day-1 start-gate checklist, Finance Day-1 result ledger and reliance decision for dashboard users.",
     decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Dashboard can write, source reconciliation is missing, P6-04 real-accounting proof is missing, Finance Day-1 result ledger is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned.",
+      "Dashboard can write, source reconciliation is missing, P6-04 real-accounting proof is missing, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned.",
     auditCommand: "npm.cmd run audit:ttgdtx-dashboard-source-reconciliation",
   },
   {
@@ -1145,12 +1146,13 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     title: "Final owner GO/NO-GO decision",
     owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
     route: "/ttgdtx",
-    runbook: "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+    runbook:
+      "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md + docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md + docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
     minimumProof:
-      "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure references.",
+      "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure references.",
     decisionValue: "SIGNED_UAT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Any required owner signs NO-GO/BLOCKED, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
+      "Any required owner signs NO-GO/BLOCKED, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
     auditCommand: "npm.cmd run audit:ttgdtx-production-owner-signoff-pack",
   },
 ];

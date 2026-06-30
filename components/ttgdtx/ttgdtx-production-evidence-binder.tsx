@@ -8,6 +8,8 @@ import {
 
 import {
   PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES,
+  PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST,
+  PRODUCTION_FINANCE_DAY_ONE_START_GATES,
   PRODUCTION_EVIDENCE_REQUIREMENTS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
@@ -140,6 +142,54 @@ export function TtgdtxProductionEvidenceBinder() {
               </p>
             </article>
           ))}
+        </div>
+
+        <div
+          className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 p-3"
+          data-p014-finance-day-one-start-gate-evidence="FIN-START-EVID"
+        >
+          <p className="font-semibold text-emerald-950">
+            Finance Day-1 start-gate evidence checklist
+          </p>
+          <p className="mt-1 leading-6 text-emerald-900">
+            P0-14 must cite the start-gate checklist before any
+            real-accounting invite/create, activation row, Finance Desk
+            reliance review or owner GO/NO-GO review. Missing start-gate
+            evidence keeps P0-14 NO-GO.
+          </p>
+          <p className="mt-1 text-xs font-medium text-emerald-800">
+            Checklist: {PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST}
+          </p>
+          <p className="mt-1 text-xs font-medium text-emerald-800">
+            Decision: FIN_START_READY / NO_GO / BLOCKED
+          </p>
+          <p className="mt-1 text-xs font-medium text-emerald-800">
+            Evidence range: FIN-START-EVID-001 through FIN-START-EVID-005
+          </p>
+          <div className="mt-3 grid gap-3 xl:grid-cols-5">
+            {PRODUCTION_FINANCE_DAY_ONE_START_GATES.map((gate, index) => (
+              <article
+                key={`${gate.code}-p014-start-gate`}
+                className="border-l-2 border-emerald-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-emerald-700">
+                  FIN-START-EVID-{String(index + 1).padStart(3, "0")}
+                </p>
+                <p className="mt-1 text-xs font-semibold uppercase text-emerald-700">
+                  {gate.code}
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Owner: {gate.owner}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Proof: {gate.requiredProof}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop: {gate.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
 
         <div

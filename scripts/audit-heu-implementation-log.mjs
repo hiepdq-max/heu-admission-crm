@@ -99,6 +99,38 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-14 Finance Day-1 Start Gate Evidence Binder Link", [
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "ttgdtx-production-evidence-binder.tsx",
+  "data-p014-finance-day-one-start-gate-evidence=\"FIN-START-EVID\"",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "lib/production-readiness.ts",
+  "UAT-ROUTE-08",
+  "UAT-ROUTE-11",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "scripts/audit-heu-production-evidence-binder.mjs",
+  "scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "issue bank",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Start Gate Evidence Checklist", [
   "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
   "PASS_LOCAL_CHECKLIST",

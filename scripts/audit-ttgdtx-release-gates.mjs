@@ -525,13 +525,13 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
-  /(?=[\s\S]*UAT-ROUTE-08[\s\S]*P2-18\/P5-03)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*P6-04 real accounting user queue\/result proof)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11[\s\S]*P0-09)(?=[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 result ledger is missing)/i,
+  /(?=[\s\S]*UAT-ROUTE-08[\s\S]*P2-18\/P5-03)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 start-gate checklist)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*P6-04 real accounting user queue\/result proof)(?=[\s\S]*Finance Day-1 start-gate checklist is missing)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11[\s\S]*P0-09)(?=[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 start-gate checklist is missing)/i,
   "signed UAT route table Finance Day-1 ledger handoff",
 );
 
 requireText(
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
-  /(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 result ledger is recorded)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision)(?=[\s\S]*Finance Day-1 result ledger, P0-17 access closure decision)/i,
+  /(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 start-gate checklist and result ledger are recorded)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision)(?=[\s\S]*Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision)/i,
   "operator handoff Finance Day-1 ledger route handoff",
 );
 
@@ -543,7 +543,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*UAT-ROUTE-08)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 result ledger, P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 result ledger is missing)/i,
+  /(?=[\s\S]*UAT-ROUTE-08)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 start-gate checklist)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*Finance Day-1 start-gate checklist is missing)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 start-gate checklist is missing)/i,
   "shared signed UAT Finance Day-1 ledger handoff source",
 );
 
@@ -2281,6 +2281,12 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*data-p014-finance-day-one-start-gate-evidence="FIN-START-EVID")(?=[\s\S]*Finance Day-1 start-gate evidence checklist)(?=[\s\S]*P0-14 must cite the start-gate checklist before any\s+real-accounting invite\/create, activation row, Finance Desk\s+reliance review or owner GO\/NO-GO review)(?=[\s\S]*Checklist:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  "P0-14 Finance Day-1 start-gate evidence checkpoint",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   /(?=[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID")(?=[\s\S]*Finance Day-1 ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/[\s\S]*REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*before Finance Desk reliance or[\s\S]*owner GO\/NO-GO review)/i,
   "P0-14 Finance Day-1 result ledger evidence checkpoint",
 );
@@ -2347,8 +2353,32 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /Controlled evidence[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
+  /Controlled evidence[\s\S]*Finance Day-1 start-gate checklist[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md[\s\S]*FIN-START-EVID-001[\s\S]*FIN-START-EVID-005[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
   "current-state P0-14 Finance Day-1 result ledger evidence path",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /(?=[\s\S]*UAT-ROUTE-08[\s\S]*P2-18\/P5-03)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 start-gate checklist)(?=[\s\S]*Finance Day-1 start-gate checklist is missing)(?=[\s\S]*UAT-ROUTE-11[\s\S]*P0-09)(?=[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision)/i,
+  "signed UAT route table Finance Day-1 start-gate checklist handoff",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  /(?=[\s\S]*UAT-HANDOFF-03A)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT)(?=[\s\S]*Finance Day-1 start-gate checklist and result ledger are recorded)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision)(?=[\s\S]*Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision)/i,
+  "operator handoff Finance Day-1 start-gate checklist route handoff",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*Finance Day-1 start-gate checklist, Finance Day-1 result ledger and reliance decision)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision)/i,
+  "execution log Finance Day-1 start-gate checklist route tracker",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-14 Finance Day-1 Start Gate Evidence Binder Link[\s\S]*data-p014-finance-day-one-start-gate-evidence="FIN-START-EVID"[\s\S]*FIN-START-EVID-001[\s\S]*FIN-START-EVID-005[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*does not create accounts[\s\S]*mark production GO/i,
+  "implementation log P0-14 Finance Day-1 start-gate binder link",
 );
 
 requireText(

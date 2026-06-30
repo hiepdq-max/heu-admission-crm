@@ -1,5 +1,36 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-14 Finance Day-1 Start Gate Evidence Binder Link
+
+- Linked `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` into
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` with
+  `data-p014-finance-day-one-start-gate-evidence="FIN-START-EVID"` so P0-14
+  cites `FIN-START-EVID-001` through `FIN-START-EVID-005` before real-accounting
+  invite/create, Finance Desk reliance or owner GO/NO-GO review.
+- Updated `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md`,
+  `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`,
+  `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` and
+  `lib/production-readiness.ts` so UAT-ROUTE-08 and UAT-ROUTE-11 carry the
+  Finance Day-1 start-gate checklist before the result ledger and owner
+  decision handoff.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-14 controlled evidence includes
+  the Finance Day-1 start-gate checklist path.
+- Tightened `scripts/audit-heu-production-evidence-binder.mjs`,
+  `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the P0-14 start-gate evidence
+  link and operator handoff cannot be dropped silently.
+- This is evidence-binder and operator-handoff packaging only. It does not
+  create accounts, send invites, store passwords, grant access, execute UAT,
+  accept evidence, approve finance reliance, approve access closure, move
+  money, issue bank instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-06-30 - Finance Day-1 Start Gate Evidence Checklist
 
 - Added `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` as a
