@@ -41,6 +41,7 @@ requireFile(mapPath);
 requireFile("docs/HEU_DATA_MODEL_V1.md");
 requireFile("docs/HEU_DATA_DICTIONARY_V1.md");
 requireFile("docs/modules/TTGDTX_9PLUS_CORE_DATA_DICTIONARY.md");
+requireFile("database/step111_heu_finance_desk.sql");
 
 const map = exists(mapPath) ? read(mapPath) : "";
 
@@ -94,6 +95,7 @@ const keyObjects = [
   "audit_logs",
   "approval_requests",
   "ttgdtx_accounting_dashboard_summary",
+  "heu_finance_desk_summary",
 ];
 
 for (const objectName of keyObjects) {
@@ -113,7 +115,26 @@ requireSqlObject("database/step101_ttgdtx_reconciliation_p2_13.sql", "ttgdtx_tui
 requireSqlObject("database/step105_ttgdtx_partner_payment_request_p2_15.sql", "ttgdtx_partner_payment_requests");
 requireSqlObject("database/step107_ttgdtx_payment_execution_p2_17.sql", "ttgdtx_partner_payment_disbursements");
 requireSqlObject("database/step108_ttgdtx_accounting_dashboard_p2_18.sql", "ttgdtx_accounting_dashboard_summary");
+requireSqlObject("database/step111_heu_finance_desk.sql", "heu_finance_desk_summary");
 requireSqlObject("database/step50_role_permission_delegation_matrix.sql", "permission_registry");
+
+requireText(
+  map,
+  /DASHBOARD_VIEW_MASTER[\s\S]*ttgdtx_accounting_dashboard_summary[\s\S]*P5-01\/P2-18 signed browser UAT and DQ-DM-05 report-view reliance signoff are required before production use/i,
+  "dashboard view master DQ-DM-05 reliance lock",
+);
+
+requireText(
+  map,
+  /FINANCE_DESK_WORKBENCH[\s\S]*heu_finance_desk_code_policy[\s\S]*heu_finance_desk_document_links[\s\S]*heu_finance_desk_summary[\s\S]*REPORT_VIEW-classified[\s\S]*P5-03 controlled-trial evidence[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED/i,
+  "Finance Desk REPORT_VIEW classification and P5-03 evidence gate",
+);
+
+requireText(
+  map,
+  /P2-18 Accounting dashboard[\s\S]*`DASHBOARD_VIEW_MASTER`, `REPORT_VIEW_MASTER_CONTRACT`[\s\S]*Step111 HEU Finance Desk[\s\S]*`FINANCE_DESK_WORKBENCH`, `REPORT_VIEW_MASTER_CONTRACT`, `ACCEPTANCE_EVIDENCE_MASTER`, `IMPORT_CONTROL_MASTER`/i,
+  "P2-18 and Step111 report-view contract targets",
+);
 
 const packageJson = JSON.parse(read("package.json"));
 if (!packageJson.scripts?.["audit:heu-sql-object-master-map"]) {

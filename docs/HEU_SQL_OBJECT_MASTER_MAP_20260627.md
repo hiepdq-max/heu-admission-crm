@@ -48,8 +48,8 @@ or evidence table, map it to the nearest master domain and mark the gap.
 | `AUDIT_LOG` | `audit_logs`, `lead_activities`, `approval_requests`, `master_data_change_requests` | Audit, activity and approval evidence exists | Audit/event taxonomy should be standardized before production reporting |
 | `WORKFLOW_REQUEST_MASTER` | `approval_requests`, `decision_gates`, `process_ownership_matrix`, `workflow_request_engine_status` | Approval and workflow controls exist | AI must not approve; workflow decisions require human owner |
 | `IMPORT_CONTROL_MASTER` | `ttgdtx_tuition_import_batches`, `ttgdtx_tuition_import_staging_rows`, `ttgdtx_tuition_import_checks`, `ttgdtx_tuition_import_field_map` | TTGDTX import staging/control exists | Real import requires redacted source registry and signed UAT |
-| `DASHBOARD_VIEW_MASTER` | `ttgdtx_accounting_dashboard_summary`, `ttgdtx_accounting_dashboard_partner_board`, `ttgdtx_accounting_dashboard_control_board`, `ttgdtx_accounting_dashboard_exception_board`, `ttgdtx_accounting_dashboard_recent_movements` | Read-only dashboard views exist | P5-01/P2-18 signed browser UAT required before production use |
-| `FINANCE_DESK_WORKBENCH` | `heu_finance_desk_code_policy`, `heu_finance_desk_document_links`, `heu_finance_desk_document_link_status`, `heu_finance_desk_summary` | KHTC workbench shell over TTGDTX import/source/dashboard objects | Step111 is metadata/control only; raw links/evidence stay outside Git and require signed UAT before production use |
+| `DASHBOARD_VIEW_MASTER` | `ttgdtx_accounting_dashboard_summary`, `ttgdtx_accounting_dashboard_partner_board`, `ttgdtx_accounting_dashboard_control_board`, `ttgdtx_accounting_dashboard_exception_board`, `ttgdtx_accounting_dashboard_recent_movements` | Read-only dashboard views exist | P5-01/P2-18 signed browser UAT and DQ-DM-05 report-view reliance signoff are required before production use |
+| `FINANCE_DESK_WORKBENCH` | `heu_finance_desk_code_policy`, `heu_finance_desk_document_links`, `heu_finance_desk_document_link_status`, `heu_finance_desk_summary` | KHTC workbench shell over TTGDTX import/source/dashboard objects; `heu_finance_desk_summary` is REPORT_VIEW-classified and read-only | Step111 is metadata/control plus report-view packaging only; raw links/evidence stay outside Git and P5-03 controlled-trial evidence with `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` is required before production use |
 
 ## 4. TTGDTX P2 Object Chain
 
@@ -67,9 +67,9 @@ or evidence table, map it to the nearest master domain and mark the gap.
 | P2-13/P2-14 Reconciliation | `ttgdtx_tuition_reconciliation_batches`, `ttgdtx_tuition_reconciliation_lines`, `ttgdtx_reconciliation_review_board` | `RECONCILIATION_MASTER` |
 | P2-15/P2-16 Payment request/approval | `ttgdtx_partner_payment_requests`, `ttgdtx_partner_payment_request_lines`, `ttgdtx_partner_payment_approval_board` | `PAYMENT_REQUEST_MASTER`, `WORKFLOW_REQUEST_MASTER` |
 | P2-17 Payout execution | `ttgdtx_partner_payment_disbursements`, `ttgdtx_partner_payment_execution_board` | `PAYMENT_MASTER` |
-| P2-18 Accounting dashboard | `ttgdtx_accounting_dashboard_*` views | `DASHBOARD_VIEW_MASTER` |
+| P2-18 Accounting dashboard | `ttgdtx_accounting_dashboard_*` views | `DASHBOARD_VIEW_MASTER`, `REPORT_VIEW_MASTER_CONTRACT` |
 | P2-19 Real-data evidence metadata | `ttgdtx_source_documents`, `ttgdtx_p2_19_real_data_evidence_status`, `ttgdtx_source_document_status` | `ACCEPTANCE_EVIDENCE_MASTER`, `AUDIT_LOG` |
-| Step111 HEU Finance Desk | `heu_finance_desk_code_policy`, `heu_finance_desk_document_links`, `heu_finance_desk_summary` | `FINANCE_DESK_WORKBENCH`, `ACCEPTANCE_EVIDENCE_MASTER`, `IMPORT_CONTROL_MASTER` |
+| Step111 HEU Finance Desk | `heu_finance_desk_code_policy`, `heu_finance_desk_document_links`, `heu_finance_desk_summary` | `FINANCE_DESK_WORKBENCH`, `REPORT_VIEW_MASTER_CONTRACT`, `ACCEPTANCE_EVIDENCE_MASTER`, `IMPORT_CONTROL_MASTER` |
 
 ## 5. Migration Planning Notes
 

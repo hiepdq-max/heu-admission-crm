@@ -99,6 +99,29 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - SQL Object Map Finance Report View Classification", [
+  "HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
+  "FINANCE_DESK_WORKBENCH",
+  "heu_finance_desk_summary",
+  "REPORT_VIEW-classified",
+  "REPORT_VIEW_MASTER_CONTRACT",
+  "P5-03 controlled-trial evidence",
+  "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+  "audit-heu-sql-object-master-map.mjs",
+  "DQ-DM-05",
+  "does not rename schema objects",
+  "run production migration",
+  "import real data",
+  "create accounts",
+  "store",
+  "passwords",
+  "approve finance",
+  "accept UAT",
+  "accept evidence",
+  "report-view reliance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Desk SQL Dependency and Report View Guard", [
   "database/step108_ttgdtx_accounting_dashboard_p2_18.sql",
   "public.heu_finance_desk_summary",

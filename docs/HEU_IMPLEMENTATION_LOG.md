@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-06-30 - SQL Object Map Finance Report View Classification
+
+- Updated `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` so
+  `FINANCE_DESK_WORKBENCH` explicitly treats `heu_finance_desk_summary` as a
+  REPORT_VIEW-classified, read-only Finance Desk surface.
+- Aligned P2-18 and Step111 to `REPORT_VIEW_MASTER_CONTRACT` in the P2 object
+  chain, while keeping Finance Desk document links and code policy in the
+  metadata/control workbench boundary.
+- Added the P5-03 controlled-trial evidence gate and
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` to the SQL object map
+  before any Finance Desk production reliance.
+- Tightened `scripts/audit-heu-sql-object-master-map.mjs` so the report-view
+  classification, DQ-DM-05 reliance lock and Step111 object reference cannot
+  silently regress.
+- This is SQL object-map governance only. It does not rename schema objects,
+  run production migration, import real data, create accounts, store
+  passwords, approve finance action, accept UAT, accept evidence, approve
+  report-view reliance, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - Finance Desk SQL Dependency and Report View Guard
 
 - Hardened `database/step108_ttgdtx_accounting_dashboard_p2_18.sql` so the
