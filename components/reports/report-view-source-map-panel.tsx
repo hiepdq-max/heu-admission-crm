@@ -68,6 +68,15 @@ const reportViewSources: ReportViewSource[] = [
     status: "SOURCE_MAP_DRAFT",
   },
   {
+    code: "RV_TTGDTX_UAT_READINESS",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    consumer: "Master Control and TTGDTX landing guard",
+    source:
+      "production-readiness blocker source, owner signoff pack, UAT handoff docs and current-state inventory",
+    qualityGate: "P0-03, P0-09, P0-13, P0-14 and P0-15 evidence-path checks",
+    status: "SOURCE_MAP_DRAFT",
+  },
+  {
     code: "RV_HOU_LEDGER_SUMMARY",
     owner: "HOU owner + KHTC + IT_DATA + Audit",
     consumer: "/hou and HOU workspace",
@@ -81,6 +90,15 @@ const reportViewSources: ReportViewSource[] = [
     consumer: "/short-course and Short Course dashboard",
     source: "short-course foundation, attendance, invoice and payment views",
     qualityGate: "Attendance lock, exception register and payment UAT",
+    status: "SOURCE_MAP_DRAFT",
+  },
+  {
+    code: "RV_AUDIT_RISK_CONTROL",
+    owner: "Audit + IT_DATA + affected owners",
+    consumer: "/audit, Master Control and BGH blocker summary",
+    source:
+      "audit logs, hard-delete/cascade finding register, controlled evidence binder and risk/signoff register",
+    qualityGate: "P6-03 audit-log UAT and P6-06 conversion/waiver decision",
     status: "SOURCE_MAP_DRAFT",
   },
   {
@@ -136,6 +154,14 @@ const dataQualityChecks: DataQualityCheck[] = [
     stopCondition: "Missing owner, physical source or allowed consumer",
   },
   {
+    id: "DQ-RV-02",
+    appliesTo: "Finance / TTGDTX views",
+    captureStatus: "SOURCE_RECON_REQUIRED",
+    ownerAction: "KHTC + IT/Data link P2-18 source reconciliation and P5-03 UAT references",
+    evidenceState: "Signed dashboard/Finance Desk browser UAT missing",
+    stopCondition: "Totals drift or source view is missing",
+  },
+  {
     id: "DQ-RV-03",
     appliesTo: "Cong no / thuc thu",
     captureStatus: "RECON_EVIDENCE_REQUIRED",
@@ -150,6 +176,30 @@ const dataQualityChecks: DataQualityCheck[] = [
     ownerAction: "KHTC + Audit mark payout implication as blocked",
     evidenceState: "No payment authorization",
     stopCondition: "COM finalization or payout is implied",
+  },
+  {
+    id: "DQ-RV-05",
+    appliesTo: "HOU",
+    captureStatus: "MODULE_SEPARATION_REQUIRED",
+    ownerAction: "HOU owner + KHTC confirm HOU ledger stays separate from TTGDTX and Short Course",
+    evidenceState: "HOU handover and ledger signoff pending",
+    stopCondition: "HOU data is mixed into TTGDTX ledger",
+  },
+  {
+    id: "DQ-RV-06",
+    appliesTo: "Short Course",
+    captureStatus: "ATTENDANCE_LOCK_REQUIRED",
+    ownerAction: "Dao Tao + KHTC confirm class, student, attendance, invoice and payment linkage",
+    evidenceState: "Attendance/payment UAT and report-view signoff pending",
+    stopCondition: "Payment period is closed without attendance or audit",
+  },
+  {
+    id: "DQ-RV-07",
+    appliesTo: "Audit / Risk",
+    captureStatus: "OWNER_DECISION_REQUIRED",
+    ownerAction: "Audit links finding, waiver or closure state to a signed owner decision",
+    evidenceState: "Owner waiver or conversion decision pending",
+    stopCondition: "Waiver is shown without signed owner decision",
   },
   {
     id: "DQ-RV-08",
@@ -237,7 +287,7 @@ export function ReportViewSourceMapPanel() {
       </div>
 
       <div
-        data-heu-report-view-source-map-audit="RV_TTGDTX_FINANCE_SUMMARY RV_TTGDTX_CONG_NO_THUC_THU RV_TTGDTX_COM_CHI_TRA RV_HOU_LEDGER_SUMMARY RV_SHORT_COURSE_ATTENDANCE_PAYMENT RV_AI_ALLOWED_CONTEXT KPI_TTGDTX_ACTUAL_COLLECTION DQ-RV-08 CAPTURE_REQUIRED OWNER_SIGNOFF_PENDING RECON_EVIDENCE_REQUIRED"
+        data-heu-report-view-source-map-audit="RV_TTGDTX_FINANCE_SUMMARY RV_TTGDTX_CONG_NO_THUC_THU RV_TTGDTX_COM_CHI_TRA RV_TTGDTX_UAT_READINESS RV_HOU_LEDGER_SUMMARY RV_SHORT_COURSE_ATTENDANCE_PAYMENT RV_AUDIT_RISK_CONTROL RV_AI_ALLOWED_CONTEXT KPI_TTGDTX_ACTUAL_COLLECTION DQ-RV-01 DQ-RV-02 DQ-RV-03 DQ-RV-04 DQ-RV-05 DQ-RV-06 DQ-RV-07 DQ-RV-08 CAPTURE_REQUIRED SOURCE_RECON_REQUIRED OWNER_SIGNOFF_PENDING RECON_EVIDENCE_REQUIRED MODULE_SEPARATION_REQUIRED ATTENDANCE_LOCK_REQUIRED OWNER_DECISION_REQUIRED"
         hidden
       />
 

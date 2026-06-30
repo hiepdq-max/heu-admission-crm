@@ -133,13 +133,13 @@ requireText(
 
 requireText(
   "components/reports/report-view-source-map-panel.tsx",
-  /(?=[\s\S]*data-heu-report-view-source-map-panel="P0-16")(?=[\s\S]*Report View Source Map: PASS_LOCAL only)(?=[\s\S]*does not approve production\s+reliance, statutory accounting, finance action, UAT acceptance,\s+evidence acceptance or owner GO)(?=[\s\S]*RV_TTGDTX_FINANCE_SUMMARY)(?=[\s\S]*RV_TTGDTX_CONG_NO_THUC_THU)(?=[\s\S]*RV_TTGDTX_COM_CHI_TRA)(?=[\s\S]*RV_HOU_LEDGER_SUMMARY)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*RV_AI_ALLOWED_CONTEXT)(?=[\s\S]*KPI_TTGDTX_ACTUAL_COLLECTION)(?=[\s\S]*DQ-RV-08)/i,
+  /(?=[\s\S]*data-heu-report-view-source-map-panel="P0-16")(?=[\s\S]*Report View Source Map: PASS_LOCAL only)(?=[\s\S]*does not approve production\s+reliance, statutory accounting, finance action, UAT acceptance,\s+evidence acceptance or owner GO)(?=[\s\S]*RV_TTGDTX_FINANCE_SUMMARY)(?=[\s\S]*RV_TTGDTX_CONG_NO_THUC_THU)(?=[\s\S]*RV_TTGDTX_COM_CHI_TRA)(?=[\s\S]*RV_TTGDTX_UAT_READINESS)(?=[\s\S]*RV_HOU_LEDGER_SUMMARY)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*RV_AUDIT_RISK_CONTROL)(?=[\s\S]*RV_AI_ALLOWED_CONTEXT)(?=[\s\S]*KPI_TTGDTX_ACTUAL_COLLECTION)(?=[\s\S]*DQ-RV-01)(?=[\s\S]*DQ-RV-02)(?=[\s\S]*DQ-RV-03)(?=[\s\S]*DQ-RV-04)(?=[\s\S]*DQ-RV-05)(?=[\s\S]*DQ-RV-06)(?=[\s\S]*DQ-RV-07)(?=[\s\S]*DQ-RV-08)/i,
   "report-view source map read-only UI panel",
 );
 
 requireText(
   "components/reports/report-view-source-map-panel.tsx",
-  /(?=[\s\S]*Data Quality Check status capture)(?=[\s\S]*CAPTURE_REQUIRED)(?=[\s\S]*Owner action:)(?=[\s\S]*Evidence state:)(?=[\s\S]*RECON_EVIDENCE_REQUIRED)(?=[\s\S]*PAYOUT_LOCK_REQUIRED)(?=[\s\S]*READ_ONLY_SCOPE_REQUIRED)(?=[\s\S]*AI production action remains blocked)/i,
+  /(?=[\s\S]*Data Quality Check status capture)(?=[\s\S]*DQ-RV-01)(?=[\s\S]*DQ-RV-02)(?=[\s\S]*DQ-RV-03)(?=[\s\S]*DQ-RV-04)(?=[\s\S]*DQ-RV-05)(?=[\s\S]*DQ-RV-06)(?=[\s\S]*DQ-RV-07)(?=[\s\S]*DQ-RV-08)(?=[\s\S]*CAPTURE_REQUIRED)(?=[\s\S]*SOURCE_RECON_REQUIRED)(?=[\s\S]*RECON_EVIDENCE_REQUIRED)(?=[\s\S]*PAYOUT_LOCK_REQUIRED)(?=[\s\S]*MODULE_SEPARATION_REQUIRED)(?=[\s\S]*ATTENDANCE_LOCK_REQUIRED)(?=[\s\S]*OWNER_DECISION_REQUIRED)(?=[\s\S]*READ_ONLY_SCOPE_REQUIRED)(?=[\s\S]*Owner action:)(?=[\s\S]*Evidence state:)(?=[\s\S]*AI production action remains blocked)/i,
   "report-view data-quality status capture",
 );
 
