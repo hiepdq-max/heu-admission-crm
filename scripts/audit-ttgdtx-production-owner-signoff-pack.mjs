@@ -44,6 +44,8 @@ for (const file of [
   "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
   "docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md",
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
+  "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/HARD_DELETE_AUDIT.md",
@@ -104,6 +106,7 @@ for (const required of [
   "P3-01/P3-02 lead lifecycle and handover UAT",
   "P2-17 payout once",
   "P2-18 accounting dashboard",
+  "P5-03 Finance Desk controlled trial and UAT",
   "Role and workspace permission",
   "Audit log completeness",
   "Hard-delete/cascade risk",
@@ -137,6 +140,18 @@ requireText(
 
 requireText(
   pack,
+  /(?=[\s\S]*P5-03 Finance Desk controlled trial and UAT)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03 Finance Desk controlled-trial evidence)(?=[\s\S]*P5-03 Finance Desk controlled-trial evidence is missing, unsigned,\s+uncontrolled or lacks)/i,
+  "P5-03 controlled-trial owner evidence path",
+);
+
+requireText(
+  pack,
+  /(?=[\s\S]*P0-09-ACCEPT-03[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03 controlled-trial evidence is missing)(?=[\s\S]*P0-09-DEC-04[\s\S]*P5-03 Finance Desk UAT[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)/i,
+  "P0-09 acceptance and decision require P5-03 controlled trial",
+);
+
+requireText(
+  pack,
   /(?=[\s\S]*P0-09 Owner GO\/NO-GO Acceptance Matrix)(?=[\s\S]*P0_09_ACCEPT \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-09-ACCEPT-01)(?=[\s\S]*P0-09-ACCEPT-06)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P0-19\/P2-05\/P2-03 finance gates)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*P0-17 access closure is missing)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*every unresolved P6-06 finding is converted or narrowly waived in writing)(?=[\s\S]*Codex\/AI is advisory only)(?=[\s\S]*Final outcome stays NO-GO until every stop condition is closed)/i,
   "P0-09 owner GO/NO-GO acceptance matrix",
 );
@@ -157,6 +172,13 @@ requireText(
   ownerChecklist,
   /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3-01\/P3-02 lead lifecycle and handover UAT)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, temporary passwords,\s+OTPs, password reset links, account activation\/invite links,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
   "P0-09 owner GO/NO-GO evidence checklist",
+  ownerChecklistPath,
+);
+
+requireText(
+  ownerChecklist,
+  /(?=[\s\S]*P5-03 Finance Desk controlled-trial evidence P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 is missing)(?=[\s\S]*missing P5-03 controlled-trial evidence)/i,
+  "P0-09 owner checklist P5-03 controlled-trial evidence",
   ownerChecklistPath,
 );
 
@@ -189,9 +211,23 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /Final owner Go\/No-Go sign-off[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED/i,
+  "production checklist P0-09 P5-03 controlled-trial owner evidence",
+  checklistPath,
+);
+
+requireText(
   backlog,
   /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P0-17 access closure decision[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
+  backlogPath,
+);
+
+requireText(
+  backlog,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED/i,
+  "backlog P0-09 P5-03 controlled-trial owner evidence",
   backlogPath,
 );
 

@@ -99,6 +99,25 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-09 Owner Signoff Finance Trial Evidence Link", [
+  "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  "ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "P5-03-TRIAL-EVID-001 through",
+  "P5-03-TRIAL-EVID-005",
+  "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "audit-ttgdtx-production-owner-signoff-pack.mjs",
+  "does not collect evidence",
+  "accounts",
+  "store passwords",
+  "execute UAT",
+  "accept evidence",
+  "approve finance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-14 P5-03 Binder Scope Guard", [
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   "step.code === \"P5-03\"",

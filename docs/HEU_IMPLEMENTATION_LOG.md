@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-09 Owner Signoff Finance Trial Evidence Link
+
+- Linked P5-03 Finance Desk controlled-trial evidence into
+  `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` and
+  `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx`.
+- Owner GO/NO-GO review now requires
+  `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`,
+  P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 and
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` before relying on P5-03.
+- Synchronized the P0-09 rows in `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`
+  and `docs/HEU_SYSTEM_BUILD_BACKLOG.md`.
+- Tightened `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs` so owner
+  signoff cannot drop the P5-03 controlled-trial evidence path silently.
+- This is owner-review packaging only. It does not collect evidence, create
+  accounts, store passwords, execute UAT, accept evidence, approve finance
+  reliance, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - P0-14 P5-03 Binder Scope Guard
 
 - Scoped the P5-03 controlled-trial evidence reminder in
