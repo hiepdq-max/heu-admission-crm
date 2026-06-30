@@ -99,6 +99,36 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-08 Internal UAT Finance Day-1 Start Gate Alignment", [
+  "P0-08",
+  "Internal UAT",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "Finance Day-1 start-gate checklist",
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "first signed finance UAT checklist",
+  "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "account activation handoff",
+  "scripts/audit-ttgdtx-production-readiness-guard.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "PASS_LOCAL",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "approve owner GO/NO-GO",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-09 Owner Signoff Finance Day-1 Start Gate Alignment", [
   "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
   "P0-09",

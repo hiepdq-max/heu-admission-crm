@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-08 Internal UAT Finance Day-1 Start Gate Alignment
+
+- Updated `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` so P0-08/Internal UAT requires the
+  Finance Day-1 start-gate checklist before account activation handoff,
+  P6-04 pre-login, real-run rehearsal and Day-1 result ledger.
+- The P0-08 row now cites
+  `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` and
+  `FIN_START_READY / NO_GO / BLOCKED` between the first signed finance UAT checklist
+  and `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md`.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the start-gate cannot be
+  dropped from Internal UAT/P0-08 while claiming PASS_LOCAL readiness.
+- This is Internal UAT guard packaging only. It does not create accounts, send
+  invites, store passwords, grant access, revoke live users, execute UAT,
+  accept evidence, approve finance reliance, approve access closure, approve
+  owner GO/NO-GO, move money, issue bank instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, revoke live users, execute UAT, accept evidence, approve
+  finance reliance, approve access closure, approve owner GO/NO-GO, move
+  money, issue bank instructions or mark production GO.
+
 ## 2026-06-30 - P0-09 Owner Signoff Finance Day-1 Start Gate Alignment
 
 - Updated `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` so P0-09
