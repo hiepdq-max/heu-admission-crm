@@ -336,6 +336,27 @@ fastSection("2026-06-30 - Finance Day-1 Real-Run Rehearsal Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-06-30 - Finance Day-1 Runbook Handoff", [
+  "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  "PASS_LOCAL_RUNBOOK",
+  "PRODUCTION_FINANCE_DAY_ONE_RUNBOOK",
+  "lib/production-readiness.ts",
+  "ttgdtx-production-execution-queue.tsx",
+  "real-user-onboarding-panel.tsx",
+  "required Day-1 account labels",
+  "FIN-DAY1-01 through FIN-DAY1-05",
+  "result template",
+  "FIN_DAY1_READY / NO_GO / BLOCKED",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "send passwords",
+  "initiate bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-28 - P0-03 Backup Restore Immediate Stop Guard", [
   "data-p003-backup-restore-immediate-stop",
   "supabase-backup-restore-guard.tsx",

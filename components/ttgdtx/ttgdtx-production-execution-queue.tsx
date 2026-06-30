@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
@@ -364,6 +365,9 @@ export function TtgdtxProductionExecutionQueue() {
               accounting route with approved account labels only. Keep account
               activation, evidence and owner signatures outside Git/Codex/chat,
               and do not initiate a bank instruction.
+            </p>
+            <p className="mt-1 text-xs font-medium text-cyan-800">
+              Runbook: {PRODUCTION_FINANCE_DAY_ONE_RUNBOOK}
             </p>
           </div>
           <span className="rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs font-semibold uppercase text-cyan-800">

@@ -52,6 +52,9 @@ export type ProductionFinanceDayOneRunStep = {
   stopCondition: string;
 };
 
+export const PRODUCTION_FINANCE_DAY_ONE_RUNBOOK =
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
+
 export type ProductionRiskClosureStep = {
   code: string;
   title: string;

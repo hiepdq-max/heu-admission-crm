@@ -1,5 +1,30 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Runbook Handoff
+
+- Added `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md` as the
+  PASS_LOCAL_RUNBOOK for the first controlled finance real-run rehearsal.
+- Linked the runbook through `PRODUCTION_FINANCE_DAY_ONE_RUNBOOK` in
+  `lib/production-readiness.ts`, then displayed the runbook path in
+  `components/ttgdtx/ttgdtx-production-execution-queue.tsx` and
+  `components/settings/real-user-onboarding-panel.tsx`.
+- The runbook gives required Day-1 account labels, static preflight commands,
+  FIN-DAY1-01 through FIN-DAY1-05 execution steps and the result template for
+  `FIN_DAY1_READY / NO_GO / BLOCKED`.
+- Synced `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Day-1 rehearsal cannot omit the
+  runbook handoff.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is runbook handoff packaging only. It does not create accounts, send passwords,
+  grant production access, execute UAT, initiate bank instructions, accept
+  evidence, approve dashboard reliance, approve finance action, approve access
+  closure, expand users, accept owner review or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Real-Run Rehearsal Guard
 
 - Added `PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS` to

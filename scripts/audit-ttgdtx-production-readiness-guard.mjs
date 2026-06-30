@@ -27,6 +27,8 @@ const executionQueuePath = "components/ttgdtx/ttgdtx-production-execution-queue.
 const pagePath = "app/ttgdtx/page.tsx";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 const backlogPath = "docs/HEU_SYSTEM_BUILD_BACKLOG.md";
+const financeDayOneRunbookPath =
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
 
 for (const file of [
   componentPath,
@@ -36,6 +38,7 @@ for (const file of [
   pagePath,
   checklistPath,
   backlogPath,
+  financeDayOneRunbookPath,
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "AGENTS.md",
@@ -52,6 +55,7 @@ const executionQueue = read(executionQueuePath);
 const page = read(pagePath);
 const checklist = read(checklistPath);
 const backlog = read(backlogPath);
+const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const agents = read("AGENTS.md");
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 const packageJson = JSON.parse(read("package.json"));
@@ -154,7 +158,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-ttgdtx-finance-day-one-run-rehearsal="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*data-ttgdtx-finance-day-one-run-range="FIN-DAY1-01_FIN-DAY1-05")(?=[\s\S]*Finance Day-1 real-run rehearsal: PASS_LOCAL only)(?=[\s\S]*approved account labels only)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*do not initiate a bank instruction)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-ttgdtx-finance-day-one-run-rehearsal="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*data-ttgdtx-finance-day-one-run-range="FIN-DAY1-01_FIN-DAY1-05")(?=[\s\S]*Finance Day-1 real-run rehearsal: PASS_LOCAL only)(?=[\s\S]*approved account labels only)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*do not initiate a bank instruction)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)/i,
   "TTGDTX finance Day-1 real-run rehearsal UI",
   executionQueuePath,
 );
@@ -217,9 +221,16 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*export type ProductionFinanceDayOneRunStep)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*A bank instruction is initiated)(?=[\s\S]*blocked users keep active finance access)/i,
+  /(?=[\s\S]*export type ProductionFinanceDayOneRunStep)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*A bank instruction is initiated)(?=[\s\S]*blocked users keep active finance access)/i,
   "TTGDTX finance Day-1 real-run rehearsal shared source",
   blockerSourcePath,
+);
+
+requireText(
+  financeDayOneRunbook,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_RUNBOOK)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-17 secure account activation outside Codex\/chat)(?=[\s\S]*P6-04 role and workspace scope proof)(?=[\s\S]*P2-18 and P5-03 read-only dashboard confidence check)(?=[\s\S]*P2-17 payout rehearsal with no bank action)(?=[\s\S]*P0-17 access closure before expanding)(?=[\s\S]*does not create accounts)(?=[\s\S]*send passwords)(?=[\s\S]*initiate bank\s+instructions)(?=[\s\S]*mark\s+production GO)/i,
+  "Finance Day-1 real-run rehearsal runbook",
+  financeDayOneRunbookPath,
 );
 
 requireText(
@@ -266,14 +277,14 @@ requireText(
 
 requireText(
   checklist,
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist and finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-production-readiness-guard\.tsx[\s\S]*renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist and finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
   "production checklist keeps internal UAT IN_PROGRESS with readiness guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*main execution queue with decision values and stop conditions[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist and finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
+  /P0-08[\s\S]*Expose TTGDTX production readiness guard in app[\s\S]*PASS_LOCAL[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*UAT execution closure template[\s\S]*UAT operator handoff[\s\S]*main execution queue with decision values and stop conditions[\s\S]*safe iteration loop[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist and finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard/i,
   "P0-08 backlog guard row",
   backlogPath,
 );

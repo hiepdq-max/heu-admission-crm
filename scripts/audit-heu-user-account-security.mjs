@@ -30,6 +30,8 @@ const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
 const scopePagePath = "app/settings/scopes/page.tsx";
 const readinessPath = "lib/production-readiness.ts";
+const financeDayOneRunbookPath =
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
 const packagePath = "package.json";
 const agentsPath = "AGENTS.md";
 const releaseGatePath = "scripts/audit-ttgdtx-release-gates.mjs";
@@ -42,6 +44,7 @@ for (const file of [
   settingsPagePath,
   scopePagePath,
   readinessPath,
+  financeDayOneRunbookPath,
   packagePath,
   agentsPath,
   releaseGatePath,
@@ -56,6 +59,7 @@ const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
 const readinessSource = read(readinessPath);
+const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const packageJson = JSON.parse(read(packagePath));
 const agents = read(agentsPath);
 const releaseGate = read(releaseGatePath);
@@ -112,16 +116,23 @@ requireText(
 
 requireText(
   onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
   "finance Day-1 real-run rehearsal guard",
   onboardingPath,
 );
 
 requireText(
   readinessSource,
-  /(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*blocked users keep active finance access)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*blocked users keep active finance access)/i,
   "finance Day-1 real-run rehearsal shared source",
   readinessPath,
+);
+
+requireText(
+  financeDayOneRunbook,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_RUNBOOK)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Required Day-1 Accounts)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not paste or store)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links or account invite links)(?=[\s\S]*Do not expand from finance to the next department)/i,
+  "finance Day-1 real-run rehearsal runbook",
+  financeDayOneRunbookPath,
 );
 
 requireText(

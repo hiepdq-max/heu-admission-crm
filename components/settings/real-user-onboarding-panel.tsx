@@ -8,7 +8,10 @@ import {
   UserCheck,
 } from "lucide-react";
 
-import { PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS } from "@/lib/production-readiness";
+import {
+  PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
+  PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
+} from "@/lib/production-readiness";
 
 const onboardingSteps = [
   {
@@ -189,6 +192,9 @@ export function RealUserOnboardingPanel() {
           Use approved real-accounting account labels only after signed UAT is
           ready. This checklist does not create accounts, approve access, accept
           UAT, move money or mark production GO.
+        </p>
+        <p className="mt-1 text-xs font-medium text-cyan-800">
+          Runbook: {PRODUCTION_FINANCE_DAY_ONE_RUNBOOK}
         </p>
         <div className="mt-3 grid gap-3 xl:grid-cols-5">
           {PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS.map((step) => (
