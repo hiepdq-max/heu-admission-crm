@@ -99,6 +99,22 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-14 Finance Controlled Trial Evidence Binder Link", [
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  "data-p014-finance-controlled-trial-evidence=\"P5-03-TRIAL-EVID\"",
+  "P5-03-TRIAL-EVID-001 through",
+  "P5-03-TRIAL-EVID-005",
+  "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+  "scripts/audit-heu-production-evidence-binder.mjs",
+  "does not collect raw",
+  "create accounts",
+  "store passwords",
+  "execute UAT",
+  "accept evidence",
+  "approve finance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Desk Controlled Trial Evidence Surface", [
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
   "P5-03-TRIAL-01 through P5-03-TRIAL-08",

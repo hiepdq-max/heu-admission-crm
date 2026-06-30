@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-14 Finance Controlled Trial Evidence Binder Link
+
+- Linked the P5-03 controlled-trial evidence IDs into
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` with
+  `data-p014-finance-controlled-trial-evidence="P5-03-TRIAL-EVID"`.
+- The P0-14 finance reliance checkpoint now reminds owner reviewers to cite
+  P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 and
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED` before any Finance Desk
+  reliance review.
+- Tightened `scripts/audit-heu-production-evidence-binder.mjs` so the binder
+  cannot drop the P5-03 controlled-trial evidence link silently.
+- This is evidence-routing UI packaging only. It does not collect raw
+  evidence, create accounts, store passwords, execute UAT, accept evidence,
+  approve finance reliance, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - Finance Desk Controlled Trial Evidence Surface
 
 - Expanded `components/finance/finance-desk-uat-evidence-checklist.tsx` so the
