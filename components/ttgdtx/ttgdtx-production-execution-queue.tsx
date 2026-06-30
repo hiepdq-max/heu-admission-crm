@@ -3,6 +3,8 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS,
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
@@ -347,6 +349,53 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-blue-200 bg-white p-4"
+        data-ttgdtx-finance-day-one-account-activation="P0-17_P6-04"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-blue-950">
+              Finance Day-1 account activation handoff
+            </h3>
+            <p className="mt-1 leading-6 text-blue-900">
+              Before any real-accounting login, record the approved account
+              label, secure invite/create status, HEU profile link, narrow
+              business scope and P6-04 pre-login result. Credential material
+              stays outside Git/Codex/chat.
+            </p>
+            <p className="mt-1 text-xs font-medium text-blue-800">
+              Template: {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE}
+            </p>
+          </div>
+          <span className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold uppercase text-blue-800">
+            FIN_ACTIVATION_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS.map((item) => (
+            <article
+              key={item.code}
+              className="border-l-2 border-blue-300 bg-blue-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-blue-700">
+                {item.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
               </p>
             </article>
           ))}

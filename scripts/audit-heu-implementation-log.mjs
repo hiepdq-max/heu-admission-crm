@@ -99,6 +99,35 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Day-1 Account Activation Handoff", [
+  "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE",
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS",
+  "ttgdtx-production-execution-queue.tsx",
+  "data-ttgdtx-finance-day-one-account-activation=\"P0-17_P6-04\"",
+  "real-user-onboarding-panel.tsx",
+  "data-heu-finance-day-one-account-activation=\"P0-17-P6-04\"",
+  "FIN-ACT-01 through FIN-ACT-05",
+  "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+  "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "send",
+  "invites",
+  "store passwords",
+  "approve access",
+  "accept UAT",
+  "approve finance action",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Result Ledger Template", [
   "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "PASS_LOCAL_TEMPLATE",

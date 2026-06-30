@@ -32,6 +32,8 @@ const scopePagePath = "app/settings/scopes/page.tsx";
 const readinessPath = "lib/production-readiness.ts";
 const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
+const financeDayOneActivationTemplatePath =
+  "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md";
 const financeDayOneLedgerTemplatePath =
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
 const packagePath = "package.json";
@@ -47,6 +49,7 @@ for (const file of [
   scopePagePath,
   readinessPath,
   financeDayOneRunbookPath,
+  financeDayOneActivationTemplatePath,
   financeDayOneLedgerTemplatePath,
   packagePath,
   agentsPath,
@@ -63,6 +66,7 @@ const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
+const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
 const financeDayOneLedgerTemplate = read(financeDayOneLedgerTemplatePath);
 const packageJson = JSON.parse(read(packagePath));
 const agents = read(agentsPath);
@@ -120,6 +124,13 @@ requireText(
 
 requireText(
   onboarding,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-account-activation="P0-17-P6-04")(?=[\s\S]*Finance Day-1 account activation handoff)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*invite status, profile link, narrow scope and P6-04\s+pre-login checks)(?=[\s\S]*without storing credentials or invite links)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*item\.requiredProof)(?=[\s\S]*item\.stopCondition)/i,
+  "finance Day-1 account activation handoff guard",
+  onboardingPath,
+);
+
+requireText(
+  onboarding,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
   "finance Day-1 real-run rehearsal guard",
   onboardingPath,
@@ -134,6 +145,13 @@ requireText(
 
 requireText(
   readinessSource,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountActivationCheck)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*Account label and owner are approved)(?=[\s\S]*FIN-ACT-02)(?=[\s\S]*Supabase Auth invite stays outside Codex)(?=[\s\S]*FIN-ACT-03)(?=[\s\S]*HEU profile link is completed)(?=[\s\S]*FIN-ACT-04)(?=[\s\S]*Business scope is assigned before login)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*P6-04 pre-login route check is recorded)(?=[\s\S]*Password, temporary password, OTP, reset link, account invite\/activation link)/i,
+  "finance Day-1 account activation handoff shared source",
+  readinessPath,
+);
+
+requireText(
+  readinessSource,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*blocked users keep active finance access)/i,
   "finance Day-1 real-run rehearsal shared source",
   readinessPath,
@@ -144,6 +162,20 @@ requireText(
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
   "finance Day-1 result ledger shared source",
   readinessPath,
+);
+
+requireText(
+  financeDayOneRunbook,
+  /(?=[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*before[\s\S]*first real-accounting login)(?=[\s\S]*secure invite\/create state)(?=[\s\S]*HEU profile link)(?=[\s\S]*narrow business scope)(?=[\s\S]*P6-04 pre-login result)(?=[\s\S]*outside Git\/Codex\/chat)/i,
+  "finance Day-1 account activation link in real-run runbook",
+  financeDayOneRunbookPath,
+);
+
+requireText(
+  financeDayOneActivationTemplate,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i,
+  "finance Day-1 account activation handoff template",
+  financeDayOneActivationTemplatePath,
 );
 
 requireText(
@@ -217,6 +249,13 @@ requireText(
   implementationLog,
   /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
   "real-user accounting onboarding log boundary",
+  logPath,
+);
+
+requireText(
+  implementationLog,
+  /(?=[\s\S]*Finance Day-1 Account Activation Handoff)(?=[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*data-ttgdtx-finance-day-one-account-activation="P0-17_P6-04")(?=[\s\S]*data-heu-finance-day-one-account-activation="P0-17-P6-04")(?=[\s\S]*FIN-ACT-01 through FIN-ACT-05)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*approve access)(?=[\s\S]*mark production GO)/i,
+  "finance Day-1 account activation handoff log boundary",
   logPath,
 );
 

@@ -58,6 +58,17 @@ export const PRODUCTION_FINANCE_DAY_ONE_RUNBOOK =
 export const PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE =
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
 
+export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE =
+  "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md";
+
+export type ProductionFinanceDayOneAccountActivationCheck = {
+  code: string;
+  title: string;
+  owner: string;
+  requiredProof: string;
+  stopCondition: string;
+};
+
 export type ProductionFinanceDayOneAccountLane = {
   accountLabel: string;
   owner: string;
@@ -439,6 +450,54 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
     requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
     stopCondition:
       "Sees TTGDTX finance, lead, source, dashboard, audit, settings or evidence data.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS: ProductionFinanceDayOneAccountActivationCheck[] = [
+  {
+    code: "FIN-ACT-01",
+    title: "Account label and owner are approved",
+    owner: "IT_DATA + ADMIN + process owner",
+    requiredProof:
+      "Approved redacted account label, owner, department, intended role and TTGDTX partner/workspace scope before any invite is sent.",
+    stopCondition:
+      "Account label is missing, owner is unclear, scope is broad by default or the request is not tied to a Day-1 lane.",
+  },
+  {
+    code: "FIN-ACT-02",
+    title: "Supabase Auth invite stays outside Codex",
+    owner: "IT_DATA + ADMIN",
+    requiredProof:
+      "Controlled evidence ID showing invite/create status and secure-channel confirmation; no secret material is copied into Git/Codex/chat.",
+    stopCondition:
+      "Password, temporary password, OTP, reset link, account invite/activation link or service-role key enters Git/Codex/chat.",
+  },
+  {
+    code: "FIN-ACT-03",
+    title: "HEU profile link is completed",
+    owner: "IT_DATA + ADMIN",
+    requiredProof:
+      "Redacted users_profile link proof with display name, department, manager, role and active/inactive state.",
+    stopCondition:
+      "Profile is missing, email identity is pasted as a raw screenshot or the role does not match the approved Day-1 lane.",
+  },
+  {
+    code: "FIN-ACT-04",
+    title: "Business scope is assigned before login",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    requiredProof:
+      "Admission segment, TTGDTX partner/workspace and lead visibility scope are assigned narrowly and reviewed before first finance login.",
+    stopCondition:
+      "The user receives broad workspace, unrestricted finance visibility, payout action, source evidence access or audit/settings access without owner approval.",
+  },
+  {
+    code: "FIN-ACT-05",
+    title: "P6-04 pre-login route check is recorded",
+    owner: "IT_DATA + Audit",
+    requiredProof:
+      "P6-04 route result and negative-control result are recorded with controlled evidence IDs before P2-18/P5-03/P2-17 are opened.",
+    stopCondition:
+      "Route result is missing, out-of-scope access is visible, evidence is raw or owner/redaction reviewer sign-off is missing.",
   },
 ];
 

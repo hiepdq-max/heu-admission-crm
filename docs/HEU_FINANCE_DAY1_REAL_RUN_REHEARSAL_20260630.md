@@ -39,6 +39,12 @@ screenshots or uncontrolled notes:
 Use redacted account labels such as `REAL_KHTC_TTGDTX_OPERATOR_01` and
 controlled evidence IDs such as `FIN-DAY1-EVID-001`.
 
+Use `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md` before
+the first real-accounting login to record the secure invite/create state, HEU
+profile link, narrow business scope and P6-04 pre-login result. Keep the filled
+activation handoff outside Git/Codex/chat and reference only controlled evidence
+IDs.
+
 ## 3. Static Preflight
 
 Run and record local pass/fail before the rehearsal:

@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 
 import {
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS,
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
@@ -173,6 +175,42 @@ export function RealUserOnboardingPanel() {
               <p className="font-medium text-zinc-950">{lane.label}</p>
               <p className="mt-1 text-xs text-zinc-500">{lane.route}</p>
               <p className="mt-2 text-rose-700">Stop: {lane.stop}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-4 rounded-lg border border-blue-200 bg-white p-4"
+        data-heu-finance-day-one-account-activation="P0-17-P6-04"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-center gap-2 font-semibold text-blue-950">
+            <KeyRound className="size-4 text-blue-700" />
+            Finance Day-1 account activation handoff
+          </div>
+          <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-900">
+            Decision: FIN_ACTIVATION_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+        <p className="mt-2 text-blue-900">
+          Use this handoff before any real-accounting account opens finance
+          routes. It records invite status, profile link, narrow scope and P6-04
+          pre-login checks without storing credentials or invite links.
+        </p>
+        <p className="mt-1 text-xs font-medium text-blue-800">
+          Template: {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE}
+        </p>
+        <div className="mt-3 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS.map((item) => (
+            <article key={item.code} className="border-l-2 border-blue-300 px-3">
+              <p className="text-xs font-semibold uppercase text-blue-700">
+                {item.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs text-zinc-500">Owner: {item.owner}</p>
+              <p className="mt-2 text-zinc-700">{item.requiredProof}</p>
+              <p className="mt-2 text-rose-700">Stop: {item.stopCondition}</p>
             </article>
           ))}
         </div>

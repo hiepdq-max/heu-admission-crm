@@ -1,5 +1,33 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Account Activation Handoff
+
+- Added `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md` as the
+  PASS_LOCAL_TEMPLATE for recording real-accounting Day-1 invite/create,
+  profile-link, narrow-scope and P6-04 pre-login status outside Git/Codex/chat.
+- Added `PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE` and
+  `PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS` to
+  `lib/production-readiness.ts`.
+- Mounted the handoff in `components/ttgdtx/ttgdtx-production-execution-queue.tsx`
+  with `data-ttgdtx-finance-day-one-account-activation="P0-17_P6-04"` and in
+  `components/settings/real-user-onboarding-panel.tsx` with
+  `data-heu-finance-day-one-account-activation="P0-17-P6-04"`.
+- The handoff covers FIN-ACT-01 through FIN-ACT-05 and requires
+  `FIN_ACTIVATION_READY / NO_GO / BLOCKED` before opening P2-18, P5-03 or P2-17
+  with a real-accounting account.
+- Synced `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is activation-handoff packaging only. It does not create accounts, send
+  invites, store passwords, approve access, accept UAT, approve finance action,
+  issue bank instructions, accept owner review or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Result Ledger Template
 
 - Added `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` as the
