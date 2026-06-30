@@ -226,7 +226,7 @@ requireText(
 
 requireText(
   checklist,
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*redaction reviewer[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*redaction reviewer[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*Finance Day-1 start-gate checklist[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
   "priority blocker list includes P0-14 evidence binder closure",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );

@@ -1272,7 +1272,7 @@ export const PRODUCTION_EXECUTION_STEPS: ProductionExecutionStep[] = [
     title: "Prepare final handoff summary",
     owner: "IT_DATA + Audit",
     proof:
-      "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation and the P0-09 final owner decision manifest, with P0-14 controlled evidence intake ledger, redaction reviewer, owner signature state, P2-18/P5-03 real-accounting finance reliance proof, Finance Day-1 result ledger, P0-17 access closure decision, P6-04/P6-03/P6-06 proof paths and the P6-06 finding register, before owner decision.",
+      "Record live git state, local checks, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation and the P0-09 final owner decision manifest, with P0-14 controlled evidence intake ledger, redaction reviewer, owner signature state, P2-18/P5-03 real-accounting finance reliance proof, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, P6-04/P6-03/P6-06 proof paths and the P6-06 finding register, before owner decision.",
     decisionValue: "P0_15_HANDOFF_READY / NO_GO / BLOCKED",
     stopCondition:
       "Live git state, local checks, Stage D/NO-GO, evidence paths or proof owners are missing, or the handoff summary claims production GO before signed owner decision.",

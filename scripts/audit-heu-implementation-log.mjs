@@ -99,6 +99,37 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-15 Finance Day-1 Start Gate Final Handoff Alignment", [
+  "AGENTS.md",
+  "lib/production-readiness.ts",
+  "P0-15 final handoff",
+  "Finance Day-1 start-gate checklist",
+  "Finance Day-1 result ledger",
+  "P0-17 access closure decision",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "PASS_LOCAL readiness",
+  "scripts/audit-heu-final-handoff-coverage.mjs",
+  "scripts/audit-heu-current-state-inventory.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Desk Day-1 Start Gate Evidence Checkpoint", [
   "data-finance-desk-day-one-start-gate-evidence=\"P5-03-FIN-START\"",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",

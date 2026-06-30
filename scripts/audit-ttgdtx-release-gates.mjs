@@ -485,7 +485,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*Production readiness guard[\s\S]*finance Day-1 real-run rehearsal)(?=[\s\S]*Production readiness guard[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT)(?=[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Role\/workspace scope[\s\S]*post-UAT access closure handoff)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
+  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*Production readiness guard[\s\S]*finance Day-1 start-gate checklist)(?=[\s\S]*Production readiness guard[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*Production readiness guard[\s\S]*finance Day-1 real-run rehearsal)(?=[\s\S]*Production readiness guard[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 start-gate checklist and result ledger into dashboard\/Finance Desk signed UAT)(?=[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Role\/workspace scope[\s\S]*post-UAT access closure handoff)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*Finance Day-1 start-gate checklist)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -550,7 +550,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /TTGDTX signed UAT execution routing hub[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO/i,
+  /TTGDTX signed UAT execution routing hub[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 start-gate checklist and result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO/i,
   "current-state signed UAT Finance Day-1 ledger handoff",
 );
 
@@ -1532,9 +1532,38 @@ requireText(
   "Finance Desk reliance decision runbook matrix",
 );
 
-requireText(
+requireAllText(
   "AGENTS.md",
-  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check\s+proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT\s+handoff\s+evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 production\s+blocker shared source[\s\S]*P0-14 production\s+evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction\s+reviewer[\s\S]*owner signature\s+state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*P0-17 access\s+closure decision[\s\S]*separate P6-04\s+role\/workspace[\s\S]*P6-03\s+audit-log[\s\S]*P6-06\s+hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*real evidence stays outside Git\/Codex\/chat/i,
+  [
+    "Final handoff summaries must include",
+    "git status --short --branch",
+    "git rev-parse --short HEAD",
+    "Stage D - internal controlled test only",
+    "Production remains NO-GO",
+    "P0-03 operator run sheet evidence path",
+    "P0-03 restore smoke-check",
+    "proof for P0-19/P3 gate preservation",
+    "P0-09 owner sign-off/UAT handoff",
+    "evidence path",
+    "P0-09 final owner decision manifest",
+    "P0-13 production",
+    "blocker shared source",
+    "P0-14 production evidence binder",
+    "controlled evidence intake ledger",
+    "redaction reviewer",
+    "owner signature",
+    "state, P2-18/P5-03 real-accounting finance reliance proof",
+    "Finance Day-1",
+    "start-gate checklist",
+    "Finance Day-1 result ledger",
+    "P0-17 access closure",
+    "decision, separate P6-04 role/workspace",
+    "P6-03 audit-log",
+    "P6-06",
+    "hard-delete/cascade proof paths",
+    "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+    "real evidence stays outside Git/Codex/chat",
+  ],
   "P0-15 final handoff summary guard",
 );
 
@@ -2488,7 +2517,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation and the P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation and the P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "P0-15 final handoff split evidence shared source",
 );
 

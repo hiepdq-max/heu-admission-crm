@@ -24,11 +24,20 @@ function requireText(contents, pattern, label, file) {
   }
 }
 
+function requireAllText(contents, tokens, label, file) {
+  for (const token of tokens) {
+    if (!contents.includes(token)) {
+      fail(`${file}: missing ${label}: ${token}`);
+    }
+  }
+}
+
 for (const file of [
   "AGENTS.md",
   "package.json",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
@@ -69,9 +78,41 @@ requireText(
   "AGENTS.md",
 );
 
-requireText(
+requireAllText(
   agents,
-  /Final handoff summaries must include[\s\S]*git status --short --branch[\s\S]*git rev-parse --short HEAD[\s\S]*local checks run[\s\S]*Stage D - internal controlled test only[\s\S]*Production remains NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check\s+proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT\s+handoff[\s\S]*evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 production\s+blocker shared source[\s\S]*P0-14 production\s+evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction\s+reviewer[\s\S]*owner signature\s+state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1\s+result ledger[\s\S]*P0-17 access\s+closure decision[\s\S]*separate P6-04\s+role\/workspace[\s\S]*P6-03\s+audit-log[\s\S]*P6-06\s+hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*real evidence stays outside Git\/Codex\/chat[\s\S]*does not approve production, migration, finance action or\s+owner GO\/NO-GO/i,
+  [
+    "Final handoff summaries must include",
+    "git status --short --branch",
+    "git rev-parse --short HEAD",
+    "local checks run",
+    "Stage D - internal controlled test only",
+    "Production remains NO-GO",
+    "P0-03 operator run sheet evidence path",
+    "P0-03 restore smoke-check",
+    "proof for P0-19/P3 gate preservation",
+    "P0-09 owner sign-off/UAT handoff",
+    "evidence path",
+    "P0-09 final owner decision manifest",
+    "P0-13 production",
+    "blocker shared source",
+    "P0-14 production evidence binder",
+    "controlled evidence intake ledger",
+    "redaction reviewer",
+    "owner signature",
+    "state, P2-18/P5-03 real-accounting finance reliance proof",
+    "Finance Day-1",
+    "start-gate checklist",
+    "Finance Day-1 result ledger",
+    "P0-17 access closure",
+    "decision, separate P6-04 role/workspace",
+    "P6-03 audit-log",
+    "P6-06",
+    "hard-delete/cascade proof paths",
+    "HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md",
+    "real evidence stays outside Git/Codex/chat",
+    "does not approve production, migration, finance action or",
+    "owner GO/NO-GO",
+  ],
   "final handoff summary content guard",
   "AGENTS.md",
 );
@@ -96,14 +137,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-15[\s\S]*Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md/i,
+  /P0-15[\s\S]*Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md/i,
   "P0-15 final handoff coverage backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md/i,
+  /Final handoff audit coverage[\s\S]*PASS_LOCAL[\s\S]*audit:heu-final-handoff-coverage[\s\S]*final handoff summary[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md/i,
   "production checklist final handoff coverage row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
@@ -117,14 +158,14 @@ requireText(
 
 requireText(
   checklist,
-  /highest priority blockers[\s\S]*Run P0-15 final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*owner GO\/NO-GO/i,
+  /highest priority blockers[\s\S]*Run P0-15 final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*owner GO\/NO-GO/i,
   "priority blocker list includes P0-15 final handoff",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*Final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*cannot override production NO-GO/i,
+  /npm\.cmd run audit:heu-final-handoff-coverage[\s\S]*PASS[\s\S]*Final handoff coverage[\s\S]*live git state[\s\S]*local check results[\s\S]*Stage D\/NO-GO[\s\S]*P0-03 operator run sheet evidence path[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path[\s\S]*P0-09 final owner decision manifest[\s\S]*P0-13 blocker source[\s\S]*P0-14 evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 start-gate checklist[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*separate P6-04 role\/workspace[\s\S]*P6-03 audit-log[\s\S]*P6-06 hard-delete\/cascade proof paths[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*cannot override production NO-GO/i,
   "current-state final handoff coverage audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
