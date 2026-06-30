@@ -231,7 +231,7 @@ requireText(
 
 requireText(
   uatChecklist,
-  /(?=[\s\S]*data-finance-desk-controlled-trial-plan="P5-03")(?=[\s\S]*P5-03 Finance Desk controlled trial plan:\s*PASS_LOCAL only)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_ACTIVATION_READY \+ P6_04_PRELOGIN_READY)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*no auto gach no)(?=[\s\S]*no COM production\s+calculation)(?=[\s\S]*no payment execution)(?=[\s\S]*no production GO)/i,
+  /(?=[\s\S]*data-finance-desk-controlled-trial-plan="P5-03")(?=[\s\S]*P5-03 Finance Desk controlled trial plan:\s*PASS_LOCAL only)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_ACTIVATION_READY \+ P6_04_PRELOGIN_READY)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-06)(?=[\s\S]*P5-03-TRIAL-07)(?=[\s\S]*P5-03-TRIAL-08)(?=[\s\S]*P5-03-TRIAL-EVID-001)(?=[\s\S]*P5-03-TRIAL-EVID-005)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*no auto gach no)(?=[\s\S]*no COM production\s+calculation)(?=[\s\S]*no payment execution)(?=[\s\S]*no production GO)/i,
   "Finance Desk controlled trial UI panel",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
 );
@@ -398,6 +398,13 @@ requireText(
   read("docs/HEU_IMPLEMENTATION_LOG.md"),
   /## 2026-06-30 - Finance Desk Controlled Trial Plan[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01[\s\S]*audit-heu-finance-desk\.mjs[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/[\s\S]*BLOCKED[\s\S]*P5-03-TRIAL-01 through P5-03-TRIAL-08[\s\S]*no bulk real-data import[\s\S]*no auto gach no[\s\S]*no COM production calculation[\s\S]*no payment execution[\s\S]*does not create accounts[\s\S]*mark production GO/i,
   "Finance Desk controlled trial implementation log",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  read("docs/HEU_IMPLEMENTATION_LOG.md"),
+  /## 2026-06-30 - Finance Desk Controlled Trial Evidence Surface[\s\S]*components\/finance\/finance-desk-uat-evidence-checklist\.tsx[\s\S]*P5-03-TRIAL-01 through P5-03-TRIAL-08[\s\S]*P5-03-TRIAL-EVID-001[\s\S]*P5-03-TRIAL-EVID-005[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*audit-heu-finance-desk\.mjs[\s\S]*PASS_LOCAL\/read-only[\s\S]*does not create accounts[\s\S]*store passwords[\s\S]*execute UAT[\s\S]*approve finance[\s\S]*mark production GO/i,
+  "Finance Desk controlled trial evidence surface implementation log",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

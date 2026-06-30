@@ -34,6 +34,13 @@ type FinanceDeskControlledTrialItem = {
   stopCondition: string;
 };
 
+type FinanceDeskControlledTrialEvidenceItem = {
+  evidenceId: string;
+  capture: string;
+  requiredContent: string;
+  forbiddenContent: string;
+};
+
 const realAccountingQueueMarker =
   'data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"';
 const realAccountingResultMarker =
@@ -183,6 +190,73 @@ const controlledTrialItems: FinanceDeskControlledTrialItem[] = [
     requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
     stopCondition:
       "Stop if any TTGDTX finance, source, dashboard, audit, settings or evidence data is visible.",
+  },
+  {
+    trialId: "P5-03-TRIAL-06",
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    routeCheck: "Run the protected-route negative-control denial check.",
+    requiredResult: "Protected routes return BLOCKED or EMPTY_SCOPED_STATE only.",
+    stopCondition:
+      "Stop if any protected TTGDTX finance, lead, payout, audit or settings row is visible.",
+  },
+  {
+    trialId: "P5-03-TRIAL-07",
+    accountLabel: "ALL_REAL_ACCOUNTING_LABELS",
+    routeCheck: "Check finance-action locks during the trial.",
+    requiredResult:
+      "No auto gach no, COM production calculation, payment execution, bank instruction or bulk real-data import is attempted.",
+    stopCondition:
+      "Stop if any money movement, COM finalization, auto debt clearing or bulk real import is attempted.",
+  },
+  {
+    trialId: "P5-03-TRIAL-08",
+    accountLabel: "KHTC_BGH_IT_DATA_AUDIT_OWNER_REVIEW",
+    routeCheck: "Record controlled result and access closure outside Git/Codex/chat.",
+    requiredResult:
+      "Evidence IDs, variance notes, owner decision and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED are recorded.",
+    stopCondition:
+      "Stop if raw PII, bank data, voucher body, payment evidence, password material or ownerless result enters the record.",
+  },
+];
+
+const controlledTrialEvidenceItems: FinanceDeskControlledTrialEvidenceItem[] = [
+  {
+    evidenceId: "P5-03-TRIAL-EVID-001",
+    capture: "Account label and scope proof",
+    requiredContent:
+      "Redacted account label, role, department, TTGDTX scope and P6-04 pre-login decision.",
+    forbiddenContent:
+      "Passwords, OTPs, invite links, reset links, real email screenshots or service-role keys.",
+  },
+  {
+    evidenceId: "P5-03-TRIAL-EVID-002",
+    capture: "/finance-desk scoped load",
+    requiredContent: "Route, role label, scoped KPIs and no-write result.",
+    forbiddenContent:
+      "Raw student PII, bank accounts, vouchers, payment data or unrestricted totals.",
+  },
+  {
+    evidenceId: "P5-03-TRIAL-EVID-003",
+    capture: "Source reconciliation",
+    requiredContent:
+      "P2-18, import readiness and source-control comparison with variance owner note.",
+    forbiddenContent: "Manual adjustment to Finance Desk output.",
+  },
+  {
+    evidenceId: "P5-03-TRIAL-EVID-004",
+    capture: "Negative-control denial",
+    requiredContent:
+      "BLOCKED or EMPTY_SCOPED_STATE result for protected routes.",
+    forbiddenContent:
+      "Any visible protected TTGDTX route, row, total, evidence link or audit row.",
+  },
+  {
+    evidenceId: "P5-03-TRIAL-EVID-005",
+    capture: "Result and access closure",
+    requiredContent:
+      "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED plus ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED.",
+    forbiddenContent:
+      "Access approval, UAT acceptance, finance reliance or production GO without owner signatures.",
   },
 ];
 
@@ -412,6 +486,32 @@ export function FinanceDeskUatEvidenceChecklist() {
               </p>
             </article>
           ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-cyan-200 bg-cyan-50 p-3">
+          <h4 className="font-semibold text-cyan-950">
+            Controlled evidence IDs
+          </h4>
+          <div className="mt-3 grid gap-3 lg:grid-cols-2">
+            {controlledTrialEvidenceItems.map((item) => (
+              <article className="bg-white px-3 py-3" key={item.evidenceId}>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-md bg-cyan-50 px-2 py-1 font-mono text-xs font-semibold text-cyan-800">
+                    {item.evidenceId}
+                  </span>
+                  <span className="text-sm font-semibold text-cyan-950">
+                    {item.capture}
+                  </span>
+                </div>
+                <p className="mt-2 leading-5 text-cyan-900">
+                  Required: {item.requiredContent}
+                </p>
+                <p className="mt-1 leading-5 text-rose-800">
+                  Forbidden: {item.forbiddenContent}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
 
         <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">

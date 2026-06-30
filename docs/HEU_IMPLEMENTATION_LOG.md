@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk Controlled Trial Evidence Surface
+
+- Expanded `components/finance/finance-desk-uat-evidence-checklist.tsx` so the
+  controlled-trial panel displays P5-03-TRIAL-01 through P5-03-TRIAL-08,
+  including negative-control denial, finance-action locks and result/access
+  closure.
+- Added visible controlled evidence IDs P5-03-TRIAL-EVID-001 through
+  P5-03-TRIAL-EVID-005 with required content, forbidden content and the
+  `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED` access-closure decision.
+- Tightened `scripts/audit-heu-finance-desk.mjs` so the Finance Desk UI must
+  keep the full controlled trial checklist, controlled evidence IDs and
+  PASS_LOCAL/read-only boundary visible.
+- This is UI guard packaging only. It does not create accounts, send invites,
+  store passwords, import real data in bulk, auto clear debt, run COM
+  production calculation, execute payment, execute UAT, approve finance
+  reliance, accept evidence, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - Finance Desk Controlled Trial UI Guard
 
 - Added a visible controlled-trial panel inside

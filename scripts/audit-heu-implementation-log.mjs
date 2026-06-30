@@ -99,6 +99,23 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Desk Controlled Trial Evidence Surface", [
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+  "P5-03-TRIAL-01 through P5-03-TRIAL-08",
+  "P5-03-TRIAL-EVID-001 through",
+  "P5-03-TRIAL-EVID-005",
+  "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+  "scripts/audit-heu-finance-desk.mjs",
+  "PASS_LOCAL/read-only",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "import real data in bulk",
+  "execute UAT",
+  "approve finance",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Desk Controlled Trial UI Guard", [
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
   "data-finance-desk-controlled-trial-plan=\"P5-03\"",
