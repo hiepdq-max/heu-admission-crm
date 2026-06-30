@@ -164,6 +164,13 @@ requireText(
 );
 
 requireText(
+  executionQueue,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*Finance Day-1 result ledger: real-user proof rows)(?=[\s\S]*Each real-accounting Day-1 lane needs a controlled evidence row)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)(?=[\s\S]*Missing, ownerless or raw evidence keeps production\s+NO-GO)/i,
+  "TTGDTX finance Day-1 result ledger UI",
+  executionQueuePath,
+);
+
+requireText(
   blockerSource,
   /(?=[\s\S]*export const SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
   "TTGDTX safe iteration shared source",
@@ -227,9 +234,23 @@ requireText(
 );
 
 requireText(
+  blockerSource,
+  /(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
+  "TTGDTX finance Day-1 result ledger shared source",
+  blockerSourcePath,
+);
+
+requireText(
   financeDayOneRunbook,
   /(?=[\s\S]*Status:\s*PASS_LOCAL_RUNBOOK)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P0-17 secure account activation outside Codex\/chat)(?=[\s\S]*P6-04 role and workspace scope proof)(?=[\s\S]*P2-18 and P5-03 read-only dashboard confidence check)(?=[\s\S]*P2-17 payout rehearsal with no bank action)(?=[\s\S]*P0-17 access closure before expanding)(?=[\s\S]*does not create accounts)(?=[\s\S]*send passwords)(?=[\s\S]*initiate bank\s+instructions)(?=[\s\S]*mark\s+production GO)/i,
   "Finance Day-1 real-run rehearsal runbook",
+  financeDayOneRunbookPath,
+);
+
+requireText(
+  financeDayOneRunbook,
+  /(?=[\s\S]*Day-1 Result Ledger)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*Raw PII, CCCD, bank data, voucher body)(?=[\s\S]*does not approve access, accept UAT, approve finance reliance, move money or\s+mark production GO)/i,
+  "Finance Day-1 result ledger runbook",
   financeDayOneRunbookPath,
 );
 

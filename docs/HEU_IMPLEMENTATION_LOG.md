@@ -1,5 +1,33 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Result Ledger Guard
+
+- Added `PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES` and
+  `PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS` to `lib/production-readiness.ts`
+  so every real-accounting Day-1 lane records the same account label, route,
+  expected result, actual result, owner decision and access closure evidence.
+- Mounted the ledger in `components/ttgdtx/ttgdtx-production-execution-queue.tsx`
+  with `data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17"`
+  and in `components/settings/real-user-onboarding-panel.tsx` with
+  `data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17"`.
+- The ledger covers `REAL_KHTC_TTGDTX_OPERATOR_01`,
+  `REAL_BGH_READONLY_01`, `REAL_AUDIT_READONLY_01`,
+  `REAL_PHAP_CHE_REVIEW_01` and `REAL_OUT_OF_SCOPE_NEGATIVE_01` with
+  `FIN_DAY1_RESULT_READY / NO_GO / BLOCKED`.
+- Updated `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Day-1 route cannot omit the
+  result ledger.
+- Tightened `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- This is result-ledger packaging only. It does not create accounts, send passwords,
+  grant access, accept UAT, approve dashboard reliance, approve finance action,
+  initiate bank instructions, revoke live users, accept owner review or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Runbook Handoff
 
 - Added `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md` as the

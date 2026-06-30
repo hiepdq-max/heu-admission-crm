@@ -55,6 +55,20 @@ export type ProductionFinanceDayOneRunStep = {
 export const PRODUCTION_FINANCE_DAY_ONE_RUNBOOK =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
 
+export type ProductionFinanceDayOneAccountLane = {
+  accountLabel: string;
+  owner: string;
+  allowedRoutes: string;
+  requiredResult: string;
+  stopCondition: string;
+};
+
+export type ProductionFinanceDayOneResultField = {
+  field: string;
+  requiredValue: string;
+  forbiddenContent: string;
+};
+
 export type ProductionRiskClosureStep = {
   code: string;
   title: string;
@@ -374,6 +388,117 @@ export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS: ProductionFinanceDayOneRunSte
     decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
     stopCondition:
       "Day-1 access remains broad, unsigned, not tied to P6-04/P2-18/P5-03 results, or blocked users keep active finance access.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAccountLane[] = [
+  {
+    accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    owner: "KHTC + IT_DATA",
+    allowedRoutes:
+      "P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only.",
+    requiredResult:
+      "ALLOWED only for approved finance work inside the assigned TTGDTX partner/workspace.",
+    stopCondition:
+      "Sees unrestricted finance totals, payout action or source evidence outside approved scope.",
+  },
+  {
+    accountLabel: "REAL_BGH_READONLY_01",
+    owner: "BGH + IT_DATA",
+    allowedRoutes: "Read-only P2-18, P5-03 and Master Control.",
+    requiredResult:
+      "READ_ONLY, with no daily entry, payment execution, evidence edit or production GO action.",
+    stopCondition:
+      "Can enter finance data, approve/pay, edit evidence, grant access or mark GO.",
+  },
+  {
+    accountLabel: "REAL_AUDIT_READONLY_01",
+    owner: "Audit + IT_DATA",
+    allowedRoutes: "Read-only audit, evidence and finance reliance review.",
+    requiredResult:
+      "READ_ONLY, with audit/evidence visibility limited to approved redacted evidence references.",
+    stopCondition:
+      "Can move money, grant roles, mutate facts, bypass redaction or view raw secrets.",
+  },
+  {
+    accountLabel: "REAL_PHAP_CHE_REVIEW_01",
+    owner: "PHAP_CHE + IT_DATA",
+    allowedRoutes: "Legal/source review only within approved scope.",
+    requiredResult:
+      "LEGAL_REVIEW_ONLY, with finance totals and private contract bodies hidden unless approved.",
+    stopCondition:
+      "Sees unrestricted finance totals or private contract bodies outside written approval.",
+  },
+  {
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    owner: "IT_DATA + Audit",
+    allowedRoutes: "Login only; expected blocked or empty scoped state.",
+    requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
+    stopCondition:
+      "Sees TTGDTX finance, lead, source, dashboard, audit, settings or evidence data.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS: ProductionFinanceDayOneResultField[] = [
+  {
+    field: "Evidence ID",
+    requiredValue:
+      "Stable controlled evidence ID such as FIN-DAY1-EVID-001, stored outside Git/Codex/chat.",
+    forbiddenContent:
+      "No raw screenshots, passwords, temporary passwords, OTPs, reset links or invite links.",
+  },
+  {
+    field: "Account label",
+    requiredValue:
+      "Redacted account label from the approved Day-1 lane list, not a raw identity screenshot.",
+    forbiddenContent:
+      "No password, invite link, reset link, OTP, real email screenshot or unrestricted identity data.",
+  },
+  {
+    field: "Profile/scope",
+    requiredValue:
+      "Role, department, segment and TTGDTX partner/workspace scope assigned for the test.",
+    forbiddenContent:
+      "No broad admin scope, service-role key, database URL or private connection string.",
+  },
+  {
+    field: "Route",
+    requiredValue:
+      "P6-04, P2-18, P5-03, P2-17 or P0-17 closure route used for the result.",
+    forbiddenContent:
+      "No unapproved production migration, bank action, source mutation or hidden admin route.",
+  },
+  {
+    field: "Expected result",
+    requiredValue:
+      "ALLOWED, READ_ONLY, LEGAL_REVIEW_ONLY, BLOCKED, EMPTY_SCOPED_STATE, NO_GO or BLOCKED_PENDING_OWNER_SIGNOFF.",
+    forbiddenContent: "No ownerless pass, implied production GO or unsigned finance reliance.",
+  },
+  {
+    field: "Actual result",
+    requiredValue:
+      "Browser/operator result with redacted evidence reference and variance note if any.",
+    forbiddenContent:
+      "No raw PII, CCCD, bank data, voucher body, private contract body or unrestricted totals leak.",
+  },
+  {
+    field: "Owner decision",
+    requiredValue: "FIN_DAY1_RESULT_READY, NO_GO or BLOCKED.",
+    forbiddenContent:
+      "No UAT acceptance, dashboard reliance, finance approval, access approval or production GO without signed owner evidence.",
+  },
+  {
+    field: "Access closure",
+    requiredValue: "ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED for each Day-1 account.",
+    forbiddenContent:
+      "No broad temporary pilot access after NO_GO/BLOCKED or unsigned owner decision.",
+  },
+  {
+    field: "Sign-off",
+    requiredValue:
+      "Operator, checker, process owner and redaction reviewer recorded outside Git/Codex/chat.",
+    forbiddenContent:
+      "No password, OTP, invite/reset link, service-role key, raw identity file or bank credential.",
   },
 ];
 

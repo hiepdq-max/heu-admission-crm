@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 
 import {
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
 } from "@/lib/production-readiness";
 
 const onboardingSteps = [
@@ -206,6 +208,61 @@ export function RealUserOnboardingPanel() {
               <p className="mt-2 text-xs text-zinc-500">Owner: {step.owner}</p>
               <p className="mt-2 text-zinc-700">{step.requiredAction}</p>
               <p className="mt-2 text-rose-700">Stop: {step.stopCondition}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-4 rounded-lg border border-teal-200 bg-white p-4"
+        data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-center gap-2 font-semibold text-teal-950">
+            <ClipboardCheck className="size-4 text-teal-700" />
+            Finance Day-1 result ledger for real users
+          </div>
+          <div className="rounded-md border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-medium text-teal-900">
+            Decision: FIN_DAY1_RESULT_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+        <p className="mt-2 text-teal-900">
+          Record one controlled result row per approved account label and route.
+          This ledger captures readiness evidence only; it does not approve
+          access, accept UAT, approve finance reliance, move money or mark
+          production GO.
+        </p>
+        <div className="mt-3 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES.map((lane) => (
+            <article
+              key={lane.accountLabel}
+              className="border-l-2 border-teal-300 px-3"
+            >
+              <p className="text-xs font-semibold uppercase text-teal-700">
+                {lane.accountLabel}
+              </p>
+              <p className="mt-1 text-xs text-zinc-500">Owner: {lane.owner}</p>
+              <p className="mt-2 text-zinc-700">{lane.allowedRoutes}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Result: {lane.requiredResult}
+              </p>
+              <p className="mt-2 text-rose-700">Stop: {lane.stopCondition}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS.map((item) => (
+            <article
+              key={item.field}
+              className="border-l-2 border-teal-300 bg-teal-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-teal-700">
+                {item.field}
+              </p>
+              <p className="mt-2 text-zinc-700">{item.requiredValue}</p>
+              <p className="mt-2 text-xs text-rose-800">
+                Forbidden: {item.forbiddenContent}
+              </p>
             </article>
           ))}
         </div>

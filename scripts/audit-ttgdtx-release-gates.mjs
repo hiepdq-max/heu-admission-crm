@@ -730,6 +730,12 @@ requireText(
 );
 
 requireText(
+  "components/settings/real-user-onboarding-panel.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 result ledger for real users)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Record one controlled result row per approved account label and route)(?=[\s\S]*does not approve\s+access, accept UAT, approve finance reliance, move money or mark\s+production GO)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)/i,
+  "P0-17 finance Day-1 result ledger guard",
+);
+
+requireText(
   "app/settings/page.tsx",
   /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
   "settings page mounts real-user onboarding before create-user form",
@@ -760,8 +766,14 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /(?=[\s\S]*Finance Day-1 Result Ledger Guard)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts[\s\S]*send passwords[\s\S]*grant access[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
+  "finance Day-1 result ledger log entry",
+);
+
+requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*soft-revoke\/INACTIVE evidence/i,
+  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*Day-1 result ledger[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*soft-revoke\/INACTIVE evidence/i,
   "P0-17 user account temporary password backlog row",
 );
 
@@ -1640,6 +1652,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*Finance Day-1 result ledger: real-user proof rows)(?=[\s\S]*Each real-accounting Day-1 lane needs a controlled evidence row)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)(?=[\s\S]*Missing, ownerless or raw evidence keeps production\s+NO-GO)/i,
+  "TTGDTX finance Day-1 result ledger UI",
+);
+
+requireText(
   "lib/production-readiness.ts",
   /(?=[\s\S]*export const SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
   "TTGDTX safe iteration shared source",
@@ -1682,9 +1700,21 @@ requireText(
 );
 
 requireText(
+  "lib/production-readiness.ts",
+  /(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
+  "TTGDTX finance Day-1 result ledger shared source",
+);
+
+requireText(
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
   /(?=[\s\S]*Status:\s*PASS_LOCAL_RUNBOOK)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Required Day-1 Accounts)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not paste or store)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links or account invite links)(?=[\s\S]*P2-17 payout rehearsal with no bank action)(?=[\s\S]*Do not expand from finance to the next department)(?=[\s\S]*Production remains\s+NO-GO)/i,
   "finance Day-1 real-run rehearsal runbook",
+);
+
+requireText(
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  /(?=[\s\S]*Day-1 Result Ledger)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*Raw PII, CCCD, bank data, voucher body)(?=[\s\S]*does not approve access, accept UAT, approve finance reliance, move money or\s+mark production GO)/i,
+  "finance Day-1 result ledger runbook",
 );
 
 requireText(

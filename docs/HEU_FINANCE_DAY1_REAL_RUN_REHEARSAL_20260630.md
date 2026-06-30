@@ -76,7 +76,34 @@ If any command fails, stop and keep the Day-1 decision at `NO_GO` or `BLOCKED`.
 | FIN-DAY1-04 | Rehearse P2-17 duplicate, overpay, voucher normalization, dossier and RPC-only controls without bank action | P2-17 release decision draft, duplicate/overpay result, dossier evidence ID and no-bank-instruction note | `FIN_DAY1_READY / NO_GO / BLOCKED` |
 | FIN-DAY1-05 | Record P0-17 `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` before adding the next department | Access closure decision ID, owner sign-off state, reduced-scope note and soft-revoke/INACTIVE proof where needed | `FIN_DAY1_READY / NO_GO / BLOCKED` |
 
-## 6. Result Template
+## 6. Day-1 Result Ledger
+
+Create one result row per account label and route before expanding beyond the
+first finance rehearsal. The ledger is a controlled-evidence index only; it
+does not approve access, accept UAT, approve finance reliance, move money or
+mark production GO.
+
+| Account label | Owner | Allowed route scope | Required result |
+|---|---|---|---|
+| `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only | `ALLOWED` only for approved finance work inside the assigned TTGDTX partner/workspace |
+| `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only P2-18, P5-03 and Master Control | `READ_ONLY`; no daily entry, payment execution, evidence edit or production GO action |
+| `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only audit, evidence and finance reliance review | `READ_ONLY`; audit/evidence visibility limited to approved redacted references |
+| `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Legal/source review only within approved scope | `LEGAL_REVIEW_ONLY`; finance totals and private contract bodies hidden unless approved |
+| `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | Login only; expected blocked or empty scoped state | `BLOCKED` or `EMPTY_SCOPED_STATE` |
+
+| Ledger field | Required value | Forbidden content |
+|---|---|---|
+| Evidence ID | Stable controlled evidence ID such as `FIN-DAY1-EVID-001` | Raw screenshots, passwords, temporary passwords, OTPs, reset links or invite links |
+| Account label | Redacted account label from the approved Day-1 lane list | Password, invite link, reset link, OTP, real email screenshot or unrestricted identity data |
+| Profile/scope | Role, department, segment and TTGDTX partner/workspace scope | Broad admin scope, service-role key, database URL or private connection string |
+| Route | P6-04, P2-18, P5-03, P2-17 or P0-17 closure route | Unapproved production migration, bank action, source mutation or hidden admin route |
+| Expected result | `ALLOWED`, `READ_ONLY`, `LEGAL_REVIEW_ONLY`, `BLOCKED`, `EMPTY_SCOPED_STATE`, `NO_GO` or `BLOCKED_PENDING_OWNER_SIGNOFF` | Ownerless pass, implied production GO or unsigned finance reliance |
+| Actual result | Browser/operator result with redacted evidence reference and variance note if any | Raw PII, CCCD, bank data, voucher body, private contract body or unrestricted totals leak |
+| Owner decision | `FIN_DAY1_RESULT_READY`, `NO_GO` or `BLOCKED` | UAT acceptance, dashboard reliance, finance approval, access approval or production GO without signed owner evidence |
+| Access closure | `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` for each Day-1 account | Broad temporary pilot access after `NO_GO/BLOCKED` or unsigned owner decision |
+| Sign-off | Operator, checker, process owner and redaction reviewer outside Git/Codex/chat | Password, OTP, invite/reset link, service-role key, raw identity file or bank credential |
+
+## 7. Result Template
 
 | Field | Required value |
 |---|---|
@@ -91,7 +118,7 @@ If any command fails, stop and keep the Day-1 decision at `NO_GO` or `BLOCKED`.
 | Access closure | `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` |
 | Sign-off | Operator, checker, process owner and redaction reviewer outside Codex/chat |
 
-## 7. Final Rule
+## 8. Final Rule
 
 Do not expand from finance to the next department until FIN-DAY1-01 through
 FIN-DAY1-05 are recorded, all stop conditions are closed or explicitly marked

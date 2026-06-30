@@ -3,8 +3,10 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
   PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
@@ -398,6 +400,70 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-teal-200 bg-white p-4"
+        data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-teal-950">
+              Finance Day-1 result ledger: real-user proof rows
+            </h3>
+            <p className="mt-1 leading-6 text-teal-900">
+              Each real-accounting Day-1 lane needs a controlled evidence row
+              with expected result, actual result, owner decision and access
+              closure. Missing, ownerless or raw evidence keeps production
+              NO-GO.
+            </p>
+          </div>
+          <span className="rounded-md border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold uppercase text-teal-800">
+            FIN_DAY1_RESULT_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES.map((lane) => (
+            <article
+              key={lane.accountLabel}
+              className="border-l-2 border-teal-300 bg-teal-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-teal-700">
+                {lane.accountLabel}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {lane.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {lane.allowedRoutes}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Result: {lane.requiredResult}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {lane.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS.map((item) => (
+            <article
+              key={item.field}
+              className="border-l-2 border-teal-300 px-3"
+            >
+              <p className="text-xs font-semibold uppercase text-teal-700">
+                {item.field}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {item.requiredValue}
+              </p>
+              <p className="mt-2 text-xs leading-5 text-rose-800">
+                Forbidden: {item.forbiddenContent}
               </p>
             </article>
           ))}
