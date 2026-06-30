@@ -26,10 +26,21 @@ type FinanceDeskRealUserBridgeItem = {
   stopCondition: string;
 };
 
+type FinanceDeskControlledTrialItem = {
+  trialId: string;
+  accountLabel: string;
+  routeCheck: string;
+  requiredResult: string;
+  stopCondition: string;
+};
+
 const realAccountingQueueMarker =
   'data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"';
 const realAccountingResultMarker =
   'data-heu-real-accounting-user-result-template="P6-04-P2-18-P5-03"';
+
+const controlledTrialPlanPath =
+  "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md";
 
 const uatItems: FinanceDeskUatItem[] = [
   {
@@ -128,6 +139,50 @@ const realUserBridgeItems: FinanceDeskRealUserBridgeItem[] = [
       "Out-of-scope account returns BLOCKED or EMPTY_SCOPED_STATE for Finance Desk totals and action links.",
     stopCondition:
       "Stop if any unrestricted TTGDTX finance, lead, source, dashboard, audit or settings data is visible.",
+  },
+];
+
+const controlledTrialItems: FinanceDeskControlledTrialItem[] = [
+  {
+    trialId: "P5-03-TRIAL-01",
+    accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    routeCheck:
+      "/finance-desk opens only inside assigned TTGDTX finance scope.",
+    requiredResult: "Scoped KPIs load with no create/update/pay/import-write controls.",
+    stopCondition:
+      "Stop if unrestricted totals, write controls or payment execution are visible.",
+  },
+  {
+    trialId: "P5-03-TRIAL-02",
+    accountLabel: "REAL_BGH_READONLY_01",
+    routeCheck: "/finance-desk and /ttgdtx/accounting-dashboard are read-only.",
+    requiredResult: "Read-only review with no approve, evidence edit or GO controls.",
+    stopCondition:
+      "Stop if BGH can mutate finance facts, approve access or mark production GO.",
+  },
+  {
+    trialId: "P5-03-TRIAL-03",
+    accountLabel: "REAL_AUDIT_READONLY_01",
+    routeCheck: "Trace and redacted-evidence checks remain read-only.",
+    requiredResult: "Audit sees redacted evidence IDs only.",
+    stopCondition:
+      "Stop if Audit can bypass redaction, grant access, move money or see secrets.",
+  },
+  {
+    trialId: "P5-03-TRIAL-04",
+    accountLabel: "REAL_PHAP_CHE_REVIEW_01",
+    routeCheck: "Legal/source review is limited to approved legal scope.",
+    requiredResult: "Legal review only; unrestricted finance totals stay blocked.",
+    stopCondition:
+      "Stop if private contract bodies, payout action or unrestricted totals are visible.",
+  },
+  {
+    trialId: "P5-03-TRIAL-05",
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    routeCheck: "/finance-desk and protected TTGDTX routes return denial.",
+    requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
+    stopCondition:
+      "Stop if any TTGDTX finance, source, dashboard, audit, settings or evidence data is visible.",
   },
 ];
 
@@ -303,6 +358,66 @@ export function FinanceDeskUatEvidenceChecklist() {
           reset links, account activation/invite links, service-role keys, raw
           PII, CCCD, bank data, vouchers or screenshots with secrets into
           Finance Desk evidence.
+        </p>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-cyan-200 bg-white p-4"
+        data-finance-desk-controlled-trial-plan="P5-03"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-cyan-950">
+              P5-03 Finance Desk controlled trial plan: PASS_LOCAL only
+            </h3>
+            <p className="mt-2 leading-6 text-cyan-900">
+              Use {controlledTrialPlanPath} before opening Finance Desk with
+              real-accounting labels. Required decision:{" "}
+              <span className="font-mono text-xs">
+                P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED
+              </span>
+              . Filled evidence stays outside Git/Codex/chat.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-950">
+            Required preconditions:
+            <span className="mt-1 block font-mono text-xs">
+              FIN_ACTIVATION_READY + P6_04_PRELOGIN_READY
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {controlledTrialItems.map((item) => (
+            <article
+              className="border-l-2 border-cyan-300 bg-cyan-50 px-3 py-3"
+              key={item.trialId}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-md bg-white px-2 py-1 font-mono text-xs font-semibold text-cyan-800">
+                  {item.trialId}
+                </span>
+                <span className="font-mono text-xs text-cyan-900">
+                  {item.accountLabel}
+                </span>
+              </div>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Route: {item.routeCheck}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Result: {item.requiredResult}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+          No bulk real-data import, no auto gach no, no COM production
+          calculation, no payment execution and no production GO are allowed in
+          this controlled trial.
         </p>
       </div>
 

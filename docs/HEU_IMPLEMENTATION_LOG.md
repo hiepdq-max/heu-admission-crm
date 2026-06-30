@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk Controlled Trial UI Guard
+
+- Added a visible controlled-trial panel inside
+  `components/finance/finance-desk-uat-evidence-checklist.tsx` with
+  `data-finance-desk-controlled-trial-plan="P5-03"`.
+- The panel requires `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`,
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`,
+  `FIN_ACTIVATION_READY + P6_04_PRELOGIN_READY`, and the redacted labels
+  `REAL_KHTC_TTGDTX_OPERATOR_01` through `REAL_OUT_OF_SCOPE_NEGATIVE_01`.
+- Tightened `scripts/audit-heu-finance-desk.mjs` so the visible UI must show
+  P5-03-TRIAL-01 through P5-03-TRIAL-05, no bulk real-data import, no auto
+  gach no, no COM production calculation, no payment execution, and no
+  production GO. This section explicitly preserves the no production GO
+  boundary.
+- This is UI guard packaging only. It does not create accounts, send invites,
+  store passwords, import real data in bulk, auto clear debt, run COM
+  production calculation, execute payment, accept UAT, approve finance
+  reliance, accept evidence, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - Finance Desk Controlled Trial Plan
 
 - Added `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` as a

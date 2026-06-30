@@ -230,6 +230,13 @@ requireText(
 );
 
 requireText(
+  uatChecklist,
+  /(?=[\s\S]*data-finance-desk-controlled-trial-plan="P5-03")(?=[\s\S]*P5-03 Finance Desk controlled trial plan:\s*PASS_LOCAL only)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_ACTIVATION_READY \+ P6_04_PRELOGIN_READY)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*no auto gach no)(?=[\s\S]*no COM production\s+calculation)(?=[\s\S]*no payment execution)(?=[\s\S]*no production GO)/i,
+  "Finance Desk controlled trial UI panel",
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+);
+
+requireText(
   page,
   /import \{ FinanceDeskUatEvidenceChecklist \}[\s\S]*<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*<FinanceDeskUatEvidenceChecklist \/>[\s\S]*!canOpen/i,
   "Finance Desk UAT evidence checklist mount before access states",
