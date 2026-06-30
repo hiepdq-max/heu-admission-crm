@@ -99,6 +99,32 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Signed UAT Routing Start Gate Current-State Audit Alignment", [
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "UAT-ROUTE-08",
+  "Finance Day-1 start-gate checklist and result ledger",
+  "dashboard/Finance Desk signed UAT",
+  "UAT-ROUTE-11",
+  "Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision",
+  "final owner GO/NO-GO",
+  "audit-heu-implementation-log.mjs",
+  "PASS_LOCAL",
+  "does not execute UAT",
+  "create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "approve owner GO/NO-GO",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-08 Internal UAT Finance Day-1 Start Gate Alignment", [
   "P0-08",
   "Internal UAT",

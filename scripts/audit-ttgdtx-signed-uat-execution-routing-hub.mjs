@@ -200,7 +200,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
+  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 start-gate checklist and result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
   "current-state signed UAT routing evidence",
 );
 

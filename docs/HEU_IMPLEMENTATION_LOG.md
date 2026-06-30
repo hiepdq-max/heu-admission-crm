@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Signed UAT Routing Start Gate Current-State Audit Alignment
+
+- Updated `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs` so the
+  current-state signed UAT routing evidence must match the upgraded
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` wording.
+- The audit now requires UAT-ROUTE-08 to carry the Finance Day-1 start-gate checklist and result ledger
+  into dashboard/Finance Desk signed UAT, and UAT-ROUTE-11 to carry the
+  Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision
+  into final owner GO/NO-GO.
+- Tightened `scripts/audit-heu-implementation-log.mjs` so this audit-alignment
+  slice is recorded with the same PASS_LOCAL/no-production boundary.
+- This is signed UAT routing audit alignment only. It does not execute UAT,
+  create accounts, send invites, store passwords, grant access, revoke live
+  users, accept evidence, approve finance reliance, approve access closure,
+  approve owner GO/NO-GO, move money, issue bank instructions or mark
+  production GO.
+- Boundary phrase: does not execute UAT, create accounts, send invites, store
+  passwords, grant access, revoke live users, accept evidence, approve finance
+  reliance, approve access closure, approve owner GO/NO-GO, move money, issue
+  bank instructions or mark production GO.
+
 ## 2026-06-30 - P0-08 Internal UAT Finance Day-1 Start Gate Alignment
 
 - Updated `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
