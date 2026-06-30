@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 import {
   PRODUCTION_EXECUTION_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
+  PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
@@ -420,6 +421,9 @@ export function TtgdtxProductionExecutionQueue() {
               with expected result, actual result, owner decision and access
               closure. Missing, ownerless or raw evidence keeps production
               NO-GO.
+            </p>
+            <p className="mt-1 text-xs font-medium text-teal-800">
+              Template: {PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE}
             </p>
           </div>
           <span className="rounded-md border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold uppercase text-teal-800">

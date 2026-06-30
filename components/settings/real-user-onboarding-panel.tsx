@@ -10,6 +10,7 @@ import {
 
 import {
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
+  PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
@@ -231,6 +232,9 @@ export function RealUserOnboardingPanel() {
           This ledger captures readiness evidence only; it does not approve
           access, accept UAT, approve finance reliance, move money or mark
           production GO.
+        </p>
+        <p className="mt-1 text-xs font-medium text-teal-800">
+          Template: {PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE}
         </p>
         <div className="mt-3 grid gap-3 xl:grid-cols-5">
           {PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES.map((lane) => (

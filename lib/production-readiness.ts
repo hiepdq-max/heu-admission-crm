@@ -55,6 +55,9 @@ export type ProductionFinanceDayOneRunStep = {
 export const PRODUCTION_FINANCE_DAY_ONE_RUNBOOK =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
 
+export const PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE =
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
+
 export type ProductionFinanceDayOneAccountLane = {
   accountLabel: string;
   owner: string;

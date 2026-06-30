@@ -99,6 +99,30 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Day-1 Result Ledger Template", [
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "PASS_LOCAL_TEMPLATE",
+  "PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE",
+  "ttgdtx-production-execution-queue.tsx",
+  "real-user-onboarding-panel.tsx",
+  "REAL_KHTC_TTGDTX_OPERATOR_01",
+  "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+  "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+  "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+  "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not collect evidence",
+  "create accounts",
+  "send passwords",
+  "approve finance action",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Result Ledger Guard", [
   "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",
   "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",

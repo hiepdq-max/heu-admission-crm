@@ -83,6 +83,11 @@ first finance rehearsal. The ledger is a controlled-evidence index only; it
 does not approve access, accept UAT, approve finance reliance, move money or
 mark production GO.
 
+Use the operator template at
+`docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` for the external
+controlled ledger. Keep the filled version outside Git/Codex/chat and reference
+only redacted evidence IDs here.
+
 | Account label | Owner | Allowed route scope | Required result |
 |---|---|---|---|
 | `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only | `ALLOWED` only for approved finance work inside the assigned TTGDTX partner/workspace |
