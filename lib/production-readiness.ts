@@ -42,6 +42,14 @@ export type ProductionFinanceUatFirstPassStep = {
   owner: string;
 };
 
+export type ProductionFinanceDayOneStartGate = {
+  code: string;
+  title: string;
+  owner: string;
+  requiredProof: string;
+  stopCondition: string;
+};
+
 export type ProductionFinanceDayOneRunStep = {
   code: string;
   title: string;
@@ -374,13 +382,61 @@ export const PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS: ProductionFinanceUatFirstP
   },
 ];
 
+export const PRODUCTION_FINANCE_DAY_ONE_START_GATES: ProductionFinanceDayOneStartGate[] = [
+  {
+    code: "FIN-START-01",
+    title: "P0-03 backup/restore evidence is accepted before real accounts",
+    owner: "IT_DATA + Audit",
+    requiredProof:
+      "Backup ID, restore target, operator run sheet, preflight/postflight and restore smoke-check evidence are controlled outside Git/Codex/chat.",
+    stopCondition:
+      "Any real-accounting invite/create starts before P0-03 evidence is accepted by IT_DATA/Audit.",
+  },
+  {
+    code: "FIN-START-02",
+    title: "Signed finance UAT route package is ready",
+    owner: "KHTC + BGH + IT_DATA + Audit",
+    requiredProof:
+      "P6-04, P2-18, P5-03, P6-03 and P2-17 route evidence plan is signed or explicitly NO_GO/BLOCKED before Day-1 accounts open.",
+    stopCondition:
+      "Finance Day-1 starts while signed UAT route evidence is missing, ownerless or stored only in Git/Codex/chat.",
+  },
+  {
+    code: "FIN-START-03",
+    title: "P0-10 controlled evidence redaction location is ready",
+    owner: "IT_DATA + Audit",
+    requiredProof:
+      "Controlled evidence location, redaction reviewer and forbidden-content checklist exist before any screenshot or account proof.",
+    stopCondition:
+      "Raw PII, CCCD, bank data, vouchers, passwords, OTPs, reset links or invite links enter Git/Codex/chat.",
+  },
+  {
+    code: "FIN-START-04",
+    title: "P0-14/P0-17 evidence and access-closure path is prepared",
+    owner: "IT_DATA + Audit + KHTC",
+    requiredProof:
+      "P0-14 intake ledger, Finance Day-1 result ledger and per-lane P0-17 access closure lanes are ready before activation.",
+    stopCondition:
+      "Account activation starts without a result-ledger row path or per-lane access closure decision path.",
+  },
+  {
+    code: "FIN-START-05",
+    title: "Human owner boundary is acknowledged",
+    owner: "BGH + KHTC + PHAP_CHE + Audit + IT_DATA",
+    requiredProof:
+      "Owners acknowledge PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO.",
+    stopCondition:
+      "Any operator treats these local gates as approval to create accounts, grant access, accept UAT, move money or mark production GO.",
+  },
+];
+
 export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS: ProductionFinanceDayOneRunStep[] = [
   {
     code: "FIN-DAY1-01",
     title: "Secure account activation outside Codex",
     owner: "IT_DATA + ADMIN",
     requiredAction:
-      "Create or invite the KHTC, BGH, Audit, Phap Che and negative-control accounts in Supabase Auth through the approved secure channel only.",
+      "After FIN_START_READY, create or invite the KHTC, BGH, Audit, Phap Che and negative-control accounts in Supabase Auth through the approved secure channel only.",
     requiredProof:
       "Controlled evidence ID for account creation/invite status, redacted account label, profile link and assigned owner; no credential material in Git/Codex/chat.",
     decisionValue: "FIN_DAY1_READY / NO_GO / BLOCKED",
@@ -443,7 +499,7 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
     accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
     owner: "KHTC + IT_DATA",
     entryGate:
-      "Start this lane first after FIN_ACTIVATION_READY and P6_04_PRELOGIN_READY; record one controlled result row before any other real-accounting lane expands.",
+      "Start this lane first after FIN_START_READY, FIN_ACTIVATION_READY and P6_04_PRELOGIN_READY; record one controlled result row before any other real-accounting lane expands.",
     advanceGate:
       "Do not open FIN-USER-02 until this lane has FIN_DAY1_RESULT_READY or explicit NO_GO/BLOCKED plus ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED.",
     allowedRoutes:
@@ -658,7 +714,7 @@ export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinance
     accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
     owner: "KHTC + IT_DATA + Audit",
     entryGate:
-      "Start after FIN_ACTIVATION_READY for FIN-USER-01 and before any other real-accounting lane opens finance routes.",
+      "Start after FIN_START_READY and FIN_ACTIVATION_READY for FIN-USER-01 and before any other real-accounting lane opens finance routes.",
     advanceGate:
       "Do not open FIN-USER-02 until FIN-USER-01 has P6_04_PRELOGIN_READY, controlled result evidence and P0-17 closure.",
     allowedBeforeFinanceLogin:

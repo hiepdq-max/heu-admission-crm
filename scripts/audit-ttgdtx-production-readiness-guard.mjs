@@ -170,6 +170,13 @@ requireText(
 
 requireText(
   executionQueue,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before account activation)(?=[\s\S]*backup\/restore\s+evidence)(?=[\s\S]*signed finance UAT route readiness)(?=[\s\S]*controlled\s+redaction storage)(?=[\s\S]*result-ledger path)(?=[\s\S]*P0-17 access-closure\s+path)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  "TTGDTX finance Day-1 start gates before account activation UI",
+  executionQueuePath,
+);
+
+requireText(
+  executionQueue,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*data-ttgdtx-finance-day-one-account-activation="P0-17_P6-04")(?=[\s\S]*Finance Day-1 account activation handoff)(?=[\s\S]*approved account\s+label)(?=[\s\S]*secure invite\/create status)(?=[\s\S]*HEU profile link)(?=[\s\S]*narrow\s+business scope)(?=[\s\S]*P6-04 pre-login result)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Credential material\s+stays outside Git\/Codex\/chat)(?=[\s\S]*item\.code)(?=[\s\S]*item\.requiredProof)(?=[\s\S]*item\.stopCondition)/i,
   "TTGDTX finance Day-1 account activation handoff UI",
   executionQueuePath,
@@ -261,6 +268,13 @@ requireText(
 
 requireText(
   blockerSource,
+  /(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*P0-03 backup\/restore evidence is accepted before real accounts)(?=[\s\S]*FIN-START-05)(?=[\s\S]*Human owner boundary is acknowledged)(?=[\s\S]*FIN_START_READY)(?=[\s\S]*P0-14\/P0-17 evidence and access-closure path is prepared)(?=[\s\S]*create accounts, grant access, accept UAT, move money or mark production GO)/i,
+  "TTGDTX finance Day-1 start gates shared source",
+  blockerSourcePath,
+);
+
+requireText(
+  blockerSource,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountActivationCheck)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*Account label and owner are approved)(?=[\s\S]*FIN-ACT-02)(?=[\s\S]*Supabase Auth invite stays outside Codex)(?=[\s\S]*FIN-ACT-03)(?=[\s\S]*HEU profile link is completed)(?=[\s\S]*FIN-ACT-04)(?=[\s\S]*Business scope is assigned before login)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*P6-04 pre-login route check is recorded)(?=[\s\S]*Password, temporary password, OTP, reset link, account invite\/activation link)/i,
   "TTGDTX finance Day-1 account activation shared source",
   blockerSourcePath,
@@ -347,6 +361,13 @@ requireText(
   financeDayOneActivationTemplate,
   /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Run one activation row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
   "Finance Day-1 account activation handoff template",
+  financeDayOneActivationTemplatePath,
+);
+
+requireText(
+  financeDayOneActivationTemplate,
+  /(?=[\s\S]*Start Gates Before Any Invite\/Create)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-START-01 P0-03 backup\/restore evidence accepted)(?=[\s\S]*FIN-START-05 Human owner boundary acknowledged)(?=[\s\S]*No invite, create or activation row may start)(?=[\s\S]*Start first after `FIN_START_READY`)(?=[\s\S]*PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO)/i,
+  "Finance Day-1 account activation start-gate template",
   financeDayOneActivationTemplatePath,
 );
 

@@ -129,6 +129,13 @@ requireText(
 
 requireText(
   onboarding,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before real-accounting accounts)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not invite, create or activate any real-accounting account)(?=[\s\S]*controlled evidence outside Git\/Codex\/chat)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  "finance Day-1 start gates before real-accounting accounts UI",
+  onboardingPath,
+);
+
+requireText(
+  onboarding,
   /(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*Real-user access closure after pilot\/UAT)(?=[\s\S]*USER-CLOSE-01)(?=[\s\S]*USER-CLOSE-04)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*soft-revoke\/INACTIVE)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links)(?=[\s\S]*account activation\/invite links)/i,
   "real-user access closure guard",
   onboardingPath,
@@ -167,6 +174,13 @@ requireText(
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 result ledger for real users)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Record one controlled result row per approved account label and route)(?=[\s\S]*does not approve\s+access, accept UAT, approve finance reliance, move money or mark\s+production GO)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.entryGate)(?=[\s\S]*lane\.advanceGate)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)/i,
   "finance Day-1 result ledger guard",
   onboardingPath,
+);
+
+requireText(
+  readinessSource,
+  /(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*P0-03 backup\/restore evidence is accepted before real accounts)(?=[\s\S]*FIN-START-02)(?=[\s\S]*Signed finance UAT route package is ready)(?=[\s\S]*FIN-START-03)(?=[\s\S]*P0-10 controlled evidence redaction location is ready)(?=[\s\S]*FIN-START-04)(?=[\s\S]*P0-14\/P0-17 evidence and access-closure path is prepared)(?=[\s\S]*FIN-START-05)(?=[\s\S]*Human owner boundary is acknowledged)(?=[\s\S]*FIN_START_READY)(?=[\s\S]*create accounts, grant access, accept UAT, move money or mark production GO)/i,
+  "finance Day-1 start gates shared source",
+  readinessPath,
 );
 
 requireText(
@@ -222,6 +236,21 @@ requireText(
   financeDayOneActivationTemplate,
   /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Run one activation row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
   "finance Day-1 account activation handoff template",
+  financeDayOneActivationTemplatePath,
+);
+
+requireAllText(
+  financeDayOneActivationTemplate,
+  [
+    "Start Gates Before Any Invite/Create",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-01 P0-03 backup/restore evidence accepted",
+    "FIN-START-05 Human owner boundary acknowledged",
+    "No invite, create or activation row may start",
+    "Start first after `FIN_START_READY`",
+    "PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO",
+  ],
+  "finance Day-1 account activation start-gate template",
   financeDayOneActivationTemplatePath,
 );
 
@@ -365,6 +394,13 @@ requireText(
   implementationLog,
   /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
   "real-user accounting onboarding log boundary",
+  logPath,
+);
+
+requireText(
+  implementationLog,
+  /(?=[\s\S]*Finance Day-1 Start Gates Before Real Account Activation)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*grant access)(?=[\s\S]*execute UAT)(?=[\s\S]*accept evidence)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)/i,
+  "finance Day-1 start gates log boundary",
   logPath,
 );
 

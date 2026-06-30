@@ -13,6 +13,7 @@ import {
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
+  PRODUCTION_FINANCE_DAY_ONE_START_GATES,
   PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
@@ -352,6 +353,50 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-emerald-200 bg-white p-4"
+        data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-emerald-950">
+              Finance Day-1 start gates before account activation
+            </h3>
+            <p className="mt-1 leading-6 text-emerald-900">
+              Before any real-accounting invite/create, confirm backup/restore
+              evidence, signed finance UAT route readiness, controlled
+              redaction storage, result-ledger path and P0-17 access-closure
+              path. Missing proof keeps the first account closed.
+            </p>
+          </div>
+          <span className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase text-emerald-800">
+            FIN_START_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_START_GATES.map((gate) => (
+            <article
+              key={gate.code}
+              className="border-l-2 border-emerald-300 bg-emerald-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-emerald-700">
+                {gate.code}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{gate.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {gate.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                {gate.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {gate.stopCondition}
               </p>
             </article>
           ))}
