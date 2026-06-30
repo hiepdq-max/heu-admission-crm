@@ -51,10 +51,10 @@ outside Git/Codex/chat before it can move to `SIGNED_UAT_READY`.
 | UAT-ROUTE-05 P0-19 legal and finance gate UAT | `docs/P0_19_P2_01_P2_02_PILOT_OPEN_UAT_RUNBOOK.md` | Legal basis, tuition policy, waiver/exception decision and ALLOW_FINANCE gate proof exist |
 | UAT-ROUTE-06 P3-01/P3-02 lead lifecycle and handover UAT | `docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md` | Handover cannot create finance facts or bypass P0-19/P2-05/P2-03 finance gates |
 | UAT-ROUTE-07 P2-17 payout duplicate and dossier UAT | `docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md` | Duplicate-click, overpay, voucher normalization, RPC-only path and BBNT/partner-invoice dossier evidence pass |
-| UAT-ROUTE-08 P2-18/P5-03 dashboard and Finance Desk browser UAT | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`; `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` | Dashboard stays read-only, Finance Desk stays scoped and reliance decision is signed |
+| UAT-ROUTE-08 P2-18/P5-03 dashboard and Finance Desk browser UAT | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md`; `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`; `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | Dashboard stays read-only, Finance Desk stays scoped, Finance Day-1 result ledger is recorded and reliance decision is signed |
 | UAT-ROUTE-09 P6-03 audit-log traceability UAT | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md` | Trace rows show actor, entity, timestamp and controlled evidence reference for create/update/check/approve/pay/source-control events |
 | UAT-ROUTE-10 P6-06 hard-delete/cascade closure proof | `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | Conversion proof or written waiver exists for unresolved protected paths |
-| UAT-ROUTE-11 P0-09 final owner GO/NO-GO decision | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` | Final owner decision manifest references signed UAT, evidence binder, migration, backup, role, P0-17 access closure decision, audit and risk-closure proof |
+| UAT-ROUTE-11 P0-09 final owner GO/NO-GO decision | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | Final owner decision manifest references signed UAT, evidence binder, migration, backup, role, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure proof |
 
 ## 3. Stop Conditions
 

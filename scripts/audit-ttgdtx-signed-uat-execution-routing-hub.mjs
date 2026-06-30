@@ -92,6 +92,12 @@ requireText(
 
 requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /(?=[\s\S]*UAT-ROUTE-08[\s\S]*P2-18\/P5-03)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md|[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*P6-04 real accounting user queue\/result proof)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11[\s\S]*P0-09)(?=[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 result ledger is missing)/i,
+  "signed UAT route table Finance Day-1 ledger handoff",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   /UAT-ROUTE-01[\s\S]*Raw PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys, vouchers or unredacted screenshots are present/i,
   "signed UAT route P0-10 account-secret stop condition",
 );
@@ -109,6 +115,12 @@ requireText(
 );
 
 requireText(
+  "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  /(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 result ledger is recorded)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision)(?=[\s\S]*Finance Day-1 result ledger, P0-17 access closure decision)/i,
+  "operator handoff Finance Day-1 ledger route handoff",
+);
+
+requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /(?=[\s\S]*Signed UAT Route Result Tracker)(?=[\s\S]*BLOCKED_PENDING_SIGNED_UAT_ROUTE_EVIDENCE)(?=[\s\S]*UAT-ROUTE-01 P0-10[\s\S]*PENDING)(?=[\s\S]*UAT-ROUTE-11 P0-09[\s\S]*PENDING)(?=[\s\S]*PASS_LOCAL does not mean any UAT route was executed, accepted, signed,\s+evidence-approved, finance-approved, migration-approved or production-approved)/i,
   "execution log tracks signed UAT route outcomes without accepting UAT",
@@ -118,6 +130,12 @@ requireText(
   "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
   /\| Route \| Current status \| Decision lane \| Route\/source \| Minimum proof to record \| Owner \| Evidence\/reference \|[\s\S]*UAT-ROUTE-01 P0-10 controlled evidence redaction intake \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED \|[\s\S]*P0-17 access closure decision/i,
   "execution log route tracker exposes per-route decision lane",
+);
+
+requireText(
+  "docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  /(?=[\s\S]*UAT-ROUTE-08 P2-18\/P5-03 dashboard and Finance Desk browser UAT \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Finance Day-1 result ledger and reliance decision)(?=[\s\S]*UAT-ROUTE-11 P0-09 final owner GO\/NO-GO decision \| PENDING \| SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger, P0-17 access closure decision)/i,
+  "execution log Finance Day-1 ledger route tracker",
 );
 
 for (const row of signedUatRouteResultRows) {
@@ -135,6 +153,12 @@ requireText(
   "lib/production-readiness.ts",
   /(?=[\s\S]*export type SignedUatExecutionRoute)(?=[\s\S]*decisionValue:\s*string)(?=[\s\S]*export const SIGNED_UAT_EXECUTION_ROUTES)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*decisionValue:\s*"SIGNED_UAT_READY \/ NO_GO \/ BLOCKED")(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*P0-10)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P6-04)(?=[\s\S]*P0-19)(?=[\s\S]*P3-01\/P3-02)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18\/P5-03)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-09)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*P0-17 access closure is missing)(?=[\s\S]*audit:ttgdtx-production-owner-signoff-pack)/i,
   "shared signed UAT execution route source",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /(?=[\s\S]*UAT-ROUTE-08)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 result ledger, P0-17 access closure decision)(?=[\s\S]*Any required owner signs NO-GO\/BLOCKED, Finance Day-1 result ledger is missing)/i,
+  "shared signed UAT Finance Day-1 ledger handoff source",
 );
 
 requireText(
@@ -175,7 +199,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*UAT-ROUTE-11 carries the P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
+  /npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required/i,
   "current-state signed UAT routing evidence",
 );
 
@@ -189,6 +213,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-06-28 - TTGDTX Signed UAT Execution Routing Hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*does not execute UAT, accept evidence, sign owner results, grant access, approve finance action, approve migration, approve owner GO\/NO-GO or mark production GO/i,
   "implementation log signed UAT routing entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-06-30 - UAT Routing Finance Day-1 Ledger Handoff[\s\S]*UAT-ROUTE-08[\s\S]*Finance Day-1 result ledger[\s\S]*UAT-ROUTE-11[\s\S]*final owner GO\/NO-GO[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*audit-ttgdtx-signed-uat-execution-routing-hub\.mjs[\s\S]*does not execute UAT[\s\S]*approve owner GO\/NO-GO[\s\S]*mark production GO/i,
+  "implementation log UAT routing Finance Day-1 ledger handoff entry",
 );
 
 requireText(

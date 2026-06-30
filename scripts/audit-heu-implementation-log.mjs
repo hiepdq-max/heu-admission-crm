@@ -99,6 +99,33 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - UAT Routing Finance Day-1 Ledger Handoff", [
+  "lib/production-readiness.ts",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "UAT-ROUTE-08",
+  "UAT-ROUTE-11",
+  "Finance Day-1 result ledger",
+  "final owner GO/NO-GO",
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "UAT routing and handoff packaging",
+  "does not execute UAT",
+  "collect evidence",
+  "accept evidence",
+  "approve dashboard reliance",
+  "approve finance reliance",
+  "approve access closure",
+  "approve owner GO/NO-GO",
+  "move money",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-09 Finance Day-1 Result Ledger Owner Signoff Link", [
   "ttgdtx-owner-go-no-go-evidence-checklist.tsx",
   "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
