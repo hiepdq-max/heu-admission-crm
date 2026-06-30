@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk SQL Dependency and Report View Guard
+
+- Hardened `database/step108_ttgdtx_accounting_dashboard_p2_18.sql` so the
+  P2-18 dashboard rebuild drops `public.heu_finance_desk_summary` before
+  recreating `public.ttgdtx_accounting_dashboard_summary`.
+- Cleaned `database/step111_heu_finance_desk.sql` so
+  `public.heu_finance_desk_summary` reads
+  `public.ttgdtx_accounting_dashboard_summary` through the explicit
+  `dashboard_summary` alias, without the old ambiguous `a` alias or an
+  unnecessary `limit 1` wrapper.
+- Classified the HEU Finance Desk workbench as `REPORT_VIEW` in the Step111
+  master-data map, keeping it as a controlled read/report surface rather than
+  a transaction writer.
+- Tightened `scripts/audit-heu-finance-desk.mjs` so the dependency drop,
+  explicit alias and `REPORT_VIEW` classification cannot silently regress.
+- This is migration-candidate SQL guard packaging only. It does not run a
+  production migration, import real data, create accounts, store passwords,
+  approve finance action, accept UAT, accept evidence, approve owner signoff
+  or mark production GO.
+
 ## 2026-06-30 - P0-09 Owner Signoff Finance Trial Evidence Link
 
 - Linked P5-03 Finance Desk controlled-trial evidence into

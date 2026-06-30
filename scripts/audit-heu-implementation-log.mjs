@@ -99,6 +99,26 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Desk SQL Dependency and Report View Guard", [
+  "database/step108_ttgdtx_accounting_dashboard_p2_18.sql",
+  "public.heu_finance_desk_summary",
+  "public.ttgdtx_accounting_dashboard_summary",
+  "database/step111_heu_finance_desk.sql",
+  "dashboard_summary",
+  "unnecessary `limit 1`",
+  "REPORT_VIEW",
+  "scripts/audit-heu-finance-desk.mjs",
+  "does not run a",
+  "production migration",
+  "import real data",
+  "create accounts",
+  "store passwords",
+  "approve finance",
+  "accept UAT",
+  "accept evidence",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - P0-09 Owner Signoff Finance Trial Evidence Link", [
   "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
   "ttgdtx-owner-go-no-go-evidence-checklist.tsx",

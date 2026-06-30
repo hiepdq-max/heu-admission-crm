@@ -472,22 +472,22 @@ create or replace view public.heu_finance_desk_summary
 with (security_invoker = true)
 as
 select
-  coalesce(a.receivable_total_vnd, 0)::numeric as receivable_total_vnd,
-  coalesce(a.receivable_paid_vnd, 0)::numeric as receivable_paid_vnd,
-  coalesce(a.receivable_balance_vnd, 0)::numeric as receivable_balance_vnd,
-  coalesce(a.collected_total_vnd, 0)::numeric as collected_total_vnd,
-  coalesce(a.locked_reconciled_total_vnd, 0)::numeric as locked_reconciled_total_vnd,
-  coalesce(a.requested_total_vnd, 0)::numeric as requested_total_vnd,
-  coalesce(a.approved_total_vnd, 0)::numeric as approved_total_vnd,
-  coalesce(a.disbursed_total_vnd, 0)::numeric as disbursed_total_vnd,
-  coalesce(a.remaining_to_pay_vnd, 0)::numeric as remaining_to_pay_vnd,
-  coalesce(a.partner_with_exception_count, 0)::int as partner_with_exception_count,
+  coalesce(dashboard_summary.receivable_total_vnd, 0)::numeric as receivable_total_vnd,
+  coalesce(dashboard_summary.receivable_paid_vnd, 0)::numeric as receivable_paid_vnd,
+  coalesce(dashboard_summary.receivable_balance_vnd, 0)::numeric as receivable_balance_vnd,
+  coalesce(dashboard_summary.collected_total_vnd, 0)::numeric as collected_total_vnd,
+  coalesce(dashboard_summary.locked_reconciled_total_vnd, 0)::numeric as locked_reconciled_total_vnd,
+  coalesce(dashboard_summary.requested_total_vnd, 0)::numeric as requested_total_vnd,
+  coalesce(dashboard_summary.approved_total_vnd, 0)::numeric as approved_total_vnd,
+  coalesce(dashboard_summary.disbursed_total_vnd, 0)::numeric as disbursed_total_vnd,
+  coalesce(dashboard_summary.remaining_to_pay_vnd, 0)::numeric as remaining_to_pay_vnd,
+  coalesce(dashboard_summary.partner_with_exception_count, 0)::int as partner_with_exception_count,
   coalesce(i.import_batch_count, 0)::int as import_batch_count,
   coalesce(i.import_issue_count, 0)::int as import_issue_count,
   coalesce(l.document_link_count, 0)::int as document_link_count,
   coalesce(l.link_issue_count, 0)::int as link_issue_count,
   now() as updated_at
-from public.ttgdtx_accounting_dashboard_summary a
+from public.ttgdtx_accounting_dashboard_summary dashboard_summary
 cross join lateral (
   select
     count(*)::int as import_batch_count,
@@ -606,7 +606,7 @@ insert into public.heu_os_master_data_map (
     'HEU Finance Desk summary and workbench',
     'M08_FINANCE_ACCOUNTING',
     'heu_finance_desk_summary; heu_finance_desk_document_links; heu_finance_desk_code_policy',
-    'DASHBOARD_VIEW',
+    'REPORT_VIEW',
     'KHTC + IT_DATA + AUDIT',
     'SUPABASE',
     'RESTRICTED',

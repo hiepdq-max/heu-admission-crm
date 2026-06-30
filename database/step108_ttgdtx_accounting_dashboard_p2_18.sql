@@ -9,6 +9,7 @@
 --   views through an approved corrective migration; source transaction tables
 --   remain untouched.
 
+drop view if exists public.heu_finance_desk_summary;
 drop view if exists public.ttgdtx_accounting_dashboard_exception_board;
 drop view if exists public.ttgdtx_accounting_dashboard_recent_movements;
 drop view if exists public.ttgdtx_accounting_dashboard_summary;

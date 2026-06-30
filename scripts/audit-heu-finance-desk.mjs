@@ -27,6 +27,7 @@ function requireText(contents, pattern, label, file) {
 for (const file of [
   "app/finance-desk/page.tsx",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
+  "database/step108_ttgdtx_accounting_dashboard_p2_18.sql",
   "database/step111_heu_finance_desk.sql",
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
@@ -57,6 +58,11 @@ const appShell = existsSync(path.join(repoRoot, "components/layout/app-shell.tsx
   : "";
 const step111 = existsSync(path.join(repoRoot, "database/step111_heu_finance_desk.sql"))
   ? read("database/step111_heu_finance_desk.sql")
+  : "";
+const step108 = existsSync(
+  path.join(repoRoot, "database/step108_ttgdtx_accounting_dashboard_p2_18.sql"),
+)
+  ? read("database/step108_ttgdtx_accounting_dashboard_p2_18.sql")
   : "";
 const spec = existsSync(path.join(repoRoot, "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md"))
   ? read("docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md")
@@ -282,6 +288,35 @@ requireText(
   step111,
   /finance_desk\.read[\s\S]*finance_desk\.manage[\s\S]*finance_desk\.export[\s\S]*enable row level security[\s\S]*can_read_finance_desk[\s\S]*can_manage_finance_desk[\s\S]*write_audit_log/i,
   "Step111 permission, RLS and audit controls",
+  "database/step111_heu_finance_desk.sql",
+);
+
+requireText(
+  step108,
+  /drop view if exists public\.heu_finance_desk_summary;[\s\S]*drop view if exists public\.ttgdtx_accounting_dashboard_summary;/i,
+  "Step108 drops dependent Finance Desk summary before dashboard summary rebuild",
+  "database/step108_ttgdtx_accounting_dashboard_p2_18.sql",
+);
+
+requireText(
+  step111,
+  /create or replace view public\.heu_finance_desk_summary[\s\S]*coalesce\(dashboard_summary\.receivable_total_vnd,\s*0\)::numeric[\s\S]*from public\.ttgdtx_accounting_dashboard_summary dashboard_summary[\s\S]*cross join lateral/i,
+  "Step111 Finance Desk summary explicit dashboard_summary alias",
+  "database/step111_heu_finance_desk.sql",
+);
+
+if (/\ba\.(receivable_total_vnd|receivable_paid_vnd|receivable_balance_vnd|collected_total_vnd|requested_total_vnd|approved_total_vnd|disbursed_total_vnd)/i.test(step111)) {
+  fail("database/step111_heu_finance_desk.sql: Finance Desk summary must not use ambiguous alias a");
+}
+
+if (/from\s*\(\s*select\s+\*\s+from\s+public\.ttgdtx_accounting_dashboard_summary[\s\S]*limit\s+1/i.test(step111)) {
+  fail("database/step111_heu_finance_desk.sql: Finance Desk summary must read the aggregate dashboard view directly");
+}
+
+requireText(
+  step111,
+  /'HEU_FINANCE_DESK_MVP'[\s\S]*'heu_finance_desk_summary; heu_finance_desk_document_links; heu_finance_desk_code_policy'[\s\S]*'REPORT_VIEW'/i,
+  "Step111 Finance Desk master-data map uses REPORT_VIEW classification",
   "database/step111_heu_finance_desk.sql",
 );
 
