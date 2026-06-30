@@ -99,6 +99,50 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Day-1 Sequential Access Closure Lanes", [
+  "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+  "lib/production-readiness.ts",
+  "closureDecisionValue",
+  "retainCondition",
+  "reduceOrRevokeCondition",
+  "blockCondition",
+  "nextLaneGate",
+  "requiredProof",
+  "stopCondition",
+  "FIN-USER-01",
+  "FIN-USER-05",
+  "real-user-onboarding-panel.tsx",
+  "ttgdtx-production-execution-queue.tsx",
+  "ttgdtx-production-evidence-binder.tsx",
+  "P0-17",
+  "P0-14",
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  "sequential access closure decision queue",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "audit-heu-user-account-security.mjs",
+  "audit-heu-production-evidence-binder.mjs",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "audit-heu-implementation-log.mjs",
+  "access-closure packaging",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "expand departments or users",
+  "move money",
+  "issue bank",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Rollout Gates for Activation and Prelogin", [
   "lib/production-readiness.ts",
   "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
@@ -1213,6 +1257,17 @@ fastSection("2026-06-28 - AI Prompt Output Audit Logging Design", [
   "does not call an AI service",
 ]);
 
+fastSection("2026-06-30 - P0-16 Legal SOP Governance Summary Alignment", [
+  "HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "P0-16 summary/audit alignment only",
+]);
+
 fastSection("2026-06-28 - Legal SOP Governance Control Matrix", [
   "HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "Legal Article Master",
@@ -2051,6 +2106,13 @@ requireText(
   log,
   /## 2026-06-28 - AI Prompt Output Audit Logging Design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*P7-04 PASS_LOCAL_DESIGN[\s\S]*actor,\s+role\/workspace scope, source-scope refs, redaction status, prompt\/output\s+hashes when available, forbidden-action flags, human decision status and\s+controlled evidence reference[\s\S]*This is AI audit-log design only[\s\S]*does not call an AI service, store live\s+prompts, read restricted data, write workflow state, approve finance action,\s+accept UAT, accept evidence, approve owner GO or mark production GO/i,
   "AI prompt/output audit logging design log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-06-30 - P0-16 Legal SOP Governance Summary Alignment[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*Legal\/SOP\/Governance control matrix alongside\s+root control, Data Master, SOP-to-data, report-view, AI scope, risk signoff\s+and module readiness controls[\s\S]*audit-heu-p0-register-pack\.mjs[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*P0-16 summary\/audit alignment only[\s\S]*does not issue legal policy,\s+approve an SOP, move Drive files, accept UAT, accept evidence, approve\s+finance action, approve migration, waive owner decision or mark production\s+GO/i,
+  "P0-16 Legal SOP Governance summary alignment log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

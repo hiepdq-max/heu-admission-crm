@@ -484,7 +484,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*Production readiness guard[\s\S]*finance Day-1 real-run rehearsal)(?=[\s\S]*Production readiness guard[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT)(?=[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Role\/workspace scope[\s\S]*post-UAT access closure handoff)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
+  /(?=[\s\S]*Date:\s*2026-06-28)(?=[\s\S]*Git state:\s*clean local worktree at last verified handoff; exact ahead count and\s+current commit are live Git state)(?=[\s\S]*Conclusion:\s*Stage D - internal controlled test only\. Production remains NO-GO)(?=[\s\S]*TTGDTX process quick finder)(?=[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*HOU ledger\/handover gap pack)(?=[\s\S]*Short Course attendance\/payment gap pack)(?=[\s\S]*TTGDTX signed UAT execution routing hub)(?=[\s\S]*user account temporary password guard)(?=[\s\S]*61 audit scripts passed)(?=[\s\S]*M02 HR[\s\S]*create-user temporary password guard)(?=[\s\S]*M02 HR[\s\S]*real-user access closure guard)(?=[\s\S]*M03 Data Master[\s\S]*Data Master \/ Report View compatibility bridge)(?=[\s\S]*Production readiness guard[\s\S]*shared `PRODUCTION_BLOCKERS`[\s\S]*signed UAT execution routing hub)(?=[\s\S]*Production readiness guard[\s\S]*finance Day-1 real-run rehearsal)(?=[\s\S]*Production readiness guard[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 result ledger into dashboard\/Finance Desk signed UAT)(?=[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO)(?=[\s\S]*Production blocker shared source[\s\S]*TTGDTX landing guard[\s\S]*P0-03 operator run sheet evidence path)(?=[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation)(?=[\s\S]*P0-09 owner sign-off\/UAT handoff evidence path)(?=[\s\S]*P0-09 final owner decision manifest)(?=[\s\S]*Process discovery\/navigation[\s\S]*\/ttgdtx` quick finder)(?=[\s\S]*Lead lifecycle\/handover[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO)(?=[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*P5-03 read-only cockpit exists at `\/finance-desk` with permission and workspace-scope gate)(?=[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md)(?=[\s\S]*P5-03 reliance decision manifest)(?=[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md)(?=[\s\S]*STUDENT_MASTER)(?=[\s\S]*CLASS_MASTER)(?=[\s\S]*COHORT_MASTER)(?=[\s\S]*Role\/workspace scope[\s\S]*create-user temporary password guard)(?=[\s\S]*Role\/workspace scope[\s\S]*real-user access closure guard)(?=[\s\S]*Role\/workspace scope[\s\S]*post-UAT access closure handoff)(?=[\s\S]*Final handoff coverage[\s\S]*P0-13 blocker source)(?=[\s\S]*P0-14 evidence binder)(?=[\s\S]*Final handoff coverage[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof)(?=[\s\S]*Final handoff coverage[\s\S]*P0-17 access closure decision)(?=[\s\S]*Production is still NO-GO because:)(?=[\s\S]*No real production backup\/restore dry-run evidence)(?=[\s\S]*Step90-Step110 production migration order is not signed)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT is not signed)(?=[\s\S]*Final BGH\/IT_DATA\/KHTC\/PHAP_CHE\/Audit\/owner GO\/NO-GO is not signed)(?=[\s\S]*Record final owner GO\/NO-GO outside Codex\/chat using the owner sign-off pack,\s+final owner decision manifest and UAT operator handoff references)/i,
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
@@ -837,6 +837,12 @@ requireText(
 );
 
 requireText(
+  "components/settings/real-user-onboarding-panel.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER")(?=[\s\S]*Finance Day-1 sequential access closure lanes)(?=[\s\S]*Close one `FIN-USER` lane at a time)(?=[\s\S]*controlled P0-17 closure decision)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.closureDecisionValue)(?=[\s\S]*lane\.retainCondition)(?=[\s\S]*lane\.reduceOrRevokeCondition)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "P0-17 finance Day-1 sequential access closure lanes guard",
+);
+
+requireText(
   "app/settings/page.tsx",
   /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
   "settings page mounts real-user onboarding before create-user form",
@@ -921,6 +927,40 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /(?=[\s\S]*Finance Day-1 Sequential Real User Rollout)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*one account lane at a time)(?=[\s\S]*controlled result row)(?=[\s\S]*P0-17 access closure)(?=[\s\S]*does not create accounts[\s\S]*send invites[\s\S]*store passwords[\s\S]*grant access[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance reliance[\s\S]*approve access closure[\s\S]*expand departments or users[\s\S]*move money[\s\S]*mark production GO)/i,
   "finance Day-1 sequential real-user rollout log entry",
+);
+
+requireAllText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  [
+    "Finance Day-1 Sequential Access Closure Lanes",
+    "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+    "closureDecisionValue",
+    "retainCondition",
+    "reduceOrRevokeCondition",
+    "blockCondition",
+    "nextLaneGate",
+    "data-heu-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
+    "data-ttgdtx-finance-day-one-access-closure-lanes=\"P0-17_FIN_USER\"",
+    "data-p014-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+    "ACCESS_RETAIN",
+    "REVOKE_OR_REDUCE",
+    "BLOCKED",
+    "does not create accounts",
+    "send invites",
+    "store passwords",
+    "grant access",
+    "revoke live users",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "expand departments or users",
+    "move money",
+    "mark production GO",
+  ],
+  "finance Day-1 sequential access closure lanes log entry",
 );
 
 requireAllText(
@@ -1941,6 +1981,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-ttgdtx-finance-day-one-access-closure-lanes="P0-17_FIN_USER")(?=[\s\S]*Finance Day-1 access closure: one lane before the next)(?=[\s\S]*Each `FIN-USER` lane needs a controlled P0-17 decision before the\s+next lane opens)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredProof)(?=[\s\S]*lane\.retainCondition)(?=[\s\S]*lane\.reduceOrRevokeCondition)(?=[\s\S]*lane\.blockCondition)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "TTGDTX finance Day-1 sequential access closure lanes UI",
+);
+
+requireText(
   "lib/production-readiness.ts",
   /(?=[\s\S]*export const SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
   "TTGDTX safe iteration shared source",
@@ -2017,6 +2063,12 @@ requireText(
   "lib/production-readiness.ts",
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*No skipped lane)(?=[\s\S]*No next-lane access)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
   "TTGDTX finance Day-1 result ledger shared source",
+);
+
+requireText(
+  "lib/production-readiness.ts",
+  /(?=[\s\S]*export type ProductionFinanceDayOneAccessClosureLane)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*closureDecisionValue)(?=[\s\S]*retainCondition)(?=[\s\S]*reduceOrRevokeCondition)(?=[\s\S]*blockCondition)(?=[\s\S]*nextLaneGate)(?=[\s\S]*requiredProof)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*Any department\/user expansion starts before the negative-control closure decision is signed)/i,
+  "TTGDTX finance Day-1 sequential access closure shared source",
 );
 
 requireText(
@@ -2129,6 +2181,38 @@ requireAllText(
   "finance Day-1 result ledger template",
 );
 
+requireAllText(
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  [
+    "Sequential Access Closure Decision Queue",
+    "Each row must close before the next lane opens",
+    "FIN-DAY1-EVID-001",
+    "FIN-DAY1-EVID-005",
+    "Do not open `FIN-USER-02` until signed",
+    "Do not expand beyond Finance Day-1 until signed",
+    "ACCESS_RETAIN",
+    "REVOKE_OR_REDUCE",
+    "BLOCKED",
+  ],
+  "finance Day-1 sequential access closure decision queue template",
+);
+
+requireAllText(
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  [
+    "Sequential Access Closure Decision Queue",
+    "Close each lane in order",
+    "exact signed scope",
+    "FIN-DAY1-EVID-001",
+    "FIN-DAY1-EVID-005",
+    "Do not open `FIN-USER-02` until signed",
+    "Do not expand beyond Finance Day-1 until signed",
+    "REVOKE_OR_REDUCE",
+    "BLOCKED",
+  ],
+  "finance Day-1 sequential access closure decision queue runbook",
+);
+
 requireText(
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   /(?=[\s\S]*PRODUCTION_RISK_CLOSURE_STEPS)(?=[\s\S]*data-ttgdtx-risk-closure-plan="P6-06_P2-17")(?=[\s\S]*Next risk closure plan: P6-06 \+ P2-17)(?=[\s\S]*hard-delete\/cascade conversion-or-waiver)(?=[\s\S]*payout\s+duplicate\/dossier evidence)(?=[\s\S]*Missing proof\s+keeps production NO-GO)(?=[\s\S]*closure proof required)(?=[\s\S]*Open closure route)/i,
@@ -2151,6 +2235,12 @@ requireText(
   "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
   /(?=[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID")(?=[\s\S]*Finance Day-1 ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/[\s\S]*REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*before Finance Desk reliance or[\s\S]*owner GO\/NO-GO review)/i,
   "P0-14 Finance Day-1 result ledger evidence checkpoint",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-p014-finance-day-one-access-closure-lanes="P0-17-FIN-USER")(?=[\s\S]*Finance Day-1 access closure evidence lanes)(?=[\s\S]*P0-14 reliance evidence must cite each Day-1 lane closure)(?=[\s\S]*Missing lane\s+closure keeps P0-14 NO-GO)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.closureDecisionValue)(?=[\s\S]*lane\.requiredProof)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "P0-14 Finance Day-1 sequential access closure evidence lanes",
 );
 
 requireText(

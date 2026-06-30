@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, ClipboardList } from "lucide-react";
 
 import {
   PRODUCTION_EXECUTION_STEPS,
+  PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
@@ -592,6 +593,63 @@ export function TtgdtxProductionExecutionQueue() {
               </p>
               <p className="mt-2 text-xs leading-5 text-rose-800">
                 Forbidden: {item.forbiddenContent}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-rose-200 bg-white p-4"
+        data-ttgdtx-finance-day-one-access-closure-lanes="P0-17_FIN_USER"
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-rose-950">
+              Finance Day-1 access closure: one lane before the next
+            </h3>
+            <p className="mt-1 leading-6 text-rose-900">
+              Each `FIN-USER` lane needs a controlled P0-17 decision before the
+              next lane opens. ACCESS_RETAIN is allowed only for the exact
+              signed scope; otherwise reduce, revoke or block the account.
+            </p>
+          </div>
+          <span className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold uppercase text-rose-800">
+            ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-5">
+          {PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES.map((lane) => (
+            <article
+              key={`${lane.rolloutOrder}-ttgdtx-access-closure`}
+              className="border-l-2 border-rose-300 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {lane.rolloutOrder}
+              </p>
+              <p className="mt-1 text-xs font-semibold uppercase text-rose-700">
+                {lane.accountLabel}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {lane.owner}
+              </p>
+              <p className="mt-2 text-xs font-medium text-rose-800">
+                Proof: {lane.requiredProof}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Retain: {lane.retainCondition}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Reduce/revoke: {lane.reduceOrRevokeCondition}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Block: {lane.blockCondition}
+              </p>
+              <p className="mt-2 text-xs font-medium text-zinc-600">
+                Next: {lane.nextLaneGate}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {lane.stopCondition}
               </p>
             </article>
           ))}

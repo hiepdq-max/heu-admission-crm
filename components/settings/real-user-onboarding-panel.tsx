@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import {
+  PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE,
   PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES,
@@ -418,6 +419,52 @@ export function RealUserOnboardingPanel() {
               <p className="mt-2 text-zinc-700">{item.detail}</p>
             </article>
           ))}
+        </div>
+        <div
+          className="mt-4 rounded-md border border-rose-200 bg-rose-50 p-3"
+          data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER"
+        >
+          <p className="font-semibold text-rose-950">
+            Finance Day-1 sequential access closure lanes
+          </p>
+          <p className="mt-1 text-rose-900">
+            Close one `FIN-USER` lane at a time. The next lane or any
+            department expansion stays closed until the current lane has a
+            controlled P0-17 closure decision.
+          </p>
+          <div className="mt-3 grid gap-3 xl:grid-cols-5">
+            {PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES.map((lane) => (
+              <article
+                key={`${lane.rolloutOrder}-access-closure`}
+                className="border-l-2 border-rose-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-rose-700">
+                  {lane.rolloutOrder}
+                </p>
+                <p className="mt-1 text-xs font-semibold uppercase text-rose-700">
+                  {lane.accountLabel}
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Owner: {lane.owner}
+                </p>
+                <p className="mt-2 text-xs font-medium text-rose-800">
+                  Decision: {lane.closureDecisionValue}
+                </p>
+                <p className="mt-2 text-zinc-700">
+                  Retain: {lane.retainCondition}
+                </p>
+                <p className="mt-2 text-zinc-700">
+                  Reduce/revoke: {lane.reduceOrRevokeCondition}
+                </p>
+                <p className="mt-2 text-zinc-700">
+                  Next gate: {lane.nextLaneGate}
+                </p>
+                <p className="mt-2 text-rose-700">
+                  Stop: {lane.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
         <p className="mt-3 text-xs text-rose-800">
           Stop if the closure decision is unsigned, broad access remains after

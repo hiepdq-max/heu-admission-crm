@@ -136,6 +136,13 @@ requireText(
 
 requireText(
   onboarding,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER")(?=[\s\S]*Finance Day-1 sequential access closure lanes)(?=[\s\S]*Close one `FIN-USER` lane at a time)(?=[\s\S]*current lane has a\s+controlled P0-17 closure decision)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.closureDecisionValue)(?=[\s\S]*lane\.retainCondition)(?=[\s\S]*lane\.reduceOrRevokeCondition)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "finance Day-1 sequential access closure lanes UI",
+  onboardingPath,
+);
+
+requireText(
+  onboarding,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-account-activation="P0-17-P6-04")(?=[\s\S]*Finance Day-1 account activation handoff)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*invite status, profile link, narrow scope and P6-04\s+pre-login checks)(?=[\s\S]*without storing credentials or invite links)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*item\.requiredProof)(?=[\s\S]*item\.stopCondition)/i,
   "finance Day-1 account activation handoff guard",
   onboardingPath,
@@ -187,6 +194,13 @@ requireText(
   readinessSource,
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*Do not open FIN-USER-02)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*No skipped lane)(?=[\s\S]*No next-lane access)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
   "finance Day-1 result ledger shared source",
+  readinessPath,
+);
+
+requireText(
+  readinessSource,
+  /(?=[\s\S]*export type ProductionFinanceDayOneAccessClosureLane)(?=[\s\S]*closureDecisionValue)(?=[\s\S]*retainCondition)(?=[\s\S]*reduceOrRevokeCondition)(?=[\s\S]*blockCondition)(?=[\s\S]*nextLaneGate)(?=[\s\S]*requiredProof)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*Do not open FIN-USER-02)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*soft-revoke\/INACTIVE proof)(?=[\s\S]*Any department\/user expansion starts before the negative-control closure decision is signed)/i,
+  "finance Day-1 sequential access closure shared source",
   readinessPath,
 );
 
@@ -266,6 +280,39 @@ requireAllText(
   ],
   "finance Day-1 result ledger template",
   financeDayOneLedgerTemplatePath,
+);
+
+requireAllText(
+  financeDayOneLedgerTemplate,
+  [
+    "Sequential Access Closure Decision Queue",
+    "Each row must close before the next lane opens",
+    "ACCESS_RETAIN",
+    "REVOKE_OR_REDUCE",
+    "BLOCKED",
+    "FIN-DAY1-EVID-001",
+    "FIN-DAY1-EVID-005",
+    "Do not open `FIN-USER-02` until signed",
+    "Do not expand beyond Finance Day-1 until signed",
+  ],
+  "finance Day-1 sequential access closure decision queue template",
+  financeDayOneLedgerTemplatePath,
+);
+
+requireAllText(
+  financeDayOneRunbook,
+  [
+    "Sequential Access Closure Decision Queue",
+    "Close each lane in order",
+    "exact signed scope",
+    "REVOKE_OR_REDUCE",
+    "FIN-DAY1-EVID-001",
+    "FIN-DAY1-EVID-005",
+    "Do not open `FIN-USER-02` until signed",
+    "Do not expand beyond Finance Day-1 until signed",
+  ],
+  "finance Day-1 sequential access closure decision queue runbook",
+  financeDayOneRunbookPath,
 );
 
 requireText(
@@ -413,6 +460,41 @@ requireText(
   implementationLog,
   /(?=[\s\S]*Finance Day-1 Sequential Real User Rollout)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*one account lane at a time)(?=[\s\S]*controlled result row)(?=[\s\S]*P0-17 access closure)(?=[\s\S]*does not create accounts[\s\S]*send invites[\s\S]*store passwords[\s\S]*grant access[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance reliance[\s\S]*approve access closure[\s\S]*expand departments or users[\s\S]*move money[\s\S]*mark production GO)/i,
   "finance Day-1 sequential real-user rollout log boundary",
+  logPath,
+);
+
+requireAllText(
+  implementationLog,
+  [
+    "Finance Day-1 Sequential Access Closure Lanes",
+    "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+    "closureDecisionValue",
+    "retainCondition",
+    "reduceOrRevokeCondition",
+    "blockCondition",
+    "nextLaneGate",
+    "data-heu-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
+    "data-ttgdtx-finance-day-one-access-closure-lanes=\"P0-17_FIN_USER\"",
+    "data-p014-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+    "ACCESS_RETAIN",
+    "REVOKE_OR_REDUCE",
+    "BLOCKED",
+    "does not create accounts",
+    "send invites",
+    "store passwords",
+    "grant access",
+    "revoke live users",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "expand departments or users",
+    "move money",
+    "mark production GO",
+  ],
+  "finance Day-1 sequential access closure lanes log boundary",
   logPath,
 );
 

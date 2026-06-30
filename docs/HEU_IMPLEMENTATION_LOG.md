@@ -1,5 +1,61 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-16 Legal SOP Governance Summary Alignment
+
+- Updated the P0-16 register-pack summary in
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` so both explicitly list
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`.
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so the P0 register-pack
+  current-state row names the Legal/SOP/Governance control matrix alongside
+  root control, Data Master, SOP-to-data, report-view, AI scope, risk signoff
+  and module readiness controls.
+- Tightened `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-current-state-inventory.mjs` plus
+  `scripts/audit-ttgdtx-release-gates.mjs` so the matrix cannot be dropped
+  from the P0-16 summaries silently.
+- This is P0-16 summary/audit alignment only. It does not issue legal policy,
+  approve an SOP, move Drive files, accept UAT, accept evidence, approve
+  finance action, approve migration, waive owner decision or mark production
+  GO.
+
+## 2026-06-30 - Finance Day-1 Sequential Access Closure Lanes
+
+- Added `PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES` to
+  `lib/production-readiness.ts` so `FIN-USER-01` through `FIN-USER-05` each
+  carry `closureDecisionValue`, `retainCondition`,
+  `reduceOrRevokeCondition`, `blockCondition`, `nextLaneGate`,
+  `requiredProof` and `stopCondition`.
+- Updated `components/settings/real-user-onboarding-panel.tsx`,
+  `components/ttgdtx/ttgdtx-production-execution-queue.tsx` and
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` so P0-17 and
+  P0-14 show the same one-lane-before-the-next closure gates.
+- The UI/evidence surfaces are guarded by
+  `data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER"`,
+  `data-ttgdtx-finance-day-one-access-closure-lanes="P0-17_FIN_USER"` and
+  `data-p014-finance-day-one-access-closure-lanes="P0-17-FIN-USER"`.
+- Updated `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` and
+  `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md` with a
+  sequential access closure decision queue requiring `ACCESS_RETAIN`,
+  `REVOKE_OR_REDUCE` or `BLOCKED` before the next lane opens or Finance Day-1
+  expands.
+- Audit anchor: sequential access closure decision queue.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-production-evidence-binder.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the per-lane access closure
+  guard cannot be dropped silently.
+- This is access-closure packaging only. It does not create accounts, send
+  invites, store passwords, grant access, revoke live users, execute UAT,
+  accept evidence, approve finance reliance, approve access closure, expand
+  departments or users, move money, issue bank instructions or mark production
+  GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, revoke live users, execute UAT, accept evidence, approve
+  finance reliance, approve access closure, expand departments or users, move
+  money, issue bank instructions or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Rollout Gates for Activation and Prelogin
 
 - Extended `lib/production-readiness.ts` so each

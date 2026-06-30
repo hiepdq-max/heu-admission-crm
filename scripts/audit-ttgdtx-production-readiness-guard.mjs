@@ -197,6 +197,13 @@ requireText(
 );
 
 requireText(
+  executionQueue,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-ttgdtx-finance-day-one-access-closure-lanes="P0-17_FIN_USER")(?=[\s\S]*Finance Day-1 access closure: one lane before the next)(?=[\s\S]*Each `FIN-USER` lane needs a controlled P0-17 decision before the\s+next lane opens)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredProof)(?=[\s\S]*lane\.retainCondition)(?=[\s\S]*lane\.reduceOrRevokeCondition)(?=[\s\S]*lane\.blockCondition)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "TTGDTX finance Day-1 sequential access closure lanes UI",
+  executionQueuePath,
+);
+
+requireText(
   blockerSource,
   /(?=[\s\S]*export const SAFE_ITERATION_STEPS)(?=[\s\S]*ITER-01)(?=[\s\S]*Pick one blocker)(?=[\s\S]*ITER-02)(?=[\s\S]*Run local guard)(?=[\s\S]*ITER-03)(?=[\s\S]*Attach controlled proof)(?=[\s\S]*ITER-04)(?=[\s\S]*Advance only if green)(?=[\s\S]*commit that small scope)(?=[\s\S]*keep NO-GO)/i,
   "TTGDTX safe iteration shared source",
@@ -281,6 +288,13 @@ requireText(
 );
 
 requireText(
+  blockerSource,
+  /(?=[\s\S]*export type ProductionFinanceDayOneAccessClosureLane)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*closureDecisionValue)(?=[\s\S]*retainCondition)(?=[\s\S]*reduceOrRevokeCondition)(?=[\s\S]*blockCondition)(?=[\s\S]*nextLaneGate)(?=[\s\S]*requiredProof)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*Any department\/user expansion starts before the negative-control closure decision is signed)/i,
+  "TTGDTX finance Day-1 sequential access closure shared source",
+  blockerSourcePath,
+);
+
+requireText(
   financeDayOneRunbook,
   /(?=[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*P6-04 Pre-Login Route Matrix)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*ALLOWED)(?=[\s\S]*BLOCKED)(?=[\s\S]*EMPTY_SCOPED_STATE)(?=[\s\S]*do not open P2-18, P5-03 or P2-17)/i,
   "Finance Day-1 P6-04 pre-login matrix in runbook",
@@ -313,6 +327,20 @@ requireText(
   /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*Run one rollout lane at a time)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*No raw screenshots)(?=[\s\S]*Stop and Escalate)/i,
   "Finance Day-1 result ledger template",
   financeDayOneLedgerTemplatePath,
+);
+
+requireText(
+  financeDayOneLedgerTemplate,
+  /(?=[\s\S]*Sequential Access Closure Decision Queue)(?=[\s\S]*Each row must close before the next lane opens)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not open `FIN-USER-02` until signed)(?=[\s\S]*Do not expand beyond Finance Day-1 until signed)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*BLOCKED)/i,
+  "Finance Day-1 sequential access closure decision queue template",
+  financeDayOneLedgerTemplatePath,
+);
+
+requireText(
+  financeDayOneRunbook,
+  /(?=[\s\S]*Sequential Access Closure Decision Queue)(?=[\s\S]*Close each lane in order)(?=[\s\S]*exact signed\s+scope)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not open `FIN-USER-02` until signed)(?=[\s\S]*Do not expand beyond Finance Day-1 until signed)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*BLOCKED)/i,
+  "Finance Day-1 sequential access closure decision queue runbook",
+  financeDayOneRunbookPath,
 );
 
 requireText(

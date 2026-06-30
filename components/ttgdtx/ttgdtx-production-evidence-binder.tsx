@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import {
+  PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES,
   PRODUCTION_EVIDENCE_REQUIREMENTS,
   PRODUCTION_GOVERNANCE_ASSURANCE_STEPS,
   PRODUCTION_UAT_LAUNCH_STEPS,
@@ -139,6 +140,50 @@ export function TtgdtxProductionEvidenceBinder() {
               </p>
             </article>
           ))}
+        </div>
+
+        <div
+          className="mt-4 rounded-md border border-indigo-200 bg-indigo-50 p-3"
+          data-p014-finance-day-one-access-closure-lanes="P0-17-FIN-USER"
+        >
+          <p className="font-semibold text-indigo-950">
+            Finance Day-1 access closure evidence lanes
+          </p>
+          <p className="mt-1 leading-6 text-indigo-900">
+            P0-14 reliance evidence must cite each Day-1 lane closure before
+            Finance Desk reliance or owner GO/NO-GO review. Missing lane
+            closure keeps P0-14 NO-GO.
+          </p>
+          <div className="mt-3 grid gap-3 xl:grid-cols-5">
+            {PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES.map((lane) => (
+              <article
+                key={`${lane.rolloutOrder}-p014-closure`}
+                className="border-l-2 border-indigo-300 bg-white px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-indigo-700">
+                  {lane.rolloutOrder}
+                </p>
+                <p className="mt-1 text-xs font-semibold uppercase text-indigo-700">
+                  {lane.accountLabel}
+                </p>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Owner: {lane.owner}
+                </p>
+                <p className="mt-2 text-xs font-medium text-indigo-800">
+                  Decision: {lane.closureDecisionValue}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Proof: {lane.requiredProof}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Next gate: {lane.nextLaneGate}
+                </p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop: {lane.stopCondition}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
 

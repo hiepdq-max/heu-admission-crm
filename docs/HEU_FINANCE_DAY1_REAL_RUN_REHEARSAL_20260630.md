@@ -144,6 +144,20 @@ only redacted evidence IDs here.
 | Access closure | `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` for each Day-1 account | Broad temporary pilot access after `NO_GO/BLOCKED` or unsigned owner decision |
 | Sign-off | Operator, checker, process owner and redaction reviewer outside Git/Codex/chat | Password, OTP, invite/reset link, service-role key, raw identity file or bank credential |
 
+### Sequential Access Closure Decision Queue
+
+Close each lane in order. `ACCESS_RETAIN` is valid only for the exact signed scope;
+otherwise record `REVOKE_OR_REDUCE` or `BLOCKED` and keep the next
+lane or department expansion closed.
+
+| Rollout order | Closure proof | Retain condition | Reduce/revoke condition | Block condition | Next gate |
+|---|---|---|---|---|---|
+| `FIN-USER-01` | `FIN-DAY1-EVID-001` plus P0-17 closure decision ID | KHTC keeps only exact signed TTGDTX finance scope | Temporary pilot scope remains broad or evidence is unsigned | Payout/source/unrestricted finance totals appear outside scope | Do not open `FIN-USER-02` until signed |
+| `FIN-USER-02` | `FIN-DAY1-EVID-002` plus read-only closure proof | BGH stays read-only for P2-18, P5-03 and Master Control | Review scope is broader than signed reliance review | Write, approval, payment, evidence edit, role grant or GO action appears | Do not open `FIN-USER-03` until signed |
+| `FIN-USER-03` | `FIN-DAY1-EVID-003` plus traceability/redaction proof | Audit sees read-only traceability and redacted evidence | Raw secrets, raw PII, mutable facts or unnecessary totals are visible | Audit can mutate facts, grant roles, move money or bypass redaction | Do not open `FIN-USER-04` until signed |
+| `FIN-USER-04` | `FIN-DAY1-EVID-004` plus legal-scope closure proof | Phap Che stays inside approved legal/source scope | Legal scope is broader than written approval | Unrestricted finance totals, payment execution or private contract bodies appear | Do not open `FIN-USER-05` until signed |
+| `FIN-USER-05` | `FIN-DAY1-EVID-005` plus blocked/empty-scoped proof | Retain is not expected unless login-only monitoring is written and signed | Any temporary pilot scope remains after negative-control check | Any TTGDTX finance, lead, source, dashboard, audit, settings, evidence or payout data appears | Do not expand beyond Finance Day-1 until signed |
+
 ## 8. Result Template
 
 | Field | Required value |

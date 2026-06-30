@@ -102,6 +102,19 @@ export type ProductionFinanceDayOneResultField = {
   forbiddenContent: string;
 };
 
+export type ProductionFinanceDayOneAccessClosureLane = {
+  rolloutOrder: string;
+  accountLabel: string;
+  owner: string;
+  closureDecisionValue: string;
+  retainCondition: string;
+  reduceOrRevokeCondition: string;
+  blockCondition: string;
+  nextLaneGate: string;
+  requiredProof: string;
+  stopCondition: string;
+};
+
 export type ProductionRiskClosureStep = {
   code: string;
   title: string;
@@ -494,6 +507,99 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
     requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
     stopCondition:
       "Sees TTGDTX finance, lead, source, dashboard, audit, settings or evidence data.",
+  },
+];
+
+export const PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES: ProductionFinanceDayOneAccessClosureLane[] = [
+  {
+    rolloutOrder: "FIN-USER-01",
+    accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    owner: "KHTC + IT_DATA + Audit",
+    closureDecisionValue: "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    retainCondition:
+      "Retain only if P6-04, P2-18, P5-03 and P2-17 results are owner-signed for the exact TTGDTX partner/workspace scope.",
+    reduceOrRevokeCondition:
+      "Reduce or revoke if temporary pilot scope remains broad, result evidence is unsigned or any finance route exceeds approved scope.",
+    blockCondition:
+      "Block if payout action, source evidence or unrestricted finance totals appear outside the assigned scope.",
+    nextLaneGate:
+      "Do not open FIN-USER-02 until this closure decision has a controlled evidence ID and owner signature state.",
+    requiredProof:
+      "FIN-DAY1-EVID-001 plus P0-17 closure decision ID, reduced-scope note if any and soft-revoke/INACTIVE proof if blocked.",
+    stopCondition:
+      "FIN-USER-02 opens while KHTC operator closure is unsigned, ownerless or still broad.",
+  },
+  {
+    rolloutOrder: "FIN-USER-02",
+    accountLabel: "REAL_BGH_READONLY_01",
+    owner: "BGH + IT_DATA + Audit",
+    closureDecisionValue: "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    retainCondition:
+      "Retain only if BGH remains read-only and cannot enter daily finance data, approve/pay, edit evidence or mark GO.",
+    reduceOrRevokeCondition:
+      "Reduce or revoke if review scope is broader than P2-18, P5-03 and Master Control reliance review.",
+    blockCondition:
+      "Block if any write, approval, payment, evidence-edit, role-grant or owner-GO action is available.",
+    nextLaneGate:
+      "Do not open FIN-USER-03 until this closure decision is recorded after the BGH result row.",
+    requiredProof:
+      "FIN-DAY1-EVID-002 plus P0-17 closure decision ID, read-only proof and owner/checker sign-off state.",
+    stopCondition:
+      "Audit reviewer opens while BGH access closure is missing or any BGH write path remains active.",
+  },
+  {
+    rolloutOrder: "FIN-USER-03",
+    accountLabel: "REAL_AUDIT_READONLY_01",
+    owner: "Audit + IT_DATA",
+    closureDecisionValue: "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    retainCondition:
+      "Retain only if Audit sees read-only traceability and approved redacted evidence references.",
+    reduceOrRevokeCondition:
+      "Reduce or revoke if audit visibility includes raw secrets, raw PII, mutable source facts or unnecessary finance totals.",
+    blockCondition:
+      "Block if Audit can mutate finance facts, grant roles, move money or bypass redaction.",
+    nextLaneGate:
+      "Do not open FIN-USER-04 until this closure decision is recorded with redaction reviewer state.",
+    requiredProof:
+      "FIN-DAY1-EVID-003 plus P0-17 closure decision ID, traceability proof and redaction reviewer sign-off state.",
+    stopCondition:
+      "Phap Che reviewer opens while Audit closure is missing or raw evidence remains exposed.",
+  },
+  {
+    rolloutOrder: "FIN-USER-04",
+    accountLabel: "REAL_PHAP_CHE_REVIEW_01",
+    owner: "PHAP_CHE + IT_DATA + KHTC",
+    closureDecisionValue: "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    retainCondition:
+      "Retain only if legal/source review is limited to approved legal scope and finance totals/private contract bodies are hidden unless separately signed.",
+    reduceOrRevokeCondition:
+      "Reduce or revoke if legal review scope is broader than written approval or includes unnecessary finance totals.",
+    blockCondition:
+      "Block if unrestricted finance totals, payment execution or private contract bodies appear outside approval.",
+    nextLaneGate:
+      "Do not open FIN-USER-05 until this closure decision is recorded and legal scope is closed.",
+    requiredProof:
+      "FIN-DAY1-EVID-004 plus P0-17 closure decision ID, legal-scope note and owner/checker sign-off state.",
+    stopCondition:
+      "Negative-control lane starts while Phap Che legal review has unsigned or overbroad access.",
+  },
+  {
+    rolloutOrder: "FIN-USER-05",
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    owner: "IT_DATA + Audit",
+    closureDecisionValue: "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    retainCondition:
+      "Retain is not expected; if kept for monitoring, it must stay login-only with empty scoped state and written owner approval.",
+    reduceOrRevokeCondition:
+      "Reduce or revoke immediately if the account has any temporary pilot scope after the negative-control check.",
+    blockCondition:
+      "Block when the account sees any TTGDTX finance, lead, source, dashboard, audit, settings, evidence or payout data.",
+    nextLaneGate:
+      "Do not expand beyond Finance Day-1 until this lane is BLOCKED/EMPTY_SCOPED_STATE and closure is signed.",
+    requiredProof:
+      "FIN-DAY1-EVID-005 plus P0-17 closure decision ID, blocked/empty-scoped proof and soft-revoke/INACTIVE proof where required.",
+    stopCondition:
+      "Any department/user expansion starts before the negative-control closure decision is signed.",
   },
 ];
 

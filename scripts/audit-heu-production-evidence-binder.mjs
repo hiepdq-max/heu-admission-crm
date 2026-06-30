@@ -116,6 +116,13 @@ requireText(
 
 requireText(
   source,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*ProductionFinanceDayOneAccessClosureLane)(?=[\s\S]*closureDecisionValue)(?=[\s\S]*retainCondition)(?=[\s\S]*reduceOrRevokeCondition)(?=[\s\S]*blockCondition)(?=[\s\S]*nextLaneGate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)/i,
+  "finance Day-1 sequential access closure shared source",
+  sourcePath,
+);
+
+requireText(
+  source,
   /P0-14-01[\s\S]*P0-03[\s\S]*Backup and restore dry-run evidence[\s\S]*Target identity lock, operator run sheet, backup ID, restore target, preflight\/postflight result, restore smoke-check result proving P0-19 and P3-01\/P3-02 gate preservation, and operator\/checker names[\s\S]*P0-19\/P3 gate preservation/i,
   "P0-14-01 backup/restore operator run sheet proof",
   sourcePath,
@@ -160,6 +167,13 @@ requireText(
   component,
   /(?=[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID")(?=[\s\S]*Finance Day-1 ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/[\s\S]*REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*before Finance Desk reliance or[\s\S]*owner GO\/NO-GO review)/i,
   "P0-14 Finance Day-1 result ledger evidence checkpoint",
+  componentPath,
+);
+
+requireText(
+  component,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-p014-finance-day-one-access-closure-lanes="P0-17-FIN-USER")(?=[\s\S]*Finance Day-1 access closure evidence lanes)(?=[\s\S]*P0-14 reliance evidence must cite each Day-1 lane closure)(?=[\s\S]*Missing lane\s+closure keeps P0-14 NO-GO)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.closureDecisionValue)(?=[\s\S]*lane\.requiredProof)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
+  "P0-14 Finance Day-1 sequential access closure evidence lanes",
   componentPath,
 );
 
