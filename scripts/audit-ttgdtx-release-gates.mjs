@@ -1997,6 +1997,12 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-production-evidence-binder.tsx",
+  /(?=[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID")(?=[\s\S]*Finance Day-1 ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/[\s\S]*REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*before Finance Desk reliance or[\s\S]*owner GO\/NO-GO review)/i,
+  "P0-14 Finance Day-1 result ledger evidence checkpoint",
+);
+
+requireText(
   "app/ttgdtx/page.tsx",
   /<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxProductionEvidenceBinder\s*\/>[\s\S]*<TtgdtxOwnerGoNoGoEvidenceChecklist\s*\/>/,
   "TTGDTX landing page mounts evidence binder before owner signoff",
@@ -2010,7 +2016,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation and the P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
+  /P0-15[\s\S]*Prepare final handoff summary[\s\S]*Record live git state, local checks, Stage D\/NO-GO and P0-03\/P0-09\/P0-13\/P0-14 evidence paths[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation and the P0-09 final owner decision manifest[\s\S]*P0-14 controlled evidence intake ledger[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*Finance Day-1 result ledger[\s\S]*P0-17 access closure decision[\s\S]*P6-04\/P6-03\/P6-06 proof paths and the P6-06 finding register[\s\S]*before owner decision/i,
   "P0-15 final handoff split evidence shared source",
 );
 
@@ -2024,6 +2030,42 @@ requireText(
   "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
   /(?=[\s\S]*data-ttgdtx-owner-go-no-go-evidence-checklist="P0-09")(?=[\s\S]*P0-09 owner GO\/NO-GO evidence checklist)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-09-01)(?=[\s\S]*P0-09-06)(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*P3-01\/P3-02 lead lifecycle and handover UAT)(?=[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md)(?=[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md)(?=[\s\S]*Signed final GO\/NO-GO is still required)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, AUDIT and\s+TRUONG_PHONG\/process owner must sign the decision outside\s+Codex\/chat)(?=[\s\S]*PASS_LOCAL does not approve backup, restore, migration, legal waiver,\s+finance action, UAT acceptance, payout, dashboard reliance or\s+production GO)(?=[\s\S]*secrets, passwords, temporary passwords,\s+OTPs, password reset links, account activation\/invite links,\s+service-role keys, bank credentials, raw student PII, raw CCCD, raw\s+phone numbers, raw bank account numbers, bank statements, vouchers or\s+raw payment data)/i,
   "P0-09 owner GO/NO-GO evidence checklist",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  /(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger lacks)(?=[\s\S]*missing Finance Day-1 result ledger)(?=[\s\S]*missing access-retain\/revoke\/block decision)/i,
+  "P0-09 Finance Day-1 result ledger owner checklist",
+);
+
+requireText(
+  "docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  /(?=[\s\S]*P5-03 Finance Desk controlled trial and UAT)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*access-retain\/revoke\/block decision is missing)/i,
+  "P0-09 Finance Day-1 result ledger owner signoff pack",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Final owner Go\/No-Go sign-off[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  "production checklist P0-09 Finance Day-1 result ledger owner evidence",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  "backlog P0-09 Finance Day-1 result ledger owner evidence",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Controlled evidence[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
+  "current-state P0-14 Finance Day-1 result ledger evidence path",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-09 Finance Day-1 Result Ledger Owner Signoff Link[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001[\s\S]*FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID"[\s\S]*owner-signoff and evidence-binder packaging[\s\S]*does not create accounts[\s\S]*mark production GO/i,
+  "implementation log P0-09 Finance Day-1 owner signoff link",
 );
 
 requireText(

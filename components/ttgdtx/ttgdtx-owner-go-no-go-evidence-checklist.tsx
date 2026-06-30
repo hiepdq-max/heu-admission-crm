@@ -54,7 +54,7 @@ const evidenceItems: EvidenceItem[] = [
     title: "Lead handover, payout, dashboard and Finance Desk UAT accepted",
     owner: "TUYEN_SINH + CTHSSV + DAO_TAO + KHTC + BGH + Audit + IT_DATA",
     evidence:
-      "P3-01/P3-02 lead lifecycle and handover UAT from HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md, P2-17 duplicate-payout UAT, P2-18 read-only dashboard reconciliation and P5-03 Finance Desk controlled-trial evidence P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 signed by required owners.",
+      "P3-01/P3-02 lead lifecycle and handover UAT from HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md, P2-17 duplicate-payout UAT, P2-18 read-only dashboard reconciliation, P5-03 Finance Desk controlled-trial evidence P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005, and HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md with FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005, FIN_DAY1_RESULT_READY / NO_GO / BLOCKED and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED signed by required owners.",
   },
   {
     caseId: "P0-09-05",
@@ -93,9 +93,9 @@ const ownerGoNoGoAcceptanceItems: OwnerGoNoGoAcceptanceItem[] = [
     caseId: "P0-09-ACCEPT-03",
     title: "Finance, legal and UAT blockers closed",
     minimum:
-      "P0-19, P3-01/P3-02 lifecycle and handover UAT, P2-17, P2-18, P5-03 Finance Desk controlled trial, role/workspace UAT, P0-17 access closure decision, audit-log trace rows and UAT operator handoff are signed; HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md, HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md and HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md are cited; P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED is recorded; every unresolved P6-06 finding is converted or narrowly waived in writing.",
+      "P0-19, P3-01/P3-02 lifecycle and handover UAT, P2-17, P2-18, P5-03 Finance Desk controlled trial, role/workspace UAT, P0-17 access closure decision, audit-log trace rows and UAT operator handoff are signed; HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md, HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md, HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md and HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md are cited; P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005, FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005, P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED, FIN_DAY1_RESULT_READY / NO_GO / BLOCKED and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED are recorded; every unresolved P6-06 finding is converted or narrowly waived in writing.",
     stopCondition:
-      "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P3-01/P3-02 is unsigned, leaks role/workspace scope or lets handover bypass P0-19/P2-05/P2-03 finance gates, P2-17 can pay twice, P2-18 can write or cannot reconcile, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 is missing, role leak exists, P0-17 access closure is missing, audit trace is incomplete or a P6-06 finding lacks conversion/waiver decision.",
+      "Any UAT/waiver is unsigned, any HIGH/BLOCKER exception remains, P3-01/P3-02 is unsigned, leaks role/workspace scope or lets handover bypass P0-19/P2-05/P2-03 finance gates, P2-17 can pay twice, P2-18 can write or cannot reconcile, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 is missing, FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005 is missing, the Finance Day-1 result ledger lacks FIN_DAY1_RESULT_READY / NO_GO / BLOCKED or ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED, role leak exists, P0-17 access closure is missing, audit trace is incomplete or a P6-06 finding lacks conversion/waiver decision.",
   },
   {
     caseId: "P0-09-ACCEPT-04",
@@ -152,9 +152,9 @@ const ownerGoNoGoDecisionItems: OwnerGoNoGoDecisionItem[] = [
     caseId: "P0-09-DEC-04",
     title: "UAT and operating proof decision",
     requiredDecision:
-      "Owner decision cites signed P3-01/P3-02 lifecycle and handover UAT, P2-17 payout UAT, P2-18 dashboard UAT, P5-03 Finance Desk UAT, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005, P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED and UAT operator handoff closure.",
+      "Owner decision cites signed P3-01/P3-02 lifecycle and handover UAT, P2-17 payout UAT, P2-18 dashboard UAT, P5-03 Finance Desk UAT, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005, FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005, HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md, P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED, FIN_DAY1_RESULT_READY / NO_GO / BLOCKED, ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED and UAT operator handoff closure.",
     stopCondition:
-      "Any unsigned browser UAT, missing P3 handover closure, P3 handover bypass of P0-19/P2-05/P2-03, duplicate payout risk, dashboard write path, missing P5-03 controlled-trial evidence, unreconciled total or missing handoff closure keeps NO_GO.",
+      "Any unsigned browser UAT, missing P3 handover closure, P3 handover bypass of P0-19/P2-05/P2-03, duplicate payout risk, dashboard write path, missing P5-03 controlled-trial evidence, missing Finance Day-1 result ledger, missing access-retain/revoke/block decision, unreconciled total or missing handoff closure keeps NO_GO.",
   },
   {
     caseId: "P0-09-DEC-05",

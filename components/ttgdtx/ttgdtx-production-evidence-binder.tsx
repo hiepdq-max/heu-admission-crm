@@ -254,15 +254,28 @@ export function TtgdtxProductionEvidenceBinder() {
                 data-heu-real-user-access-closure before final owner review.
               </p>
               {step.code === "P5-03" ? (
-                <p
-                  className="mt-2 leading-5 text-zinc-700"
-                  data-p014-finance-controlled-trial-evidence="P5-03-TRIAL-EVID"
-                >
-                  <span className="font-medium">P5-03 controlled trial:</span>{" "}
-                  cite P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 plus
-                  P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED before any
-                  Finance Desk reliance review.
-                </p>
+                <>
+                  <p
+                    className="mt-2 leading-5 text-zinc-700"
+                    data-p014-finance-controlled-trial-evidence="P5-03-TRIAL-EVID"
+                  >
+                    <span className="font-medium">P5-03 controlled trial:</span>{" "}
+                    cite P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005
+                    plus P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED before
+                    any Finance Desk reliance review.
+                  </p>
+                  <p
+                    className="mt-2 leading-5 text-zinc-700"
+                    data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID"
+                  >
+                    <span className="font-medium">Finance Day-1 ledger:</span>{" "}
+                    cite HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md,
+                    FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005,
+                    FIN_DAY1_RESULT_READY / NO_GO / BLOCKED and ACCESS_RETAIN /
+                    REVOKE_OR_REDUCE / BLOCKED before Finance Desk reliance or
+                    owner GO/NO-GO review.
+                  </p>
+                </>
               ) : null}
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {step.stopCondition}

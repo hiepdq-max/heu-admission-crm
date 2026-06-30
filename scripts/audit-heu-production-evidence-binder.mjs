@@ -38,6 +38,7 @@ for (const file of [
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "scripts/audit-ttgdtx-release-gates.mjs",
 ]) {
   requireFile(file);
@@ -156,6 +157,13 @@ requireText(
 );
 
 requireText(
+  component,
+  /(?=[\s\S]*data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID")(?=[\s\S]*Finance Day-1 ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/[\s\S]*REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*before Finance Desk reliance or[\s\S]*owner GO\/NO-GO review)/i,
+  "P0-14 Finance Day-1 result ledger evidence checkpoint",
+  componentPath,
+);
+
+requireText(
   page,
   /TtgdtxProductionEvidenceBinder[\s\S]*<TtgdtxProductionExecutionQueue\s*\/>[\s\S]*<TtgdtxProductionEvidenceBinder\s*\/>[\s\S]*<TtgdtxOwnerGoNoGoEvidenceChecklist\s*\/>/,
   "TTGDTX page mounts evidence binder between execution queue and owner signoff",
@@ -175,14 +183,14 @@ requireText(
 
 requireText(
   backlog,
-  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*finance reliance evidence checkpoint for P2-18\/P5-03\/P6-04[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
+  /P0-14[\s\S]*Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*finance reliance evidence checkpoint for P2-18\/P5-03\/P6-04[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision plus Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
   "P0-14 production evidence binder backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*finance reliance evidence checkpoint for P2-18\/P5-03\/P6-04[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
+  /Production evidence binder[\s\S]*PASS_LOCAL[\s\S]*controlled evidence intake ledger[\s\S]*governance evidence checkpoint for P6-04\/P6-03[\s\S]*finance reliance evidence checkpoint for P2-18\/P5-03\/P6-04[\s\S]*closure tracker[\s\S]*audit:heu-production-evidence-binder[\s\S]*redaction reviewer[\s\S]*owner signature state[\s\S]*P0-03 operator run sheet proof and restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision plus Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
   "production checklist evidence binder row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
@@ -196,14 +204,14 @@ requireText(
 
 requireText(
   checklist,
-  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*redaction reviewer[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint with P0-17 access closure decision[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
+  /highest priority blockers[\s\S]*Close P0-14 production evidence binder[\s\S]*controlled evidence intake ledger[\s\S]*controlled evidence locations[\s\S]*redaction class[\s\S]*redaction reviewer[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*P6-04\/P6-03 governance evidence checkpoint[\s\S]*P2-18\/P5-03\/P6-04 finance reliance evidence checkpoint with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger[\s\S]*owner sign-off path[\s\S]*no forbidden content/i,
   "priority blocker list includes P0-14 evidence binder closure",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Backup\/restore[\s\S]*restore smoke-check acceptance matrix with P0-19\/P3 gate preservation[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint, finance reliance evidence checkpoint and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
+  /npm\.cmd run audit:heu-production-evidence-binder[\s\S]*PASS[\s\S]*Backup\/restore[\s\S]*restore smoke-check acceptance matrix with P0-19\/P3 gate preservation[\s\S]*Controlled evidence[\s\S]*P0-14 evidence binder, controlled evidence intake ledger, governance evidence checkpoint, finance reliance evidence checkpoint and closure tracker[\s\S]*P0-03 operator run sheet proof[\s\S]*P0-03 restore smoke-check proof for P0-19\/P3 gate preservation[\s\S]*separate P6-04 role\/workspace proof[\s\S]*P6-03 audit-log proof[\s\S]*P2-18\/P5-03 real-accounting reliance proof with P0-17 access closure decision[\s\S]*Finance Day-1 result ledger and access retain\/revoke\/block decision[\s\S]*P6-06 hard-delete\/cascade conversion-or-waiver proof[\s\S]*P0-09 owner sign-off\/UAT handoff\/final owner decision manifest proof/i,
   "current-state production evidence binder audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

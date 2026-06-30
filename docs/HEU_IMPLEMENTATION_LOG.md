@@ -1,5 +1,37 @@
 # HEU Implementation Log
 
+## 2026-06-30 - P0-09 Finance Day-1 Result Ledger Owner Signoff Link
+
+- Linked the Finance Day-1 result ledger into P0-09 owner signoff by updating
+  `components/ttgdtx/ttgdtx-owner-go-no-go-evidence-checklist.tsx` and
+  `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`.
+- P0-09 now requires `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md`,
+  `FIN-DAY1-EVID-001` through `FIN-DAY1-EVID-005`,
+  `FIN_DAY1_RESULT_READY / NO_GO / BLOCKED` and
+  `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED` before owner GO/NO-GO review.
+- Linked the same condition into
+  `components/ttgdtx/ttgdtx-production-evidence-binder.tsx` with
+  `data-p014-finance-day-one-result-ledger="FIN-DAY1-EVID"` so P0-14 finance
+  reliance evidence cannot omit the Day-1 result ledger.
+- Synchronized `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-09, P0-14 and P0-15 all carry
+  the Day-1 ledger and access retain/revoke/block decision.
+- Tightened `scripts/audit-ttgdtx-production-owner-signoff-pack.mjs`,
+  `scripts/audit-heu-production-evidence-binder.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the owner signoff path cannot
+  silently drop the Day-1 result ledger.
+- This is owner-signoff and evidence-binder packaging only. It does not create
+  accounts, store credentials, execute UAT, collect evidence, accept evidence,
+  approve finance reliance, approve access closure, approve owner GO/NO-GO,
+  move money, issue bank instructions or mark production GO.
+- Boundary phrase: does not create accounts, store credentials, execute UAT,
+  collect evidence, accept evidence, approve finance reliance, approve access
+  closure, approve owner GO/NO-GO, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-06-30 - Finance Desk Day-1 Result Ledger Panel
 
 - Added a read-only Finance Day-1 result ledger panel to

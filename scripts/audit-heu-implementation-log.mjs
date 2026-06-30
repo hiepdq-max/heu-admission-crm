@@ -99,6 +99,38 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - P0-09 Finance Day-1 Result Ledger Owner Signoff Link", [
+  "ttgdtx-owner-go-no-go-evidence-checklist.tsx",
+  "TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md",
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "FIN-DAY1-EVID-001",
+  "FIN-DAY1-EVID-005",
+  "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+  "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+  "ttgdtx-production-evidence-binder.tsx",
+  "data-p014-finance-day-one-result-ledger=\"FIN-DAY1-EVID\"",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "audit-ttgdtx-production-owner-signoff-pack.mjs",
+  "audit-heu-production-evidence-binder.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "owner-signoff and evidence-binder packaging",
+  "does not create accounts",
+  "store credentials",
+  "execute UAT",
+  "collect evidence",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "approve owner GO/NO-GO",
+  "move money",
+  "issue bank",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Report View Evidence Attachment Queue", [
   "components/reports/report-view-source-map-panel.tsx",
   "HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",

@@ -46,6 +46,7 @@ for (const file of [
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
   "docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md",
   "docs/HARD_DELETE_AUDIT.md",
@@ -146,7 +147,13 @@ requireText(
 
 requireText(
   pack,
-  /(?=[\s\S]*P0-09-ACCEPT-03[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03 controlled-trial evidence is missing)(?=[\s\S]*P0-09-DEC-04[\s\S]*P5-03 Finance Desk UAT[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)/i,
+  /(?=[\s\S]*P5-03 Finance Desk controlled trial and UAT)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*access-retain\/revoke\/block decision is missing)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*or[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)/i,
+  "P5-03 Finance Day-1 result ledger owner evidence path",
+);
+
+requireText(
+  pack,
+  /(?=[\s\S]*P0-09-ACCEPT-03[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P5-03 controlled-trial evidence is missing)(?=[\s\S]*Finance Day-1 result ledger is missing)(?=[\s\S]*P0-09-DEC-04[\s\S]*P5-03 Finance Desk UAT[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)/i,
   "P0-09 acceptance and decision require P5-03 controlled trial",
 );
 
@@ -179,6 +186,13 @@ requireText(
   ownerChecklist,
   /(?=[\s\S]*P5-03 Finance Desk controlled-trial evidence P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 is missing)(?=[\s\S]*missing P5-03 controlled-trial evidence)/i,
   "P0-09 owner checklist P5-03 controlled-trial evidence",
+  ownerChecklistPath,
+);
+
+requireText(
+  ownerChecklist,
+  /(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*Finance Day-1 result ledger lacks)(?=[\s\S]*missing Finance Day-1 result ledger)(?=[\s\S]*missing access-retain\/revoke\/block decision)/i,
+  "P0-09 owner checklist Finance Day-1 result ledger evidence",
   ownerChecklistPath,
 );
 
@@ -218,6 +232,13 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /Final owner Go\/No-Go sign-off[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  "production checklist P0-09 Finance Day-1 result ledger owner evidence",
+  checklistPath,
+);
+
+requireText(
   backlog,
   /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627\.md[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628\.md[\s\S]*P0-17 access closure decision[\s\S]*ttgdtx-owner-go-no-go-evidence-checklist\.tsx[\s\S]*owner GO\/NO-GO acceptance matrix[\s\S]*owner GO\/NO-GO decision manifest[\s\S]*audit:ttgdtx-production-owner-signoff-pack[\s\S]*owner GO\/NO-GO still required/i,
   "backlog P0-09 owner sign-off row",
@@ -228,6 +249,13 @@ requireText(
   backlog,
   /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630\.md[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED/i,
   "backlog P0-09 P5-03 controlled-trial owner evidence",
+  backlogPath,
+);
+
+requireText(
+  backlog,
+  /P0-09[\s\S]*Owner Go\/No-Go sign-off pack[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED/i,
+  "backlog P0-09 Finance Day-1 result ledger owner evidence",
   backlogPath,
 );
 
