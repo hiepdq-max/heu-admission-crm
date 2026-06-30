@@ -436,11 +436,20 @@ export function TtgdtxProductionExecutionQueue() {
               <p className="text-xs font-semibold uppercase text-violet-700">
                 {item.code}
               </p>
+              <p className="mt-1 text-xs font-semibold uppercase text-violet-700">
+                {item.rolloutOrder}
+              </p>
               <p className="mt-1 font-medium text-zinc-950">
                 {item.accountLabel}
               </p>
               <p className="mt-2 text-xs font-medium text-zinc-500">
                 Owner: {item.owner}
+              </p>
+              <p className="mt-2 text-xs font-medium text-violet-800">
+                Entry: {item.entryGate}
+              </p>
+              <p className="mt-2 text-xs font-medium text-violet-800">
+                Advance: {item.advanceGate}
               </p>
               <p className="mt-2 leading-5 text-zinc-700">
                 Allow: {item.allowedBeforeFinanceLogin}

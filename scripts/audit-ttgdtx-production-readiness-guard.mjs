@@ -177,7 +177,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*data-ttgdtx-finance-day-one-p6-04-prelogin-matrix="P6-04_P0-17")(?=[\s\S]*Finance Day-1 P6-04 pre-login route matrix)(?=[\s\S]*allowed route family)(?=[\s\S]*blocked route family)(?=[\s\S]*required result)(?=[\s\S]*negative-control result)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*Matrix:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*item\.accountLabel)(?=[\s\S]*item\.allowedBeforeFinanceLogin)(?=[\s\S]*item\.blockedBeforeFinanceLogin)(?=[\s\S]*item\.requiredResult)(?=[\s\S]*item\.stopCondition)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*data-ttgdtx-finance-day-one-p6-04-prelogin-matrix="P6-04_P0-17")(?=[\s\S]*Finance Day-1 P6-04 pre-login route matrix)(?=[\s\S]*allowed route family)(?=[\s\S]*blocked route family)(?=[\s\S]*required result)(?=[\s\S]*negative-control result)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*Matrix:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*item\.rolloutOrder)(?=[\s\S]*item\.entryGate)(?=[\s\S]*item\.advanceGate)(?=[\s\S]*item\.accountLabel)(?=[\s\S]*item\.allowedBeforeFinanceLogin)(?=[\s\S]*item\.blockedBeforeFinanceLogin)(?=[\s\S]*item\.requiredResult)(?=[\s\S]*item\.stopCondition)/i,
   "TTGDTX finance Day-1 P6-04 pre-login matrix UI",
   executionQueuePath,
 );
@@ -261,7 +261,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOnePreloginRouteCheck)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*P6-04-PRELOGIN-01)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*P6-04-PRELOGIN-05)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*allowedBeforeFinanceLogin)(?=[\s\S]*blockedBeforeFinanceLogin)(?=[\s\S]*requiredResult)(?=[\s\S]*BLOCKED or EMPTY_SCOPED_STATE)(?=[\s\S]*negative-control account sees any protected route)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOnePreloginRouteCheck)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*P6-04-PRELOGIN-01)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*P6-04-PRELOGIN-05)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*allowedBeforeFinanceLogin)(?=[\s\S]*blockedBeforeFinanceLogin)(?=[\s\S]*requiredResult)(?=[\s\S]*BLOCKED or EMPTY_SCOPED_STATE)(?=[\s\S]*negative-control account sees any protected route)/i,
   "TTGDTX finance Day-1 P6-04 pre-login matrix shared source",
   blockerSourcePath,
 );
@@ -289,7 +289,7 @@ requireText(
 
 requireText(
   financeDayOnePreloginMatrix,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*P6-04-PRELOGIN-EVID-001)(?=[\s\S]*P6-04-PRELOGIN-EVID-005)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Run one pre-login row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*P6-04-PRELOGIN-EVID-001)(?=[\s\S]*P6-04-PRELOGIN-EVID-005)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
   "Finance Day-1 P6-04 pre-login matrix template",
   financeDayOnePreloginMatrixPath,
 );
@@ -317,7 +317,7 @@ requireText(
 
 requireText(
   financeDayOneActivationTemplate,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Run one activation row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
   "Finance Day-1 account activation handoff template",
   financeDayOneActivationTemplatePath,
 );

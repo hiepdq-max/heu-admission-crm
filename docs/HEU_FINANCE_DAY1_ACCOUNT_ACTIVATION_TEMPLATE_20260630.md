@@ -11,6 +11,10 @@ P2-18, P5-03 or P2-17. It gives IT_DATA, ADMIN and the process owner one place
 to record whether each approved account label has been invited, linked to a HEU
 profile, scoped narrowly and checked through P6-04.
 
+Run one activation row at a time from `FIN-USER-01` through `FIN-USER-05`.
+Do not activate or open the next lane until the prior lane has controlled
+result evidence and P0-17 access closure where required.
+
 This template does not create accounts, send invites, store passwords, reset
 credentials, approve access, accept UAT, approve finance reliance, initiate bank
 instructions, accept evidence or mark production GO.
@@ -31,13 +35,13 @@ Record only redacted account labels and controlled evidence IDs.
 
 ## 3. Activation Handoff Rows
 
-| Evidence ID | Account label | Owner | Auth state | Profile link state | Scope state | P6-04 pre-login result | Decision | Stop note |
-|---|---|---|---|---|---|---|---|---|
-| `FIN-ACT-EVID-001` | `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Assigned TTGDTX finance scope only | `ALLOWED / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No unrestricted totals, payout action or source evidence outside scope |
-| `FIN-ACT-EVID-002` | `REAL_BGH_READONLY_01` | BGH + IT_DATA | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Read-only BGH scope only | `READ_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No entry, approve, pay, edit, grant access or GO action |
-| `FIN-ACT-EVID-003` | `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Read-only audit/evidence scope only | `READ_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No money movement, role grant, fact mutation or redaction bypass |
-| `FIN-ACT-EVID-004` | `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Legal/source review scope only | `LEGAL_REVIEW_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No unrestricted finance totals or private contract bodies outside approval |
-| `FIN-ACT-EVID-005` | `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Negative-control scope only | `BLOCKED / EMPTY_SCOPED_STATE / NO_GO` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | Stop if any TTGDTX finance, lead, source, dashboard, audit or settings data is visible |
+| Evidence ID | Rollout order | Account label | Owner | Entry gate | Advance gate | Auth state | Profile link state | Scope state | P6-04 pre-login result | Decision | Stop note |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `FIN-ACT-EVID-001` | `FIN-USER-01` | `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | Start first after owner approval and before any other real-accounting lane opens | Do not open `FIN-USER-02` until result evidence and P0-17 closure exist | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Assigned TTGDTX finance scope only | `ALLOWED / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No unrestricted totals, payout action or source evidence outside scope |
+| `FIN-ACT-EVID-002` | `FIN-USER-02` | `REAL_BGH_READONLY_01` | BGH + IT_DATA | Open after `FIN-USER-01` is closed | Do not open `FIN-USER-03` until result evidence and P0-17 closure exist | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Read-only BGH scope only | `READ_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No entry, approve, pay, edit, grant access or GO action |
+| `FIN-ACT-EVID-003` | `FIN-USER-03` | `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Open after `FIN-USER-02` is closed | Do not open `FIN-USER-04` until result evidence and P0-17 closure exist | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Read-only audit/evidence scope only | `READ_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No money movement, role grant, fact mutation or redaction bypass |
+| `FIN-ACT-EVID-004` | `FIN-USER-04` | `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Open after `FIN-USER-03` is closed | Do not open `FIN-USER-05` until result evidence and P0-17 closure exist | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Legal/source review scope only | `LEGAL_REVIEW_ONLY / NO_GO / BLOCKED` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | No unrestricted finance totals or private contract bodies outside approval |
+| `FIN-ACT-EVID-005` | `FIN-USER-05` | `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | Run before any department expansion | Do not expand beyond Finance Day-1 until blocked/empty result and P0-17 closure exist | `INVITED / ACTIVE / BLOCKED` | `PROFILE_LINKED / BLOCKED` | Negative-control scope only | `BLOCKED / EMPTY_SCOPED_STATE / NO_GO` | `FIN_ACTIVATION_READY / NO_GO / BLOCKED` | Stop if any TTGDTX finance, lead, source, dashboard, audit or settings data is visible |
 
 ## 4. Activation Checks
 
@@ -69,6 +73,8 @@ dashboard, audit, settings or evidence data.
 Do not open P2-18, P5-03 or P2-17 with a real-accounting account until its
 activation row is `FIN_ACTIVATION_READY`, the P6-04 pre-login result is recorded
 and all stop conditions are closed or marked `NO_GO/BLOCKED`.
+Do not open the next `FIN-USER` lane until the prior lane has controlled result
+evidence and P0-17 access closure.
 
 Passing this template locally is not production approval. Production remains
 NO-GO until signed owner evidence and final owner GO exist.

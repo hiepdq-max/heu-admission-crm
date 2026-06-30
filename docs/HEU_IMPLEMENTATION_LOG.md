@@ -1,5 +1,34 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Rollout Gates for Activation and Prelogin
+
+- Extended `lib/production-readiness.ts` so each
+  `PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS` row carries
+  `rolloutOrder`, `entryGate` and `advanceGate` for `FIN-USER-01` through
+  `FIN-USER-05`.
+- Updated `components/settings/real-user-onboarding-panel.tsx` and
+  `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so the P6-04
+  pre-login cards show the same rollout, entry and advance gates before
+  finance routes open.
+- Updated `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md` and
+  `docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md` so activation and
+  pre-login rows run one lane at a time and require controlled result evidence
+  plus P0-17 access closure before the next `FIN-USER` lane opens.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so activation/pre-login rollout
+  gates cannot be dropped silently.
+- This is activation/pre-login rollout-gate packaging only. It does not create
+  accounts, send invites, store passwords, grant access, execute UAT, accept
+  route evidence, approve finance reliance, approve access closure, expand
+  departments or users, move money, issue bank instructions or mark production
+  GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept route evidence, approve finance reliance,
+  approve access closure, expand departments or users, move money, issue bank
+  instructions or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Rollout Columns for Result Ledger Template
 
 - Updated `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` so each

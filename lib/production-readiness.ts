@@ -74,8 +74,11 @@ export type ProductionFinanceDayOneAccountActivationCheck = {
 
 export type ProductionFinanceDayOnePreloginRouteCheck = {
   code: string;
+  rolloutOrder: string;
   accountLabel: string;
   owner: string;
+  entryGate: string;
+  advanceGate: string;
   allowedBeforeFinanceLogin: string;
   blockedBeforeFinanceLogin: string;
   requiredResult: string;
@@ -545,8 +548,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS: ProductionFin
 export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinanceDayOnePreloginRouteCheck[] = [
   {
     code: "P6-04-PRELOGIN-01",
+    rolloutOrder: "FIN-USER-01",
     accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
     owner: "KHTC + IT_DATA + Audit",
+    entryGate:
+      "Start after FIN_ACTIVATION_READY for FIN-USER-01 and before any other real-accounting lane opens finance routes.",
+    advanceGate:
+      "Do not open FIN-USER-02 until FIN-USER-01 has P6_04_PRELOGIN_READY, controlled result evidence and P0-17 closure.",
     allowedBeforeFinanceLogin:
       "P6-04 scope proof, P2-10, P2-13, P2-17, P2-18 and P5-03 inside the assigned TTGDTX finance scope only.",
     blockedBeforeFinanceLogin:
@@ -557,8 +565,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinance
   },
   {
     code: "P6-04-PRELOGIN-02",
+    rolloutOrder: "FIN-USER-02",
     accountLabel: "REAL_BGH_READONLY_01",
     owner: "BGH + IT_DATA + Audit",
+    entryGate:
+      "Open after FIN-USER-01 is closed with controlled result evidence and P0-17 access closure.",
+    advanceGate:
+      "Do not open FIN-USER-03 until FIN-USER-02 has P6_04_PRELOGIN_READY, controlled result evidence and P0-17 closure.",
     allowedBeforeFinanceLogin:
       "P6-04 scope proof plus read-only P2-18, P5-03 and Master Control review routes.",
     blockedBeforeFinanceLogin:
@@ -569,8 +582,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinance
   },
   {
     code: "P6-04-PRELOGIN-03",
+    rolloutOrder: "FIN-USER-03",
     accountLabel: "REAL_AUDIT_READONLY_01",
     owner: "Audit + IT_DATA",
+    entryGate:
+      "Open after FIN-USER-02 is closed with controlled result evidence and P0-17 access closure.",
+    advanceGate:
+      "Do not open FIN-USER-04 until FIN-USER-03 has P6_04_PRELOGIN_READY, controlled result evidence and P0-17 closure.",
     allowedBeforeFinanceLogin:
       "P6-04 scope proof plus read-only audit, redacted evidence review, P2-18 and P5-03 traceability checks.",
     blockedBeforeFinanceLogin:
@@ -581,8 +599,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinance
   },
   {
     code: "P6-04-PRELOGIN-04",
+    rolloutOrder: "FIN-USER-04",
     accountLabel: "REAL_PHAP_CHE_REVIEW_01",
     owner: "PHAP_CHE + IT_DATA + KHTC",
+    entryGate:
+      "Open after FIN-USER-03 is closed with controlled result evidence and P0-17 access closure.",
+    advanceGate:
+      "Do not open FIN-USER-05 until FIN-USER-04 has P6_04_PRELOGIN_READY, controlled result evidence and P0-17 closure.",
     allowedBeforeFinanceLogin:
       "P6-04 scope proof plus P0-19 legal/source/contract review inside approved legal scope.",
     blockedBeforeFinanceLogin:
@@ -593,8 +616,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS: ProductionFinance
   },
   {
     code: "P6-04-PRELOGIN-05",
+    rolloutOrder: "FIN-USER-05",
     accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
     owner: "IT_DATA + Audit",
+    entryGate:
+      "Run after FIN-USER-04 closure and before any department expansion.",
+    advanceGate:
+      "Do not expand beyond Finance Day-1 until this lane is BLOCKED/EMPTY_SCOPED_STATE and P0-17 closure is recorded.",
     allowedBeforeFinanceLogin:
       "Login and blocked or empty scoped state only, with P6-04 negative-control result recorded.",
     blockedBeforeFinanceLogin:
