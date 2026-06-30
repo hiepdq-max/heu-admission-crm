@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk Controlled Trial Release Gate Lock
+
+- Added `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` to the
+  required-file list inside `scripts/audit-ttgdtx-release-gates.mjs`.
+- Added a release-gate content lock requiring the controlled-trial plan to keep
+  `PASS_LOCAL_PLAN`, `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`,
+  `REAL_KHTC_TTGDTX_OPERATOR_01`, `REAL_OUT_OF_SCOPE_NEGATIVE_01`,
+  P5-03-TRIAL-01 through P5-03-TRIAL-08, P5-03-TRIAL-EVID-001 through
+  P5-03-TRIAL-EVID-005, the `/finance-desk` and
+  `/ttgdtx/accounting-dashboard` route checks, no bulk real-data import, no
+  auto gach no, no COM production calculation, no payment execution and
+  outside-Git/Codex/chat evidence handling.
+- Updated `scripts/audit-heu-implementation-log.mjs` so the implementation log
+  cannot omit this release-gate lock.
+- This is controlled-trial release-gate packaging only. It does not create
+  accounts, send invites, store passwords, import real data, execute UAT,
+  accept evidence, approve finance reliance, approve access closure, move
+  money, issue bank instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  import real data, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-06-30 - UAT Routing Finance Day-1 Ledger Handoff
 
 - Updated `lib/production-readiness.ts` and

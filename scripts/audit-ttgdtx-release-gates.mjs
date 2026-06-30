@@ -92,6 +92,7 @@ const requiredFiles = [
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
   "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
@@ -1180,6 +1181,12 @@ requireText(
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   /Status:\s*PASS_LOCAL_TEMPLATE[\s\S]*P5-03-UAT-01[\s\S]*P5-03-UAT-09[\s\S]*P5-03-ACCEPT-01[\s\S]*P5-03-ACCEPT-06[\s\S]*Final result remains NO-GO until all required owners sign/i,
   "Finance Desk UAT runbook matrix",
+);
+
+requireText(
+  "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_PLAN)(?=[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*\/finance-desk)(?=[\s\S]*\/ttgdtx\/accounting-dashboard)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-08)(?=[\s\S]*P5-03-TRIAL-EVID-001)(?=[\s\S]*P5-03-TRIAL-EVID-005)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*No auto gach no)(?=[\s\S]*No COM production calculation)(?=[\s\S]*No payment execution)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*Production remains\s+NO-GO)/i,
+  "Finance Desk controlled trial plan release-gate file lock",
 );
 
 requireText(
