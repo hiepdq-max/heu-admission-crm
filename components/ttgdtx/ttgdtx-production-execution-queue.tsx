@@ -543,10 +543,19 @@ export function TtgdtxProductionExecutionQueue() {
               className="border-l-2 border-teal-300 bg-teal-50 px-3 py-3"
             >
               <p className="text-xs font-semibold uppercase text-teal-700">
+                {lane.rolloutOrder}
+              </p>
+              <p className="text-xs font-semibold uppercase text-teal-700">
                 {lane.accountLabel}
               </p>
               <p className="mt-2 text-xs font-medium text-zinc-500">
                 Owner: {lane.owner}
+              </p>
+              <p className="mt-2 text-xs font-medium text-teal-800">
+                Entry: {lane.entryGate}
+              </p>
+              <p className="mt-2 text-xs font-medium text-teal-800">
+                Advance: {lane.advanceGate}
               </p>
               <p className="mt-2 leading-5 text-zinc-700">
                 {lane.allowedRoutes}

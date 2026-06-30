@@ -55,28 +55,43 @@ const onboardingSteps = [
 
 const financeUserLanes = [
   {
+    order: "FIN-USER-01",
     label: "KHTC accounting operator",
     route: "P2-10, P2-13, P2-17, P2-18, P5-03",
+    advance:
+      "Open first; close result and access decision before BGH reviewer opens.",
     stop: "No unrestricted dashboard, payout or source evidence outside assigned TTGDTX scope.",
   },
   {
+    order: "FIN-USER-02",
     label: "BGH read-only reviewer",
     route: "P2-18, P5-03, Master Control",
+    advance:
+      "Open only after FIN-USER-01 closure; close before Audit reviewer opens.",
     stop: "No daily entry, payment execution, hidden raw evidence or production GO action.",
   },
   {
+    order: "FIN-USER-03",
     label: "Audit read-only reviewer",
     route: "Audit log, evidence checks, P2-18/P5-03 review",
+    advance:
+      "Open only after FIN-USER-02 closure; close before Phap Che reviewer opens.",
     stop: "No money movement, role grant, data ownership change or raw secret exposure.",
   },
   {
+    order: "FIN-USER-04",
     label: "Phap Che contract/legal reviewer",
     route: "P0-19, source/legal evidence, contract checks",
+    advance:
+      "Open only after FIN-USER-03 closure; close before negative-control lane runs.",
     stop: "No unrestricted finance totals unless separately approved and signed.",
   },
   {
+    order: "FIN-USER-05",
     label: "Out-of-scope negative account",
     route: "Login and blocked/empty scoped state",
+    advance:
+      "Run before any department expansion; expected BLOCKED/EMPTY_SCOPED_STATE.",
     stop: "Any unrestricted TTGDTX finance, lead, source, dashboard or audit data.",
   },
 ];
@@ -174,8 +189,14 @@ export function RealUserOnboardingPanel() {
         <div className="mt-3 grid gap-3 xl:grid-cols-5">
           {financeUserLanes.map((lane) => (
             <article key={lane.label} className="border-l-2 border-indigo-300 px-3">
+              <p className="text-xs font-semibold uppercase text-indigo-700">
+                {lane.order}
+              </p>
               <p className="font-medium text-zinc-950">{lane.label}</p>
               <p className="mt-1 text-xs text-zinc-500">{lane.route}</p>
+              <p className="mt-2 text-xs font-medium text-indigo-800">
+                Advance: {lane.advance}
+              </p>
               <p className="mt-2 text-rose-700">Stop: {lane.stop}</p>
             </article>
           ))}
@@ -327,9 +348,18 @@ export function RealUserOnboardingPanel() {
               className="border-l-2 border-teal-300 px-3"
             >
               <p className="text-xs font-semibold uppercase text-teal-700">
+                {lane.rolloutOrder}
+              </p>
+              <p className="text-xs font-semibold uppercase text-teal-700">
                 {lane.accountLabel}
               </p>
               <p className="mt-1 text-xs text-zinc-500">Owner: {lane.owner}</p>
+              <p className="mt-2 text-xs font-medium text-teal-800">
+                Entry: {lane.entryGate}
+              </p>
+              <p className="mt-2 text-xs font-medium text-teal-800">
+                Advance: {lane.advanceGate}
+              </p>
               <p className="mt-2 text-zinc-700">{lane.allowedRoutes}</p>
               <p className="mt-2 text-xs font-medium text-zinc-600">
                 Result: {lane.requiredResult}

@@ -69,13 +69,16 @@ If any command fails, stop and keep the Day-1 decision at `NO_GO` or `BLOCKED`.
 
 ## 4. Required Day-1 Accounts
 
-| Account label | Owner | Expected route result | Stop condition |
-|---|---|---|---|
-| `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | Allowed only inside assigned TTGDTX finance scope | Sees unrestricted finance totals, payout action or source evidence outside approved scope |
-| `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only P2-18, P5-03 and Master Control | Can enter daily finance data, approve/pay, edit evidence or mark GO |
-| `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only audit, evidence and finance reliance review | Can move money, grant roles, mutate facts or bypass redaction |
-| `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Legal/source review only within approved scope | Sees unrestricted finance totals or private contract bodies outside approval |
-| `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | `BLOCKED` or `EMPTY_SCOPED_STATE` | Sees TTGDTX finance, lead, source, dashboard, audit or settings data |
+Run one account lane at a time. Do not open the next FIN-USER lane until the
+prior lane has a controlled result row and P0-17 access closure decision.
+
+| Rollout order | Account label | Owner | Expected route result | Entry gate | Advance gate | Stop condition |
+|---|---|---|---|---|---|---|
+| `FIN-USER-01` | `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | Allowed only inside assigned TTGDTX finance scope | Start after `FIN_ACTIVATION_READY` and `P6_04_PRELOGIN_READY`; record one controlled result row before any other real-accounting lane expands | Do not open `FIN-USER-02` until this lane has `FIN_DAY1_RESULT_READY` or explicit `NO_GO/BLOCKED` plus `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` | Sees unrestricted finance totals, payout action or source evidence outside approved scope |
+| `FIN-USER-02` | `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only P2-18, P5-03 and Master Control | Open only after `FIN-USER-01` is closed with a controlled result row and P0-17 access closure decision | Do not open `FIN-USER-03` until this lane has `FIN_DAY1_RESULT_READY` or explicit `NO_GO/BLOCKED` plus `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` | Can enter daily finance data, approve/pay, edit evidence or mark GO |
+| `FIN-USER-03` | `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only audit, evidence and finance reliance review | Open only after `FIN-USER-02` is closed with a controlled result row and P0-17 access closure decision | Do not open `FIN-USER-04` until this lane has `FIN_DAY1_RESULT_READY` or explicit `NO_GO/BLOCKED` plus `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` | Can move money, grant roles, mutate facts or bypass redaction |
+| `FIN-USER-04` | `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Legal/source review only within approved scope | Open only after `FIN-USER-03` is closed with a controlled result row and P0-17 access closure decision | Do not open `FIN-USER-05` until this lane has `FIN_DAY1_RESULT_READY` or explicit `NO_GO/BLOCKED` plus `ACCESS_RETAIN`, `REVOKE_OR_REDUCE` or `BLOCKED` | Sees unrestricted finance totals or private contract bodies outside approval |
+| `FIN-USER-05` | `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | `BLOCKED` or `EMPTY_SCOPED_STATE` | Run as the mandatory negative-control lane before any department expansion | Do not expand beyond Finance Day-1 until this lane is `BLOCKED/EMPTY_SCOPED_STATE` and access closure is recorded | Sees TTGDTX finance, lead, source, dashboard, audit or settings data |
 
 ## 5. P6-04 Pre-Login Route Matrix
 
@@ -109,22 +112,25 @@ data, do not open P2-18, P5-03 or P2-17 with real-accounting accounts.
 ## 7. Day-1 Result Ledger
 
 Create one result row per account label and route before expanding beyond the
-first finance rehearsal. The ledger is a controlled-evidence index only; it
-does not approve access, accept UAT, approve finance reliance, move money or
-mark production GO.
+first finance rehearsal. Run one account lane at a time and keep the next
+`FIN-USER` lane closed until the prior lane has a result row and access closure.
+The ledger is a controlled-evidence index only; it does not approve access,
+accept UAT, approve finance reliance, move money or mark production GO.
+
+Boundary phrase: does not approve access, accept UAT, approve finance reliance, move money or mark production GO.
 
 Use the operator template at
 `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` for the external
 controlled ledger. Keep the filled version outside Git/Codex/chat and reference
 only redacted evidence IDs here.
 
-| Account label | Owner | Allowed route scope | Required result |
-|---|---|---|---|
-| `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only | `ALLOWED` only for approved finance work inside the assigned TTGDTX partner/workspace |
-| `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only P2-18, P5-03 and Master Control | `READ_ONLY`; no daily entry, payment execution, evidence edit or production GO action |
-| `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only audit, evidence and finance reliance review | `READ_ONLY`; audit/evidence visibility limited to approved redacted references |
-| `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Legal/source review only within approved scope | `LEGAL_REVIEW_ONLY`; finance totals and private contract bodies hidden unless approved |
-| `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | Login only; expected blocked or empty scoped state | `BLOCKED` or `EMPTY_SCOPED_STATE` |
+| Rollout order | Account label | Owner | Allowed route scope | Required result | Advance gate |
+|---|---|---|---|---|---|
+| `FIN-USER-01` | `REAL_KHTC_TTGDTX_OPERATOR_01` | KHTC + IT_DATA | P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only | `ALLOWED` only for approved finance work inside the assigned TTGDTX partner/workspace | Do not open `FIN-USER-02` until this lane has result and access closure |
+| `FIN-USER-02` | `REAL_BGH_READONLY_01` | BGH + IT_DATA | Read-only P2-18, P5-03 and Master Control | `READ_ONLY`; no daily entry, payment execution, evidence edit or production GO action | Do not open `FIN-USER-03` until this lane has result and access closure |
+| `FIN-USER-03` | `REAL_AUDIT_READONLY_01` | Audit + IT_DATA | Read-only audit, evidence and finance reliance review | `READ_ONLY`; audit/evidence visibility limited to approved redacted references | Do not open `FIN-USER-04` until this lane has result and access closure |
+| `FIN-USER-04` | `REAL_PHAP_CHE_REVIEW_01` | PHAP_CHE + IT_DATA | Legal/source review only within approved scope | `LEGAL_REVIEW_ONLY`; finance totals and private contract bodies hidden unless approved | Do not open `FIN-USER-05` until this lane has result and access closure |
+| `FIN-USER-05` | `REAL_OUT_OF_SCOPE_NEGATIVE_01` | IT_DATA + Audit | Login only; expected blocked or empty scoped state | `BLOCKED` or `EMPTY_SCOPED_STATE` | Do not expand beyond Finance Day-1 until this lane has result and access closure |
 
 | Ledger field | Required value | Forbidden content |
 |---|---|---|

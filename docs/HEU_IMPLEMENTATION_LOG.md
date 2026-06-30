@@ -1,5 +1,34 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Sequential Real User Rollout
+
+- Extended `lib/production-readiness.ts` so every
+  `PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES` entry carries `rolloutOrder`,
+  `entryGate` and `advanceGate` from `FIN-USER-01` through `FIN-USER-05`.
+- Updated `components/settings/real-user-onboarding-panel.tsx` and
+  `components/ttgdtx/ttgdtx-production-execution-queue.tsx` so operators see
+  the one-account-at-a-time entry and advance gate before real accounting
+  lanes are opened.
+- Updated `docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md` so Day-1
+  required accounts and the Day-1 result ledger require one account lane at a
+  time, a controlled result row and P0-17 access closure before the next
+  `FIN-USER` lane opens.
+- Audit anchor: one account lane at a time; sequential real-user rollout gate.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the sequential real-user
+  rollout gate cannot be dropped silently.
+- This is sequential real-user rollout packaging only. It does not create
+  accounts, send invites, store passwords, grant access, execute UAT, accept
+  evidence, approve finance reliance, approve access closure, expand
+  departments or users, move money, issue bank instructions or mark production
+  GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, expand departments or users, move money, issue bank
+  instructions or mark production GO.
+
 ## 2026-06-30 - P0-03 Backup Restore Migration Guard Release Gate Alignment
 
 - Tightened `scripts/audit-ttgdtx-release-gates.mjs` so the

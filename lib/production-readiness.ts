@@ -83,8 +83,11 @@ export type ProductionFinanceDayOnePreloginRouteCheck = {
 };
 
 export type ProductionFinanceDayOneAccountLane = {
+  rolloutOrder: string;
   accountLabel: string;
   owner: string;
+  entryGate: string;
+  advanceGate: string;
   allowedRoutes: string;
   requiredResult: string;
   stopCondition: string;
@@ -420,8 +423,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS: ProductionFinanceDayOneRunSte
 
 export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAccountLane[] = [
   {
+    rolloutOrder: "FIN-USER-01",
     accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
     owner: "KHTC + IT_DATA",
+    entryGate:
+      "Start this lane first after FIN_ACTIVATION_READY and P6_04_PRELOGIN_READY; record one controlled result row before any other real-accounting lane expands.",
+    advanceGate:
+      "Do not open FIN-USER-02 until this lane has FIN_DAY1_RESULT_READY or explicit NO_GO/BLOCKED plus ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED.",
     allowedRoutes:
       "P2-10, P2-13, P2-17, P2-18 and P5-03 inside assigned TTGDTX scope only.",
     requiredResult:
@@ -430,8 +438,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
       "Sees unrestricted finance totals, payout action or source evidence outside approved scope.",
   },
   {
+    rolloutOrder: "FIN-USER-02",
     accountLabel: "REAL_BGH_READONLY_01",
     owner: "BGH + IT_DATA",
+    entryGate:
+      "Open only after FIN-USER-01 is closed with a controlled result row and P0-17 access closure decision.",
+    advanceGate:
+      "Do not open FIN-USER-03 until this lane has FIN_DAY1_RESULT_READY or explicit NO_GO/BLOCKED plus ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED.",
     allowedRoutes: "Read-only P2-18, P5-03 and Master Control.",
     requiredResult:
       "READ_ONLY, with no daily entry, payment execution, evidence edit or production GO action.",
@@ -439,8 +452,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
       "Can enter finance data, approve/pay, edit evidence, grant access or mark GO.",
   },
   {
+    rolloutOrder: "FIN-USER-03",
     accountLabel: "REAL_AUDIT_READONLY_01",
     owner: "Audit + IT_DATA",
+    entryGate:
+      "Open only after FIN-USER-02 is closed with a controlled result row and P0-17 access closure decision.",
+    advanceGate:
+      "Do not open FIN-USER-04 until this lane has FIN_DAY1_RESULT_READY or explicit NO_GO/BLOCKED plus ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED.",
     allowedRoutes: "Read-only audit, evidence and finance reliance review.",
     requiredResult:
       "READ_ONLY, with audit/evidence visibility limited to approved redacted evidence references.",
@@ -448,8 +466,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
       "Can move money, grant roles, mutate facts, bypass redaction or view raw secrets.",
   },
   {
+    rolloutOrder: "FIN-USER-04",
     accountLabel: "REAL_PHAP_CHE_REVIEW_01",
     owner: "PHAP_CHE + IT_DATA",
+    entryGate:
+      "Open only after FIN-USER-03 is closed with a controlled result row and P0-17 access closure decision.",
+    advanceGate:
+      "Do not open FIN-USER-05 until this lane has FIN_DAY1_RESULT_READY or explicit NO_GO/BLOCKED plus ACCESS_RETAIN, REVOKE_OR_REDUCE or BLOCKED.",
     allowedRoutes: "Legal/source review only within approved scope.",
     requiredResult:
       "LEGAL_REVIEW_ONLY, with finance totals and private contract bodies hidden unless approved.",
@@ -457,8 +480,13 @@ export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES: ProductionFinanceDayOneAc
       "Sees unrestricted finance totals or private contract bodies outside written approval.",
   },
   {
+    rolloutOrder: "FIN-USER-05",
     accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
     owner: "IT_DATA + Audit",
+    entryGate:
+      "Run as the mandatory negative-control lane before any department expansion; expected BLOCKED/EMPTY_SCOPED_STATE.",
+    advanceGate:
+      "Do not expand beyond Finance Day-1 until this lane is BLOCKED/EMPTY_SCOPED_STATE and access closure is recorded.",
     allowedRoutes: "Login only; expected blocked or empty scoped state.",
     requiredResult: "BLOCKED or EMPTY_SCOPED_STATE.",
     stopCondition:
