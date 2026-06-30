@@ -99,6 +99,37 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Day-1 Rollout Columns for Result Ledger Template", [
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "Rollout order",
+  "Entry gate",
+  "Advance gate",
+  "FIN-USER-01",
+  "FIN-USER-05",
+  "lib/production-readiness.ts",
+  "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
+  "skipped-lane prohibition",
+  "no-expansion-before-access-closure control",
+  "audit-heu-user-account-security.mjs",
+  "audit-ttgdtx-production-readiness-guard.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "audit-heu-implementation-log.mjs",
+  "external ledger template",
+  "cannot omit rollout, entry and advance columns",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "expand departments or users",
+  "move money",
+  "issue bank",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Sequential Real User Rollout", [
   "lib/production-readiness.ts",
   "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",

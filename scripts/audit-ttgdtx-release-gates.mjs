@@ -916,6 +916,32 @@ requireText(
 );
 
 requireAllText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  [
+    "Finance Day-1 Rollout Columns for Result Ledger Template",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "Rollout order",
+    "Entry gate",
+    "Advance gate",
+    "FIN-USER-01",
+    "FIN-USER-05",
+    "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
+    "does not create accounts",
+    "send invites",
+    "store passwords",
+    "grant access",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "expand departments or users",
+    "move money",
+    "mark production GO",
+  ],
+  "finance Day-1 result ledger template rollout-columns log entry",
+);
+
+requireAllText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   [
     "P0-17",
@@ -1941,7 +1967,7 @@ requireText(
 
 requireText(
   "lib/production-readiness.ts",
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*No skipped lane)(?=[\s\S]*No next-lane access)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
   "TTGDTX finance Day-1 result ledger shared source",
 );
 
@@ -2021,9 +2047,31 @@ requireText(
   "finance Day-1 result ledger runbook",
 );
 
-requireText(
+requireAllText(
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*No raw screenshots)(?=[\s\S]*Stop and Escalate)/i,
+  [
+    "Status: PASS_LOCAL_TEMPLATE",
+    "Production status: NO-GO",
+    "Rollout order",
+    "Entry gate",
+    "Advance gate",
+    "FIN-USER-01",
+    "FIN-USER-05",
+    "Run one rollout lane at a time",
+    "Do not expand beyond Finance Day-1",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+    "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    "does not create accounts",
+    "issue bank instructions",
+    "mark production GO",
+    "No raw screenshots",
+    "Stop and Escalate",
+  ],
   "finance Day-1 result ledger template",
 );
 

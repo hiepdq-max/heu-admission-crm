@@ -614,6 +614,27 @@ export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS: ProductionFinanceDayOneRe
       "No raw screenshots, passwords, temporary passwords, OTPs, reset links or invite links.",
   },
   {
+    field: "Rollout order",
+    requiredValue:
+      "FIN-USER-01 through FIN-USER-05, matching the approved Day-1 account lane.",
+    forbiddenContent:
+      "No skipped lane, parallel lane opening or department expansion before access closure.",
+  },
+  {
+    field: "Entry gate",
+    requiredValue:
+      "Gate condition that allowed this lane to open, including prior-lane result and P0-17 closure where required.",
+    forbiddenContent:
+      "No ownerless entry, missing prior result row or unrecorded P6-04 pre-login proof.",
+  },
+  {
+    field: "Advance gate",
+    requiredValue:
+      "Condition that must be met before opening the next FIN-USER lane or expanding beyond Finance Day-1.",
+    forbiddenContent:
+      "No next-lane access, department expansion or broad pilot access before result and closure.",
+  },
+  {
     field: "Account label",
     requiredValue:
       "Redacted account label from the approved Day-1 lane list, not a raw identity screenshot.",

@@ -275,7 +275,7 @@ requireText(
 
 requireText(
   blockerSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*No skipped lane)(?=[\s\S]*No next-lane access)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
   "TTGDTX finance Day-1 result ledger shared source",
   blockerSourcePath,
 );
@@ -310,7 +310,7 @@ requireText(
 
 requireText(
   financeDayOneLedgerTemplate,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*No raw screenshots)(?=[\s\S]*Stop and Escalate)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*Run one rollout lane at a time)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*No raw screenshots)(?=[\s\S]*Stop and Escalate)/i,
   "Finance Day-1 result ledger template",
   financeDayOneLedgerTemplatePath,
 );

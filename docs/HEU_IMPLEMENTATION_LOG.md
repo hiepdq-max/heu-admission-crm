@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Rollout Columns for Result Ledger Template
+
+- Updated `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` so each
+  external ledger row carries `Rollout order`, `Entry gate` and `Advance gate`
+  for `FIN-USER-01` through `FIN-USER-05`.
+- Updated `lib/production-readiness.ts` so
+  `PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS` includes the same rollout fields,
+  skipped-lane prohibition and no-expansion-before-access-closure control.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the external ledger template
+  cannot omit rollout, entry and advance columns.
+- This is result-ledger template packaging only. It does not create accounts,
+  send invites, store passwords, grant access, execute UAT, accept evidence,
+  approve finance reliance, approve access closure, expand departments or
+  users, move money, issue bank instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, expand departments or users, move money, issue bank
+  instructions or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 Sequential Real User Rollout
 
 - Extended `lib/production-readiness.ts` so every
