@@ -32,6 +32,7 @@ for (const file of [
   "docs/modules/HEU_FINANCE_DESK_MVP_SPEC_20260627.md",
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
   "components/layout/app-shell.tsx",
   "lib/vnd-money.ts",
@@ -74,6 +75,11 @@ const controlledTrialPlan = existsSync(
   path.join(repoRoot, "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md"),
 )
   ? read("docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md")
+  : "";
+const dayOneResultLedgerTemplate = existsSync(
+  path.join(repoRoot, "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md"),
+)
+  ? read("docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md")
   : "";
 const sqlObjectMap = existsSync(path.join(repoRoot, "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md"))
   ? read("docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md")
@@ -243,6 +249,13 @@ requireText(
 );
 
 requireText(
+  uatChecklist,
+  /(?=[\s\S]*data-finance-desk-day-one-result-ledger="P5-03-FIN-DAY1")(?=[\s\S]*Finance Day-1 result ledger:\s*PASS_LOCAL only)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*BLOCKED or EMPTY_SCOPED_STATE)(?=[\s\S]*does not create accounts)(?=[\s\S]*store credentials)(?=[\s\S]*accept UAT)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*issue\s+bank instructions)(?=[\s\S]*mark production GO)/i,
+  "Finance Desk Day-1 result ledger panel",
+  "components/finance/finance-desk-uat-evidence-checklist.tsx",
+);
+
+requireText(
   page,
   /import \{ FinanceDeskUatEvidenceChecklist \}[\s\S]*<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*<FinanceDeskUatEvidenceChecklist \/>[\s\S]*!canOpen/i,
   "Finance Desk UAT evidence checklist mount before access states",
@@ -258,21 +271,21 @@ requireText(
 
 requireText(
   backlog,
-  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
+  /P5-03[\s\S]*HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*audit:heu-finance-desk[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 reliance decision manifest[\s\S]*signed finance\/dashboard UAT and reliance decision still required/i,
   "P5-03 Finance Desk backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
 requireText(
   checklist,
-  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
+  /HEU Finance Desk read-only cockpit[\s\S]*PASS_LOCAL[\s\S]*app\/finance-desk\/page\.tsx[\s\S]*finance-desk-uat-evidence-checklist\.tsx[\s\S]*database\/step111_heu_finance_desk\.sql[\s\S]*HEU_FINANCE_DESK_MVP_SPEC_20260627\.md[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*audit:heu-finance-desk[\s\S]*P5-03 UAT evidence checklist[\s\S]*P5-03 immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 UAT acceptance matrix and P5-03 reliance decision manifest[\s\S]*does not approve finance action, statutory accounting, voucher posting, bank transfer, production migration, UAT acceptance, dashboard production reliance or owner GO/i,
   "production checklist Finance Desk row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
+  /npm\.cmd run audit:heu-finance-desk[\s\S]*PASS[\s\S]*Finance Desk \/ KHTC cockpit[\s\S]*read-only cockpit[\s\S]*permission and workspace-scope gate[\s\S]*UAT evidence checklist[\s\S]*immediate stop guard[\s\S]*real accounting user evidence bridge[\s\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\.md[\s\S]*Finance Day-1 result ledger[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*P5-03 reliance decision manifest[\s\S]*Signed browser UAT and reliance decision pending/i,
   "current-state Finance Desk evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );
@@ -357,6 +370,13 @@ requireText(
   /(?=[\s\S]*Status:\s*PASS_LOCAL_PLAN)(?=[\s\S]*P5-03 Finance Desk controlled trial)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*\/finance-desk)(?=[\s\S]*\/ttgdtx\/accounting-dashboard)(?=[\s\S]*P5-03-TRIAL-01)(?=[\s\S]*P5-03-TRIAL-08)(?=[\s\S]*Evidence To Capture)(?=[\s\S]*No bulk real-data import)(?=[\s\S]*No auto gach no)(?=[\s\S]*No COM production calculation)(?=[\s\S]*No payment execution)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*Production remains NO-GO)/i,
   "Finance Desk controlled trial plan",
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+);
+
+requireText(
+  dayOneResultLedgerTemplate,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*No raw screenshots)(?=[\s\S]*Stop and Escalate)/i,
+  "Finance Day-1 result ledger template",
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
 );
 
 requireText(
@@ -452,7 +472,7 @@ requireText(
 
 requireText(
   sqlObjectMap,
-  /FINANCE_DESK_WORKBENCH[\s\S]*heu_finance_desk_code_policy[\s\S]*heu_finance_desk_document_links[\s\S]*heu_finance_desk_summary[\s\S]*Step111 is metadata\/control only[\s\S]*raw links\/evidence stay outside Git/i,
+  /FINANCE_DESK_WORKBENCH[\s\S]*heu_finance_desk_code_policy[\s\S]*heu_finance_desk_document_links[\s\S]*heu_finance_desk_summary[\s\S]*Step111 is metadata\/control plus report-view packaging only[\s\S]*raw links\/evidence stay outside Git/i,
   "SQL object map Finance Desk workbench row",
   "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md",
 );

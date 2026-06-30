@@ -41,6 +41,14 @@ type FinanceDeskControlledTrialEvidenceItem = {
   forbiddenContent: string;
 };
 
+type FinanceDeskDayOneResultLedgerItem = {
+  evidenceId: string;
+  accountLabel: string;
+  route: string;
+  requiredResult: string;
+  stopCondition: string;
+};
+
 const realAccountingQueueMarker =
   'data-heu-real-accounting-user-uat-queue="P6-04-P2-18-P5-03"';
 const realAccountingResultMarker =
@@ -48,6 +56,8 @@ const realAccountingResultMarker =
 
 const controlledTrialPlanPath =
   "docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md";
+const financeDayOneResultLedgerTemplatePath =
+  "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
 
 const uatItems: FinanceDeskUatItem[] = [
   {
@@ -257,6 +267,53 @@ const controlledTrialEvidenceItems: FinanceDeskControlledTrialEvidenceItem[] = [
       "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED plus ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED.",
     forbiddenContent:
       "Access approval, UAT acceptance, finance reliance or production GO without owner signatures.",
+  },
+];
+
+const dayOneResultLedgerItems: FinanceDeskDayOneResultLedgerItem[] = [
+  {
+    evidenceId: "FIN-DAY1-EVID-001",
+    accountLabel: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    route: "P6-04 / P2-18 / P5-03 / P2-17 / P0-17",
+    requiredResult:
+      "ALLOWED only inside assigned finance scope, with Finance Desk read-only.",
+    stopCondition:
+      "Stop if unrestricted totals, write actions, payment execution or missing P0-17 access closure appears.",
+  },
+  {
+    evidenceId: "FIN-DAY1-EVID-002",
+    accountLabel: "REAL_BGH_READONLY_01",
+    route: "P6-04 / P2-18 / P5-03 / P0-17",
+    requiredResult:
+      "READ_ONLY review of Finance Desk and dashboard reliance blockers.",
+    stopCondition:
+      "Stop if BGH can mutate finance facts, approve evidence, approve access or mark production GO.",
+  },
+  {
+    evidenceId: "FIN-DAY1-EVID-003",
+    accountLabel: "REAL_AUDIT_READONLY_01",
+    route: "P6-04 / audit/evidence review / P0-17",
+    requiredResult:
+      "READ_ONLY audit review with redacted evidence references only.",
+    stopCondition:
+      "Stop if Audit sees secrets, raw PII, bank data, vouchers or unrestricted payment evidence.",
+  },
+  {
+    evidenceId: "FIN-DAY1-EVID-004",
+    accountLabel: "REAL_PHAP_CHE_REVIEW_01",
+    route: "P6-04 / legal-source review / P0-17",
+    requiredResult:
+      "LEGAL_REVIEW_ONLY, with private contract bodies and finance totals scoped.",
+    stopCondition:
+      "Stop if legal review exposes unrestricted finance totals, private bodies beyond scope or payout action.",
+  },
+  {
+    evidenceId: "FIN-DAY1-EVID-005",
+    accountLabel: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    route: "P6-04 / blocked route checks / P0-17",
+    requiredResult: "BLOCKED or EMPTY_SCOPED_STATE only.",
+    stopCondition:
+      "Stop if any TTGDTX finance, source, dashboard, audit, settings or evidence data is visible.",
   },
 ];
 
@@ -518,6 +575,67 @@ export function FinanceDeskUatEvidenceChecklist() {
           No bulk real-data import, no auto gach no, no COM production
           calculation, no payment execution and no production GO are allowed in
           this controlled trial.
+        </p>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-sky-200 bg-white p-4"
+        data-finance-desk-day-one-result-ledger="P5-03-FIN-DAY1"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h3 className="font-semibold text-sky-950">
+              Finance Day-1 result ledger: PASS_LOCAL only
+            </h3>
+            <p className="mt-2 leading-6 text-sky-900">
+              Before anyone relies on the Finance Desk cockpit, record Day-1
+              result rows in {financeDayOneResultLedgerTemplatePath}. Required
+              decision:{" "}
+              <span className="font-mono text-xs">
+                FIN_DAY1_RESULT_READY / NO_GO / BLOCKED
+              </span>
+              . Filled evidence and signatures stay outside Git/Codex/chat.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sky-950">
+            Access closure:
+            <span className="mt-1 block font-mono text-xs">
+              ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {dayOneResultLedgerItems.map((item) => (
+            <article
+              className="border-l-2 border-sky-300 bg-sky-50 px-3 py-3"
+              key={item.evidenceId}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-md bg-white px-2 py-1 font-mono text-xs font-semibold text-sky-800">
+                  {item.evidenceId}
+                </span>
+                <span className="font-mono text-xs text-sky-900">
+                  {item.accountLabel}
+                </span>
+              </div>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Route: {item.route}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required: {item.requiredResult}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-900">
+          This panel does not create accounts, store credentials, accept UAT,
+          approve finance reliance, approve access closure, move money, issue
+          bank instructions or mark production GO.
         </p>
       </div>
 
