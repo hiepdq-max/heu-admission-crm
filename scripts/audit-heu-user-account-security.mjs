@@ -42,6 +42,8 @@ const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
 const financeDayOneActivationTemplatePath =
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md";
+const financeDayOneStartGateChecklistPath =
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md";
 const financeDayOnePreloginMatrixPath =
   "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md";
 const financeDayOneLedgerTemplatePath =
@@ -60,6 +62,7 @@ for (const file of [
   readinessPath,
   financeDayOneRunbookPath,
   financeDayOneActivationTemplatePath,
+  financeDayOneStartGateChecklistPath,
   financeDayOnePreloginMatrixPath,
   financeDayOneLedgerTemplatePath,
   packagePath,
@@ -78,6 +81,7 @@ const scopePage = read(scopePagePath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
+const financeDayOneStartGateChecklist = read(financeDayOneStartGateChecklistPath);
 const financeDayOnePreloginMatrix = read(financeDayOnePreloginMatrixPath);
 const financeDayOneLedgerTemplate = read(financeDayOneLedgerTemplatePath);
 const packageJson = JSON.parse(read(packagePath));
@@ -129,7 +133,7 @@ requireText(
 
 requireText(
   onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before real-accounting accounts)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not invite, create or activate any real-accounting account)(?=[\s\S]*controlled evidence outside Git\/Codex\/chat)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before real-accounting accounts)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not invite, create or activate any real-accounting account)(?=[\s\S]*controlled evidence outside Git\/Codex\/chat)(?=[\s\S]*Checklist:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
   "finance Day-1 start gates before real-accounting accounts UI",
   onboardingPath,
 );
@@ -174,6 +178,13 @@ requireText(
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 result ledger for real users)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Record one controlled result row per approved account label and route)(?=[\s\S]*does not approve\s+access, accept UAT, approve finance reliance, move money or mark\s+production GO)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.entryGate)(?=[\s\S]*lane\.advanceGate)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)/i,
   "finance Day-1 result ledger guard",
   onboardingPath,
+);
+
+requireText(
+  readinessSource,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)/i,
+  "finance Day-1 start-gate checklist shared source",
+  readinessPath,
 );
 
 requireText(
@@ -240,9 +251,39 @@ requireText(
 );
 
 requireAllText(
+  financeDayOneStartGateChecklist,
+  [
+    "Status: PASS_LOCAL_CHECKLIST",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
+    "FIN-START-01",
+    "FIN-START-05",
+    "Do not paste or attach passwords",
+    "does not create accounts",
+    "send invites",
+    "store passwords",
+    "grant access",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "approve access closure",
+    "move money",
+    "issue bank instructions",
+    "mark production GO",
+    "Do not start `FIN-ACT-EVID-001`",
+  ],
+  "finance Day-1 start-gate checklist template",
+  financeDayOneStartGateChecklistPath,
+);
+
+requireAllText(
   financeDayOneActivationTemplate,
   [
     "Start Gates Before Any Invite/Create",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "FIN-START-EVID-001",
+    "FIN-START-EVID-005",
     "FIN_START_READY / NO_GO / BLOCKED",
     "FIN-START-01 P0-03 backup/restore evidence accepted",
     "FIN-START-05 Human owner boundary acknowledged",
@@ -394,6 +435,13 @@ requireText(
   implementationLog,
   /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
   "real-user accounting onboarding log boundary",
+  logPath,
+);
+
+requireText(
+  implementationLog,
+  /(?=[\s\S]*Finance Day-1 Start Gate Evidence Checklist)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*PASS_LOCAL_CHECKLIST)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*grant access)(?=[\s\S]*execute UAT)(?=[\s\S]*accept evidence)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)/i,
+  "finance Day-1 start-gate checklist log boundary",
   logPath,
 );
 

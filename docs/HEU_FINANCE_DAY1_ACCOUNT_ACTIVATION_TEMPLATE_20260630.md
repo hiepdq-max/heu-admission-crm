@@ -39,6 +39,10 @@ No invite, create or activation row may start until the start-gate decision is
 `FIN_START_READY / NO_GO / BLOCKED`. If any gate is missing, keep the first
 real-accounting account closed and record `NO_GO/BLOCKED`.
 
+Fill `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` first, with
+`FIN-START-EVID-001` through `FIN-START-EVID-005`, then carry only the
+controlled evidence IDs into this activation template.
+
 | Gate | Owner | Required proof | Stop condition |
 |---|---|---|---|
 | FIN-START-01 P0-03 backup/restore evidence accepted | IT_DATA + Audit | Backup ID, restore target, operator run sheet, preflight/postflight and restore smoke-check evidence controlled outside Git/Codex/chat | Any real-accounting invite/create starts before P0-03 evidence is accepted |

@@ -13,6 +13,7 @@ import {
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
+  PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST,
   PRODUCTION_FINANCE_DAY_ONE_START_GATES,
   PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS,
   PRODUCTION_GATE_HANDOVER_STEPS,
@@ -373,6 +374,9 @@ export function TtgdtxProductionExecutionQueue() {
               evidence, signed finance UAT route readiness, controlled
               redaction storage, result-ledger path and P0-17 access-closure
               path. Missing proof keeps the first account closed.
+            </p>
+            <p className="mt-1 text-xs font-medium text-emerald-800">
+              Checklist: {PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST}
             </p>
           </div>
           <span className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase text-emerald-800">

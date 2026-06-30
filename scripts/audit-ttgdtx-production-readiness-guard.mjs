@@ -33,6 +33,8 @@ const financeDayOneLedgerTemplatePath =
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md";
 const financeDayOneActivationTemplatePath =
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md";
+const financeDayOneStartGateChecklistPath =
+  "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md";
 const financeDayOnePreloginMatrixPath =
   "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md";
 
@@ -47,6 +49,7 @@ for (const file of [
   financeDayOneRunbookPath,
   financeDayOneLedgerTemplatePath,
   financeDayOneActivationTemplatePath,
+  financeDayOneStartGateChecklistPath,
   financeDayOnePreloginMatrixPath,
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
@@ -67,6 +70,7 @@ const backlog = read(backlogPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneLedgerTemplate = read(financeDayOneLedgerTemplatePath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
+const financeDayOneStartGateChecklist = read(financeDayOneStartGateChecklistPath);
 const financeDayOnePreloginMatrix = read(financeDayOnePreloginMatrixPath);
 const agents = read("AGENTS.md");
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
@@ -170,7 +174,7 @@ requireText(
 
 requireText(
   executionQueue,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before account activation)(?=[\s\S]*backup\/restore\s+evidence)(?=[\s\S]*signed finance UAT route readiness)(?=[\s\S]*controlled\s+redaction storage)(?=[\s\S]*result-ledger path)(?=[\s\S]*P0-17 access-closure\s+path)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before account activation)(?=[\s\S]*backup\/restore\s+evidence)(?=[\s\S]*signed finance UAT route readiness)(?=[\s\S]*controlled\s+redaction storage)(?=[\s\S]*result-ledger path)(?=[\s\S]*P0-17 access-closure\s+path)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Checklist:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
   "TTGDTX finance Day-1 start gates before account activation UI",
   executionQueuePath,
 );
@@ -263,6 +267,13 @@ requireText(
   blockerSource,
   /(?=[\s\S]*export const PRODUCTION_FINANCE_UAT_FIRST_PASS_STEPS)(?=[\s\S]*FIN-UAT-01)(?=[\s\S]*P0-10 evidence redaction is ready)(?=[\s\S]*FIN-UAT-02)(?=[\s\S]*P6-04 real-accounting accounts are ready)(?=[\s\S]*FIN-UAT-03)(?=[\s\S]*P2-18 dashboard route is ready)(?=[\s\S]*FIN-UAT-04)(?=[\s\S]*P5-03 Finance Desk route is ready)(?=[\s\S]*FIN-UAT-05)(?=[\s\S]*P0-14\/P0-17 handoff is ready)(?=[\s\S]*Evidence ID, redaction reviewer, owner signature state or access closure decision is missing)/i,
   "TTGDTX P2-18/P5-03 first finance UAT shared source",
+  blockerSourcePath,
+);
+
+requireText(
+  blockerSource,
+  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)/i,
+  "TTGDTX finance Day-1 start-gate checklist shared source",
   blockerSourcePath,
 );
 
@@ -365,8 +376,15 @@ requireText(
 );
 
 requireText(
+  financeDayOneStartGateChecklist,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_CHECKLIST)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)(?=[\s\S]*Do not paste or attach passwords)(?=[\s\S]*does not create accounts)(?=[\s\S]*send invites)(?=[\s\S]*store passwords)(?=[\s\S]*grant\s+access)(?=[\s\S]*execute UAT)(?=[\s\S]*accept evidence)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*issue bank instructions)(?=[\s\S]*mark production GO)(?=[\s\S]*Do not start `FIN-ACT-EVID-001`)/i,
+  "Finance Day-1 start-gate checklist template",
+  financeDayOneStartGateChecklistPath,
+);
+
+requireText(
   financeDayOneActivationTemplate,
-  /(?=[\s\S]*Start Gates Before Any Invite\/Create)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-START-01 P0-03 backup\/restore evidence accepted)(?=[\s\S]*FIN-START-05 Human owner boundary acknowledged)(?=[\s\S]*No invite, create or activation row may start)(?=[\s\S]*Start first after `FIN_START_READY`)(?=[\s\S]*PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO)/i,
+  /(?=[\s\S]*Start Gates Before Any Invite\/Create)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-START-01 P0-03 backup\/restore evidence accepted)(?=[\s\S]*FIN-START-05 Human owner boundary acknowledged)(?=[\s\S]*No invite, create or activation row may start)(?=[\s\S]*Start first after `FIN_START_READY`)(?=[\s\S]*PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO)/i,
   "Finance Day-1 account activation start-gate template",
   financeDayOneActivationTemplatePath,
 );

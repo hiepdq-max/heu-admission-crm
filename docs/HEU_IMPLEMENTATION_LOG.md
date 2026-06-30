@@ -1,5 +1,30 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Day-1 Start Gate Evidence Checklist
+
+- Added `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` as a
+  `PASS_LOCAL_CHECKLIST` for `FIN-START-EVID-001` through
+  `FIN-START-EVID-005` before any real-accounting invite/create starts.
+- Added `PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST` to
+  `lib/production-readiness.ts` and linked it from
+  `components/settings/real-user-onboarding-panel.tsx`,
+  `components/ttgdtx/ttgdtx-production-execution-queue.tsx` and
+  `docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md`.
+- Tightened `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the checklist link and
+  `FIN-START-EVID-001` through `FIN-START-EVID-005` evidence rows cannot be
+  dropped silently.
+- This is evidence-checklist packaging only. It does not create accounts,
+  send invites, store passwords, grant access, execute UAT, accept evidence,
+  approve finance reliance, approve access closure, move money, issue bank
+  instructions or mark production GO.
+- Boundary phrase: does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance,
+  approve access closure, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-06-30 - Finance Day-1 Start Gates Before Real Account Activation
 
 - Added `PRODUCTION_FINANCE_DAY_ONE_START_GATES` to

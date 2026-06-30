@@ -99,6 +99,33 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Finance Day-1 Start Gate Evidence Checklist", [
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "PASS_LOCAL_CHECKLIST",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST",
+  "lib/production-readiness.ts",
+  "real-user-onboarding-panel.tsx",
+  "ttgdtx-production-execution-queue.tsx",
+  "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "scripts/audit-heu-user-account-security.mjs",
+  "scripts/audit-ttgdtx-production-readiness-guard.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "issue bank",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Start Gates Before Real Account Activation", [
   "PRODUCTION_FINANCE_DAY_ONE_START_GATES",
   "lib/production-readiness.ts",

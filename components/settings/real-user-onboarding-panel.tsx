@@ -19,6 +19,7 @@ import {
   PRODUCTION_FINANCE_DAY_ONE_RUNBOOK,
   PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS,
   PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS,
+  PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST,
   PRODUCTION_FINANCE_DAY_ONE_START_GATES,
 } from "@/lib/production-readiness";
 
@@ -197,6 +198,9 @@ export function RealUserOnboardingPanel() {
           Do not invite, create or activate any real-accounting account until
           these gates have controlled evidence outside Git/Codex/chat and a
           human owner decision.
+        </p>
+        <p className="mt-1 text-xs font-medium text-emerald-800">
+          Checklist: {PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST}
         </p>
         <div className="mt-3 grid gap-3 xl:grid-cols-5">
           {PRODUCTION_FINANCE_DAY_ONE_START_GATES.map((gate) => (
