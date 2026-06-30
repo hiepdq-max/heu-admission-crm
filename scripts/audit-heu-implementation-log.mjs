@@ -99,6 +99,52 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-06-30 - Report View Source Map Logical View Completion", [
+  "report-view-source-map-panel.tsx",
+  "RV_TTGDTX_UAT_READINESS",
+  "RV_AUDIT_RISK_CONTROL",
+  "Report View Register",
+  "Source Map",
+  "controlled source",
+  "consumer",
+  "owner",
+  "quality-gate",
+  "audit-heu-p0-register-pack.mjs",
+  "full report-view source-map set",
+  "audit-heu-implementation-log.mjs",
+  "read-only Report View source-map completion only",
+  "does not collect",
+  "evidence",
+  "approve UAT readiness",
+  "waive audit findings",
+  "approve dashboard",
+  "approve finance action",
+  "accept owner signoff",
+  "mark production GO",
+]);
+
+fastSection("2026-06-30 - Report View DQ-RV Full Status Capture", [
+  "report-view-source-map-panel.tsx",
+  "DQ-RV-01",
+  "DQ-RV-08",
+  "finance/TTGDTX source reconciliation",
+  "HOU module separation",
+  "Short Course attendance/payment linkage",
+  "Audit/Risk",
+  "audit-heu-p0-register-pack.mjs",
+  "full DQ-RV-01 through DQ-RV-08 UI coverage",
+  "audit-heu-implementation-log.mjs",
+  "read-only Report View governance UI hardening only",
+  "does not",
+  "accept evidence",
+  "waive blockers",
+  "approve dashboard reliance",
+  "approve finance",
+  "accept UAT",
+  "collect owner signatures",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Finance Day-1 Account Activation Handoff", [
   "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
   "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE",

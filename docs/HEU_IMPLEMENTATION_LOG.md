@@ -1,5 +1,39 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Report View Source Map Logical View Completion
+
+- Updated `components/reports/report-view-source-map-panel.tsx` so the
+  read-only `/reports` source-map panel includes `RV_TTGDTX_UAT_READINESS` and
+  `RV_AUDIT_RISK_CONTROL`, matching the logical report views already listed in
+  the Report View Register and Source Map.
+- The added rows expose controlled source, consumer, owner and quality-gate
+  status for UAT readiness and Audit/Risk without reading raw workbooks,
+  unrestricted tables or sensitive evidence.
+- Tightened `scripts/audit-heu-p0-register-pack.mjs` so the P0 register audit
+  requires the full report-view source-map set in the UI.
+- Tightened `scripts/audit-heu-implementation-log.mjs` so this slice remains
+  covered by implementation-log discipline.
+- This is read-only Report View source-map completion only. It does not collect
+  evidence, approve UAT readiness, waive audit findings, approve dashboard
+  reliance, approve finance action, accept owner signoff or mark production GO.
+
+## 2026-06-30 - Report View DQ-RV Full Status Capture
+
+- Updated `components/reports/report-view-source-map-panel.tsx` so the
+  read-only `/reports` source-map panel displays all Data Quality Check
+  checkpoints `DQ-RV-01` through `DQ-RV-08`.
+- Added the missing capture lanes for finance/TTGDTX source reconciliation,
+  HOU module separation, Short Course attendance/payment linkage and Audit/Risk
+  owner-decision proof.
+- Tightened `scripts/audit-heu-p0-register-pack.mjs` so the P0 register pack
+  audit requires the full DQ-RV-01 through DQ-RV-08 UI coverage and capture
+  statuses.
+- Tightened `scripts/audit-heu-implementation-log.mjs` so this slice stays
+  recorded under P0-05 implementation-log discipline.
+- This is read-only Report View governance UI hardening only. It does not
+  accept evidence, waive blockers, approve dashboard reliance, approve finance
+  action, accept UAT, collect owner signatures or mark production GO.
+
 ## 2026-06-30 - Finance Day-1 P6-04 Pre-Login Matrix
 
 - Added `docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md` as the
