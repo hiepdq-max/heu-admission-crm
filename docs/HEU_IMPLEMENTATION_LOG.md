@@ -1,5 +1,29 @@
 # HEU Implementation Log
 
+## 2026-06-30 - Finance Desk Controlled Trial Plan
+
+- Added `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` as a
+  PASS_LOCAL_PLAN for the P5-03 controlled trial with real-accounting user
+  labels, route visibility, read-only checklist, evidence rows and stop
+  conditions.
+- The plan identifies `REAL_KHTC_TTGDTX_OPERATOR_01`,
+  `REAL_BGH_READONLY_01`, `REAL_AUDIT_READONLY_01`,
+  `REAL_PHAP_CHE_REVIEW_01` and `REAL_OUT_OF_SCOPE_NEGATIVE_01` as redacted
+  labels only; actual account identity and evidence must stay outside
+  Git/Codex/chat.
+- Linked the plan from `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Tightened `scripts/audit-heu-finance-desk.mjs` so Finance Desk packaging now
+  requires the controlled trial plan, `P5_03_CONTROLLED_TRIAL_READY / NO_GO /
+  BLOCKED`, P5-03-TRIAL-01 through P5-03-TRIAL-08, no bulk real-data import,
+  no auto gach no, no COM production calculation and no payment execution.
+- This is controlled trial planning only. It does not create accounts, send
+  invites, store passwords, import real data in bulk, auto clear debt, run COM
+  production calculation, execute payment, accept UAT, approve finance
+  reliance, accept evidence, approve owner signoff or mark production GO.
+
 ## 2026-06-30 - Report View Source Map Logical View Completion
 
 - Updated `components/reports/report-view-source-map-panel.tsx` so the
@@ -63,6 +87,13 @@
 - Updated `scripts/audit-heu-current-state-inventory.mjs` so the current-state
   guard requires the P6-04 pre-login matrix in the production readiness and
   role/workspace scope snapshot.
+- Guard coverage for this slice includes
+  `scripts/audit-ttgdtx-production-readiness-guard.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-role-scope-uat-pack.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
 - Follow-up aligned the real-user onboarding UI wording and account activation
   template handoff wording so `audit:heu-user-account-security` requires the
   negative-control account, allowed route family and blocked route family before

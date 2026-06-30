@@ -41,6 +41,7 @@ for (const file of [
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
@@ -93,7 +94,7 @@ requireText(
 );
 requireText(
   backlog,
-  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03[\s\S]*finance Day-1 account activation handoff[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*Day-1 result ledger[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*soft-revoke\/INACTIVE evidence/i,
+  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03[\s\S]*finance Day-1 account activation handoff[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md[\s\S]*finance Day-1 P6-04 pre-login matrix[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*Day-1 result ledger[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*soft-revoke\/INACTIVE evidence/i,
   "P0-17 user account temporary password backlog row",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );

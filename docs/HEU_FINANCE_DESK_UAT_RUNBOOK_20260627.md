@@ -59,6 +59,15 @@ P5-03-REAL-01 through P5-03-REAL-05 and decision value
 `P5_03_REAL_USER_READY / NO_GO / BLOCKED`. It requires the P6-04 real
 accounting user queue and result template before Finance Desk reliance.
 
+The controlled trial wrapper for real-accounting Finance Desk users is
+`docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`. Use it to identify
+the redacted account label, route visibility, read-only evidence and stop
+conditions before signed UAT. Decision value:
+`P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`. The plan covers
+`REAL_KHTC_TTGDTX_OPERATOR_01` through `REAL_OUT_OF_SCOPE_NEGATIVE_01` and
+does not approve bulk real-data import, auto debt clearing, COM production
+calculation, payment execution or production GO.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |

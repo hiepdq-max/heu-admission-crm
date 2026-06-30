@@ -34,6 +34,19 @@ function requireText(relativePath, pattern, label) {
   }
 }
 
+function requireAllText(relativePath, tokens, label) {
+  if (!exists(relativePath)) {
+    return;
+  }
+
+  const contents = read(relativePath);
+  for (const token of tokens) {
+    if (!contents.includes(token)) {
+      fail(`${relativePath}: missing ${label}: ${token}`);
+    }
+  }
+}
+
 const requiredFiles = [
   "docs/MIGRATION_ORDER_AUDIT.md",
   "docs/HARD_DELETE_AUDIT.md",
@@ -81,6 +94,7 @@ const requiredFiles = [
   "docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
@@ -473,6 +487,17 @@ requireText(
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
 
+requireAllText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  [
+    "Production readiness guard",
+    "finance Day-1 P6-04 pre-login matrix",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "Role/workspace scope",
+  ],
+  "HEU current-state inventory finance Day-1 P6-04 pre-login matrix state",
+);
+
 requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   /UAT-ROUTE-01[\s\S]*Raw PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation\/invite links, service-role keys, vouchers or unredacted screenshots are present/i,
@@ -733,6 +758,26 @@ requireText(
   "P0-17 finance Day-1 account activation handoff guard",
 );
 
+requireAllText(
+  "components/settings/real-user-onboarding-panel.tsx",
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    "data-heu-finance-day-one-p6-04-prelogin-matrix=\"P6-04-P0-17\"",
+    "Finance Day-1 P6-04 pre-login route matrix",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "Record one P6-04 route/scope result before any real-accounting account opens P2-18, P5-03 or P2-17",
+    "Negative-control account must be BLOCKED/EMPTY_SCOPED_STATE",
+    "Matrix:",
+    "item.accountLabel",
+    "item.allowedBeforeFinanceLogin",
+    "item.blockedBeforeFinanceLogin",
+    "item.requiredResult",
+    "item.stopCondition",
+  ],
+  "P0-17 finance Day-1 P6-04 pre-login matrix guard",
+);
+
 requireText(
   "components/settings/real-user-onboarding-panel.tsx",
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
@@ -781,6 +826,34 @@ requireText(
   "finance Day-1 account activation handoff log entry",
 );
 
+requireAllText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  [
+    "Finance Day-1 P6-04 Pre-Login Matrix",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "data-ttgdtx-finance-day-one-p6-04-prelogin-matrix=\"P6-04_P0-17\"",
+    "data-heu-finance-day-one-p6-04-prelogin-matrix=\"P6-04-P0-17\"",
+    "P6-04-PRELOGIN-01",
+    "P6-04-PRELOGIN-05",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "does not create accounts",
+    "send",
+    "invites",
+    "store passwords",
+    "execute UAT",
+    "grant access",
+    "accept route evidence",
+    "approve finance action",
+    "move money",
+    "mark production GO",
+  ],
+  "finance Day-1 P6-04 pre-login matrix log entry",
+);
+
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /(?=[\s\S]*Finance Day-1 Result Ledger Guard)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-ttgdtx-finance-day-one-result-ledger="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts[\s\S]*send passwords[\s\S]*grant access[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
@@ -793,9 +866,25 @@ requireText(
   "finance Day-1 result ledger template log entry",
 );
 
-requireText(
+requireAllText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-17[\s\S]*User account temporary password security[\s\S]*PASS_LOCAL[\s\S]*user-create-form\.tsx[\s\S]*real-user-onboarding-panel\.tsx[\s\S]*user-auth-profile-link-form\.tsx[\s\S]*actions\.ts[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*Codex\/chat\/email notes\/attachments[\s\S]*does not display keys or log temporary passwords[\s\S]*real accounting users[\s\S]*P6-04[\s\S]*P2-18[\s\S]*P5-03[\s\S]*finance Day-1 account activation handoff[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*Day-1 result ledger[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED[\s\S]*soft-revoke\/INACTIVE evidence/i,
+  [
+    "P0-17",
+    "User account temporary password security",
+    "PASS_LOCAL",
+    "real-user-onboarding-panel.tsx",
+    "audit-heu-user-account-security.mjs",
+    "finance Day-1 account activation handoff",
+    "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+    "finance Day-1 P6-04 pre-login matrix",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "finance Day-1 real-run rehearsal",
+    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+  ],
   "P0-17 user account temporary password backlog row",
 );
 
@@ -1559,9 +1648,22 @@ requireText(
   "P6-04 role-scope access decision manifest UI",
 );
 
-requireText(
+requireAllText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*Permission by role and workspace)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627\.md)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md)(?=[\s\S]*real accounting user UAT queue and result template)(?=[\s\S]*post-UAT access closure handoff)(?=[\s\S]*role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff)(?=[\s\S]*signed UAT still required)/i,
+  [
+    "Permission by role and workspace",
+    "IN_PROGRESS",
+    "HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
+    "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+    "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+    "real accounting user UAT queue and result template",
+    "finance Day-1 P6-04 pre-login matrix",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "post-UAT access closure handoff",
+    "role-scope evidence checklist, route matrix, acceptance matrix, access decision manifest, UAT execution closure template and UAT operator handoff",
+    "signed UAT still required",
+  ],
   "P6-04 production checklist acceptance matrix row",
 );
 
@@ -1673,6 +1775,29 @@ requireText(
   "TTGDTX finance Day-1 account activation handoff UI",
 );
 
+requireAllText(
+  "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    "data-ttgdtx-finance-day-one-p6-04-prelogin-matrix=\"P6-04_P0-17\"",
+    "Finance Day-1 P6-04 pre-login route matrix",
+    "allowed route family",
+    "blocked route family",
+    "required result",
+    "negative-control result",
+    "outside Git/Codex/chat",
+    "Matrix:",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "item.accountLabel",
+    "item.allowedBeforeFinanceLogin",
+    "item.blockedBeforeFinanceLogin",
+    "item.requiredResult",
+    "item.stopCondition",
+  ],
+  "TTGDTX finance Day-1 P6-04 pre-login matrix UI",
+);
+
 requireText(
   "components/ttgdtx/ttgdtx-production-execution-queue.tsx",
   /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-ttgdtx-finance-day-one-run-rehearsal="P0-17_P6-04_P2-18_P5-03_P2-17")(?=[\s\S]*data-ttgdtx-finance-day-one-run-range="FIN-DAY1-01_FIN-DAY1-05")(?=[\s\S]*Finance Day-1 real-run rehearsal: PASS_LOCAL only)(?=[\s\S]*approved account labels only)(?=[\s\S]*outside Git\/Codex\/chat)(?=[\s\S]*do not initiate a bank instruction)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Decision:[\s\S]*step\.decisionValue)(?=[\s\S]*Stop:[\s\S]*step\.stopCondition)/i,
@@ -1727,6 +1852,26 @@ requireText(
   "TTGDTX finance Day-1 account activation handoff shared source",
 );
 
+requireAllText(
+  "lib/production-readiness.ts",
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "export type ProductionFinanceDayOnePreloginRouteCheck",
+    "export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "P6-04-PRELOGIN-01",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "P6-04-PRELOGIN-05",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "allowedBeforeFinanceLogin",
+    "blockedBeforeFinanceLogin",
+    "requiredResult",
+    "BLOCKED or EMPTY_SCOPED_STATE",
+    "negative-control account sees any protected route",
+  ],
+  "TTGDTX finance Day-1 P6-04 pre-login matrix shared source",
+);
+
 requireText(
   "lib/production-readiness.ts",
   /(?=[\s\S]*export type ProductionFinanceDayOneRunStep)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*A bank instruction is initiated)(?=[\s\S]*blocked users keep active finance access)/i,
@@ -1745,10 +1890,62 @@ requireText(
   "finance Day-1 account activation link in real-run runbook",
 );
 
+requireAllText(
+  "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  [
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "P6-04 Pre-Login Route Matrix",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "ALLOWED",
+    "BLOCKED",
+    "EMPTY_SCOPED_STATE",
+    "do not open P2-18, P5-03 or P2-17",
+  ],
+  "finance Day-1 P6-04 pre-login matrix in real-run runbook",
+);
+
+requireAllText(
+  "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+  [
+    "Status: PASS_LOCAL_TEMPLATE",
+    "Production status: NO-GO",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "P6-04-PRELOGIN-EVID-001",
+    "P6-04-PRELOGIN-EVID-005",
+    "does not create accounts",
+    "store passwords",
+    "move money",
+    "mark production GO",
+    "Do not open P2-18, P5-03 or P2-17",
+  ],
+  "finance Day-1 P6-04 pre-login matrix template",
+);
+
 requireText(
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
   /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i,
   "finance Day-1 account activation handoff template",
+);
+
+requireAllText(
+  "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  [
+    "P6-04 Pre-Login Matrix Handoff",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "allowed route family",
+    "blocked route family",
+    "negative-control account",
+    "Do not open P2-18, P5-03 or P2-17",
+  ],
+  "finance Day-1 account activation template P6-04 pre-login handoff",
 );
 
 requireText(
@@ -1853,9 +2050,35 @@ requireText(
   "TTGDTX landing page mounts internal UAT sign-off guard",
 );
 
-requireText(
+requireAllText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Internal UAT sign-off[\s\S]*IN_PROGRESS[\s\S]*TTGDTX_UAT_OPERATOR_HANDOFF_20260627\.md[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*internal UAT run closure tracker[\s\S]*ttgdtx-uat-signoff-guard\.tsx[\s\S]*governance UAT execution readiness for P6-04\/P6-03[\s\S]*UAT run closure tracker[\s\S]*main execution queue with decision values and stop conditions[\s\S]*P0-03\/Step90-Step110 infra readiness plan[\s\S]*P0-19\/P3-01\/P3-02 gate-handover readiness plan[\s\S]*P6-04\/P6-03 governance assurance plan[\s\S]*P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist[\s\S]*finance Day-1 account activation handoff[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md[\s\S]*finance Day-1 real-run rehearsal[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md[\s\S]*P6-06\/P2-17 risk closure plan[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*signed multi-account UAT still required/i,
+  [
+    "Internal UAT sign-off",
+    "IN_PROGRESS",
+    "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+    "TTGDTX_UAT_EXECUTION_LOG_20260625.md",
+    "governance UAT execution readiness for P6-04/P6-03",
+    "internal UAT run closure tracker",
+    "ttgdtx-uat-signoff-guard.tsx",
+    "main execution queue with decision values and stop conditions",
+    "P0-03/Step90-Step110 infra readiness plan",
+    "P0-19/P3-01/P3-02 gate-handover readiness plan",
+    "P6-04/P6-03 governance assurance plan",
+    "P2-18/P5-03 UAT launch plan with P6-04 real-accounting queue/result proof, first signed finance UAT checklist",
+    "finance Day-1 account activation handoff",
+    "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+    "finance Day-1 P6-04 pre-login matrix",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "finance Day-1 real-run rehearsal",
+    "FIN_DAY1_READY / NO_GO / BLOCKED",
+    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "P6-06/P2-17 risk closure plan",
+    "audit:ttgdtx-production-readiness-guard",
+    "signed multi-account UAT still required",
+  ],
   "internal UAT readiness guard checklist row",
 );
 
