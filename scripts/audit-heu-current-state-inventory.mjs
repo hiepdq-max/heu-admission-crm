@@ -165,7 +165,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard immediate stop guard, real accounting user evidence bridge to P6-04 queue\/result proof, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard immediate stop guard, safe evidence-link rendering for movement evidence, real accounting user evidence bridge to P6-04 queue\/result proof, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*Signed browser UAT pending/i,
   "P2-18 dashboard and P5-02 action queue control state",
 );
 requireText(

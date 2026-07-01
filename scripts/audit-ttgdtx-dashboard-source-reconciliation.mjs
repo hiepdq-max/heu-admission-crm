@@ -101,6 +101,13 @@ requireText(
   pagePath,
 );
 
+requireText(
+  page,
+  /function safeEvidenceHref\([\s\S]*value\.startsWith\("\/"\)[\s\S]*!value\.startsWith\("\/\/"\)[\s\S]*new URL\(value\)[\s\S]*url\.protocol === "https:"[\s\S]*const evidenceHref = safeEvidenceHref\(\s*movement\.evidence_url,\s*\)[\s\S]*<Link href=\{evidenceHref\}>/i,
+  "P2-18 dashboard sanitizes movement evidence links",
+  pagePath,
+);
+
 if (/replace\(\s*\/\\\.\//.test(page)) {
   fail(`${pagePath}: must not replace dot separators with spaces for VND display`);
 }
@@ -114,21 +121,21 @@ requireText(
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*safe evidence-link rendering)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "production checklist P2-18 source reconciliation guard row",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-18[\s\S]*dashboard immediate stop guard[\s\S]*dashboard reliance decision manifest[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*audit:ttgdtx-dashboard-source-reconciliation/i,
+  /P2-18[\s\S]*dashboard immediate stop guard[\s\S]*safe evidence-link rendering[\s\S]*dashboard reliance decision manifest[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx[\s\S]*audit:ttgdtx-dashboard-source-reconciliation/i,
   "backlog P2-18 source reconciliation guard",
   backlogPath,
 );
 
 requireText(
   inventory,
-  /(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*dashboard immediate stop guard[\s\S]*dashboard reliance decision manifest[\s\S]*Signed browser UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS)/i,
+  /(?=[\s\S]*Accounting dashboard \/ BGH control[\s\S]*dashboard immediate stop guard[\s\S]*safe evidence-link rendering[\s\S]*dashboard reliance decision manifest[\s\S]*Signed browser UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-dashboard-source-reconciliation[\s\S]*PASS)/i,
   "current-state P2-18 source reconciliation audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

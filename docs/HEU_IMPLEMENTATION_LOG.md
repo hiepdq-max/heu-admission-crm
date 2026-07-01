@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-07-01 - P2-18 Dashboard Safe Evidence Links
+
+- Added `safeEvidenceHref` to `/ttgdtx/accounting-dashboard` so movement
+  evidence links render only when the value is an internal path or an HTTPS URL.
+- Replaced direct `movement.evidence_url` rendering with the sanitized
+  `evidenceHref` value before the "Mo minh chung" action is shown.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P2-18 records safe evidence-link
+  rendering while signed browser UAT remains pending.
+- Tightened `scripts/audit-ttgdtx-dashboard-source-reconciliation.mjs`,
+  `scripts/audit-ttgdtx-dashboard-readonly-guard.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so unsafe evidence-link rendering
+  cannot return silently.
+- Boundary phrase: PASS_LOCAL only; does not accept evidence, execute browser UAT,
+  approve dashboard reliance, approve finance action, expose raw vouchers,
+  expose raw bank data, move money, issue bank instructions or mark production GO.
+
 ## 2026-07-01 - P2-17 Payout Boundary Acknowledgment
 
 - Added a mandatory `payout_boundary_ack` checkbox to

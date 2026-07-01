@@ -1803,9 +1803,27 @@ requireText(
 );
 
 requireText(
+  "app/ttgdtx/accounting-dashboard/page.tsx",
+  /function safeEvidenceHref\([\s\S]*value\.startsWith\("\/"\)[\s\S]*!value\.startsWith\("\/\/"\)[\s\S]*new URL\(value\)[\s\S]*url\.protocol === "https:"[\s\S]*const evidenceHref = safeEvidenceHref\(\s*movement\.evidence_url,\s*\)[\s\S]*<Link href=\{evidenceHref\}>/i,
+  "P2-18 dashboard safe movement evidence link rendering",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-dashboard-readonly-guard\.tsx)(?=[\s\S]*ttgdtx-dashboard-source-reconciliation-checklist\.tsx)(?=[\s\S]*ttgdtx-dashboard-uat-evidence-checklist\.tsx)(?=[\s\S]*safe evidence-link rendering)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*dashboard immediate stop guard)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*dashboard reliance decision manifest)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*audit:ttgdtx-dashboard-source-reconciliation)(?=[\s\S]*signed UAT evidence)/i,
   "P2-18 read-only guard checklist row",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Accounting dashboard \/ BGH control[\s\S]*dashboard immediate stop guard[\s\S]*safe evidence-link rendering for movement evidence[\s\S]*dashboard reliance decision manifest[\s\S]*Signed browser UAT pending/i,
+  "P2-18 safe evidence-link current-state row",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-18 Dashboard Safe Evidence Links[\s\S]*safeEvidenceHref[\s\S]*movement\.evidence_url[\s\S]*audit-ttgdtx-dashboard-source-reconciliation\.mjs[\s\S]*does not accept evidence[\s\S]*expose raw bank data[\s\S]*mark production GO/i,
+  "P2-18 safe evidence-link implementation log",
 );
 
 requireText(

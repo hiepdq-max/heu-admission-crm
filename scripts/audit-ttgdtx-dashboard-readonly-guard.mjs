@@ -145,6 +145,13 @@ requireText(
   pagePath,
 );
 
+requireText(
+  page,
+  /function safeEvidenceHref\([\s\S]*url\.protocol === "https:"[\s\S]*const evidenceHref = safeEvidenceHref\(\s*movement\.evidence_url,\s*\)[\s\S]*<Link href=\{evidenceHref\}>/i,
+  "P2-18 dashboard renders only sanitized evidence links",
+  pagePath,
+);
+
 if (/permission_name:\s*"ttgdtx\.contract\.read"/.test(page)) {
   fail("P2-18 dashboard must not use ttgdtx.contract.read as finance-dashboard access.");
 }
@@ -197,14 +204,14 @@ requireText(
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
+  /(?=[\s\S]*P2-18 accounting dashboard)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*safe evidence-link rendering)(?=[\s\S]*dashboard acceptance matrix)(?=[\s\S]*real accounting user evidence bridge)(?=[\s\S]*audit:ttgdtx-dashboard-readonly-guard)(?=[\s\S]*signed UAT evidence)/i,
   "production checklist keeps P2-18 IN_PROGRESS with read-only guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-18[\s\S]*dashboard acceptance matrix[\s\S]*real accounting user evidence bridge[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
+  /P2-18[\s\S]*dashboard acceptance matrix[\s\S]*safe evidence-link rendering[\s\S]*real accounting user evidence bridge[\s\S]*audit:ttgdtx-dashboard-readonly-guard/i,
   "backlog records P2-18 read-only guard audit",
   backlogPath,
 );

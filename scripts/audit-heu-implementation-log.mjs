@@ -158,6 +158,33 @@ fastSection("2026-07-01 - P2-17 Payout Boundary Acknowledgment", [
   "mark production GO",
 ]);
 
+fastSection("2026-07-01 - P2-18 Dashboard Safe Evidence Links", [
+  "safeEvidenceHref",
+  "/ttgdtx/accounting-dashboard",
+  "movement.evidence_url",
+  "evidenceHref",
+  "safe evidence-link",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "signed browser UAT",
+  "audit-ttgdtx-dashboard-source-reconciliation.mjs",
+  "audit-ttgdtx-dashboard-readonly-guard.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "PASS_LOCAL only",
+  "does not accept evidence",
+  "execute browser UAT",
+  "approve dashboard reliance",
+  "approve finance action",
+  "expose raw vouchers",
+  "expose raw bank data",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-07-01 - P2-13 P2-14 Reconciliation Exception Gate", [
   "ttgdtx-reconciliation-exception-gate.tsx",
   "PASS_LOCAL",

@@ -228,6 +228,23 @@ function safeHref(value: string | null | undefined) {
   return value;
 }
 
+function safeEvidenceHref(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  if (value.startsWith("/") && !value.startsWith("//")) {
+    return value;
+  }
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 function issueText(code: string) {
   return issueDisplayLabels[code] ?? code;
 }
@@ -849,8 +866,13 @@ export default async function TtgdtxAccountingDashboardPage() {
                       Chưa có phát sinh kế toán TTGDTX.
                     </div>
                   ) : (
-                    movements.map((movement) => (
-                      <div key={movement.movement_code} className="p-5">
+                    movements.map((movement) => {
+                      const evidenceHref = safeEvidenceHref(
+                        movement.evidence_url,
+                      );
+
+                      return (
+                        <div key={movement.movement_code} className="p-5">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div>
                             <StatusBadge tone="info">
@@ -874,13 +896,14 @@ export default async function TtgdtxAccountingDashboardPage() {
                           Trạng thái: {movement.status} · Người ghi:{" "}
                           {movement.actor_name ?? "Chưa có"}
                         </p>
-                        {movement.evidence_url ? (
+                        {evidenceHref ? (
                           <Button asChild variant="outline" className="mt-3">
-                            <Link href={movement.evidence_url}>Mở minh chứng</Link>
+                            <Link href={evidenceHref}>Mở minh chứng</Link>
                           </Button>
                         ) : null}
-                      </div>
-                    ))
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>
