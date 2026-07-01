@@ -46,6 +46,9 @@ const requiredFiles = [
   "database/step105_ttgdtx_partner_payment_request_p2_15.sql",
   "database/step106_ttgdtx_payment_request_approval_p2_16.sql",
   "database/step107_ttgdtx_payment_execution_p2_17.sql",
+  "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
+  "app/ttgdtx/reconciliation/page.tsx",
+  "app/ttgdtx/reconciliation/review/page.tsx",
   "docs/TTGDTX_PERIOD_LOCK_ADJUSTMENT_POLICY_20260627.md",
   "docs/P2_17_DUPLICATE_PAYOUT_UAT_RUNBOOK.md",
 ];
@@ -62,6 +65,11 @@ const step104 = read("database/step104_ttgdtx_reconciliation_approval_p2_14.sql"
 const step105 = read("database/step105_ttgdtx_partner_payment_request_p2_15.sql");
 const step106 = read("database/step106_ttgdtx_payment_request_approval_p2_16.sql");
 const step107 = read("database/step107_ttgdtx_payment_execution_p2_17.sql");
+const reconciliationExceptionGate = read(
+  "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
+);
+const reconciliationPage = read("app/ttgdtx/reconciliation/page.tsx");
+const reconciliationReviewPage = read("app/ttgdtx/reconciliation/review/page.tsx");
 
 requireText(policy, /P4-01 receivable\/payment status lifecycle/i, "P4-01 scope");
 requireText(policy, /NO-GO until signed finance UAT and human owner approval/i, "production NO-GO boundary");
@@ -183,19 +191,44 @@ requireAll(
   "database/step107_ttgdtx_payment_execution_p2_17.sql",
 );
 
+requireText(
+  reconciliationExceptionGate,
+  /(?=[\s\S]*data-ttgdtx-reconciliation-exception-gate="P2-13_P2-14")(?=[\s\S]*REC-GATE-01)(?=[\s\S]*REC-GATE-02)(?=[\s\S]*REC-GATE-03)(?=[\s\S]*REC-GATE-04)(?=[\s\S]*POSTED)(?=[\s\S]*invoice_control_status)(?=[\s\S]*LOCKED)(?=[\s\S]*P0-14\/P6-03)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed finance UAT)(?=[\s\S]*payout reliance)/i,
+  "P2-13/P2-14 reconciliation exception gate",
+  "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
+);
+
+requireText(
+  reconciliationPage,
+  /(?=[\s\S]*TtgdtxReconciliationExceptionGate)(?=[\s\S]*currentCode="P2-13")/i,
+  "P2-13 reconciliation exception gate mount",
+  "app/ttgdtx/reconciliation/page.tsx",
+);
+
+requireText(
+  reconciliationReviewPage,
+  /(?=[\s\S]*TtgdtxReconciliationExceptionGate)(?=[\s\S]*currentCode="P2-14")/i,
+  "P2-14 reconciliation exception gate mount",
+  "app/ttgdtx/reconciliation/review/page.tsx",
+);
+
 const packageJson = JSON.parse(read("package.json"));
 if (!packageJson.scripts?.["audit:ttgdtx-receivable-payment-lifecycle"]) {
   fail("package.json: missing audit:ttgdtx-receivable-payment-lifecycle script");
 }
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
-if (!/P4-01[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627\.md[\s\S]*audit:ttgdtx-receivable-payment-lifecycle/.test(backlog)) {
-  fail("Backlog P4-01 must be PASS_LOCAL and reference lifecycle policy audit.");
+if (
+  !/P4-01[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627\.md[\s\S]*ttgdtx-reconciliation-exception-gate\.tsx[\s\S]*REC-GATE-01[\s\S]*REC-GATE-04[\s\S]*audit:ttgdtx-receivable-payment-lifecycle/.test(backlog)
+) {
+  fail("Backlog P4-01 must be PASS_LOCAL and reference lifecycle policy plus reconciliation exception gate audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
-if (!/Receivable\/payment status lifecycle[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627\.md/.test(checklist)) {
-  fail("Production checklist must include receivable/payment status lifecycle PASS_LOCAL evidence.");
+if (
+  !/Receivable\/payment status lifecycle[\s\S]*PASS_LOCAL[\s\S]*TTGDTX_RECEIVABLE_PAYMENT_STATUS_LIFECYCLE_POLICY_20260627\.md[\s\S]*ttgdtx-reconciliation-exception-gate\.tsx[\s\S]*REC-GATE-01[\s\S]*REC-GATE-04/.test(checklist)
+) {
+  fail("Production checklist must include receivable/payment lifecycle PASS_LOCAL evidence and reconciliation exception gate.");
 }
 
 const agents = read("AGENTS.md");
@@ -207,7 +240,11 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-receivable-payment-lifecycle")) {
 }
 
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
-if (!releaseGateAudit.includes(policyPath) || !releaseGateAudit.includes("audit:ttgdtx-receivable-payment-lifecycle")) {
+if (
+  !releaseGateAudit.includes(policyPath) ||
+  !releaseGateAudit.includes("ttgdtx-reconciliation-exception-gate.tsx") ||
+  !releaseGateAudit.includes("audit:ttgdtx-receivable-payment-lifecycle")
+) {
   fail("scripts/audit-ttgdtx-release-gates.mjs: missing receivable/payment lifecycle gate coverage.");
 }
 

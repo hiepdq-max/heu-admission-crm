@@ -3049,6 +3049,30 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
+  /(?=[\s\S]*data-ttgdtx-reconciliation-exception-gate="P2-13_P2-14")(?=[\s\S]*Gate ngoại lệ đối soát P2-13\/P2-14)(?=[\s\S]*REC-GATE-01)(?=[\s\S]*REC-GATE-02)(?=[\s\S]*REC-GATE-03)(?=[\s\S]*REC-GATE-04)(?=[\s\S]*POSTED)(?=[\s\S]*invoice_control_status)(?=[\s\S]*LOCKED)(?=[\s\S]*P0-14\/P6-03)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Signed finance UAT)(?=[\s\S]*payout reliance)/i,
+  "P2-13/P2-14 reconciliation exception gate",
+);
+
+requireText(
+  "app/ttgdtx/reconciliation/page.tsx",
+  /(?=[\s\S]*TtgdtxReconciliationExceptionGate)(?=[\s\S]*currentCode="P2-13")/i,
+  "P2-13 reconciliation exception gate mount",
+);
+
+requireText(
+  "app/ttgdtx/reconciliation/review/page.tsx",
+  /(?=[\s\S]*TtgdtxReconciliationExceptionGate)(?=[\s\S]*currentCode="P2-14")/i,
+  "P2-14 reconciliation exception gate mount",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-13 P2-14 Reconciliation Exception Gate[\s\S]*ttgdtx-reconciliation-exception-gate\.tsx[\s\S]*REC-GATE-01[\s\S]*REC-GATE-04[\s\S]*audit-ttgdtx-receivable-payment-lifecycle\.mjs[\s\S]*does not create receivables[\s\S]*execute payout[\s\S]*mark production GO/i,
+  "P2-13/P2-14 reconciliation exception gate implementation log",
+);
+
+requireText(
   "docs/HEU_LEAD_LIFECYCLE_STANDARD_20260627.md",
   /(?=[\s\S]*P3-01 is PASS_LOCAL)(?=[\s\S]*No raw form dump into AI)(?=[\s\S]*P3-02 prepares lead-to-student handover)(?=[\s\S]*P2-05 remains the receivable gate)(?=[\s\S]*P2-03 remains the final student receivable creation control)/i,
   "P3-01 lead lifecycle PASS_LOCAL and finance-gate boundary",

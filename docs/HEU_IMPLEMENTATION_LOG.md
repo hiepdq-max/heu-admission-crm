@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-07-01 - P2-13 P2-14 Reconciliation Exception Gate
+
+- Added `components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx` as a
+  read-only PASS_LOCAL gate for P2-13/P2-14 before batch creation, review,
+  approval, lock and payout reliance.
+- Mounted the gate on `/ttgdtx/reconciliation` and
+  `/ttgdtx/reconciliation/review` so KHTC sees `REC-GATE-01` through
+  `REC-GATE-04` for posted payment proof, invoice/chung-tu resolution,
+  locked period dependency and controlled evidence redaction.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P4-01 and the current
+  receivable/collection/reconciliation state cite the gate.
+- Tightened `scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the gate cannot be removed
+  silently.
+- Boundary phrase: PASS_LOCAL only; does not create receivables, auto gach no,
+  approve reconciliation, lock a real period, create payment requests, execute payout,
+  accept evidence, accept UAT, approve finance action or mark production GO.
+
 ## 2026-07-01 - Report View Finance Day-1 Evidence Gate
 
 - Updated `components/reports/report-view-source-map-panel.tsx` so

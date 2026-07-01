@@ -46,6 +46,7 @@ for (const file of [
   "docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
+  "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
@@ -153,7 +154,7 @@ requireText(
 );
 requireText(
   inventory,
-  /M01 Legal[\s\S]*P0-19 legal\/finance gate, immediate stop guard, acceptance matrix, gate decision manifest and Legal\/SOP\/Governance control matrix are packaged; signed UAT and PHAP_CHE owner review still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist, immediate stop guard, waiver\/exception register, acceptance matrix and gate decision manifest exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-10 invoice\/chung-tu decision manifest, P2-13 and P2-14 packaged; shared VND helper covers P2-10\/P2-17 money-form parsing\/input formatting plus P2-18 dashboard and P5-03 Finance Desk display[\s\S]*Local controls pass; signed finance UAT pending/i,
+  /M01 Legal[\s\S]*P0-19 legal\/finance gate, immediate stop guard, acceptance matrix, gate decision manifest and Legal\/SOP\/Governance control matrix are packaged; signed UAT and PHAP_CHE owner review still required[\s\S]*Legal\/finance gate[\s\S]*P0-19 guard, UAT checklist, immediate stop guard, waiver\/exception register, acceptance matrix and gate decision manifest exist[\s\S]*Signed legal\/finance UAT still required[\s\S]*Receivable\/collection\/reconciliation[\s\S]*P2-03, P2-10, P2-10 invoice\/chung-tu UAT evidence checklist, P2-10 invoice\/chung-tu decision manifest, P2-13 and P2-14 packaged with the read-only reconciliation exception gate `REC-GATE-01` through `REC-GATE-04` on `\/ttgdtx\/reconciliation` and `\/ttgdtx\/reconciliation\/review`[\s\S]*shared VND helper covers P2-10\/P2-17 money-form parsing\/input formatting plus P2-18 dashboard and P5-03 Finance Desk display[\s\S]*Local controls pass; signed finance UAT pending/i,
   "P0-19 legal/finance acceptance matrix control state",
 );
 requireText(

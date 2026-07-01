@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { TtgdtxReconciliationExceptionGate } from "@/components/ttgdtx/ttgdtx-reconciliation-exception-gate";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -374,6 +375,7 @@ export default async function TtgdtxReconciliationReviewPage({
       ) : (
         <div className="space-y-6">
           <TtgdtxOperatingControlStrip currentCode="P2-14" />
+          <TtgdtxReconciliationExceptionGate />
 
           {message ? (
             <section
