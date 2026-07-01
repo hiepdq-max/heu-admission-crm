@@ -87,6 +87,7 @@ Codex, AI or a local PASS_LOCAL guard must not:
 - `components/short-course/short-course-attendance-payment-gap-pack.tsx`
 - `/short-course`
 - `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
+- `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md`
 - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
 
 Passing this audit means only that the Short Course gap-pack structure exists
@@ -94,3 +95,18 @@ locally and the production boundary is visible. Short Course remains `CAN_SUA`
 until signed attendance/payment UAT, policy signoff, source reconciliation,
 period-lock/reversal proof, audit evidence and owner decision evidence are
 completed outside Codex/chat.
+
+## 8. Mail/Drive Payment Intake Sample
+
+The sample file
+`docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md` records a
+Git-safe Gmail/Drive-share intake pattern for the folder title "Thanh toan GV
+lop ngan han". It keeps only metadata, controlled folder reference and product
+design fields in Git. Raw Drive URLs, teacher/payment files, vouchers, bank
+data, payroll data and personal data must stay outside Git/Codex/chat in the
+approved controlled evidence location.
+
+This sample can guide the Short Course payment intake queue and Finance
+Desk/Short Course evidence handoff. It does not approve teacher payment,
+invoice/payment verification, evidence acceptance, UAT acceptance, owner GO or
+production GO.

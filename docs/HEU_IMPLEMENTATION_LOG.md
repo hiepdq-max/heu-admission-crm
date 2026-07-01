@@ -5919,6 +5919,21 @@
   server logs, create users, grant access, accept UAT, approve finance reliance
   or mark production GO.
 
+## 2026-07-01 - Short Course Payment Mail/Drive Intake Sample
+
+- Added `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md`
+  as a Git-safe sample for capturing Gmail/Drive-share metadata from the
+  "Thanh toan GV lop ngan han" notification without storing the raw Drive URL,
+  payroll files, vouchers, bank data, teacher personal data or payment data in
+  Git/Codex/chat.
+- Linked the sample from the Short Course attendance/payment gap pack so the
+  future Short Course payment intake queue can record controlled folder
+  references, evidence class, reviewer, decision value and Finance
+  Desk/Short Course handoff metadata.
+- This is product-design evidence-intake packaging only. It does not accept
+  evidence, approve teacher payment, verify invoices/payments, execute UAT,
+  approve finance reliance, accept owner signoff or mark production GO.
+
 ## 2026-07-01 - SOP Tam Ung Thanh Toan Software Mapping
 
 - Added
