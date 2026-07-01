@@ -49,3 +49,9 @@ workflow-gate, report-view, finance-reliance, AI-scope and owner-decision
 boundaries. It is DRAFT_CONTROL only and cannot be used as official legal
 approval, official SOP issuance, evidence acceptance, UAT acceptance, finance
 approval, owner waiver or production GO.
+
+## 7. Specialized SOP Mapping Drafts
+
+| Specialized SOP | Mapping file | Scope | Boundary |
+|---|---|---|---|
+| Tam ung, hoan ung, de nghi thanh toan va thanh toan HEU | `docs/HEU_SOP_TAM_UNG_THANH_TOAN_SOFTWARE_MAPPING_20260701_V01_DRAFT.md` | ADVANCE_MASTER, ADVANCE_RECON_LOG, PAYMENT_REQUEST, PAYMENT_MASTER, FINANCE_APPROVAL_LOG, AUDIT_LOG, report views and finance gates | DRAFT_CONTROL only; does not issue SOP, approve finance action, execute payment, accept UAT/evidence or mark production GO |

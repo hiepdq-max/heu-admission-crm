@@ -13,6 +13,7 @@
     "audit:heu-controlled-evidence-redaction-pack": "node scripts/audit-heu-controlled-evidence-redaction-pack.mjs",
     "audit:heu-current-state-inventory": "node scripts/audit-heu-current-state-inventory.mjs",
     "audit:heu-data-foundation": "node scripts/audit-heu-data-foundation.mjs",
+    "audit:heu-finance-advance-payment-shell": "node scripts/audit-heu-finance-advance-payment-shell.mjs",
     "audit:heu-finance-desk": "node scripts/audit-heu-finance-desk.mjs",
     "audit:heu-final-handoff-coverage": "node scripts/audit-heu-final-handoff-coverage.mjs",
     "audit:heu-git-hygiene": "node scripts/audit-heu-git-hygiene.mjs",

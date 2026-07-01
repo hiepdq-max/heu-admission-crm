@@ -5918,3 +5918,31 @@
 - This is error-disclosure hardening only. It does not run migrations, expose
   server logs, create users, grant access, accept UAT, approve finance reliance
   or mark production GO.
+
+## 2026-07-01 - SOP Tam Ung Thanh Toan Software Mapping
+
+- Added
+  `docs/HEU_SOP_TAM_UNG_THANH_TOAN_SOFTWARE_MAPPING_20260701_V01_DRAFT.md`
+  to convert the draft HEU advance/payment SOP into software objects, workflow
+  statuses, role boundaries, gate decisions, report views and next-build
+  slices for Finance Desk / Advance Management / Payment Request Control.
+- Linked the specialized mapping from
+  `docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md` so the general SOP-to-
+  data register can route this finance SOP without treating it as officially
+  issued.
+- This is SOP-to-software design packaging only. It does not issue the SOP,
+  create production records, execute bank transfer, approve finance action,
+  accept evidence, accept UAT, approve owner signoff or mark production GO.
+
+## 2026-07-01 - Finance Advance Payment Read-Only Shell
+
+- Added `docs/HEU_FINANCE_ADVANCE_PAYMENT_DATA_DICTIONARY_20260701_V01_DRAFT.md`,
+  `components/finance/advance-payment-workflow-shell.tsx` and
+  `app/finance/advance-payment/page.tsx` to turn the SOP advance/payment
+  mapping into a read-only mock workflow shell with ADVANCE_GATE,
+  ADVANCE_RECON_GATE, PAYMENT_REQUEST_GATE, PAYMENT_GATE and
+  P0_10_EVIDENCE_GATE.
+- Added `audit:heu-finance-advance-payment-shell` so the P5-04 shell,
+  dictionary, backlog row, navigation link and local-only boundary cannot
+  drift out of the control package.
+- This is mock workflow and data-dictionary packaging only. It does not create production records, execute bank transfer, approve finance action, accept evidence, accept UAT, approve owner signoff or mark production GO.
