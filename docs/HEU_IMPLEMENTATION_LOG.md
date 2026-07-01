@@ -5906,3 +5906,15 @@
 - This is access-denial clarity only. It does not create accounts, grant
   access, execute UAT, accept evidence, approve finance reliance, approve
   access closure, move money or mark production GO.
+
+## 2026-07-01 - Finance Desk Controlled Missing-View Error Disclosure
+
+- Replaced the raw Finance Desk data-error detail on the missing-view state
+  with the controlled code `FIN_DESK_VIEW_UNAVAILABLE` and directed IT/Data to
+  inspect server logs in the controlled environment.
+- Extended `audit:heu-finance-desk` so `dataError.message` cannot be rendered
+  from `/finance-desk`, and synchronized the current-state inventory plus
+  system backlog with the controlled disclosure guard.
+- This is error-disclosure hardening only. It does not run migrations, expose
+  server logs, create users, grant access, accept UAT, approve finance reliance
+  or mark production GO.

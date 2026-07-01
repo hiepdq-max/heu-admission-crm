@@ -208,6 +208,10 @@ for (const forbidden of [
   }
 }
 
+if (page.includes("dataError.message")) {
+  fail("app/finance-desk/page.tsx: must not render raw database errors");
+}
+
 requireText(
   page,
   /function safeHref\([\s\S]*!value\.startsWith\("\/"\)[\s\S]*value\.startsWith\("\/\/"\)[\s\S]*return "\/finance-desk"/i,
@@ -345,6 +349,13 @@ requireText(
   page,
   /<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*!canOpen[\s\S]*dataError[\s\S]*Chưa đọc được đầy đủ Finance Desk[\s\S]*Step90-Step111[\s\S]*đã backup/i,
   "read-only boundary is visible before no-access and missing-view states",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  page,
+  /FIN_DESK_VIEW_UNAVAILABLE[\s\S]*raw database\/schema error[\s\S]*server logs/i,
+  "controlled Finance Desk missing-view error disclosure",
   "app/finance-desk/page.tsx",
 );
 

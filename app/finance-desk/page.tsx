@@ -669,7 +669,10 @@ export default async function FinanceDeskPage() {
                 </p>
                 <p className="mt-1">
                   Hãy áp dụng các migration Step90-Step111 trên môi trường UAT
-                  đã backup. Chi tiết: {dataError.message}
+                  đã backup. Mã kiểm soát: FIN_DESK_VIEW_UNAVAILABLE.
+                  Không hiển thị raw database/schema error trên màn hình người
+                  dùng; IT/Data kiểm tra chi tiết trong server logs của môi
+                  trường kiểm soát.
                 </p>
               </div>
             </div>
