@@ -25,7 +25,10 @@ function requireText(contents, pattern, label, file) {
 }
 
 const componentPath = "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx";
+const approvalSeparationGuardPath =
+  "components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx";
 const p215PagePath = "app/ttgdtx/payment-requests/page.tsx";
+const p216PagePath = "app/ttgdtx/payment-requests/review/page.tsx";
 const p217PagePath = "app/ttgdtx/payment-requests/pay/page.tsx";
 const p215ActionPath = "app/ttgdtx/payment-requests/actions.ts";
 const p217ActionPath = "app/ttgdtx/payment-requests/pay/actions.ts";
@@ -33,7 +36,9 @@ const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
 
 for (const file of [
   componentPath,
+  approvalSeparationGuardPath,
   p215PagePath,
+  p216PagePath,
   p217PagePath,
   p215ActionPath,
   p217ActionPath,
@@ -48,7 +53,9 @@ for (const file of [
 }
 
 const component = read(componentPath);
+const approvalSeparationGuard = read(approvalSeparationGuardPath);
 const p215Page = read(p215PagePath);
+const p216Page = read(p216PagePath);
 const p217Page = read(p217PagePath);
 const p215Action = read(p215ActionPath);
 const p217Action = read(p217ActionPath);
@@ -94,6 +101,20 @@ requireText(
 );
 
 requireText(
+  approvalSeparationGuard,
+  /(?=[\s\S]*data-ttgdtx-payment-approval-separation-guard="P2-16")(?=[\s\S]*Guard tách kiểm tra\/duyệt P2-16)(?=[\s\S]*P2-16-SEP-01)(?=[\s\S]*P2-16-SEP-06)(?=[\s\S]*Maker không tự duyệt)(?=[\s\S]*CHECK tr(?:uoc|ước) APPROVE)(?=[\s\S]*Hồ sơ trước lệnh chi)(?=[\s\S]*Duyệt không phải chi tiền)(?=[\s\S]*Return\/reject bắt buộc lý do)(?=[\s\S]*Bằng chứng đã redact)(?=[\s\S]*data-ttgdtx-payment-approval-decision-boundary="P2-16")(?=[\s\S]*P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*does not initiate payout or approve production use)/i,
+  "P2-16 maker/checker/approver separation guard",
+  approvalSeparationGuardPath,
+);
+
+requireText(
+  p216Page,
+  /(?=[\s\S]*TtgdtxPaymentApprovalSeparationGuard)(?=[\s\S]*currentCode="P2-16")/i,
+  "P2-16 page mounts approval separation guard",
+  p216PagePath,
+);
+
+requireText(
   p217Page,
   /TtgdtxPaymentDossierChecklist[\s\S]*currentStep="P2-17"/,
   "P2-17 page mounts dossier checklist",
@@ -129,9 +150,23 @@ requireText(
 );
 
 requireText(
+  checklist,
+  /P2-16 check\/approve payment request[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-payment-approval-separation-guard\.tsx[\s\S]*P2-16-SEP-01[\s\S]*P2-16-SEP-06[\s\S]*P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED[\s\S]*signed payout UAT[\s\S]*one person creating, checking and approving without written owner exception/i,
+  "P2-16 approval separation PASS_LOCAL checklist row",
+  checklistPath,
+);
+
+requireText(
   backlog,
   /P2-15[\s\S]*ttgdtx-payment-dossier-checklist[\s\S]*payment dossier acceptance matrix/i,
   "P2-15 backlog dossier checklist evidence",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+);
+
+requireText(
+  backlog,
+  /P2-16[\s\S]*Partner payment request approval[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-payment-approval-separation-guard\.tsx[\s\S]*P2-16-SEP-01[\s\S]*P2-16-SEP-06[\s\S]*P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED[\s\S]*signed payout UAT/i,
+  "P2-16 backlog approval separation evidence",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
 );
 
@@ -148,6 +183,7 @@ requireText(
 
 for (const needle of [
   componentPath,
+  approvalSeparationGuardPath,
   "scripts/audit-ttgdtx-payment-dossier-checklist.mjs",
   "audit:ttgdtx-payment-dossier-checklist",
 ]) {
@@ -164,4 +200,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("TTGDTX payment dossier checklist audit passed. P2-15/P2-17 show BBNT, partner invoice and payout evidence gates.");
+console.log("TTGDTX payment dossier checklist audit passed. P2-15/P2-16/P2-17 show dossier, approval separation and payout evidence gates.");

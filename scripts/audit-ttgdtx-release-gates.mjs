@@ -148,6 +148,7 @@ const requiredFiles = [
   "components/ttgdtx/ttgdtx-p019-gate-guard.tsx",
   "components/ttgdtx/ttgdtx-p019-uat-evidence-checklist.tsx",
   "components/ttgdtx/ttgdtx-payment-dossier-checklist.tsx",
+  "components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx",
   "components/ttgdtx/ttgdtx-payout-duplicate-guard.tsx",
   "components/ttgdtx/ttgdtx-payout-execution-readiness-checklist.tsx",
   "components/ttgdtx/ttgdtx-payout-uat-evidence-checklist.tsx",
@@ -2809,9 +2810,21 @@ requireText(
 );
 
 requireText(
+  "components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx",
+  /(?=[\s\S]*data-ttgdtx-payment-approval-separation-guard="P2-16")(?=[\s\S]*Guard tách kiểm tra\/duyệt P2-16)(?=[\s\S]*P2-16-SEP-01)(?=[\s\S]*P2-16-SEP-06)(?=[\s\S]*Maker không tự duyệt)(?=[\s\S]*CHECK tr(?:uoc|ước) APPROVE)(?=[\s\S]*Hồ sơ trước lệnh chi)(?=[\s\S]*Duyệt không phải chi tiền)(?=[\s\S]*Return\/reject bắt buộc lý do)(?=[\s\S]*Bằng chứng đã redact)(?=[\s\S]*data-ttgdtx-payment-approval-decision-boundary="P2-16")(?=[\s\S]*P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*does not initiate payout or approve production use)/i,
+  "P2-16 payment approval separation guard",
+);
+
+requireText(
   "app/ttgdtx/payment-requests/page.tsx",
   /TtgdtxPaymentDossierChecklist[\s\S]*currentStep="P2-15"/,
   "P2-15 payment dossier checklist mount",
+);
+
+requireText(
+  "app/ttgdtx/payment-requests/review/page.tsx",
+  /(?=[\s\S]*TtgdtxPaymentApprovalSeparationGuard)(?=[\s\S]*currentCode="P2-16")/i,
+  "P2-16 approval separation guard mount",
 );
 
 requireText(
@@ -2824,6 +2837,18 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /BBNT evidence gate before partner payment[\s\S]*PASS_LOCAL[\s\S]*payment dossier acceptance matrix[\s\S]*audit:ttgdtx-payment-dossier-checklist[\s\S]*signed UAT/i,
   "payment dossier checklist PASS_LOCAL checklist row",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /P2-16 check\/approve payment request[\s\S]*PASS_LOCAL[\s\S]*ttgdtx-payment-approval-separation-guard\.tsx[\s\S]*P2-16-SEP-01[\s\S]*P2-16-SEP-06[\s\S]*P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED[\s\S]*signed payout UAT[\s\S]*one person creating, checking and approving without written owner exception/i,
+  "P2-16 approval separation checklist row",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-16 Payment Approval Separation Guard[\s\S]*ttgdtx-payment-approval-separation-guard\.tsx[\s\S]*P2-16-SEP-01[\s\S]*P2-16-SEP-06[\s\S]*audit-ttgdtx-payment-dossier-checklist\.mjs[\s\S]*does not self-approve payment requests[\s\S]*initiate bank transfer[\s\S]*mark production GO/i,
+  "P2-16 approval separation implementation log",
 );
 
 requireText(

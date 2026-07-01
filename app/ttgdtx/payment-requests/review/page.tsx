@@ -15,6 +15,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { TtgdtxOperatingControlStrip } from "@/components/ttgdtx/ttgdtx-operating-control-strip";
+import { TtgdtxPaymentApprovalSeparationGuard } from "@/components/ttgdtx/ttgdtx-payment-approval-separation-guard";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { firstParam } from "@/lib/workspace";
@@ -354,6 +355,7 @@ export default async function PaymentRequestReviewPage({
     >
       <div className="space-y-5">
         <TtgdtxOperatingControlStrip currentCode="P2-16" />
+        <TtgdtxPaymentApprovalSeparationGuard />
 
         {pageMessage ? (
           <div

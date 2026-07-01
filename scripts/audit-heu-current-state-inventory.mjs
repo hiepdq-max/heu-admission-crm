@@ -47,6 +47,7 @@ for (const file of [
   "components/reports/report-view-source-map-panel.tsx",
   "components/reports/data-master-report-view-bridge-panel.tsx",
   "components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx",
+  "components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
@@ -204,7 +205,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, payment dossier acceptance matrix, duplicate, execution-readiness guards, payout acceptance matrix and payout release decision manifest[\s\S]*Signed payout UAT pending/i,
+  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, payment dossier acceptance matrix, P2-16 maker\/checker\/approver separation guard `P2-16-SEP-01` through `P2-16-SEP-06` with `P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED`, duplicate, execution-readiness guards, payout acceptance matrix and payout release decision manifest[\s\S]*Signed payout UAT pending/i,
   "P2-17 payout execution readiness control state",
 );
 requireText(

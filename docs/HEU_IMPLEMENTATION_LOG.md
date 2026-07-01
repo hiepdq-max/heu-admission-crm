@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-07-01 - P2-16 Payment Approval Separation Guard
+
+- Added `components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx` as a
+  read-only PASS_LOCAL guard for maker/checker/approver separation before a
+  P2-15 payment request can be trusted for P2-16 approval and P2-17 payout reliance.
+- Mounted the guard on `/ttgdtx/payment-requests/review` so KHTC/BGH/Audit see
+  `P2-16-SEP-01` through `P2-16-SEP-06` before CHECK/APPROVE/RETURN/REJECT.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P2-16 is PASS_LOCAL and still
+  requires signed payout UAT plus owner evidence.
+- Tightened `scripts/audit-ttgdtx-payment-dossier-checklist.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the separation guard cannot be
+  removed silently.
+- Boundary phrase: PASS_LOCAL only; does not self-approve payment requests,
+  approve payout, initiate bank transfer, accept evidence, accept UAT,
+  approve finance action, recognize revenue or mark production GO.
+
 ## 2026-07-01 - P2-13 P2-14 Reconciliation Exception Gate
 
 - Added `components/ttgdtx/ttgdtx-reconciliation-exception-gate.tsx` as a
