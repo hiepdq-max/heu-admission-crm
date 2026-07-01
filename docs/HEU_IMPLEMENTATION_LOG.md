@@ -5893,3 +5893,16 @@
 - This is UI action-scope hardening only. It does not grant access, create
   users, execute UAT, accept evidence, approve finance reliance, move money or
   mark production GO.
+
+## 2026-07-01 - Finance Desk P6-04 Access-Denial Checklist
+
+- Added a P6-04 access-denial checklist to the `/finance-desk` no-access state
+  so real-accounting user rehearsals can see which local gate is PASS or
+  BLOCKED without exposing Finance Desk totals, evidence links or workflow
+  action links.
+- Extended `audit:heu-finance-desk` and synchronized the current-state
+  inventory plus system backlog so the denial checklist remains part of the
+  P5-03/P6-04 guard package.
+- This is access-denial clarity only. It does not create accounts, grant
+  access, execute UAT, accept evidence, approve finance reliance, approve
+  access closure, move money or mark production GO.

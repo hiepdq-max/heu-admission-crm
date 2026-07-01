@@ -98,6 +98,13 @@ type FinanceDeskRelianceItem = {
   stopCondition: string;
 };
 
+type FinanceDeskAccessGateItem = {
+  gateId: string;
+  label: string;
+  passed: boolean;
+  detail: string;
+};
+
 const financeDeskRelianceItems: FinanceDeskRelianceItem[] = [
   {
     caseId: "P5-03-REL-01",
@@ -256,6 +263,62 @@ function FinanceDeskActions({ canOpen }: { canOpen: boolean }) {
           </Button>
         </>
       ) : null}
+    </div>
+  );
+}
+
+function FinanceDeskAccessDenialChecklist({
+  items,
+}: {
+  items: FinanceDeskAccessGateItem[];
+}) {
+  return (
+    <div
+      className="mt-4 rounded-md border border-rose-200 bg-white p-4"
+      data-finance-desk-access-denial-checklist="P5-03-P6-04"
+    >
+      <div className="flex items-start gap-3">
+        <ListChecks className="mt-0.5 size-5 shrink-0 text-rose-700" />
+        <div>
+          <h3 className="font-semibold text-rose-950">
+            P6-04 Finance Desk access-denial checklist: PASS_LOCAL only
+          </h3>
+          <p className="mt-1 text-sm leading-6 text-rose-800">
+            No Finance Desk totals, evidence links or workflow action links are
+            rendered while any required gate is BLOCKED.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2">
+        {items.map((item) => (
+          <article
+            className="rounded-md border border-rose-100 bg-rose-50 px-3 py-3"
+            key={item.gateId}
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-md bg-white px-2 py-1 font-mono text-xs font-semibold text-rose-800">
+                {item.gateId}
+              </span>
+              <span
+                className={
+                  item.passed
+                    ? "rounded-md bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-800"
+                    : "rounded-md bg-rose-100 px-2 py-1 text-xs font-semibold text-rose-800"
+                }
+              >
+                {item.passed ? "PASS" : "BLOCKED"}
+              </span>
+            </div>
+            <p className="mt-2 text-sm font-semibold text-rose-950">
+              {item.label}
+            </p>
+            <p className="mt-1 text-sm leading-5 text-rose-800">
+              {item.detail}
+            </p>
+          </article>
+        ))}
+      </div>
     </div>
   );
 }
@@ -463,16 +526,62 @@ export default async function FinanceDeskPage() {
 
   const roleCode = (roleResult.data as string | null) ?? null;
   const segment = segmentResult.data;
+  const profileScopes = scopeResult.data ?? [];
+  const hasRoleOverride = roleCode === "ADMIN" || roleCode === "BGH";
+  const hasFinanceDeskRead = Boolean(financeDeskReadResult.data);
+  const hasTtgdtxReportRead = Boolean(ttgdtxReportReadResult.data);
+  const hasImportRead = Boolean(importReadResult.data);
+  const hasSourceRead = Boolean(sourceReadResult.data);
+  const hasPaymentManage = Boolean(paymentManageResult.data);
+  const hasAnyFinanceDeskPermission =
+    hasFinanceDeskRead ||
+    hasTtgdtxReportRead ||
+    hasImportRead ||
+    hasSourceRead ||
+    hasPaymentManage;
+  const hasWorkspaceSegmentScope = Boolean(
+    segment?.id &&
+      profileScopes.some((scope) => scope.segment_id === segment.id),
+  );
   const canOpen = canOpenFinanceDesk(
     segment?.id ?? null,
     roleCode,
-    scopeResult.data ?? [],
-    Boolean(financeDeskReadResult.data),
-    Boolean(ttgdtxReportReadResult.data),
-    Boolean(importReadResult.data),
-    Boolean(sourceReadResult.data),
-    Boolean(paymentManageResult.data),
+    profileScopes,
+    hasFinanceDeskRead,
+    hasTtgdtxReportRead,
+    hasImportRead,
+    hasSourceRead,
+    hasPaymentManage,
   );
+  const accessGateItems: FinanceDeskAccessGateItem[] = [
+    {
+      gateId: "P6-04-FD-ACCESS-01",
+      label: "Authenticated Finance Desk session",
+      passed: Boolean(user.id),
+      detail: "The route redirects to login before this state can render.",
+    },
+    {
+      gateId: "P6-04-FD-ACCESS-02",
+      label: "Approved role or Finance Desk permission",
+      passed: hasRoleOverride || hasAnyFinanceDeskPermission,
+      detail:
+        "Requires ADMIN/BGH override or one approved finance/report/import/source/payment permission.",
+    },
+    {
+      gateId: "P6-04-FD-ACCESS-03",
+      label: "TTGDTX 9+ workspace scope match",
+      passed: hasRoleOverride || hasWorkspaceSegmentScope,
+      detail:
+        "Non-override accounts must have an active TC9_TTGDTX_LINKED segment scope before seeing totals.",
+    },
+    {
+      gateId: "P6-04-FD-ACCESS-04",
+      label: "Workflow action links remain locked",
+      passed: !canOpen,
+      detail:
+        "Import, Source Control and P2-18 Dashboard links render only after canOpen is true.",
+    },
+  ];
 
   let financeSummary = emptyFinanceSummary;
   let sourceSummary = emptySourceSummary;
@@ -548,6 +657,7 @@ export default async function FinanceDeskPage() {
             Tài khoản hiện tại chưa được mở quyền HEU Finance Desk hoặc chưa có
             phạm vi TTGDTX 9+ phù hợp. Cần quyền finance_desk.read, quyền báo
             cáo/import/nguồn TTGDTX, hoặc vai trò ADMIN/BGH.
+            <FinanceDeskAccessDenialChecklist items={accessGateItems} />
           </section>
         ) : dataError ? (
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">

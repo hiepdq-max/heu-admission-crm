@@ -224,6 +224,13 @@ requireText(
 
 requireText(
   page,
+  /(?=[\s\S]*type FinanceDeskAccessGateItem)(?=[\s\S]*function FinanceDeskAccessDenialChecklist)(?=[\s\S]*data-finance-desk-access-denial-checklist="P5-03-P6-04")(?=[\s\S]*P6-04 Finance Desk access-denial checklist: PASS_LOCAL only)(?=[\s\S]*No Finance Desk totals, evidence links or workflow action links are\s+rendered while any required gate is BLOCKED)(?=[\s\S]*const accessGateItems[\s\S]*P6-04-FD-ACCESS-01[\s\S]*P6-04-FD-ACCESS-02[\s\S]*P6-04-FD-ACCESS-03[\s\S]*P6-04-FD-ACCESS-04)(?=[\s\S]*!canOpen[\s\S]*<FinanceDeskAccessDenialChecklist items=\{accessGateItems\} \/>)/i,
+  "Finance Desk P6-04 access-denial checklist",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  page,
   /function FinanceDeskReadOnlyBoundary\(\)[\s\S]*data-finance-desk-readonly-boundary="P5-03"[\s\S]*Mọi sửa số liệu tiền phải quay về đúng bước gốc P2[\s\S]*dashboard không tự phê duyệt[\s\S]*không thay thế chứng từ[\s\S]*không khởi tạo lệnh chuyển tiền[\s\S]*Production remains NO-GO until\s+backup\/restore evidence, signed UAT, migration approval and owner\s+Go\/No-Go exist outside Codex\/chat/i,
   "read-only finance operating boundary",
   "app/finance-desk/page.tsx",
