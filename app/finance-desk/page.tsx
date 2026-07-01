@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { FinanceDeskUatEvidenceChecklist } from "@/components/finance/finance-desk-uat-evidence-checklist";
+import { FinanceOfficialOperationGate } from "@/components/finance/finance-official-operation-gate";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -649,6 +650,7 @@ export default async function FinanceDeskPage() {
     >
       <div className="space-y-6">
         <FinanceDeskReadOnlyBoundary />
+        <FinanceOfficialOperationGate />
         <FinanceDeskRelianceDecisionManifest />
         <FinanceDeskUatEvidenceChecklist />
 

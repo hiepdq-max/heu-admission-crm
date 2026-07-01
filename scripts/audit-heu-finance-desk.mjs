@@ -34,6 +34,7 @@ function requireAllText(contents, tokens, label, file) {
 
 for (const file of [
   "app/finance-desk/page.tsx",
+  "components/finance/finance-official-operation-gate.tsx",
   "components/finance/finance-desk-uat-evidence-checklist.tsx",
   "database/step108_ttgdtx_accounting_dashboard_p2_18.sql",
   "database/step111_heu_finance_desk.sql",
@@ -57,6 +58,11 @@ for (const file of [
 
 const page = existsSync(path.join(repoRoot, "app/finance-desk/page.tsx"))
   ? read("app/finance-desk/page.tsx")
+  : "";
+const officialOperationGate = existsSync(
+  path.join(repoRoot, "components/finance/finance-official-operation-gate.tsx"),
+)
+  ? read("components/finance/finance-official-operation-gate.tsx")
   : "";
 const uatChecklist = existsSync(
   path.join(repoRoot, "components/finance/finance-desk-uat-evidence-checklist.tsx"),
@@ -223,6 +229,20 @@ requireText(
   page,
   /function FinanceDeskActions[\s\S]*data-finance-desk-action-scope-guard="P5-03-P6-04"[\s\S]*<Link href="\/finance-desk">[\s\S]*canOpen \?[\s\S]*<Link href="\/ttgdtx\/import">[\s\S]*<Link href="\/ttgdtx\/source-control">[\s\S]*<Link href="\/ttgdtx\/accounting-dashboard">[\s\S]*: null/i,
   "Finance Desk scoped action guard",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  officialOperationGate,
+  /(?=[\s\S]*data-finance-official-operation-gate="P6-04_P2-18_P5-03_P0-03_P0-09")(?=[\s\S]*Finance official operation gate: NO-GO until signed)(?=[\s\S]*OFFICIAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-OFFICIAL-01[\s\S]*P6-04 signed role\/workspace UAT)(?=[\s\S]*FIN-OFFICIAL-02[\s\S]*P2-18 signed accounting-dashboard UAT)(?=[\s\S]*FIN-OFFICIAL-03[\s\S]*P5-03 signed Finance Desk UAT)(?=[\s\S]*FIN-OFFICIAL-04[\s\S]*P0-03 backup\/restore proof accepted)(?=[\s\S]*FIN-OFFICIAL-05[\s\S]*P0-09 owner GO\/NO-GO signed)(?=[\s\S]*No statutory accounting, voucher posting, finance approval, bank\s+transfer instruction, production dashboard reliance, UAT acceptance\s+or production GO is approved here)(?=[\s\S]*No GO button is provided)/i,
+  "Finance official operation gate",
+  "components/finance/finance-official-operation-gate.tsx",
+);
+
+requireText(
+  page,
+  /import \{ FinanceOfficialOperationGate \}[\s\S]*<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceOfficialOperationGate \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*<FinanceDeskUatEvidenceChecklist \/>/i,
+  "Finance official operation gate mounted before reliance and UAT checklist",
   "app/finance-desk/page.tsx",
 );
 
