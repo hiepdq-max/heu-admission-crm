@@ -5880,3 +5880,16 @@
 - This is audit traceability-readiness packaging only. It does not accept UAT,
   approve finance, waive evidence, accept financial traceability for
   production, or approve production GO.
+
+## 2026-07-01 - Finance Desk Scoped Action Guard
+
+- Added a P5-03/P6-04 scoped action guard to `/finance-desk` so accounts that
+  fail the Finance Desk permission/workspace-scope gate only see the local
+  reload action; Import, Source Control and P2-18 Dashboard action links render
+  only after `canOpen` is true.
+- Extended `audit:heu-finance-desk` and synchronized the current-state
+  inventory plus system backlog so the scoped action guard cannot drift out of
+  the Finance Desk control package.
+- This is UI action-scope hardening only. It does not grant access, create
+  users, execute UAT, accept evidence, approve finance reliance, move money or
+  mark production GO.

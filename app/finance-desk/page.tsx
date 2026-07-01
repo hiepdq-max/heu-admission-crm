@@ -222,6 +222,44 @@ function safeHref(value: string | null | undefined) {
   return value;
 }
 
+function FinanceDeskActions({ canOpen }: { canOpen: boolean }) {
+  return (
+    <div
+      className="contents"
+      data-finance-desk-action-scope-guard="P5-03-P6-04"
+    >
+      <Button asChild variant="outline">
+        <Link href="/finance-desk">
+          <RefreshCcw className="size-4" />
+          Tải lại
+        </Link>
+      </Button>
+      {canOpen ? (
+        <>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/import">
+              <FileSpreadsheet className="size-4" />
+              Import Excel
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/source-control">
+              <FolderSearch className="size-4" />
+              Hồ sơ/link
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/ttgdtx/accounting-dashboard">
+              <LayoutDashboard className="size-4" />
+              Dashboard P2-18
+            </Link>
+          </Button>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 function badgeTone(status: string) {
   if (["PASS", "READY_TO_LOCK", "LOCKED"].includes(status)) {
     return "border-emerald-200 bg-emerald-50 text-emerald-700";
@@ -498,34 +536,7 @@ export default async function FinanceDeskPage() {
       description="Công nợ học phí, import Excel, đối soát nguồn và thanh toán trung tâm cho TTGDTX 9+."
       workspaceSegmentId={segment?.id ?? null}
       workspaceReturnTo="/finance-desk"
-      actions={
-        <>
-          <Button asChild variant="outline">
-            <Link href="/finance-desk">
-              <RefreshCcw className="size-4" />
-              Tải lại
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/ttgdtx/import">
-              <FileSpreadsheet className="size-4" />
-              Import Excel
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/ttgdtx/source-control">
-              <FolderSearch className="size-4" />
-              Hồ sơ/link
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/ttgdtx/accounting-dashboard">
-              <LayoutDashboard className="size-4" />
-              Dashboard P2-18
-            </Link>
-          </Button>
-        </>
-      }
+      actions={<FinanceDeskActions canOpen={canOpen} />}
     >
       <div className="space-y-6">
         <FinanceDeskReadOnlyBoundary />

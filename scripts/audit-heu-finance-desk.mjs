@@ -217,6 +217,13 @@ requireText(
 
 requireText(
   page,
+  /function FinanceDeskActions[\s\S]*data-finance-desk-action-scope-guard="P5-03-P6-04"[\s\S]*<Link href="\/finance-desk">[\s\S]*canOpen \?[\s\S]*<Link href="\/ttgdtx\/import">[\s\S]*<Link href="\/ttgdtx\/source-control">[\s\S]*<Link href="\/ttgdtx\/accounting-dashboard">[\s\S]*: null/i,
+  "Finance Desk scoped action guard",
+  "app/finance-desk/page.tsx",
+);
+
+requireText(
+  page,
   /function FinanceDeskReadOnlyBoundary\(\)[\s\S]*data-finance-desk-readonly-boundary="P5-03"[\s\S]*Mọi sửa số liệu tiền phải quay về đúng bước gốc P2[\s\S]*dashboard không tự phê duyệt[\s\S]*không thay thế chứng từ[\s\S]*không khởi tạo lệnh chuyển tiền[\s\S]*Production remains NO-GO until\s+backup\/restore evidence, signed UAT, migration approval and owner\s+Go\/No-Go exist outside Codex\/chat/i,
   "read-only finance operating boundary",
   "app/finance-desk/page.tsx",
