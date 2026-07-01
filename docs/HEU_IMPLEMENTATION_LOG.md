@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Desk Safe Pilot Order Documentation
+
+- Synchronized the Finance safe pilot order from
+  `components/finance/finance-official-operation-gate.tsx` into
+  `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` and
+  `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md` so operators see
+  `FIN-PILOT-01` through `FIN-PILOT-05` and
+  `FIN_PILOT_READY / NO_GO / BLOCKED` before expanding real-accounting access.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so the P5-03
+  Finance Desk package requires secure account creation outside Codex/chat,
+  narrow TTGDTX scope, P6-04 negative-account proof, P2-18/P5-03 read-only
+  trial, result ledger and access closure before expansion.
+- This is documentation/audit propagation only. It does not create accounts,
+  send invites, store passwords, grant access, execute UAT, accept evidence,
+  approve finance reliance, approve access closure, move money, issue bank
+  instructions, or mark production GO. Boundary wording: issue bank instructions,
+  approve owner GO/NO-GO and mark production GO remain blocked.
+
 ## 2026-07-01 - P2-18 Dashboard Safe Evidence Links
 
 - Added `safeEvidenceHref` to `/ttgdtx/accounting-dashboard` so movement

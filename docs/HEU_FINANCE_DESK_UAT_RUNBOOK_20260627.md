@@ -76,6 +76,17 @@ conditions after `FIN_START_READY`, `FIN_ACTIVATION_READY` and
 does not approve bulk real-data import, auto debt clearing, COM production
 calculation, payment execution or production GO.
 
+The `/finance-desk` official-operation gate also exposes
+`data-finance-safe-pilot-order="P6-04_P2-18_P5-03"` with
+`FIN-PILOT-01` through `FIN-PILOT-05` and decision value
+`FIN_PILOT_READY / NO_GO / BLOCKED`. Use this order before opening
+real-accounting pilot access: secure account creation outside Codex/chat,
+narrow TTGDTX profile/scope, P6-04 pre-login and negative-account proof,
+P2-18/P5-03 read-only trial, then result ledger and access closure. The order
+does not create accounts, send invites, store passwords, grant access, execute
+UAT, accept evidence, approve finance reliance, approve access closure, move
+money, issue bank instructions or mark production GO.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |

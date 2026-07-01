@@ -39,6 +39,25 @@ real-accounting user label:
 - Stop if any required precondition is missing, ownerless, unsigned, raw,
   `NO_GO` or `BLOCKED`.
 
+## 2.1 Finance Safe Pilot Order
+
+Decision value: `FIN_PILOT_READY / NO_GO / BLOCKED`.
+
+Run the pilot in this exact order. Do not open the next step until the previous
+step is recorded with controlled evidence outside Git/Codex/chat.
+
+| Step | Required action | STOP condition |
+|---|---|---|
+| `FIN-PILOT-01` | Account owner creates or invites the real accounting account only through the approved secure channel outside Codex/chat | Any password, OTP, reset link, activation link, service-role key, raw PII, bank data or voucher appears in Codex/chat |
+| `FIN-PILOT-02` | IT links the auth user to the HEU profile and grants only the approved role, workspace and TTGDTX partner scope | Role is broad, workspace scope is unclear, partner scope is missing or the negative account is not prepared |
+| `FIN-PILOT-03` | Run the P6-04 route matrix before Finance Desk use, including `BLOCKED` or `EMPTY_SCOPED_STATE` proof for out-of-scope users | Any route leaks data, shows raw evidence, or lacks redacted controlled evidence and owner sign-off |
+| `FIN-PILOT-04` | Open P2-18 accounting dashboard and P5-03 Finance Desk as read-only rehearsal surfaces only | The pilot can edit, approve, pay, post vouchers, issue bank instructions or treat dashboard totals as production reliance |
+| `FIN-PILOT-05` | Record controlled evidence IDs, owner decision and `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED` before adding any more users | Day-1 result ledger, P0-17 access closure, backup/restore proof or owner GO/NO-GO is missing |
+
+This safe pilot order does not create accounts, send invites, store passwords,
+grant access, execute UAT, accept evidence, approve finance reliance, approve
+access closure, move money, issue bank instructions or mark production GO.
+
 ## 3. Real User Labels
 
 Actual account identity must be recorded only in the external controlled
