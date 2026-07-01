@@ -123,8 +123,8 @@ requireText(
 
 requireText(
   action,
-  /const voucherNo = textValue\(formData, "voucher_no"\)[\s\S]*if \(!voucherNo\)[\s\S]*const evidenceUrl = textValue\(formData, "evidence_url"\)[\s\S]*if \(!evidenceUrl\)/i,
-  "server action requires voucher and evidence URL before RPC",
+  /const voucherNo = textValue\(formData, "voucher_no"\)[\s\S]*const payoutBoundaryAck = textValue\(formData, "payout_boundary_ack"\)[\s\S]*if \(!voucherNo\)[\s\S]*payoutBoundaryAck !== "on"[\s\S]*const evidenceUrl = textValue\(formData, "evidence_url"\)[\s\S]*if \(!evidenceUrl\)/i,
+  "server action requires voucher, boundary acknowledgment and evidence URL before RPC",
   actionPath,
 );
 
@@ -179,14 +179,14 @@ requireText(
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*mandatory payout boundary acknowledgment)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps P2-17 IN_PROGRESS with guard evidence",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-17[\s\S]*payout acceptance matrix[\s\S]*audit:ttgdtx-payout-duplicate-guard/i,
+  /P2-17[\s\S]*payout acceptance matrix[\s\S]*mandatory payout boundary acknowledgment[\s\S]*audit:ttgdtx-payout-duplicate-guard/i,
   "backlog records P2-17 duplicate guard audit",
   backlogPath,
 );

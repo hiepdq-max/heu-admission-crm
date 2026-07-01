@@ -105,6 +105,8 @@ const requiredFiles = [
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "app/reports/page.tsx",
+  "app/ttgdtx/payment-requests/pay/actions.ts",
+  "app/ttgdtx/payment-requests/pay/page.tsx",
   "docs/TTGDTX_LINKED_OPERATING_REVIEW_20260625.md",
   "docs/TTGDTX_OPERATING_CONTROL_MATRIX_20260625.md",
   "docs/TTGDTX_PROCESS_CODE_MAP_20260625.md",
@@ -2894,9 +2896,27 @@ requireText(
 );
 
 requireText(
+  "app/ttgdtx/payment-requests/pay/page.tsx",
+  /name="payout_boundary_ack"[\s\S]*required[\s\S]*type="checkbox"[\s\S]*value="on"[\s\S]*P2-17 chi ghi nhan chung tu da chi[\s\S]*khong tao lenh chuyen khoan/i,
+  "P2-17 payout boundary acknowledgment checkbox",
+);
+
+requireText(
+  "app/ttgdtx/payment-requests/pay/actions.ts",
+  /const payoutBoundaryAck = textValue\(formData, "payout_boundary_ack"\)[\s\S]*payoutBoundaryAck !== "on"[\s\S]*record_ttgdtx_partner_payment_disbursement/i,
+  "P2-17 server action boundary acknowledgment before RPC",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*ttgdtx-payout-duplicate-guard\.tsx)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*ttgdtx-payout-uat-evidence-checklist\.tsx)(?=[\s\S]*payout acceptance matrix)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*mandatory payout boundary acknowledgment)(?=[\s\S]*audit:ttgdtx-payout-duplicate-guard)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
   "P2-17 duplicate guard checklist row",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P2-17 Payout Boundary Acknowledgment[\s\S]*payout_boundary_ack[\s\S]*record_ttgdtx_partner_payment_disbursement[\s\S]*audit-ttgdtx-payout-execution-readiness\.mjs[\s\S]*does not execute payout UAT[\s\S]*initiate bank transfer[\s\S]*mark production GO/i,
+  "P2-17 payout boundary acknowledgment implementation log",
 );
 
 requireText(

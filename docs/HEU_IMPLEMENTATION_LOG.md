@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-07-01 - P2-17 Payout Boundary Acknowledgment
+
+- Added a mandatory `payout_boundary_ack` checkbox to
+  `/ttgdtx/payment-requests/pay` so the operator must confirm P2-17 only
+  records evidence for money already paid.
+- Added the same acknowledgment check in
+  `app/ttgdtx/payment-requests/pay/actions.ts` before
+  `record_ttgdtx_partner_payment_disbursement` is called.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P2-17 still remains
+  IN_PROGRESS/PASS_LOCAL with signed payout UAT pending.
+- Tightened `scripts/audit-ttgdtx-payout-execution-readiness.mjs`,
+  `scripts/audit-ttgdtx-payout-duplicate-guard.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the boundary acknowledgment
+  cannot be removed silently.
+- Boundary phrase: PASS_LOCAL only; does not execute payout UAT, move money,
+  initiate bank transfer, enter OTP, approve bank action, approve finance action,
+  accept evidence, accept UAT or mark production GO.
+
 ## 2026-07-01 - P2-16 Payment Approval Separation Guard
 
 - Added `components/ttgdtx/ttgdtx-payment-approval-separation-guard.tsx` as a

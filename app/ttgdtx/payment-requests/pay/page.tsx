@@ -599,6 +599,28 @@ export default async function PaymentExecutionPage({
                         value="/ttgdtx/payment-requests/pay"
                       />
 
+                      <label
+                        className={`flex items-start gap-3 rounded-lg border p-3 text-sm ${
+                          canPayThisRequest
+                            ? "border-amber-200 bg-amber-50 text-amber-900"
+                            : "border-zinc-200 bg-zinc-100 text-zinc-500"
+                        }`}
+                      >
+                        <input
+                          className="mt-1 size-4 shrink-0"
+                          disabled={!canPayThisRequest}
+                          name="payout_boundary_ack"
+                          required
+                          type="checkbox"
+                          value="on"
+                        />
+                        <span>
+                          Toi xac nhan P2-17 chi ghi nhan chung tu da chi,
+                          khong tao lenh chuyen khoan, khong nhap OTP/ngan hang
+                          va khong phe duyet tai chinh thay cho chu so huu.
+                        </span>
+                      </label>
+
                       <div className="grid gap-4 md:grid-cols-2">
                         <label className="space-y-1 text-sm">
                           <span>Số tiền chi</span>

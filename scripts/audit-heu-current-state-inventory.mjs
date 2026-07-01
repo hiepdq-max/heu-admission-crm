@@ -205,7 +205,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, payment dossier acceptance matrix, P2-16 maker\/checker\/approver separation guard `P2-16-SEP-01` through `P2-16-SEP-06` with `P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED`, duplicate, execution-readiness guards, payout acceptance matrix and payout release decision manifest[\s\S]*Signed payout UAT pending/i,
+  /Partner payment\/payout[\s\S]*P2-15, P2-16, P2-17 packaged with dossier, payment dossier acceptance matrix, P2-16 maker\/checker\/approver separation guard `P2-16-SEP-01` through `P2-16-SEP-06` with `P2_16_APPROVAL_SEPARATED \/ NO_GO \/ BLOCKED`, duplicate, execution-readiness guards, payout acceptance matrix, payout release decision manifest and mandatory payout boundary acknowledgment before the P2-17 server action calls the RPC[\s\S]*Signed payout UAT pending/i,
   "P2-17 payout execution readiness control state",
 );
 requireText(

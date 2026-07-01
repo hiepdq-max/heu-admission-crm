@@ -99,6 +99,13 @@ requireText(
 );
 
 requireText(
+  page,
+  /name="payout_boundary_ack"[\s\S]*required[\s\S]*type="checkbox"[\s\S]*value="on"[\s\S]*P2-17 chi ghi nhan chung tu da chi[\s\S]*khong tao lenh chuyen khoan/i,
+  "P2-17 payout boundary acknowledgment checkbox",
+  pagePath,
+);
+
+requireText(
   button,
   /useFormStatus\(\)[\s\S]*pending[\s\S]*disabled=\{isDisabled\}/,
   "submit button disables while pending",
@@ -107,8 +114,8 @@ requireText(
 
 requireText(
   action,
-  /const voucherNo = textValue\(formData, "voucher_no"\)[\s\S]*if \(!voucherNo\)[\s\S]*const evidenceUrl = textValue\(formData, "evidence_url"\)[\s\S]*if \(!evidenceUrl\)[\s\S]*record_ttgdtx_partner_payment_disbursement/i,
-  "server action requires voucher and evidence before RPC",
+  /const voucherNo = textValue\(formData, "voucher_no"\)[\s\S]*const payoutBoundaryAck = textValue\(formData, "payout_boundary_ack"\)[\s\S]*if \(!voucherNo\)[\s\S]*payoutBoundaryAck !== "on"[\s\S]*const evidenceUrl = textValue\(formData, "evidence_url"\)[\s\S]*if \(!evidenceUrl\)[\s\S]*record_ttgdtx_partner_payment_disbursement/i,
+  "server action requires voucher, boundary acknowledgment and evidence before RPC",
   actionPath,
 );
 
@@ -128,21 +135,21 @@ requireText(
 
 requireText(
   checklist,
-  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
+  /(?=[\s\S]*P2-17 execute payout once)(?=[\s\S]*IN_PROGRESS)(?=[\s\S]*payout release decision manifest)(?=[\s\S]*mandatory payout boundary acknowledgment)(?=[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx)(?=[\s\S]*audit:ttgdtx-payout-execution-readiness)(?=[\s\S]*signed UAT)/i,
   "production checklist keeps P2-17 IN_PROGRESS with execution readiness audit",
   checklistPath,
 );
 
 requireText(
   backlog,
-  /P2-17[\s\S]*payout release decision manifest[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx[\s\S]*audit:ttgdtx-payout-execution-readiness/i,
+  /P2-17[\s\S]*payout release decision manifest[\s\S]*mandatory payout boundary acknowledgment[\s\S]*ttgdtx-payout-execution-readiness-checklist\.tsx[\s\S]*audit:ttgdtx-payout-execution-readiness/i,
   "backlog records P2-17 execution readiness guard",
   backlogPath,
 );
 
 requireText(
   inventory,
-  /(?=[\s\S]*Partner payment\/payout[\s\S]*payout release decision manifest[\s\S]*Signed payout UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS)/i,
+  /(?=[\s\S]*Partner payment\/payout[\s\S]*payout release decision manifest and mandatory payout boundary acknowledgment[\s\S]*Signed payout UAT pending)(?=[\s\S]*npm\.cmd run audit:ttgdtx-payout-execution-readiness[\s\S]*PASS)/i,
   "current-state P2-17 payout execution readiness audit evidence",
   inventoryPath,
 );

@@ -131,6 +131,33 @@ fastSection("2026-07-01 - P2-16 Payment Approval Separation Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-07-01 - P2-17 Payout Boundary Acknowledgment", [
+  "payout_boundary_ack",
+  "/ttgdtx/payment-requests/pay",
+  "app/ttgdtx/payment-requests/pay/actions.ts",
+  "record_ttgdtx_partner_payment_disbursement",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "IN_PROGRESS/PASS_LOCAL",
+  "signed payout UAT",
+  "audit-ttgdtx-payout-execution-readiness.mjs",
+  "audit-ttgdtx-payout-duplicate-guard.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "PASS_LOCAL only",
+  "does not execute payout UAT",
+  "move money",
+  "initiate bank transfer",
+  "enter OTP",
+  "approve bank action",
+  "approve finance action",
+  "accept evidence",
+  "accept UAT",
+  "mark production GO",
+]);
+
 fastSection("2026-07-01 - P2-13 P2-14 Reconciliation Exception Gate", [
   "ttgdtx-reconciliation-exception-gate.tsx",
   "PASS_LOCAL",

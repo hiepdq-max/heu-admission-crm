@@ -45,6 +45,7 @@ export async function recordTtgdtxPartnerPaymentDisbursementAction(
   const requestId = uuidValue(textValue(formData, "request_id"));
   const amount = parsePositiveVndAmountInput(textValue(formData, "amount_vnd"));
   const voucherNo = textValue(formData, "voucher_no");
+  const payoutBoundaryAck = textValue(formData, "payout_boundary_ack");
 
   if (!requestId) {
     redirectWithError(
@@ -59,6 +60,13 @@ export async function recordTtgdtxPartnerPaymentDisbursementAction(
 
   if (!voucherNo) {
     redirectWithError(formData, "Vui lòng nhập số chứng từ hoặc số phiếu chi.");
+  }
+
+  if (payoutBoundaryAck !== "on") {
+    redirectWithError(
+      formData,
+      "Can xac nhan P2-17 chi ghi nhan chung tu da chi, khong tao lenh chuyen khoan hoac phe duyet ngan hang.",
+    );
   }
 
   const evidenceUrl = textValue(formData, "evidence_url");
