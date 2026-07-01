@@ -1,5 +1,31 @@
 # HEU Implementation Log
 
+## 2026-07-01 - Report View Finance Day-1 Evidence Gate
+
+- Updated `components/reports/report-view-source-map-panel.tsx` so
+  `RV_TTGDTX_FINANCE_SUMMARY` requires Finance Day-1 start-gate and result ledger evidence
+  before Finance Desk or accounting dashboard reliance.
+- Updated `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so the Report View evidence queue
+  cites `FIN-START-EVID-001` through `FIN-START-EVID-005`,
+  `FIN-DAY1-EVID-001` through `FIN-DAY1-EVID-005`,
+  `FIN_START_READY / NO_GO / BLOCKED` and
+  `FIN_DAY1_RESULT_READY / NO_GO / BLOCKED`.
+- Tightened `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so Report View reliance cannot drop
+  the Finance Day-1 evidence gate silently.
+- This is read-only report governance packaging only. It does not upload files,
+  collect signatures, accept evidence, approve report-view reliance, approve
+  dashboard reliance, approve finance action, accept UAT, move money, issue
+  bank instructions or mark production GO.
+- Boundary phrase: does not upload files, collect signatures, accept evidence,
+  approve report-view reliance, approve dashboard reliance, approve finance
+  action, accept UAT, move money, issue bank instructions or mark production GO.
+
 ## 2026-06-30 - Signed UAT Routing Start Gate Current-State Audit Alignment
 
 - Updated `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs` so the

@@ -99,6 +99,36 @@ fastRequire(
   "scripts/audit-ttgdtx-release-gates.mjs",
 );
 
+fastSection("2026-07-01 - Report View Finance Day-1 Evidence Gate", [
+  "report-view-source-map-panel.tsx",
+  "RV_TTGDTX_FINANCE_SUMMARY",
+  "Finance Day-1 start-gate and result ledger evidence",
+  "HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "FIN-DAY1-EVID-001",
+  "FIN-DAY1-EVID-005",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "does not upload files",
+  "collect signatures",
+  "accept evidence",
+  "approve report-view reliance",
+  "approve dashboard reliance",
+  "approve finance action",
+  "accept UAT",
+  "move money",
+  "issue bank instructions",
+  "mark production GO",
+]);
+
 fastSection("2026-06-30 - Signed UAT Routing Start Gate Current-State Audit Alignment", [
   "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
   "HEU_CURRENT_STATE_INVENTORY.md",

@@ -54,7 +54,8 @@ const reportViewSources: ReportViewSource[] = [
     consumer: "/finance-desk, /ttgdtx/accounting-dashboard, BGH",
     source:
       "ttgdtx_accounting_dashboard_summary, partner/control boards, heu_finance_desk_summary",
-    qualityGate: "P2-18 source reconciliation and P5-03 Finance Desk UAT",
+    qualityGate:
+      "P2-18 source reconciliation, P5-03 Finance Desk UAT, Finance Day-1 start-gate and result ledger",
     status: "SOURCE_MAP_DRAFT",
   },
   {
@@ -165,9 +166,12 @@ const dataQualityChecks: DataQualityCheck[] = [
     id: "DQ-RV-02",
     appliesTo: "Finance / TTGDTX views",
     captureStatus: "SOURCE_RECON_REQUIRED",
-    ownerAction: "KHTC + IT/Data link P2-18 source reconciliation and P5-03 UAT references",
-    evidenceState: "Signed dashboard/Finance Desk browser UAT missing",
-    stopCondition: "Totals drift or source view is missing",
+    ownerAction:
+      "KHTC + IT/Data link P2-18 source reconciliation, P5-03 UAT, Finance Day-1 start-gate and result-ledger references",
+    evidenceState:
+      "Signed dashboard/Finance Desk browser UAT, Finance Day-1 start-gate and result ledger missing",
+    stopCondition:
+      "Totals drift, source view is missing or Finance Day-1 evidence is missing",
   },
   {
     id: "DQ-RV-03",
@@ -262,10 +266,11 @@ const evidenceAttachmentCaptures: EvidenceAttachmentCapture[] = [
     id: "RV-EVID-01",
     reportView: "RV_TTGDTX_FINANCE_SUMMARY",
     requiredEvidence:
-      "P2-18 source reconciliation, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005",
-    decisionValue: "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED",
+      "P2-18 source reconciliation, P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005, FIN-START-EVID-001 through FIN-START-EVID-005 and FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005",
+    decisionValue:
+      "P5_03_CONTROLLED_TRIAL_READY / FIN_START_READY / FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
     stopCondition:
-      "Finance Desk or accounting dashboard is used for reliance before signed evidence and owner decision exist",
+      "Finance Desk or accounting dashboard is used for reliance before signed evidence, Finance Day-1 start-gate, result ledger and owner decision exist",
   },
   {
     id: "RV-EVID-02",
@@ -356,7 +361,7 @@ export function ReportViewSourceMapPanel() {
         hidden
       />
       <div
-        data-heu-report-view-evidence-attachment-queue="RV-EVID-01 RV-EVID-02 RV-EVID-03 RV-EVID-04 RV-EVID-05 RV-EVID-06 P5-03-TRIAL-EVID-001 P5-03-TRIAL-EVID-005 P5_03_CONTROLLED_TRIAL_READY SIGNED_UAT_READY PAYOUT_RELEASE_READY HOU_LEDGER_READY SC_ATTENDANCE_PAYMENT_READY AUDIT_AI_SCOPE_READY NO_GO BLOCKED"
+        data-heu-report-view-evidence-attachment-queue="RV-EVID-01 RV-EVID-02 RV-EVID-03 RV-EVID-04 RV-EVID-05 RV-EVID-06 P5-03-TRIAL-EVID-001 P5-03-TRIAL-EVID-005 FIN-START-EVID-001 FIN-START-EVID-005 FIN-DAY1-EVID-001 FIN-DAY1-EVID-005 P5_03_CONTROLLED_TRIAL_READY FIN_START_READY FIN_DAY1_RESULT_READY SIGNED_UAT_READY PAYOUT_RELEASE_READY HOU_LEDGER_READY SC_ATTENDANCE_PAYMENT_READY AUDIT_AI_SCOPE_READY NO_GO BLOCKED"
         hidden
       />
 

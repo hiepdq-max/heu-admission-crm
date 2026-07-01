@@ -133,7 +133,7 @@ requireText(
 
 requireText(
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
-  /Evidence Attachment Queue[\s\S]*RV-EVID-01[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-02[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-03[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-04[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-05[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-06[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*does not upload files,\s+accept evidence, approve signoff, waive blockers or store raw evidence/i,
+  /Evidence Attachment Queue[\s\S]*RV-EVID-01[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ FIN_START_READY \/ FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-02[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-03[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-04[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-05[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*RV-EVID-06[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*does not upload files,\s+accept evidence, approve signoff, waive blockers or store raw evidence/i,
   "report-view evidence attachment queue doc",
 );
 
@@ -157,7 +157,7 @@ requireText(
 
 requireText(
   "components/reports/report-view-source-map-panel.tsx",
-  /(?=[\s\S]*data-heu-report-view-evidence-attachment-queue="RV-EVID-01)(?=[\s\S]*Evidence attachment queue)(?=[\s\S]*RV-EVID-01)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-02)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-03)(?=[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-04)(?=[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-05)(?=[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-06)(?=[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*It does not upload files,\s+accept evidence or waive blockers)/i,
+  /(?=[\s\S]*data-heu-report-view-evidence-attachment-queue="RV-EVID-01)(?=[\s\S]*Evidence attachment queue)(?=[\s\S]*RV-EVID-01)(?=[\s\S]*P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005)(?=[\s\S]*FIN-START-EVID-001 through FIN-START-EVID-005)(?=[\s\S]*FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ FIN_START_READY \/ FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-02)(?=[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-03)(?=[\s\S]*PAYOUT_RELEASE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-04)(?=[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-05)(?=[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*RV-EVID-06)(?=[\s\S]*AUDIT_AI_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*It does not upload files,\s+accept evidence or waive blockers)/i,
   "report-view evidence attachment queue UI",
 );
 
@@ -216,13 +216,13 @@ if (!packageJson.scripts?.["audit:heu-p0-register-pack"]) {
 
 requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P0-16[\s\S]*HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*\/reports[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
+  /P0-16[\s\S]*HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*\/reports[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and result ledger[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
   "P0-16 backlog row",
 );
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*\/reports[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
+  /HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*\/reports[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and result ledger[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
   "production checklist P0 register row",
 );
 
@@ -240,8 +240,14 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue, AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\s\S]*AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
   "current-state P0 register evidence",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /Report View Finance Day-1 Evidence Gate[\s\S]*report-view-source-map-panel\.tsx[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate and result\s+ledger evidence[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*FIN-START-EVID-001[\s\S]*FIN-DAY1-EVID-005[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit-heu-p0-register-pack\.mjs[\s\S]*does not upload files[\s\S]*approve report-view reliance[\s\S]*mark production GO/i,
+  "report-view Finance Day-1 evidence gate implementation log entry",
 );
 
 requireText(

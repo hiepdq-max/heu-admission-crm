@@ -25,7 +25,7 @@ unapproved sensitive data.
 
 | Logical report view | Current controlled source | Consumer | Data quality check | Owner signoff | Current status |
 |---|---|---|---|---|---|
-| RV_TTGDTX_FINANCE_SUMMARY | `ttgdtx_accounting_dashboard_summary`; `ttgdtx_accounting_dashboard_partner_board`; `ttgdtx_accounting_dashboard_control_board`; `heu_finance_desk_summary` | `/finance-desk`; `/ttgdtx/accounting-dashboard`; BGH blocker summary | P2-18 dashboard source reconciliation; P5-03 Finance Desk UAT | KHTC + BGH + IT_DATA + Audit | SOURCE_MAP_DRAFT |
+| RV_TTGDTX_FINANCE_SUMMARY | `ttgdtx_accounting_dashboard_summary`; `ttgdtx_accounting_dashboard_partner_board`; `ttgdtx_accounting_dashboard_control_board`; `heu_finance_desk_summary` | `/finance-desk`; `/ttgdtx/accounting-dashboard`; BGH blocker summary | P2-18 dashboard source reconciliation; P5-03 Finance Desk UAT; Finance Day-1 start-gate checklist; Finance Day-1 result ledger | KHTC + BGH + IT_DATA + Audit | SOURCE_MAP_DRAFT |
 | RV_TTGDTX_CONG_NO_THUC_THU | `ttgdtx_student_receivable_readiness`; `ttgdtx_tuition_payment_board`; `ttgdtx_collection_summary`; `ttgdtx_accounting_dashboard_summary` | Finance Desk; accounting dashboard | Receivable/payment lifecycle; actual HEU receipt and reconciliation evidence | KHTC + Audit | SOURCE_MAP_DRAFT |
 | RV_TTGDTX_COM_CHI_TRA | `ttgdtx_partner_payment_request_board`; `ttgdtx_partner_payment_approval_board`; `ttgdtx_partner_payment_execution_board`; `ttgdtx_partner_payment_disbursement_recent` | Finance Desk; payment request/pay routes | BBNT/partner invoice dossier; duplicate payout guard; payout execution readiness | KHTC + PHAP_CHE + BGH + Audit | SOURCE_MAP_DRAFT |
 | RV_TTGDTX_UAT_READINESS | `lib/production-readiness.ts`; `TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; UAT operator handoff docs; current-state inventory | Master Control; TTGDTX landing guard | P0-03/P0-09/P0-13/P0-14/P0-15 evidence path checks | BGH + IT_DATA + KHTC + PHAP_CHE + Audit | SOURCE_MAP_DRAFT |
@@ -55,7 +55,7 @@ unapproved sensitive data.
 | Check ID | Applies to | Required evidence | Stop condition |
 |---|---|---|---|
 | DQ-RV-01 | All report views | Owner, physical source and allowed consumer are listed | Missing owner or source |
-| DQ-RV-02 | Finance/TTGDTX views | P2-18 source reconciliation and P5-03 UAT references | Totals drift or source view missing |
+| DQ-RV-02 | Finance/TTGDTX views | P2-18 source reconciliation, P5-03 UAT references, Finance Day-1 start-gate checklist and Finance Day-1 result ledger | Totals drift, source view missing or Finance Day-1 evidence missing |
 | DQ-RV-03 | Cong no/thuc thu | Receipt, payment and reconciliation status are traceable | Dashboard claims real HEU receipt without evidence |
 | DQ-RV-04 | COM/chi tra | Contract, BBNT, partner invoice, approval and duplicate guard are traceable | COM finalization or payout is implied |
 | DQ-RV-05 | HOU | HOU ledger remains separate from TTGDTX and Short Course | HOU data is mixed into TTGDTX ledger |
@@ -67,7 +67,7 @@ unapproved sensitive data.
 
 | Evidence ID | Report view | Required evidence | Decision value | Stop condition |
 |---|---|---|---|---|
-| RV-EVID-01 | RV_TTGDTX_FINANCE_SUMMARY | P2-18 source reconciliation; P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005 | P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED | Finance Desk or accounting dashboard is used for reliance before signed evidence and owner decision exist |
+| RV-EVID-01 | RV_TTGDTX_FINANCE_SUMMARY | P2-18 source reconciliation; P5-03-TRIAL-EVID-001 through P5-03-TRIAL-EVID-005; FIN-START-EVID-001 through FIN-START-EVID-005; FIN-DAY1-EVID-001 through FIN-DAY1-EVID-005 | P5_03_CONTROLLED_TRIAL_READY / FIN_START_READY / FIN_DAY1_RESULT_READY / NO_GO / BLOCKED | Finance Desk or accounting dashboard is used for reliance before signed evidence, Finance Day-1 start-gate, result ledger and owner decision exist |
 | RV-EVID-02 | RV_TTGDTX_UAT_READINESS | P0-03 backup/restore proof; P0-09 owner signoff pack; P0-14 evidence binder; P0-15 final handoff | SIGNED_UAT_READY / NO_GO / BLOCKED | Owner Go/No-Go is requested before UAT routes and blocker proof are attached |
 | RV-EVID-03 | RV_TTGDTX_COM_CHI_TRA | BBNT; partner invoice dossier; duplicate payout proof; payout release decision | PAYOUT_RELEASE_READY / NO_GO / BLOCKED | COM finalization or payout is implied before P2-17 evidence and owner approval |
 | RV-EVID-04 | RV_HOU_LEDGER_SUMMARY | HOU handover UAT; tuition ledger proof; commission policy signoff | HOU_LEDGER_READY / NO_GO / BLOCKED | HOU ledger is mixed with TTGDTX or Short Course before HOU owner signoff |
