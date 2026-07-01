@@ -240,6 +240,13 @@ requireText(
 );
 
 requireText(
+  officialOperationGate,
+  /(?=[\s\S]*data-finance-safe-pilot-order="P6-04_P2-18_P5-03")(?=[\s\S]*Finance safe pilot order: read-only before any expansion)(?=[\s\S]*FIN_PILOT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-PILOT-01[\s\S]*Secure account creation outside Codex\/chat)(?=[\s\S]*FIN-PILOT-02[\s\S]*Narrow TTGDTX profile and workspace scope)(?=[\s\S]*FIN-PILOT-03[\s\S]*P6-04 pre-login and negative-account matrix)(?=[\s\S]*FIN-PILOT-04[\s\S]*P2-18 and P5-03 read-only trial only)(?=[\s\S]*FIN-PILOT-05[\s\S]*Result ledger and access closure before expansion)(?=[\s\S]*BLOCKED or EMPTY_SCOPED_STATE proof)(?=[\s\S]*ACCESS_RETAIN or REVOKE_OR_REDUCE)(?=[\s\S]*does not create accounts, send invites, store\s+passwords, grant access, execute UAT, accept evidence, approve\s+finance reliance, approve access closure, move money, issue bank\s+instructions or mark production GO)/i,
+  "Finance safe pilot order",
+  "components/finance/finance-official-operation-gate.tsx",
+);
+
+requireText(
   page,
   /import \{ FinanceOfficialOperationGate \}[\s\S]*<FinanceDeskReadOnlyBoundary \/>[\s\S]*<FinanceOfficialOperationGate \/>[\s\S]*<FinanceDeskRelianceDecisionManifest \/>[\s\S]*<FinanceDeskUatEvidenceChecklist \/>/i,
   "Finance official operation gate mounted before reliance and UAT checklist",
