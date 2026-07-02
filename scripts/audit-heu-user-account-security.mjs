@@ -18,18 +18,38 @@ function requireFile(relativePath) {
   }
 }
 
-function requireText(contents, pattern, label, file) {
-  if (!pattern.test(contents)) {
-    fail(`${file}: missing ${label}`);
-  }
-}
-
 function requireAllText(contents, tokens, label, file) {
   for (const token of tokens) {
     if (!contents.includes(token)) {
       fail(`${file}: missing ${label}: ${token}`);
     }
   }
+}
+
+function requireOrderedText(contents, tokens, label, file) {
+  let cursor = 0;
+
+  for (const token of tokens) {
+    const next = contents.indexOf(token, cursor);
+    if (next === -1) {
+      fail(`${file}: missing ordered ${label}: ${token}`);
+      return;
+    }
+    cursor = next + token.length;
+  }
+}
+
+function requireSection(contents, heading, tokens, file) {
+  const marker = `## ${heading}`;
+  const start = contents.indexOf(marker);
+  if (start === -1) {
+    fail(`${file}: missing section ${heading}`);
+    return;
+  }
+
+  const next = contents.indexOf("\n## ", start + marker.length);
+  const section = next === -1 ? contents.slice(start) : contents.slice(start, next);
+  requireAllText(section, tokens, heading, file);
 }
 
 const formPath = "components/settings/user-create-form.tsx";
@@ -89,165 +109,345 @@ const agents = read(agentsPath);
 const releaseGate = read(releaseGatePath);
 const implementationLog = read(logPath);
 
-requireText(
+requireAllText(
   form,
-  /id="password"[\s\S]*type="password"[\s\S]*autoComplete="new-password"[\s\S]*minLength=\{8\}[\s\S]*aria-describedby="temporary-password-help"[\s\S]*temporary-password-help[\s\S]*không gửi qua Codex\/chat[\s\S]*kênh bảo mật/i,
+  [
+    'id="password"',
+    'type="password"',
+    'autoComplete="new-password"',
+    "minLength={8}",
+    'aria-describedby="temporary-password-help"',
+    'id="temporary-password-help"',
+    "Codex/chat",
+    "email",
+    "service role key",
+    "Không hiển thị key",
+    "không ghi log mật khẩu tạm",
+  ],
   "temporary password field safety guidance",
   formPath,
 );
 
-requireText(
-  form,
-  /service role key[\s\S]*Không hiển thị key[\s\S]*không ghi log mật khẩu tạm/i,
-  "service-role key and temporary password no-log guidance",
-  formPath,
-);
-
-requireText(
+requireAllText(
   actions,
-  /(?=[\s\S]*unsafeTemporaryPasswords)(?=[\s\S]*password123)(?=[\s\S]*heu123456)(?=[\s\S]*normalizePasswordSignal)(?=[\s\S]*isUnsafeTemporaryPassword)(?=[\s\S]*emailLocalPart)(?=[\s\S]*nameParts)(?=[\s\S]*unsafe_temporary_password)/i,
+  [
+    "unsafeTemporaryPasswords",
+    "password123",
+    "heu123456",
+    "normalizePasswordSignal",
+    "isUnsafeTemporaryPassword",
+    "emailLocalPart",
+    "nameParts",
+    "unsafe_temporary_password",
+  ],
   "server-side unsafe temporary password guard",
   actionsPath,
 );
 
-requireText(
+requireAllText(
   settingsPage,
-  /unsafe_temporary_password[\s\S]*Mật khẩu tạm quá dễ đoán[\s\S]*email\/tên user[\s\S]*kênh bảo mật/i,
-  "unsafe temporary password operator error",
+  [
+    "unsafe_temporary_password",
+    "Mật khẩu tạm quá dễ đoán",
+    "email/tên user",
+    "kênh bảo mật",
+    "RealUserOnboardingPanel",
+    "<RealUserOnboardingPanel />",
+    "<UserCreateForm",
+  ],
+  "settings page user-account guard",
   settingsPagePath,
 );
 
-requireText(
+requireOrderedText(
+  settingsPage,
+  ["RealUserOnboardingPanel", "<RealUserOnboardingPanel />", "<UserCreateForm"],
+  "real-user onboarding panel before create-user form",
+  settingsPagePath,
+);
+
+requireOrderedText(
+  scopePage,
+  ["RealUserOnboardingPanel", "<RealUserOnboardingPanel />", "<UserCreateForm"],
+  "real-user onboarding panel before scoped create-user form",
+  scopePagePath,
+);
+
+requireAllText(
   onboarding,
-  /(?=[\s\S]*data-heu-real-user-onboarding-panel="P0-17")(?=[\s\S]*Real user onboarding for accounting)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*USER-REAL-01)(?=[\s\S]*USER-REAL-05)(?=[\s\S]*Supabase Auth)(?=[\s\S]*User Scope Enforcement)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*USER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links,\s+account activation\/invite links)(?=[\s\S]*production GO)/i,
+  [
+    'data-heu-real-user-onboarding-panel="P0-17"',
+    "Real user onboarding for accounting",
+    "PASS_LOCAL only",
+    "USER-REAL-01",
+    "USER-REAL-05",
+    "Supabase Auth",
+    "User Scope Enforcement",
+    "P6-04",
+    "P2-18",
+    "P5-03",
+    "USER_READY / NO_GO / BLOCKED",
+    "passwords, temporary passwords",
+    "OTPs",
+    "password reset links",
+    "account activation/invite links",
+    "production GO",
+    'data-heu-real-user-finance-lanes="P0-17-P5-03"',
+    "KHTC accounting operator",
+    "BGH read-only reviewer",
+    "Audit read-only reviewer",
+    "Phap Che contract/legal reviewer",
+    "Out-of-scope negative account",
+  ],
   "real-user accounting onboarding guard",
   onboardingPath,
 );
 
-requireText(
+requireAllText(
   onboarding,
-  /(?=[\s\S]*data-heu-real-user-finance-lanes="P0-17-P5-03")(?=[\s\S]*KHTC accounting operator)(?=[\s\S]*BGH read-only reviewer)(?=[\s\S]*Audit read-only reviewer)(?=[\s\S]*Phap Che contract\/legal reviewer)(?=[\s\S]*Out-of-scope negative account)/i,
-  "real-user finance-accounting lanes",
-  onboardingPath,
-);
-
-requireText(
-  onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*Finance Day-1 start gates before real-accounting accounts)(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not invite, create or activate any real-accounting account)(?=[\s\S]*controlled evidence outside Git\/Codex\/chat)(?=[\s\S]*Checklist:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*gate\.requiredProof)(?=[\s\S]*gate\.stopCondition)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_START_GATES",
+    "PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST",
+    'data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17"',
+    "Finance Day-1 start gates before real-accounting accounts",
+    "FIN_START_READY / NO_GO / BLOCKED",
+    "Do not invite, create or activate any real-accounting account",
+    "controlled evidence outside Git/Codex/chat",
+    "gate.requiredProof",
+    "gate.stopCondition",
+  ],
   "finance Day-1 start gates before real-accounting accounts UI",
   onboardingPath,
 );
 
-requireText(
+requireAllText(
   onboarding,
-  /(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*Real-user access closure after pilot\/UAT)(?=[\s\S]*USER-CLOSE-01)(?=[\s\S]*USER-CLOSE-04)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*soft-revoke\/INACTIVE)(?=[\s\S]*passwords, temporary passwords, OTPs, password reset links)(?=[\s\S]*account activation\/invite links)/i,
-  "real-user access closure guard",
-  onboardingPath,
-);
-
-requireText(
-  onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER")(?=[\s\S]*Finance Day-1 sequential access closure lanes)(?=[\s\S]*Close one `FIN-USER` lane at a time)(?=[\s\S]*current lane has a\s+controlled P0-17 closure decision)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.closureDecisionValue)(?=[\s\S]*lane\.retainCondition)(?=[\s\S]*lane\.reduceOrRevokeCondition)(?=[\s\S]*lane\.nextLaneGate)(?=[\s\S]*lane\.stopCondition)/i,
-  "finance Day-1 sequential access closure lanes UI",
-  onboardingPath,
-);
-
-requireText(
-  onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-account-activation="P0-17-P6-04")(?=[\s\S]*Finance Day-1 account activation handoff)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*invite status, profile link, narrow scope and P6-04\s+pre-login checks)(?=[\s\S]*without storing credentials or invite links)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*item\.requiredProof)(?=[\s\S]*item\.stopCondition)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS",
+    "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE",
+    'data-heu-finance-day-one-account-activation="P0-17-P6-04"',
+    "Finance Day-1 account activation handoff",
+    "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+    "invite status, profile link, narrow scope",
+    "without storing credentials or invite links",
+    "item.requiredProof",
+    "item.stopCondition",
+  ],
   "finance Day-1 account activation handoff guard",
   onboardingPath,
 );
 
-requireText(
+requireAllText(
   onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17")(?=[\s\S]*Finance Day-1 P6-04 pre-login route matrix)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Record one P6-04 route\/scope result before any real-accounting account opens P2-18, P5-03 or P2-17)(?=[\s\S]*Negative-control account must be BLOCKED\/EMPTY_SCOPED_STATE)(?=[\s\S]*Matrix:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*item\.rolloutOrder)(?=[\s\S]*item\.entryGate)(?=[\s\S]*item\.advanceGate)(?=[\s\S]*item\.accountLabel)(?=[\s\S]*item\.allowedBeforeFinanceLogin)(?=[\s\S]*item\.blockedBeforeFinanceLogin)(?=[\s\S]*item\.requiredResult)(?=[\s\S]*item\.stopCondition)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    'data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17"',
+    "Finance Day-1 P6-04 pre-login route matrix",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "Record one P6-04 route/scope result",
+    "Negative-control account must be BLOCKED/EMPTY_SCOPED_STATE",
+    "item.rolloutOrder",
+    "item.entryGate",
+    "item.advanceGate",
+    "item.accountLabel",
+    "item.allowedBeforeFinanceLogin",
+    "item.blockedBeforeFinanceLogin",
+    "item.requiredResult",
+    "item.stopCondition",
+  ],
   "finance Day-1 P6-04 pre-login route matrix guard",
   onboardingPath,
 );
 
-requireText(
+requireAllText(
   onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 real-run rehearsal before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*approved real-accounting account labels)(?=[\s\S]*does not create accounts, approve access, accept\s+UAT, move money or mark production GO)(?=[\s\S]*Runbook:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK)(?=[\s\S]*step\.requiredAction)(?=[\s\S]*step\.stopCondition)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_RUNBOOK",
+    "PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS",
+    'data-heu-finance-day-one-run-rehearsal="P0-17-P6-04-P2-18-P5-03-P2-17"',
+    "Finance Day-1 real-run rehearsal before expansion",
+    "FIN_DAY1_READY / NO_GO / BLOCKED",
+    "approved real-accounting account labels",
+    "does not create accounts, approve access, accept",
+    "move money or mark production GO",
+    "step.requiredAction",
+    "step.stopCondition",
+  ],
   "finance Day-1 real-run rehearsal guard",
   onboardingPath,
 );
 
-requireText(
+requireAllText(
   onboarding,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*Finance Day-1 result ledger for real users)(?=[\s\S]*Template:[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Record one controlled result row per approved account label and route)(?=[\s\S]*does not approve\s+access, accept UAT, approve finance reliance, move money or mark\s+production GO)(?=[\s\S]*lane\.rolloutOrder)(?=[\s\S]*lane\.entryGate)(?=[\s\S]*lane\.advanceGate)(?=[\s\S]*lane\.accountLabel)(?=[\s\S]*lane\.requiredResult)(?=[\s\S]*lane\.stopCondition)(?=[\s\S]*item\.forbiddenContent)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",
+    "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
+    "PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE",
+    'data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17"',
+    "Finance Day-1 result ledger for real users",
+    "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+    "Record one controlled result row per approved account label and route",
+    "does not approve",
+    "access, accept UAT",
+    "approve finance reliance",
+    "lane.rolloutOrder",
+    "lane.entryGate",
+    "lane.advanceGate",
+    "lane.accountLabel",
+    "lane.requiredResult",
+    "lane.stopCondition",
+    "item.forbiddenContent",
+  ],
   "finance Day-1 result ledger guard",
   onboardingPath,
 );
 
-requireText(
-  readinessSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)/i,
-  "finance Day-1 start-gate checklist shared source",
-  readinessPath,
+requireAllText(
+  onboarding,
+  [
+    'data-heu-real-user-access-closure="P0-17-P6-04"',
+    "Real-user access closure after pilot/UAT",
+    "USER-CLOSE-01",
+    "USER-CLOSE-04",
+    "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    "soft-revoke/INACTIVE",
+    "passwords, temporary passwords",
+    "account activation/invite links",
+    "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+    'data-heu-finance-day-one-access-closure-lanes="P0-17-FIN-USER"',
+    "Finance Day-1 sequential access closure lanes",
+    "Close one `FIN-USER` lane at a time",
+    "current lane has a",
+    "controlled P0-17 closure decision",
+    "lane.closureDecisionValue",
+    "lane.retainCondition",
+    "lane.reduceOrRevokeCondition",
+    "lane.nextLaneGate",
+  ],
+  "real-user access closure guard and Finance Day-1 closure lanes",
+  onboardingPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*export type ProductionFinanceDayOneStartGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*P0-03 backup\/restore evidence is accepted before real accounts)(?=[\s\S]*FIN-START-02)(?=[\s\S]*Signed finance UAT route package is ready)(?=[\s\S]*FIN-START-03)(?=[\s\S]*P0-10 controlled evidence redaction location is ready)(?=[\s\S]*FIN-START-04)(?=[\s\S]*P0-14\/P0-17 evidence and access-closure path is prepared)(?=[\s\S]*FIN-START-05)(?=[\s\S]*Human owner boundary is acknowledged)(?=[\s\S]*FIN_START_READY)(?=[\s\S]*create accounts, grant access, accept UAT, move money or mark production GO)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST",
+    "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+    "export type ProductionFinanceDayOneStartGate",
+    "export const PRODUCTION_FINANCE_DAY_ONE_START_GATES",
+    "FIN-START-01",
+    "P0-03 backup/restore evidence is accepted before real accounts",
+    "FIN-START-05",
+    "Human owner boundary is acknowledged",
+    "FIN_START_READY",
+    "create accounts, grant access, accept UAT, move money or mark production GO",
+  ],
   "finance Day-1 start gates shared source",
   readinessPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountActivationCheck)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*Account label and owner are approved)(?=[\s\S]*FIN-ACT-02)(?=[\s\S]*Supabase Auth invite stays outside Codex)(?=[\s\S]*FIN-ACT-03)(?=[\s\S]*HEU profile link is completed)(?=[\s\S]*FIN-ACT-04)(?=[\s\S]*Business scope is assigned before login)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*P6-04 pre-login route check is recorded)(?=[\s\S]*Password, temporary password, OTP, reset link, account invite\/activation link)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE",
+    "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+    "export type ProductionFinanceDayOneAccountActivationCheck",
+    "export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS",
+    "FIN-ACT-01",
+    "Account label and owner are approved",
+    "FIN-ACT-05",
+    "P6-04 pre-login route check is recorded",
+    "Password, temporary password, OTP, reset link, account invite/activation link",
+  ],
   "finance Day-1 account activation handoff shared source",
   readinessPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOnePreloginRouteCheck)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*P6-04-PRELOGIN-01)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*P6-04-PRELOGIN-05)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*allowedBeforeFinanceLogin)(?=[\s\S]*blockedBeforeFinanceLogin)(?=[\s\S]*requiredResult)(?=[\s\S]*BLOCKED or EMPTY_SCOPED_STATE)(?=[\s\S]*negative-control account sees any protected route)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "export type ProductionFinanceDayOnePreloginRouteCheck",
+    "export const PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+    "FIN-USER-01",
+    "P6-04-PRELOGIN-01",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "FIN-USER-05",
+    "P6-04-PRELOGIN-05",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "allowedBeforeFinanceLogin",
+    "blockedBeforeFinanceLogin",
+    "requiredResult",
+    "BLOCKED or EMPTY_SCOPED_STATE",
+    "negative-control account sees any protected route",
+  ],
   "finance Day-1 P6-04 pre-login route matrix shared source",
   readinessPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RUNBOOK[\s\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*Secure account activation outside Codex)(?=[\s\S]*FIN-DAY1-02)(?=[\s\S]*Scope proof before first finance login)(?=[\s\S]*FIN-DAY1-03)(?=[\s\S]*Read-only dashboard confidence check)(?=[\s\S]*FIN-DAY1-04)(?=[\s\S]*Payout rehearsal with no bank action)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*Access closure before expansion)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links)(?=[\s\S]*blocked users keep active finance access)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_RUNBOOK",
+    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+    "export const PRODUCTION_FINANCE_DAY_ONE_RUN_STEPS",
+    "FIN-DAY1-01",
+    "Secure account activation outside Codex",
+    "FIN-DAY1-05",
+    "Access closure before expansion",
+    "FIN_DAY1_READY / NO_GO / BLOCKED",
+    "Passwords, temporary passwords, OTPs, reset links",
+    "blocked users keep active finance access",
+  ],
   "finance Day-1 real-run rehearsal shared source",
   readinessPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*export type ProductionFinanceDayOneAccountLane)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*export type ProductionFinanceDayOneResultField)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*Do not open FIN-USER-02)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*No skipped lane)(?=[\s\S]*No next-lane access)(?=[\s\S]*Evidence ID)(?=[\s\S]*Owner decision)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*Access closure)(?=[\s\S]*No raw PII, CCCD, bank data, voucher body)(?=[\s\S]*No password, OTP, invite\/reset link)/i,
+  [
+    "PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "export type ProductionFinanceDayOneAccountLane",
+    "export const PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",
+    "export const PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "No skipped lane",
+    "No next-lane access",
+    "Evidence ID",
+    "Owner decision",
+    "FIN_DAY1_RESULT_READY",
+    "Access closure",
+    "No raw PII, CCCD, bank data, voucher body",
+    "No password, OTP, invite/reset link",
+  ],
   "finance Day-1 result ledger shared source",
   readinessPath,
 );
 
-requireText(
+requireAllText(
   readinessSource,
-  /(?=[\s\S]*export type ProductionFinanceDayOneAccessClosureLane)(?=[\s\S]*closureDecisionValue)(?=[\s\S]*retainCondition)(?=[\s\S]*reduceOrRevokeCondition)(?=[\s\S]*blockCondition)(?=[\s\S]*nextLaneGate)(?=[\s\S]*requiredProof)(?=[\s\S]*export const PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*Do not open FIN-USER-02)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*FIN-DAY1-EVID-005)(?=[\s\S]*Do not expand beyond Finance Day-1)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*soft-revoke\/INACTIVE proof)(?=[\s\S]*Any department\/user expansion starts before the negative-control closure decision is signed)/i,
+  [
+    "export type ProductionFinanceDayOneAccessClosureLane",
+    "closureDecisionValue",
+    "retainCondition",
+    "reduceOrRevokeCondition",
+    "blockCondition",
+    "nextLaneGate",
+    "requiredProof",
+    "export const PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+    "FIN-DAY1-EVID-001",
+    "FIN-DAY1-EVID-005",
+    "ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED",
+    "soft-revoke/INACTIVE proof",
+    "Any department/user expansion starts before the negative-control closure decision is signed",
+  ],
   "finance Day-1 sequential access closure shared source",
   readinessPath,
-);
-
-requireText(
-  financeDayOneRunbook,
-  /(?=[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*before[\s\S]*first real-accounting login)(?=[\s\S]*secure invite\/create state)(?=[\s\S]*HEU profile link)(?=[\s\S]*narrow business scope)(?=[\s\S]*P6-04 pre-login result)(?=[\s\S]*outside Git\/Codex\/chat)/i,
-  "finance Day-1 account activation link in real-run runbook",
-  financeDayOneRunbookPath,
-);
-
-requireText(
-  financeDayOneRunbook,
-  /(?=[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*P6-04 Pre-Login Route Matrix)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*ALLOWED)(?=[\s\S]*BLOCKED)(?=[\s\S]*EMPTY_SCOPED_STATE)(?=[\s\S]*do not open P2-18, P5-03 or P2-17)/i,
-  "finance Day-1 P6-04 pre-login matrix in real-run runbook",
-  financeDayOneRunbookPath,
-);
-
-requireText(
-  financeDayOneActivationTemplate,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Run one activation row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN-ACT-01)(?=[\s\S]*FIN-ACT-05)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*mark production GO)(?=[\s\S]*Never paste or attach)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
-  "finance Day-1 account activation handoff template",
-  financeDayOneActivationTemplatePath,
 );
 
 requireAllText(
@@ -280,46 +480,116 @@ requireAllText(
 requireAllText(
   financeDayOneActivationTemplate,
   [
+    "Status: PASS_LOCAL_TEMPLATE",
+    "Production status: NO-GO",
+    "Run one activation row at a time",
+    "Rollout order",
+    "Entry gate",
+    "Advance gate",
+    "FIN-USER-01",
+    "FIN-USER-05",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+    "FIN-ACT-01",
+    "FIN-ACT-05",
+    "does not create accounts",
+    "store passwords",
+    "mark production GO",
+    "Never paste or attach",
+    "Do not open P2-18, P5-03 or P2-17",
+    "Do not open the next `FIN-USER` lane",
     "Start Gates Before Any Invite/Create",
     "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
-    "FIN-START-EVID-001",
-    "FIN-START-EVID-005",
-    "FIN_START_READY / NO_GO / BLOCKED",
-    "FIN-START-01 P0-03 backup/restore evidence accepted",
-    "FIN-START-05 Human owner boundary acknowledged",
     "No invite, create or activation row may start",
-    "Start first after `FIN_START_READY`",
-    "PASS_LOCAL does not approve access, UAT, finance reliance, migration, owner GO or production GO",
+    "P6-04 Pre-Login Matrix Handoff",
+    "allowed route family",
+    "blocked route family",
+    "negative-control account",
   ],
-  "finance Day-1 account activation start-gate template",
+  "finance Day-1 account activation handoff template",
   financeDayOneActivationTemplatePath,
 );
 
-requireText(
-  financeDayOneActivationTemplate,
-  /(?=[\s\S]*P6-04 Pre-Login Matrix Handoff)(?=[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*allowed route family)(?=[\s\S]*blocked route family)(?=[\s\S]*negative-control account)(?=[\s\S]*Do not open P2-18, P5-03 or P2-17)/i,
-  "finance Day-1 activation template P6-04 pre-login handoff",
-  financeDayOneActivationTemplatePath,
-);
-
-requireText(
+requireAllText(
   financeDayOnePreloginMatrix,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Run one pre-login row at a time)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_PHAP_CHE_REVIEW_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*P6-04-PRELOGIN-EVID-001)(?=[\s\S]*P6-04-PRELOGIN-EVID-005)(?=[\s\S]*does not create accounts)(?=[\s\S]*store passwords)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)(?=[\s\S]*Do not open the next `FIN-USER` lane)/i,
+  [
+    "Status: PASS_LOCAL_TEMPLATE",
+    "Production status: NO-GO",
+    "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+    "Run one pre-login row at a time",
+    "Rollout order",
+    "Entry gate",
+    "Advance gate",
+    "FIN-USER-01",
+    "FIN-USER-05",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_BGH_READONLY_01",
+    "REAL_AUDIT_READONLY_01",
+    "REAL_PHAP_CHE_REVIEW_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "P6-04-PRELOGIN-EVID-001",
+    "P6-04-PRELOGIN-EVID-005",
+    "does not create accounts",
+    "store passwords",
+    "move money",
+    "mark production GO",
+    "Do not open the next `FIN-USER` lane",
+  ],
   "finance Day-1 P6-04 pre-login matrix template",
   financeDayOnePreloginMatrixPath,
 );
 
-requireText(
+requireAllText(
   financeDayOneRunbook,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_RUNBOOK)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Required Day-1 Accounts)(?=[\s\S]*Rollout order)(?=[\s\S]*Entry gate)(?=[\s\S]*Advance gate)(?=[\s\S]*Run one account lane at a time)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-01)(?=[\s\S]*FIN-DAY1-05)(?=[\s\S]*FIN_DAY1_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Do not paste or store)(?=[\s\S]*Passwords, temporary passwords, OTPs, reset links or account invite links)(?=[\s\S]*Do not expand from finance to the next department)/i,
+  [
+    "Status: PASS_LOCAL_RUNBOOK",
+    "Production status: NO-GO",
+    "Required Day-1 Accounts",
+    "Rollout order",
+    "Entry gate",
+    "Advance gate",
+    "Run one account lane at a time",
+    "FIN-USER-01",
+    "FIN-USER-05",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "FIN-DAY1-01",
+    "FIN-DAY1-05",
+    "FIN_DAY1_READY / NO_GO / BLOCKED",
+    "Do not paste or store",
+    "Passwords, temporary passwords, OTPs, reset links or account invite links",
+    "Do not expand from finance to the next department",
+    "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+    "first real-accounting login",
+    "secure invite/create state",
+    "HEU profile link",
+    "narrow business scope",
+    "P6-04 pre-login result",
+    "outside Git/Codex/chat",
+    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+    "P6-04 Pre-Login Route Matrix",
+    "ALLOWED",
+    "BLOCKED",
+    "EMPTY_SCOPED_STATE",
+    "do not open P2-18, P5-03 or P2-17",
+    "Day-1 Result Ledger",
+    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+    "FIN-DAY1-EVID-001",
+    "ACCESS_RETAIN",
+    "REVOKE_OR_REDUCE",
+    "Raw PII, CCCD, bank data, voucher body",
+    "does not approve access, accept UAT, approve finance reliance, move money",
+    "Sequential Access Closure Decision Queue",
+    "Close each lane in order",
+    "exact signed scope",
+    "Do not open `FIN-USER-02` until signed",
+    "Do not expand beyond Finance Day-1 until signed",
+  ],
   "finance Day-1 real-run rehearsal runbook",
-  financeDayOneRunbookPath,
-);
-
-requireText(
-  financeDayOneRunbook,
-  /(?=[\s\S]*Day-1 Result Ledger)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*Rollout order)(?=[\s\S]*Advance gate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN-DAY1-EVID-001)(?=[\s\S]*FIN_DAY1_RESULT_READY)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*Raw PII, CCCD, bank data, voucher body)(?=[\s\S]*does not approve access, accept UAT, approve finance reliance, move money or\s+mark production GO)/i,
-  "finance Day-1 result ledger runbook",
   financeDayOneRunbookPath,
 );
 
@@ -347,240 +617,243 @@ requireAllText(
     "mark production GO",
     "No raw screenshots",
     "Stop and Escalate",
-  ],
-  "finance Day-1 result ledger template",
-  financeDayOneLedgerTemplatePath,
-);
-
-requireAllText(
-  financeDayOneLedgerTemplate,
-  [
     "Sequential Access Closure Decision Queue",
     "Each row must close before the next lane opens",
-    "ACCESS_RETAIN",
-    "REVOKE_OR_REDUCE",
-    "BLOCKED",
-    "FIN-DAY1-EVID-001",
-    "FIN-DAY1-EVID-005",
     "Do not open `FIN-USER-02` until signed",
     "Do not expand beyond Finance Day-1 until signed",
   ],
-  "finance Day-1 sequential access closure decision queue template",
+  "finance Day-1 result ledger and access closure template",
   financeDayOneLedgerTemplatePath,
-);
-
-requireAllText(
-  financeDayOneRunbook,
-  [
-    "Sequential Access Closure Decision Queue",
-    "Close each lane in order",
-    "exact signed scope",
-    "REVOKE_OR_REDUCE",
-    "FIN-DAY1-EVID-001",
-    "FIN-DAY1-EVID-005",
-    "Do not open `FIN-USER-02` until signed",
-    "Do not expand beyond Finance Day-1 until signed",
-  ],
-  "finance Day-1 sequential access closure decision queue runbook",
-  financeDayOneRunbookPath,
-);
-
-requireText(
-  settingsPage,
-  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
-  "real-user onboarding panel before create-user form",
-  settingsPagePath,
-);
-
-requireText(
-  scopePage,
-  /RealUserOnboardingPanel[\s\S]*<RealUserOnboardingPanel \/>[\s\S]*<UserCreateForm/,
-  "real-user onboarding panel before scoped create-user form",
-  scopePagePath,
 );
 
 if (!packageJson.scripts?.["audit:heu-user-account-security"]) {
   fail(`${packagePath}: missing audit:heu-user-account-security script`);
 }
 
-requireText(
+requireAllText(
   agents,
-  /Before any final handoff[\s\S]*npm\.cmd run audit:heu-user-account-security/i,
+  ["Before any final handoff", "npm.cmd run audit:heu-user-account-security"],
   "final handoff user-account security audit command",
   agentsPath,
 );
 
-requireText(
+requireAllText(
   releaseGate,
-  /audit:heu-user-account-security[\s\S]*user account temporary password[\s\S]*security/i,
+  ["audit:heu-user-account-security", "user account temporary password", "security"],
   "release-gate user-account security audit coverage",
   releaseGatePath,
 );
 
-requireText(
-  implementationLog,
-  /User Account Temporary Password Guard[\s\S]*user-create-form\.tsx[\s\S]*actions\.ts[\s\S]*unsafe temporary passwords[\s\S]*audit-heu-user-account-security\.mjs[\s\S]*does not create production accounts,\s+send passwords, rotate keys, enable\s+MFA, accept UAT or mark production GO/i,
-  "implementation log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-29 - Real User Access Closure Guard", [
+  "data-heu-real-user-access-closure=\"P0-17-P6-04\"",
+  "real-user-onboarding-panel.tsx",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "P6-04",
+  "P2-18",
+  "P5-03",
+  "soft-revoke",
+  "INACTIVE",
+  "does not create accounts",
+  "revoke live users",
+  "send passwords",
+  "approve role scope",
+  "accept UAT",
+  "finance action",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Real User Access Closure Guard)(?=[\s\S]*data-heu-real-user-access-closure="P0-17-P6-04")(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*ACCESS_RETAIN)(?=[\s\S]*REVOKE_OR_REDUCE)(?=[\s\S]*BLOCKED)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*soft-revoke)(?=[\s\S]*INACTIVE)(?=[\s\S]*does not create accounts[\s\S]*revoke live users[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
-  "real-user access closure log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-29 - Real User Accounting Onboarding Guard", [
+  "real-user-onboarding-panel.tsx",
+  "UserAuthProfileLinkForm",
+  "KHTC/BGH/Audit/Phap Che",
+  "Out-of-scope negative account",
+  "P6-04",
+  "P2-18",
+  "P5-03",
+  "does not create production accounts",
+  "send passwords",
+  "approve role scope",
+  "accept UAT",
+  "approve finance action",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Real User Accounting Onboarding Guard)(?=[\s\S]*real-user-onboarding-panel\.tsx)(?=[\s\S]*UserAuthProfileLinkForm)(?=[\s\S]*KHTC\/BGH\/Audit\/Phap Che)(?=[\s\S]*Out-of-scope negative account)(?=[\s\S]*P6-04)(?=[\s\S]*P2-18)(?=[\s\S]*P5-03)(?=[\s\S]*does not create production accounts[\s\S]*send passwords[\s\S]*approve role scope[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
-  "real-user accounting onboarding log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Start Gate Evidence Checklist", [
+  "HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
+  "PASS_LOCAL_CHECKLIST",
+  "FIN-START-EVID-001",
+  "FIN-START-EVID-005",
+  "PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST",
+  "does not create accounts",
+  "send",
+  "invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Start Gate Evidence Checklist)(?=[\s\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md)(?=[\s\S]*PASS_LOCAL_CHECKLIST)(?=[\s\S]*FIN-START-EVID-001)(?=[\s\S]*FIN-START-EVID-005)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATE_CHECKLIST)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*grant access)(?=[\s\S]*execute UAT)(?=[\s\S]*accept evidence)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)/i,
-  "finance Day-1 start-gate checklist log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Start Gates Before Real Account Activation", [
+  "PRODUCTION_FINANCE_DAY_ONE_START_GATES",
+  "FIN-START-01",
+  "FIN-START-05",
+  "data-heu-finance-day-one-start-gates=\"P0-03_P0-10_P6-04_P0-14_P0-17\"",
+  "data-ttgdtx-finance-day-one-start-gates=\"P0-03_P0-10_P6-04_P0-14_P0-17\"",
+  "FIN_START_READY / NO_GO / BLOCKED",
+  "does not create accounts",
+  "send",
+  "invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "move money",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Start Gates Before Real Account Activation)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_START_GATES)(?=[\s\S]*FIN-START-01)(?=[\s\S]*FIN-START-05)(?=[\s\S]*data-heu-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*data-ttgdtx-finance-day-one-start-gates="P0-03_P0-10_P6-04_P0-14_P0-17")(?=[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*grant access)(?=[\s\S]*execute UAT)(?=[\s\S]*accept evidence)(?=[\s\S]*approve finance reliance)(?=[\s\S]*approve access closure)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)/i,
-  "finance Day-1 start gates log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Account Activation Handoff", [
+  "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE",
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS",
+  "FIN-ACT-01 through FIN-ACT-05",
+  "FIN_ACTIVATION_READY / NO_GO / BLOCKED",
+  "does not create accounts",
+  "send",
+  "invites",
+  "store passwords",
+  "approve access",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Account Activation Handoff)(?=[\s\S]*HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_TEMPLATE)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_ACTIVATION_CHECKS)(?=[\s\S]*data-ttgdtx-finance-day-one-account-activation="P0-17_P6-04")(?=[\s\S]*data-heu-finance-day-one-account-activation="P0-17-P6-04")(?=[\s\S]*FIN-ACT-01 through FIN-ACT-05)(?=[\s\S]*FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*approve access)(?=[\s\S]*mark production GO)/i,
-  "finance Day-1 account activation handoff log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 P6-04 Pre-Login Matrix", [
+  "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
+  "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX",
+  "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
+  "P6-04-PRELOGIN-01",
+  "P6-04-PRELOGIN-05",
+  "REAL_KHTC_TTGDTX_OPERATOR_01",
+  "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+  "P6_04_PRELOGIN_READY / NO_GO / BLOCKED",
+  "does not create accounts",
+  "send",
+  "invites",
+  "store passwords",
+  "execute UAT",
+  "grant access",
+  "accept route evidence",
+  "approve finance action",
+  "move money",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 P6-04 Pre-Login Matrix)(?=[\s\S]*HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_MATRIX)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS)(?=[\s\S]*data-ttgdtx-finance-day-one-p6-04-prelogin-matrix="P6-04_P0-17")(?=[\s\S]*data-heu-finance-day-one-p6-04-prelogin-matrix="P6-04-P0-17")(?=[\s\S]*P6-04-PRELOGIN-01)(?=[\s\S]*P6-04-PRELOGIN-05)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts)(?=[\s\S]*send\s+invites)(?=[\s\S]*store passwords)(?=[\s\S]*execute UAT)(?=[\s\S]*grant access)(?=[\s\S]*accept route evidence)(?=[\s\S]*approve finance action)(?=[\s\S]*move money)(?=[\s\S]*mark production GO)/i,
-  "finance Day-1 P6-04 pre-login matrix log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Result Ledger Guard", [
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",
+  "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
+  "data-heu-finance-day-one-result-ledger=\"P0-17-P6-04-P2-18-P5-03-P2-17\"",
+  "REAL_KHTC_TTGDTX_OPERATOR_01",
+  "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+  "FIN_DAY1_RESULT_READY / NO_GO / BLOCKED",
+  "does not create accounts",
+  "send passwords",
+  "grant access",
+  "accept UAT",
+  "approve finance action",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Result Ledger Guard)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS)(?=[\s\S]*data-heu-finance-day-one-result-ledger="P0-17-P6-04-P2-18-P5-03-P2-17")(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not create accounts[\s\S]*send passwords[\s\S]*grant access[\s\S]*accept UAT[\s\S]*approve finance action[\s\S]*mark production GO)/i,
-  "finance Day-1 result ledger log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Sequential Real User Rollout", [
+  "PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES",
+  "rolloutOrder",
+  "entryGate",
+  "advanceGate",
+  "FIN-USER-01",
+  "FIN-USER-05",
+  "one account lane at a time",
+  "controlled result row",
+  "P0-17 access closure",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "expand departments or users",
+  "move money",
+  "mark production GO",
+], logPath);
 
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Result Ledger Template)(?=[\s\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md)(?=[\s\S]*PASS_LOCAL_TEMPLATE)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_RESULT_LEDGER_TEMPLATE)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*does not collect evidence[\s\S]*create accounts[\s\S]*send passwords[\s\S]*approve finance action[\s\S]*issue bank instructions[\s\S]*mark production GO)/i,
-  "finance Day-1 result ledger template log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-30 - Finance Day-1 Sequential Access Closure Lanes", [
+  "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
+  "closureDecisionValue",
+  "retainCondition",
+  "reduceOrRevokeCondition",
+  "blockCondition",
+  "nextLaneGate",
+  "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
+  "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
+  "ACCESS_RETAIN",
+  "REVOKE_OR_REDUCE",
+  "BLOCKED",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "revoke live users",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "expand departments or users",
+  "move money",
+  "mark production GO",
+], logPath);
 
-requireAllText(
-  implementationLog,
-  [
-    "Finance Day-1 Rollout Columns for Result Ledger Template",
-    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
-    "Rollout order",
-    "Entry gate",
-    "Advance gate",
-    "FIN-USER-01",
-    "FIN-USER-05",
-    "PRODUCTION_FINANCE_DAY_ONE_RESULT_FIELDS",
-    "does not create accounts",
-    "send invites",
-    "store passwords",
-    "grant access",
-    "execute UAT",
-    "accept evidence",
-    "approve finance reliance",
-    "approve access closure",
-    "expand departments or users",
-    "move money",
-    "mark production GO",
-  ],
-  "finance Day-1 result ledger template rollout-columns log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-06-28 - Current State User Account Security Alignment", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "M02/role-workspace scope",
+  "user account temporary password guard",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-implementation-log.mjs",
+  "release-gate audits",
+  "current-state/backlog alignment only",
+  "does not create accounts",
+  "send passwords",
+  "approve role scope",
+  "mark production GO",
+], logPath);
 
-requireAllText(
-  implementationLog,
-  [
-    "Finance Day-1 Rollout Gates for Activation and Prelogin",
-    "PRODUCTION_FINANCE_DAY_ONE_P6_04_PRELOGIN_CHECKS",
-    "rolloutOrder",
-    "entryGate",
-    "advanceGate",
-    "FIN-USER-01",
-    "FIN-USER-05",
-    "real-user-onboarding-panel.tsx",
-    "ttgdtx-production-execution-queue.tsx",
-    "HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
-    "HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
-    "one lane at a time",
-    "controlled result evidence",
-    "P0-17 access closure",
-    "does not create accounts",
-    "send invites",
-    "store passwords",
-    "grant access",
-    "execute UAT",
-    "accept route evidence",
-    "approve finance reliance",
-    "approve access closure",
-    "expand departments or users",
-    "move money",
-    "mark production GO",
-  ],
-  "finance Day-1 activation/pre-login rollout-gate log boundary",
-  logPath,
-);
-
-requireText(
-  implementationLog,
-  /(?=[\s\S]*Finance Day-1 Sequential Real User Rollout)(?=[\s\S]*PRODUCTION_FINANCE_DAY_ONE_ACCOUNT_LANES)(?=[\s\S]*rolloutOrder)(?=[\s\S]*entryGate)(?=[\s\S]*advanceGate)(?=[\s\S]*FIN-USER-01)(?=[\s\S]*FIN-USER-05)(?=[\s\S]*one account lane at a time)(?=[\s\S]*controlled result row)(?=[\s\S]*P0-17 access closure)(?=[\s\S]*does not create accounts[\s\S]*send invites[\s\S]*store passwords[\s\S]*grant access[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance reliance[\s\S]*approve access closure[\s\S]*expand departments or users[\s\S]*move money[\s\S]*mark production GO)/i,
-  "finance Day-1 sequential real-user rollout log boundary",
-  logPath,
-);
-
-requireAllText(
-  implementationLog,
-  [
-    "Finance Day-1 Sequential Access Closure Lanes",
-    "PRODUCTION_FINANCE_DAY_ONE_ACCESS_CLOSURE_LANES",
-    "closureDecisionValue",
-    "retainCondition",
-    "reduceOrRevokeCondition",
-    "blockCondition",
-    "nextLaneGate",
-    "data-heu-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
-    "data-ttgdtx-finance-day-one-access-closure-lanes=\"P0-17_FIN_USER\"",
-    "data-p014-finance-day-one-access-closure-lanes=\"P0-17-FIN-USER\"",
-    "HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md",
-    "HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md",
-    "ACCESS_RETAIN",
-    "REVOKE_OR_REDUCE",
-    "BLOCKED",
-    "does not create accounts",
-    "send invites",
-    "store passwords",
-    "grant access",
-    "revoke live users",
-    "execute UAT",
-    "accept evidence",
-    "approve finance reliance",
-    "approve access closure",
-    "expand departments or users",
-    "move money",
-    "mark production GO",
-  ],
-  "finance Day-1 sequential access closure lanes log boundary",
-  logPath,
-);
+requireSection(implementationLog, "2026-07-02 - P0-17 User Account Security Audit Fast Guard", [
+  "audit-heu-user-account-security.mjs",
+  "regex-heavy lookahead checks",
+  "token-based checks",
+  "P0-17",
+  "P6-04",
+  "Finance Day-1",
+  "audit:heu-user-account-security",
+  "audit:heu-implementation-log",
+  "does not create",
+  "accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept",
+  "evidence",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+], logPath);
 
 if (failures.length > 0) {
   console.error("HEU user-account security audit failed.");

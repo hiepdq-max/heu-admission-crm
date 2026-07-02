@@ -214,6 +214,37 @@ fastSection("2026-07-02 - PASS_LOCAL Workflow AI Policy Audit Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-07-02 - P0-17 User Account Security Audit Fast Guard", [
+  "scripts/audit-heu-user-account-security.mjs",
+  "regex-heavy lookahead checks",
+  "token-based checks",
+  "P0-17 temporary-password handling",
+  "real-accounting",
+  "P6-04 pre-login scope checks",
+  "Finance Day-1 activation/result",
+  "release-gate registration",
+  "audit:heu-user-account-security",
+  "audit:heu-implementation-log",
+  "audit:ttgdtx-release-gates",
+  "audit:heu-current-state-inventory",
+  "audit:heu-vietnamese-text-encoding",
+  "lint",
+  "build",
+  "git diff --check",
+  "audit reliability packaging only",
+  "does not create",
+  "accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept",
+  "evidence",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+]);
+
 fastSection("2026-07-02 - P5-02 Department Task Handoff Register Dry-Run", [
   "HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
   "DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED",

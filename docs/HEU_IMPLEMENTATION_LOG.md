@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P0-17 User Account Security Audit Fast Guard
+
+- Reworked `scripts/audit-heu-user-account-security.mjs` from
+  regex-heavy lookahead checks into explicit token-based checks grouped by
+  source file and implementation-log section.
+- The guard still covers P0-17 temporary-password handling, real-accounting
+  onboarding, P6-04 pre-login scope checks, Finance Day-1 activation/result
+  ledger/access-closure handoff and release-gate registration.
+- Required checks include `audit:heu-user-account-security`,
+  `audit:heu-implementation-log`, `audit:ttgdtx-release-gates`,
+  `audit:heu-current-state-inventory`, `audit:heu-vietnamese-text-encoding`,
+  `lint`, `build` and `git diff --check`.
+- Boundary: this is audit reliability packaging only. It does not create
+  accounts, send invites, store passwords, grant access, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO, deploy production
+  or mark production GO.
+
 ## 2026-07-02 - PASS_LOCAL Workflow AI Policy Audit Guard
 
 - Updated `.github/workflows/heu-pass-local.yml` so the GitHub Actions
