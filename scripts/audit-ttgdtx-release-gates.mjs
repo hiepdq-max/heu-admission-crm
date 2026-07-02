@@ -741,6 +741,24 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_UAT_CLOSURE_INTAKE)(?=[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-03-UAT-01)(?=[\\s\\S]*REAL-OPS-03-UAT-06)(?=[\\s\\S]*UAT-ROUTE-01 through\\s+UAT-ROUTE-11)(?=[\\s\\S]*Finance reliance routes closed)(?=[\\s\\S]*Governance routes closed)(?=[\\s\\S]*Final handoff boundary acknowledged)(?=[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\")(?=[\\s\\S]*does not execute UAT, accept evidence, sign owner\\s+results, create accounts, grant access, approve finance reliance, approve\\s+legal position, approve migration, approve owner GO\\/NO-GO or mark production\\s+GO)", "i"),
+  "REAL-OPS-03 signed UAT closure intake source document",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  literalPattern("(?=[\\s\\S]*REAL-OPS-03 Signed UAT Closure Intake)(?=[\\s\\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\\.md)(?=[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\")(?=[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-03-UAT-01)(?=[\\s\\S]*REAL-OPS-03-UAT-06)(?=[\\s\\S]*PASS_LOCAL proves only that REAL-OPS-03 signed UAT closure intake is\\s+structured)", "i"),
+  "signed UAT routing hub REAL-OPS-03 closure intake",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  literalPattern("(?=[\\s\\S]*realOps03SignedUatClosureItems)(?=[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\")(?=[\\s\\S]*REAL-OPS-03 signed UAT closure intake)(?=[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-03-UAT-01)(?=[\\s\\S]*REAL-OPS-03-UAT-06)(?=[\\s\\S]*does not execute UAT, accept evidence, sign owner\\s+results, approve finance reliance, approve migration, approve owner\\s+GO\\/NO-GO or mark production GO)", "i"),
+  "visible REAL-OPS-03 signed UAT closure intake",
+);
+
+requireText(
   "lib/production-readiness.ts",
   literalPattern("UAT-ROUTE-01[\\s\\S]*Raw student PII, CCCD, bank data, passwords, temporary passwords, OTPs, password reset links, account activation\\/invite links, service-role keys, vouchers or unredacted screenshots are present", "i"),
   "shared signed UAT routing account-secret stop condition",
@@ -786,6 +804,24 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   literalPattern("UAT Routing Finance Day-1 Ledger Handoff[\\s\\S]*UAT-ROUTE-08[\\s\\S]*Finance Day-1 result ledger[\\s\\S]*UAT-ROUTE-11[\\s\\S]*final owner GO\\/NO-GO[\\s\\S]*HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\\.md[\\s\\S]*audit-ttgdtx-signed-uat-execution-routing-hub\\.mjs[\\s\\S]*does not execute UAT[\\s\\S]*mark production GO", "i"),
   "implementation log UAT routing Finance Day-1 ledger handoff",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  literalPattern("P0-08 REAL-OPS-03 Signed UAT Closure Intake[\\s\\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\\.md[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\"[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*does not execute UAT, accept evidence, sign owner results, approve\\s+finance reliance, approve migration, approve owner GO\\/NO-GO or mark production\\s+GO", "i"),
+  "backlog REAL-OPS-03 signed UAT closure intake",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  literalPattern("REAL-OPS-03 Signed UAT Closure Intake[\\s\\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\\.md[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\"[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*does not execute UAT, accept evidence, sign owner results, approve finance\\s+reliance, approve migration, approve owner GO\\/NO-GO or mark production GO", "i"),
+  "production checklist REAL-OPS-03 signed UAT closure intake",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  literalPattern("REAL-OPS-03 Signed UAT Closure Intake[\\s\\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\\.md[\\s\\S]*PASS_LOCAL_UAT_CLOSURE_INTAKE[\\s\\S]*REAL_OPS_03_UAT_CLOSURE_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*data-ttgdtx-real-ops-03-signed-uat-closure=\"REAL-OPS-03_UAT_ROUTES\"[\\s\\S]*does not execute UAT[\\s\\S]*accept evidence[\\s\\S]*approve finance reliance[\\s\\S]*approve owner GO\\/NO-GO[\\s\\S]*mark production GO", "i"),
+  "implementation log REAL-OPS-03 signed UAT closure intake",
 );
 
 requireText(

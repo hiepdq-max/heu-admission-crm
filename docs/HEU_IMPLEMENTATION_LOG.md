@@ -19,8 +19,8 @@
   `scripts/audit-ttgdtx-release-gates.mjs`.
 - Boundary: this UAT closure intake does not execute UAT, accept evidence,
   sign owner results, create accounts, grant access, approve finance reliance,
-  approve legal position, approve migration, approve owner GO/NO-GO or mark
-  production GO. It also keeps screenshots, signed forms, route evidence,
+  approve legal position, approve migration, approve owner GO/NO-GO or mark production GO.
+  It also keeps screenshots, signed forms, route evidence,
   vouchers, student files, bank data, account credentials, temporary passwords,
   OTPs, reset/invite links and service-role keys outside Git/Codex/chat.
 
