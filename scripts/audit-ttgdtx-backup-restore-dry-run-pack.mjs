@@ -7,6 +7,8 @@ const runbookPath = "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md";
 const operatorRunSheetPath =
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md";
 const checklistPath = "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md";
+const realOps01ProofIntakePath =
+  "docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md";
 const componentPath = "components/settings/supabase-backup-restore-guard.tsx";
 const pagePath = "app/settings/supabase-check/page.tsx";
 const failures = [];
@@ -40,6 +42,7 @@ const requiredFiles = [
   runbookPath,
   operatorRunSheetPath,
   checklistPath,
+  realOps01ProofIntakePath,
   componentPath,
   pagePath,
   "docs/MIGRATION_ORDER_AUDIT.md",
@@ -62,6 +65,9 @@ const operatorRunSheet = exists(operatorRunSheetPath)
   ? read(operatorRunSheetPath)
   : "";
 const checklist = exists(checklistPath) ? read(checklistPath) : "";
+const realOps01ProofIntake = exists(realOps01ProofIntakePath)
+  ? read(realOps01ProofIntakePath)
+  : "";
 const component = exists(componentPath) ? read(componentPath) : "";
 const page = exists(pagePath) ? read(pagePath) : "";
 const packageJson = JSON.parse(read("package.json"));
@@ -101,6 +107,18 @@ requireText(
   /(?=[\s\S]*P0-03 Backup\/Restore Closure Decision Manifest)(?=[\s\S]*data-p003-backup-restore-closure-decision-manifest="P0-03")(?=[\s\S]*P0-03-CLOSE-01)(?=[\s\S]*P0-03-CLOSE-06)(?=[\s\S]*Execution authority and target isolation confirmed)(?=[\s\S]*Backup and restore proof accepted)(?=[\s\S]*Preflight and postflight checks pass)(?=[\s\S]*Smoke-check and UAT index accepted)(?=[\s\S]*P0-19 gate UAT)(?=[\s\S]*P3-01\/P3-02 lifecycle and handover UAT)(?=[\s\S]*P0-17 access closure decision)(?=[\s\S]*P0-17 access closure evidence)(?=[\s\S]*Exceptions and waivers controlled)(?=[\s\S]*Human closure decision recorded)(?=[\s\S]*P0_03_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*PASS_LOCAL keeps P0-03 at evidence-structure readiness only)/i,
   "backup/restore closure decision manifest",
 );
+requireText(
+  pack,
+  /(?=[\s\S]*REAL-OPS-01 Backup\/Restore Proof Intake)(?=[\s\S]*data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03")(?=[\s\S]*HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702\.md)(?=[\s\S]*REAL_OPS_01_PROOF_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01-IN-01)(?=[\s\S]*REAL-OPS-01-IN-05)(?=[\s\S]*Controlled evidence ID recorded)(?=[\s\S]*Backup reference accepted)(?=[\s\S]*Restore target proof accepted)(?=[\s\S]*Smoke-check result accepted)(?=[\s\S]*Closure owner decision prepared)(?=[\s\S]*P0-19, P3 gate preservation, P2-18\/P5-03 source reconciliation, P6-04 scope and P0-17 access closure state)(?=[\s\S]*PASS_LOCAL proves only that REAL-OPS-01 proof intake is structured)(?=[\s\S]*Owner\s+evidence acceptance, backup execution, restore execution, migration-order review\s+and production GO remain outside this evidence pack and outside Codex\/chat)/i,
+  "REAL-OPS-01 backup/restore proof intake evidence-pack reference",
+);
+
+requireText(
+  realOps01ProofIntake,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_PROOF_INTAKE)(?=[\s\S]*REAL_OPS_01_PROOF_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does\s+not execute backup, execute restore, accept evidence, approve migration,\s+approve UAT, approve finance reliance, approve legal position or mark\s+production GO)(?=[\s\S]*backup dumps, restore exports, connection strings, database URLs,\s+service-role keys, credentials, passwords, temporary passwords, OTPs,\s+password reset links, account activation\/invite links, raw PII, CCCD, bank\s+data, bank statements, vouchers and raw payment evidence outside\s+Git\/Codex\/chat)(?=[\s\S]*REAL-OPS-01-IN-01)(?=[\s\S]*REAL-OPS-01-IN-05)(?=[\s\S]*Controlled evidence ID recorded)(?=[\s\S]*Backup reference accepted)(?=[\s\S]*Restore target proof accepted)(?=[\s\S]*Smoke-check result accepted)(?=[\s\S]*Closure owner decision prepared)(?=[\s\S]*data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03")(?=[\s\S]*Passing local checks means only the proof-intake structure exists and is\s+audited)/i,
+  "REAL-OPS-01 proof intake source document",
+  realOps01ProofIntakePath,
+);
 
 requireText(
   pack,
@@ -137,6 +155,12 @@ requireText(
   component,
   /(?=[\s\S]*data-p003-backup-restore-target-identity-lock="P0-03")(?=[\s\S]*P0-03 backup\/restore target identity lock)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*P0-03-TARGET-01)(?=[\s\S]*P0-03-TARGET-06)(?=[\s\S]*TARGET_LOCK_READY \/ STOP \/ BLOCKED)(?=[\s\S]*Execution authority recorded)(?=[\s\S]*Production source is source-only)(?=[\s\S]*Restore target is isolated)(?=[\s\S]*App banner points to restore target)(?=[\s\S]*SQL editor and CLI profile locked)(?=[\s\S]*Controlled evidence folder confirmed)(?=[\s\S]*PASS_LOCAL proves only that the target-lock checklist exists)/i,
   "P0-03 backup/restore target identity lock",
+  componentPath,
+);
+requireText(
+  component,
+  /(?=[\s\S]*realOps01ProofIntakeItems)(?=[\s\S]*data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03")(?=[\s\S]*REAL-OPS-01 backup\/restore proof intake)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*REAL_OPS_01_PROOF_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01-IN-01)(?=[\s\S]*REAL-OPS-01-IN-05)(?=[\s\S]*Controlled evidence ID recorded)(?=[\s\S]*Backup reference accepted)(?=[\s\S]*Restore target proof accepted)(?=[\s\S]*Smoke-check result accepted)(?=[\s\S]*Closure owner decision prepared)(?=[\s\S]*P0-19, P3 gate preservation, P2-18\/P5-03 source reconciliation, P6-04 scope and P0-17 access closure state)(?=[\s\S]*PASS_LOCAL proves only that REAL-OPS-01 proof intake is structured)(?=[\s\S]*Owner\s+evidence acceptance, backup execution, restore execution,\s+migration-order review and production GO remain outside this app\s+screen and outside Codex\/chat)/i,
+  "REAL-OPS-01 backup/restore proof intake UI guard",
   componentPath,
 );
 requireText(
@@ -194,6 +218,12 @@ requireText(
   "production checklist evidence-pack reference",
   checklistPath,
 );
+requireText(
+  checklist,
+  /Supabase backup before production migration[\s\S]*HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702\.md[\s\S]*REAL-OPS-01 proof intake[\s\S]*REAL_OPS_01_PROOF_READY \/ NO_GO \/ BLOCKED[\s\S]*controlled evidence outside Git when sensitive/i,
+  "production checklist REAL-OPS-01 proof intake reference",
+  checklistPath,
+);
 
 if (!packageJson.scripts?.["audit:ttgdtx-backup-restore-dry-run-pack"]) {
   fail("package.json: missing audit:ttgdtx-backup-restore-dry-run-pack script");
@@ -202,6 +232,7 @@ if (!packageJson.scripts?.["audit:ttgdtx-backup-restore-dry-run-pack"]) {
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 if (
   !releaseGateAudit.includes(packPath) ||
+  !releaseGateAudit.includes(realOps01ProofIntakePath) ||
   !releaseGateAudit.includes(operatorRunSheetPath) ||
   !releaseGateAudit.includes(componentPath) ||
   !releaseGateAudit.includes("audit:ttgdtx-backup-restore-dry-run-pack")
@@ -223,6 +254,9 @@ if (!agents.includes("npm.cmd run audit:ttgdtx-backup-restore-dry-run-pack")) {
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 if (!/P0-03[\s\S]*STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627\.md[\s\S]*STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627\.md[\s\S]*components\/settings\/supabase-backup-restore-guard\.tsx[\s\S]*backup\/restore target identity lock[\s\S]*backup\/restore operator run sheet[\s\S]*backup\/restore execution evidence checklist[\s\S]*external evidence manifest[\s\S]*restore smoke-check acceptance matrix[\s\S]*P0-17 access closure state preservation[\s\S]*backup\/restore closure decision manifest[\s\S]*audit:ttgdtx-backup-restore-dry-run-pack/.test(backlog)) {
   fail("Backlog P0-03 must reference the backup/restore evidence pack audit.");
+}
+if (!/P0-03[\s\S]*HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702\.md[\s\S]*REAL-OPS-01 proof intake[\s\S]*REAL_OPS_01_PROOF_READY \/ NO_GO \/ BLOCKED[\s\S]*actual backup\/restore evidence still required before production/i.test(backlog)) {
+  fail("Backlog P0-03 must reference the REAL-OPS-01 proof intake boundary.");
 }
 
 if (failures.length > 0) {

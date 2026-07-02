@@ -24,6 +24,18 @@ Git/Codex/chat.
 | `REAL-OPS-07` HOU and Short Course scope | HOU owner + DAO_TAO + CTHSSV + KHTC + PHAP_CHE | HOU and Short Course phase decision, UAT plan, report-view signoff or explicit owner-approved defer decision | HOU or Short Course is folded into TTGDTX production without signed scope separation |
 | `REAL-OPS-08` Final owner GO/NO-GO package | BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG | Final owner GO/NO-GO manifest only after `REAL-OPS-01` through `REAL-OPS-07` have controlled evidence IDs | Owner GO/NO-GO is requested before all prerequisite lanes have signed closure |
 
+## REAL-OPS-01 Source Intake
+
+Use `docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md` and
+`data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03"` to prepare the
+backup/restore proof lane. Decision value:
+`REAL_OPS_01_PROOF_READY / NO_GO / BLOCKED`.
+
+The source intake records only controlled evidence IDs, redaction owner,
+backup reference, restore target proof, smoke-check result and closure decision
+references. It does not accept evidence, execute backup, execute restore,
+approve migration-order review or mark production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

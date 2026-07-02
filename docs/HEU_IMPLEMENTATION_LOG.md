@@ -35,6 +35,31 @@
   production migration, issue bank instructions, post vouchers, issue invoices,
   approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-02 - REAL-OPS-01 Backup/Restore Proof Intake
+
+- Added `docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md` as a
+  PASS_LOCAL_PROOF_INTAKE with
+  `REAL_OPS_01_PROOF_READY / NO_GO / BLOCKED`.
+- Extended `components/settings/supabase-backup-restore-guard.tsx` with
+  `data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03"` and
+  REAL-OPS-01-IN-01 through REAL-OPS-01-IN-05 for controlled evidence ID,
+  backup reference, restore target proof, smoke-check result and closure owner
+  decision references.
+- Updated `docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md`,
+  `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`; tightened
+  `scripts/audit-ttgdtx-backup-restore-dry-run-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- Boundary: this proof intake does not execute backup, execute restore, accept
+  evidence, approve migration, approve UAT, approve finance reliance, approve legal position,
+  accept owner GO/NO-GO or mark production GO. It also keeps
+  backup dumps, restore exports, connection strings, database URLs,
+  service-role keys, credentials, passwords, temporary passwords, OTPs,
+  invite/reset links, raw PII, CCCD, bank data, bank statements, vouchers and
+  raw payment evidence outside Git/Codex/chat.
+
 ## 2026-07-02 - HEU System Framework Review
 
 - Added `docs/HEU_SYSTEM_FRAMEWORK_REVIEW_20260702.md` as a

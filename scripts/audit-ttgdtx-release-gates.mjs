@@ -212,6 +212,7 @@ const requiredFiles = [
   "docs/STEP90_STEP110_BACKUP_ROLLBACK_DRY_RUN_RUNBOOK.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  "docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md",
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
@@ -511,6 +512,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_PROOF_INTAKE)(?=[\\s\\S]*REAL_OPS_01_PROOF_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-01-IN-01)(?=[\\s\\S]*REAL-OPS-01-IN-05)(?=[\\s\\S]*Controlled evidence ID recorded)(?=[\\s\\S]*Backup reference accepted)(?=[\\s\\S]*Restore target proof accepted)(?=[\\s\\S]*Smoke-check result accepted)(?=[\\s\\S]*Closure owner decision prepared)(?=[\\s\\S]*data-p003-real-ops-01-proof-intake=\"REAL-OPS-01_P0-03\")(?=[\\s\\S]*does\\s+not execute backup, execute restore, accept evidence, approve migration,\\s+approve UAT, approve finance reliance, approve legal position or mark\\s+production GO)(?=[\\s\\S]*backup dumps, restore exports, connection strings, database URLs,\\s+service-role keys, credentials, passwords, temporary passwords, OTPs,\\s+password reset links, account activation\\/invite links, raw PII, CCCD, bank\\s+data, bank statements, vouchers and raw payment evidence outside\\s+Git\\/Codex\\/chat)", "i"),
+  "REAL-OPS-01 proof intake source document",
+);
+
+requireText(
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
   literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_TEMPLATE)(?=[\\s\\S]*does not execute backup, restore, migration, rollback, UAT\\s+acceptance, owner waiver or production GO)(?=[\\s\\S]*P0-03-RUN-01)(?=[\\s\\S]*P0-03-RUN-06)(?=[\\s\\S]*BACKUP_RESTORE_RUN_READY \\/ STOP \\/ BLOCKED)(?=[\\s\\S]*Immediate Stop Conditions)(?=[\\s\\S]*does not prove an actual backup, restore, migration\\s+dry-run, rollback proof, UAT pass, owner sign-off or production GO)", "i"),
   "backup/restore operator run sheet local-only boundary",
@@ -553,6 +560,12 @@ requireText(
 );
 
 requireText(
+  "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
+  literalPattern("(?=[\\s\\S]*REAL-OPS-01 Backup\\/Restore Proof Intake)(?=[\\s\\S]*data-p003-real-ops-01-proof-intake=\"REAL-OPS-01_P0-03\")(?=[\\s\\S]*HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702\\.md)(?=[\\s\\S]*REAL_OPS_01_PROOF_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-01-IN-01)(?=[\\s\\S]*REAL-OPS-01-IN-05)(?=[\\s\\S]*P0-19, P3 gate preservation, P2-18\\/P5-03 source reconciliation, P6-04 scope and P0-17 access closure state)(?=[\\s\\S]*PASS_LOCAL proves only that REAL-OPS-01 proof intake is structured)", "i"),
+  "REAL-OPS-01 proof intake evidence pack reference",
+);
+
+requireText(
   "components/settings/supabase-backup-restore-guard.tsx",
   literalPattern("(?=[\\s\\S]*data-supabase-backup-restore-guard=\"P0-03\")(?=[\\s\\S]*P0-03 Supabase backup\\/restore dry-run)(?=[\\s\\S]*PASS_LOCAL)(?=[\\s\\S]*Production remains NO-GO until real backup evidence, restore\\s+evidence, migration preflight\\/postflight results and owner\\s+sign-off exist)(?=[\\s\\S]*PASS_LOCAL does not mean backup was executed,\\s+restore was executed, UAT passed, production migration is\\s+approved, or production GO is approved)(?=[\\s\\S]*Do not run production migration from Codex\\/chat)(?=[\\s\\S]*secrets, passwords, temporary passwords, OTPs, password reset\\s+links, account activation\\/invite links, service-role keys, bank\\s+credentials, raw student PII, raw CCCD, raw phone numbers or raw\\s+payment data)(?=[\\s\\S]*data-p003-backup-restore-immediate-stop=\"P0-03\")(?=[\\s\\S]*P0-03 immediate operator stop conditions)(?=[\\s\\S]*P0_03_STOP_CHECK \\/ GO_NEXT \\/ BLOCKED)(?=[\\s\\S]*Target identity unclear)(?=[\\s\\S]*Backup or restore proof incomplete)(?=[\\s\\S]*Secret or raw evidence exposure)(?=[\\s\\S]*temporary passwords)(?=[\\s\\S]*account activation\\/invite links)(?=[\\s\\S]*Backup ID \\/ snapshot ID)(?=[\\s\\S]*Restore target project\\/ref)(?=[\\s\\S]*App connection checked against restore target)(?=[\\s\\S]*Human sign-off)(?=[\\s\\S]*audit:ttgdtx-backup-restore-dry-run-pack)(?=[\\s\\S]*audit:ttgdtx-migration-order-guard)(?=[\\s\\S]*audit:ttgdtx-release-gates)(?=[\\s\\S]*npm\\.cmd run build)", "i"),
   "P0-03 Supabase backup/restore UI guard",
@@ -562,6 +575,12 @@ requireText(
   "components/settings/supabase-backup-restore-guard.tsx",
   literalPattern("(?=[\\s\\S]*data-p003-backup-restore-target-identity-lock=\"P0-03\")(?=[\\s\\S]*P0-03 backup\\/restore target identity lock)(?=[\\s\\S]*PASS_LOCAL only)(?=[\\s\\S]*P0-03-TARGET-01)(?=[\\s\\S]*P0-03-TARGET-06)(?=[\\s\\S]*TARGET_LOCK_READY \\/ STOP \\/ BLOCKED)(?=[\\s\\S]*Execution authority recorded)(?=[\\s\\S]*Production source is source-only)(?=[\\s\\S]*Restore target is isolated)(?=[\\s\\S]*App banner points to restore target)(?=[\\s\\S]*SQL editor and CLI profile locked)(?=[\\s\\S]*Controlled evidence folder confirmed)(?=[\\s\\S]*PASS_LOCAL proves only that the target-lock checklist exists)", "i"),
   "P0-03 backup/restore target identity lock",
+);
+
+requireText(
+  "components/settings/supabase-backup-restore-guard.tsx",
+  literalPattern("(?=[\\s\\S]*realOps01ProofIntakeItems)(?=[\\s\\S]*data-p003-real-ops-01-proof-intake=\"REAL-OPS-01_P0-03\")(?=[\\s\\S]*REAL-OPS-01 backup\\/restore proof intake)(?=[\\s\\S]*PASS_LOCAL only)(?=[\\s\\S]*REAL_OPS_01_PROOF_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-01-IN-01)(?=[\\s\\S]*REAL-OPS-01-IN-05)(?=[\\s\\S]*Controlled evidence ID recorded)(?=[\\s\\S]*Backup reference accepted)(?=[\\s\\S]*Restore target proof accepted)(?=[\\s\\S]*Smoke-check result accepted)(?=[\\s\\S]*Closure owner decision prepared)(?=[\\s\\S]*Owner evidence acceptance, backup execution, restore execution,\\s+migration-order review and production GO remain outside this app\\s+screen and outside Codex\\/chat)", "i"),
+  "REAL-OPS-01 backup/restore proof intake UI guard",
 );
 
 requireText(

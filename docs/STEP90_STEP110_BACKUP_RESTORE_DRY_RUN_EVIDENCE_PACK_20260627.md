@@ -322,3 +322,25 @@ Closure decision: P0_03_CLOSURE_READY / NO_GO / BLOCKED.
 PASS_LOCAL keeps P0-03 at evidence-structure readiness only. Missing target
 proof, backup/restore evidence, postflight result, smoke-check/UAT index,
 exception decision or human sign-off keeps production NO-GO.
+
+## 18. REAL-OPS-01 Backup/Restore Proof Intake
+
+The Supabase check page also exposes
+`data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03"` and the source
+intake document
+`docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md`. Use this
+before anyone claims backup/restore proof is ready for real operation.
+
+Decision: REAL_OPS_01_PROOF_READY / NO_GO / BLOCKED.
+
+| Case | Intake lane | Required reference | Stop condition |
+|---|---|---|---|
+| REAL-OPS-01-IN-01 | Controlled evidence ID recorded | Controlled evidence ID, storage class, redaction reviewer and owner label | Backup dump, screenshot with secrets, connection string, bank data, voucher or raw PII is pasted into Git/Codex/chat |
+| REAL-OPS-01-IN-02 | Backup reference accepted | Backup/snapshot ID, timestamp range, operator and checker in the controlled evidence store | Backup ID is missing, stale, unsigned or cannot be tied to the source environment |
+| REAL-OPS-01-IN-03 | Restore target proof accepted | Isolated restore target project/ref, app banner and SQL/CLI target proof with checker confirmation | Restore target can be confused with production or target identity proof is incomplete |
+| REAL-OPS-01-IN-04 | Smoke-check result accepted | Restore smoke-check result for P0-19, P3 gate preservation, P2-18/P5-03 source reconciliation, P6-04 scope and P0-17 access closure state | Any smoke-check route is skipped, unresolved, unowned or run against the wrong target |
+| REAL-OPS-01-IN-05 | Closure owner decision prepared | GO, NO_GO or BLOCKED decision references for P0-03 closure before migration-order review | PASS_LOCAL is treated as backup executed, restore executed, evidence accepted, migration approved or production GO |
+
+PASS_LOCAL proves only that REAL-OPS-01 proof intake is structured. Owner
+evidence acceptance, backup execution, restore execution, migration-order review
+and production GO remain outside this evidence pack and outside Codex/chat.

@@ -285,6 +285,54 @@ const backupRestoreClosureItems = [
   },
 ];
 
+const realOps01ProofIntakeItems = [
+  {
+    caseId: "REAL-OPS-01-IN-01",
+    title: "Controlled evidence ID recorded",
+    owner: "IT_DATA + Audit",
+    required:
+      "Record only the controlled evidence ID, storage class, redaction reviewer and owner label.",
+    stopCondition:
+      "Stop if a backup dump, screenshot with secrets, connection string, bank data, voucher or raw PII is pasted into Git/Codex/chat.",
+  },
+  {
+    caseId: "REAL-OPS-01-IN-02",
+    title: "Backup reference accepted",
+    owner: "IT_DATA + Audit",
+    required:
+      "Capture backup/snapshot ID, timestamp range, operator and checker in the controlled evidence store.",
+    stopCondition:
+      "Stop if backup ID is missing, stale, unsigned or cannot be tied to the source environment.",
+  },
+  {
+    caseId: "REAL-OPS-01-IN-03",
+    title: "Restore target proof accepted",
+    owner: "IT_DATA + Audit",
+    required:
+      "Capture isolated restore target project/ref, app banner and SQL/CLI target proof with checker confirmation.",
+    stopCondition:
+      "Stop if the restore target can be confused with production or target identity proof is incomplete.",
+  },
+  {
+    caseId: "REAL-OPS-01-IN-04",
+    title: "Smoke-check result accepted",
+    owner: "KHTC + PHAP_CHE + Audit + IT_DATA",
+    required:
+      "Record restore smoke-check result for P0-19, P3 gate preservation, P2-18/P5-03 source reconciliation, P6-04 scope and P0-17 access closure state.",
+    stopCondition:
+      "Stop if any smoke-check route is skipped, unresolved, unowned or run against the wrong target.",
+  },
+  {
+    caseId: "REAL-OPS-01-IN-05",
+    title: "Closure owner decision prepared",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    required:
+      "Prepare GO, NO_GO or BLOCKED decision references for P0-03 closure before migration-order review.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as backup executed, restore executed, evidence accepted, migration approved or production GO.",
+  },
+];
+
 const operatorRunSheetItems = [
   {
     caseId: "P0-03-RUN-01",
@@ -515,6 +563,62 @@ export function SupabaseBackupRestoreGuard() {
           PASS_LOCAL proves only that the target-lock checklist exists. It does
           not execute backup, restore, migration, rollback, UAT acceptance or
           production GO.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-lime-200 bg-lime-50 p-4 text-lime-950"
+        data-p003-real-ops-01-proof-intake="REAL-OPS-01_P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>REAL-OPS-01 backup/restore proof intake: PASS_LOCAL only</span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this intake before anyone claims backup/restore proof is ready
+              for real operation. It accepts only redacted references and owner
+              labels; real dumps, screenshots with secrets, bank data, vouchers,
+              raw PII and credentials stay outside Git/Codex/chat.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-lime-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              REAL_OPS_01_PROOF_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {realOps01ProofIntakeItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-lime-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-lime-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required: {item.required}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-lime-200 bg-white px-3 py-2 text-lime-900">
+          PASS_LOCAL proves only that REAL-OPS-01 proof intake is structured.
+          Owner evidence acceptance, backup execution, restore execution,
+          migration-order review and production GO remain outside this app
+          screen and outside Codex/chat.
         </div>
       </div>
 
