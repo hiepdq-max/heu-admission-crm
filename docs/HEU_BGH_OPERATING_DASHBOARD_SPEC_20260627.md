@@ -112,6 +112,15 @@ handoff summary, before any GO/NO-GO discussion. The component is read-only and 
 not create, update, approve, pay, delete, unlock, reverse, mark UAT accepted or
 mark production GO.
 
+The same surface also includes
+`data-heu-daily-report-task-handoff="P5-02"` as a dry-run shell for daily
+report and task handoff. It exposes `DAILY_REPORT_DRY_RUN / NO_GO / BLOCKED`,
+the report lines for build progress, controlled trial users and plain-language
+glossary, plus task lanes for IT_DATA, KHTC, BGH, Audit and Phap Che. This is a
+handoff template only: it does not send email, create real tasks, store
+passwords, OTPs, invite/reset links, bank data, raw PII or approve UAT,
+finance action, owner GO or production GO.
+
 ## 9. Current Evidence
 
 Current local evidence:

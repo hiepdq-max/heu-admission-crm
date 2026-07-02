@@ -57,6 +57,8 @@ const blockerSummary = exists(blockerSummaryPath) ? read(blockerSummaryPath) : "
 const masterControlPage = exists(masterControlPagePath)
   ? read(masterControlPagePath)
   : "";
+const currentStateInventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
+const implementationLog = read("docs/HEU_IMPLEMENTATION_LOG.md");
 
 requireText(spec, /P5-02 BGH operating dashboard specification/i, "P5-02 scope");
 requireText(spec, /NO-GO until source workflows, role-scope UAT and owner\s+sign-off are complete/i, "production NO-GO boundary");
@@ -74,12 +76,23 @@ requireText(
   /(?=[\s\S]*P5-02 Read-Only Blocker Summary)(?=[\s\S]*production-readiness-blocker-summary\.tsx)(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*data-heu-production-safe-iteration-loop="P5-02")(?=[\s\S]*data-heu-production-action-queue="P5-02")(?=[\s\S]*Safe iteration loop)(?=[\s\S]*Next controlled actions)(?=[\s\S]*P0-14 intake-ledger evidence binder closure)(?=[\s\S]*P0-15 final\s+handoff summary)(?=[\s\S]*No GO button is provided)/i,
   "read-only blocker summary implementation note",
 );
+requireText(
+  spec,
+  /(?=[\s\S]*data-heu-daily-report-task-handoff="P5-02")(?=[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED)(?=[\s\S]*build progress, controlled trial users and plain-language\s+glossary)(?=[\s\S]*IT_DATA, KHTC, BGH, Audit and Phap Che)(?=[\s\S]*does not send email, create real tasks, store\s+passwords, OTPs, invite\/reset links, bank data, raw PII or approve UAT,\s+finance action, owner GO or production GO)/i,
+  "daily report and task handoff dry-run implementation note",
+);
 requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH\s+dashboard[\s\S]*replace signed UAT/i, "PASS_LOCAL local-only boundary");
 
 requireText(
   blockerSummary,
   /(?=[\s\S]*SAFE_ITERATION_STEPS)(?=[\s\S]*data-heu-production-blocker-summary="P5-02")(?=[\s\S]*P5-02 production blocker summary)(?=[\s\S]*PASS_LOCAL only)(?=[\s\S]*Read-only BGH\/owner view)(?=[\s\S]*Production remains NO-GO until backup\/restore, migration order,\s+legal\/finance UAT, payout UAT, dashboard UAT, role-scope UAT,\s+audit-log UAT, hard-delete conversion\/waiver, redaction, P0-14\s+intake-ledger evidence binder, P0-15 final handoff summary and\s+final owner sign-off are completed outside Codex\/chat)(?=[\s\S]*PRODUCTION_BLOCKERS)(?=[\s\S]*PRODUCTION_EXECUTION_STEPS)(?=[\s\S]*data-heu-production-safe-iteration-loop="P5-02")(?=[\s\S]*Safe iteration loop)(?=[\s\S]*Master Control follows the same rhythm as TTGDTX)(?=[\s\S]*data-heu-production-action-queue="P5-02")(?=[\s\S]*Next controlled actions)(?=[\s\S]*P0-14\s+intake-ledger evidence binder)(?=[\s\S]*P0-15 final handoff summary)(?=[\s\S]*owner GO\/NO-GO discussion)(?=[\s\S]*Current recommendation:[\s\S]*NO-GO)(?=[\s\S]*No GO button is provided here)(?=[\s\S]*PASS_LOCAL does not approve production\s+dashboard use, finance actions, production migration, UAT acceptance,\s+owner waiver or production GO)(?=[\s\S]*secrets, passwords,\s+temporary passwords, OTPs, password reset links, account\s+activation\/invite links, service-role keys, bank credentials, raw\s+student PII, raw CCCD, raw phone numbers, raw bank account numbers,\s+bank statements, vouchers or raw payment data)/i,
   "P5-02 production blocker summary UI shell",
+  blockerSummaryPath,
+);
+requireText(
+  blockerSummary,
+  /(?=[\s\S]*DAILY_REPORT_LINES)(?=[\s\S]*TASK_HANDOFF_LANES)(?=[\s\S]*data-heu-daily-report-task-handoff="P5-02")(?=[\s\S]*Daily report and task handoff: dry-run only)(?=[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not send email, create real tasks, store secrets or approve\s+any business decision)(?=[\s\S]*DRY-RUN-REPORT-01)(?=[\s\S]*DRY-RUN-REPORT-03)(?=[\s\S]*TASK-HANDOFF-02)(?=[\s\S]*Khong nhap mat khau, OTP, invite\/reset link)(?=[\s\S]*Khong coi PASS_LOCAL la UAT signed, finance approved, owner GO hoac production GO)/i,
+  "P5-02 daily report and task handoff UI shell",
   blockerSummaryPath,
 );
 
@@ -136,10 +149,24 @@ const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 if (!/P5-02[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*safe iteration loop[\s\S]*next controlled actions queue includes P0-14 intake-ledger evidence binder and P0-15 final handoff summary[\s\S]*audit:heu-bgh-dashboard-spec/.test(backlog)) {
   fail("Backlog P5-02 must be PASS_LOCAL and reference BGH dashboard spec audit.");
 }
+if (!/P5-02[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*no email is sent and no real task is created/i.test(backlog)) {
+  fail("Backlog P5-02 must reference the daily report/task handoff dry-run shell.");
+}
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 if (!/BGH operating dashboard specification[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*safe iteration loop[\s\S]*next controlled actions queue includes P0-14 intake-ledger evidence binder and P0-15 final handoff summary/.test(checklist)) {
   fail("Production checklist must include BGH operating dashboard specification PASS_LOCAL evidence.");
+}
+if (!/BGH operating dashboard specification[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*no production dashboard implementation, real email sending, real task creation or GO decision/i.test(checklist)) {
+  fail("Production checklist must keep the BGH daily report/task handoff in dry-run mode.");
+}
+
+if (!/Accounting dashboard \/ BGH control[\s\S]*daily report\/task handoff dry-run[\s\S]*without sending email, creating real tasks or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
+  fail("Current-state inventory must mention the P5-02 daily report/task handoff dry-run boundary.");
+}
+
+if (!/P5-02 Daily Report And Task Handoff Dry-Run[\s\S]*data-heu-daily-report-task-handoff="P5-02"[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*does not send real\s+email, create real tasks[\s\S]*approve owner GO or mark\s+production GO/i.test(implementationLog)) {
+  fail("Implementation log must record the P5-02 daily report/task handoff dry-run boundary.");
 }
 
 const agents = read("AGENTS.md");

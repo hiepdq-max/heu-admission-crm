@@ -4,7 +4,10 @@ import {
   ClipboardCheck,
   ClipboardList,
   FileWarning,
+  ListChecks,
+  MailCheck,
   ShieldAlert,
+  UsersRound,
 } from "lucide-react";
 
 import {
@@ -12,6 +15,51 @@ import {
   PRODUCTION_EXECUTION_STEPS,
   SAFE_ITERATION_STEPS,
 } from "@/lib/production-readiness";
+
+const DAILY_REPORT_LINES = [
+  {
+    code: "DRY-RUN-REPORT-01",
+    title: "Tien do xay dung",
+    audience: "BGH + IT_DATA",
+    detail:
+      "Tom tat lat da PASS_LOCAL, audit/lint/build da chay, file da sua va blocker con lai.",
+  },
+  {
+    code: "DRY-RUN-REPORT-02",
+    title: "Nguoi dang dung thu",
+    audience: "KHTC + BGH + Audit + Phap Che",
+    detail:
+      "Chi dung label vai tro/nhom phong ban, cach dang dung thu, trang thai NO_GO/BLOCKED/PASS_LOCAL va viec can xac nhan.",
+  },
+  {
+    code: "DRY-RUN-REPORT-03",
+    title: "Chu thich de hieu",
+    audience: "All owners",
+    detail:
+      "Giai thich ngan gon audit, lint, build, evidence, UAT, PASS_LOCAL va NO-GO bang ngon ngu dieu hanh.",
+  },
+];
+
+const TASK_HANDOFF_LANES = [
+  {
+    code: "TASK-HANDOFF-01",
+    owner: "IT_DATA",
+    task: "Chay PASS_LOCAL gate va ghi loi vao blocker neu co buoc FAIL.",
+    stop: "Khong chuyen lat tiep theo khi audit/lint/build chua xanh.",
+  },
+  {
+    code: "TASK-HANDOFF-02",
+    owner: "KHTC",
+    task: "Dung thu Finance Desk o che do read-only theo nhan vai tro da duyet.",
+    stop: "Khong nhap mat khau, OTP, invite/reset link, so tai khoan ngan hang hoac du lieu thanh toan tho.",
+  },
+  {
+    code: "TASK-HANDOFF-03",
+    owner: "BGH + Audit + Phap Che",
+    task: "Xem blocker, evidence reference va viec can ky/xac nhan dung tham quyen.",
+    stop: "Khong coi PASS_LOCAL la UAT signed, finance approved, owner GO hoac production GO.",
+  },
+];
 
 export function ProductionReadinessBlockerSummary() {
   return (
@@ -84,6 +132,78 @@ export function ProductionReadinessBlockerSummary() {
             </div>
           </article>
         ))}
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-daily-report-task-handoff="P5-02"
+      >
+        <div className="flex items-start gap-3">
+          <MailCheck className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Daily report and task handoff: dry-run only
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              DAILY_REPORT_DRY_RUN / NO_GO / BLOCKED. This shell shows what a
+              daily email summary and in-app task list must contain, but it
+              does not send email, create real tasks, store secrets or approve
+              any business decision.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {DAILY_REPORT_LINES.map((line) => (
+            <article
+              key={line.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <div className="flex items-start gap-2">
+                <ListChecks className="mt-0.5 size-4 shrink-0 text-rose-700" />
+                <div>
+                  <p className="text-xs font-semibold uppercase text-rose-700">
+                    {line.code}
+                  </p>
+                  <p className="mt-1 font-medium text-zinc-950">
+                    {line.title}
+                  </p>
+                  <p className="mt-2 text-xs font-medium text-zinc-500">
+                    To: {line.audience}
+                  </p>
+                  <p className="mt-2 leading-5 text-zinc-700">
+                    {line.detail}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {TASK_HANDOFF_LANES.map((lane) => (
+            <article
+              key={lane.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <div className="flex items-start gap-2">
+                <UsersRound className="mt-0.5 size-4 shrink-0 text-rose-700" />
+                <div>
+                  <p className="text-xs font-semibold uppercase text-rose-700">
+                    {lane.code}
+                  </p>
+                  <p className="mt-1 text-xs font-medium text-zinc-500">
+                    Owner: {lane.owner}
+                  </p>
+                  <p className="mt-2 leading-5 text-zinc-700">{lane.task}</p>
+                  <p className="mt-2 leading-5 text-rose-800">
+                    Stop: {lane.stop}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div
