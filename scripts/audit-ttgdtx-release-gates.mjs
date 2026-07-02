@@ -71,6 +71,7 @@ const requiredFiles = [
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_DICTIONARY_MIN_20260627_V01_DRAFT.md",
@@ -1999,6 +2000,24 @@ requireText(
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   /(?=[\s\S]*P5-02 Read-Only Blocker Summary)(?=[\s\S]*production-readiness-blocker-summary\.tsx)(?=[\s\S]*data-heu-production-safe-iteration-loop="P5-02")(?=[\s\S]*data-heu-production-action-queue="P5-02")(?=[\s\S]*Safe iteration loop)(?=[\s\S]*Next controlled actions)(?=[\s\S]*No GO button is provided)(?=[\s\S]*P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH\s+dashboard[\s\S]*approve\s+production GO or replace signed UAT)/i,
   "P5-02 BGH dashboard spec local-only boundary",
+);
+
+requireText(
+  "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  /(?=[\s\S]*HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702\.md)(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*allowed recipient labels)(?=[\s\S]*manual enablement steps)(?=[\s\S]*does\s+not store recipient addresses, SMTP values or secrets in Git\/Codex\/chat)(?=[\s\S]*does\s+not send mail)(?=[\s\S]*does\s+not approve UAT,\s+evidence, finance action, owner GO\/NO-GO or production GO)/i,
+  "P5-02 daily email dispatch handoff spec boundary",
+);
+
+requireText(
+  "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_CONFIG_HANDOFF)(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*HEU_DAILY_REPORT_TO)(?=[\s\S]*HEU_SMTP_PASSWORD)(?=[\s\S]*BGH_DAILY_REPORT_ALIAS)(?=[\s\S]*EMAIL-DISPATCH-01)(?=[\s\S]*EMAIL-DISPATCH-06)(?=[\s\S]*does not send email, create real tasks)(?=[\s\S]*Email receipt is not accepted as signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO or production GO)(?=[\s\S]*does not approve production, UAT, evidence acceptance, finance approval,\s+owner GO\/NO-GO or production GO)(?=[\s\S]*Production remains NO-GO)/i,
+  "P5-02 daily email dispatch handoff guard",
+);
+
+requireText(
+  "scripts/report-heu-email-readiness.mjs",
+  /(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY)(?=[\s\S]*HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702\.md)(?=[\s\S]*Required approval owners)(?=[\s\S]*Allowed recipient labels)(?=[\s\S]*Manual enablement steps)(?=[\s\S]*Stop conditions)(?=[\s\S]*BGH_DAILY_REPORT_ALIAS)(?=[\s\S]*EMAIL-DISPATCH-06)(?=[\s\S]*This checker does not send email, create tasks, accept UAT, approve finance action, approve owner GO or mark production GO)/i,
+  "P5-02 daily email dispatch readiness report guard",
 );
 
 requireText(

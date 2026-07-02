@@ -142,6 +142,14 @@ SMTP settings. It hides values, does not send mail and keeps all passwords,
 app passwords, OTPs, invite/reset links, service-role keys, bank credentials,
 raw PII, bank statements, vouchers and raw payment data outside Git/Codex/chat.
 
+`docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md` adds the
+`EMAIL_DISPATCH_HANDOFF_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` configuration
+handoff for a future daily email sender. It records required owner approvals,
+allowed recipient labels, manual enablement steps and stop conditions. It does
+not store recipient addresses, SMTP values or secrets in Git/Codex/chat, does
+not send mail, does not create real tickets/tasks and does not approve UAT,
+evidence, finance action, owner GO/NO-GO or production GO.
+
 ## 9. Current Evidence
 
 Current local evidence:
@@ -151,6 +159,7 @@ Current local evidence:
 - `app/master-control/page.tsx`
 - `components/master-control/production-readiness-blocker-summary.tsx`
 - `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md`
+- `docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md`
 - `.github/workflows/heu-pass-local.yml`
 - `scripts/report-heu-daily-dry-run.mjs`
 - `scripts/report-heu-email-readiness.mjs`

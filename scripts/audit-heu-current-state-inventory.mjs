@@ -42,6 +42,7 @@ for (const file of [
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
+  "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630.md",
   "docs/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630.md",
   "docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md",
@@ -169,6 +170,11 @@ requireText(
   inventory,
   /Accounting dashboard \/ BGH control[\s\S]*P2-18 read-only guard, source reconciliation checklist, UAT checklist, dashboard acceptance matrix, dashboard immediate stop guard, safe evidence-link rendering for movement evidence, real accounting user evidence bridge to P6-04 queue\/result proof, dashboard reliance decision manifest and P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\/NO-GO exist[\s\S]*HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702\.md[\s\S]*department\/user-label task lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P2-18 dashboard and P5-02 action queue control state",
+);
+requireText(
+  inventory,
+  /Accounting dashboard \/ BGH control[\s\S]*HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702\.md[\s\S]*daily email dispatch handoff[\s\S]*allowed recipient labels[\s\S]*manual enablement steps[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  "P5-02 daily email dispatch handoff current control state",
 );
 requireText(
   inventory,
