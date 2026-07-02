@@ -248,7 +248,7 @@ export async function AppShell({
                   key={item.key}
                   asChild
                   variant={isActive ? "default" : "ghost"}
-                  className={`w-full justify-start gap-3 ${
+                  className={`w-full min-w-0 justify-start gap-3 overflow-hidden ${
                     isActive ? "" : "text-zinc-600"
                   }`}
                 >
@@ -260,7 +260,7 @@ export async function AppShell({
                     )}
                   >
                     <Icon className="size-4" />
-                    {item.label}
+                    <span className="min-w-0 truncate">{item.label}</span>
                   </Link>
                 </Button>
               );
@@ -270,16 +270,21 @@ export async function AppShell({
 
         <section className="min-w-0">
           <header className="flex min-h-16 flex-col gap-3 border-b border-zinc-200 bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-            <div>
-              <h1 className="text-xl font-semibold tracking-normal">{title}</h1>
-              <p className="mt-1 text-sm text-zinc-500">{description}</p>
+            <div className="min-w-0">
+              <h1 className="break-words text-xl font-semibold tracking-normal">
+                {title}
+              </h1>
+              <p className="mt-1 break-words text-sm text-zinc-500">
+                {description}
+              </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
               {userEmail ? (
                 <form
                   action="/search"
                   method="get"
-                  className="flex h-8 min-w-0 items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2"
+                  className="flex h-8 w-full min-w-0 max-w-full items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 sm:w-auto"
+                  data-heu-global-quick-access="P1-11_SEARCH"
                 >
                   {workspace?.activeSegmentId ? (
                     <input

@@ -6,6 +6,7 @@ const labelPath = "lib/ttgdtx-process-labels.ts";
 const searchPagePath = "app/search/page.tsx";
 const quickFinderPath = "components/ttgdtx/ttgdtx-process-quick-finder.tsx";
 const landingPath = "app/ttgdtx/page.tsx";
+const appShellPath = "components/layout/app-shell.tsx";
 const failures = [];
 
 function fail(message) {
@@ -32,6 +33,7 @@ requireFile(labelPath);
 requireFile(searchPagePath);
 requireFile(quickFinderPath);
 requireFile(landingPath);
+requireFile(appShellPath);
 requireFile("docs/TTGDTX_PROCESS_CODE_MAP_20260625.md");
 requireFile("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
@@ -39,6 +41,7 @@ const labels = read(labelPath);
 const searchPage = read(searchPagePath);
 const quickFinder = read(quickFinderPath);
 const landingPage = read(landingPath);
+const appShell = read(appShellPath);
 const processMap = read("docs/TTGDTX_PROCESS_CODE_MAP_20260625.md");
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 
@@ -128,6 +131,24 @@ requireText(
   /action="\/search"[\s\S]*name="q"[\s\S]*placeholder="Finance Desk, xuat hoa don, P2-10"/i,
   "quick finder search form",
   quickFinderPath,
+);
+requireText(
+  quickFinder,
+  /(?=[\s\S]*data-ttgdtx-process-quick-finder-overflow-guard="QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*className="min-w-0 max-w-3xl")(?=[\s\S]*className="w-full min-w-0 max-w-md lg:shrink-0")(?=[\s\S]*className="min-w-0 overflow-hidden rounded-md)(?=[\s\S]*className="flex min-w-0 items-center justify-between gap-3)(?=[\s\S]*className="min-w-0 break-words")(?=[\s\S]*className="mt-2 break-words leading-5 text-zinc-600")(?=[\s\S]*className="mt-2 break-words text-xs uppercase text-zinc-500")/i,
+  "quick finder fast-access overflow guard",
+  quickFinderPath,
+);
+requireText(
+  searchPage,
+  /(?=[\s\S]*className="max-w-full break-words rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50")(?=[\s\S]*className="min-w-0 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm")(?=[\s\S]*className="mt-3 break-words text-base font-semibold text-zinc-950")(?=[\s\S]*line-clamp-3 break-words)(?=[\s\S]*<span className="break-words">Module:)(?=[\s\S]*<span className="break-words">Cập nhật:)/i,
+  "search page result and suggestion overflow guard",
+  searchPagePath,
+);
+requireText(
+  appShell,
+  /(?=[\s\S]*w-full min-w-0 justify-start gap-3 overflow-hidden)(?=[\s\S]*<span className="min-w-0 truncate">\{item\.label\}<\/span>)(?=[\s\S]*<div className="min-w-0">)(?=[\s\S]*className="break-words text-xl font-semibold tracking-normal")(?=[\s\S]*data-heu-global-quick-access="P1-11_SEARCH")(?=[\s\S]*className="flex h-8 w-full min-w-0 max-w-full items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 sm:w-auto")/i,
+  "global quick access and navigation overflow guard",
+  appShellPath,
 );
 requireText(
   landingPage,

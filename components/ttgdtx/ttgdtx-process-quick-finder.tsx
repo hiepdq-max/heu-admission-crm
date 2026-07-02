@@ -28,26 +28,27 @@ export function TtgdtxProcessQuickFinder() {
     <section
       className="rounded-lg border border-zinc-200 bg-white p-5 text-sm shadow-sm"
       data-ttgdtx-process-quick-finder="TTGDTX_9PLUS"
+      data-ttgdtx-process-quick-finder-overflow-guard="QUICK_ACCESS_NO_OVERFLOW"
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div className="max-w-3xl">
+        <div className="min-w-0 max-w-3xl">
           <div className="flex items-center gap-2 text-zinc-500">
             <Workflow className="size-4" />
             <span className="text-xs font-medium uppercase">
               Tìm nhanh quy trình TTGDTX
             </span>
           </div>
-          <h2 className="mt-2 text-base font-semibold text-zinc-950">
+          <h2 className="mt-2 break-words text-base font-semibold text-zinc-950">
             Chọn theo tên việc trước, mã P2 để đối chiếu sau
           </h2>
-          <p className="mt-2 leading-6 text-zinc-600">
+          <p className="mt-2 break-words leading-6 text-zinc-600">
             Ví dụ: Thu học phí (P2-10) là màn ghi nhận tiền đã thu, chứng từ
             thu và hóa đơn/chứng từ nếu cần. Có thể tìm bằng: thu hoc phi,
             chung tu thu, hoa don thu tien hoặc P2-10.
           </p>
         </div>
 
-        <form action="/search" className="w-full max-w-md">
+        <form action="/search" className="w-full min-w-0 max-w-md lg:shrink-0">
           <label
             className="text-xs font-medium uppercase text-zinc-500"
             htmlFor="ttgdtx-process-search"
@@ -72,17 +73,17 @@ export function TtgdtxProcessQuickFinder() {
           <Link
             key={process.code}
             href={process.href}
-            className="rounded-md border border-zinc-200 bg-zinc-50 p-3 transition hover:border-emerald-300 hover:bg-emerald-50"
+            className="min-w-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-3 transition hover:border-emerald-300 hover:bg-emerald-50"
             data-ttgdtx-process-quick-finder-item={process.code}
           >
-            <p className="flex items-center justify-between gap-3 font-medium text-zinc-950">
-              <span>{process.label}</span>
+            <p className="flex min-w-0 items-center justify-between gap-3 font-medium text-zinc-950">
+              <span className="min-w-0 break-words">{process.label}</span>
               <ArrowRight className="size-4 shrink-0 text-zinc-500" />
             </p>
-            <p className="mt-2 leading-5 text-zinc-600">
+            <p className="mt-2 break-words leading-5 text-zinc-600">
               {process.plainMeaning}
             </p>
-            <p className="mt-2 text-xs uppercase text-zinc-500">
+            <p className="mt-2 break-words text-xs uppercase text-zinc-500">
               Từ khóa: {process.searchTerms.slice(0, 3).join(", ")}
             </p>
           </Link>

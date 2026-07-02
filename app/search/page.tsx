@@ -221,7 +221,7 @@ function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
         <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-zinc-100">
           <Database className="size-5 text-zinc-600" />
         </div>
-        <div>
+        <div className="min-w-0">
           <h2 className="font-semibold">Có thể thử tìm</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {suggestions.map((item) => (
@@ -231,7 +231,7 @@ function SearchSuggestions({ segmentId }: { segmentId: string | null }) {
                   `/search?q=${encodeURIComponent(item)}`,
                   segmentId,
                 )}
-                className="rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+                className="max-w-full break-words rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
               >
                 {item}
               </Link>
@@ -285,7 +285,7 @@ function SearchResultCard({
   const updatedAt = formatUpdatedAt(row.updated_at);
 
   return (
-    <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+    <article className="min-w-0 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -303,20 +303,36 @@ function SearchResultCard({
               </span>
             ) : null}
           </div>
-          <h2 className="mt-3 text-base font-semibold text-zinc-950">
+          <h2 className="mt-3 break-words text-base font-semibold text-zinc-950">
             {row.result_label}
           </h2>
           {row.result_summary ? (
-            <p className="mt-2 line-clamp-3 text-sm leading-6 text-zinc-600">
+            <p className="mt-2 line-clamp-3 break-words text-sm leading-6 text-zinc-600">
               {row.result_summary}
             </p>
           ) : null}
           <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
-            {row.module_code ? <span>Module: {row.module_code}</span> : null}
-            {row.segment_label ? <span>Đối tượng: {row.segment_label}</span> : null}
-            {row.owner_department ? <span>Owner: {row.owner_department}</span> : null}
-            {row.status_label ? <span>Trạng thái: {row.status_label}</span> : null}
-            {updatedAt ? <span>Cập nhật: {updatedAt}</span> : null}
+            {row.module_code ? (
+              <span className="break-words">Module: {row.module_code}</span>
+            ) : null}
+            {row.segment_label ? (
+              <span className="break-words">
+                Đối tượng: {row.segment_label}
+              </span>
+            ) : null}
+            {row.owner_department ? (
+              <span className="break-words">
+                Owner: {row.owner_department}
+              </span>
+            ) : null}
+            {row.status_label ? (
+              <span className="break-words">
+                Trạng thái: {row.status_label}
+              </span>
+            ) : null}
+            {updatedAt ? (
+              <span className="break-words">Cập nhật: {updatedAt}</span>
+            ) : null}
           </div>
         </div>
         <Button asChild variant="outline" className="sm:shrink-0">

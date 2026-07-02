@@ -21,6 +21,26 @@
   approve UAT, approve finance reliance, approve migration order, approve owner
   GO/NO-GO or mark production GO.
 
+## 2026-07-02 - Quick Access Overflow Guard
+
+- Tightened `components/layout/app-shell.tsx` so global search is marked with
+  `data-heu-global-quick-access="P1-11_SEARCH"`, long navigation labels are
+  truncated inside a `min-w-0` container and long page titles/descriptions can
+  wrap instead of forcing horizontal overflow.
+- Tightened `components/ttgdtx/ttgdtx-process-quick-finder.tsx` with
+  `data-ttgdtx-process-quick-finder-overflow-guard="QUICK_ACCESS_NO_OVERFLOW"`
+  and min-width/break-word guards for the search form, process cards, labels,
+  plain-language meanings and keyword lines.
+- Tightened `app/search/page.tsx` so suggestion chips and result cards can wrap
+  long business labels, segment labels, owner labels and status text without
+  breaking the layout.
+- Extended `scripts/audit-ttgdtx-process-labels.mjs` so quick access and
+  overflow guards fail locally if removed.
+- This is navigation/readability packaging only. It does not change business
+  permissions, expose hidden routes, create accounts, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
 ## 2026-07-02 - Current State Real Ops Daily Summary Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M10 Dashboard and
