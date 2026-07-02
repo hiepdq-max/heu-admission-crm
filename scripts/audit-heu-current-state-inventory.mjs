@@ -35,6 +35,7 @@ for (const file of [
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
   "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
@@ -294,8 +295,13 @@ requireText(
 );
 requireText(
   inventory,
-  /P7-01\/P7-02\/P7-03 are PASS_LOCAL, P7-04 prompt\/output audit logging is PASS_LOCAL_DESIGN and P7-05 AI delivery team operating register is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED; autonomous AI remains locked[\s\S]*AI helper layer[\s\S]*Task checklist and risk board are read-only; P7-04 prompt\/output audit logging design, P7-05 AI delivery team operating register and the Master Control goal register exist[\s\S]*Advisory\/control only; no AI service call, prompt storage, workflow write, autonomous approval, real email sending, real task creation, UAT\/evidence\/finance\/owner approval or production action/i,
+  /P7-01\/P7-02\/P7-03 are PASS_LOCAL, P7-04 prompt\/output audit logging is PASS_LOCAL_DESIGN, P7-05 AI delivery team operating register is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED and P7-06 cloud agent operating plan is PASS_LOCAL_PLAN with CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED; autonomous AI and real cloud-agent activation remain locked[\s\S]*AI helper layer[\s\S]*Task checklist and risk board are read-only; P7-04 prompt\/output audit logging design, P7-05 AI delivery team operating register, P7-06 cloud agent operating plan and the Master Control goal register exist[\s\S]*Advisory\/control\/plan only; no AI service call, prompt storage, workflow write, autonomous approval, cloud infrastructure creation, payment entry, real email sending, real task creation, real user creation, UAT\/evidence\/finance\/owner approval or production action/i,
   "AI remains advisory-only",
+);
+requireText(
+  inventory,
+  /AI misuse[\s\S]*AI remains advisory-only; prompt\/output logging and role-scoped AI data are not enabled; P7-05 only documents delivery lanes and stop conditions; P7-06 only documents the cloud-agent budget, setup checklist and stop conditions/i,
+  "P7-06 cloud-agent misuse boundary",
 );
 requireText(
   inventory,

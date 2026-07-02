@@ -68,7 +68,25 @@ TEAM_REGISTER_READY / NO_GO / BLOCKED is a local control status only. Human
 authority owners remain responsible for signed UAT, evidence acceptance,
 finance decisions, access closure and owner GO/NO-GO outside Git/Codex/chat.
 
-## 6. Production Lock
+## 6. Cloud Agent Operating Scope
+
+P7-06 cloud agent operating control is documented in
+`docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md`. It records the accepted
+planning direction for a paid cloud-agent option, an initial USD 20-40 monthly
+cap, owner setup requirements, allowed PASS_LOCAL work and stop conditions.
+
+P7-06 may guide future cloud PASS_LOCAL build work when the local computer is
+off. It must not buy a server, enter payment details, create cloud
+infrastructure, store secrets, send real email, create real tasks, create real
+users, accept UAT, accept evidence, approve finance action, approve owner GO,
+run production migration or mark production GO.
+
+CLOUD_AGENT_PLAN_READY / NO_GO / BLOCKED is a local planning status only.
+Human authority owners remain responsible for provider selection, payment,
+budget cap, secret storage, kill switch and any real cloud-agent activation
+outside Git/Codex/chat.
+
+## 7. Production Lock
 
 AI remains pilot/read-only until all are complete:
 
@@ -78,7 +96,7 @@ AI remains pilot/read-only until all are complete:
 4. Human approval gate for every AI-assisted workflow.
 5. Signed UAT proving AI cannot approve, pay, release, delete or go-live.
 
-## 7. Boundary
+## 8. Boundary
 
 Codex/AI output is not approval evidence. Human actor, human decision, source
 evidence, timestamp and role/scope context are required for high-risk actions.

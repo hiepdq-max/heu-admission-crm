@@ -1,5 +1,36 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P7-06 Cloud Agent Operating Plan
+
+- Added `docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md` as a
+  PASS_LOCAL_PLAN control for the paid cloud-agent option when the local
+  computer is off.
+- The plan records `CLOUD_AGENT_PLAN_READY / NO_GO / BLOCKED`, the initial
+  `USD 20-40` monthly planning cap, required human owner setup checklist,
+  kill switch, operating loop and stop conditions before any real cloud agent
+  can run.
+- Updated `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`,
+  `docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; tightened
+  `scripts/audit-heu-ai-policy.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- Required checks include `audit:heu-ai-policy`,
+  `audit:heu-current-state-inventory`, `audit:heu-implementation-log`,
+  `audit:ttgdtx-release-gates`, `audit:heu-vietnamese-text-encoding`,
+  `lint`, `build` and `git diff --check`.
+- Boundary: this plan does not buy server, enter payment card or payment details,
+  create cloud infrastructure, create autonomous AI workers, store
+  repository tokens, OpenAI/API keys, SMTP credentials, passwords, OTPs,
+  reset/invite links, raw PII, bank statements, vouchers, payment proof or
+  signed evidence in Git/Codex/chat, send real email, create real tasks/tickets,
+  create real users, accept UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO, run production migration or mark production GO.
+
 ## 2026-07-02 - Finance Day-1 Accountant Operator Guide
 
 - Added `docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md` as a

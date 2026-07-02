@@ -130,7 +130,32 @@ lanes and stop conditions are documented and auditable; it does not enable
 autonomous AI, production deployment, UAT acceptance, evidence acceptance,
 finance approval or owner GO/NO-GO.
 
-## 9. Evidence Rule
+## 9. P7-06 Cloud Agent Operating Plan
+
+`docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md` is allowed as a
+PASS_LOCAL_PLAN artifact because it records the paid cloud-agent direction,
+budget range, owner setup requirements and stop conditions for future
+continuous build work when the local computer is off.
+
+It must not:
+
+- Buy a server, enter a payment card or create cloud infrastructure from
+  Codex/chat.
+- Create autonomous AI workers without a separate owner-approved authority
+  model, audit log, budget cap and kill switch.
+- Store repository tokens, OpenAI/API keys, SMTP credentials, passwords,
+  temporary passwords, OTPs, reset/invite links, raw PII, bank statements,
+  vouchers, payment proof or signed evidence in Git, Codex or chat.
+- Send real email, create real tasks/tickets, create real users, accept UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO, run
+  production migration or mark production GO.
+
+P7-06 remains PASS_LOCAL_PLAN only. CLOUD_AGENT_PLAN_READY means the plan,
+budget boundary and owner setup checklist are documented; it does not enable
+paid infrastructure, autonomous coding, production deployment, UAT acceptance,
+evidence acceptance, finance approval or owner GO/NO-GO.
+
+## 10. Evidence Rule
 
 Every AI-assisted high-risk workflow must store:
 
@@ -143,13 +168,16 @@ Every AI-assisted high-risk workflow must store:
 
 AI output alone is not approval evidence.
 
-## 10. Current Result
+## 11. Current Result
 
 P7-01 is PASS_LOCAL as a policy and static UI guard. P7-02 is PASS_LOCAL as a
 read-only task checklist helper. P7-03 is PASS_LOCAL as a read-only risk
 suggestion board. P7-04 is PASS_LOCAL_DESIGN as a prompt/output audit logging
 design. P7-05 is PASS_LOCAL_CONTROL as an AI/IT delivery team operating
-register with TEAM_REGISTER_READY / NO_GO / BLOCKED boundaries. This does not
-enable AI automation. Production AI remains locked until the implementation
-rule, prompt/output audit logging, role-scoped AI data access, risk-review
-audit logging, human authority owner decisions and UAT evidence are complete.
+register with TEAM_REGISTER_READY / NO_GO / BLOCKED boundaries. P7-06 is
+PASS_LOCAL_PLAN as a cloud-agent operating plan with CLOUD_AGENT_PLAN_READY /
+NO_GO / BLOCKED boundaries. This does not enable AI automation, paid cloud
+infrastructure or real autonomous work. Production AI remains locked until the
+implementation rule, prompt/output audit logging, role-scoped AI data access,
+risk-review audit logging, human authority owner decisions and UAT evidence are
+complete.

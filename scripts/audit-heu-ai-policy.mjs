@@ -66,6 +66,11 @@ const deliveryTeamRegister = requireText(
   /Status:\s*PASS_LOCAL_CONTROL[\s\S]*Decision values:\s*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build Agent[\s\S]*QA\/Audit Agent[\s\S]*Data Check Agent[\s\S]*Finance Trial Support Agent[\s\S]*UAT\/Evidence Coordinator[\s\S]*Report\/Email Coordinator[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
   "P7-05 AI delivery team operating register",
 );
+const cloudAgentPlan = requireText(
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
+  /Status:\s*PASS_LOCAL_PLAN[\s\S]*Decision lane:\s*CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED[\s\S]*Production status:\s*NO-GO[\s\S]*USD 10-20[\s\S]*USD 20-40[\s\S]*Required Human Setup Outside Git\/Codex\/Chat[\s\S]*Kill switch and cancellation route documented[\s\S]*Stop Conditions[\s\S]*Production remains NO-GO/i,
+  "P7-06 cloud agent operating plan",
+);
 const masterGoalRegister = requireText(
   "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
   /Status:\s*PASS_LOCAL_GOAL_CONTROL[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED[\s\S]*Continuous Build Goal When Local Machine Is Off[\s\S]*cloud PASS_LOCAL\s+verification, not autonomous coding[\s\S]*Expert Team Build Goal[\s\S]*Build Agent[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
@@ -114,6 +119,11 @@ requireText(
   "P7-05 AI delivery team operating policy",
 );
 requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-06 Cloud Agent Operating Plan[\s\S]*HEU_CLOUD_AGENT_OPERATING_PLAN_20260702\.md[\s\S]*PASS_LOCAL_PLAN[\s\S]*budget range, owner setup requirements and stop conditions[\s\S]*must not:[\s\S]*Buy a server, enter a payment card or create cloud infrastructure[\s\S]*Create autonomous AI workers[\s\S]*repository tokens, OpenAI\/API keys, SMTP credentials[\s\S]*Send real email, create real tasks\/tickets, create real users[\s\S]*accept UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*approve owner GO\/NO-GO[\s\S]*run\s+production migration or mark production GO[\s\S]*P7-06 remains PASS_LOCAL_PLAN only[\s\S]*CLOUD_AGENT_PLAN_READY[\s\S]*does not enable\s+paid infrastructure, autonomous coding, production deployment, UAT acceptance,\s+evidence acceptance, finance approval or owner GO\/NO-GO/i,
+  "P7-06 cloud agent operating policy",
+);
+requireText(
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   /P7-04 prompt\/output audit logging design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor, role, workspace scope, registered agent, source scope,\s+prompt\/output redaction status, prompt\/output hash where available, forbidden\s+action flags, human decision status and controlled evidence reference[\s\S]*does not implement AI logging, enable AI\s+service calls, approve AI-readable data access, accept UAT or approve\s+production AI/i,
   "P7-04 AI scope register boundary",
@@ -122,6 +132,11 @@ requireText(
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   /Delivery Team Operating Scope[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*Build\s+Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support Agent,\s+UAT\/Evidence Coordinator, Report\/Email Coordinator and Human Authority Owner[\s\S]*coordinate local PASS_LOCAL work, audit reruns, plain-language\s+reports, no-secret task handoffs and owner routing[\s\S]*must not create\s+autonomous AI workers, send real email, create real software tasks, accept UAT,\s+accept evidence, approve finance action, approve owner GO, run production\s+migration or mark production GO[\s\S]*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Human\s+authority owners remain responsible/i,
   "P7-05 AI delivery team scope register boundary",
+);
+requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /Cloud Agent Operating Scope[\s\S]*P7-06 cloud agent operating control[\s\S]*HEU_CLOUD_AGENT_OPERATING_PLAN_20260702\.md[\s\S]*initial USD 20-40 monthly\s+cap[\s\S]*owner setup requirements[\s\S]*allowed PASS_LOCAL work and stop conditions[\s\S]*must not buy a server, enter payment details, create cloud\s+infrastructure, store secrets, send real email, create real tasks, create real\s+users, accept UAT, accept evidence, approve finance action, approve owner GO,\s+run production migration or mark production GO[\s\S]*CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED[\s\S]*Human authority owners remain responsible/i,
+  "P7-06 cloud agent scope register boundary",
 );
 requireText(
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
@@ -147,6 +162,26 @@ requireText(
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   /Current Result[\s\S]*TEAM_REGISTER_READY is a local control state only[\s\S]*Production remains NO-GO[\s\S]*Autonomous AI delivery, real email sending, real task\s+creation, signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO and\s+production migration remain blocked/i,
   "P7-05 local-only current result",
+);
+requireText(
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
+  /Approved Budget Direction[\s\S]*Small cloud server[\s\S]*USD 10-20 per month[\s\S]*AI\/API usage cap[\s\S]*USD 10-20 per month[\s\S]*Initial total cap[\s\S]*USD 20-40 per month[\s\S]*Do not treat this as permission for Codex to purchase services/i,
+  "P7-06 approved budget direction",
+);
+requireText(
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
+  /Required Human Setup Outside Git\/Codex\/Chat[\s\S]*Cloud provider selected[\s\S]*Payment account and hard monthly cap configured[\s\S]*Repository access token with least privilege[\s\S]*OpenAI\/API key with usage cap[\s\S]*Secret storage outside Git\/Codex\/chat[\s\S]*Kill switch and cancellation route documented[\s\S]*No-production\/no-UAT\/no-finance authority boundary signed/i,
+  "P7-06 required human setup checklist",
+);
+requireText(
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
+  /Operating Loop[\s\S]*git status --short --branch[\s\S]*git diff --name-status[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*Choose exactly one small slice[\s\S]*Report PASS_LOCAL only after all checks pass/i,
+  "P7-06 operating loop",
+);
+requireText(
+  "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
+  /Forbidden Cloud-Agent Work[\s\S]*Create production users, passwords, OTPs, invite links or reset links[\s\S]*Store service-role keys, API keys, SMTP passwords, app passwords, raw PII,\s+bank statements, vouchers, payment proof or signed evidence in Git\/Codex\/chat[\s\S]*Send real email[\s\S]*Create real tasks\/tickets[\s\S]*Approve UAT, accept evidence, approve finance, approve access closure,\s+approve owner GO\/NO-GO, deploy production or run production migration[\s\S]*Stop Conditions[\s\S]*budget cap[\s\S]*secret[\s\S]*dirty files outside the selected slice[\s\S]*audit\/lint\/build fails/i,
+  "P7-06 forbidden work and stop conditions",
 );
 requireText(
   "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
@@ -242,12 +277,18 @@ if (!/P7-04[\s\S]*AI prompt\/output audit logging design[\s\S]*PASS_LOCAL_DESIGN
 if (!/P7-05[\s\S]*AI delivery team operating register[\s\S]*PASS_LOCAL_CONTROL[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md[\s\S]*HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-ai-policy[\s\S]*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build, QA\/Audit, Data Check, Finance Trial Support, UAT\/Evidence, Report\/Email and Human Authority Owner lanes[\s\S]*no autonomous AI workers, no real email sending, no real task creation[\s\S]*no UAT\/evidence\/finance\/owner approval and no production action/i.test(backlog)) {
   fail("Backlog P7-05 must be PASS_LOCAL_CONTROL and reference the AI delivery team operating register.");
 }
+if (!/P7-06[\s\S]*Cloud agent operating plan[\s\S]*PASS_LOCAL_PLAN[\s\S]*HEU_CLOUD_AGENT_OPERATING_PLAN_20260702\.md[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md[\s\S]*HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-ai-policy[\s\S]*CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED[\s\S]*USD 20-40 monthly planning cap[\s\S]*owner setup checklist and stop conditions[\s\S]*no server purchase, payment entry, cloud infrastructure creation, autonomous coding, real email, real task creation, real user creation, secrets in Git\/Codex\/chat, UAT\/evidence\/finance\/owner approval or production action/i.test(backlog)) {
+  fail("Backlog P7-06 must be PASS_LOCAL_PLAN and reference the cloud agent operating plan.");
+}
 
 if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*P7-04 is PASS_LOCAL_DESIGN only[\s\S]*cannot call AI services, store live prompts, approve, pay, recognize revenue, freeze\/release or mark go-live/i.test(checklist)) {
   fail("Production checklist must include P7-04 as design-only under the No AI approval control.");
 }
 if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*P7-05 is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED only[\s\S]*cannot create autonomous AI workers, send real email, create real tasks, accept UAT\/evidence, approve finance\/owner decisions or mark production GO/i.test(checklist)) {
   fail("Production checklist must include P7-05 as local delivery-team control under the No AI approval control.");
+}
+if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_CLOUD_AGENT_OPERATING_PLAN_20260702\.md[\s\S]*P7-06 is PASS_LOCAL_PLAN with CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED only[\s\S]*USD 20-40 monthly planning cap[\s\S]*owner setup checklist and stop conditions[\s\S]*cannot buy a server, enter payment details, create cloud infrastructure, store secrets, create users, send real email, create real tasks, accept UAT\/evidence, approve finance\/owner decisions or mark production GO/i.test(checklist)) {
+  fail("Production checklist must include P7-06 as local cloud-agent plan under the No AI approval control.");
 }
 
 if (/raw PII|bank statement|service-role key/i.test(promptOutputDesign) && !/forbidden in AI prompts, outputs, logs and Git/i.test(promptOutputDesign)) {
@@ -259,6 +300,9 @@ if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(deliveryTeamRegiste
 if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(masterGoalRegister) && !/Paste or store passwords, temporary passwords, OTPs, reset\/invite links,\s+service-role keys, SMTP credentials, raw PII, bank statements, vouchers or raw\s+payment data/i.test(masterGoalRegister)) {
   fail("Master Control goal register must explicitly forbid sensitive content.");
 }
+if (/password|OTP|SMTP|raw PII|bank statement|voucher|API key|token/i.test(cloudAgentPlan) && !/outside Git\/Codex\/chat/i.test(cloudAgentPlan)) {
+  fail("P7-06 cloud agent operating plan must keep secrets and sensitive evidence outside Git/Codex/chat.");
+}
 
 if (failures.length > 0) {
   console.error("HEU AI policy audit failed.");
@@ -269,5 +313,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `HEU AI policy audit passed. Checked ${aiRouteFiles.length} AI route file(s); AI remains advisory only and P7-05 stays delivery-control only.`,
+  `HEU AI policy audit passed. Checked ${aiRouteFiles.length} AI route file(s); AI remains advisory only and P7-06 stays cloud-plan only.`,
 );
