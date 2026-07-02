@@ -135,11 +135,14 @@ export function UserCreateForm({
     effectiveDisabledReason === "missing_permission"
       ? "Chưa có quyền"
       : "Chưa cấu hình key";
+  const missingServiceRoleMessage = canCreatePrivilegedUsers
+    ? "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. ADMIN vẫn có thể tạo user thủ công trong Supabase Auth rồi quay lại liên kết Auth user vào CRM."
+    : "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. Người được ủy quyền users.create cần nhờ ADMIN/IT_DATA cấu hình key server hoặc tạo/link Auth thủ công; không gửi mật khẩu tạm, OTP hay invite/reset link qua chat/email.";
   const gateMessage = canCreateAuthUser
     ? "CRM đã có service role key và user hiện tại có quyền users.create. Có thể tạo tài khoản đăng nhập tự động. Không hiển thị key, không ghi log mật khẩu tạm."
     : effectiveDisabledReason === "missing_permission"
       ? "User hiện tại chưa được cấp quyền users.create nên nút tạo user tự động đang bị khóa. ADMIN có thể cấp quyền này trong ma trận phân quyền."
-      : "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. Bạn vẫn có thể tạo user thủ công trong Supabase Auth rồi quay lại gắn profile/phạm vi.";
+      : missingServiceRoleMessage;
 
   return (
     <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">

@@ -12,6 +12,11 @@
   button reflects service-role-key and `users.create` gates, hides ADMIN/BGH
   role assignment for non-ADMIN creators and shows a controlled no-access
   reason.
+- Clarified the missing-service-role-key message in
+  `components/settings/user-create-form.tsx`: ADMIN can use the manual Auth link
+  path, while delegated `users.create` operators must ask ADMIN/IT_DATA to
+  configure the server key or handle manual Auth linking without sharing
+  passwords, OTPs or invite/reset links.
 - Updated `components/layout/app-shell.tsx` so the `Phạm vi user` navigation
   item is visible to ADMIN, `scope.manage_department` and `users.create`
   operators.
@@ -22,10 +27,12 @@
 - Added a user-creation preflight on `/settings/supabase-check` for service
   role env, Supabase Auth Admin API, ADMIN `users.create` database permission,
   current operator permission and the create-user route.
-- Added `.env.example` and `scripts/check-heu-user-create-readiness.mjs` plus
+- Added `docs/HEU_USER_CREATE_SERVER_KEY_TEMPLATE_20260702.md` and
+  `scripts/check-heu-user-create-readiness.mjs` plus
   `npm.cmd run check:heu-user-create-readiness` so IT_DATA can verify the local
-  user-creation setup after adding the server-only key, without printing secret
-  values or raw Supabase error messages.
+  user-creation setup after adding the server-only key, without committing
+  env-like files, printing secret values or exposing raw Supabase error
+  messages.
 - Added `database/step112_admin_user_create_permission.sql` as a migration
   candidate so existing databases can grant/reactivate ADMIN `users.create`
   without rerunning the full seed file; it must not be run in production from

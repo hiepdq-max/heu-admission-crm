@@ -71,7 +71,8 @@ const supabaseCheckPagePath = "app/settings/supabase-check/page.tsx";
 const appShellPath = "components/layout/app-shell.tsx";
 const permissionsPath = "lib/permissions.ts";
 const seedPath = "database/seed.sql";
-const envExamplePath = ".env.example";
+const userCreateServerKeyTemplatePath =
+  "docs/HEU_USER_CREATE_SERVER_KEY_TEMPLATE_20260702.md";
 const userCreateReadinessCheckPath =
   "scripts/check-heu-user-create-readiness.mjs";
 const userCreatePermissionMigrationPath =
@@ -104,7 +105,7 @@ for (const file of [
   appShellPath,
   permissionsPath,
   seedPath,
-  envExamplePath,
+  userCreateServerKeyTemplatePath,
   userCreateReadinessCheckPath,
   userCreatePermissionMigrationPath,
   readinessPath,
@@ -132,7 +133,7 @@ const supabaseCheckPage = read(supabaseCheckPagePath);
 const appShell = read(appShellPath);
 const permissionsSource = read(permissionsPath);
 const seedSource = read(seedPath);
-const envExample = read(envExamplePath);
+const userCreateServerKeyTemplate = read(userCreateServerKeyTemplatePath);
 const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const readinessSource = read(readinessPath);
@@ -223,6 +224,10 @@ requireAllText(
     "canCreatePrivilegedUsers",
     '!["ADMIN", "BGH"].includes',
     "users.create",
+    "missingServiceRoleMessage",
+    "ADMIN vẫn có thể tạo user thủ công",
+    "nhờ ADMIN/IT_DATA cấu hình key server",
+    "không gửi mật khẩu tạm, OTP hay invite/reset link",
   ],
   "create-user form permission and privileged-role guard",
   formPath,
@@ -348,16 +353,19 @@ forbidText(
 );
 
 requireAllText(
-  envExample,
+  userCreateServerKeyTemplate,
   [
     "NEXT_PUBLIC_SUPABASE_URL=",
     "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=",
     "SUPABASE_SERVICE_ROLE_KEY=",
-    "Do not commit .env.local",
-    "do not paste secret values",
+    "Do not commit `.env.local`",
+    "Do not paste secret values",
+    "check:heu-user-create-readiness",
+    "must not print secret values or",
+    "raw Supabase error messages",
   ],
-  "safe env template for user creation",
-  envExamplePath,
+  "safe server-key template for user creation",
+  userCreateServerKeyTemplatePath,
 );
 
 requireAllText(
