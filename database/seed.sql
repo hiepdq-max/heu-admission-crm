@@ -23,6 +23,7 @@ cross join lateral (
   values
     ('system.manage'),
     ('users.manage'),
+    ('users.create'),
     ('leads.read_all'),
     ('leads.write_all'),
     ('leads.assign'),

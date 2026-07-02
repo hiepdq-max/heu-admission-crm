@@ -24,6 +24,12 @@ export const permissionGroups: PermissionGroup[] = [
         description: "Cấp role, phòng ban và trạng thái tài khoản.",
       },
       {
+        code: "users.create",
+        label: "Tạo user đăng nhập",
+        description:
+          "Tạo Supabase Auth user và gắn profile CRM khi server có service role key.",
+      },
+      {
         code: "users.manage_department",
         label: "Quản lý người dùng cùng phòng",
         description: "Trưởng phòng phân quyền cho nhân sự thuộc phòng mình.",

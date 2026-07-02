@@ -13,6 +13,8 @@ function textValue(formData: FormData, key: string) {
 }
 
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
+const createUserPermission = "users.create";
+const privilegedUserRoleCodes = new Set(["ADMIN", "BGH"]);
 const unsafeTemporaryPasswords = new Set([
   "12345678",
   "123456789",
@@ -169,13 +171,39 @@ export async function createUserAccountAction(formData: FormData) {
   const { data: currentRoleCode } = await supabase.rpc(
     "current_user_role_code",
   );
+  const canCreateUser =
+    currentRoleCode === "ADMIN" ||
+    Boolean(
+      (
+        await supabase.rpc("has_permission", {
+          permission_name: createUserPermission,
+        })
+      ).data,
+    );
 
-  if (currentRoleCode !== "ADMIN") {
-    redirect(`${returnPath}?error=not_admin`);
+  if (!canCreateUser) {
+    redirect(`${returnPath}?error=not_allowed_create_user`);
   }
 
   if (!email || !fullName || !password || !roleId) {
     redirect(`${returnPath}?error=missing_new_user_data`);
+  }
+
+  const { data: targetRole } = await supabase
+    .from("roles")
+    .select("code")
+    .eq("id", roleId)
+    .maybeSingle();
+
+  if (!targetRole) {
+    redirect(`${returnPath}?error=missing_role`);
+  }
+
+  if (
+    currentRoleCode !== "ADMIN" &&
+    privilegedUserRoleCodes.has(targetRole.code)
+  ) {
+    redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
   }
 
   if (password.length < 8) {
@@ -212,22 +240,31 @@ export async function createUserAccountAction(formData: FormData) {
     );
   }
 
-  const { error: profileError } = await supabase.from("users_profile").upsert(
-    {
-      id: createdUser.user.id,
-      email,
-      full_name: fullName,
-      phone,
-      role_id: roleId,
-      department_id: departmentId,
-      manager_id: managerId,
-      status: "ACTIVE",
-    },
-    { onConflict: "id" },
-  );
+  const { error: profileError } = await adminClient
+    .from("users_profile")
+    .upsert(
+      {
+        id: createdUser.user.id,
+        email,
+        full_name: fullName,
+        phone,
+        role_id: roleId,
+        department_id: departmentId,
+        manager_id: managerId,
+        status: "ACTIVE",
+      },
+      { onConflict: "id" },
+    );
 
   if (profileError) {
-    redirect(`${returnPath}?error=${encodeURIComponent(profileError.message)}`);
+    const { error: cleanupError } = await adminClient.auth.admin.deleteUser(
+      createdUser.user.id,
+    );
+    const cleanupMessage = cleanupError
+      ? `${profileError.message} Auth cleanup failed: ${cleanupError.message}`
+      : profileError.message;
+
+    redirect(`${returnPath}?error=${encodeURIComponent(cleanupMessage)}`);
   }
 
   revalidatePath("/settings");
@@ -334,6 +371,7 @@ export async function updateRolePermissionsAction(formData: FormData) {
   if (targetRole.code === "ADMIN") {
     selectedPermissions.add("system.manage");
     selectedPermissions.add("users.manage");
+    selectedPermissions.add(createUserPermission);
   }
 
   const permissionUpdateAt = new Date().toISOString();

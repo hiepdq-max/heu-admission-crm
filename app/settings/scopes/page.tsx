@@ -41,10 +41,15 @@ const errorMessages: Record<string, string> = {
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
+  missing_role: "Thiếu role cần gán cho user mới.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
+  not_allowed_create_user:
+    "Bạn chưa được cấp quyền users.create để tạo tài khoản đăng nhập.",
+  not_allowed_create_privileged_user:
+    "Quyền users.create không được tạo user ADMIN/BGH. ADMIN phải thực hiện tài khoản đặc quyền.",
   invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
   not_admin: "Chỉ ADMIN mới được tạo user hoặc đổi role/phòng ban.",
   invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
@@ -64,15 +69,26 @@ export default async function ScopeSettingsPage({
     redirect("/login");
   }
 
-  const [{ data: currentRoleCode }, { data: canManageScopes }] =
+  const [
+    { data: currentRoleCode },
+    { data: canManageScopes },
+    { data: canCreateUserPermission },
+  ] =
     await Promise.all([
       supabase.rpc("current_user_role_code"),
       supabase.rpc("has_permission", {
         permission_name: "scope.manage_department",
       }),
+      supabase.rpc("has_permission", {
+        permission_name: "users.create",
+      }),
     ]);
 
-  if (currentRoleCode !== "ADMIN" && !canManageScopes) {
+  const canCreateUsers =
+    currentRoleCode === "ADMIN" || Boolean(canCreateUserPermission);
+  const canUseScopePanels = currentRoleCode === "ADMIN" || Boolean(canManageScopes);
+
+  if (!canUseScopePanels && !canCreateUsers) {
     redirect("/");
   }
 
@@ -177,6 +193,12 @@ export default async function ScopeSettingsPage({
   const visibleScopeEnforcementRows = (scopeEnforcementRows ?? []).filter(
     (row) => visibleUserIds.has(row.user_id),
   );
+  const hasServiceRoleKey = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const createUserDisabledReason = !hasServiceRoleKey
+    ? "missing_service_role_key"
+    : !canCreateUsers
+      ? "missing_permission"
+      : undefined;
   const error = params?.error
     ? errorMessages[params.error] ?? decodeURIComponent(params.error)
     : undefined;
@@ -215,13 +237,13 @@ export default async function ScopeSettingsPage({
         </div>
       ) : null}
 
-      {currentRoleCode === "ADMIN" ? (
+      {canCreateUsers ? (
         <>
           <RealUserOnboardingPanel />
           <UserCreateForm
             roles={roles ?? []}
             departments={departments ?? []}
-            managers={(users ?? []).map((profile) => ({
+            managers={visibleUsers.map((profile) => ({
               id: profile.id,
               full_name: profile.full_name,
               email: profile.email,
@@ -229,59 +251,69 @@ export default async function ScopeSettingsPage({
               department_id: profile.department_id,
             }))}
             returnPath="/settings/scopes"
-            canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
+            canCreateAuthUser={hasServiceRoleKey && canCreateUsers}
+            createUserDisabledReason={createUserDisabledReason}
+            canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}
           />
-          <UserAuthProfileLinkForm
-            roles={roles ?? []}
-            departments={departments ?? []}
-            managers={(users ?? []).map((profile) => ({
-              id: profile.id,
-              full_name: profile.full_name,
-              email: profile.email,
-              role_id: profile.role_id,
-              department_id: profile.department_id,
-            }))}
-            returnPath="/settings/scopes"
-          />
+          {currentRoleCode === "ADMIN" ? (
+            <UserAuthProfileLinkForm
+              roles={roles ?? []}
+              departments={departments ?? []}
+              managers={(users ?? []).map((profile) => ({
+                id: profile.id,
+                full_name: profile.full_name,
+                email: profile.email,
+                role_id: profile.role_id,
+                department_id: profile.department_id,
+              }))}
+              returnPath="/settings/scopes"
+            />
+          ) : null}
         </>
       ) : null}
 
-      <UserScopeEnforcementPanel
-        rows={visibleScopeEnforcementRows}
-        summary={currentRoleCode === "ADMIN" ? scopeEnforcementSummary : null}
-        loadError={
-          scopeEnforcementRowsError?.message ??
-          scopeEnforcementSummaryError?.message
-        }
-      />
+      {canUseScopePanels ? (
+        <>
+          <UserScopeEnforcementPanel
+            rows={visibleScopeEnforcementRows}
+            summary={currentRoleCode === "ADMIN" ? scopeEnforcementSummary : null}
+            loadError={
+              scopeEnforcementRowsError?.message ??
+              scopeEnforcementSummaryError?.message
+            }
+          />
 
-      <UserBusinessScopeSettings
-        users={visibleUsers}
-        roles={roles ?? []}
-        departments={departments ?? []}
-        segments={(admissionSegments ?? []).map((segment) => ({
-          id: segment.id,
-          label: segment.segment_name,
-          group: segment.program_group,
-        }))}
-        partners={(partnerScopeOptions ?? []).map((partner) => ({
-          id: partner.id,
-          label: partner.partner_name,
-          group: [partner.partner_type, partner.area].filter(Boolean).join(" · "),
-        }))}
-        userSegmentScopes={visibleSegmentScopes}
-        userPartnerScopes={visiblePartnerScopes}
-        userLeadVisibilityScopes={visibleLeadVisibilityScopes}
-        returnPath="/settings/scopes"
-        canManageUserProfiles={currentRoleCode === "ADMIN"}
-        canAssignAllLeadVisibility={currentRoleCode === "ADMIN"}
-        loadError={
-          admissionSegmentsError?.message ??
-          userSegmentScopesError?.message ??
-          userPartnerScopesError?.message ??
-          userLeadVisibilityScopesError?.message
-        }
-      />
+          <UserBusinessScopeSettings
+            users={visibleUsers}
+            roles={roles ?? []}
+            departments={departments ?? []}
+            segments={(admissionSegments ?? []).map((segment) => ({
+              id: segment.id,
+              label: segment.segment_name,
+              group: segment.program_group,
+            }))}
+            partners={(partnerScopeOptions ?? []).map((partner) => ({
+              id: partner.id,
+              label: partner.partner_name,
+              group: [partner.partner_type, partner.area]
+                .filter(Boolean)
+                .join(" · "),
+            }))}
+            userSegmentScopes={visibleSegmentScopes}
+            userPartnerScopes={visiblePartnerScopes}
+            userLeadVisibilityScopes={visibleLeadVisibilityScopes}
+            returnPath="/settings/scopes"
+            canManageUserProfiles={currentRoleCode === "ADMIN"}
+            canAssignAllLeadVisibility={currentRoleCode === "ADMIN"}
+            loadError={
+              admissionSegmentsError?.message ??
+              userSegmentScopesError?.message ??
+              userPartnerScopesError?.message ??
+              userLeadVisibilityScopesError?.message
+            }
+          />
+        </>
+      ) : null}
     </AppShell>
   );
 }

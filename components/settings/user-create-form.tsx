@@ -20,12 +20,16 @@ type UserOptionRow = {
   department_id: string | null;
 };
 
+type CreateUserDisabledReason = "missing_service_role_key" | "missing_permission";
+
 type UserCreateFormProps = {
   roles: OptionRow[];
   departments: OptionRow[];
   managers: UserOptionRow[];
   returnPath?: "/settings" | "/settings/scopes";
   canCreateAuthUser?: boolean;
+  createUserDisabledReason?: CreateUserDisabledReason;
+  canCreatePrivilegedUsers?: boolean;
 };
 
 const inputClass =
@@ -59,11 +63,18 @@ export function UserCreateForm({
   managers,
   returnPath = "/settings",
   canCreateAuthUser = false,
+  createUserDisabledReason,
+  canCreatePrivilegedUsers = true,
 }: UserCreateFormProps) {
   const [selectedRoleId, setSelectedRoleId] = useState("");
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
   const [selectedManagerId, setSelectedManagerId] = useState("");
-  const selectedRole = roles.find((role) => role.id === selectedRoleId);
+  const assignableRoles = canCreatePrivilegedUsers
+    ? roles
+    : roles.filter((role) => !["ADMIN", "BGH"].includes(role.code ?? ""));
+  const selectedRole = assignableRoles.find(
+    (role) => role.id === selectedRoleId,
+  );
   const staffRole = isStaffRole(selectedRole);
   const departmentHeads = managers.filter((manager) => {
     const role = roles.find((item) => item.id === manager.role_id);
@@ -100,7 +111,7 @@ export function UserCreateForm({
   }
 
   function handleRoleChange(roleId: string) {
-    const nextRole = roles.find((role) => role.id === roleId);
+    const nextRole = assignableRoles.find((role) => role.id === roleId);
 
     setSelectedRoleId(roleId);
 
@@ -116,6 +127,19 @@ export function UserCreateForm({
       setSelectedManagerId(firstDepartmentHeadId(departmentId));
     }
   }
+
+  const effectiveDisabledReason =
+    createUserDisabledReason ??
+    (canCreateAuthUser ? undefined : "missing_service_role_key");
+  const disabledButtonLabel =
+    effectiveDisabledReason === "missing_permission"
+      ? "Chưa có quyền"
+      : "Chưa cấu hình key";
+  const gateMessage = canCreateAuthUser
+    ? "CRM đã có service role key và user hiện tại có quyền users.create. Có thể tạo tài khoản đăng nhập tự động. Không hiển thị key, không ghi log mật khẩu tạm."
+    : effectiveDisabledReason === "missing_permission"
+      ? "User hiện tại chưa được cấp quyền users.create nên nút tạo user tự động đang bị khóa. ADMIN có thể cấp quyền này trong ma trận phân quyền."
+      : "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. Bạn vẫn có thể tạo user thủ công trong Supabase Auth rồi quay lại gắn profile/phạm vi.";
 
   return (
     <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
@@ -201,6 +225,7 @@ export function UserCreateForm({
               Dùng mật khẩu tạm riêng cho user mới, không dùng mật khẩu thật,
               không gửi qua Codex/chat, email thường, ghi chú hay file đính kèm.
               Yêu cầu đổi mật khẩu qua kênh bảo mật sau lần đăng nhập đầu.
+              Không hiển thị key, không ghi log mật khẩu tạm.
             </p>
           </div>
 
@@ -220,12 +245,18 @@ export function UserCreateForm({
               onChange={(event) => handleRoleChange(event.target.value)}
             >
               <option value="">Chọn role</option>
-              {roles.map((role) => (
+              {assignableRoles.map((role) => (
                 <option key={role.id} value={role.id}>
                   {role.name}
                 </option>
               ))}
             </select>
+            {!canCreatePrivilegedUsers ? (
+              <p className="text-xs leading-5 text-amber-700">
+                Quyền users.create không được tạo role ADMIN/BGH. Nếu cần role đặc
+                quyền, ADMIN phải thực hiện.
+              </p>
+            ) : null}
           </div>
 
           <div className="space-y-2">
@@ -288,15 +319,13 @@ export function UserCreateForm({
         </div>
 
         <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-800">
-          {canCreateAuthUser
-            ? "CRM đã có service role key, có thể tạo tài khoản đăng nhập tự động. Không hiển thị key, không ghi log mật khẩu tạm."
-            : "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên nút tạo user tự động đang bị khóa. Bạn vẫn có thể tạo user thủ công trong Supabase Auth rồi quay lại gắn profile/phạm vi."}
+          {gateMessage}
         </div>
 
         <div className="flex justify-end">
           <Button type="submit" disabled={!canCreateAuthUser}>
             <UserPlus className="size-4" />
-            {canCreateAuthUser ? "Tạo user" : "Chưa cấu hình key"}
+            {canCreateAuthUser ? "Tạo user" : disabledButtonLabel}
           </Button>
         </div>
       </form>

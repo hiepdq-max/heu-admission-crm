@@ -58,6 +58,9 @@ const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
 const scopePagePath = "app/settings/scopes/page.tsx";
+const appShellPath = "components/layout/app-shell.tsx";
+const permissionsPath = "lib/permissions.ts";
+const seedPath = "database/seed.sql";
 const readinessPath = "lib/production-readiness.ts";
 const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
@@ -81,6 +84,9 @@ for (const file of [
   actionsPath,
   settingsPagePath,
   scopePagePath,
+  appShellPath,
+  permissionsPath,
+  seedPath,
   readinessPath,
   financeDayOneRunbookPath,
   financeDayOneActivationTemplatePath,
@@ -101,6 +107,9 @@ const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
+const appShell = read(appShellPath);
+const permissionsSource = read(permissionsPath);
+const seedSource = read(seedPath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
@@ -148,6 +157,53 @@ requireAllText(
 );
 
 requireAllText(
+  permissionsSource,
+  [
+    'code: "users.create"',
+    "Tạo Supabase Auth user và gắn profile CRM",
+  ],
+  "dedicated create-user permission catalog entry",
+  permissionsPath,
+);
+
+requireAllText(
+  seedSource,
+  ["('users.create')"],
+  "ADMIN seed keeps create-user permission",
+  seedPath,
+);
+
+requireAllText(
+  actions,
+  [
+    'const createUserPermission = "users.create"',
+    "privilegedUserRoleCodes",
+    "permission_name: createUserPermission",
+    "not_allowed_create_user",
+    "not_allowed_create_privileged_user",
+    '.from("users_profile")',
+    "adminClient.auth.admin.deleteUser",
+    "Auth cleanup failed",
+    "selectedPermissions.add(createUserPermission)",
+  ],
+  "server-side create-user permission and privileged-role guard",
+  actionsPath,
+);
+
+requireAllText(
+  form,
+  [
+    "createUserDisabledReason",
+    "missing_permission",
+    "canCreatePrivilegedUsers",
+    '!["ADMIN", "BGH"].includes',
+    "users.create",
+  ],
+  "create-user form permission and privileged-role guard",
+  formPath,
+);
+
+requireAllText(
   linkForm,
   [
     "financeDayOneManualLinkChecks",
@@ -187,9 +243,39 @@ requireAllText(
     "RealUserOnboardingPanel",
     "<RealUserOnboardingPanel />",
     "<UserCreateForm",
+    "not_allowed_create_user",
+    "not_allowed_create_privileged_user",
+    "canCreatePrivilegedUsers",
   ],
   "settings page user-account guard",
   settingsPagePath,
+);
+
+requireAllText(
+  scopePage,
+  [
+    "canCreateUserPermission",
+    'permission_name: "users.create"',
+    "canCreateUsers",
+    "canUseScopePanels",
+    "not_allowed_create_user",
+    "not_allowed_create_privileged_user",
+    "createUserDisabledReason",
+    'canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}',
+  ],
+  "scoped page create-user permission guard",
+  scopePagePath,
+);
+
+requireAllText(
+  appShell,
+  [
+    'permissions: ["scope.manage_department", "users.create"]',
+    "item.permissions",
+    "itemPermissions.some",
+  ],
+  "sidebar exposes user scope page to delegated create-user operators",
+  appShellPath,
 );
 
 requireOrderedText(

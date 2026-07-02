@@ -107,6 +107,10 @@ const errorMessages: Record<string, string> = {
     "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
+  not_allowed_create_user:
+    "Bạn chưa được cấp quyền users.create để tạo tài khoản đăng nhập.",
+  not_allowed_create_privileged_user:
+    "Quyền users.create không được tạo user ADMIN/BGH. ADMIN phải thực hiện tài khoản đặc quyền.",
   invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
   missing_user_or_role: "Thiếu user hoặc role cần cập nhật.",
   missing_user: "Thiếu user cần cập nhật.",
@@ -421,6 +425,8 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     "BGH",
     "ADMISSION_HEAD",
   ].includes(currentRoleCode);
+  const hasServiceRoleKey = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const canCreateUsers = currentRoleCode === "ADMIN";
 
   let houCommissionPolicies: HouCommissionPolicyRow[] = [];
   let houCommissionLines: HouCommissionPolicyLineRow[] = [];
@@ -548,7 +554,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             role_id: profile.role_id,
             department_id: profile.department_id,
           }))}
-          canCreateAuthUser={Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY)}
+          canCreateAuthUser={hasServiceRoleKey && canCreateUsers}
+          createUserDisabledReason={
+            hasServiceRoleKey ? undefined : "missing_service_role_key"
+          }
+          canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}
         />
         <UserAuthProfileLinkForm
           roles={roles ?? []}
