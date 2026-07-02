@@ -69,6 +69,69 @@ const taskLanes = [
   },
 ];
 
+const productionBlockerLanes = [
+  {
+    code: "P0-03",
+    owner: "IT_DATA + Audit",
+    blocker: "Backup and restore dry-run",
+    next: "Can backup ID, restore target, smoke-check va owner evidence ngoai Git/Codex/chat.",
+  },
+  {
+    code: "Step90-Step110",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    blocker: "Migration order approval",
+    next: "Chi ky lenh migration sau khi P0-03 evidence duoc chap nhan dung tham quyen.",
+  },
+  {
+    code: "P0-19",
+    owner: "PHAP_CHE + KHTC + BGH",
+    blocker: "Legal and finance gate UAT",
+    next: "Can legal basis, tuition policy, finance gate va signed legal/finance UAT.",
+  },
+  {
+    code: "P2-17",
+    owner: "KHTC + BGH + Audit",
+    blocker: "Partner payout duplicate and dossier UAT",
+    next: "Can duplicate-click, overpay, voucher, RPC-only va dossier evidence signed.",
+  },
+  {
+    code: "P2-18",
+    owner: "KHTC + BGH + IT_DATA",
+    blocker: "Accounting dashboard read-only and source reconciliation",
+    next: "Can source comparison, role-scope denial va no-write dashboard UAT evidence.",
+  },
+  {
+    code: "P6-04",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    blocker: "Role and workspace scope UAT",
+    next: "Can ADMIN, BGH, KHTC, PHAP_CHE, AUDIT va out-of-scope browser UAT evidence.",
+  },
+  {
+    code: "P6-03",
+    owner: "Audit + IT_DATA + KHTC",
+    blocker: "Audit log traceability",
+    next: "Can trace rows cho create, update, check, approve, pay va source-control events.",
+  },
+  {
+    code: "P6-06",
+    owner: "IT_DATA + Audit + business owners",
+    blocker: "Hard-delete and cascade risk",
+    next: "Can conversion evidence hoac written waiver cho unresolved cascade paths.",
+  },
+  {
+    code: "P0-10",
+    owner: "IT_DATA + Audit",
+    blocker: "Controlled evidence redaction",
+    next: "Can controlled evidence location va redacted references; raw evidence stays outside Git/Codex/chat.",
+  },
+  {
+    code: "P0-09",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
+    blocker: "Final owner GO/NO-GO decision",
+    next: "Can final signed multi-owner GO/NO-GO note outside Codex/chat.",
+  },
+];
+
 const departmentTaskRegister = [
   {
     department: "BGH",
@@ -184,7 +247,17 @@ for (const lane of departmentTaskRegister) {
   console.log(`- ${lane.department} (${lane.userLabel}) - ${lane.stage}: ${lane.task}`);
 }
 console.log("");
-console.log("## 8. Blocker can dung tham quyen xac nhan");
+console.log("## 8. Blocker theo phong/owner");
+console.log("");
+console.log("Status: BLOCKER_OWNER_LANES_READY / NO_GO / BLOCKED");
+console.log("Source: lib/production-readiness.ts -> PRODUCTION_BLOCKERS");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no evidence accepted.");
+console.log("");
+for (const lane of productionBlockerLanes) {
+  console.log(`- ${lane.code} - ${lane.owner}: ${lane.blocker}. Viec can xac nhan: ${lane.next}`);
+}
+console.log("");
+console.log("## 9. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");

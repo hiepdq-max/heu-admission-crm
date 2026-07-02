@@ -47,6 +47,28 @@ function requireAllText(relativePath, tokens, label) {
   }
 }
 
+function requireSectionTokens(relativePath, heading, tokens, label) {
+  if (!exists(relativePath)) {
+    return;
+  }
+
+  const contents = read(relativePath);
+  const marker = `## ${heading}`;
+  const start = contents.indexOf(marker);
+  if (start === -1) {
+    fail(`${relativePath}: missing ${label}: ${marker}`);
+    return;
+  }
+
+  const next = contents.indexOf("\n## ", start + marker.length);
+  const section = next === -1 ? contents.slice(start) : contents.slice(start, next);
+  for (const token of tokens) {
+    if (!section.includes(token)) {
+      fail(`${relativePath}: missing ${label}: ${token}`);
+    }
+  }
+}
+
 const requiredFiles = [
   "docs/MIGRATION_ORDER_AUDIT.md",
   "docs/HARD_DELETE_AUDIT.md",
@@ -1176,15 +1198,45 @@ requireText(
   "P0-09 owner signoff access closure decision gate log entry",
 );
 
-requireText(
+requireSectionTokens(
   "docs/HEU_IMPLEMENTATION_LOG.md",
-  /P0-15 Final Handoff Access Closure Proof Alignment[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-17 access closure decision[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*final handoff cannot omit the\s+access closure decision[\s\S]*final-handoff packaging only[\s\S]*does not create accounts[\s\S]*revoke live users[\s\S]*mark production GO/i,
+  "2026-06-29 - P0-15 Final Handoff Access Closure Proof Alignment",
+  [
+    "AGENTS.md",
+    "lib/production-readiness.ts",
+    "P0-17 access closure decision",
+    "P2-18/P5-03 real-accounting finance reliance proof",
+    "HEU_SYSTEM_BUILD_BACKLOG.md",
+    "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+    "HEU_CURRENT_STATE_INVENTORY.md",
+    "final handoff cannot omit the",
+    "access closure decision",
+    "final-handoff packaging only",
+    "does not create accounts",
+    "revoke live users",
+    "mark production GO",
+  ],
   "P0-15 final handoff access closure proof alignment log entry",
 );
 
-requireText(
+requireSectionTokens(
   "docs/HEU_IMPLEMENTATION_LOG.md",
-  /P0-15 Final Handoff Finance Reliance Proof Alignment[\s\S]*AGENTS\.md[\s\S]*lib\/production-readiness\.ts[\s\S]*P0-14 finance reliance evidence checkpoint[\s\S]*P2-18\/P5-03 real-accounting finance reliance proof[\s\S]*HEU_SYSTEM_BUILD_BACKLOG\.md[\s\S]*TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST\.md[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*final handoff cannot omit the\s+real-accounting reliance proof[\s\S]*final-handoff packaging only[\s\S]*does not collect evidence[\s\S]*create accounts[\s\S]*mark production GO/i,
+  "2026-06-29 - P0-15 Final Handoff Finance Reliance Proof Alignment",
+  [
+    "AGENTS.md",
+    "lib/production-readiness.ts",
+    "P0-14 finance reliance evidence checkpoint",
+    "P2-18/P5-03 real-accounting finance reliance proof",
+    "HEU_SYSTEM_BUILD_BACKLOG.md",
+    "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+    "HEU_CURRENT_STATE_INVENTORY.md",
+    "final handoff cannot omit the",
+    "real-accounting reliance proof",
+    "final-handoff packaging only",
+    "does not collect evidence",
+    "create accounts",
+    "mark production GO",
+  ],
   "P0-15 final handoff finance reliance proof alignment log entry",
 );
 
@@ -2031,6 +2083,12 @@ requireText(
   "scripts/report-heu-daily-dry-run.mjs",
   /(?=[\s\S]*Muc tieu tong chi huy)(?=[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md)(?=[\s\S]*Khi may tinh tat)(?=[\s\S]*GitHub Actions co the chay PASS_LOCAL, audit, lint, build va report summary; khong tu code, tu deploy, tu approve)(?=[\s\S]*A Clean\/package dirty scope)(?=[\s\S]*E Remaining blockers)(?=[\s\S]*Build Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support)(?=[\s\S]*Human Authority Owner)(?=[\s\S]*khong production GO, khong email\/nhiem vu\/user that, khong UAT\/evidence\/finance\/owner approval)/i,
   "P5-02 Master Control daily report summary guard",
+);
+
+requireText(
+  "scripts/report-heu-daily-dry-run.mjs",
+  /(?=[\s\S]*Blocker theo phong\/owner)(?=[\s\S]*BLOCKER_OWNER_LANES_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*lib\/production-readiness\.ts -> PRODUCTION_BLOCKERS)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*no email sent, no real task created, no evidence accepted)/i,
+  "P5-02 daily report blocker-owner lanes guard",
 );
 
 requireText(

@@ -144,6 +144,14 @@ UAT/Evidence Coordinator, Report/Email Coordinator and Human Authority Owner,
 plus the plain-language rule that the report does not self-code, self-deploy,
 send real email, create real tasks/users, approve UAT, accept evidence,
 approve finance/owner decisions or mark production GO.
+The draft also includes blocker-owner lanes sourced from
+`lib/production-readiness.ts` and `PRODUCTION_BLOCKERS`, with
+`BLOCKER_OWNER_LANES_READY / NO_GO / BLOCKED`, P0-03, Step90-Step110, P0-19,
+P2-17, P2-18, P6-04, P6-03, P6-06, P0-10 and P0-09 mapped to the responsible
+owner labels and the next proof each owner must confirm outside
+Git/Codex/chat. This is reporting only: it does not send email, create real
+tasks/tickets, accept evidence, execute UAT, approve finance action, approve
+owner GO/NO-GO or mark production GO.
 `npm.cmd run report:heu-email-readiness` prints an
 `EMAIL_DRY_RUN_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` readiness checklist for
 GitHub Actions variables/secrets such as recipient list, sender identity and
