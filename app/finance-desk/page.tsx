@@ -17,6 +17,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
+import { FinanceDayOneAccountantHandoff } from "@/components/finance/finance-day-one-accountant-handoff";
 import { FinanceDeskUatEvidenceChecklist } from "@/components/finance/finance-desk-uat-evidence-checklist";
 import { FinanceOfficialOperationGate } from "@/components/finance/finance-official-operation-gate";
 import { AppShell } from "@/components/layout/app-shell";
@@ -651,6 +652,7 @@ export default async function FinanceDeskPage() {
       <div className="space-y-6">
         <FinanceDeskReadOnlyBoundary />
         <FinanceOfficialOperationGate />
+        <FinanceDayOneAccountantHandoff />
         <FinanceDeskRelianceDecisionManifest />
         <FinanceDeskUatEvidenceChecklist />
 

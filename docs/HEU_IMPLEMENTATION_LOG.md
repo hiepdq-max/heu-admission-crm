@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Desk Day-1 Accountant Handoff
+
+- Added `components/finance/finance-day-one-accountant-handoff.tsx` and mounted
+  it on `/finance-desk` after the official-operation gate and before reliance
+  and UAT checklists.
+- The handoff exposes
+  `data-finance-day-one-accountant-handoff="P5-03_FIN_DAY1_OPERATOR"`,
+  `FIN-ACCT-HANDOFF-01` through `FIN-ACCT-HANDOFF-04` and
+  `FIN_ACCOUNTANT_HANDOFF_READY / NO_GO / BLOCKED` so the first KHTC
+  accountant sees allowed read-only review, blocked finance actions, escalation
+  route and Day-1 evidence closure before expansion.
+- Updated `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`,
+  `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`.
+- This is read-only handoff packaging only. It does not create accounts, send
+  invites, store passwords, grant access, execute UAT, accept evidence, approve
+  finance reliance, approve access closure, post vouchers, move money, issue
+  bank instructions, approve owner GO/NO-GO or mark production GO.
+  Boundary wording: send invites; approve finance reliance; issue bank instructions remain blocked.
+
 ## 2026-07-02 - Finance Desk Safe Pilot Order Documentation
 
 - Synchronized the Finance safe pilot order from

@@ -87,6 +87,19 @@ does not create accounts, send invites, store passwords, grant access, execute
 UAT, accept evidence, approve finance reliance, approve access closure, move
 money, issue bank instructions or mark production GO.
 
+The page also exposes
+`data-finance-day-one-accountant-handoff="P5-03_FIN_DAY1_OPERATOR"` with
+`FIN-ACCT-HANDOFF-01` through `FIN-ACCT-HANDOFF-04` and decision value
+`FIN_ACCOUNTANT_HANDOFF_READY / NO_GO / BLOCKED`. Use it as the plain operator
+handoff for the first KHTC accountant: allowed read-only review, blocked
+finance actions, escalation route and Day-1 evidence closure. Data variance
+goes to KHTC owner, route/scope issue goes to IT_DATA, legal/source exception
+goes to PHAP_CHE, and access leak goes to Audit. It does not create accounts,
+send invites, store passwords, grant access, execute UAT, accept evidence,
+approve finance reliance, approve access closure, post vouchers, move money,
+issue bank instructions or mark production GO.
+Boundary wording: blocked finance actions remain blocked in this handoff.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |

@@ -58,6 +58,27 @@ This safe pilot order does not create accounts, send invites, store passwords,
 grant access, execute UAT, accept evidence, approve finance reliance, approve
 access closure, move money, issue bank instructions or mark production GO.
 
+## 2.2 Finance Day-1 Accountant Handoff
+
+Decision value: `FIN_ACCOUNTANT_HANDOFF_READY / NO_GO / BLOCKED`.
+
+The `/finance-desk` page exposes
+`data-finance-day-one-accountant-handoff="P5-03_FIN_DAY1_OPERATOR"` for the
+first KHTC accountant pilot. The handoff must be read before the operator uses
+the cockpit.
+
+| Handoff ID | Operator rule | STOP condition |
+|---|---|---|
+| `FIN-ACCT-HANDOFF-01` | KHTC accountant may view `/finance-desk`, `/ttgdtx/accounting-dashboard`, import readiness and source-control status inside assigned TTGDTX scope only | Any unrestricted total, out-of-scope partner, raw evidence body or hidden route appears |
+| `FIN-ACCT-HANDOFF-02` | Finance actions stay blocked: no create, update, approve, pay, import-write, source-edit, voucher posting, period lock, bank instruction or production reliance | Any write control, approval control, payout control, bank-instruction path or voucher-posting path is visible |
+| `FIN-ACCT-HANDOFF-03` | Data variance goes to KHTC owner, route/scope issue goes to IT_DATA, legal/source exception goes to PHAP_CHE, and access leak goes to Audit | The operator edits Finance Desk output directly, uses chat as evidence storage or resolves an exception without owner route |
+| `FIN-ACCT-HANDOFF-04` | Controlled evidence IDs, result ledger and `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED` must close before expanding to another user | Day-1 result ledger, P0-17 access closure, negative-account proof or owner decision is missing |
+
+This accountant handoff does not create accounts, send invites, store passwords,
+grant access, execute UAT, accept evidence, approve finance reliance, approve
+access closure, post vouchers, move money, issue bank instructions or mark
+production GO.
+
 ## 3. Real User Labels
 
 Actual account identity must be recorded only in the external controlled
