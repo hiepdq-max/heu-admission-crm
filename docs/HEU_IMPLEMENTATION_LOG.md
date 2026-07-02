@@ -6075,3 +6075,19 @@
   invite/reset links, bank credentials, raw PII, bank statements, vouchers or
   raw payment data, accept UAT, approve finance action, approve owner GO or
   mark production GO.
+
+## 2026-07-02 - Remote PASS_LOCAL Gate Activation
+
+- Pushed branch `hardening/ttgdtx-9plus-pilot` to origin at commit `a2011c4`
+  so `.github/workflows/heu-pass-local.yml` can run from GitHub on push,
+  pull request, manual dispatch and daily schedule while the local machine is
+  offline.
+- Verified local branch is no longer ahead of origin and reran
+  `npm.cmd run audit:heu-git-hygiene`.
+- Local `gh` CLI is not installed and the available GitHub connector returned
+  no PR-triggered workflow run for the pushed commit, so remote run status must
+  still be confirmed in GitHub Actions UI or a connector that can read push
+  runs.
+- This is CI activation only. It does not deploy production, send email, create
+  real tasks, accept UAT, approve evidence, approve finance action, approve
+  owner GO or mark production GO.

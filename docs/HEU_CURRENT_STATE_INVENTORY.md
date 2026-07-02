@@ -41,7 +41,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 | `npm.cmd run lint` | PASS at last verification |
 | `npm.cmd run audit:ttgdtx-release-gates` | PASS |
 | `npm.cmd run audit:heu-git-hygiene` | PASS |
-| `.github/workflows/heu-pass-local.yml` | PASS_LOCAL workflow configured; first remote GitHub run is pending until push; scheduled summary appends `npm.cmd run report:heu-daily-dry-run` output as a dry-run daily report draft without sending email |
+| `.github/workflows/heu-pass-local.yml` | PASS_LOCAL workflow configured and branch pushed to origin at `a2011c4`; scheduled summary appends `npm.cmd run report:heu-daily-dry-run` output as a dry-run daily report draft without sending email; remote GitHub Actions run status still needs confirmation in GitHub because local `gh` CLI is unavailable and the available connector returned no PR-triggered run |
 | `npm.cmd run audit:ttgdtx-process-labels` | PASS |
 | `npm.cmd run audit:heu-bgh-dashboard-spec` | PASS |
 | `npm.cmd run audit:heu-lead-lifecycle-standard` | PASS |
