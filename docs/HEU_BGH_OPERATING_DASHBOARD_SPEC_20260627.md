@@ -120,6 +120,17 @@ glossary, plus task lanes for IT_DATA, KHTC, BGH, Audit and Phap Che. This is a
 handoff template only: it does not send email, create real tasks, store
 passwords, OTPs, invite/reset links, bank data, raw PII or approve UAT,
 finance action, owner GO or production GO.
+
+`docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md` and
+`data-heu-department-task-handoff-register="P5-02"` add the dry-run department
+task register with `DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED`. The register
+lists BGH, IT_DATA, KHTC, PHAP_CHE, Audit, TUYEN_SINH, CTHSSV, DAO_TAO and HR
+lanes with user labels, stage, in-app task, how the user uses it, required
+external proof and stop condition. It is for plain-language reporting and
+in-app review only. It does not send real email, create real tickets, assign
+real accounts, accept evidence, execute UAT, approve finance action, approve
+owner GO or mark production GO.
+
 `npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
@@ -139,6 +150,7 @@ Current local evidence:
 - `app/reports/page.tsx`
 - `app/master-control/page.tsx`
 - `components/master-control/production-readiness-blocker-summary.tsx`
+- `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md`
 - `.github/workflows/heu-pass-local.yml`
 - `scripts/report-heu-daily-dry-run.mjs`
 - `scripts/report-heu-email-readiness.mjs`

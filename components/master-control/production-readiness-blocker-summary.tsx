@@ -61,6 +61,89 @@ const TASK_HANDOFF_LANES = [
   },
 ];
 
+const DEPARTMENT_TASK_HANDOFF_REGISTER = [
+  {
+    code: "DEPT-TASK-01",
+    department: "BGH",
+    userLabel: "BGH_READONLY_REVIEWER_LABEL",
+    stage: "Daily review",
+    task: "Review Master Control blockers and plain-language report.",
+    usage:
+      "Read NO-GO blockers, ask the right owner for evidence and wait for signed decision.",
+    stop: "PASS_LOCAL is treated as approval.",
+  },
+  {
+    code: "DEPT-TASK-02",
+    department: "IT_DATA",
+    userLabel: "IT_DATA_BUILD_OPERATOR_LABEL",
+    stage: "Every build slice",
+    task: "Run PASS_LOCAL checks and record the failed gate if any.",
+    usage:
+      "Check git state, run audit/lint/build, package one small commit and keep production NO-GO.",
+    stop: "Dirty scope appears outside the slice or any audit fails.",
+  },
+  {
+    code: "DEPT-TASK-03",
+    department: "KHTC",
+    userLabel: "KHTC_ACCOUNTING_OPERATOR_LABEL",
+    stage: "Finance Day-1 trial",
+    task: "Use Finance Desk read-only and record blocker/result.",
+    usage:
+      "Compare summary views, note mismatches and escalate through the Day-1 result ledger.",
+    stop: "Voucher posting, bank transfer or raw bank/payment data is requested.",
+  },
+  {
+    code: "DEPT-TASK-04",
+    department: "PHAP_CHE",
+    userLabel: "PHAP_CHE_REVIEWER_LABEL",
+    stage: "Legal/finance gate",
+    task: "Review legal, SOP and evidence blockers.",
+    usage:
+      "Confirm legal basis, contract/SOP route and unresolved exception owner outside Git/Codex/chat.",
+    stop: "Legal conclusion is requested from AI/Codex.",
+  },
+  {
+    code: "DEPT-TASK-05",
+    department: "Audit",
+    userLabel: "AUDIT_READONLY_REVIEWER_LABEL",
+    stage: "Evidence/UAT route",
+    task: "Check evidence reference, redaction and audit trace.",
+    usage:
+      "Verify proof owner, redaction reviewer and audit-log trace before owner signoff.",
+    stop: "Raw evidence, PII, bank statement or voucher appears in Git/Codex/chat.",
+  },
+  {
+    code: "DEPT-TASK-06",
+    department: "TUYEN_SINH",
+    userLabel: "TUYEN_SINH_OPERATOR_LABEL",
+    stage: "Lead lifecycle UAT",
+    task: "Execute P3-01/P3-02 lead lifecycle checklist when scheduled.",
+    usage:
+      "Confirm lead status, handover blocker and no finance bypass in signed UAT.",
+    stop: "Handover creates finance facts before the required gate.",
+  },
+  {
+    code: "DEPT-TASK-07",
+    department: "CTHSSV",
+    userLabel: "CTHSSV_HANDOVER_OPERATOR_LABEL",
+    stage: "Student handover UAT",
+    task: "Review handover packet readiness.",
+    usage:
+      "Check student-profile readiness and missing documents with redacted evidence references.",
+    stop: "Raw PII is pasted into report, email, Git or chat.",
+  },
+  {
+    code: "DEPT-TASK-08",
+    department: "DAO_TAO + HR",
+    userLabel: "DAO_TAO_REVIEWER_LABEL / HR_REVIEWER_LABEL",
+    stage: "Class/payment policy readiness",
+    task: "Review Short Course, attendance and allowance/payment blockers.",
+    usage:
+      "Check class/course dependencies, policy owner route and required proof before signoff.",
+    stop: "Attendance/payment period is closed or HR payment is approved from PASS_LOCAL.",
+  },
+];
+
 export function ProductionReadinessBlockerSummary() {
   return (
     <section
@@ -203,6 +286,54 @@ export function ProductionReadinessBlockerSummary() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div
+          className="mt-4 border-t border-rose-200 pt-4"
+          data-heu-department-task-handoff-register="P5-02"
+        >
+          <div className="flex items-start gap-3">
+            <UsersRound className="mt-0.5 size-5 shrink-0 text-rose-700" />
+            <div>
+              <h4 className="font-semibold text-zinc-950">
+                Department task handoff register: dry-run only
+              </h4>
+              <p className="mt-1 leading-6 text-zinc-600">
+                DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED. These are
+                department lanes and user labels for reports and in-app review;
+                no real email, real ticket, account creation, evidence
+                acceptance, UAT approval, finance approval or owner GO is
+                performed here.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 xl:grid-cols-4">
+            {DEPARTMENT_TASK_HANDOFF_REGISTER.map((lane) => (
+              <article
+                key={lane.code}
+                className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+              >
+                <p className="text-xs font-semibold uppercase text-rose-700">
+                  {lane.code}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">
+                  {lane.department}
+                </p>
+                <p className="mt-2 text-xs font-medium text-zinc-500">
+                  User: {lane.userLabel}
+                </p>
+                <p className="mt-1 text-xs font-medium text-zinc-500">
+                  Stage: {lane.stage}
+                </p>
+                <p className="mt-2 leading-5 text-zinc-700">{lane.task}</p>
+                <p className="mt-2 leading-5 text-zinc-700">{lane.usage}</p>
+                <p className="mt-2 leading-5 text-rose-800">
+                  Stop: {lane.stop}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
 

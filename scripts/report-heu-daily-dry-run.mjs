@@ -56,6 +56,57 @@ const taskLanes = [
   },
 ];
 
+const departmentTaskRegister = [
+  {
+    department: "BGH",
+    userLabel: "BGH_READONLY_REVIEWER_LABEL",
+    stage: "Daily review",
+    task: "Review Master Control blockers and plain-language report; do not treat PASS_LOCAL as approval.",
+  },
+  {
+    department: "IT_DATA",
+    userLabel: "IT_DATA_BUILD_OPERATOR_LABEL",
+    stage: "Every build slice",
+    task: "Run git status, focused audit, baseline audit/lint/build and package one clean slice.",
+  },
+  {
+    department: "KHTC",
+    userLabel: "KHTC_ACCOUNTING_OPERATOR_LABEL",
+    stage: "Finance Day-1 trial",
+    task: "Use Finance Desk read-only, compare summary views and write blocker/result outside raw-data channels.",
+  },
+  {
+    department: "PHAP_CHE",
+    userLabel: "PHAP_CHE_REVIEWER_LABEL",
+    stage: "Legal/finance gate",
+    task: "Review legal/SOP/evidence blockers and sign only through the approved external process.",
+  },
+  {
+    department: "Audit",
+    userLabel: "AUDIT_READONLY_REVIEWER_LABEL",
+    stage: "Evidence/UAT route",
+    task: "Check redaction, evidence reference and audit trace; reject raw evidence in Git/Codex/chat.",
+  },
+  {
+    department: "TUYEN_SINH",
+    userLabel: "TUYEN_SINH_OPERATOR_LABEL",
+    stage: "Lead lifecycle UAT",
+    task: "Run P3-01/P3-02 checklist when scheduled and confirm no finance bypass.",
+  },
+  {
+    department: "CTHSSV",
+    userLabel: "CTHSSV_HANDOVER_OPERATOR_LABEL",
+    stage: "Student handover UAT",
+    task: "Review handover packet readiness with redacted evidence references only.",
+  },
+  {
+    department: "DAO_TAO + HR",
+    userLabel: "DAO_TAO_REVIEWER_LABEL / HR_REVIEWER_LABEL",
+    stage: "Class/payment policy readiness",
+    task: "Review Short Course, attendance and allowance/payment blockers before any owner signoff.",
+  },
+];
+
 const glossary = [
   ["PASS_LOCAL", "Da kiem tra noi bo bang audit/lint/build; chua phai phe duyet chay that."],
   ["Audit", "Kiem tra tu dong cac hang rao an toan va tai lieu bat buoc."],
@@ -102,7 +153,16 @@ for (const [term, meaning] of glossary) {
   console.log(`- ${term}: ${meaning}`);
 }
 console.log("");
-console.log("## 6. Blocker can dung tham quyen xac nhan");
+console.log("## 6. Viec theo tung phong/user label");
+console.log("");
+console.log("Status: DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no account assigned.");
+console.log("");
+for (const lane of departmentTaskRegister) {
+  console.log(`- ${lane.department} (${lane.userLabel}) - ${lane.stage}: ${lane.task}`);
+}
+console.log("");
+console.log("## 7. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");

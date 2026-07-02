@@ -6133,3 +6133,27 @@
   bank statements, vouchers or raw payment data, execute UAT, accept evidence,
   approve finance action, approve owner GO/NO-GO, run production migration or
   mark production GO.
+
+## 2026-07-02 - P5-02 Department Task Handoff Register Dry-Run
+
+- Added `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md` with
+  `DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED` so BGH, IT_DATA, KHTC,
+  PHAP_CHE, Audit, TUYEN_SINH, CTHSSV, DAO_TAO and HR can see department
+  lanes, user labels, stage, in-app task, usage note, external proof and stop
+  condition in plain language.
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with `data-heu-department-task-handoff-register="P5-02"` and updated
+  `scripts/report-heu-daily-dry-run.mjs` so the dry-run report includes the
+  same department/user-label task lanes.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and
+  `audit:heu-bgh-dashboard-spec` so the register stays dry-run/read-only.
+- This is department task handoff dry-run packaging only. It does not send
+  real email, create real tasks/tickets, assign real accounts, store
+  passwords, OTPs, invite/reset links, service-role keys, SMTP credentials,
+  raw PII, bank statements, vouchers or raw payment data, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO, run production
+  migration or mark production GO.
