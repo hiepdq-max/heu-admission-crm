@@ -112,6 +112,20 @@ UAT, approve finance reliance, approve accounting results, approve access
 closure, issue bank instructions, post vouchers, move money, approve owner
 GO/NO-GO or mark production GO.
 
+## 5.3 REAL-OPS-05 Legal Invoice Chung-Tu Confirmation Intake
+
+`docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md`
+and `data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE"`
+add the REAL-OPS-05 legal, invoice and chung-tu confirmation intake with
+`REAL_OPS_05_LEGAL_INVOICE_READY / NO_GO / BLOCKED`.
+
+This is checklist packaging only. It keeps signed P0-19 legal/finance UAT,
+P2-01 contract master, P2-02 tuition policy, P2-10 invoice/chung-tu decision,
+waiver basis and evidence redaction required outside Git/Codex/chat. It does
+not provide legal advice, decide tax position, issue invoice, accept evidence,
+execute UAT, approve finance reliance, approve migration, approve owner
+GO/NO-GO or mark production GO.
+
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled

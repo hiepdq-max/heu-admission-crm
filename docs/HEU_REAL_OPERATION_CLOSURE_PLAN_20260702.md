@@ -80,6 +80,24 @@ reliance, approve accounting results, approve access closure, approve owner
 GO/NO-GO, issue bank instructions, post vouchers, move money or mark
 production GO.
 
+## REAL-OPS-05 Source Intake
+
+Use `docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md`
+and `data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE"`
+to prepare the legal, SOP, tuition, invoice and chung-tu confirmation lane
+after signed UAT and finance reliance references are ready for human authority
+review. Decision value:
+`REAL_OPS_05_LEGAL_INVOICE_READY / NO_GO / BLOCKED`.
+
+The source intake records only controlled evidence IDs, owner labels,
+legal/SOP decision references, tuition policy version, invoice/chung-tu
+responsibility, redaction class and authority decision path. It does not
+provide legal advice, decide tax position, issue invoice, accept evidence,
+execute UAT, approve finance reliance, approve migration, approve owner
+GO/NO-GO or mark production GO.
+
+Guard tokens: does not provide legal advice, decide tax position, issue invoice, accept evidence, execute UAT, approve finance reliance, approve migration, approve owner GO/NO-GO or mark production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

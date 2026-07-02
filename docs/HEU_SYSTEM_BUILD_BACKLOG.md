@@ -51,6 +51,20 @@ reliance, approve accounting results, approve access closure, issue bank
 instructions, post vouchers, move money, approve owner GO/NO-GO or mark
 production GO.
 
+### P0-19/P4-02 REAL-OPS-05 Legal Invoice Chung-Tu Confirmation Intake
+
+`docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md`
+and `data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE"`
+add the REAL-OPS-05 legal, invoice and chung-tu confirmation intake to the
+Master Control closure board. Decision value:
+`REAL_OPS_05_LEGAL_INVOICE_READY / NO_GO / BLOCKED`.
+
+The intake keeps P0-19 legal/finance gate, P2-01 contract master, P2-02 tuition
+policy, P2-10 invoice/chung-tu decision, waiver basis and redaction class at
+controlled-reference packaging only. It does not provide legal advice, decide
+tax position, issue invoice, accept evidence, execute UAT, approve finance
+reliance, approve migration, approve owner GO/NO-GO or mark production GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |

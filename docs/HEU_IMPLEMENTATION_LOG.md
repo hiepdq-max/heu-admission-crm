@@ -1,5 +1,30 @@
 # HEU Implementation Log
 
+## 2026-07-02 - REAL-OPS-05 Legal Invoice Chung-Tu Confirmation Intake
+
+- Added
+  `docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md`
+  as a PASS_LOCAL_LEGAL_INVOICE_INTAKE with
+  `REAL_OPS_05_LEGAL_INVOICE_READY / NO_GO / BLOCKED`.
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with `data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE"`
+  and REAL-OPS-05-LEG-01 through REAL-OPS-05-LEG-06 for P0-19 legal gate,
+  P2-01 contract/SOP basis, P2-02 tuition policy, P2-10 invoice/chung-tu
+  decision, evidence redaction class and authority decision path.
+- Updated `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`; tightened
+  `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-heu-implementation-log.mjs`.
+- Boundary: this legal/invoice/chung-tu confirmation intake does not provide
+  legal advice, decide tax position, issue invoice, accept evidence, execute
+  UAT, approve finance reliance, approve migration, approve owner GO/NO-GO or
+  mark production GO. Private contracts, signed legal memos, vouchers, invoice
+  images, bank statements, raw payment data, account credentials and
+  service-role keys stay outside Git/Codex/chat.
+- Guard tokens: does not provide legal advice, execute UAT, invoice images,
+  bank statements and raw payment data remain forbidden in PASS_LOCAL.
+
 ## 2026-07-02 - REAL-OPS-04 Finance Reliance Closure Intake
 
 - Added `docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md`

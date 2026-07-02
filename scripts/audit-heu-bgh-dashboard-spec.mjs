@@ -46,6 +46,7 @@ const requiredFiles = [
   "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
   "docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
   "docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md",
+  "docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md",
   "scripts/report-heu-email-readiness.mjs",
   "scripts/report-heu-daily-dry-run.mjs",
   "app/ttgdtx/accounting-dashboard/page.tsx",
@@ -84,6 +85,9 @@ const realOperationClosurePlan = read(
 );
 const realOps04FinanceRelianceIntake = read(
   "docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md",
+);
+const realOps05LegalInvoiceIntake = read(
+  "docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md",
 );
 
 requireText(spec, /P5-02 BGH operating dashboard specification/i, "P5-02 scope");
@@ -195,13 +199,13 @@ requireText(
 );
 requireText(
   blockerSummary,
-  /(?=[\s\S]*REAL_OPERATION_CLOSURE_LANES)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake)(?=[\s\S]*REAL-OPS-04_FINANCE)(?=[\s\S]*Real operation closure board: owner action required)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*backup\/restore)(?=[\s\S]*signed migration order)(?=[\s\S]*Signed UAT results)(?=[\s\S]*Finance Desk and accounting-dashboard source reconciliation)(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*Legal, SOP, tuition, invoice and chung-tu)(?=[\s\S]*Hard-delete\/cascade conversion evidence)(?=[\s\S]*HOU and Short Course phase decision)(?=[\s\S]*Final owner GO\/NO-GO manifest)(?=[\s\S]*does not create accounts, send\s+email, collect secrets, accept evidence, execute UAT, approve\s+finance reliance, approve legal position, run migration or mark\s+production GO)/i,
+  /(?=[\s\S]*REAL_OPERATION_CLOSURE_LANES)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake)(?=[\s\S]*REAL-OPS-04_FINANCE)(?=[\s\S]*data-heu-real-ops-05-legal-invoice-intake)(?=[\s\S]*REAL-OPS-05_LEGAL_INVOICE)(?=[\s\S]*Real operation closure board: owner action required)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*backup\/restore)(?=[\s\S]*signed migration order)(?=[\s\S]*Signed UAT results)(?=[\s\S]*Finance Desk and accounting-dashboard source reconciliation)(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*Legal, SOP, tuition, invoice and chung-tu)(?=[\s\S]*REAL_OPS_05_LEGAL_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702\.md)(?=[\s\S]*Hard-delete\/cascade conversion evidence)(?=[\s\S]*HOU and Short Course phase decision)(?=[\s\S]*Final owner GO\/NO-GO manifest)(?=[\s\S]*does not create accounts, send\s+email, collect secrets, accept evidence, execute UAT, approve\s+finance reliance, approve legal position, run migration or mark\s+production GO)/i,
   "P5-02 real operation closure board UI shell",
   blockerSummaryPath,
 );
 requireText(
   realOperationClosurePlan,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_CLOSURE_PLAN)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*Backup\/restore proof)(?=[\s\S]*Signed migration order)(?=[\s\S]*Signed UAT closure)(?=[\s\S]*Finance reliance closure)(?=[\s\S]*Legal, invoice and chung-tu confirmation)(?=[\s\S]*Hard-delete\/cascade closure)(?=[\s\S]*HOU and Short Course scope)(?=[\s\S]*Final owner GO\/NO-GO package)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE")(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not accept evidence, execute UAT, approve finance\s+reliance, approve accounting results, approve access closure, approve owner\s+GO\/NO-GO, issue bank instructions, post vouchers, move money or mark\s+production GO)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*must not create accounts, send real email, create real\s+tasks\/tickets, collect secrets, accept evidence, execute UAT, approve finance\s+reliance, approve legal position, approve waiver, run production migration,\s+issue bank instructions, post vouchers, issue invoices or mark production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_CLOSURE_PLAN)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*Backup\/restore proof)(?=[\s\S]*Signed migration order)(?=[\s\S]*Signed UAT closure)(?=[\s\S]*Finance reliance closure)(?=[\s\S]*Legal, invoice and chung-tu confirmation)(?=[\s\S]*Hard-delete\/cascade closure)(?=[\s\S]*HOU and Short Course scope)(?=[\s\S]*Final owner GO\/NO-GO package)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE")(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702\.md)(?=[\s\S]*data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE")(?=[\s\S]*REAL_OPS_05_LEGAL_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not provide legal advice, decide tax position, issue invoice, accept evidence,\s+execute UAT, approve finance reliance, approve migration, approve owner\s+GO\/NO-GO or mark production GO)(?=[\s\S]*does not accept evidence, execute UAT, approve finance\s+reliance, approve accounting results, approve access closure, approve owner\s+GO\/NO-GO, issue bank instructions, post vouchers, move money or mark\s+production GO)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*must not create accounts, send real email, create real\s+tasks\/tickets, collect secrets, accept evidence, execute UAT, approve finance\s+reliance, approve legal position, approve waiver, run production migration,\s+issue bank instructions, post vouchers, issue invoices or mark production GO)/i,
   "real operation closure plan boundary",
   "docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
 );
@@ -210,6 +214,12 @@ requireText(
   /(?=[\s\S]*Status:\s*PASS_LOCAL_FINANCE_RELIANCE_INTAKE)(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-04-FIN-01)(?=[\s\S]*REAL-OPS-04-FIN-06)(?=[\s\S]*P2-18\/P5-03 source reconciliation)(?=[\s\S]*Finance Day-1 result ledger)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE")(?=[\s\S]*does not accept evidence, execute UAT, approve\s+finance reliance, approve accounting results, approve access closure, approve\s+owner GO\/NO-GO, issue bank instructions, post vouchers, move money or mark\s+production GO)(?=[\s\S]*does not mean Finance Desk or the accounting\s+dashboard is finance-approved, evidence-approved, owner-approved,\s+migration-approved, statutory-accounting-ready or production-approved)/i,
   "REAL-OPS-04 finance reliance closure intake source document",
   "docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md",
+);
+requireText(
+  realOps05LegalInvoiceIntake,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_LEGAL_INVOICE_INTAKE)(?=[\s\S]*REAL_OPS_05_LEGAL_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-05-LEG-01)(?=[\s\S]*REAL-OPS-05-LEG-06)(?=[\s\S]*P0_19_GATE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P2_10_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*invoice_required)(?=[\s\S]*PENDING_POLICY)(?=[\s\S]*data-heu-real-ops-05-legal-invoice-intake="REAL-OPS-05_LEGAL_INVOICE")(?=[\s\S]*does not provide legal advice, decide tax\s+position, issue invoice, accept evidence, execute UAT, approve finance\s+reliance, approve migration, approve owner GO\/NO-GO or mark production GO)(?=[\s\S]*does not mean legal basis, tax position,\s+invoice\/chung-tu issuance, evidence, UAT, finance reliance, migration,\s+owner GO\/NO-GO or production operation is approved)/i,
+  "REAL-OPS-05 legal invoice chung-tu confirmation intake source document",
+  "docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md",
 );
 requireText(
   masterControlGoalRegister,

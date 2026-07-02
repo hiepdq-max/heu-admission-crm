@@ -309,6 +309,8 @@ const REAL_OPERATION_CLOSURE_LANES: RealOperationClosureLane[] = [
     required:
       "Legal, SOP, tuition, invoice and chung-tu decision basis with controlled evidence class and signer owner.",
     stop: "Contract/SOP/tax-document basis is unclear or AI/Codex is asked to decide the legal position.",
+    decision: "REAL_OPS_05_LEGAL_INVOICE_READY / NO_GO / BLOCKED",
+    source: "docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md",
   },
   {
     code: "REAL-OPS-06",
@@ -638,6 +640,11 @@ export function ProductionReadinessBlockerSummary() {
               key={lane.code}
               data-heu-real-ops-04-finance-reliance-intake={
                 lane.code === "REAL-OPS-04" ? "REAL-OPS-04_FINANCE" : undefined
+              }
+              data-heu-real-ops-05-legal-invoice-intake={
+                lane.code === "REAL-OPS-05"
+                  ? "REAL-OPS-05_LEGAL_INVOICE"
+                  : undefined
               }
               className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
             >
