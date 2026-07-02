@@ -38,6 +38,7 @@ for (const file of [
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
   "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
+  "docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
   "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
   "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
@@ -93,6 +94,41 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+
+fastSection("2026-07-02 - Real Operation Closure Board", [
+  "HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
+  "PASS_LOCAL_CLOSURE_PLAN",
+  "REAL_OPERATION_READY / NO_GO / BLOCKED",
+  "production-readiness-blocker-summary.tsx",
+  "data-heu-real-operation-closure-board=\"P0-03_P0-09_P2-18_P5-03_P6-04\"",
+  "REAL-OPS-01 through REAL-OPS-08",
+  "backup/restore",
+  "signed migration order",
+  "signed UAT",
+  "finance reliance",
+  "legal/invoice/chung-tu",
+  "hard-delete/cascade",
+  "HOU and Short Course scope",
+  "final owner GO/NO-GO",
+  "HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  "audit-heu-bgh-dashboard-spec.mjs",
+  "audit-heu-implementation-log.mjs",
+  "does not create accounts",
+  "send real email",
+  "create real tasks/tickets",
+  "collect secrets",
+  "accept evidence",
+  "execute UAT",
+  "approve finance reliance",
+  "approve legal position",
+  "approve waiver",
+  "production migration",
+  "issue bank instructions",
+  "post vouchers",
+  "issue invoices",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+]);
 
 fastSection("2026-07-02 - Signed UAT Authority Action Queue", [
   "SIGNED_UAT_AUTHORITY_ACTIONS",

@@ -16,6 +16,25 @@
   send invites, store passwords, grant access, execute UAT, accept evidence,
   approve finance reliance, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-02 - Real Operation Closure Board
+
+- Added `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md` as a
+  PASS_LOCAL_CLOSURE_PLAN with `REAL_OPERATION_READY / NO_GO / BLOCKED`.
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with `data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04"`
+  so Master Control shows REAL-OPS-01 through REAL-OPS-08 for backup/restore,
+  signed migration order, signed UAT, finance reliance, legal/invoice/chung-tu,
+  hard-delete/cascade, HOU and Short Course scope and final owner GO/NO-GO.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md` and tightened
+  `scripts/audit-heu-bgh-dashboard-spec.mjs` plus
+  `scripts/audit-heu-implementation-log.mjs` so the real operation closure
+  board remains read-only and owner-action routed.
+- Boundary: this closure board does not create accounts, send real email,
+  create real tasks/tickets, collect secrets, accept evidence, execute UAT,
+  approve finance reliance, approve legal position, approve waiver, run
+  production migration, issue bank instructions, post vouchers, issue invoices,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - HEU System Framework Review
 
 - Added `docs/HEU_SYSTEM_FRAMEWORK_REVIEW_20260702.md` as a

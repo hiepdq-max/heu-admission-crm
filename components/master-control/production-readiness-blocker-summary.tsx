@@ -263,6 +263,65 @@ const SIGNED_UAT_ROUTE_SUMMARY = [
   },
 ];
 
+const REAL_OPERATION_CLOSURE_LANES = [
+  {
+    code: "REAL-OPS-01",
+    owner: "IT_DATA + Audit",
+    required:
+      "Real backup ID, restore target, smoke-check result and owner acceptance for preserved P0-19, P2-18, P5-03, P6-04 and P0-17 evidence state.",
+    stop: "No restore proof, raw evidence in Git/Codex/chat or unclear target identity.",
+  },
+  {
+    code: "REAL-OPS-02",
+    owner: "IT_DATA + KHTC + PHAP_CHE + BGH",
+    required:
+      "Signed Step90-Step110 migration order after backup/restore evidence is accepted by the required owners.",
+    stop: "Migration order is unsigned, oral, broad or treated as approved by PASS_LOCAL.",
+  },
+  {
+    code: "REAL-OPS-03",
+    owner: "BGH + KHTC + PHAP_CHE + Audit + IT_DATA + process owners",
+    required:
+      "Signed UAT results for P0-19, P2-17, P2-18/P5-03, P6-03, P6-04 and required handover routes.",
+    stop: "Any route stays PENDING, lacks controlled evidence ID or lacks required signer.",
+  },
+  {
+    code: "REAL-OPS-04",
+    owner: "KHTC + BGH + Audit",
+    required:
+      "Finance Desk and accounting-dashboard source reconciliation, Day-1 result ledger, access closure and reliance decision.",
+    stop: "Dashboard/Finance Desk mismatch, unsigned reliance or open access-retain/revoke decision.",
+  },
+  {
+    code: "REAL-OPS-05",
+    owner: "PHAP_CHE + KHTC",
+    required:
+      "Legal, SOP, tuition, invoice and chung-tu decision basis with controlled evidence class and signer owner.",
+    stop: "Contract/SOP/tax-document basis is unclear or AI/Codex is asked to decide the legal position.",
+  },
+  {
+    code: "REAL-OPS-06",
+    owner: "IT_DATA + Audit + business owners",
+    required:
+      "Hard-delete/cascade conversion evidence or written owner waiver for every protected path still open.",
+    stop: "A protected delete/cascade path has no conversion proof and no signed waiver.",
+  },
+  {
+    code: "REAL-OPS-07",
+    owner: "HOU owner + DAO_TAO + CTHSSV + KHTC + PHAP_CHE",
+    required:
+      "HOU and Short Course phase decision, UAT plan, report-view signoff or explicit owner-approved defer decision.",
+    stop: "HOU or Short Course is folded into TTGDTX production without signed scope separation.",
+  },
+  {
+    code: "REAL-OPS-08",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG",
+    required:
+      "Final owner GO/NO-GO manifest only after REAL-OPS-01 through REAL-OPS-07 have controlled evidence IDs.",
+    stop: "Owner GO/NO-GO is requested before all prerequisite lanes have signed closure.",
+  },
+];
+
 export function ProductionReadinessBlockerSummary() {
   return (
     <section
@@ -535,6 +594,51 @@ export function ProductionReadinessBlockerSummary() {
                 Owner: {route.owner}
               </p>
               <p className="mt-2 leading-5 text-zinc-700">{route.proof}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04"
+      >
+        <div className="flex items-start gap-3">
+          <ClipboardList className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Real operation closure board: owner action required
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              REAL_OPERATION_READY / NO_GO / BLOCKED. These lanes turn the
+              missing real-operation items into owner-confirmed closure work.
+              They remain NO-GO until evidence IDs and signatures are recorded
+              outside Git/Codex/chat. This board does not create accounts, send
+              email, collect secrets, accept evidence, execute UAT, approve
+              finance reliance, approve legal position, run migration or mark
+              production GO.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-4">
+          {REAL_OPERATION_CLOSURE_LANES.map((lane) => (
+            <article
+              key={lane.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {lane.code}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-500">
+                Owner: {lane.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required: {lane.required}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop: {lane.stop}
+              </p>
             </article>
           ))}
         </div>

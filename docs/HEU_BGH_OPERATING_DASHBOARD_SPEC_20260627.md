@@ -148,6 +148,17 @@ is an in-app status surface only: it does not send real email, create real
 tasks/tickets, accept evidence, execute UAT, approve finance action, approve
 owner GO or mark production GO.
 
+`docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md` and
+`data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04"` add
+the real operation closure board with `REAL_OPERATION_READY / NO_GO / BLOCKED`.
+The board shows REAL-OPS-01 through REAL-OPS-08 for backup/restore proof,
+signed migration order, signed UAT closure, finance reliance closure,
+legal/invoice/chung-tu confirmation, hard-delete/cascade closure, HOU and
+Short Course scope and final owner GO/NO-GO package. It is owner-action routing
+only: it does not create accounts, send real email, create real tasks/tickets,
+collect secrets, accept evidence, execute UAT, approve finance reliance,
+approve legal position, run production migration or mark production GO.
+
 `npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
@@ -208,6 +219,7 @@ Current local evidence:
 - `app/reports/page.tsx`
 - `app/master-control/page.tsx`
 - `components/master-control/production-readiness-blocker-summary.tsx`
+- `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`
 - `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md`
 - `docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md`
 - `.github/workflows/heu-pass-local.yml`
