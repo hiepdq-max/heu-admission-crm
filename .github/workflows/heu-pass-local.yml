@@ -1,0 +1,111 @@
+name: HEU PASS_LOCAL Gate
+
+on:
+  push:
+    branches:
+      - hardening/ttgdtx-9plus-pilot
+      - main
+  pull_request:
+    branches:
+      - hardening/ttgdtx-9plus-pilot
+      - main
+  schedule:
+    - cron: "15 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: heu-pass-local-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pass-local:
+    name: Audit, lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Confirm PASS_LOCAL boundary
+        run: |
+          {
+            echo "## HEU PASS_LOCAL Gate"
+            echo ""
+            echo "- Stage: internal controlled test only"
+            echo "- Production: NO-GO"
+            echo "- This workflow does not approve UAT, finance action, evidence acceptance, owner GO or production GO."
+            echo "- Secrets, passwords, OTPs, invite/reset links, raw PII, bank data and uncontrolled evidence must stay outside GitHub Actions logs."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Audit current state inventory
+        run: npm run audit:heu-current-state-inventory
+
+      - name: Audit implementation log
+        run: npm run audit:heu-implementation-log
+
+      - name: Audit release gates
+        run: npm run audit:ttgdtx-release-gates
+
+      - name: Audit final handoff coverage
+        run: npm run audit:heu-final-handoff-coverage
+
+      - name: Audit Git hygiene
+        run: npm run audit:heu-git-hygiene
+
+      - name: Audit Vietnamese text encoding
+        run: npm run audit:heu-vietnamese-text-encoding
+
+      - name: Audit Finance Desk controlled trial
+        run: npm run audit:heu-finance-desk
+
+      - name: Audit role-scope UAT pack
+        run: npm run audit:heu-role-scope-uat-pack
+
+      - name: Audit user account security
+        run: npm run audit:heu-user-account-security
+
+      - name: Audit production readiness guard
+        run: npm run audit:ttgdtx-production-readiness-guard
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Write daily-readable summary
+        if: always()
+        run: |
+          {
+            echo ""
+            echo "## Bao cao de hieu"
+            echo ""
+            echo "- He thong da duoc GitHub Actions kiem tra tu dong tren nhanh hien tai."
+            echo "- Neu tat ca buoc tren PASS: ma nguon dung quy tac, app build duoc, cac hang rao PASS_LOCAL con duoc giu."
+            echo "- Neu co buoc FAIL: khong chuyen lat tiep theo; can sua dung pham vi va chay lai."
+            echo "- Production van NO-GO cho den khi co du backup/restore, signed UAT, evidence, migration order va owner GO/NO-GO."
+            echo ""
+            echo "### Chu thich"
+            echo ""
+            echo "- PASS_LOCAL: da kiem tra noi bo, chua phai phe duyet chay that."
+            echo "- Audit: kiem tra tu dong cac hang rao an toan."
+            echo "- Lint: kiem tra quy tac code co ban."
+            echo "- Build: dong goi app de chac khong vo khi trien khai thu."
+            echo "- NO-GO: chua duoc phep chay production."
+          } >> "$GITHUB_STEP_SUMMARY"

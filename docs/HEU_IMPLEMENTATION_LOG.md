@@ -6022,3 +6022,20 @@
   dictionary, backlog row, navigation link and local-only boundary cannot
   drift out of the control package.
 - This is mock workflow and data-dictionary packaging only. It does not create production records, execute bank transfer, approve finance action, accept evidence, accept UAT, approve owner signoff or mark production GO.
+
+## 2026-07-02 - HEU PASS_LOCAL GitHub Actions Gate
+
+- Added `.github/workflows/heu-pass-local.yml` so pushes, pull requests,
+  manual dispatches and the daily scheduled check can run the HEU PASS_LOCAL
+  gate on GitHub using the lowest-cost standard Linux runner path.
+- The workflow installs dependencies, writes a plain-language NO-GO boundary
+  summary and runs current-state, implementation-log, release-gate, final
+  handoff, git-hygiene, Vietnamese encoding, Finance Desk, role-scope,
+  user-account security, production-readiness, lint, build and whitespace
+  checks.
+- Updated `AGENTS.md` and `scripts/audit-ttgdtx-release-gates.mjs` so
+  `audit:heu-finance-advance-payment-shell` is included in final handoff
+  coverage and release-gate required scripts.
+- This is PASS_LOCAL CI packaging only. It does not send email, store secrets,
+  execute UAT, accept evidence, approve finance action, approve owner GO or
+  mark production GO.

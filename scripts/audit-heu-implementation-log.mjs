@@ -2537,7 +2537,7 @@ fastRequire(
     "npm.cmd run audit:ttgdtx-signed-uat-execution-routing-hub",
     "signed UAT execution routing hub",
     "P0-05 implementation log audit guard",
-    "61 audit scripts passed",
+    "62 audit scripts passed",
   ],
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
@@ -2688,7 +2688,7 @@ requireText(
 
 requireText(
   inventory,
-  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*signed UAT execution routing hub[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*61 audit scripts passed/i,
+  /npm\.cmd run audit:heu-implementation-log[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-user-account-security[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*npm\.cmd run audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*PASS[\s\S]*Full `audit:\*` suite[\s\S]*signed UAT execution routing hub[\s\S]*P5-02 Master Control action queue and safe iteration loop[\s\S]*P5-03 Finance Desk read-only cockpit guard[\s\S]*HOU ledger\/handover gap pack[\s\S]*Short Course attendance\/payment gap pack[\s\S]*P3-01\/P3-02 UAT execution pack guard[\s\S]*P0-05 implementation log audit guard[\s\S]*P0 register pack[\s\S]*user account temporary password guard[\s\S]*Finance advance\/payment shell coverage[\s\S]*62 audit scripts passed/i,
   "current-state implementation-log audit evidence",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
 );

@@ -129,6 +129,7 @@ Read these documents before changing TTGDTX finance or migration logic:
   - `npm.cmd run audit:heu-controlled-evidence-redaction-pack`
   - `npm.cmd run audit:heu-current-state-inventory`
   - `npm.cmd run audit:heu-data-foundation`
+  - `npm.cmd run audit:heu-finance-advance-payment-shell`
   - `npm.cmd run audit:heu-finance-desk`
   - `npm.cmd run audit:heu-final-handoff-coverage`
   - `npm.cmd run audit:heu-git-hygiene`
