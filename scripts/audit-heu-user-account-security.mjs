@@ -26,6 +26,14 @@ function requireAllText(contents, tokens, label, file) {
   }
 }
 
+function forbidText(contents, tokens, label, file) {
+  for (const token of tokens) {
+    if (contents.includes(token)) {
+      fail(`${file}: forbidden ${label}: ${token}`);
+    }
+  }
+}
+
 function requireOrderedText(contents, tokens, label, file) {
   let cursor = 0;
 
@@ -58,9 +66,16 @@ const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
 const scopePagePath = "app/settings/scopes/page.tsx";
+const supabaseCheckPath = "components/settings/supabase-check.tsx";
+const supabaseCheckPagePath = "app/settings/supabase-check/page.tsx";
 const appShellPath = "components/layout/app-shell.tsx";
 const permissionsPath = "lib/permissions.ts";
 const seedPath = "database/seed.sql";
+const envExamplePath = ".env.example";
+const userCreateReadinessCheckPath =
+  "scripts/check-heu-user-create-readiness.mjs";
+const userCreatePermissionMigrationPath =
+  "database/step112_admin_user_create_permission.sql";
 const readinessPath = "lib/production-readiness.ts";
 const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
@@ -84,9 +99,14 @@ for (const file of [
   actionsPath,
   settingsPagePath,
   scopePagePath,
+  supabaseCheckPath,
+  supabaseCheckPagePath,
   appShellPath,
   permissionsPath,
   seedPath,
+  envExamplePath,
+  userCreateReadinessCheckPath,
+  userCreatePermissionMigrationPath,
   readinessPath,
   financeDayOneRunbookPath,
   financeDayOneActivationTemplatePath,
@@ -107,9 +127,14 @@ const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
+const supabaseCheck = read(supabaseCheckPath);
+const supabaseCheckPage = read(supabaseCheckPagePath);
 const appShell = read(appShellPath);
 const permissionsSource = read(permissionsPath);
 const seedSource = read(seedPath);
+const envExample = read(envExamplePath);
+const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
+const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
@@ -276,6 +301,115 @@ requireAllText(
   ],
   "sidebar exposes user scope page to delegated create-user operators",
   appShellPath,
+);
+
+requireAllText(
+  supabaseCheck,
+  [
+    "serviceRoleKeyConfigured",
+    "userCreationPreflightItems",
+    "Trạng thái tạo user tự động",
+    "Preflight tạo user trong phần mềm",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "users.create",
+    "mật khẩu tạm, OTP hoặc invite link",
+    "không gửi qua Codex/chat/email",
+  ],
+  "Supabase check user-create service-role readiness",
+  supabaseCheckPath,
+);
+
+requireAllText(
+  supabaseCheckPage,
+  [
+    "checkServiceRoleAdminApi",
+    "adminClient.auth.admin.listUsers",
+    "USER-CREATE-ENV",
+    "USER-CREATE-AUTH-ADMIN",
+    "USER-CREATE-ADMIN-SEED",
+    "USER-CREATE-OPERATOR",
+    "USER-CREATE-ROUTE",
+    "USER_CREATE_AUTH_ADMIN_NO_GO",
+    "USER_CREATE_ADMIN_CLIENT_NO_GO",
+    "không đưa chi tiết lỗi ra UI/log/chat",
+    "serviceRoleKeyConfigured",
+    "process.env.SUPABASE_SERVICE_ROLE_KEY",
+    "userCreationPreflightItems",
+  ],
+  "Supabase check page passes service-role readiness without exposing key",
+  supabaseCheckPagePath,
+);
+
+forbidText(
+  supabaseCheckPage,
+  ["error.message"],
+  "raw Supabase Auth Admin API error disclosure",
+  supabaseCheckPagePath,
+);
+
+requireAllText(
+  envExample,
+  [
+    "NEXT_PUBLIC_SUPABASE_URL=",
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=",
+    "SUPABASE_SERVICE_ROLE_KEY=",
+    "Do not commit .env.local",
+    "do not paste secret values",
+  ],
+  "safe env template for user creation",
+  envExamplePath,
+);
+
+requireAllText(
+  userCreateReadinessCheck,
+  [
+    "HEU user-create readiness check",
+    "Secrets are never printed by this script.",
+    "USER-CREATE-ENV",
+    "USER-CREATE-AUTH-ADMIN",
+    "USER-CREATE-ADMIN-SEED",
+    "USER_CREATE_AUTH_ADMIN_NO_GO",
+    "USER_CREATE_ADMIN_ROLE_NO_GO",
+    "USER_CREATE_ADMIN_SEED_NO_GO",
+    "USER_CREATE_READINESS_EXCEPTION_NO_GO",
+    "Raw errors are not printed.",
+    "auth.admin.listUsers",
+    "role_permissions",
+    "users.create",
+    "database/step112_admin_user_create_permission.sql",
+  ],
+  "local user-create readiness script",
+  userCreateReadinessCheckPath,
+);
+
+requireAllText(
+  userCreatePermissionMigration,
+  [
+    "Step 112 - P0-17 Admin user-create permission grant",
+    "insert into public.role_permissions",
+    "values (admin_role_id, 'users.create')",
+    "on conflict (role_id, permission) do nothing",
+    "status = 'ACTIVE'",
+    "database/step112_admin_user_create_permission.sql",
+    "Do not run in production from Codex/chat",
+    "service-role keys, passwords, OTPs, invite links",
+  ],
+  "existing database users.create permission migration",
+  userCreatePermissionMigrationPath,
+);
+
+forbidText(
+  userCreateReadinessCheck,
+  [".message"],
+  "raw Supabase readiness error disclosure",
+  userCreateReadinessCheckPath,
+);
+
+requireAllText(
+  JSON.stringify(packageJson.scripts),
+  ["check:heu-user-create-readiness"],
+  "package command for user-create readiness",
+  packagePath,
 );
 
 requireOrderedText(

@@ -15,6 +15,21 @@
 - Updated `components/layout/app-shell.tsx` so the `Phạm vi user` navigation
   item is visible to ADMIN, `scope.manage_department` and `users.create`
   operators.
+- Updated `components/settings/supabase-check.tsx` and
+  `app/settings/supabase-check/page.tsx` so ADMIN can see whether the
+  server-side `SUPABASE_SERVICE_ROLE_KEY` is configured before using automatic
+  user creation, without exposing the key value.
+- Added a user-creation preflight on `/settings/supabase-check` for service
+  role env, Supabase Auth Admin API, ADMIN `users.create` database permission,
+  current operator permission and the create-user route.
+- Added `.env.example` and `scripts/check-heu-user-create-readiness.mjs` plus
+  `npm.cmd run check:heu-user-create-readiness` so IT_DATA can verify the local
+  user-creation setup after adding the server-only key, without printing secret
+  values or raw Supabase error messages.
+- Added `database/step112_admin_user_create_permission.sql` as a migration
+  candidate so existing databases can grant/reactivate ADMIN `users.create`
+  without rerunning the full seed file; it must not be run in production from
+  Codex/chat and still requires approved backup evidence and migration order.
 - Tightened `scripts/audit-heu-user-account-security.mjs` for the
   `users.create` permission gate.
 - Boundary: this is P0-17/P6-04 permission packaging only. It does not create
