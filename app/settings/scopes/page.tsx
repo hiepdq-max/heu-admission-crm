@@ -18,6 +18,10 @@ import {
   type UserScopeEffectiveAccessRow,
   type UserScopeEnforcementSummaryRow,
 } from "@/components/settings/user-scope-enforcement-panel";
+import {
+  PositionAssignmentMatrix,
+  type HeuPositionMatrixStatusRow,
+} from "@/components/settings/position-assignment-matrix";
 import { createClient } from "@/lib/supabase/server";
 
 type ScopePageProps = {
@@ -27,6 +31,9 @@ type ScopePageProps = {
     user_created?: string;
     profile_linked?: string;
     auth_user_existing?: string;
+    position_assigned?: string;
+    password_updated?: string;
+    password_email_sent?: string;
     error?: string;
   }>;
 };
@@ -45,6 +52,8 @@ const errorMessages: Record<string, string> = {
   missing_role: "Thiếu role cần gán cho user mới.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
+  unsafe_temporary_password:
+    "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   auth_user_lookup_failed:
@@ -57,6 +66,14 @@ const errorMessages: Record<string, string> = {
     "Quyền users.create không được tạo user ADMIN/BGH. ADMIN phải thực hiện tài khoản đặc quyền.",
   invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
   not_admin: "Chỉ ADMIN mới được tạo user hoặc đổi role/phòng ban.",
+  missing_position_assignment_data:
+    "Thiếu vị trí hoặc email cần gán vào ma trận chức danh.",
+  not_allowed_position_assignment:
+    "Bạn chưa có quyền permission_matrix.manage để gán vị trí chuẩn.",
+  missing_password_reset_data:
+    "Thiếu email hoặc mật khẩu tạm cần xử lý.",
+  missing_password_user:
+    "Email này chưa có profile trong CRM. Hãy tạo/link Auth user vào users_profile trước.",
   invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
   lead_visibility_all_admin_only:
     "Chỉ ADMIN mới được gán quyền xem lead toàn hệ thống.",
@@ -68,9 +85,10 @@ export default async function ScopeSettingsPage({
   const supabase = await createClient();
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (userError || !user) {
     redirect("/login");
   }
 
@@ -78,6 +96,9 @@ export default async function ScopeSettingsPage({
     { data: currentRoleCode },
     { data: canManageScopes },
     { data: canCreateUserPermission },
+    { data: canManageUsersPermission },
+    { data: canReadPositionMatrix },
+    { data: canManagePositionMatrixPermission },
   ] =
     await Promise.all([
       supabase.rpc("current_user_role_code"),
@@ -87,13 +108,32 @@ export default async function ScopeSettingsPage({
       supabase.rpc("has_permission", {
         permission_name: "users.create",
       }),
+      supabase.rpc("has_permission", {
+        permission_name: "users.manage",
+      }),
+      supabase.rpc("has_permission", {
+        permission_name: "permission_matrix.read",
+      }),
+      supabase.rpc("has_permission", {
+        permission_name: "permission_matrix.manage",
+      }),
     ]);
 
   const canCreateUsers =
     currentRoleCode === "ADMIN" || Boolean(canCreateUserPermission);
   const canUseScopePanels = currentRoleCode === "ADMIN" || Boolean(canManageScopes);
+  const canManagePositionMatrix =
+    currentRoleCode === "ADMIN" || Boolean(canManagePositionMatrixPermission);
+  const canUsePositionMatrix =
+    canManagePositionMatrix ||
+    currentRoleCode === "ADMIN" ||
+    Boolean(canReadPositionMatrix);
+  const canManagePasswords =
+    currentRoleCode === "ADMIN" ||
+    Boolean(canCreateUserPermission) ||
+    Boolean(canManageUsersPermission);
 
-  if (!canUseScopePanels && !canCreateUsers) {
+  if (!canUseScopePanels && !canCreateUsers && !canUsePositionMatrix) {
     redirect("/");
   }
 
@@ -110,6 +150,7 @@ export default async function ScopeSettingsPage({
     { data: userLeadVisibilityScopes, error: userLeadVisibilityScopesError },
     { data: scopeEnforcementRows, error: scopeEnforcementRowsError },
     { data: scopeEnforcementSummary, error: scopeEnforcementSummaryError },
+    { data: positionMatrixRows, error: positionMatrixRowsError },
   ] = await Promise.all([
     supabase
       .from("users_profile")
@@ -175,6 +216,14 @@ export default async function ScopeSettingsPage({
         "user_count,ok_count,check_count,needs_fix_count,high_risk_count,broad_access_count,strict_access_count,missing_scope_count",
       )
       .maybeSingle<UserScopeEnforcementSummaryRow>(),
+    supabase
+      .from("heu_position_matrix_status")
+      .select(
+        "id,position_code,position_name,position_group,department_code,department_name,default_role_code,default_role_name,reports_to_position_code,reports_to_position_name,seat_order,required_assignment,control_status,status,permission_count,active_assignment_id,assigned_full_name,assigned_email,assignment_state",
+      )
+      .order("position_group", { ascending: true })
+      .order("seat_order", { ascending: true })
+      .returns<HeuPositionMatrixStatusRow[]>(),
   ]);
 
   const visibleUsers =
@@ -216,7 +265,13 @@ export default async function ScopeSettingsPage({
         ? "Đã tạo tài khoản user mới."
         : params?.profile_linked
           ? "Đã liên kết Auth user vào CRM."
-    : undefined;
+          : params?.position_assigned
+            ? "Đã gán user vào vị trí chuẩn."
+            : params?.password_updated
+              ? "Đã đặt mật khẩu tạm mới cho user."
+              : params?.password_email_sent
+                ? "Đã gửi email đặt lại mật khẩu qua Supabase Auth."
+                : undefined;
 
   return (
     <AppShell
@@ -275,6 +330,23 @@ export default async function ScopeSettingsPage({
             />
           ) : null}
         </>
+      ) : null}
+
+      {canUsePositionMatrix ? (
+        <PositionAssignmentMatrix
+          rows={positionMatrixRows ?? []}
+          users={(users ?? []).map((profile) => ({
+            id: profile.id,
+            full_name: profile.full_name,
+            email: profile.email,
+            status: profile.status,
+          }))}
+          canManageAssignments={canManagePositionMatrix}
+          canManagePasswords={canManagePasswords}
+          hasServiceRoleKey={hasServiceRoleKey}
+          returnPath="/settings/scopes"
+          loadError={positionMatrixRowsError?.message}
+        />
       ) : null}
 
       {canUseScopePanels ? (

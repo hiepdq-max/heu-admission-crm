@@ -64,6 +64,8 @@ const formPath = "components/settings/user-create-form.tsx";
 const linkFormPath = "components/settings/user-auth-profile-link-form.tsx";
 const businessScopePath =
   "components/settings/user-business-scope-settings.tsx";
+const positionMatrixPath =
+  "components/settings/position-assignment-matrix.tsx";
 const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
@@ -81,6 +83,8 @@ const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
 const departmentHeadRolesMigrationPath =
   "database/step113_department_head_roles.sql";
+const organizationPositionMatrixPath =
+  "database/step114_organization_position_permission_matrix.sql";
 const readinessPath = "lib/production-readiness.ts";
 const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
@@ -101,6 +105,7 @@ for (const file of [
   formPath,
   linkFormPath,
   businessScopePath,
+  positionMatrixPath,
   onboardingPath,
   actionsPath,
   settingsPagePath,
@@ -114,6 +119,7 @@ for (const file of [
   userCreateReadinessCheckPath,
   userCreatePermissionMigrationPath,
   departmentHeadRolesMigrationPath,
+  organizationPositionMatrixPath,
   readinessPath,
   financeDayOneRunbookPath,
   financeDayOneActivationTemplatePath,
@@ -131,6 +137,7 @@ for (const file of [
 const form = read(formPath);
 const linkForm = read(linkFormPath);
 const businessScope = read(businessScopePath);
+const positionMatrix = read(positionMatrixPath);
 const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
@@ -144,6 +151,7 @@ const userCreateServerKeyTemplate = read(userCreateServerKeyTemplatePath);
 const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
+const organizationPositionMatrix = read(organizationPositionMatrixPath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
@@ -237,6 +245,27 @@ requireAllText(
     "profile_linked=1&auth_user_existing=1",
   ],
   "existing Supabase Auth user profile-link fallback guard",
+  actionsPath,
+);
+
+requireAllText(
+  actions,
+  [
+    'const positionMatrixManagePermission = "permission_matrix.manage"',
+    "assignHeuPositionByEmailAction",
+    "assign_heu_position_by_email",
+    "target_position_code",
+    "target_email",
+    "not_allowed_position_assignment",
+    "setUserTemporaryPasswordAction",
+    "sendUserPasswordResetEmailAction",
+    "adminClient.auth.admin.updateUserById",
+    "resetPasswordForEmail",
+    "isUnsafeTemporaryPassword",
+    "missing_password_reset_data",
+    "missing_password_user",
+  ],
+  "position assignment and password-reset server guard",
   actionsPath,
 );
 
@@ -346,13 +375,58 @@ requireAllText(
 requireAllText(
   appShell,
   [
-    'permissions: ["scope.manage_department", "users.create"]',
+    'permissions: [',
+    '"scope.manage_department"',
+    '"users.create"',
+    '"permission_matrix.read"',
+    '"permission_matrix.manage"',
     "item.permissions",
     "itemPermissions.some",
   ],
   "sidebar exposes user scope page to delegated create-user operators",
   appShellPath,
 );
+
+requireAllText(
+  positionMatrix,
+  [
+    'data-heu-position-assignment-matrix="P0-17"',
+    'data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"',
+    'data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"',
+    'data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"',
+    "Ma trận vị trí và user",
+    "assignHeuPositionByEmailAction",
+    "setUserTemporaryPasswordAction",
+    "sendUserPasswordResetEmailAction",
+    "heu-position-user-email-options",
+    "min-w-0",
+    "overflow-hidden",
+    "break-words",
+    "truncate",
+    "overflow-x-auto",
+    "shrink-0",
+    "Không hiển thị, không log",
+    "không gửi mật khẩu thô",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "Step 114",
+    "PASS_LOCAL",
+  ],
+  "position assignment matrix UI guard",
+  positionMatrixPath,
+);
+
+requireSection(implementationLog, "2026-07-02 - P0-17 Position Assignment Control UI", [
+  "components/settings/position-assignment-matrix.tsx",
+  "/settings/scopes",
+  "permission_matrix.read",
+  "permission_matrix.manage",
+  "data-heu-position-matrix-quick-access=\"P0-17_POSITION_QUICK_ACCESS\"",
+  "data-heu-position-matrix-overflow-guard=\"P0-17_NO_OVERFLOW\"",
+  "does not create fake accounts",
+  "approve UAT",
+  "approve finance reliance",
+  "mark production GO",
+], logPath);
 
 requireAllText(
   supabaseCheck,
@@ -480,6 +554,104 @@ requireAllText(
   "department head role migration safety boundary",
   departmentHeadRolesMigrationPath,
 );
+
+requireAllText(
+  organizationPositionMatrix,
+  [
+    "Step 114 - P0-17 HEU organization position, permission and assignment matrix",
+    "Migration candidate only",
+    "Do not run in production from Codex/chat",
+    "Keep real account assignment separate from role design",
+    "heu_org_positions",
+    "heu_position_permission_matrix",
+    "heu_position_assignments",
+    "heu_position_matrix_status",
+    "assign_heu_position_by_email",
+    "ADMISSION_HEAD",
+    "COUNSELOR",
+    "('LEGAL', 'Nhan su phap che'",
+    "('PHAP_CHE_01', 'Phap che 01'",
+    "join public.roles r on r.code = p.default_role_code",
+    "public.can_read_permission_matrix()",
+    "public.can_manage_permission_matrix()",
+    "or public.has_permission('users.manage')",
+    "on delete restrict",
+    "do not paste passwords, OTPs, invite/reset links",
+    "service-role keys, raw PII, CCCD, bank data or screenshots",
+  ],
+  "organization position permission matrix setup",
+  organizationPositionMatrixPath,
+);
+
+forbidText(
+  organizationPositionMatrix,
+  ["using (true);", "on delete cascade"],
+  "open authenticated read policy in organization position matrix",
+  organizationPositionMatrixPath,
+);
+
+requireAllText(
+  permissionsSource,
+  [
+    'code: "permission_matrix.read"',
+    'label: "Xem ma trận vị trí"',
+    'code: "permission_matrix.manage"',
+    'label: "Gán ma trận vị trí"',
+  ],
+  "permission matrix labels",
+  permissionsPath,
+);
+
+requireAllText(
+  actions,
+  [
+    "positionMatrixManagePermission",
+    "userManagePermission",
+    "requirePositionMatrixManage",
+    "requireUserCredentialManage",
+    "assignHeuPositionByEmailAction",
+    "assign_heu_position_by_email",
+    "setUserTemporaryPasswordAction",
+    "sendUserPasswordResetEmailAction",
+    "not_allowed_create_privileged_user",
+    "isUnsafeTemporaryPassword",
+    "findAuthUserIdByEmail",
+    "updateUserById",
+    "resetPasswordForEmail",
+    "position_assigned=1#position-matrix",
+    "password_updated=1#position-password",
+    "password_email_sent=1#position-password",
+  ],
+  "position assignment and credential handoff actions",
+  actionsPath,
+);
+
+requireSection(implementationLog, "2026-07-02 - P0-17 Organization Position Permission Matrix", [
+  "database/step114_organization_position_permission_matrix.sql",
+  "standard HEU position matrix",
+  "heu_org_positions",
+  "heu_position_permission_matrix",
+  "heu_position_assignments",
+  "heu_position_matrix_status",
+  "LEGAL",
+  "PHAP_CHE_01",
+  "PHAP_CHE_03",
+  "can_read_permission_matrix",
+  "can_manage_permission_matrix",
+  "no open all-authenticated read",
+  "no on delete cascade",
+  "permission_matrix.read",
+  "permission_matrix.manage",
+  "assign_heu_position_by_email",
+  "does not create",
+  "accounts",
+  "set passwords",
+  "send reset/invite links",
+  "approve UAT",
+  "approve finance reliance",
+  "approve migration order",
+  "mark production GO",
+], logPath);
 
 forbidText(
   userCreateReadinessCheck,

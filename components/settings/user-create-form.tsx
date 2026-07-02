@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { UserPlus } from "lucide-react";
+import { LoaderCircle, UserPlus } from "lucide-react";
+import { useFormStatus } from "react-dom";
 
 import { createUserAccountAction } from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,32 @@ function isStaffRole(role: OptionRow | undefined) {
   }
 
   return !["ADMIN", "BGH"].includes(role.code ?? "") && !isDepartmentHeadRole(role);
+}
+
+function UserCreateSubmitButton({
+  canCreateAuthUser,
+  disabledButtonLabel,
+}: {
+  canCreateAuthUser: boolean;
+  disabledButtonLabel: string;
+}) {
+  const { pending } = useFormStatus();
+  const isDisabled = !canCreateAuthUser || pending;
+
+  return (
+    <Button aria-live="polite" disabled={isDisabled} type="submit">
+      {pending ? (
+        <LoaderCircle className="size-4 animate-spin" />
+      ) : (
+        <UserPlus className="size-4" />
+      )}
+      {pending
+        ? "Đang tạo user..."
+        : canCreateAuthUser
+          ? "Tạo user"
+          : disabledButtonLabel}
+    </Button>
+  );
 }
 
 export function UserCreateForm({
@@ -350,10 +377,10 @@ export function UserCreateForm({
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={!canCreateAuthUser}>
-            <UserPlus className="size-4" />
-            {canCreateAuthUser ? "Tạo user" : disabledButtonLabel}
-          </Button>
+          <UserCreateSubmitButton
+            canCreateAuthUser={canCreateAuthUser}
+            disabledButtonLabel={disabledButtonLabel}
+          />
         </div>
       </form>
     </section>

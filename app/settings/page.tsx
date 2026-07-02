@@ -210,9 +210,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   const supabase = await createClient();
   const {
     data: { user },
+    error: userError,
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (userError || !user) {
     redirect("/login");
   }
 

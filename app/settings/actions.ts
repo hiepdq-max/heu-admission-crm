@@ -14,6 +14,8 @@ function textValue(formData: FormData, key: string) {
 
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
 const createUserPermission = "users.create";
+const userManagePermission = "users.manage";
+const positionMatrixManagePermission = "permission_matrix.manage";
 const privilegedUserRoleCodes = new Set(["ADMIN", "BGH"]);
 const unsafeTemporaryPasswords = new Set([
   "12345678",
@@ -30,6 +32,26 @@ const unsafeTemporaryPasswords = new Set([
 ]);
 
 type AdminClient = ReturnType<typeof createAdminClient>;
+type SettingsReturnPath = "/settings" | "/settings/scopes";
+
+function settingsReturnPath(value: string | null): SettingsReturnPath {
+  return value === "/settings/scopes" ? "/settings/scopes" : "/settings";
+}
+
+async function requireSettingsAuthenticatedUser(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+) {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    redirect("/login");
+  }
+
+  return user;
+}
 
 function normalizePasswordSignal(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -138,15 +160,213 @@ async function upsertUserProfileForAuthUser(
   );
 }
 
+async function requirePositionMatrixManage(returnPath: SettingsReturnPath) {
+  const supabase = await createClient();
+  await requireSettingsAuthenticatedUser(supabase);
+
+  const [{ data: currentRoleCode }, { data: canManagePositionMatrix }] =
+    await Promise.all([
+      supabase.rpc("current_user_role_code"),
+      supabase.rpc("has_permission", {
+        permission_name: positionMatrixManagePermission,
+      }),
+    ]);
+
+  if (currentRoleCode !== "ADMIN" && !canManagePositionMatrix) {
+    redirect(`${returnPath}?error=not_allowed_position_assignment`);
+  }
+
+  return { supabase };
+}
+
+async function requireUserCredentialManage(returnPath: SettingsReturnPath) {
+  const supabase = await createClient();
+  await requireSettingsAuthenticatedUser(supabase);
+
+  const [
+    { data: currentRoleCode },
+    { data: canCreateUser },
+    { data: canManageUsers },
+  ] = await Promise.all([
+    supabase.rpc("current_user_role_code"),
+    supabase.rpc("has_permission", {
+      permission_name: createUserPermission,
+    }),
+    supabase.rpc("has_permission", {
+      permission_name: userManagePermission,
+    }),
+  ]);
+
+  if (currentRoleCode !== "ADMIN" && !canCreateUser && !canManageUsers) {
+    redirect(`${returnPath}?error=not_allowed_create_user`);
+  }
+
+  return { supabase, currentRoleCode };
+}
+
+async function loadProfileForEmail(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  email: string,
+) {
+  return supabase
+    .from("users_profile")
+    .select("id,email,full_name,role_id,roles(code)")
+    .eq("email", email)
+    .maybeSingle<{
+      id: string;
+      email: string;
+      full_name: string;
+      role_id: string | null;
+      roles: { code: string } | null;
+    }>();
+}
+
+export async function assignHeuPositionByEmailAction(formData: FormData) {
+  const returnPath = settingsReturnPath(textValue(formData, "return_to"));
+  const positionCode = normalizeMasterCode(textValue(formData, "position_code"));
+  const email = textValue(formData, "email")?.toLowerCase();
+  const note = textValue(formData, "assignment_note");
+  const { supabase } = await requirePositionMatrixManage(returnPath);
+
+  if (!positionCode || !email) {
+    redirect(`${returnPath}?error=missing_position_assignment_data`);
+  }
+
+  const { error } = await supabase.rpc("assign_heu_position_by_email", {
+    target_position_code: positionCode,
+    target_email: email,
+    target_note: note,
+  });
+
+  if (error) {
+    redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?position_assigned=1#position-matrix`);
+}
+
+export async function setUserTemporaryPasswordAction(formData: FormData) {
+  const returnPath = settingsReturnPath(textValue(formData, "return_to"));
+  const email = textValue(formData, "email")?.toLowerCase();
+  const password = textValue(formData, "password");
+  const { supabase, currentRoleCode } =
+    await requireUserCredentialManage(returnPath);
+
+  if (!email || !password) {
+    redirect(`${returnPath}?error=missing_password_reset_data`);
+  }
+
+  const { data: profile, error: profileError } = await loadProfileForEmail(
+    supabase,
+    email,
+  );
+
+  if (profileError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(profileError.message)}`);
+  }
+
+  if (!profile) {
+    redirect(`${returnPath}?error=missing_password_user`);
+  }
+
+  const targetRoleCode = profile.roles?.code ?? "";
+
+  if (
+    currentRoleCode !== "ADMIN" &&
+    privilegedUserRoleCodes.has(targetRoleCode)
+  ) {
+    redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
+  }
+
+  if (password.length < 8) {
+    redirect(`${returnPath}?error=weak_password`);
+  }
+
+  if (isUnsafeTemporaryPassword(password, email, profile.full_name)) {
+    redirect(`${returnPath}?error=unsafe_temporary_password`);
+  }
+
+  let adminClient: AdminClient;
+
+  try {
+    adminClient = createAdminClient();
+  } catch {
+    redirect(`${returnPath}?error=missing_service_role_key`);
+  }
+
+  let authUserId: string | null = null;
+
+  try {
+    authUserId = await findAuthUserIdByEmail(adminClient, email);
+  } catch {
+    redirect(`${returnPath}?error=auth_user_lookup_failed`);
+  }
+
+  if (!authUserId) {
+    redirect(`${returnPath}?error=auth_user_exists_but_not_found`);
+  }
+
+  const { error } = await adminClient.auth.admin.updateUserById(authUserId, {
+    password,
+  });
+
+  if (error) {
+    redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?password_updated=1#position-password`);
+}
+
+export async function sendUserPasswordResetEmailAction(formData: FormData) {
+  const returnPath = settingsReturnPath(textValue(formData, "return_to"));
+  const email = textValue(formData, "email")?.toLowerCase();
+  const { supabase, currentRoleCode } =
+    await requireUserCredentialManage(returnPath);
+
+  if (!email) {
+    redirect(`${returnPath}?error=missing_password_reset_data`);
+  }
+
+  const { data: profile, error: profileError } = await loadProfileForEmail(
+    supabase,
+    email,
+  );
+
+  if (profileError) {
+    redirect(`${returnPath}?error=${encodeURIComponent(profileError.message)}`);
+  }
+
+  if (!profile) {
+    redirect(`${returnPath}?error=missing_password_user`);
+  }
+
+  const targetRoleCode = profile.roles?.code ?? "";
+
+  if (
+    currentRoleCode !== "ADMIN" &&
+    privilegedUserRoleCodes.has(targetRoleCode)
+  ) {
+    redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+  if (error) {
+    redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  revalidatePath("/settings");
+  revalidatePath("/settings/scopes");
+  redirect(`${returnPath}?password_email_sent=1#position-password`);
+}
+
 export async function updateUserProfileAction(formData: FormData) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const targetUserId = textValue(formData, "user_id");
   const roleId = textValue(formData, "role_id");
@@ -218,13 +438,7 @@ export async function updateUserProfileAction(formData: FormData) {
 
 export async function createUserAccountAction(formData: FormData) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
+  await requireSettingsAuthenticatedUser(supabase);
 
   const requestedReturnTo = textValue(formData, "return_to");
   const returnPath =
@@ -368,13 +582,7 @@ export async function createUserAccountAction(formData: FormData) {
 
 export async function linkAuthUserProfileAction(formData: FormData) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
+  await requireSettingsAuthenticatedUser(supabase);
 
   const requestedReturnTo = textValue(formData, "return_to");
   const returnPath =
@@ -422,13 +630,7 @@ export async function linkAuthUserProfileAction(formData: FormData) {
 
 export async function updateRolePermissionsAction(formData: FormData) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const { data: currentRoleCode } = await supabase.rpc(
     "current_user_role_code",
@@ -520,13 +722,7 @@ export async function updateRolePermissionsAction(formData: FormData) {
 
 export async function updateUserBusinessScopesAction(formData: FormData) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/login");
-  }
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const requestedReturnTo = textValue(formData, "return_to");
   const returnPath =

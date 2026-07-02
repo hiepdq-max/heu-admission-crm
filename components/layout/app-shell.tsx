@@ -121,7 +121,12 @@ const navigation = [
     href: "/settings/scopes",
     icon: ShieldCheck,
     key: "scopes",
-    permissions: ["scope.manage_department", "users.create"],
+    permissions: [
+      "scope.manage_department",
+      "users.create",
+      "permission_matrix.read",
+      "permission_matrix.manage",
+    ],
   },
   {
     label: "Cấu hình",

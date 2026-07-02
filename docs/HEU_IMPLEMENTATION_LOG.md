@@ -1,5 +1,63 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P0-17 Position Assignment Control UI
+
+- Added `components/settings/position-assignment-matrix.tsx` and wired it into
+  `/settings/scopes` so ADMIN or users with `permission_matrix.read/manage` can
+  see the standard HEU position matrix, assigned user, default role, department,
+  manager chain and assignment state in one fast control surface.
+- Added `permission_matrix.read` and `permission_matrix.manage` to the UI
+  permission catalog and sidebar gate so delegated operators can access the
+  position matrix without needing full ADMIN settings access.
+- Added `assignHeuPositionByEmailAction` to call
+  `assign_heu_position_by_email(position_code, email, note)` from the app after
+  the email already exists in `users_profile`; the RPC keeps role, department
+  and direct-manager assignment derived from the approved position matrix.
+- Added controlled password access actions:
+  `setUserTemporaryPasswordAction` uses the server-side service-role client to
+  set a temporary password for an existing Auth user, while
+  `sendUserPasswordResetEmailAction` triggers a Supabase Auth reset email.
+  Neither action prints, logs or records passwords, OTPs, service-role keys or
+  reset links in Git/Codex/chat.
+- Tightened the position matrix surface with
+  `data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"` and
+  `data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"` so search,
+  department filters, summary cards, assignment rows and password/reset panels
+  stay fast to reach and do not force horizontal overflow.
+- PASS_LOCAL boundary: this improves local user/position administration only.
+  It does not create fake accounts, approve role assignments for production,
+  approve UAT, approve finance reliance, approve migration order, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-02 - P0-17 Organization Position Permission Matrix
+
+- Added `database/step114_organization_position_permission_matrix.sql` to
+  create the standard HEU position matrix before assigning real people:
+  `HT`, `PHT_*`, department heads and numbered staff seats for Dao Tao,
+  Tuyen Sinh, CTHSSV, Ke Toan/KHTC, Phap Che, Audit, IT/Data, Khoa,
+  Dao Tao Ngan Han and HR.
+- Added `heu_org_positions`, `heu_position_permission_matrix`,
+  `heu_position_assignments` and `heu_position_matrix_status` so role design,
+  permission design and real-user assignment are separate layers.
+- Seeded the PHAP_CHE staff default role `LEGAL` inside the migration so the
+  `PHAP_CHE_01` through `PHAP_CHE_03` seats resolve to a real role before any
+  position-permission matrix is generated.
+- Added `assign_heu_position_by_email(position_code, email, note)` for later
+  ADMIN/IT_DATA assignment after the email already exists in `users_profile`;
+  assigning a position also updates the user's role, department and direct
+  manager from the position chain. The migration does not create fake accounts
+  or bulk real Auth users.
+- Tightened the candidate RLS/read gate so position, permission and assignment
+  matrix reads depend on `can_read_permission_matrix`, writes and assignment
+  execution depend on `can_manage_permission_matrix`; no open all-authenticated read
+  of the control matrix is allowed.
+- Added `permission_matrix.read` and `permission_matrix.manage` labels in
+  `lib/permissions.ts` and kept Step114 foreign keys on `on delete restrict`,
+  with no on delete cascade in the organization position matrix.
+- PASS_LOCAL boundary: this is a DRAFT control matrix only. It does not create
+  accounts, set passwords, send reset/invite links, approve UAT, approve finance reliance,
+  approve migration order, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - P0-17 Auth User Profile Link Fallback
 
 - Updated `app/settings/actions.ts` so creating a user with an email that

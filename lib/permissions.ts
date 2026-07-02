@@ -35,6 +35,17 @@ export const permissionGroups: PermissionGroup[] = [
         description: "Trưởng phòng phân quyền cho nhân sự thuộc phòng mình.",
       },
       {
+        code: "permission_matrix.read",
+        label: "Xem ma trận vị trí",
+        description: "Xem vị trí chuẩn, role mặc định và user đang được gán.",
+      },
+      {
+        code: "permission_matrix.manage",
+        label: "Gán ma trận vị trí",
+        description:
+          "Gán email đã có profile vào vị trí chuẩn để cập nhật role, phòng ban và quản lý trực tiếp.",
+      },
+      {
         code: "settings.manage",
         label: "Quản lý cấu hình",
         description: "Quản lý danh mục và các cấu hình nghiệp vụ.",
