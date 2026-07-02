@@ -34,7 +34,26 @@ Current baseline: Stage D internal controlled test only. Production remains
 | DAO_TAO / CTHSSV | Lead-to-student handover, class/program readiness, attendance or student-state transitions | Handover acceptance without signed UAT |
 | HOU / Short Course owners | HOU ledger/handover and short-course attendance/payment rules if in scope | COM/payment/attendance finalization |
 
-## 3. Logic Review List
+## 3. PASS_LOCAL Confirmation SOP Loop
+
+Use this loop before any real-data reliance, signed UAT handoff, finance
+reliance request or owner GO/NO-GO discussion. The operating order is:
+check -> professional -> legal/SOP -> logic/data -> PASS_LOCAL -> continue.
+
+| ID | Step | Required check | Output | Stop if |
+|---|---|---|---|---|
+| `SOP-01` | Check current state | Read live git status, current-state inventory, system backlog and module readiness gap matrix before choosing the slice | One small scoped slice with Stage D / NO-GO boundary visible | Scope is broad, live status is unknown or the slice implies production/UAT/finance/owner approval |
+| `SOP-02` | Professional check | KHTC, DAO_TAO, CTHSSV, HOU, Short Course or process owner confirms the domain rule and business meaning | Professional owner note, missing item or BLOCKED reason | Domain rule is oral, ownerless, case-specific but generalized, or contradicted by existing register rows |
+| `SOP-03` | Legal/SOP check | PHAP_CHE and process owner map the legal basis, SOP authority, evidence class and signoff path | Legal/SOP reference, unresolved question or NO_GO/BLOCKED row | Codex output is treated as legal advice, official SOP issuance, waiver, UAT acceptance or owner signoff |
+| `SOP-04` | Logic/data check | IT_DATA and Audit verify data source, role/workspace scope, audit-log path, report-view boundary and no-secret handling | Logic/data finding tied to `LOGIC-*`, `DATA-*`, `MISS-*` or `UNCERTAIN-*` row | Raw PII, bank data, voucher, password, OTP, reset/invite link, service-role key or uncontrolled evidence appears in Git/Codex/chat |
+| `SOP-05` | PASS_LOCAL verification | Run the focused audit/lint/build guard that matches the slice and record only local evidence | PASS_LOCAL, NO_GO or BLOCKED result with command name | PASS_LOCAL is described as UAT pass, evidence acceptance, finance reliance, migration approval or production GO |
+| `SOP-06` | Continue or stop | If checks are green, update docs/log/audit for the actual delta and move to the next small slice; if not, stop on the smallest blocker | Next-slice note or blocker note | Any owner decision is missing, any audit fails, or any required real evidence/signature remains outside the controlled evidence system |
+
+This SOP loop is a local control procedure only. It does not approve real-data reliance.
+It also does not approve legal position, official SOP issuance, signed UAT,
+finance action, evidence acceptance, migration, owner GO/NO-GO or production GO.
+
+## 4. Logic Review List
 
 | ID | Logic area | Current controlled logic | Missing or required confirmation | Owner |
 |---|---|---|---|---|
@@ -49,7 +68,7 @@ Current baseline: Stage D internal controlled test only. Production remains
 | `LOGIC-09` | Hard-delete/cascade | Cascade findings are registered | Conversion or written waiver is still required | IT_DATA + Audit + owners |
 | `LOGIC-10` | Evidence handling | Controlled evidence/redaction pack exists | Actual controlled Drive evidence locations and redaction reviewers must be confirmed | Audit + IT_DATA |
 
-## 4. Professional Review List
+## 5. Professional Review List
 
 | ID | Professional area | Must be confirmed with real owner | Minimum confirmation output |
 |---|---|---|---|
@@ -64,7 +83,7 @@ Current baseline: Stage D internal controlled test only. Production remains
 | `PRO-09` | Bank/collateral | Whether phong toa/giai chap is metadata-only or operational in HEU v1 | KHTC + PHAP_CHE + BGH scope decision |
 | `PRO-10` | Master data | Which student/class/program/partner fields are authoritative | IT_DATA + process-owner Data Master signoff |
 
-## 5. Legal And Compliance Review List
+## 6. Legal And Compliance Review List
 
 | ID | Legal/compliance area | Missing or uncertain point | Required owner response |
 |---|---|---|---|
@@ -79,7 +98,7 @@ Current baseline: Stage D internal controlled test only. Production remains
 | `LEGAL-09` | Bank/collateral | Legal boundary for phong toa, giai chap and bank instructions | PHAP_CHE + KHTC written scope boundary |
 | `LEGAL-10` | AI/Codex boundary | What source data may be shared with AI/Codex | PHAP_CHE + Audit AI data-sharing rule |
 
-## 6. Real Data Required List
+## 7. Real Data Required List
 
 Real data must stay in controlled storage outside Git/Codex/chat. Only redacted
 labels, evidence IDs and owner decision IDs may be referenced here.
@@ -97,7 +116,7 @@ labels, evidence IDs and owner decision IDs may be referenced here.
 | `DATA-09` | P6-03 audit-log trace samples | `AUDIT-EVID-001` | Audit + IT_DATA | User/action/source cannot be traced |
 | `DATA-10` | Hard-delete/cascade conversion or written waiver | `CASCADE-EVID-001` | IT_DATA + Audit + owners | Finding remains open without owner waiver |
 
-## 7. Missing List For Staff To Provide
+## 8. Missing List For Staff To Provide
 
 | ID | Missing item | Owner to provide | Expected format |
 |---|---|---|---|
@@ -112,7 +131,7 @@ labels, evidence IDs and owner decision IDs may be referenced here.
 | `MISS-09` | P6-06 cascade conversion or waiver | IT_DATA + Audit + owners | Conversion evidence or written waiver |
 | `MISS-10` | Final owner GO/NO-GO | BGH + accountable owners | Owner decision manifest outside Codex/chat |
 
-## 8. Uncertain List For Staff To Confirm Or Correct
+## 9. Uncertain List For Staff To Confirm Or Correct
 
 | ID | Uncertain point | Current safe assumption | Who must confirm |
 |---|---|---|---|
@@ -127,7 +146,7 @@ labels, evidence IDs and owner decision IDs may be referenced here.
 | `UNCERTAIN-09` | Who signs unresolved exception waivers? | Keep exception as BLOCKED until authority is confirmed | BGH + PHAP_CHE + Audit |
 | `UNCERTAIN-10` | Can AI/Codex read any real workbook, bank statement, voucher or PII? | No; only redacted labels and summaries are allowed | PHAP_CHE + Audit + IT_DATA |
 
-## 9. Staff Confirmation Template
+## 10. Staff Confirmation Template
 
 Copy one row per decision into the controlled evidence system, not Git/Codex/chat.
 
@@ -135,7 +154,7 @@ Copy one row per decision into the controlled evidence system, not Git/Codex/cha
 |---|---|---|---|---|---|---|
 |  |  |  |  |  |  |  |
 
-## 10. Stop Conditions
+## 11. Stop Conditions
 
 Mark the register `NO_GO` or `BLOCKED` when any of these happen:
 
@@ -150,7 +169,7 @@ Mark the register `NO_GO` or `BLOCKED` when any of these happen:
 - Any dashboard or Finance Desk output is treated as statutory accounting,
   voucher posting, bank instruction, payment approval or production reliance.
 
-## 11. Current Conclusion
+## 12. Current Conclusion
 
 Current conclusion: `NO_GO` for production. The build may continue only as
 PASS_LOCAL control work, UAT support, read-only reporting, confirmation

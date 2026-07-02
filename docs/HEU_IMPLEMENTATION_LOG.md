@@ -1,5 +1,41 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Codex Operating Playbook SOP Loop Alignment
+
+- Updated `docs/HEU_CODEX_OPERATING_PLAYBOOK.md` with a PASS_LOCAL SOP loop for
+  every small HEU slice: check current state, professional review, legal/SOP
+  review, logic/data review, focused local verification and continue-or-stop.
+- Added the real-data logic/professional/legal confirmation register to the
+  standard file list so operators can route to
+  `SOP-01` through `SOP-06` before real-data reliance, signed UAT handoff,
+  finance reliance request or owner GO/NO-GO discussion.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the playbook SOP
+  reference, register link and local-only boundary stay guarded by
+  `npm.cmd run audit:heu-implementation-log`.
+- PASS_LOCAL boundary: this is operating-playbook alignment only. It does not
+  execute UAT, accept evidence, approve legal advice, approve official SOP
+  issuance, approve finance reliance, approve migration, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-02 - Real Data Confirmation SOP Loop
+
+- Extended
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  with a PASS_LOCAL confirmation SOP loop before any real-data reliance, signed
+  UAT handoff, finance reliance request or owner GO/NO-GO discussion.
+- Added `SOP-01` through `SOP-06` for the operating order
+  `check -> professional -> legal/SOP -> logic/data -> PASS_LOCAL -> continue`,
+  including current-state scope fencing, professional owner confirmation,
+  PHAP_CHE legal/SOP mapping, IT_DATA/Audit logic-data checks, focused local
+  audit/lint/build verification and the continue-or-stop rule.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the SOP loop, stop
+  conditions and local-only boundary stay guarded by
+  `npm.cmd run audit:heu-implementation-log`.
+- PASS_LOCAL boundary: this is local SOP/control packaging only. It does not
+  approve real-data reliance, legal position, official SOP issuance, signed
+  UAT, finance action, evidence acceptance, migration, owner GO/NO-GO or
+  production GO.
+
 ## 2026-07-02 - P0-17 Position Assignment Control UI
 
 - Added `components/settings/position-assignment-matrix.tsx` and wired it into

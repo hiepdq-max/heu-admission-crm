@@ -74,12 +74,36 @@ Lam tiep G5 Payment Control cho TTGDTX. Muc tieu: khong cho chi trung mot de
 nghi chi. Duoc sua code va docs, khong chay migration production, chay lint/build.
 ```
 
+### 5.1 PASS_LOCAL SOP Loop
+
+Moi lat nho trong repo HEU phai di theo vong SOP local:
+
+1. Check: doc live git status, current-state inventory, system backlog va
+   module readiness gap matrix.
+2. Professional: doi chieu chuyen mon voi owner dung module, nhu KHTC, DAO_TAO,
+   CTHSSV, HOU, Short Course hoac process owner.
+3. Legal/SOP: doi chieu PHAP_CHE, can cu phap ly, SOP authority, evidence class
+   va duong ky/xac nhan.
+4. Logic/data: doi chieu IT_DATA/Audit ve data source, role/workspace scope,
+   audit log, report-view boundary va no-secret handling.
+5. PASS_LOCAL: chay focused audit/lint/build lien quan va chi ghi nhan ket qua
+   local.
+6. Continue: chi sang lat tiep theo khi guard xanh; neu khong thi dung o
+   blocker nho nhat.
+
+Quy trinh chi tiet nam trong
+`docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+Section 3, `SOP-01` through `SOP-06`. PASS_LOCAL khong phai UAT pass, evidence
+acceptance, legal approval, official SOP issuance, finance reliance, migration
+approval, owner GO/NO-GO hoac production GO.
+
 ## 6. Danh Sach File Chuan Phai Doc
 
 | File | Vai tro |
 |---|---|
 | `AGENTS.md` | Luat bat buoc cho Codex khi sua repo |
 | `docs/HEU_CODEX_OPERATING_PLAYBOOK.md` | Cach dieu phoi du an voi Codex |
+| `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md` | SOP loop PASS_LOCAL: check, chuyen mon, legal/SOP, logic/data, PASS_LOCAL, continue |
 | `docs/HEU_TECH_DECISION_001_FREEZE_AND_HARDEN_TTGDTX_9PLUS.md` | Quyet dinh dong bang pham vi TTGDTX |
 | `docs/TTGDTX_PHU_XUYEN_REAL_DATA_FIT_NOTE_20260625.md` | Goc nhin du lieu that Phu Xuyen de may do import, hop dong, doi soat va bao mat |
 | `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` | Checklist Go/No-Go |

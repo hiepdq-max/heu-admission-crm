@@ -28,12 +28,14 @@ for (const file of [
   "AGENTS.md",
   "package.json",
   ".github/workflows/heu-pass-local.yml",
+  "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
@@ -70,10 +72,14 @@ for (const file of [
 
 const agents = read("AGENTS.md");
 const packageJson = JSON.parse(read("package.json"));
+const codexOperatingPlaybook = read("docs/HEU_CODEX_OPERATING_PLAYBOOK.md");
 const log = read("docs/HEU_IMPLEMENTATION_LOG.md");
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 const inventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
+const realDataConfirmationRegister = read(
+  "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+);
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 
 const fastFailures = [];
@@ -102,6 +108,109 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+
+fastRequire(
+  codexOperatingPlaybook,
+  [
+    "### 5.1 PASS_LOCAL SOP Loop",
+    "Moi lat nho trong repo HEU phai di theo vong SOP local:",
+    "Check: doc live git status",
+    "Professional: doi chieu chuyen mon",
+    "Legal/SOP: doi chieu PHAP_CHE",
+    "Logic/data: doi chieu IT_DATA/Audit",
+    "PASS_LOCAL: chay focused audit/lint/build",
+    "Continue: chi sang lat tiep theo khi guard xanh",
+    "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "`SOP-01` through `SOP-06`",
+    "PASS_LOCAL khong phai UAT pass",
+    "evidence",
+    "acceptance",
+    "legal approval",
+    "official SOP issuance",
+    "finance reliance",
+    "owner GO/NO-GO",
+    "production GO",
+  ],
+  "Codex operating playbook PASS_LOCAL SOP loop",
+  "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
+);
+
+fastSection("2026-07-02 - Codex Operating Playbook SOP Loop Alignment", [
+  "HEU_CODEX_OPERATING_PLAYBOOK.md",
+  "PASS_LOCAL SOP loop",
+  "check current state",
+  "professional review",
+  "legal/SOP",
+  "review",
+  "logic/data review",
+  "focused local verification",
+  "continue-or-stop",
+  "standard file list",
+  "SOP-01` through `SOP-06",
+  "scripts/audit-heu-implementation-log.mjs",
+  "npm.cmd run audit:heu-implementation-log",
+  "operating-playbook alignment only",
+  "execute UAT",
+  "accept evidence",
+  "approve legal advice",
+  "official SOP",
+  "issuance",
+  "finance reliance",
+  "owner GO/NO-GO",
+  "production GO",
+]);
+
+fastRequire(
+  realDataConfirmationRegister,
+  [
+    "## 3. PASS_LOCAL Confirmation SOP Loop",
+    "check -> professional -> legal/SOP -> logic/data -> PASS_LOCAL -> continue",
+    "`SOP-01`",
+    "`SOP-02`",
+    "`SOP-03`",
+    "`SOP-04`",
+    "`SOP-05`",
+    "`SOP-06`",
+    "Read live git status, current-state inventory, system backlog and module readiness gap matrix",
+    "PHAP_CHE and process owner map the legal basis, SOP authority, evidence class and signoff path",
+    "IT_DATA and Audit verify data source, role/workspace scope, audit-log path, report-view boundary and no-secret handling",
+    "Run the focused audit/lint/build guard that matches the slice",
+    "PASS_LOCAL is described as UAT pass, evidence acceptance, finance reliance, migration approval or production GO",
+    "does not approve real-data reliance",
+    "legal position",
+    "official SOP issuance",
+    "signed UAT",
+    "finance action",
+    "evidence acceptance",
+    "owner GO/NO-GO",
+    "production GO",
+  ],
+  "real-data confirmation SOP loop",
+  "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+);
+
+fastSection("2026-07-02 - Real Data Confirmation SOP Loop", [
+  "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+  "PASS_LOCAL confirmation SOP loop",
+  "`SOP-01` through `SOP-06`",
+  "check -> professional -> legal/SOP -> logic/data -> PASS_LOCAL -> continue",
+  "current-state scope fencing",
+  "professional owner confirmation",
+  "PHAP_CHE legal/SOP mapping",
+  "IT_DATA/Audit logic-data checks",
+  "focused local",
+  "audit/lint/build verification",
+  "continue-or-stop rule",
+  "scripts/audit-heu-implementation-log.mjs",
+  "npm.cmd run audit:heu-implementation-log",
+  "local SOP/control packaging only",
+  "approve real-data reliance",
+  "official SOP issuance",
+  "UAT",
+  "finance action",
+  "owner GO/NO-GO",
+  "production GO",
+]);
 
 fastSection("2026-07-02 - Real Operation Closure Board", [
   "HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
