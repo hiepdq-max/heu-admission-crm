@@ -70,6 +70,7 @@ const requiredFiles = [
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
@@ -676,6 +677,12 @@ requireText(
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   /Status:\s*PASS_LOCAL_CONTROL[\s\S]*Decision values:\s*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build Agent[\s\S]*QA\/Audit Agent[\s\S]*Data Check Agent[\s\S]*Finance Trial Support Agent[\s\S]*UAT\/Evidence Coordinator[\s\S]*Report\/Email Coordinator[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
   "P7-05 AI delivery team operating register",
+);
+
+requireText(
+  "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_GOAL_CONTROL)(?=[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Continuous Build Goal When Local Machine Is Off)(?=[\s\S]*cloud PASS_LOCAL\s+verification, not autonomous coding)(?=[\s\S]*Build verification when local machine is off)(?=[\s\S]*GitHub Actions PASS_LOCAL workflow runs audits\/lint\/build\/report summaries)(?=[\s\S]*Expert Team Build Goal)(?=[\s\S]*Build Agent)(?=[\s\S]*QA\/Audit Agent)(?=[\s\S]*Data Check Agent)(?=[\s\S]*Finance Trial Support)(?=[\s\S]*UAT\/Evidence Coordinator)(?=[\s\S]*Report\/Email Coordinator)(?=[\s\S]*Human Authority Owner)(?=[\s\S]*Build Phases)(?=[\s\S]*A[\s\S]*Clean\/package dirty scope)(?=[\s\S]*E[\s\S]*Remaining blockers)(?=[\s\S]*Required Reporting Style)(?=[\s\S]*Stop Conditions)(?=[\s\S]*does not create autonomous AI workers,\s+send real email, create real tasks, create real accounts, accept UAT, accept\s+evidence, approve finance action, approve owner GO\/NO-GO, run production\s+migration or mark production GO)(?=[\s\S]*Production remains NO-GO)/i,
+  "Master Control goal register local-only boundary",
 );
 requireText(
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",

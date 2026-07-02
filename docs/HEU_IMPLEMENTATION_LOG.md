@@ -6139,6 +6139,26 @@
   execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO,
   run production migration or mark production GO.
 
+## 2026-07-02 - Master Control Goal Register
+
+- Added `docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md` as a
+  PASS_LOCAL_GOAL_CONTROL register with `MASTER_GOAL_READY / NO_GO / BLOCKED`.
+- The register consolidates the HEU master goal, continuous cloud PASS_LOCAL
+  verification when the local machine is off, expert-team lanes, department and
+  user-label reporting, phase order A-E and stop conditions.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the goal register remains
+  PASS_LOCAL only.
+- This is goal-control packaging only. It does not create autonomous AI
+  workers, send real email, create real tasks, create real accounts, accept
+  UAT, accept evidence, approve finance action, approve owner GO/NO-GO, run
+  production migration or mark production GO.
+- It does not accept UAT and does not run production migration.
+
 ## 2026-07-02 - P7-05 AI Delivery Team Operating Register
 
 - Added `docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md` as a

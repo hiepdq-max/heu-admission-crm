@@ -35,6 +35,7 @@ for (const file of [
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
@@ -114,6 +115,11 @@ requireText(
   inventory,
   /M03 Data Master[\s\S]*Admission programs, majors, TTGDTX master[\s\S]*Partial[\s\S]*Master\/dropdown controls and the Data Master \/ Report View compatibility bridge exist; signed UAT and owner signoff still required/i,
   "M03 Data Master compatibility bridge state",
+);
+requireText(
+  inventory,
+  /M04 SOP\/Workflow[\s\S]*Master Control workflow and approval patterns exist; `docs\/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md` now records `MASTER_GOAL_READY \/ NO_GO \/ BLOCKED`[\s\S]*continuous cloud PASS_LOCAL verification[\s\S]*expert-team lanes[\s\S]*phase order A-E[\s\S]*without self-approving production, UAT, evidence, finance, owner GO\/NO-GO or production GO/i,
+  "M04 Master Control goal register state",
 );
 
 requireText(
@@ -248,7 +254,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P7-01\/P7-02\/P7-03 are PASS_LOCAL, P7-04 prompt\/output audit logging is PASS_LOCAL_DESIGN and P7-05 AI delivery team operating register is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED; autonomous AI remains locked[\s\S]*AI helper layer[\s\S]*Task checklist and risk board are read-only; P7-04 prompt\/output audit logging design and P7-05 AI delivery team operating register exist[\s\S]*Advisory only; no AI service call, prompt storage, workflow write, autonomous approval, real email sending or real task creation/i,
+  /P7-01\/P7-02\/P7-03 are PASS_LOCAL, P7-04 prompt\/output audit logging is PASS_LOCAL_DESIGN and P7-05 AI delivery team operating register is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED; autonomous AI remains locked[\s\S]*AI helper layer[\s\S]*Task checklist and risk board are read-only; P7-04 prompt\/output audit logging design, P7-05 AI delivery team operating register and the Master Control goal register exist[\s\S]*Advisory\/control only; no AI service call, prompt storage, workflow write, autonomous approval, real email sending, real task creation, UAT\/evidence\/finance\/owner approval or production action/i,
   "AI remains advisory-only",
 );
 requireText(

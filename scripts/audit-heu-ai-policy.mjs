@@ -66,6 +66,11 @@ const deliveryTeamRegister = requireText(
   /Status:\s*PASS_LOCAL_CONTROL[\s\S]*Decision values:\s*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build Agent[\s\S]*QA\/Audit Agent[\s\S]*Data Check Agent[\s\S]*Finance Trial Support Agent[\s\S]*UAT\/Evidence Coordinator[\s\S]*Report\/Email Coordinator[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
   "P7-05 AI delivery team operating register",
 );
+const masterGoalRegister = requireText(
+  "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
+  /Status:\s*PASS_LOCAL_GOAL_CONTROL[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED[\s\S]*Continuous Build Goal When Local Machine Is Off[\s\S]*cloud PASS_LOCAL\s+verification, not autonomous coding[\s\S]*Expert Team Build Goal[\s\S]*Build Agent[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
+  "Master Control goal register",
+);
 const checklistGenerator = requireText(
   "components/ai/ai-task-checklist-generator.tsx",
   /data-heu-ai-task-checklist-generator="P7-02"/i,
@@ -142,6 +147,11 @@ requireText(
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   /Current Result[\s\S]*TEAM_REGISTER_READY is a local control state only[\s\S]*Production remains NO-GO[\s\S]*Autonomous AI delivery, real email sending, real task\s+creation, signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO and\s+production migration remain blocked/i,
   "P7-05 local-only current result",
+);
+requireText(
+  "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
+  /Current Result[\s\S]*MASTER_GOAL_READY is PASS_LOCAL_GOAL_CONTROL only[\s\S]*Production remains NO-GO[\s\S]*Continuous cloud checks, expert-team lanes and daily\s+reports are coordination controls only[\s\S]*signed UAT, controlled evidence, finance decisions, migration approval and final\s+owner GO\/NO-GO outside Git\/Codex\/chat/i,
+  "Master Control goal register current result",
 );
 
 const aiPage = requireText(
@@ -245,6 +255,9 @@ if (/raw PII|bank statement|service-role key/i.test(promptOutputDesign) && !/for
 }
 if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(deliveryTeamRegister) && !/No lane may ask a human to paste or store these in Git, Codex, chat, email\s+notes or local docs/i.test(deliveryTeamRegister)) {
   fail("P7-05 register must explicitly forbid sensitive content in AI delivery lanes.");
+}
+if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(masterGoalRegister) && !/Paste or store passwords, temporary passwords, OTPs, reset\/invite links,\s+service-role keys, SMTP credentials, raw PII, bank statements, vouchers or raw\s+payment data/i.test(masterGoalRegister)) {
+  fail("Master Control goal register must explicitly forbid sensitive content.");
 }
 
 if (failures.length > 0) {
