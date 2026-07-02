@@ -34,6 +34,8 @@ for (const file of [
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
@@ -79,6 +81,15 @@ const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 const inventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
 const moduleReadinessGapMatrix = read(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+);
+const rootControlActionRegister = read(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+);
+const sopToDataMapping = read(
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+);
+const legalSopGovernanceControlMatrix = read(
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
 );
 const realDataConfirmationRegister = read(
   "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
@@ -141,6 +152,33 @@ fastRequire(
 );
 
 fastRequire(
+  inventory,
+  [
+    "P0 register pack",
+    "SOP-to-data with `PASS_LOCAL SOP Loop Gate`",
+    "Legal/SOP/Governance control matrix with `PASS_LOCAL SOP Loop` anchor",
+    "RC-07A routes `SOP-01` through `SOP-06` before any logged slice",
+    "PASS_LOCAL; official owner signoff and Drive registry still required",
+  ],
+  "current-state P0 register SOP loop anchor propagation",
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+fastRequire(
+  backlog,
+  [
+    "P0-16",
+    "HEU P0 register pack",
+    "HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md` with `PASS_LOCAL SOP Loop Gate`",
+    "HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` with `PASS_LOCAL SOP Loop` anchor",
+    "RC-07A routes `SOP-01` through `SOP-06` before any logged slice",
+    "DRAFT_CONTROL only and does not approve production, migration, UAT, evidence acceptance or finance action",
+  ],
+  "backlog P0-16 SOP loop anchor propagation",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+);
+
+fastRequire(
   moduleReadinessGapMatrix,
   [
     "SOP Gate",
@@ -157,6 +195,123 @@ fastRequire(
   "gap-matrix SOP Gate loop propagation",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
 );
+
+fastRequire(
+  legalSopGovernanceControlMatrix,
+  [
+    "PASS_LOCAL SOP Loop",
+    "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "HEU_CODEX_OPERATING_PLAYBOOK.md",
+    "SOP-01` through `SOP-06",
+    "check current state, professional review, legal/SOP review, logic/data review, focused PASS_LOCAL verification and continue-or-stop",
+    "legal advice, official SOP issuance, UAT/evidence acceptance, finance reliance, owner GO/NO-GO or production GO",
+    "human owner signoff outside Codex/chat",
+  ],
+  "Legal/SOP/Governance SOP loop anchor",
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+);
+
+fastRequire(
+  rootControlActionRegister,
+  [
+    "RC-07A",
+    "PASS_LOCAL SOP loop routing",
+    "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "HEU_CODEX_OPERATING_PLAYBOOK.md",
+    "SOP-01` through `SOP-06",
+    "before any logged slice",
+    "signed owner review still required",
+  ],
+  "root action register SOP loop anchor",
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+);
+
+fastRequire(
+  sopToDataMapping,
+  [
+    "PASS_LOCAL SOP Loop Gate",
+    "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "HEU_CODEX_OPERATING_PLAYBOOK.md",
+    "SOP-01` through `SOP-06",
+    "check current state, professional review, legal/SOP review, logic/data review",
+    "focused PASS_LOCAL verification and continue-or-stop",
+    "does not provide legal advice",
+    "issue official",
+    "SOP",
+    "accept UAT/evidence",
+    "approve finance reliance",
+    "approve owner GO/NO-GO",
+    "mark production GO",
+  ],
+  "SOP-to-data PASS_LOCAL SOP loop gate",
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+);
+
+fastSection("2026-07-03 - P0 Register SOP Loop State Backlog Alignment", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "P0 register pack",
+  "PASS_LOCAL SOP Loop Gate",
+  "PASS_LOCAL SOP Loop",
+  "RC-07A",
+  "SOP-01` through `SOP-06",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "P0-16",
+  "audit-heu-current-state-inventory.mjs",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-implementation-log.mjs",
+  "current-state/backlog/audit propagation only",
+  "does not approve production",
+  "migration",
+  "UAT",
+  "evidence acceptance",
+  "legal advice",
+  "official SOP issuance",
+  "finance action",
+  "owner GO/NO-GO",
+]);
+
+fastSection("2026-07-02 - SOP To Data PASS_LOCAL Loop Gate", [
+  "HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  "PASS_LOCAL SOP Loop Gate",
+  "SOP-01` through `SOP-06",
+  "check current state",
+  "professional",
+  "legal/SOP",
+  "logic/data",
+  "focused PASS_LOCAL verification",
+  "continue-or-stop",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-implementation-log.mjs",
+  "SOP-to-data mapping guard work only",
+  "no legal advice",
+  "does not issue official SOP",
+  "accept UAT/evidence",
+  "approve finance reliance",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+]);
+
+fastSection("2026-07-02 - Legal SOP Governance SOP Loop Anchor", [
+  "HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "PASS_LOCAL SOP Loop",
+  "SOP-01` through `SOP-06",
+  "check current state",
+  "professional review",
+  "legal/SOP review",
+  "logic/data review",
+  "focused PASS_LOCAL verification",
+  "continue-or-stop",
+  "HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  "RC-07A",
+  "audit-heu-p0-register-pack.mjs",
+  "audit-heu-implementation-log.mjs",
+  "no legal advice",
+  "no official SOP issuance",
+  "no UAT/evidence acceptance",
+  "no finance reliance",
+  "no owner GO/NO-GO",
+  "no production GO",
+]);
 
 fastSection("2026-07-02 - SOP Loop State Backlog Gap Alignment", [
   "HEU_CURRENT_STATE_INVENTORY.md",

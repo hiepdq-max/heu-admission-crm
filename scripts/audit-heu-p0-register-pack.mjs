@@ -84,6 +84,11 @@ requireText(
   /RC-04[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*RC-07A[\s\S]*Legal\/SOP\/Governance control matrix[\s\S]*DRAFT_CONTROL[\s\S]*Legal Article Master, SOP Register, evidence class, workflow gate, report view and owner decision boundaries are mapped[\s\S]*signed owner review still required/i,
   "root action register Legal/SOP/Governance routing",
 );
+requireText(
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  /RC-07A[\s\S]*PASS_LOCAL SOP loop routing[\s\S]*HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702\.md[\s\S]*HEU_CODEX_OPERATING_PLAYBOOK\.md[\s\S]*SOP-01` through `SOP-06[\s\S]*signed owner review still required/i,
+  "root action register PASS_LOCAL SOP loop routing",
+);
 
 requireText(
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
@@ -108,9 +113,19 @@ requireText(
   "SOP-to-data related Legal/SOP/Governance matrix",
 );
 requireText(
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
+  /PASS_LOCAL SOP Loop Gate[\s\S]*HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702\.md[\s\S]*HEU_CODEX_OPERATING_PLAYBOOK\.md[\s\S]*SOP-01` through `SOP-06[\s\S]*check current state, professional review, legal\/SOP review, logic\/data review,\s+focused PASS_LOCAL verification and continue-or-stop[\s\S]*does not provide legal advice, issue official\s+SOP, accept UAT\/evidence, approve finance reliance, approve owner GO\/NO-GO or\s+mark production GO/i,
+  "SOP-to-data PASS_LOCAL SOP loop gate",
+);
+requireText(
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   /(?=[\s\S]*Status:\s*DRAFT_CONTROL)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*Legal basis -> Regulation\/SOP -> Data source -> Workflow gate -> Evidence\s+class -> Report view -> Audit log -> Signoff register -> Owner decision)(?=[\s\S]*Legal Article Master)(?=[\s\S]*SOP Register)(?=[\s\S]*Evidence Class Boundary)(?=[\s\S]*Workflow Gate)(?=[\s\S]*Report View Reliance)(?=[\s\S]*Finance Reliance Boundary)(?=[\s\S]*AI Scope Boundary)(?=[\s\S]*Owner Decision Boundary)(?=[\s\S]*does not issue legal policy, approve an SOP, accept UAT,\s+accept evidence, approve finance action, approve migration, move Drive files or\s+grant owner Go\/No-Go)/i,
   "Legal/SOP/Governance control matrix boundary",
+);
+requireText(
+  "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  /PASS_LOCAL SOP Loop[\s\S]*HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702\.md[\s\S]*HEU_CODEX_OPERATING_PLAYBOOK\.md[\s\S]*SOP-01` through `SOP-06[\s\S]*check current state, professional review, legal\/SOP review, logic\/data review, focused PASS_LOCAL verification and continue-or-stop[\s\S]*legal advice, official SOP issuance, UAT\/evidence acceptance, finance reliance, owner GO\/NO-GO or production GO[\s\S]*human owner signoff outside Codex\/chat/i,
+  "Legal/SOP/Governance PASS_LOCAL SOP loop anchor",
 );
 
 requireText(
@@ -225,6 +240,11 @@ requireText(
   /P0-16[\s\S]*HEU P0 register pack[\s\S]*PASS_LOCAL[\s\S]*HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT\.md[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*components\/reports\/report-view-source-map-panel\.tsx[\s\S]*\/reports[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and result ledger[\s\S]*FIN_START_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT\.md[\s\S]*audit:heu-p0-register-pack[\s\S]*does not approve production/i,
   "P0-16 backlog row",
 );
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P0-16[\s\S]*HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT\.md` with `PASS_LOCAL SOP Loop Gate`[\s\S]*HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT\.md` with `PASS_LOCAL SOP Loop` anchor[\s\S]*RC-07A routes `SOP-01` through `SOP-06` before any logged slice[\s\S]*DRAFT_CONTROL only and does not approve production, migration, UAT, evidence acceptance or finance action/i,
+  "P0-16 SOP loop gate and anchor backlog row",
+);
 
 requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
@@ -246,7 +266,7 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\s\S]*AI scope, risk signoff registers and module readiness gap matrix[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
+  /npm\.cmd run audit:heu-p0-register-pack[\s\S]*PASS[\s\S]*P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data with `PASS_LOCAL SOP Loop Gate`[\s\S]*Legal\/SOP\/Governance control matrix with `PASS_LOCAL SOP Loop` anchor[\s\S]*read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\s\S]*AI scope, risk signoff registers and module readiness gap matrix[\s\S]*RC-07A routes `SOP-01` through `SOP-06` before any logged slice[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER/i,
   "current-state P0 register evidence",
 );
 

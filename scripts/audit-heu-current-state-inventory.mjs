@@ -32,6 +32,8 @@ for (const file of [
   "docs/TTGDTX_CONTRACT_TUITION_MASTER_GUARD_20260627.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
+  "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
@@ -247,7 +249,7 @@ requireText(
 );
 requireText(
   inventory,
-  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data, Legal\/SOP\/Governance control matrix, report view, report-view source map, read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\s\S]*AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
+  /P0 register pack[\s\S]*Root control, data master, dictionary, SOP-to-data with `PASS_LOCAL SOP Loop Gate`[\s\S]*Legal\/SOP\/Governance control matrix with `PASS_LOCAL SOP Loop` anchor[\s\S]*read-only `\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\s\S]*AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents[\s\S]*RC-07A routes `SOP-01` through `SOP-06` before any logged slice[\s\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\.md[\s\S]*data-master-report-view-bridge-panel\.tsx[\s\S]*STUDENT_MASTER[\s\S]*CLASS_MASTER[\s\S]*COHORT_MASTER[\s\S]*PASS_LOCAL; official owner signoff and Drive registry still required/i,
   "P0 register pack current control state",
 );
 requireText(

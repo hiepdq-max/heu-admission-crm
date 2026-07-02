@@ -50,7 +50,19 @@ boundaries. It is DRAFT_CONTROL only and cannot be used as official legal
 approval, official SOP issuance, evidence acceptance, UAT acceptance, finance
 approval, owner waiver or production GO.
 
-## 7. Specialized SOP Mapping Drafts
+## 7. PASS_LOCAL SOP Loop Gate
+
+Before any SOP-to-data mapping is used for a safe build slice, route the slice
+through `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md` using `SOP-01` through `SOP-06`:
+check current state, professional review, legal/SOP review, logic/data review,
+focused PASS_LOCAL verification and continue-or-stop.
+
+This loop is PASS_LOCAL only. It does not provide legal advice, issue official
+SOP, accept UAT/evidence, approve finance reliance, approve owner GO/NO-GO or
+mark production GO.
+
+## 8. Specialized SOP Mapping Drafts
 
 | Specialized SOP | Mapping file | Scope | Boundary |
 |---|---|---|---|

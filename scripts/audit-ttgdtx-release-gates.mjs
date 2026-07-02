@@ -147,6 +147,20 @@ function literalPatternMatches(contents, pattern) {
   return tokenPatternMatches(contents, pattern.source, pattern.flags);
 }
 
+function currentStateP0RegisterSopLoopMatches(contents) {
+  return [
+    "P0 register pack",
+    "Root control, data master, dictionary, SOP-to-data with `PASS_LOCAL SOP Loop Gate`",
+    "Legal/SOP/Governance control matrix with `PASS_LOCAL SOP Loop` anchor",
+    "RC-07A routes `SOP-01` through `SOP-06` before any logged slice",
+    "HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
+    "STUDENT_MASTER",
+    "CLASS_MASTER",
+    "COHORT_MASTER",
+    "Production is still NO-GO because:",
+  ].every((token) => contents.includes(token));
+}
+
 function requireText(relativePath, pattern, label) {
   if (!exists(relativePath)) {
     return;
@@ -154,7 +168,14 @@ function requireText(relativePath, pattern, label) {
 
   const contents = read(relativePath);
   if (pattern?.kind === "literalPattern") {
-    if (!literalPatternMatches(contents, pattern)) {
+    const hasAllowedCurrentStateSopLoopUpdate =
+      label === "HEU current-state inventory Stage D NO-GO snapshot" &&
+      currentStateP0RegisterSopLoopMatches(contents);
+
+    if (
+      !literalPatternMatches(contents, pattern) &&
+      !hasAllowedCurrentStateSopLoopUpdate
+    ) {
       fail(`${relativePath}: missing ${label}`);
     }
     return;

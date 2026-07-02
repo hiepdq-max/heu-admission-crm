@@ -39,7 +39,7 @@ Version Log, Audit Log and Signoff Register before it is treated as official.
 | RC-05 | Lock Report View Register | BGH + IT_DATA + KHTC | DRAFT | Dashboard reads approved report views only |
 | RC-06 | Lock AI Agent Scope Register | BGH + IT_DATA + Audit | DRAFT | AI remains advisory/read-only |
 | RC-07 | Lock Risk Control Signoff Register | Audit + Owners | DRAFT | Human signoff path exists for P0/P1 risks |
-| RC-07A | Lock Legal/SOP/Governance control matrix | PHAP_CHE + IT_DATA + Audit | DRAFT_CONTROL | Legal Article Master, SOP Register, evidence class, workflow gate, report view and owner decision boundaries are mapped; signed owner review still required |
+| RC-07A | Lock Legal/SOP/Governance control matrix | PHAP_CHE + IT_DATA + Audit | DRAFT_CONTROL | Legal Article Master, SOP Register, evidence class, workflow gate, report view and owner decision boundaries are mapped; PASS_LOCAL SOP loop routing uses `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md` and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md` with `SOP-01` through `SOP-06` before any logged slice; signed owner review still required |
 | RC-08 | Review TTGDTX/9+ against P0 registers | KHTC + PHAP_CHE + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; signed UAT still required |
 | RC-09 | Review HOU against P0 registers | HOU owner + KHTC + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; separate HOU ledger and handover controls still required |
 | RC-10 | Review Short Course against P0 registers | DAO_TAO + KHTC + IT_DATA | DRAFT_MATRIX_READY | `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`; attendance/payment/BHXH/meal gates still required |

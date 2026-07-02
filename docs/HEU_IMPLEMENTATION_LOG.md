@@ -1,5 +1,55 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0 Register SOP Loop State Backlog Alignment
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` P0 register pack row so it
+  records the SOP-to-data `PASS_LOCAL SOP Loop Gate`, the
+  Legal/SOP/Governance `PASS_LOCAL SOP Loop` anchor and RC-07A routing through
+  `SOP-01` through `SOP-06` before any logged slice.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` P0-16 with the same P0 register
+  pack SOP loop gate/anchor wording.
+- Extended `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` to guard this propagation.
+- PASS_LOCAL boundary: this is current-state/backlog/audit propagation only. It
+  does not approve production, migration, UAT, evidence acceptance or legal advice.
+- It does not approve official SOP issuance, finance action or owner GO/NO-GO.
+
+## 2026-07-02 - SOP To Data PASS_LOCAL Loop Gate
+
+- Added a `PASS_LOCAL SOP Loop Gate` section to
+  `docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md` so every SOP-to-data
+  mapping slice routes through `SOP-01` through `SOP-06`.
+- The gate records the operating order: check current state, professional
+  review, legal/SOP review, logic/data review, focused PASS_LOCAL verification
+  and continue-or-stop.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the SOP-to-data loop gate stays
+  guarded locally.
+- PASS_LOCAL boundary: this is SOP-to-data mapping guard work only. It gives
+  no legal advice and does not issue official SOP.
+- It does not accept UAT/evidence, approve finance reliance, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-02 - Legal SOP Governance SOP Loop Anchor
+
+- Added a `PASS_LOCAL SOP Loop` row to
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
+  so the legal/SOP/governance control matrix routes every small slice through
+  `SOP-01` through `SOP-06`: check current state, professional review,
+  legal/SOP review, logic/data review, focused PASS_LOCAL verification and
+  continue-or-stop.
+- Updated `docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md`
+  RC-07A so the root action queue names the real-data confirmation register
+  and Codex operating playbook before any logged slice.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` to guard the Legal/SOP/Governance
+  SOP loop anchor.
+- PASS_LOCAL boundary: this is control-matrix/root-register anchoring only. It
+  gives no legal advice, no official SOP issuance, no UAT/evidence acceptance,
+  no finance reliance, no migration approval and no owner GO/NO-GO. It gives
+  no production GO.
+
 ## 2026-07-02 - SOP Loop State Backlog Gap Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M04 SOP/Workflow names the

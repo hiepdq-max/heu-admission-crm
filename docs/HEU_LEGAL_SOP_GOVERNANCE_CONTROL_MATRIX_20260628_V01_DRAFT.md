@@ -26,6 +26,7 @@ If any link in this chain is missing, the affected area must stay
 |---|---|---|---|---|---|
 | Legal Article Master | Legal article, contract clause, tuition rule or approved internal regulation | PHAP_CHE + relevant process owner | Draft legal-basis checklist, missing-basis warnings and source-reference fields | Treat a draft source as final legal approval, interpret law as binding advice or waive missing basis | Signed PHAP_CHE review and controlled Legal Article Master |
 | SOP Register | SOP title, version, owner department, effective scope and dependency | PHAP_CHE + process owner + IT_DATA | Draft required-SOP checklist, owner routing and SOP-to-data mapping | Issue official SOP, replace version log or bypass owner signoff | SOP owner signoff, Version Log and Audit Log |
+| PASS_LOCAL SOP Loop | `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`, `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`, current-state inventory, system backlog and module readiness gap matrix | Codex + IT_DATA + PHAP_CHE + process owner + Audit | Route each small slice through `SOP-01` through `SOP-06`: check current state, professional review, legal/SOP review, logic/data review, focused PASS_LOCAL verification and continue-or-stop | Treat the loop as legal advice, official SOP issuance, UAT/evidence acceptance, finance reliance, owner GO/NO-GO or production GO | Implementation-log entry, focused audit/lint/build result and human owner signoff outside Codex/chat |
 | Evidence Class Boundary | File registry, evidence class and redaction rule | Audit + IT_DATA + process owner | Classify as public control, controlled redacted, controlled sensitive or forbidden in Git/Codex/chat | Move real evidence, paste raw PII/bank/voucher/password data or mix legal files with BBNT/payment evidence | Controlled Drive evidence registry and redaction review |
 | Workflow Gate | Gate code, owner, route, action and blocker state | IT_DATA + process owner | Add read-only gate checklist, blocker display and audit guard | Mark gate READY from PASS_LOCAL or let AI approve a gate | Signed UAT and gate decision manifest |
 | Report View Reliance | Approved report view, source map and data quality check | BGH + IT_DATA + owner department | Show report-view source map and Data Quality Check status | Treat raw workbook/table output as dashboard truth | Report View owner signoff and UAT evidence |
@@ -49,6 +50,9 @@ Stop and keep the item `NO-GO` or `BLOCKED` when:
 
 - The legal basis is missing, unsigned, expired or outside scope.
 - The SOP owner, version, data source, audit log or signoff path is missing.
+- Any PASS_LOCAL SOP loop step is skipped, or PASS_LOCAL is recorded without
+  current-state check, professional owner review, PHAP_CHE legal/SOP route,
+  IT_DATA/Audit logic-data check and focused audit/lint/build result.
 - Evidence is raw, sensitive, unredacted or stored in Git/Codex/chat.
 - The action would create receivable, clear debt, approve payout, approve COM,
   issue invoice, rely on dashboard totals or move money.
