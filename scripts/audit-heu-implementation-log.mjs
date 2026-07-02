@@ -77,6 +77,9 @@ const log = read("docs/HEU_IMPLEMENTATION_LOG.md");
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 const inventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
+const moduleReadinessGapMatrix = read(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+);
 const realDataConfirmationRegister = read(
   "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
 );
@@ -108,6 +111,80 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+
+fastRequire(
+  inventory,
+  [
+    "M04 SOP/Workflow",
+    "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "HEU_CODEX_OPERATING_PLAYBOOK.md",
+    "SOP-01` through `SOP-06",
+    "check -> professional -> legal/SOP -> logic/data -> PASS_LOCAL -> continue",
+    "does not approve production, UAT, evidence, legal position, official SOP issuance, finance, owner GO/NO-GO or production GO",
+  ],
+  "current-state M04 SOP loop propagation",
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+);
+
+fastRequire(
+  backlog,
+  [
+    "P0-05",
+    "HEU_CODEX_OPERATING_PLAYBOOK.md",
+    "HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
+    "SOP-01` through `SOP-06",
+    "check current state, professional review, legal/SOP review, logic/data review, focused PASS_LOCAL verification and continue-or-stop",
+    "does not approve production, UAT, evidence acceptance, legal advice, official SOP issuance, finance action or owner GO/NO-GO",
+  ],
+  "backlog P0-05 SOP loop propagation",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+);
+
+fastRequire(
+  moduleReadinessGapMatrix,
+  [
+    "SOP Gate",
+    "Codex operating playbook and real-data logic/professional/legal confirmation register",
+    "PASS_LOCAL control references",
+    "SOP-01` through `SOP-06",
+    "official SOP issuance",
+    "legal approval inference",
+    "UAT acceptance",
+    "evidence acceptance",
+    "finance reliance from PASS_LOCAL",
+    "signed owner confirmation outside Codex/chat",
+  ],
+  "gap-matrix SOP Gate loop propagation",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+);
+
+fastSection("2026-07-02 - SOP Loop State Backlog Gap Alignment", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "M04 SOP/Workflow",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "P0-05",
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "SOP Gate",
+  "SOP-01` through `SOP-06",
+  "check current state",
+  "professional review",
+  "legal/SOP review",
+  "logic/data",
+  "review",
+  "focused PASS_LOCAL verification",
+  "continue-or-stop",
+  "current-state",
+  "P0 register",
+  "implementation-log audits",
+  "state/backlog/gap-matrix alignment only",
+  "execute UAT",
+  "accept evidence",
+  "provide legal advice",
+  "issue official SOP",
+  "approve finance reliance",
+  "owner GO/NO-GO",
+  "production GO",
+]);
 
 fastRequire(
   codexOperatingPlaybook,

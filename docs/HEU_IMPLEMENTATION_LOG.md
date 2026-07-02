@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-07-02 - SOP Loop State Backlog Gap Alignment
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M04 SOP/Workflow names the
+  real-data logic/professional/legal confirmation register, Codex operating
+  playbook and `SOP-01` through `SOP-06` PASS_LOCAL loop.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` P0-05 so every logged slice points
+  to check current state, professional review, legal/SOP review, logic/data
+  review, focused PASS_LOCAL verification and continue-or-stop.
+- Updated `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so the
+  SOP Gate records the playbook/register as control references while keeping
+  SOP automation, official SOP issuance, legal approval inference, UAT
+  acceptance, evidence acceptance and finance reliance blocked from PASS_LOCAL.
+- Extended current-state, P0 register and implementation-log audits to guard
+  the SOP loop propagation.
+- PASS_LOCAL boundary: this is state/backlog/gap-matrix alignment only. It does
+  not execute UAT, accept evidence, provide legal advice, issue official SOP,
+  approve finance reliance, approve migration, approve owner GO/NO-GO or mark
+  production GO.
+
 ## 2026-07-02 - Codex Operating Playbook SOP Loop Alignment
 
 - Updated `docs/HEU_CODEX_OPERATING_PLAYBOOK.md` with a PASS_LOCAL SOP loop for

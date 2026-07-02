@@ -33,6 +33,8 @@ for (const file of [
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
+  "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
+  "docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md",
@@ -119,8 +121,8 @@ requireText(
 );
 requireText(
   inventory,
-  /M04 SOP\/Workflow[\s\S]*Master Control workflow and approval patterns exist; `docs\/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md` now records `MASTER_GOAL_READY \/ NO_GO \/ BLOCKED`[\s\S]*continuous cloud PASS_LOCAL verification[\s\S]*expert-team lanes[\s\S]*phase order A-E[\s\S]*without self-approving production, UAT, evidence, finance, owner GO\/NO-GO or production GO/i,
-  "M04 Master Control goal register state",
+  /M04 SOP\/Workflow[\s\S]*HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED[\s\S]*HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702\.md[\s\S]*HEU_CODEX_OPERATING_PLAYBOOK\.md[\s\S]*SOP-01` through `SOP-06[\s\S]*check -> professional -> legal\/SOP -> logic\/data -> PASS_LOCAL -> continue[\s\S]*does not approve production, UAT, evidence, legal position, official SOP issuance, finance, owner GO\/NO-GO or production GO/i,
+  "M04 SOP PASS_LOCAL loop state",
 );
 
 requireText(

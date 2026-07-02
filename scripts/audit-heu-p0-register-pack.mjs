@@ -114,6 +114,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /SOP Gate[\s\S]*Codex operating playbook and real-data logic\/professional\/legal confirmation register[\s\S]*PASS_LOCAL control references[\s\S]*SOP-01` through `SOP-06[\s\S]*SOP automation, official SOP issuance, owner signoff inference, legal approval inference, UAT acceptance, evidence acceptance or finance reliance from PASS_LOCAL[\s\S]*signed owner confirmation outside Codex\/chat/i,
+  "SOP Gate PASS_LOCAL loop routing and stop conditions",
+);
+
+requireText(
   "docs/HEU_REPORT_VIEW_REGISTER_20260627_V01_DRAFT.md",
   /Dashboard -> Report View -> Data Quality Check -> Source Map -> Owner Signoff[\s\S]*HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT\.md[\s\S]*RV_TTGDTX_FINANCE_SUMMARY[\s\S]*SOURCE_MAP_DRAFT[\s\S]*RV_AI_ALLOWED_CONTEXT/i,
   "report-view source control",
