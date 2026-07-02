@@ -1,5 +1,30 @@
 # HEU Implementation Log
 
+## 2026-07-02 - REAL-OPS-04 Finance Reliance Closure Intake
+
+- Added `docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md`
+  as a PASS_LOCAL_FINANCE_RELIANCE_INTAKE with
+  `REAL_OPS_04_FINANCE_RELIANCE_READY / NO_GO / BLOCKED`.
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with `data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE"`
+  and REAL-OPS-04-FIN-01 through REAL-OPS-04-FIN-06 for P2-18/P5-03 source
+  reconciliation, Finance Day-1 result ledger, P0-17 access closure,
+  `ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED` and
+  `P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED`.
+- Updated `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`; tightened
+  `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-heu-implementation-log.mjs`.
+- Boundary: this finance reliance closure intake does not accept evidence,
+  execute UAT, approve finance reliance, approve accounting results, approve
+  access closure, approve owner GO/NO-GO, issue bank instructions, post
+  vouchers, move money or mark production GO. Bank statements, raw payment
+  data, account credentials and service-role keys stay outside Git/Codex/chat.
+- Guard tokens: P2-18/P5-03 source reconciliation; approve access closure,
+  post vouchers, bank statements and raw payment data remain forbidden in
+  PASS_LOCAL.
+
 ## 2026-07-02 - Finance Day-1 Plain-Language Daily Report Lane
 
 - Updated `scripts/report-heu-daily-dry-run.mjs` with

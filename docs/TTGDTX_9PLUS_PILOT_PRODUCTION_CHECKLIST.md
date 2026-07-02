@@ -98,6 +98,20 @@ This is checklist packaging only. It keeps signed multi-account UAT required
 and does not execute UAT, accept evidence, sign owner results, approve finance
 reliance, approve migration, approve owner GO/NO-GO or mark production GO.
 
+## 5.2 REAL-OPS-04 Finance Reliance Closure Intake
+
+`docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md` and
+`data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE"` add the
+REAL-OPS-04 finance reliance closure intake with
+`REAL_OPS_04_FINANCE_RELIANCE_READY / NO_GO / BLOCKED`.
+
+This is checklist packaging only. It keeps signed Finance Desk/accounting
+dashboard UAT, Finance Day-1 result ledger, P0-17 access closure and reliance
+decision required outside Git/Codex/chat. It does not accept evidence, execute
+UAT, approve finance reliance, approve accounting results, approve access
+closure, issue bank instructions, post vouchers, move money, approve owner
+GO/NO-GO or mark production GO.
+
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled

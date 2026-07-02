@@ -37,6 +37,20 @@ only. It does not execute UAT, accept evidence, sign owner results, approve
 finance reliance, approve migration, approve owner GO/NO-GO or mark production
 GO.
 
+### P5-03 REAL-OPS-04 Finance Reliance Closure Intake
+
+`docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md` and
+`data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE"` add the
+REAL-OPS-04 finance reliance closure intake to the Master Control closure board.
+Decision value: `REAL_OPS_04_FINANCE_RELIANCE_READY / NO_GO / BLOCKED`.
+
+The intake keeps Finance Desk, P2-18 accounting dashboard, Finance Day-1 result
+ledger, P0-17 access closure and P5-03 reliance decision at controlled-reference
+packaging only. It does not accept evidence, execute UAT, approve finance
+reliance, approve accounting results, approve access closure, issue bank
+instructions, post vouchers, move money, approve owner GO/NO-GO or mark
+production GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |

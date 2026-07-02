@@ -263,7 +263,16 @@ const SIGNED_UAT_ROUTE_SUMMARY = [
   },
 ];
 
-const REAL_OPERATION_CLOSURE_LANES = [
+type RealOperationClosureLane = {
+  code: string;
+  owner: string;
+  required: string;
+  stop: string;
+  decision?: string;
+  source?: string;
+};
+
+const REAL_OPERATION_CLOSURE_LANES: RealOperationClosureLane[] = [
   {
     code: "REAL-OPS-01",
     owner: "IT_DATA + Audit",
@@ -291,6 +300,8 @@ const REAL_OPERATION_CLOSURE_LANES = [
     required:
       "Finance Desk and accounting-dashboard source reconciliation, Day-1 result ledger, access closure and reliance decision.",
     stop: "Dashboard/Finance Desk mismatch, unsigned reliance or open access-retain/revoke decision.",
+    decision: "REAL_OPS_04_FINANCE_RELIANCE_READY / NO_GO / BLOCKED",
+    source: "docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md",
   },
   {
     code: "REAL-OPS-05",
@@ -625,6 +636,9 @@ export function ProductionReadinessBlockerSummary() {
           {REAL_OPERATION_CLOSURE_LANES.map((lane) => (
             <article
               key={lane.code}
+              data-heu-real-ops-04-finance-reliance-intake={
+                lane.code === "REAL-OPS-04" ? "REAL-OPS-04_FINANCE" : undefined
+              }
               className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
             >
               <p className="text-xs font-semibold uppercase text-rose-700">
@@ -636,6 +650,16 @@ export function ProductionReadinessBlockerSummary() {
               <p className="mt-2 leading-5 text-zinc-700">
                 Required: {lane.required}
               </p>
+              {lane.decision ? (
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Decision: {lane.decision}
+                </p>
+              ) : null}
+              {lane.source ? (
+                <p className="mt-2 leading-5 text-zinc-700">
+                  Source: {lane.source}
+                </p>
+              ) : null}
               <p className="mt-2 leading-5 text-rose-800">
                 Stop: {lane.stop}
               </p>

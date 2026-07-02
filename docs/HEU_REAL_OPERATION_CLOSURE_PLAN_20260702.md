@@ -64,6 +64,22 @@ acknowledgement. It does not execute UAT, accept evidence, sign owner results,
 approve finance reliance, approve migration, approve owner GO/NO-GO or mark
 production GO.
 
+## REAL-OPS-04 Source Intake
+
+Use `docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md` and
+`data-heu-real-ops-04-finance-reliance-intake="REAL-OPS-04_FINANCE"` to
+prepare the finance reliance closure lane after signed UAT closure and
+Finance Day-1 result evidence are ready for owner review. Decision value:
+`REAL_OPS_04_FINANCE_RELIANCE_READY / NO_GO / BLOCKED`.
+
+The source intake records only controlled evidence IDs, redaction reviewers,
+source-reconciliation result, Finance Day-1 result ledger reference, P0-17
+access closure decision, reliance signer labels and finance-boundary
+acknowledgement. It does not accept evidence, execute UAT, approve finance
+reliance, approve accounting results, approve access closure, approve owner
+GO/NO-GO, issue bank instructions, post vouchers, move money or mark
+production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop
