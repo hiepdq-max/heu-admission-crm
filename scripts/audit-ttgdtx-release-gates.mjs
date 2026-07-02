@@ -213,6 +213,7 @@ const requiredFiles = [
   "docs/STEP90_STEP110_BACKUP_RESTORE_OPERATOR_RUN_SHEET_20260627.md",
   "docs/STEP90_STEP110_BACKUP_RESTORE_DRY_RUN_EVIDENCE_PACK_20260627.md",
   "docs/HEU_REAL_OPS_01_BACKUP_RESTORE_PROOF_INTAKE_20260702.md",
+  "docs/HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702.md",
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   "docs/TTGDTX_ROLE_SCOPE_UAT_RUNBOOK.md",
   "docs/HEU_ROLE_SCOPE_UAT_EXECUTION_PACK_20260627.md",
@@ -647,6 +648,48 @@ requireText(
   "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
   literalPattern("(?=[\\s\\S]*Step Decision Manifest)(?=[\\s\\S]*MIG-DEC-01)(?=[\\s\\S]*MIG-DEC-06)(?=[\\s\\S]*MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive\\s+evidence or unclear production target keeps the migration order NO-GO)", "i"),
   "Step90-Step110 migration decision manifest",
+);
+
+requireText(
+  "docs/HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_SIGNOFF_INTAKE)(?=[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-02-IN-01)(?=[\\s\\S]*REAL-OPS-02-IN-05)(?=[\\s\\S]*Backup\\/restore prerequisite verified)(?=[\\s\\S]*Signer authority confirmed)(?=[\\s\\S]*Step90-Step110 scope locked)(?=[\\s\\S]*Exception and rollback decision recorded)(?=[\\s\\S]*Migration-order decision prepared)(?=[\\s\\S]*data-p003-real-ops-02-migration-order-intake=\"REAL-OPS-02_P0-03\")(?=[\\s\\S]*does not sign the migration order, approve production migration,\\s+execute SQL, accept evidence, accept UAT, approve finance reliance, approve\\s+legal position, approve owner GO\\/NO-GO or mark production GO)(?=[\\s\\S]*Passing local checks means only the migration-order intake structure exists and\\s+is audited)", "i"),
+  "REAL-OPS-02 signed migration-order intake source document",
+);
+
+requireText(
+  "docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md",
+  literalPattern("(?=[\\s\\S]*REAL-OPS-02 Signed Migration Order Intake)(?=[\\s\\S]*HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702\\.md)(?=[\\s\\S]*data-p003-real-ops-02-migration-order-intake=\"REAL-OPS-02_P0-03\")(?=[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-02-IN-01)(?=[\\s\\S]*REAL-OPS-02-IN-05)(?=[\\s\\S]*Backup\\/restore prerequisite verified)(?=[\\s\\S]*Signer authority confirmed)(?=[\\s\\S]*Step90-Step110 scope locked)(?=[\\s\\S]*Exception and rollback decision recorded)(?=[\\s\\S]*Migration-order decision prepared)(?=[\\s\\S]*PASS_LOCAL proves only that REAL-OPS-02 migration-order intake is structured)", "i"),
+  "migration-order REAL-OPS-02 intake guard section",
+);
+
+requireText(
+  "components/settings/supabase-backup-restore-guard.tsx",
+  literalPattern("(?=[\\s\\S]*realOps02MigrationOrderIntakeItems)(?=[\\s\\S]*data-p003-real-ops-02-migration-order-intake=\"REAL-OPS-02_P0-03\")(?=[\\s\\S]*REAL-OPS-02 signed migration-order intake)(?=[\\s\\S]*PASS_LOCAL only)(?=[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*REAL-OPS-02-IN-01)(?=[\\s\\S]*REAL-OPS-02-IN-05)(?=[\\s\\S]*Backup\\/restore prerequisite verified)(?=[\\s\\S]*Signer authority confirmed)(?=[\\s\\S]*Step90-Step110 scope locked)(?=[\\s\\S]*Exception and rollback decision recorded)(?=[\\s\\S]*Migration-order decision prepared)(?=[\\s\\S]*does not sign the migration order, approve production\\s+migration, execute SQL, accept evidence, accept UAT, approve finance\\s+reliance, approve owner GO\\/NO-GO or mark production GO)", "i"),
+  "REAL-OPS-02 signed migration-order intake UI guard",
+);
+
+requireText(
+  "docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md",
+  literalPattern("(?=[\\s\\S]*REAL-OPS-02 Source Intake)(?=[\\s\\S]*HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702\\.md)(?=[\\s\\S]*data-p003-real-ops-02-migration-order-intake=\"REAL-OPS-02_P0-03\")(?=[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*does not sign the migration order, approve production\\s+migration, execute SQL, accept evidence, accept UAT, approve finance reliance,\\s+approve owner GO\\/NO-GO or mark production GO)", "i"),
+  "real operation closure plan REAL-OPS-02 intake",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  literalPattern("Approve Step90-Step110 migration order[\\s\\S]*HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702\\.md[\\s\\S]*REAL-OPS-02 signed migration-order intake[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*signed approval still required before production", "i"),
+  "migration-order checklist REAL-OPS-02 intake row",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  literalPattern("P0-03[\\s\\S]*HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702\\.md[\\s\\S]*REAL-OPS-02 signed migration-order intake[\\s\\S]*REAL_OPS_02_MIGRATION_ORDER_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*signed migration order still required before production", "i"),
+  "P0-03 backlog REAL-OPS-02 intake row",
+);
+
+requireText(
+  "scripts/audit-ttgdtx-migration-order-guard.mjs",
+  literalPattern("HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702\\.md[\\s\\S]*REAL-OPS-02 signed migration-order intake", "i"),
+  "migration-order audit script covers REAL-OPS-02 intake",
 );
 
 requireText(

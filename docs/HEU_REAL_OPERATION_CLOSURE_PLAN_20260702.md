@@ -36,6 +36,19 @@ backup reference, restore target proof, smoke-check result and closure decision
 references. It does not accept evidence, execute backup, execute restore,
 approve migration-order review or mark production GO.
 
+## REAL-OPS-02 Source Intake
+
+Use `docs/HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702.md` and
+`data-p003-real-ops-02-migration-order-intake="REAL-OPS-02_P0-03"` to prepare
+the signed migration-order lane after REAL-OPS-01 proof is ready. Decision
+value: `REAL_OPS_02_MIGRATION_ORDER_READY / NO_GO / BLOCKED`.
+
+The source intake records only controlled evidence IDs, signer owner labels,
+Step90-Step110 decision IDs, waiver/rollback references and migration-order
+decision references. It does not sign the migration order, approve production
+migration, execute SQL, accept evidence, accept UAT, approve finance reliance,
+approve owner GO/NO-GO or mark production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

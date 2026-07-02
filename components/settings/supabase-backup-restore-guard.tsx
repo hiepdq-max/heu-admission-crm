@@ -333,6 +333,54 @@ const realOps01ProofIntakeItems = [
   },
 ];
 
+const realOps02MigrationOrderIntakeItems = [
+  {
+    caseId: "REAL-OPS-02-IN-01",
+    title: "Backup/restore prerequisite verified",
+    owner: "IT_DATA + Audit",
+    required:
+      "Reference the REAL-OPS-01 proof decision, MIGRATION_EVIDENCE_ACCEPTED state and controlled evidence ID before signature routing.",
+    stopCondition:
+      "Stop if backup/restore proof is missing, unsigned, chat-only or not tied to the isolated restore target.",
+  },
+  {
+    caseId: "REAL-OPS-02-IN-02",
+    title: "Signer authority confirmed",
+    owner: "IT_DATA + KHTC + PHAP_CHE + BGH",
+    required:
+      "Confirm signer owner labels, delegation basis, signature date and controlled location for the migration-order packet.",
+    stopCondition:
+      "Stop if any signer is missing, authority is unclear or approval is oral, broad or delegated without written basis.",
+  },
+  {
+    caseId: "REAL-OPS-02-IN-03",
+    title: "Step90-Step110 scope locked",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    required:
+      "Record APPLY, SKIP, WAIVE or BLOCKED for MIG-DEC-01 through MIG-DEC-06, including Step97 and Step100 conditions.",
+    stopCondition:
+      "Stop if any Step90-Step110 decision ID is missing, Step100 lacks waiver basis or Step110 could import raw sensitive data.",
+  },
+  {
+    caseId: "REAL-OPS-02-IN-04",
+    title: "Exception and rollback decision recorded",
+    owner: "IT_DATA + Audit + BGH",
+    required:
+      "Record HIGH/BLOCKER exception state, rollback point, rollback owner and waiver or fix reference before migration-order decision.",
+    stopCondition:
+      "Stop if rollback proof is unclear, an exception is ownerless or a waiver hides finance, legal or audit risk.",
+  },
+  {
+    caseId: "REAL-OPS-02-IN-05",
+    title: "Migration-order decision prepared",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    required:
+      "Prepare REAL_OPS_02_MIGRATION_ORDER_READY, NO_GO or BLOCKED with controlled evidence references only.",
+    stopCondition:
+      "Stop if PASS_LOCAL is treated as signed migration order, production migration approval, SQL execution, UAT acceptance or production GO.",
+  },
+];
+
 const operatorRunSheetItems = [
   {
     caseId: "P0-03-RUN-01",
@@ -619,6 +667,64 @@ export function SupabaseBackupRestoreGuard() {
           Owner evidence acceptance, backup execution, restore execution,
           migration-order review and production GO remain outside this app
           screen and outside Codex/chat.
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-lg border border-cyan-200 bg-cyan-50 p-4 text-cyan-950"
+        data-p003-real-ops-02-migration-order-intake="REAL-OPS-02_P0-03"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 shrink-0" />
+              <span>
+                REAL-OPS-02 signed migration-order intake: PASS_LOCAL only
+              </span>
+            </div>
+            <p className="mt-2 leading-6">
+              Use this intake after backup/restore proof is ready for owner
+              review. It prepares signature routing and Step90-Step110 decision
+              references only; signed orders, waiver packets, rollback proof
+              and evidence stay in controlled stores outside Git/Codex/chat.
+            </p>
+          </div>
+          <div className="min-w-72 rounded-md border border-cyan-200 bg-white px-3 py-2">
+            Decision:
+            <span className="mt-1 block font-mono text-xs">
+              REAL_OPS_02_MIGRATION_ORDER_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          {realOps02MigrationOrderIntakeItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="border-l-2 border-cyan-300 bg-white px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-cyan-700">
+                {item.caseId}
+              </p>
+              <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">
+                Required: {item.required}
+              </p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-md border border-cyan-200 bg-white px-3 py-2 text-cyan-900">
+          PASS_LOCAL proves only that REAL-OPS-02 migration-order intake is
+          structured. It does not sign the migration order, approve production
+          migration, execute SQL, accept evidence, accept UAT, approve finance
+          reliance, approve owner GO/NO-GO or mark production GO.
         </div>
       </div>
 

@@ -60,6 +60,26 @@
   invite/reset links, raw PII, CCCD, bank data, bank statements, vouchers and
   raw payment evidence outside Git/Codex/chat.
 
+## 2026-07-02 - REAL-OPS-02 Signed Migration Order Intake
+
+- Added `docs/HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702.md` as a
+  PASS_LOCAL_SIGNOFF_INTAKE with
+  `REAL_OPS_02_MIGRATION_ORDER_READY / NO_GO / BLOCKED`.
+- Extended `components/settings/supabase-backup-restore-guard.tsx` with
+  `data-p003-real-ops-02-migration-order-intake="REAL-OPS-02_P0-03"` and
+  REAL-OPS-02-IN-01 through REAL-OPS-02-IN-05 for backup/restore prerequisite,
+  signer authority, Step90-Step110 scope, exception/rollback decision and
+  migration-order decision references.
+- Updated `docs/STEP90_STEP110_MIGRATION_ORDER_SIGNOFF_GUARD_20260627.md`,
+  `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`; tightened
+  `scripts/audit-ttgdtx-migration-order-guard.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs`.
+- Boundary: this signoff intake does not sign the migration order, approve production migration, execute SQL, accept evidence, accept UAT, approve finance reliance, approve legal position, approve owner GO/NO-GO or mark production GO.
+- It also keeps signed orders, waiver packets, rollback proof, database exports, connection strings, database URLs, service-role keys, credentials, passwords, temporary passwords, OTPs, invite/reset links, raw PII, CCCD, bank data, bank statements, vouchers and raw payment evidence outside Git/Codex/chat.
+
 ## 2026-07-02 - HEU System Framework Review
 
 - Added `docs/HEU_SYSTEM_FRAMEWORK_REVIEW_20260702.md` as a

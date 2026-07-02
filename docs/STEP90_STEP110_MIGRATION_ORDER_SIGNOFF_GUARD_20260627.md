@@ -61,7 +61,27 @@ PASS_LOCAL proves only that this acceptance-lock structure exists. It does not
 execute backup, restore, production migration, rollback, UAT acceptance,
 evidence acceptance or production GO.
 
-## 5. Step-Specific Guard Rules
+## 5. REAL-OPS-02 Signed Migration Order Intake
+
+Use `docs/HEU_REAL_OPS_02_SIGNED_MIGRATION_ORDER_INTAKE_20260702.md` and
+`data-p003-real-ops-02-migration-order-intake="REAL-OPS-02_P0-03"` after
+REAL-OPS-01 backup/restore proof is ready for owner review. Decision:
+REAL_OPS_02_MIGRATION_ORDER_READY / NO_GO / BLOCKED.
+
+| Case | Intake gate | Minimum proof before signed order | Stop condition |
+|---|---|---|---|
+| REAL-OPS-02-IN-01 | Backup/restore prerequisite verified | REAL-OPS-01 proof decision, MIGRATION_EVIDENCE_ACCEPTED state and controlled evidence ID | Backup/restore proof is missing, unsigned, chat-only or not tied to the isolated restore target |
+| REAL-OPS-02-IN-02 | Signer authority confirmed | Signer owner labels, delegation basis, signature date and controlled location for the migration-order packet | Any signer is missing, authority is unclear or approval is oral, broad or delegated without written basis |
+| REAL-OPS-02-IN-03 | Step90-Step110 scope locked | APPLY, SKIP, WAIVE or BLOCKED for MIG-DEC-01 through MIG-DEC-06, including Step97 and Step100 conditions | Any Step90-Step110 decision ID is missing, Step100 lacks waiver basis or Step110 could import raw sensitive data |
+| REAL-OPS-02-IN-04 | Exception and rollback decision recorded | HIGH/BLOCKER exception state, rollback point, rollback owner and waiver or fix reference before migration-order decision | Rollback proof is unclear, an exception is ownerless or a waiver hides finance, legal or audit risk |
+| REAL-OPS-02-IN-05 | Migration-order decision prepared | REAL_OPS_02_MIGRATION_ORDER_READY, NO_GO or BLOCKED with controlled evidence references only | PASS_LOCAL is treated as signed migration order, production migration approval, SQL execution, UAT acceptance or production GO |
+
+PASS_LOCAL proves only that REAL-OPS-02 migration-order intake is structured.
+It does not sign the migration order, approve production migration, execute
+SQL, accept evidence, accept UAT, approve finance reliance, approve owner
+GO/NO-GO or mark production GO.
+
+## 6. Step-Specific Guard Rules
 
 - Step90-Step96 are the base receivable, import, workload and collection chain.
 - Step97 is a conditional P0-19 finance gate fix, not a default production step.
@@ -74,7 +94,7 @@ evidence acceptance or production GO.
 - Step109 changes permission semantics and requires role/access UAT before run.
 - Step110 is evidence metadata only and must not import raw sensitive data.
 
-## 6. Step Decision Manifest
+## 7. Step Decision Manifest
 
 Each decision must be recorded outside Git/Codex/chat with controlled evidence
 references only. Do not treat a green local audit as permission to run SQL in
@@ -94,7 +114,7 @@ Final migration-order decision: MIGRATION_ORDER_READY / NO_GO / BLOCKED.
 Any missing decision ID, unsigned waiver, missing rollback note, raw sensitive
 evidence or unclear production target keeps the migration order NO-GO.
 
-## 7. Local Guard Command
+## 8. Local Guard Command
 
 Run this before any handoff that discusses Step90-Step110 readiness:
 
@@ -110,7 +130,7 @@ The guard checks that:
 - Step97 and Step100 remain conditional or waiver-only;
 - AGENTS.md and release-gate audit include this guard.
 
-## 8. Current Decision
+## 9. Current Decision
 
 The Step90-Step110 order is locally reviewed, but production execution is still
 blocked. The next valid movement is signed owner review and backup/restore
