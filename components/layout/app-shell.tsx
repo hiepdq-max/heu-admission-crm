@@ -121,7 +121,7 @@ const navigation = [
     href: "/settings/scopes",
     icon: ShieldCheck,
     key: "scopes",
-    permission: "scope.manage_department",
+    permissions: ["scope.manage_department", "users.create"],
   },
   {
     label: "Cấu hình",
@@ -186,7 +186,10 @@ export async function AppShell({
   const permissionNames = [
     ...new Set(
       navigation
-        .map((item) => item.permission)
+        .flatMap((item) => [
+          ...(item.permission ? [item.permission] : []),
+          ...(item.permissions ?? []),
+        ])
         .filter((permission): permission is string => Boolean(permission)),
     ),
   ];
@@ -206,11 +209,19 @@ export async function AppShell({
     ]),
   );
   const visibleNavigation = navigation.filter(
-    (item) =>
-      (!item.adminOnly || currentRoleCode === "ADMIN") &&
-      (!item.permission ||
-        currentRoleCode === "ADMIN" ||
-        permissionMap.get(item.permission)),
+    (item) => {
+      const itemPermissions = [
+        ...(item.permission ? [item.permission] : []),
+        ...(item.permissions ?? []),
+      ];
+
+      return (
+        (!item.adminOnly || currentRoleCode === "ADMIN") &&
+        (itemPermissions.length === 0 ||
+          currentRoleCode === "ADMIN" ||
+          itemPermissions.some((permission) => permissionMap.get(permission)))
+      );
+    },
   );
 
   return (
