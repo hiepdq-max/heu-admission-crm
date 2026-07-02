@@ -140,6 +140,22 @@ required outside Git/Codex/chat. It does not approve production deletion,
 cascade execution, waiver, conversion migration, data cleanup, rollback
 success, evidence acceptance, owner GO/NO-GO or production GO.
 
+## 5.5 REAL-OPS-07 HOU Short Course Scope Intake
+
+`docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md` and
+`data-heu-real-ops-07-hou-short-course-scope-intake="REAL-OPS-07_HOU_SHORT_COURSE"`
+add the REAL-OPS-07 HOU and Short Course scope-separation intake with
+`REAL_OPS_07_SCOPE_READY / NO_GO / BLOCKED`.
+
+This is checklist packaging only. It keeps HOU-LH-01 through HOU-LH-08,
+SC-AP-01 through SC-AP-08, HOU and Short Course UAT routes, report-view
+signoff routes, owner defer decisions and signed scope separation required
+outside Git/Codex/chat. It does not approve HOU handover, tuition ledger
+posting, invoice issuance, COM payout, attendance lock, BHXH decision,
+meal/allowance payment, HR payment, invoice/payment verification, period close,
+statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or
+production GO.
+
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled

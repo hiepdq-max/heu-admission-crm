@@ -80,6 +80,24 @@ packaging only. It does not approve production deletion, cascade execution,
 waiver, conversion migration, data cleanup, rollback success, evidence
 acceptance, owner GO/NO-GO or production GO.
 
+### P8/P9 REAL-OPS-07 HOU Short Course Scope Intake
+
+`docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md` and
+`data-heu-real-ops-07-hou-short-course-scope-intake="REAL-OPS-07_HOU_SHORT_COURSE"`
+add the REAL-OPS-07 HOU and Short Course scope-separation intake to the Master
+Control closure board. Decision value:
+`REAL_OPS_07_SCOPE_READY / NO_GO / BLOCKED`.
+
+The intake keeps `HOU_LEDGER_READY / NO_GO / BLOCKED`, HOU-LH-01 through
+HOU-LH-08, `SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED`, SC-AP-01 through
+SC-AP-08, `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`, UAT
+plan routes, report-view signoff routes and owner defer decisions at
+controlled-reference packaging only. It does not approve HOU handover, tuition
+ledger posting, invoice issuance, COM payout, attendance lock, BHXH decision,
+meal/allowance payment, HR payment, invoice/payment verification, period close,
+statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or
+production GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |

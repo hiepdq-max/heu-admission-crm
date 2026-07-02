@@ -1,5 +1,45 @@
 # HEU Implementation Log
 
+## 2026-07-02 - REAL-OPS-07 HOU Short Course Scope Intake
+
+- Added `docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md`
+  with `PASS_LOCAL_SCOPE_SEPARATION_INTAKE`,
+  `REAL_OPS_07_SCOPE_READY / NO_GO / BLOCKED`,
+  `data-heu-real-ops-07-hou-short-course-scope-intake="REAL-OPS-07_HOU_SHORT_COURSE"`
+  and REAL-OPS-07-SCOPE-01 through REAL-OPS-07-SCOPE-06 for HOU gap pack,
+  HOU phase decision route, Short Course gap pack, Short Course phase decision
+  route, TTGDTX separation and authority decision path.
+- Updated `components/master-control/production-readiness-blocker-summary.tsx`,
+  `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` so Master Control exposes
+  the REAL-OPS-07 source intake beside REAL-OPS-04, REAL-OPS-05 and
+  REAL-OPS-06 while preserving production NO-GO.
+- Updated `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the HOU/Short Course
+  scope-separation intake cannot drift without local audit failure.
+- This is HOU and Short Course scope-separation packaging only. It does not
+  approve HOU handover, tuition ledger posting, invoice issuance, COM payout,
+  attendance lock, BHXH decision, meal/allowance payment, HR payment,
+  invoice/payment verification, period close, statutory accounting, UAT
+  acceptance, evidence acceptance, owner GO/NO-GO or production GO.
+- Boundary tokens: does not approve HOU handover, tuition ledger posting,
+  invoice issuance, COM payout, attendance lock, BHXH decision,
+  meal/allowance payment, HR payment, invoice/payment verification, period
+  close, statutory accounting, UAT acceptance, evidence acceptance,
+  owner GO/NO-GO or production GO.
+- Scope tokens: HOU gap pack; HOU phase decision route; Short Course gap pack;
+  Short Course phase decision route; TTGDTX separation; authority decision path.
+- Guard tokens: HOU_LEDGER_READY / NO_GO / BLOCKED, HOU-LH-01 through
+  HOU-LH-08, SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED, SC-AP-01 through
+  SC-AP-08, RV_HOU_LEDGER_SUMMARY, RV_SHORT_COURSE_ATTENDANCE_PAYMENT.
+- Guard tokens flat: HOU-LH-01 through HOU-LH-08; SC-AP-01 through SC-AP-08.
+- Forbidden content tokens: raw HOU records, Short Course attendance sheets,
+  teacher/payment files, student PII, CCCD, bank data, payroll data, vouchers,
+  credentials, passwords, OTPs, reset/invite links, service-role keys and raw
+  Drive URLs remain outside Git/Codex/chat.
+- Forbidden content tokens flat: raw Drive URLs.
+
 ## 2026-07-02 - REAL-OPS-06 Hard-Delete Cascade Closure Intake
 
 - Added `docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md`

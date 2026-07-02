@@ -328,6 +328,9 @@ const REAL_OPERATION_CLOSURE_LANES: RealOperationClosureLane[] = [
     required:
       "HOU and Short Course phase decision, UAT plan, report-view signoff or explicit owner-approved defer decision.",
     stop: "HOU or Short Course is folded into TTGDTX production without signed scope separation.",
+    decision: "REAL_OPS_07_SCOPE_READY / NO_GO / BLOCKED",
+    source:
+      "docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md",
   },
   {
     code: "REAL-OPS-08",
@@ -652,6 +655,11 @@ export function ProductionReadinessBlockerSummary() {
               data-heu-real-ops-06-cascade-closure-intake={
                 lane.code === "REAL-OPS-06"
                   ? "REAL-OPS-06_CASCADE"
+                  : undefined
+              }
+              data-heu-real-ops-07-hou-short-course-scope-intake={
+                lane.code === "REAL-OPS-07"
+                  ? "REAL-OPS-07_HOU_SHORT_COURSE"
                   : undefined
               }
               className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"

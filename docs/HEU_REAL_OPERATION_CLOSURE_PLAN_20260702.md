@@ -115,6 +115,25 @@ evidence acceptance, owner GO/NO-GO or production GO.
 
 Guard tokens: does not approve production deletion, cascade execution, waiver, conversion migration, data cleanup, rollback success, evidence acceptance, owner GO/NO-GO or production GO.
 
+## REAL-OPS-07 Source Intake
+
+Use `docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md`
+and
+`data-heu-real-ops-07-hou-short-course-scope-intake="REAL-OPS-07_HOU_SHORT_COURSE"`
+to prepare the HOU and Short Course scope-separation lane before final owner
+GO/NO-GO review. Decision value:
+`REAL_OPS_07_SCOPE_READY / NO_GO / BLOCKED`.
+
+The source intake records only phase decision labels, owner labels, UAT plan
+references, report-view signoff references, controlled evidence IDs and
+defer-decision references. It does not approve HOU handover, tuition ledger
+posting, invoice issuance, COM payout, attendance lock, BHXH decision,
+meal/allowance payment, HR payment, invoice/payment verification, period close,
+statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or
+production GO.
+
+Guard tokens: does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, attendance lock, BHXH decision, meal/allowance payment, HR payment, invoice/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

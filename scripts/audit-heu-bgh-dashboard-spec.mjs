@@ -48,6 +48,7 @@ const requiredFiles = [
   "docs/HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702.md",
   "docs/HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702.md",
   "docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md",
+  "docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md",
   "scripts/report-heu-email-readiness.mjs",
   "scripts/report-heu-daily-dry-run.mjs",
   "app/ttgdtx/accounting-dashboard/page.tsx",
@@ -92,6 +93,9 @@ const realOps05LegalInvoiceIntake = read(
 );
 const realOps06CascadeClosureIntake = read(
   "docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md",
+);
+const realOps07HouShortCourseScopeIntake = read(
+  "docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md",
 );
 
 requireText(spec, /P5-02 BGH operating dashboard specification/i, "P5-02 scope");
@@ -203,7 +207,7 @@ requireText(
 );
 requireText(
   blockerSummary,
-  /(?=[\s\S]*REAL_OPERATION_CLOSURE_LANES)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake)(?=[\s\S]*REAL-OPS-04_FINANCE)(?=[\s\S]*data-heu-real-ops-05-legal-invoice-intake)(?=[\s\S]*REAL-OPS-05_LEGAL_INVOICE)(?=[\s\S]*data-heu-real-ops-06-cascade-closure-intake)(?=[\s\S]*REAL-OPS-06_CASCADE)(?=[\s\S]*Real operation closure board: owner action required)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*backup\/restore)(?=[\s\S]*signed migration order)(?=[\s\S]*Signed UAT results)(?=[\s\S]*Finance Desk and accounting-dashboard source reconciliation)(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*Legal, SOP, tuition, invoice and chung-tu)(?=[\s\S]*REAL_OPS_05_LEGAL_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702\.md)(?=[\s\S]*Hard-delete\/cascade conversion evidence)(?=[\s\S]*REAL_OPS_06_CASCADE_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*HOU and Short Course phase decision)(?=[\s\S]*Final owner GO\/NO-GO manifest)(?=[\s\S]*does not create accounts, send\s+email, collect secrets, accept evidence, execute UAT, approve\s+finance reliance, approve legal position, run migration or mark\s+production GO)/i,
+  /(?=[\s\S]*REAL_OPERATION_CLOSURE_LANES)(?=[\s\S]*data-heu-real-operation-closure-board="P0-03_P0-09_P2-18_P5-03_P6-04")(?=[\s\S]*data-heu-real-ops-04-finance-reliance-intake)(?=[\s\S]*REAL-OPS-04_FINANCE)(?=[\s\S]*data-heu-real-ops-05-legal-invoice-intake)(?=[\s\S]*REAL-OPS-05_LEGAL_INVOICE)(?=[\s\S]*data-heu-real-ops-06-cascade-closure-intake)(?=[\s\S]*REAL-OPS-06_CASCADE)(?=[\s\S]*data-heu-real-ops-07-hou-short-course-scope-intake)(?=[\s\S]*REAL-OPS-07_HOU_SHORT_COURSE)(?=[\s\S]*Real operation closure board: owner action required)(?=[\s\S]*REAL_OPERATION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-01)(?=[\s\S]*REAL-OPS-08)(?=[\s\S]*backup\/restore)(?=[\s\S]*signed migration order)(?=[\s\S]*Signed UAT results)(?=[\s\S]*Finance Desk and accounting-dashboard source reconciliation)(?=[\s\S]*REAL_OPS_04_FINANCE_RELIANCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_04_FINANCE_RELIANCE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*Legal, SOP, tuition, invoice and chung-tu)(?=[\s\S]*REAL_OPS_05_LEGAL_INVOICE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_05_LEGAL_INVOICE_CHUNGTU_CONFIRMATION_INTAKE_20260702\.md)(?=[\s\S]*Hard-delete\/cascade conversion evidence)(?=[\s\S]*REAL_OPS_06_CASCADE_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*HOU and Short Course phase decision)(?=[\s\S]*REAL_OPS_07_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702\.md)(?=[\s\S]*Final owner GO\/NO-GO manifest)(?=[\s\S]*does not create accounts, send\s+email, collect secrets, accept evidence, execute UAT, approve\s+finance reliance, approve legal position, run migration or mark\s+production GO)/i,
   "P5-02 real operation closure board UI shell",
   blockerSummaryPath,
 );
@@ -230,6 +234,12 @@ requireText(
   /(?=[\s\S]*Status:\s*PASS_LOCAL_CASCADE_CLOSURE_INTAKE)(?=[\s\S]*REAL_OPS_06_CASCADE_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-06-HDQ-01)(?=[\s\S]*REAL-OPS-06-HDQ-06)(?=[\s\S]*P6-06-FIND-001 through P6-06-FIND-044)(?=[\s\S]*P6_06_TRIAGE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P6_06_ACCEPT \/ FAIL \/ BLOCKED)(?=[\s\S]*P6_06_BATCH1_READY through P6_06_BATCH5_READY)(?=[\s\S]*P6_06_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*data-heu-real-ops-06-cascade-closure-intake="REAL-OPS-06_CASCADE")(?=[\s\S]*does not approve production deletion, cascade\s+execution, waiver, conversion migration, data cleanup, rollback success,\s+evidence acceptance, owner GO\/NO-GO or production GO)(?=[\s\S]*does not mean conversion, waiver, evidence,\s+rollback, cleanup, owner GO\/NO-GO or production operation is approved)/i,
   "REAL-OPS-06 hard-delete cascade closure intake source document",
   "docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md",
+);
+requireText(
+  realOps07HouShortCourseScopeIntake,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_SCOPE_SEPARATION_INTAKE)(?=[\s\S]*REAL_OPS_07_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-07-SCOPE-01)(?=[\s\S]*REAL-OPS-07-SCOPE-06)(?=[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HOU-LH-01 through HOU-LH-08)(?=[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SC-AP-01 through SC-AP-08)(?=[\s\S]*RV_HOU_LEDGER_SUMMARY)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*data-heu-real-ops-07-hou-short-course-scope-intake="REAL-OPS-07_HOU_SHORT_COURSE")(?=[\s\S]*does not approve HOU handover,\s+tuition ledger posting, invoice issuance, COM payout, attendance lock, BHXH\s+decision, meal\/allowance payment, HR payment, invoice\/payment verification,\s+period close, statutory accounting, UAT acceptance, evidence acceptance, owner\s+GO\/NO-GO or production GO)(?=[\s\S]*does not mean HOU scope, Short\s+Course scope, UAT, evidence, finance action, owner GO\/NO-GO or production\s+operation is approved)/i,
+  "REAL-OPS-07 HOU Short Course scope intake source document",
+  "docs/HEU_REAL_OPS_07_HOU_SHORT_COURSE_SCOPE_INTAKE_20260702.md",
 );
 requireText(
   masterControlGoalRegister,
