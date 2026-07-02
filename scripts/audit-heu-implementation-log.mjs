@@ -4498,6 +4498,13 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
+requireText(
+  log,
+  /## 2026-07-03 - P0-12 Local Route Smoke Guard[\s\S]*smoke-heu-local-routes\.mjs[\s\S]*npm\.cmd run smoke:heu-local-routes[\s\S]*localhost[\s\S]*127\.0\.0\.1[\s\S]*::1[\s\S]*protocol and credential checks[\s\S]*GET requests[\s\S]*2xx\/3xx[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*LOCALHOST_ONLY[\s\S]*does not\s+log in as a real user[\s\S]*execute signed UAT[\s\S]*accept evidence[\s\S]*call external\s+environments[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production\s+GO/i,
+  "P0-12 local route smoke guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
 if (failures.length > 0) {
   console.error("HEU implementation-log audit failed.");
   for (const failure of failures) {

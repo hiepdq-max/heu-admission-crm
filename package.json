@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "check:heu-user-create-readiness": "node scripts/check-heu-user-create-readiness.mjs",
+    "smoke:heu-local-routes": "node scripts/smoke-heu-local-routes.mjs",
     "report:heu-daily-dry-run": "node scripts/report-heu-daily-dry-run.mjs",
     "report:heu-email-readiness": "node scripts/report-heu-email-readiness.mjs",
     "audit:heu-ai-policy": "node scripts/audit-heu-ai-policy.mjs",

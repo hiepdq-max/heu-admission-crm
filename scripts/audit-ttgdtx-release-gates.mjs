@@ -411,6 +411,7 @@ const requiredFiles = [
   "scripts/audit-ttgdtx-process-labels.mjs",
   "scripts/audit-ttgdtx-receivable-payment-lifecycle.mjs",
   "scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "scripts/smoke-heu-local-routes.mjs",
   "scripts/audit-vnd-money-format.mjs",
 ];
 
@@ -489,6 +490,13 @@ for (const script of requiredScripts) {
     fail(`package.json: missing npm script ${script}`);
   }
 }
+if (
+  packageJson.scripts?.["smoke:heu-local-routes"] !==
+  "node scripts/smoke-heu-local-routes.mjs"
+) {
+  fail("package.json: missing smoke:heu-local-routes local route smoke script");
+}
+
 
 requireText(
   "docs/MIGRATION_ORDER_AUDIT.md",
@@ -741,6 +749,22 @@ requireText(
   literalPattern("(?=[\\s\\S]*Date:\\s*2026-06-28)(?=[\\s\\S]*Git state:\\s*clean local worktree at last verified handoff; exact ahead count and\\s+current commit are live Git state)(?=[\\s\\S]*Conclusion:\\s*Stage D - internal controlled test only\\. Production remains NO-GO)(?=[\\s\\S]*TTGDTX process quick finder)(?=[\\s\\S]*Data Master \\/ Report View compatibility bridge)(?=[\\s\\S]*HOU ledger\\/handover gap pack)(?=[\\s\\S]*Short Course attendance\\/payment gap pack)(?=[\\s\\S]*TTGDTX signed UAT execution routing hub)(?=[\\s\\S]*user account temporary password guard)(?=[\\s\\S]*Finance advance\\/payment shell coverage)(?=[\\s\\S]*62 audit scripts passed)(?=[\\s\\S]*M02 HR[\\s\\S]*create-user temporary password guard)(?=[\\s\\S]*M02 HR[\\s\\S]*real-user access closure guard)(?=[\\s\\S]*M03 Data Master[\\s\\S]*Data Master \\/ Report View compatibility bridge)(?=[\\s\\S]*Production readiness guard[\\s\\S]*shared `PRODUCTION_BLOCKERS`[\\s\\S]*signed UAT execution routing hub)(?=[\\s\\S]*Production readiness guard[\\s\\S]*finance Day-1 start-gate checklist)(?=[\\s\\S]*Production readiness guard[\\s\\S]*HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\\.md)(?=[\\s\\S]*Production readiness guard[\\s\\S]*finance Day-1 real-run rehearsal)(?=[\\s\\S]*Production readiness guard[\\s\\S]*HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\\.md)(?=[\\s\\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\\.md)(?=[\\s\\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\\s\\S]*UAT-ROUTE-08 carries the Finance Day-1 start-gate checklist and result ledger into dashboard\\/Finance Desk signed UAT)(?=[\\s\\S]*UAT-ROUTE-11 carries the Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\\/NO-GO)(?=[\\s\\S]*Production blocker shared source[\\s\\S]*TTGDTX landing guard[\\s\\S]*P0-03 operator run sheet evidence path)(?=[\\s\\S]*P0-03 restore smoke-check proof for P0-19\\/P3 gate preservation)(?=[\\s\\S]*P0-09 owner sign-off\\/UAT handoff evidence path)(?=[\\s\\S]*P0-09 final owner decision manifest)(?=[\\s\\S]*Process discovery\\/navigation[\\s\\S]*\\/ttgdtx` quick finder)(?=[\\s\\S]*Lead lifecycle\\/handover[\\s\\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\\.md)(?=[\\s\\S]*Accounting dashboard \\/ BGH control[\\s\\S]*P5-02 Master Control action queue with safe iteration loop, P0-14 intake-ledger evidence binder and P0-15 final handoff summary before owner GO\\/NO-GO)(?=[\\s\\S]*Finance Desk \\/ KHTC cockpit[\\s\\S]*P5-03 read-only cockpit exists at `\\/finance-desk` with permission and workspace-scope gate)(?=[\\s\\S]*HEU_FINANCE_DESK_UAT_RUNBOOK_20260627\\.md)(?=[\\s\\S]*P5-03 reliance decision manifest)(?=[\\s\\S]*P0 register pack[\\s\\S]*Root control, data master, dictionary, SOP-to-data, Legal\\/SOP\\/Governance control matrix, report view, report-view source map, read-only `\\/reports` source-map panel with Data Quality Check status capture, owner signoff capture and controlled evidence attachment queue[\\s\\S]*RV_TTGDTX_FINANCE_SUMMARY[\\s\\S]*Finance Day-1 start-gate checklist and Finance Day-1 result ledger[\\s\\S]*AI scope, risk signoff registers and module readiness gap matrix exist as DRAFT_CONTROL documents)(?=[\\s\\S]*HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT\\.md)(?=[\\s\\S]*STUDENT_MASTER)(?=[\\s\\S]*CLASS_MASTER)(?=[\\s\\S]*COHORT_MASTER)(?=[\\s\\S]*Role\\/workspace scope[\\s\\S]*create-user temporary password guard)(?=[\\s\\S]*Role\\/workspace scope[\\s\\S]*real-user access closure guard)(?=[\\s\\S]*Role\\/workspace scope[\\s\\S]*post-UAT access closure handoff)(?=[\\s\\S]*Final handoff coverage[\\s\\S]*P0-13 blocker source)(?=[\\s\\S]*P0-14 evidence binder)(?=[\\s\\S]*Final handoff coverage[\\s\\S]*P2-18\\/P5-03 real-accounting finance reliance proof)(?=[\\s\\S]*Final handoff coverage[\\s\\S]*Finance Day-1 start-gate checklist)(?=[\\s\\S]*Final handoff coverage[\\s\\S]*P0-17 access closure decision)(?=[\\s\\S]*Production is still NO-GO because:)(?=[\\s\\S]*No real production backup\\/restore dry-run evidence)(?=[\\s\\S]*Step90-Step110 production migration order is not signed)(?=[\\s\\S]*P3-01\\/P3-02 lifecycle and handover UAT is not signed)(?=[\\s\\S]*Final BGH\\/IT_DATA\\/KHTC\\/PHAP_CHE\\/Audit\\/owner GO\\/NO-GO is not signed)(?=[\\s\\S]*Record final owner GO\\/NO-GO outside Codex\\/chat using the owner sign-off pack,\\s+final owner decision manifest and UAT operator handoff references)", "i"),
   "HEU current-state inventory Stage D NO-GO snapshot",
 );
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /npm\.cmd run smoke:heu-local-routes[\s\S]*PASS_LOCAL route smoke[\s\S]*localhost-only `HEU_BASE_URL`[\s\S]*LOCALHOST_ONLY[\s\S]*no signed UAT[\s\S]*evidence acceptance[\s\S]*external environment call[\s\S]*production GO/i,
+  "current-state local route smoke evidence",
+);
+requireText(
+  "scripts/smoke-heu-local-routes.mjs",
+  /(?=[\s\S]*const LOCAL_HOSTS = new Set\(\["localhost", "127\.0\.0\.1", "::1"\]\))(?=[\s\S]*function assertLocalBaseUrl)(?=[\s\S]*HEU_BASE_URL must not include credentials)(?=[\s\S]*HEU_BASE_URL must be local-only for PASS_LOCAL smoke)(?=[\s\S]*HEU_BASE_URL \?\? "http:\/\/localhost:3000")(?=[\s\S]*LOCALHOST_ONLY)(?=[\s\S]*does not execute signed UAT)(?=[\s\S]*call external environments)(?=[\s\S]*approve production GO)/,
+  "local route smoke localhost-only guard",
+);
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /P0-12 Local Route Smoke Guard[\s\S]*smoke-heu-local-routes\.mjs[\s\S]*npm\.cmd run smoke:heu-local-routes[\s\S]*localhost[\s\S]*127\.0\.0\.1[\s\S]*::1[\s\S]*protocol and credential checks[\s\S]*GET requests[\s\S]*2xx\/3xx[\s\S]*LOCALHOST_ONLY[\s\S]*does not\s+log in as a real user[\s\S]*execute signed UAT[\s\S]*accept evidence[\s\S]*call external\s+environments[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "local route smoke implementation log boundary",
+);
+
 
 requireAllText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",

@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-12 Local Route Smoke Guard
+
+- Hardened `scripts/smoke-heu-local-routes.mjs` so
+  `npm.cmd run smoke:heu-local-routes` only accepts local `HEU_BASE_URL` hosts:
+  `localhost`, `127.0.0.1` or `::1`.
+- Added protocol and credential checks so route smoke cannot accidentally call
+  an external environment or embed credentials in the URL.
+- Kept the route smoke read-only: it only sends GET requests to main local HEU
+  routes and treats 2xx/3xx as route availability evidence.
+- Extended `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the smoke command and
+  `LOCALHOST_ONLY` boundary are visible in local controls.
+- PASS_LOCAL boundary: this is local route availability smoke only. It does not
+  log in as a real user, execute signed UAT, accept evidence, call external
+  environments, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
 ## 2026-07-03 - P9-01 Short Course Control Propagation
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md`,

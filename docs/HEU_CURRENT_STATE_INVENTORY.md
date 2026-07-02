@@ -39,6 +39,7 @@ Conclusion: Stage D - internal controlled test only. Production remains NO-GO.
 |---|---|
 | `npm.cmd run build` | PASS at last verification |
 | `npm.cmd run lint` | PASS at last verification |
+| `npm.cmd run smoke:heu-local-routes` | PASS_LOCAL route smoke for localhost-only `HEU_BASE_URL`; checks the main HEU routes return 2xx/3xx and stays `LOCALHOST_ONLY` with no signed UAT, evidence acceptance, external environment call or production GO |
 | `npm.cmd run audit:ttgdtx-release-gates` | PASS |
 | `npm.cmd run audit:heu-git-hygiene` | PASS |
 | `.github/workflows/heu-pass-local.yml` | PASS_LOCAL workflow configured and branch pushed to origin at `a2011c4`; workflow runs the AI policy/cloud-agent plan audit directly with `npm.cmd run audit:heu-ai-policy` before final handoff coverage; `docs/HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702.md` records the zero-cost background guard for standard `ubuntu-latest`, included/free quota only, no paid runner/server/API/AI call and no self-code/self-commit/self-merge; scheduled summary appends `npm.cmd run report:heu-daily-dry-run` output as a dry-run daily report draft and `npm.cmd run report:heu-email-readiness` output as an email readiness checklist without sending email; remote GitHub Actions run status still needs confirmation in GitHub because local `gh` CLI is unavailable and the available connector returned no PR-triggered run |
