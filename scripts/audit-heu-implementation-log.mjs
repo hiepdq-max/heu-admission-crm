@@ -214,6 +214,34 @@ fastSection("2026-07-02 - PASS_LOCAL Workflow AI Policy Audit Guard", [
   "mark production GO",
 ]);
 
+fastSection("2026-07-02 - TTGDTX Release Gates Fast Literal Pattern Guard", [
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "requireText",
+  "literalPattern",
+  "large",
+  "regex literals",
+  "token/order matching",
+  "small patterns",
+  "alternatives",
+  "escaped",
+  "parentheses",
+  "214 seconds",
+  "5.4 seconds",
+  "audit runtime packaging only",
+  "does not weaken production",
+  "NO-GO",
+  "create accounts",
+  "send real email",
+  "create real tasks",
+  "execute UAT",
+  "accept evidence",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "deploy",
+  "production",
+  "mark production GO",
+]);
+
 fastSection("2026-07-02 - P0-17 User Account Security Audit Fast Guard", [
   "scripts/audit-heu-user-account-security.mjs",
   "regex-heavy lookahead checks",

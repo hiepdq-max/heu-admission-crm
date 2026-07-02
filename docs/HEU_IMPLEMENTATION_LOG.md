@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-07-02 - TTGDTX Release Gates Fast Literal Pattern Guard
+
+- Reworked `scripts/audit-ttgdtx-release-gates.mjs` so `requireText(...)`
+  assertions use `literalPattern(...)` descriptors instead of compiling large
+  regex literals when the script loads.
+- Added token/order matching for large lookahead patterns while preserving
+  regex execution for small patterns that need alternatives or escaped
+  parentheses.
+- Local timing for `npm.cmd run audit:ttgdtx-release-gates` dropped from the
+  previously observed 214 seconds to about 5.4 seconds in this slice.
+- Boundary: this is audit runtime packaging only. It does not weaken production
+  NO-GO, create accounts, send real email, create real tasks, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO, deploy
+  production or mark production GO.
+
 ## 2026-07-02 - P0-17 User Account Security Audit Fast Guard
 
 - Reworked `scripts/audit-heu-user-account-security.mjs` from
