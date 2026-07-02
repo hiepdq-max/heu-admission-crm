@@ -34,6 +34,7 @@ for (const file of [
   "docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
@@ -87,6 +88,43 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+
+fastSection("2026-07-02 - P7-05 AI Delivery Team Operating Register", [
+  "HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  "PASS_LOCAL_CONTROL",
+  "TEAM_REGISTER_READY / NO_GO / BLOCKED",
+  "Build Agent",
+  "QA/Audit Agent",
+  "Data Check Agent",
+  "Finance Trial Support Agent",
+  "UAT/Evidence Coordinator",
+  "Report/Email Coordinator",
+  "Human Authority Owner",
+  "HEU_AI_ASSISTANT_POLICY_20260627.md",
+  "HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "audit:heu-ai-policy",
+  "does not create autonomous",
+  "send real email",
+  "create real tasks",
+  "store passwords",
+  "OTPs",
+  "invite/reset links",
+  "service-role keys",
+  "SMTP credentials",
+  "raw PII",
+  "bank statements",
+  "vouchers",
+  "execute UAT",
+  "accept evidence",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "run production migration",
+  "mark production GO",
+]);
 
 fastSection("2026-07-02 - Finance Day-1 Accountant Operator Guide", [
   "HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",

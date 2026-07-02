@@ -108,7 +108,29 @@ P7-04 remains PASS_LOCAL_DESIGN only until a separate implementation has
 approved AI-readable data scope, role-scoped access, prompt/output audit
 storage, human approval gates and signed AI UAT.
 
-## 8. Evidence Rule
+## 8. P7-05 AI Delivery Team Operating Register
+
+`docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md` is allowed as a
+PASS_LOCAL_CONTROL artifact because it defines the operating lanes, allowed
+inputs, allowed outputs, required checks, human authority owners and stop
+conditions for continuous AI/IT delivery.
+
+It must not:
+
+- Create real autonomous AI workers.
+- Send real email or create real software tasks from Codex.
+- Store passwords, temporary passwords, OTPs, reset/invite links, service-role
+  keys, SMTP credentials, raw PII, bank statements, vouchers or raw payment
+  data in Git, Codex or chat.
+- Execute UAT, accept evidence, approve finance action, approve owner GO,
+  run production migration or mark production GO.
+
+P7-05 remains PASS_LOCAL_CONTROL only. TEAM_REGISTER_READY means the delivery
+lanes and stop conditions are documented and auditable; it does not enable
+autonomous AI, production deployment, UAT acceptance, evidence acceptance,
+finance approval or owner GO/NO-GO.
+
+## 9. Evidence Rule
 
 Every AI-assisted high-risk workflow must store:
 
@@ -121,11 +143,13 @@ Every AI-assisted high-risk workflow must store:
 
 AI output alone is not approval evidence.
 
-## 9. Current Result
+## 10. Current Result
 
 P7-01 is PASS_LOCAL as a policy and static UI guard. P7-02 is PASS_LOCAL as a
 read-only task checklist helper. P7-03 is PASS_LOCAL as a read-only risk
 suggestion board. P7-04 is PASS_LOCAL_DESIGN as a prompt/output audit logging
-design. This does not enable AI automation. Production AI remains locked until
-the implementation rule, prompt/output audit logging, role-scoped AI data
-access, risk-review audit logging and UAT evidence are complete.
+design. P7-05 is PASS_LOCAL_CONTROL as an AI/IT delivery team operating
+register with TEAM_REGISTER_READY / NO_GO / BLOCKED boundaries. This does not
+enable AI automation. Production AI remains locked until the implementation
+rule, prompt/output audit logging, role-scoped AI data access, risk-review
+audit logging, human authority owner decisions and UAT evidence are complete.

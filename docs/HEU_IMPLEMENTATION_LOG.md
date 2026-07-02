@@ -6110,3 +6110,26 @@
   OTPs, invite/reset links, service-role keys, bank credentials, raw PII, bank
   statements, vouchers or raw payment data, accept UAT, approve finance action,
   approve owner GO or mark production GO.
+
+## 2026-07-02 - P7-05 AI Delivery Team Operating Register
+
+- Added `docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md` as a
+  PASS_LOCAL_CONTROL register for continuous HEU AI/IT delivery lanes with
+  `TEAM_REGISTER_READY / NO_GO / BLOCKED`.
+- The register separates Build Agent, QA/Audit Agent, Data Check Agent,
+  Finance Trial Support Agent, UAT/Evidence Coordinator,
+  Report/Email Coordinator and Human Authority Owner lanes, including allowed inputs,
+  allowed outputs, required checks and stop conditions.
+- Updated `docs/HEU_AI_ASSISTANT_POLICY_20260627.md`,
+  `docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`, plus
+  `audit:heu-ai-policy`, so P7-05 stays advisory/control-only.
+- This is delivery-team operating control only. It does not create autonomous
+  AI workers, send real email, create real tasks, store passwords, OTPs,
+  invite/reset links, service-role keys, SMTP credentials, raw PII,
+  bank statements, vouchers or raw payment data, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO, run production migration or
+  mark production GO.

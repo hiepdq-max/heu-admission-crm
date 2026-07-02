@@ -69,6 +69,7 @@ const requiredFiles = [
   "docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
   "docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_P0_REGISTER_20260627_V01_DRAFT.md",
@@ -669,6 +670,16 @@ requireText(
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   /P7-04 prompt\/output audit logging design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor, role, workspace scope, registered agent, source scope,\s+prompt\/output redaction status, prompt\/output hash where available, forbidden\s+action flags, human decision status and controlled evidence reference[\s\S]*does not implement AI logging, enable AI\s+service calls, approve AI-readable data access, accept UAT or approve\s+production AI/i,
   "P7-04 AI agent scope register boundary",
+);
+requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Status:\s*PASS_LOCAL_CONTROL[\s\S]*Decision values:\s*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build Agent[\s\S]*QA\/Audit Agent[\s\S]*Data Check Agent[\s\S]*Finance Trial Support Agent[\s\S]*UAT\/Evidence Coordinator[\s\S]*Report\/Email Coordinator[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
+  "P7-05 AI delivery team operating register",
+);
+requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /Delivery Team Operating Scope[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*must not create\s+autonomous AI workers, send real email, create real software tasks, accept UAT,\s+accept evidence, approve finance action, approve owner GO, run production\s+migration or mark production GO/i,
+  "P7-05 AI agent scope register boundary",
 );
 
 requireText(
@@ -1723,6 +1734,11 @@ requireText(
   "P7-04 prompt/output audit logging policy",
 );
 requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-05 AI Delivery Team Operating Register[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*PASS_LOCAL_CONTROL[\s\S]*Create real autonomous AI workers[\s\S]*Send real email or create real software tasks from Codex[\s\S]*Execute UAT, accept evidence, approve finance action, approve owner GO,\s+run production migration or mark production GO[\s\S]*TEAM_REGISTER_READY[\s\S]*does not enable\s+autonomous AI, production deployment, UAT acceptance, evidence acceptance,\s+finance approval or owner GO\/NO-GO/i,
+  "P7-05 AI delivery team operating policy",
+);
+requireText(
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   /Required Logical Records[\s\S]*AI_PROMPT_OUTPUT_AUDIT_LOG[\s\S]*AI_SCOPE_SOURCE_ACCESS_LOG[\s\S]*AI_ASSISTED_DECISION_LINK[\s\S]*AI_RISK_REVIEW_LOG[\s\S]*Minimum Event Fields[\s\S]*actor_user_id[\s\S]*workspace_scope[\s\S]*source_scope_refs[\s\S]*forbidden_action_flag[\s\S]*human_decision_status[\s\S]*Stop Conditions[\s\S]*AI suggests approval, payment, revenue recognition, account release,\s+deletion, evidence hiding, migration approval or production GO/i,
   "P7-04 prompt/output audit logging design records and stops",
@@ -1750,6 +1766,11 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /No AI approval[\s\S]*PASS_LOCAL[\s\S]*ai-task-checklist-generator\.tsx[\s\S]*ai-risk-suggestion-board\.tsx[\s\S]*audit:heu-ai-policy/i,
   "No AI approval checklist row includes P7-02 guard",
+);
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*P7-05 is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED only[\s\S]*cannot create autonomous AI workers, send real email, create real tasks, accept UAT\/evidence, approve finance\/owner decisions or mark production GO/i,
+  "No AI approval checklist row includes P7-05 delivery-team control",
 );
 
 requireText(

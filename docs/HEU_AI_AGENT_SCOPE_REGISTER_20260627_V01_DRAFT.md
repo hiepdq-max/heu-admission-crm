@@ -50,7 +50,25 @@ P7-04 is PASS_LOCAL_DESIGN only. It does not implement AI logging, enable AI
 service calls, approve AI-readable data access, accept UAT or approve
 production AI.
 
-## 5. Production Lock
+## 5. Delivery Team Operating Scope
+
+P7-05 AI delivery team operating control is documented in
+`docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md`. It defines Build
+Agent, QA/Audit Agent, Data Check Agent, Finance Trial Support Agent,
+UAT/Evidence Coordinator, Report/Email Coordinator and Human Authority Owner
+lanes.
+
+P7-05 may coordinate local PASS_LOCAL work, audit reruns, plain-language
+reports, no-secret task handoffs and owner routing. It must not create
+autonomous AI workers, send real email, create real software tasks, accept UAT,
+accept evidence, approve finance action, approve owner GO, run production
+migration or mark production GO.
+
+TEAM_REGISTER_READY / NO_GO / BLOCKED is a local control status only. Human
+authority owners remain responsible for signed UAT, evidence acceptance,
+finance decisions, access closure and owner GO/NO-GO outside Git/Codex/chat.
+
+## 6. Production Lock
 
 AI remains pilot/read-only until all are complete:
 
@@ -60,7 +78,7 @@ AI remains pilot/read-only until all are complete:
 4. Human approval gate for every AI-assisted workflow.
 5. Signed UAT proving AI cannot approve, pay, release, delete or go-live.
 
-## 6. Boundary
+## 7. Boundary
 
 Codex/AI output is not approval evidence. Human actor, human decision, source
 evidence, timestamp and role/scope context are required for high-risk actions.

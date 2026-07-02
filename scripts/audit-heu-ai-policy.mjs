@@ -61,6 +61,11 @@ const promptOutputDesign = requireText(
   /P7-04 is PASS_LOCAL_DESIGN only[\s\S]*does not implement\s+AI logging, enable AI service calls, enable autonomous AI, approve UAT, approve\s+finance, accept evidence, approve owner GO or mark production GO/i,
   "P7-04 prompt/output audit logging design boundary",
 );
+const deliveryTeamRegister = requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Status:\s*PASS_LOCAL_CONTROL[\s\S]*Decision values:\s*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build Agent[\s\S]*QA\/Audit Agent[\s\S]*Data Check Agent[\s\S]*Finance Trial Support Agent[\s\S]*UAT\/Evidence Coordinator[\s\S]*Report\/Email Coordinator[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
+  "P7-05 AI delivery team operating register",
+);
 const checklistGenerator = requireText(
   "components/ai/ai-task-checklist-generator.tsx",
   /data-heu-ai-task-checklist-generator="P7-02"/i,
@@ -99,14 +104,44 @@ requireText(
   "P7-04 prompt/output audit logging policy",
 );
 requireText(
+  "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
+  /P7-05 AI Delivery Team Operating Register[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*PASS_LOCAL_CONTROL[\s\S]*operating lanes, allowed\s+inputs, allowed outputs, required checks, human authority owners and stop\s+conditions[\s\S]*must not:[\s\S]*Create real autonomous AI workers[\s\S]*Send real email or create real software tasks from Codex[\s\S]*Store passwords, temporary passwords, OTPs, reset\/invite links, service-role\s+keys, SMTP credentials, raw PII, bank statements, vouchers or raw payment\s+data in Git, Codex or chat[\s\S]*Execute UAT, accept evidence, approve finance action, approve owner GO,\s+run production migration or mark production GO[\s\S]*TEAM_REGISTER_READY[\s\S]*does not enable\s+autonomous AI, production deployment, UAT acceptance, evidence acceptance,\s+finance approval or owner GO\/NO-GO/i,
+  "P7-05 AI delivery team operating policy",
+);
+requireText(
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   /P7-04 prompt\/output audit logging design[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*actor, role, workspace scope, registered agent, source scope,\s+prompt\/output redaction status, prompt\/output hash where available, forbidden\s+action flags, human decision status and controlled evidence reference[\s\S]*does not implement AI logging, enable AI\s+service calls, approve AI-readable data access, accept UAT or approve\s+production AI/i,
   "P7-04 AI scope register boundary",
 );
 requireText(
+  "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
+  /Delivery Team Operating Scope[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*Build\s+Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support Agent,\s+UAT\/Evidence Coordinator, Report\/Email Coordinator and Human Authority Owner[\s\S]*coordinate local PASS_LOCAL work, audit reruns, plain-language\s+reports, no-secret task handoffs and owner routing[\s\S]*must not create\s+autonomous AI workers, send real email, create real software tasks, accept UAT,\s+accept evidence, approve finance action, approve owner GO, run production\s+migration or mark production GO[\s\S]*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Human\s+authority owners remain responsible/i,
+  "P7-05 AI delivery team scope register boundary",
+);
+requireText(
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   /Required Logical Records[\s\S]*AI_PROMPT_OUTPUT_AUDIT_LOG[\s\S]*AI_SCOPE_SOURCE_ACCESS_LOG[\s\S]*AI_ASSISTED_DECISION_LINK[\s\S]*AI_RISK_REVIEW_LOG[\s\S]*Minimum Event Fields[\s\S]*actor_user_id[\s\S]*workspace_scope[\s\S]*source_scope_refs[\s\S]*forbidden_action_flag[\s\S]*human_decision_status[\s\S]*Stop Conditions[\s\S]*AI suggests approval, payment, revenue recognition, account release,\s+deletion, evidence hiding, migration approval or production GO/i,
   "P7-04 required records fields and stop conditions",
+);
+requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Mandatory Operating Loop[\s\S]*git status --short --branch[\s\S]*git diff --name-status[\s\S]*current state inventory, system backlog and module readiness gap\s+matrix[\s\S]*Choose exactly one small slice[\s\S]*Report PASS_LOCAL only after checks pass; PASS_LOCAL never means production\s+ready/i,
+  "P7-05 mandatory operating loop",
+);
+requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Forbidden Inputs[\s\S]*Passwords, temporary passwords, OTPs, password reset links, account\s+activation links or invite links[\s\S]*Service-role keys, API keys, private keys, SMTP passwords or app passwords[\s\S]*Raw student PII[\s\S]*Raw bank statements, vouchers, payment proof, signed evidence or uncontrolled\s+Drive files[\s\S]*controlled storage outside Git\/Codex\/chat/i,
+  "P7-05 forbidden inputs",
+);
+requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Baseline Checks[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*audit:heu-vietnamese-text-encoding[\s\S]*lint[\s\S]*build[\s\S]*git diff --check[\s\S]*Finance\/P6-04 slices[\s\S]*audit:heu-role-scope-uat-pack[\s\S]*audit:heu-user-account-security[\s\S]*audit:heu-finance-desk[\s\S]*audit:ttgdtx-production-readiness-guard[\s\S]*AI\/team-control slices[\s\S]*audit:heu-ai-policy/i,
+  "P7-05 baseline checks",
+);
+requireText(
+  "docs/HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
+  /Current Result[\s\S]*TEAM_REGISTER_READY is a local control state only[\s\S]*Production remains NO-GO[\s\S]*Autonomous AI delivery, real email sending, real task\s+creation, signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO and\s+production migration remain blocked/i,
+  "P7-05 local-only current result",
 );
 
 const aiPage = requireText(
@@ -194,13 +229,22 @@ if (!/P7-03[\s\S]*AI risk suggestion board[\s\S]*PASS_LOCAL[\s\S]*ai-risk-sugges
 if (!/P7-04[\s\S]*AI prompt\/output audit logging design[\s\S]*PASS_LOCAL_DESIGN[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md[\s\S]*HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-ai-policy[\s\S]*design only, no AI call, no prompt storage in Git\/Codex\/chat, no workflow write, no production action/i.test(backlog)) {
   fail("Backlog P7-04 must be PASS_LOCAL_DESIGN and reference prompt/output audit logging design.");
 }
+if (!/P7-05[\s\S]*AI delivery team operating register[\s\S]*PASS_LOCAL_CONTROL[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*HEU_AI_ASSISTANT_POLICY_20260627\.md[\s\S]*HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT\.md[\s\S]*audit:heu-ai-policy[\s\S]*TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED[\s\S]*Build, QA\/Audit, Data Check, Finance Trial Support, UAT\/Evidence, Report\/Email and Human Authority Owner lanes[\s\S]*no autonomous AI workers, no real email sending, no real task creation[\s\S]*no UAT\/evidence\/finance\/owner approval and no production action/i.test(backlog)) {
+  fail("Backlog P7-05 must be PASS_LOCAL_CONTROL and reference the AI delivery team operating register.");
+}
 
 if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628\.md[\s\S]*P7-04 is PASS_LOCAL_DESIGN only[\s\S]*cannot call AI services, store live prompts, approve, pay, recognize revenue, freeze\/release or mark go-live/i.test(checklist)) {
   fail("Production checklist must include P7-04 as design-only under the No AI approval control.");
 }
+if (!/No AI approval[\s\S]*PASS_LOCAL[\s\S]*HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702\.md[\s\S]*P7-05 is PASS_LOCAL_CONTROL with TEAM_REGISTER_READY \/ NO_GO \/ BLOCKED only[\s\S]*cannot create autonomous AI workers, send real email, create real tasks, accept UAT\/evidence, approve finance\/owner decisions or mark production GO/i.test(checklist)) {
+  fail("Production checklist must include P7-05 as local delivery-team control under the No AI approval control.");
+}
 
 if (/raw PII|bank statement|service-role key/i.test(promptOutputDesign) && !/forbidden in AI prompts, outputs, logs and Git/i.test(promptOutputDesign)) {
   fail("P7-04 design must explicitly forbid raw sensitive content in AI logs.");
+}
+if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(deliveryTeamRegister) && !/No lane may ask a human to paste or store these in Git, Codex, chat, email\s+notes or local docs/i.test(deliveryTeamRegister)) {
+  fail("P7-05 register must explicitly forbid sensitive content in AI delivery lanes.");
 }
 
 if (failures.length > 0) {
@@ -212,5 +256,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `HEU AI policy audit passed. Checked ${aiRouteFiles.length} AI route file(s); AI remains advisory only.`,
+  `HEU AI policy audit passed. Checked ${aiRouteFiles.length} AI route file(s); AI remains advisory only and P7-05 stays delivery-control only.`,
 );
