@@ -31,6 +31,7 @@ for (const file of [
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  "docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",
   "docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_AI_PROMPT_OUTPUT_AUDIT_LOGGING_DESIGN_20260628.md",
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
@@ -86,6 +87,40 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+
+fastSection("2026-07-02 - Finance Day-1 Accountant Operator Guide", [
+  "HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md",
+  "PASS_LOCAL_OPERATOR_GUIDE",
+  "P5-03 Finance Desk and P2-18 accounting dashboard",
+  "finance-day-one-accountant-handoff.tsx",
+  "/finance-desk",
+  "HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md",
+  "HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "FIN_ACCOUNTANT_GUIDE_READY / NO_GO / BLOCKED",
+  "FIN-ACCT-GUIDE-01",
+  "FIN-ACCT-GUIDE-05",
+  "read-only operator steps",
+  "escalation rules",
+  "forbidden content",
+  "Day-1 closure before expansion",
+  "does not create accounts",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
+  "approve access closure",
+  "post vouchers",
+  "move money",
+  "issue bank instructions",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+]);
 
 fastRequire(
   agents,

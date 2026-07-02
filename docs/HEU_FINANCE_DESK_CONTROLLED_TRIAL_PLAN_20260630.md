@@ -67,6 +67,12 @@ The `/finance-desk` page exposes
 first KHTC accountant pilot. The handoff must be read before the operator uses
 the cockpit.
 
+The practical operator guide is
+`docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md` with decision
+value `FIN_ACCOUNTANT_GUIDE_READY / NO_GO / BLOCKED`. It defines the first KHTC accountant start conditions, read-only steps, escalation rules, forbidden content and Day-1 closure before any expansion.
+It covers `FIN-ACCT-GUIDE-01` through `FIN-ACCT-GUIDE-05` for the first KHTC
+accountant start conditions.
+
 | Handoff ID | Operator rule | STOP condition |
 |---|---|---|
 | `FIN-ACCT-HANDOFF-01` | KHTC accountant may view `/finance-desk`, `/ttgdtx/accounting-dashboard`, import readiness and source-control status inside assigned TTGDTX scope only | Any unrestricted total, out-of-scope partner, raw evidence body or hidden route appears |

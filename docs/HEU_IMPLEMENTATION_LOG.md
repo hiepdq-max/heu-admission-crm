@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Day-1 Accountant Operator Guide
+
+- Added `docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md` as a
+  PASS_LOCAL_OPERATOR_GUIDE for the first KHTC accountant using P5-03 Finance Desk and P2-18 accounting dashboard.
+- Linked the guide from `components/finance/finance-day-one-accountant-handoff.tsx`
+  on `/finance-desk`, plus `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md`,
+  `docs/HEU_FINANCE_DESK_CONTROLLED_TRIAL_PLAN_20260630.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`.
+- The guide records `FIN_ACCOUNTANT_GUIDE_READY / NO_GO / BLOCKED`,
+  `FIN-ACCT-GUIDE-01` through `FIN-ACCT-GUIDE-05`, read-only operator steps,
+  escalation rules, forbidden content and Day-1 closure before expansion.
+- Boundary: this guide does not create accounts, send invites, store passwords,
+  grant access, execute UAT, accept evidence, approve finance reliance, approve access closure, post vouchers, move money, issue bank instructions, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - Finance Desk Day-1 Accountant Handoff
 
 - Added `components/finance/finance-day-one-accountant-handoff.tsx` and mounted

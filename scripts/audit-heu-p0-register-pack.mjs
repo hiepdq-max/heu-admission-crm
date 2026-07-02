@@ -193,7 +193,7 @@ requireText(
 
 requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
-  /Classify the current HEU build against the P0 register pack[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*Finance safe pilot order[\s\S]*Day-1 accountant handoff[\s\S]*FIN_PILOT_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_ACCOUNTANT_HANDOFF_READY \/ NO_GO \/ BLOCKED[\s\S]*broad pilot expansion[\s\S]*accountant bypass of escalation route[\s\S]*access closure[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE/i,
+  /Classify the current HEU build against the P0 register pack[\s\S]*DAT[\s\S]*CAN_SUA[\s\S]*CHUA_DU_DIEU_KIEN[\s\S]*CAM_CODE[\s\S]*TTGDTX\/9\+ Operating Module[\s\S]*Finance Desk[\s\S]*Finance safe pilot order[\s\S]*Day-1 accountant handoff[\s\S]*accountant operator guide[\s\S]*FIN_PILOT_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_ACCOUNTANT_HANDOFF_READY \/ NO_GO \/ BLOCKED[\s\S]*FIN_ACCOUNTANT_GUIDE_READY \/ NO_GO \/ BLOCKED[\s\S]*broad pilot expansion[\s\S]*accountant bypass of escalation route[\s\S]*access closure[\s\S]*Gach no from receipt[\s\S]*CAM_CODE[\s\S]*Partner payout execution[\s\S]*CAM_CODE[\s\S]*Bank\/collateral operation[\s\S]*CAM_CODE/i,
   "module readiness matrix classifications and finance stop conditions",
 );
 

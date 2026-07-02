@@ -100,6 +100,13 @@ approve finance reliance, approve access closure, post vouchers, move money,
 issue bank instructions or mark production GO.
 Boundary wording: blocked finance actions remain blocked in this handoff.
 
+The accountant-facing operating guide is
+`docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md` with decision
+value `FIN_ACCOUNTANT_GUIDE_READY / NO_GO / BLOCKED`. Use it for the first
+KHTC accountant start conditions, read-only operator steps, escalation rules,
+forbidden content and Day-1 closure before expanding beyond the first
+accountant.
+
 ## 4. UAT Accounts
 
 | Role label | Required setup | Expected result |

@@ -1,5 +1,8 @@
 import { AlertTriangle, Eye, Route, ShieldCheck } from "lucide-react";
 
+const operatorGuidePath =
+  "docs/HEU_FINANCE_DAY1_ACCOUNTANT_OPERATOR_GUIDE_20260702.md";
+
 const handoffRules = [
   {
     code: "FIN-ACCT-HANDOFF-01",
@@ -64,6 +67,11 @@ export function FinanceDayOneAccountantHandoff() {
             grant access, execute UAT, accept evidence, approve finance
             reliance, approve access closure, post vouchers, move money, issue
             bank instructions or mark production GO.
+          </p>
+          <p className="mt-2">
+            Operator guide: <code>{operatorGuidePath}</code>. Use it to confirm
+            start conditions, read-only steps, escalation owners, forbidden content
+            and Day-1 closure before expanding beyond the first accountant.
           </p>
         </div>
         <div className="rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-800">
