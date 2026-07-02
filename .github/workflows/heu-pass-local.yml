@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+env:
+  HEU_COST_MODE: ZERO_COST_QUOTA_GUARD
+  HEU_BACKGROUND_MODE: GITHUB_ACTIONS_PASS_LOCAL_ONLY
+
 concurrency:
   group: heu-pass-local-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -48,6 +52,20 @@ jobs:
             echo "- Production: NO-GO"
             echo "- This workflow does not approve UAT, finance action, evidence acceptance, owner GO or production GO."
             echo "- Secrets, passwords, OTPs, invite/reset links, raw PII, bank data and uncontrolled evidence must stay outside GitHub Actions logs."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Confirm zero-cost background guard
+        run: |
+          {
+            echo ""
+            echo "## HEU zero-cost background guard"
+            echo ""
+            echo "- Mode: ZERO_COST_BACKGROUND_BUILD_READY / NO_GO / BLOCKED."
+            echo "- Path: GitHub Actions standard runner, included/free quota only."
+            echo "- Runner: ubuntu-latest only; no larger runner, no paid cloud server, no API/AI call."
+            echo "- Schedule: daily PASS_LOCAL audit/lint/build/report summary when the local computer is off."
+            echo "- This workflow cannot self-code, self-commit, self-merge, deploy production, send real email, create real tasks/users, accept UAT/evidence, approve finance/owner decisions or mark production GO."
+            echo "- If included quota, billing state or budget guard is unclear, stop at NO_GO/BLOCKED; Codex must not enter payment details."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Audit current state inventory

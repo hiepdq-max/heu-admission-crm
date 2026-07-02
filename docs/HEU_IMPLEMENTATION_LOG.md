@@ -1,5 +1,47 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P0-17 Users Create Permission Gate
+
+- Added `users.create` as a separate role permission in `lib/permissions.ts`
+  and `database/seed.sql`.
+- Updated `app/settings/actions.ts` so create-user server action allows ADMIN
+  or users with `users.create`, while non-ADMIN users cannot create privileged
+  ADMIN/BGH accounts.
+- Updated `components/settings/user-create-form.tsx`,
+  `app/settings/page.tsx` and `app/settings/scopes/page.tsx` so the create-user
+  button reflects service-role-key and `users.create` gates, hides ADMIN/BGH
+  role assignment for non-ADMIN creators and shows a controlled no-access
+  reason.
+- Updated `components/layout/app-shell.tsx` so the `Phạm vi user` navigation
+  item is visible to ADMIN, `scope.manage_department` and `users.create`
+  operators.
+- Tightened `scripts/audit-heu-user-account-security.mjs` for the
+  `users.create` permission gate.
+- Boundary: this is P0-17/P6-04 permission packaging only. It does not create
+  real users, receive passwords, send invites, store secrets, approve UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO. It must not mark production GO.
+
+## 2026-07-02 - Zero-Cost Background Build Guard
+
+- Added `docs/HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702.md` as a
+  PASS_LOCAL_ZERO_COST_GUARD with
+  `ZERO_COST_BACKGROUND_BUILD_READY / NO_GO / BLOCKED`.
+- Updated `.github/workflows/heu-pass-local.yml` with
+  `HEU_COST_MODE: ZERO_COST_QUOTA_GUARD`,
+  `HEU_BACKGROUND_MODE: GITHUB_ACTIONS_PASS_LOCAL_ONLY` and a summary section
+  confirming standard `ubuntu-latest`, included/free quota only, no paid
+  runner/server/API/AI call and no self-code/self-commit/self-merge.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the zero-cost guard cannot drift
+  out of the PASS_LOCAL workflow boundary.
+- Boundary: this guard does not buy a server, enter payment details, create
+  cloud infrastructure, call AI/API services, send real email, create real
+  tasks/tickets, create real users, accept UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO, deploy production, run production
+  migration or mark production GO.
+
 ## 2026-07-02 - REAL-OPS-03 Signed UAT Closure Intake
 
 - Added `docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md` as a

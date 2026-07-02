@@ -261,6 +261,7 @@ const requiredFiles = [
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md",
+  "docs/HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702.md",
   "docs/HEU_CODEX_OPERATING_PLAYBOOK.md",
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
@@ -975,6 +976,32 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   literalPattern("PASS_LOCAL Workflow AI Policy Audit Guard[\\s\\S]*\\.github\\/workflows\\/heu-pass-local\\.yml[\\s\\S]*npm run audit:heu-ai-policy[\\s\\S]*release gates[\\s\\S]*final handoff coverage[\\s\\S]*AI policy\\/cloud-agent plan audit[\\s\\S]*does not create cloud\\s+infrastructure[\\s\\S]*buy a server[\\s\\S]*enter payment details[\\s\\S]*send real\\s+email[\\s\\S]*create real tasks[\\s\\S]*create real users[\\s\\S]*accept UAT[\\s\\S]*accept evidence[\\s\\S]*approve finance action[\\s\\S]*approve owner GO\\/NO-GO[\\s\\S]*deploy production[\\s\\S]*mark\\s+production GO", "i"),
   "PASS_LOCAL workflow AI policy audit implementation log entry",
+);
+
+requireText(
+  "docs/HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_ZERO_COST_GUARD)(?=[\\s\\S]*ZERO_COST_BACKGROUND_BUILD_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*GitHub Actions PASS_LOCAL verification when the local computer is off)(?=[\\s\\S]*existing GitHub Actions workflow and included\\/free quota only)(?=[\\s\\S]*ZERO-COST-01 Daily PASS_LOCAL check)(?=[\\s\\S]*ZERO-COST-05 Human continuation)(?=[\\s\\S]*HEU_COST_MODE:\\s*ZERO_COST_QUOTA_GUARD)(?=[\\s\\S]*HEU_BACKGROUND_MODE:\\s*GITHUB_ACTIONS_PASS_LOCAL_ONLY)(?=[\\s\\S]*ubuntu-latest)(?=[\\s\\S]*npm\\.cmd run audit:ttgdtx-release-gates)(?=[\\s\\S]*npm\\.cmd run build)(?=[\\s\\S]*does not mean autonomous AI coding is enabled or\\s+production is approved)", "i"),
+  "zero-cost background build guard document",
+);
+requireText(
+  ".github/workflows/heu-pass-local.yml",
+  literalPattern("(?=[\\s\\S]*HEU_COST_MODE:\\s*ZERO_COST_QUOTA_GUARD)(?=[\\s\\S]*HEU_BACKGROUND_MODE:\\s*GITHUB_ACTIONS_PASS_LOCAL_ONLY)(?=[\\s\\S]*runs-on:\\s*ubuntu-latest)(?=[\\s\\S]*timeout-minutes:\\s*35)(?=[\\s\\S]*Confirm zero-cost background guard)(?=[\\s\\S]*ZERO_COST_BACKGROUND_BUILD_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*included\\/free quota only)(?=[\\s\\S]*no larger runner, no paid cloud server, no API\\/AI call)(?=[\\s\\S]*cannot self-code, self-commit, self-merge, deploy production, send real email, create real tasks\\/users, accept UAT\\/evidence, approve finance\\/owner decisions or mark production GO)", "i"),
+  "zero-cost background workflow guard",
+);
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  literalPattern("P0-02[\\s\\S]*HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702\\.md[\\s\\S]*zero-cost background guard requires standard `ubuntu-latest`, included\\/free quota only, no paid runner\\/server\\/API\\/AI call and no self-code\\/self-commit\\/self-merge", "i"),
+  "backlog zero-cost background guard",
+);
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  literalPattern("\\.github\\/workflows\\/heu-pass-local\\.yml[\\s\\S]*HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702\\.md[\\s\\S]*zero-cost background guard for standard `ubuntu-latest`, included\\/free quota only, no paid runner\\/server\\/API\\/AI call and no self-code\\/self-commit\\/self-merge", "i"),
+  "current-state zero-cost background guard",
+);
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  literalPattern("Zero-Cost Background Build Guard[\\s\\S]*HEU_ZERO_COST_BACKGROUND_BUILD_GUARD_20260702\\.md[\\s\\S]*PASS_LOCAL_ZERO_COST_GUARD[\\s\\S]*ZERO_COST_BACKGROUND_BUILD_READY \\/ NO_GO \\/ BLOCKED[\\s\\S]*HEU_COST_MODE:\\s*ZERO_COST_QUOTA_GUARD[\\s\\S]*HEU_BACKGROUND_MODE:\\s*GITHUB_ACTIONS_PASS_LOCAL_ONLY[\\s\\S]*included\\/free quota only[\\s\\S]*no paid\\s+runner\\/server\\/API\\/AI call[\\s\\S]*does not buy a server[\\s\\S]*enter payment details[\\s\\S]*send real email[\\s\\S]*create real\\s+users[\\s\\S]*accept UAT[\\s\\S]*approve finance action[\\s\\S]*approve owner GO\\/NO-GO[\\s\\S]*mark production GO", "i"),
+  "implementation log zero-cost background guard",
 );
 
 requireText(
