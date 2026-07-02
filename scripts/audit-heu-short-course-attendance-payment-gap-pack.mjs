@@ -73,6 +73,12 @@ requireText(
 
 requireText(
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH")(?=[\s\S]*data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU")(?=[\s\S]*href="\/hou")(?=[\s\S]*aria-label="Open HOU control surface from Short Course scope switch")(?=[\s\S]*title="Open HOU control surface")(?=[\s\S]*href="\/master-control")(?=[\s\S]*aria-label="Open Master Control from Short Course scope switch")(?=[\s\S]*title="Open Master Control")(?=[\s\S]*Short Course \/ HOU scope switch)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*flex-wrap)/i,
+  "Short Course quick scope switch and overflow guards",
+);
+
+requireText(
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   /(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF")(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*table-fixed)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*whitespace-normal)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*break-words)(?=[\s\S]*data-heu-short-course-review-decision="SC_REVIEW_READY_NO_GO_BLOCKED")(?=[\s\S]*Short Course review handoff)(?=[\s\S]*SC_REVIEW_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SC-REV-01)(?=[\s\S]*SC-REV-06)(?=[\s\S]*Attendance lock packet)(?=[\s\S]*Invoice\/payment reconciliation)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*signatures and evidence acceptance[\s\S]*outside Codex\/chat)(?=[\s\S]*PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO)/i,
   "Short Course review handoff queue",
 );
@@ -123,6 +129,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-06-28 - Short Course Attendance Payment Gap Pack[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*components\/short-course\/short-course-attendance-payment-gap-pack\.tsx[\s\S]*SC-AP-01 through\s+SC-AP-08[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*This is Short Course control packaging only[\s\S]*does not approve attendance\s+lock[\s\S]*BHXH decision[\s\S]*meal\/allowance payment[\s\S]*HR payment[\s\S]*invoice\/payment\s+verification[\s\S]*period close[\s\S]*statutory accounting[\s\S]*UAT acceptance[\s\S]*evidence\s+acceptance[\s\S]*owner GO[\s\S]*production GO/i,
   "implementation log Short Course gap-pack entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-02 - P8\/P9 HOU Short Course Quick Scope Switch[\s\S]*components\/hou\/hou-ledger-handover-gap-pack\.tsx[\s\S]*data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"[\s\S]*components\/short-course\/short-course-attendance-payment-gap-pack\.tsx[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"[\s\S]*data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"[\s\S]*audit:heu-hou-ledger-handover-gap-pack[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*does not approve HOU handover[\s\S]*attendance lock[\s\S]*finance action[\s\S]*UAT acceptance[\s\S]*owner GO[\s\S]*production GO/i,
+  "implementation log HOU/Short Course quick scope switch entry",
 );
 
 requireText(

@@ -83,6 +83,12 @@ requireText(
 );
 
 requireText(
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH")(?=[\s\S]*data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE")(?=[\s\S]*href="\/short-course")(?=[\s\S]*aria-label="Open Short Course control surface from HOU scope switch")(?=[\s\S]*title="Open Short Course control surface")(?=[\s\S]*href="\/master-control")(?=[\s\S]*aria-label="Open Master Control from HOU scope switch")(?=[\s\S]*title="Open Master Control")(?=[\s\S]*HOU \/ Short Course scope switch)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*flex-wrap)/i,
+  "HOU quick scope switch and overflow guards",
+);
+
+requireText(
   "app/hou/page.tsx",
   /(?=[\s\S]*HouLedgerHandoverGapPack)(?=[\s\S]*<HouLedgerHandoverGapPack \/>)/i,
   "HOU page mounts gap-pack panel",
@@ -122,6 +128,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-06-28 - HOU Ledger Handover Gap Pack[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*components\/hou\/hou-ledger-handover-gap-pack\.tsx[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-hou-ledger-handover-gap-pack[\s\S]*This is HOU control packaging only[\s\S]*does not approve HOU handover[\s\S]*tuition ledger posting[\s\S]*invoice issuance[\s\S]*COM payout[\s\S]*finance action[\s\S]*UAT\s+acceptance[\s\S]*evidence acceptance[\s\S]*owner GO[\s\S]*production GO/i,
   "implementation log HOU gap-pack entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-02 - P8\/P9 HOU Short Course Quick Scope Switch[\s\S]*components\/hou\/hou-ledger-handover-gap-pack\.tsx[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"[\s\S]*data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"[\s\S]*components\/short-course\/short-course-attendance-payment-gap-pack\.tsx[\s\S]*data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"[\s\S]*audit:heu-hou-ledger-handover-gap-pack[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*does not approve HOU handover[\s\S]*attendance lock[\s\S]*finance action[\s\S]*UAT acceptance[\s\S]*owner GO[\s\S]*production GO/i,
+  "implementation log HOU/Short Course quick scope switch entry",
 );
 
 requireText(

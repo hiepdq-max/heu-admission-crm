@@ -105,6 +105,33 @@
   posting, approve invoice issuance, approve COM payout, approve owner GO or
   mark production GO.
 
+## 2026-07-02 - P8/P9 HOU Short Course Quick Scope Switch
+
+- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` with
+  `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"` and
+  `data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"` so the HOU
+  ledger/handover control pack can jump to the separate Short Course
+  attendance/payment surface without mixing module scope.
+- Tightened `components/short-course/short-course-attendance-payment-gap-pack.tsx`
+  with `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"`
+  and `data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"` so Short
+  Course operators can jump back to the separate HOU ledger/handover surface.
+- Added `min-w-0`, `overflow-hidden`, `break-words`, `truncate`, `shrink-0`
+  and `flex-wrap` guards around the quick-switch rows so long scope labels and
+  action buttons do not force horizontal overflow.
+- Added explicit `aria-label` and `title` text on the HOU, Short Course and
+  Master Control quick-switch links so keyboard/browser-assistive navigation
+  names the target control surface without changing data, scope or approvals.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
+  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
+  cross-scope quick switch and overflow guards fail locally if removed.
+- Verification routes: `npm.cmd run audit:heu-hou-ledger-handover-gap-pack` and
+  `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`.
+- PASS_LOCAL boundary: this is read-only navigation packaging only. It does not
+  approve HOU handover, attendance lock, tuition ledger posting, invoice
+  issuance, COM payout, meal/allowance payment, HR payment, finance action, UAT
+  acceptance, evidence acceptance, owner GO/NO-GO or production GO.
+
 ## 2026-07-03 - P1-11 Search Quick Open Guard
 
 - Tightened `app/search/page.tsx` so result pages show the first three results

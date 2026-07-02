@@ -1,4 +1,6 @@
+import Link from "next/link";
 import {
+  ArrowRightLeft,
   Banknote,
   ClipboardCheck,
   FileWarning,
@@ -278,6 +280,43 @@ export function ShortCourseAttendancePaymentGapPack() {
             <span className="rounded-md bg-rose-50 px-2 py-1 text-rose-700">
               Production NO-GO
             </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="border-b border-zinc-200 p-5"
+        data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"
+        data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"
+      >
+        <div className="flex min-w-0 flex-col gap-3 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ArrowRightLeft className="size-4 shrink-0 text-zinc-600" />
+              <span className="truncate">Short Course / HOU scope switch</span>
+            </div>
+            <p className="mt-2 break-words text-sm leading-6 text-zinc-600">
+              Quick access keeps Short Course attendance/payment and HOU ledger
+              in separate PASS_LOCAL surfaces for REAL-OPS-07 review.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2 text-sm font-medium">
+            <Link
+              href="/hou"
+              aria-label="Open HOU control surface from Short Course scope switch"
+              title="Open HOU control surface"
+              className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-700 hover:bg-zinc-100"
+            >
+              Open HOU
+            </Link>
+            <Link
+              href="/master-control"
+              aria-label="Open Master Control from Short Course scope switch"
+              title="Open Master Control"
+              className="rounded-md bg-zinc-950 px-3 py-2 text-white hover:bg-zinc-800"
+            >
+              Master Control
+            </Link>
           </div>
         </div>
       </div>
