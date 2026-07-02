@@ -144,6 +144,56 @@ const DEPARTMENT_TASK_HANDOFF_REGISTER = [
   },
 ];
 
+const AUTHORITY_INFORMATION_REQUESTS = [
+  {
+    code: "INFO-REQ-01",
+    owner: "BGH",
+    request: "Confirm daily report audience labels and scope.",
+    safeOutput:
+      "Record only approved labels/aliases; do not expose individual email addresses in Git/Codex/chat.",
+  },
+  {
+    code: "INFO-REQ-02",
+    owner: "IT_DATA",
+    request:
+      "Confirm whether GitHub Actions mail variables/secrets are configured or still EMAIL_CONFIG_REQUIRED.",
+    safeOutput:
+      "Record names and readiness state only; never expose SMTP values, passwords, tokens or secrets.",
+  },
+  {
+    code: "INFO-REQ-03",
+    owner: "KHTC",
+    request:
+      "Confirm accounting user labels and Finance Day-1 read-only trial scope.",
+    safeOutput:
+      "Record labels, role and scope only; do not collect real accounts, passwords, OTPs or bank data.",
+  },
+  {
+    code: "INFO-REQ-04",
+    owner: "PHAP_CHE",
+    request:
+      "Confirm which legal/SOP questions still need a human-authority decision.",
+    safeOutput:
+      "Record blockers and signer owner only; AI/Codex does not give the legal conclusion.",
+  },
+  {
+    code: "INFO-REQ-05",
+    owner: "Audit",
+    request:
+      "Confirm evidence reference, redaction class and evidence reviewer lane.",
+    safeOutput:
+      "Record controlled evidence IDs only; do not expose raw evidence, vouchers, PII or bank statements.",
+  },
+  {
+    code: "INFO-REQ-06",
+    owner: "TRUONG_PHONG + process owners",
+    request:
+      "Confirm which route/user-label may test, which route is out-of-scope and who signs the result.",
+    safeOutput:
+      "Record labels, route and stop condition only; do not create real users or approve UAT here.",
+  },
+];
+
 const SIGNED_UAT_ROUTE_SUMMARY = [
   {
     route: "UAT-ROUTE-01",
@@ -403,6 +453,48 @@ export function ProductionReadinessBlockerSummary() {
               </article>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-authority-information-requests="P5-02"
+      >
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Information required from authority: dry-run only
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED. When Master Control
+              does not know something, the request is routed to the right owner
+              label instead of guessing. This panel does not send email, create
+              tasks/tickets, create accounts, collect secrets, accept evidence,
+              approve UAT, approve finance action, approve owner GO or mark
+              production GO.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {AUTHORITY_INFORMATION_REQUESTS.map((item) => (
+            <article
+              key={item.code}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {item.code}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{item.request}</p>
+              <p className="mt-2 leading-5 text-rose-800">
+                Safe output: {item.safeOutput}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
 

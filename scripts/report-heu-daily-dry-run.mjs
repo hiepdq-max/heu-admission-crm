@@ -263,6 +263,57 @@ const departmentTaskRegister = [
   },
 ];
 
+const authorityInformationRequests = [
+  {
+    code: "INFO-REQ-01",
+    owner: "BGH",
+    request:
+      "Xac nhan nhom nhan bao cao hang ngay va muc doc bao cao theo phong ban.",
+    output:
+      "Chi duoc ghi label/alias da duyet; khong ghi dia chi email ca nhan vao Git/Codex/chat.",
+  },
+  {
+    code: "INFO-REQ-02",
+    owner: "IT_DATA",
+    request:
+      "Xac nhan GitHub Actions variables/secrets da cau hinh hay van EMAIL_CONFIG_REQUIRED.",
+    output:
+      "Chi ghi ten bien va trang thai; khong ghi SMTP value, password, token hoac secret.",
+  },
+  {
+    code: "INFO-REQ-03",
+    owner: "KHTC",
+    request:
+      "Xac nhan user label ke toan duoc dung thu Finance Desk read-only va pham vi Day-1.",
+    output:
+      "Chi ghi user label/role/scope; khong ghi tai khoan that, mat khau, OTP hay du lieu ngan hang.",
+  },
+  {
+    code: "INFO-REQ-04",
+    owner: "PHAP_CHE",
+    request:
+      "Xac nhan cau hoi phap ly/SOP nao con thieu nguoi dung tham quyen ket luan.",
+    output:
+      "Chi ghi blocker va owner can ky; AI/Codex khong ket luan phap ly.",
+  },
+  {
+    code: "INFO-REQ-05",
+    owner: "Audit",
+    request:
+      "Xac nhan evidence reference, lop redaction va nguoi review bang chung.",
+    output:
+      "Chi ghi ma bang chung da kiem soat; khong dua raw evidence, voucher, PII hay bank statement vao bao cao.",
+  },
+  {
+    code: "INFO-REQ-06",
+    owner: "TRUONG_PHONG + process owners",
+    request:
+      "Xac nhan route/user-label nao duoc thu, route nao out-of-scope va ai ky ket qua.",
+    output:
+      "Chi ghi label, route va stop condition; khong tao user that hay phe duyet UAT tu bao cao.",
+  },
+];
+
 const glossary = [
   ["PASS_LOCAL", "Da kiem tra noi bo bang audit/lint/build; chua phai phe duyet chay that."],
   ["Audit", "Kiem tra tu dong cac hang rao an toan va tai lieu bat buoc."],
@@ -327,7 +378,16 @@ for (const lane of departmentTaskRegister) {
   console.log(`- ${lane.department} (${lane.userLabel}) - ${lane.stage}: ${lane.task}`);
 }
 console.log("");
-console.log("## 8. Blocker theo phong/owner");
+console.log("## 8. Thong tin can nguoi dung tham quyen xac nhan");
+console.log("");
+console.log("Status: INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no user/account/secret collected.");
+console.log("");
+for (const item of authorityInformationRequests) {
+  console.log(`- ${item.code} - ${item.owner}: ${item.request} Ket qua an toan: ${item.output}`);
+}
+console.log("");
+console.log("## 9. Blocker theo phong/owner");
 console.log("");
 console.log("Status: BLOCKER_OWNER_LANES_READY / NO_GO / BLOCKED");
 console.log("Source: lib/production-readiness.ts -> PRODUCTION_BLOCKERS");
@@ -337,7 +397,7 @@ for (const lane of productionBlockerLanes) {
   console.log(`- ${lane.code} - ${lane.owner}: ${lane.blocker}. Viec can xac nhan: ${lane.next}`);
 }
 console.log("");
-console.log("## 9. Signed UAT route summary");
+console.log("## 10. Signed UAT route summary");
 console.log("");
 console.log("Status: SIGNED_UAT_ROUTE_SUMMARY_READY / NO_GO / BLOCKED");
 console.log("Source: docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md Section 5.2 and docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md");
@@ -347,7 +407,7 @@ for (const route of signedUatRouteSummary) {
   console.log(`- ${route.route} ${route.code} - ${route.owner}: ${route.status}. Can co: ${route.proof}`);
 }
 console.log("");
-console.log("## 10. Blocker can dung tham quyen xac nhan");
+console.log("## 11. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");

@@ -131,6 +131,15 @@ in-app review only. It does not send real email, create real tickets, assign
 real accounts, accept evidence, execute UAT, approve finance action, approve
 owner GO or mark production GO.
 
+`data-heu-authority-information-requests="P5-02"` adds a dry-run information
+request lane for cases where the system or report does not know enough to
+continue. It uses `INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED`, INFO-REQ-01
+through INFO-REQ-06 and owner labels BGH, IT_DATA, KHTC, PHAP_CHE, Audit,
+TRUONG_PHONG and process owners. Each row states the question to confirm and
+the safe output allowed in reports/software. It does not send real email,
+create tasks/tickets, create accounts, collect secrets, accept evidence,
+approve UAT, approve finance action, approve owner GO or mark production GO.
+
 `data-heu-signed-uat-route-summary="P5-02"` adds the read-only signed UAT route
 summary inside Master Control. It shows `SIGNED_UAT_ROUTE_SUMMARY_READY /
 NO_GO / BLOCKED`, UAT-ROUTE-01 through UAT-ROUTE-11, PENDING status, owner
@@ -160,6 +169,13 @@ owner labels and the next proof each owner must confirm outside
 Git/Codex/chat. This is reporting only: it does not send email, create real
 tasks/tickets, accept evidence, execute UAT, approve finance action, approve
 owner GO/NO-GO or mark production GO.
+The draft also prints `INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED` for
+unclear or missing authority inputs, including BGH recipient labels, IT_DATA
+mail configuration state, KHTC accounting user labels, PHAP_CHE legal/SOP
+questions, Audit evidence/redaction references and TRUONG_PHONG/process-owner
+route scope. This is reporting only and never collects individual email
+addresses, accounts, passwords, OTPs, SMTP values, raw evidence, vouchers, bank
+statements or raw PII.
 The draft also adds a signed UAT route summary from
 `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 and
 `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`, with

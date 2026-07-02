@@ -210,17 +210,17 @@ requireText(
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*blocker-owner lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*blocker-owner lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P5-02 blocker-owner lanes current control state",
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*controlled evidence and required owner signatures exist[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*controlled evidence and required owner signatures exist[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P5-02 signed UAT route summary current control state",
 );
 requireText(
   inventory,
-  /Accounting dashboard \/ BGH control[\s\S]*data-heu-signed-uat-route-summary="P5-02"[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  /Accounting dashboard \/ BGH control[\s\S]*data-heu-signed-uat-route-summary="P5-02"[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P5-02 in-app signed UAT route summary current control state",
 );
 requireText(

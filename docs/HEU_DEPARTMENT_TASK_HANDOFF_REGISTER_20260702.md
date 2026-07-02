@@ -24,6 +24,7 @@ approve finance action, approve owner GO or mark production GO.
 | NO_GO | Do not use for production or real financial/legal reliance. |
 | BLOCKED | A named owner must provide missing evidence, decision, access proof or correction. |
 | DEPT_TASK_REGISTER_READY | The task lanes are ready as a controlled draft; no email/task automation is enabled. |
+| INFO_REQUIRED_BY_AUTHORITY | A question is routed to the right owner label instead of Codex guessing or approving. |
 
 ## 3. Department Task Register
 
@@ -39,7 +40,23 @@ approve finance action, approve owner GO or mark production GO.
 | DAO_TAO | DAO_TAO_REVIEWER_LABEL | Program/class readiness | Review class/program readiness and Short Course blockers | Check class/course dependencies and training owner decisions | Signed Dao Tao/Short Course UAT proof | Attendance/payment period is closed without signed proof |
 | HR | HR_REVIEWER_LABEL | Short Course/allowance review | Review HR payment-related blocker only after source proof | Check role lane and required policy/evidence route | Signed HR/payment policy proof outside Git | Meal/allowance/HR payment is approved from PASS_LOCAL |
 
-## 4. Email And In-App Boundary
+## 4. Information Required From Authority
+
+When a report, UI panel or Codex run is missing a business decision, the safe
+state is `INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED`. The system must route
+the question to the owner label and wait for an external signed answer instead
+of guessing or marking GO.
+
+| Request | Owner label | Question to confirm | Safe output allowed in report/software | Stop condition |
+|---|---|---|---|---|
+| INFO-REQ-01 | BGH | Which recipient labels may receive the daily PASS_LOCAL report? | Approved alias/label names only | Individual email addresses or private lists are pasted into Git/Codex/chat |
+| INFO-REQ-02 | IT_DATA | Are GitHub Actions variables/secrets configured or still EMAIL_CONFIG_REQUIRED? | Config name plus readiness state only | SMTP value, password, token or secret is exposed |
+| INFO-REQ-03 | KHTC | Which accounting user labels may use Finance Desk read-only during Day-1? | User label, role and scope only | Real account, password, OTP or bank/payment data is requested |
+| INFO-REQ-04 | PHAP_CHE | Which legal/SOP question still needs a human-authority conclusion? | Blocker, owner and external signoff route | AI/Codex is asked to provide the legal conclusion |
+| INFO-REQ-05 | Audit | Which evidence reference, redaction class and reviewer are acceptable? | Controlled evidence ID/reference only | Raw evidence, PII, bank statement or voucher is exposed |
+| INFO-REQ-06 | TRUONG_PHONG + process owners | Which route/user-label may test, which route is out of scope and who signs? | Label, route, stop condition and signer owner | Real user is created or UAT is approved from the dry-run report |
+
+## 5. Email And In-App Boundary
 
 The same lane can appear in:
 
@@ -65,9 +82,10 @@ task label, Git commit, Codex/chat or workflow log:
 - Bank statements, vouchers, raw payment data, raw signed evidence or private
   contract bodies.
 
-## 6. Current Result
+## 7. Current Result
 
 DEPT_TASK_REGISTER_READY is PASS_LOCAL_DRY_RUN only. It means the department
-task lanes and user labels are documented for dry-run reporting. It does not
-approve production, UAT, evidence, finance action, access creation, email
-sending, task automation or owner GO/NO-GO.
+task lanes, user labels and INFO_REQUIRED_BY_AUTHORITY owner questions are
+documented for dry-run reporting. It does not approve production, UAT,
+evidence, finance action, access creation, email sending, task automation or
+owner GO/NO-GO.

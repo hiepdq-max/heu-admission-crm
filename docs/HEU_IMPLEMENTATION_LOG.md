@@ -6407,3 +6407,24 @@
   approve finance action, approve owner GO/NO-GO, run production migration or
   mark production GO.
 - It does not create real tasks/tickets and does not approve UAT.
+
+## 2026-07-02 - P5-02 Authority Information Request Guard
+
+- Extended `scripts/report-heu-daily-dry-run.mjs` so the dry-run daily report
+  prints `INFO_REQUIRED_BY_AUTHORITY / NO_GO / BLOCKED` for unclear inputs that
+  must be confirmed by the right authority instead of guessed by Codex.
+- Added `data-heu-authority-information-requests="P5-02"` to
+  `components/master-control/production-readiness-blocker-summary.tsx` so
+  Master Control shows INFO-REQ-01 through INFO-REQ-06 for BGH, IT_DATA, KHTC,
+  PHAP_CHE, Audit, TRUONG_PHONG and process owners.
+- Updated `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md` and
+  `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md` so each information
+  request names the owner question, safe output and stop condition.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and
+  `scripts/audit-heu-bgh-dashboard-spec.mjs` plus
+  `scripts/audit-heu-current-state-inventory.mjs` so the authority request
+  lane remains dry-run/read-only.
+- This is authority routing only. It does not send real email, create real tasks/tickets, create real accounts, collect secrets, collect passwords, collect OTPs, store SMTP credentials, accept evidence, execute UAT, approve finance action, approve owner GO/NO-GO, run production migration or mark production GO.

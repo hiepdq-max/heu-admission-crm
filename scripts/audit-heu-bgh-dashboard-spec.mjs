@@ -121,6 +121,11 @@ requireText(
 );
 requireText(
   spec,
+  /(?=[\s\S]*data-heu-authority-information-requests="P5-02")(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED)(?=[\s\S]*INFO-REQ-01)(?=[\s\S]*INFO-REQ-06)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, Audit,\s+TRUONG_PHONG and process owners)(?=[\s\S]*question to confirm)(?=[\s\S]*safe output allowed in reports\/software)(?=[\s\S]*does not send real email,\s+create tasks\/tickets, create accounts, collect secrets, accept evidence,\s+approve UAT, approve finance action, approve owner GO or mark production GO)/i,
+  "authority information request implementation note",
+);
+requireText(
+  spec,
   /(?=[\s\S]*HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702\.md)(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*required owner approvals)(?=[\s\S]*allowed recipient labels)(?=[\s\S]*manual enablement steps)(?=[\s\S]*stop conditions)(?=[\s\S]*does\s+not store recipient addresses, SMTP values or secrets in Git\/Codex\/chat)(?=[\s\S]*does\s+not send mail)(?=[\s\S]*does\s+not approve UAT,\s+evidence, finance action, owner GO\/NO-GO or production GO)/i,
   "daily email dispatch handoff implementation note",
 );
@@ -128,8 +133,14 @@ requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH
 
 requireText(
   departmentTaskRegister,
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_DRY_RUN)(?=[\s\S]*DEPT_TASK_REGISTER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*BGH_READONLY_REVIEWER_LABEL)(?=[\s\S]*IT_DATA_BUILD_OPERATOR_LABEL)(?=[\s\S]*KHTC_ACCOUNTING_OPERATOR_LABEL)(?=[\s\S]*PHAP_CHE_REVIEWER_LABEL)(?=[\s\S]*AUDIT_READONLY_REVIEWER_LABEL)(?=[\s\S]*TUYEN_SINH_OPERATOR_LABEL)(?=[\s\S]*CTHSSV_HANDOVER_OPERATOR_LABEL)(?=[\s\S]*DAO_TAO_REVIEWER_LABEL)(?=[\s\S]*HR_REVIEWER_LABEL)(?=[\s\S]*does not send email, create real tasks,\s+assign real user accounts)(?=[\s\S]*Forbidden Content)(?=[\s\S]*Passwords, temporary passwords, OTPs)(?=[\s\S]*Bank statements, vouchers, raw payment data)(?=[\s\S]*does not\s+approve production, UAT, evidence, finance action, access creation, email\s+sending, task automation or owner GO\/NO-GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_DRY_RUN)(?=[\s\S]*DEPT_TASK_REGISTER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY)(?=[\s\S]*BGH_READONLY_REVIEWER_LABEL)(?=[\s\S]*IT_DATA_BUILD_OPERATOR_LABEL)(?=[\s\S]*KHTC_ACCOUNTING_OPERATOR_LABEL)(?=[\s\S]*PHAP_CHE_REVIEWER_LABEL)(?=[\s\S]*AUDIT_READONLY_REVIEWER_LABEL)(?=[\s\S]*TUYEN_SINH_OPERATOR_LABEL)(?=[\s\S]*CTHSSV_HANDOVER_OPERATOR_LABEL)(?=[\s\S]*DAO_TAO_REVIEWER_LABEL)(?=[\s\S]*HR_REVIEWER_LABEL)(?=[\s\S]*does not send email, create real tasks,\s+assign real user accounts)(?=[\s\S]*Forbidden Content)(?=[\s\S]*Passwords, temporary passwords, OTPs)(?=[\s\S]*Bank statements, vouchers, raw payment data)(?=[\s\S]*It does not approve production, UAT,\s+evidence, finance action, access creation, email sending, task automation or\s+owner GO\/NO-GO)/i,
   "department task handoff register dry-run boundary",
+  "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
+);
+requireText(
+  departmentTaskRegister,
+  /(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY)(?=[\s\S]*INFO-REQ-01)(?=[\s\S]*INFO-REQ-06)(?=[\s\S]*BGH)(?=[\s\S]*IT_DATA)(?=[\s\S]*KHTC)(?=[\s\S]*PHAP_CHE)(?=[\s\S]*Audit)(?=[\s\S]*TRUONG_PHONG \+ process owners)(?=[\s\S]*Safe output allowed in report\/software)(?=[\s\S]*Raw evidence, PII, bank statement or voucher is exposed)(?=[\s\S]*Real user is created or UAT is approved from the dry-run report)/i,
+  "department task handoff authority information request boundary",
   "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
 );
 requireText(
@@ -159,6 +170,12 @@ requireText(
 );
 requireText(
   blockerSummary,
+  /(?=[\s\S]*AUTHORITY_INFORMATION_REQUESTS)(?=[\s\S]*data-heu-authority-information-requests="P5-02")(?=[\s\S]*Information required from authority: dry-run only)(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED)(?=[\s\S]*INFO-REQ-01)(?=[\s\S]*INFO-REQ-06)(?=[\s\S]*BGH)(?=[\s\S]*IT_DATA)(?=[\s\S]*KHTC)(?=[\s\S]*PHAP_CHE)(?=[\s\S]*Audit)(?=[\s\S]*TRUONG_PHONG \+ process owners)(?=[\s\S]*does not send email, create\s+tasks\/tickets, create accounts, collect secrets, accept evidence,\s+approve UAT, approve finance action, approve owner GO or mark\s+production GO)/i,
+  "P5-02 authority information request UI shell",
+  blockerSummaryPath,
+);
+requireText(
+  blockerSummary,
   /(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY)(?=[\s\S]*data-heu-signed-uat-route-summary="P5-02")(?=[\s\S]*Signed UAT route summary: read-only)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Status: PENDING)(?=[\s\S]*controlled evidence and\s+required owner signatures exist outside Git\/Codex\/chat)(?=[\s\S]*does not send email, create real tasks\/tickets, accept\s+evidence, execute UAT, approve finance action, approve owner GO\s+or mark production GO)/i,
   "P5-02 in-app signed UAT route summary UI shell",
   blockerSummaryPath,
@@ -173,6 +190,12 @@ requireText(
   dailyReportScript,
   /(?=[\s\S]*HEU daily PASS_LOCAL report draft)(?=[\s\S]*Mode: DRY_RUN only - no email sent, no real task created)(?=[\s\S]*Production: NO-GO)(?=[\s\S]*Muc tieu tong chi huy)(?=[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md)(?=[\s\S]*Khi may tinh tat)(?=[\s\S]*GitHub Actions co the chay PASS_LOCAL, audit, lint, build va report summary; khong tu code, tu deploy, tu approve)(?=[\s\S]*Thu tu giai doan)(?=[\s\S]*A Clean\/package dirty scope)(?=[\s\S]*E Remaining blockers)(?=[\s\S]*Build Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support)(?=[\s\S]*Human Authority Owner)(?=[\s\S]*khong production GO, khong email\/nhiem vu\/user that, khong UAT\/evidence\/finance\/owner approval)(?=[\s\S]*Nguoi dung thu va cach su dung)(?=[\s\S]*KHTC_ACCOUNTING_OPERATOR_LABEL)(?=[\s\S]*BGH_READONLY_REVIEWER_LABEL)(?=[\s\S]*AUDIT_READONLY_REVIEWER_LABEL)(?=[\s\S]*PHAP_CHE_REVIEWER_LABEL)(?=[\s\S]*Chu thich tu IT)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*Audit)(?=[\s\S]*Lint)(?=[\s\S]*Build)(?=[\s\S]*UAT)(?=[\s\S]*NO-GO)(?=[\s\S]*Viec theo tung phong\/user label)(?=[\s\S]*DEPT_TASK_REGISTER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*IT_DATA_BUILD_OPERATOR_LABEL)(?=[\s\S]*TUYEN_SINH_OPERATOR_LABEL)(?=[\s\S]*CTHSSV_HANDOVER_OPERATOR_LABEL)(?=[\s\S]*DAO_TAO_REVIEWER_LABEL \/ HR_REVIEWER_LABEL)(?=[\s\S]*Blocker theo phong\/owner)(?=[\s\S]*BLOCKER_OWNER_LANES_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*lib\/production-readiness\.ts -> PRODUCTION_BLOCKERS)(?=[\s\S]*Signed UAT route summary)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md Section 5\.2)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*PENDING)(?=[\s\S]*no email sent, no real task created, no evidence accepted, no UAT approved)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*passwords, OTPs, invite\/reset links, service-role keys, bank credentials, raw PII, bank statements, vouchers hoac raw payment data)/i,
   "P5-02 daily report dry-run script",
+  "scripts/report-heu-daily-dry-run.mjs",
+);
+requireText(
+  dailyReportScript,
+  /(?=[\s\S]*authorityInformationRequests)(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED)(?=[\s\S]*INFO-REQ-01)(?=[\s\S]*INFO-REQ-06)(?=[\s\S]*BGH)(?=[\s\S]*IT_DATA)(?=[\s\S]*KHTC)(?=[\s\S]*PHAP_CHE)(?=[\s\S]*Audit)(?=[\s\S]*TRUONG_PHONG \+ process owners)(?=[\s\S]*no email sent, no real task created, no user\/account\/secret collected)(?=[\s\S]*khong ghi dia chi email ca nhan)(?=[\s\S]*khong ghi SMTP value, password, token hoac secret)(?=[\s\S]*khong tao user that hay phe duyet UAT tu bao cao)/i,
+  "P5-02 daily report authority information request script",
   "scripts/report-heu-daily-dry-run.mjs",
 );
 requireText(
@@ -271,6 +294,9 @@ if (!/P5-02[\s\S]*lib\/production-readiness\.ts[\s\S]*PRODUCTION_BLOCKERS[\s\S]*
 if (!/P5-02[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*owner labels and minimum proof[\s\S]*no evidence is accepted[\s\S]*no production GO is marked/i.test(backlog)) {
   fail("Backlog P5-02 must reference the daily report signed UAT route summary.");
 }
+if (!/P5-02[\s\S]*authority information request lane[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED[\s\S]*INFO-REQ-01 through INFO-REQ-06[\s\S]*owner labels BGH, IT_DATA, KHTC, PHAP_CHE, Audit, TRUONG_PHONG and process owners[\s\S]*no email is sent, no real task\/ticket is created[\s\S]*no evidence is accepted[\s\S]*no production GO is marked/i.test(backlog)) {
+  fail("Backlog P5-02 must reference the authority information request dry-run lane.");
+}
 if (!/P0-02[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*npm\.cmd run audit:heu-ai-policy[\s\S]*direct AI policy\/cloud-agent plan audit before final handoff coverage[\s\S]*scheduled summary appends a dry-run daily report draft plus email readiness checklist but does not send email/i.test(backlog)) {
   fail("Backlog P0-02 must reference the PASS_LOCAL daily report dry-run summary and direct AI policy audit.");
 }
@@ -290,6 +316,9 @@ if (!/BGH operating dashboard specification[\s\S]*lib\/production-readiness\.ts[
 }
 if (!/BGH operating dashboard specification[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*owner labels and minimum proof[\s\S]*no production dashboard implementation, real email sending, real task\/ticket creation, real account assignment, evidence acceptance, UAT\/evidence\/finance\/owner approval or GO decision/i.test(checklist)) {
   fail("Production checklist must keep the daily report signed UAT route summary in dry-run mode.");
+}
+if (!/BGH operating dashboard specification[\s\S]*authority information request lane[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED[\s\S]*INFO-REQ-01 through INFO-REQ-06[\s\S]*owner labels BGH, IT_DATA, KHTC, PHAP_CHE, Audit, TRUONG_PHONG and process owners[\s\S]*no production dashboard implementation, real email sending, real task\/ticket creation, real account assignment, evidence acceptance, UAT\/evidence\/finance\/owner approval or GO decision/i.test(checklist)) {
+  fail("Production checklist must keep the authority information request lane in dry-run mode.");
 }
 
 if (!/\.github\/workflows\/heu-pass-local\.yml[\s\S]*audit:heu-ai-policy[\s\S]*report:heu-daily-dry-run[\s\S]*report:heu-email-readiness[\s\S]*email readiness checklist[\s\S]*without sending email/i.test(currentStateInventory)) {
@@ -313,11 +342,14 @@ if (!/M10 Dashboard[\s\S]*lib\/production-readiness\.ts[\s\S]*PRODUCTION_BLOCKER
 if (!/M10 Dashboard[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*no real email sending, no real task\/ticket creation and no real account assignment/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the P5-02 daily report signed UAT route summary.");
 }
-if (!/Accounting dashboard \/ BGH control[\s\S]*blocker-owner lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
+if (!/Accounting dashboard \/ BGH control[\s\S]*blocker-owner lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the P5-02 blocker-owner lane dry-run boundary.");
 }
-if (!/Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
+if (!/Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the P5-02 signed UAT route summary dry-run boundary.");
+}
+if (!/Accounting dashboard \/ BGH control[\s\S]*authority information request lanes[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, collecting secrets, accepting evidence or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
+  fail("Current-state inventory must mention the P5-02 authority information request dry-run boundary.");
 }
 
 if (!/P5-02 Daily Report And Task Handoff Dry-Run[\s\S]*data-heu-daily-report-task-handoff="P5-02"[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*does not send real\s+email, create real tasks[\s\S]*approve owner GO or mark\s+production GO/i.test(implementationLog)) {
@@ -343,6 +375,9 @@ if (!/P5-02 Daily Report Blocker Owner Lanes[\s\S]*scripts\/report-heu-daily-dry
 }
 if (!/P5-02 Daily Report Signed UAT Route Summary[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*owner labels[\s\S]*minimum\s+proof[\s\S]*does not send real email, create\s+real tasks\/tickets, create real accounts, accept evidence, execute UAT,\s+approve finance action, approve owner GO\/NO-GO, run production migration or\s+mark production GO/i.test(implementationLog)) {
   fail("Implementation log must record the daily report signed UAT route summary boundary.");
+}
+if (!/P5-02 Authority Information Request Guard[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED[\s\S]*data-heu-authority-information-requests="P5-02"[\s\S]*INFO-REQ-01 through INFO-REQ-06[\s\S]*BGH, IT_DATA, KHTC,[\s\S]*TRUONG_PHONG and process owners[\s\S]*HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702\.md[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*audit-heu-bgh-dashboard-spec\.mjs[\s\S]*does not send real\s+email, create real\s+tasks\/tickets, create real accounts, collect secrets[\s\S]*approve\s+finance action, approve owner GO\/NO-GO, run production migration or mark\s+production GO/i.test(implementationLog)) {
+  fail("Implementation log must record the authority information request dry-run boundary.");
 }
 
 const agents = read("AGENTS.md");
