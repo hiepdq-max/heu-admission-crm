@@ -58,6 +58,8 @@ for (const file of [
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "components/reports/report-view-source-map-panel.tsx",
@@ -247,6 +249,30 @@ fastRequire(
   "SOP-to-data PASS_LOCAL SOP loop gate",
   "docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md",
 );
+
+fastSection("2026-07-03 - P9-01 Short Course Control Propagation", [
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
+  "HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "SC-SIGN-01` through `SC-SIGN-06",
+  "SC-UAT-LEDGER-01` through",
+  "SC-UAT-LEDGER-08",
+  "SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED",
+  "SC_UAT_RESULT_READY / NO_GO / BLOCKED",
+  "audit-heu-short-course-attendance-payment-gap-pack.mjs",
+  "audit-ttgdtx-release-gates.mjs",
+  "audit-heu-implementation-log.mjs",
+  "control-surface synchronization only",
+  "does not execute UAT",
+  "accept evidence",
+  "approve attendance lock",
+  "approve payment",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+]);
 
 fastSection("2026-07-03 - P0 Register SOP Loop State Backlog Alignment", [
   "HEU_CURRENT_STATE_INVENTORY.md",

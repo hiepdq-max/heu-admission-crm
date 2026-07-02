@@ -1,5 +1,90 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P9-01 Short Course Control Propagation
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` so P9-01 records the
+  owner signoff manifest and UAT result ledger alongside the original Short
+  Course gap pack.
+- Propagated `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`,
+  `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`,
+  `SC-SIGN-01` through `SC-SIGN-06`, `SC-UAT-LEDGER-01` through
+  `SC-UAT-LEDGER-08`, `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED` and
+  `SC_UAT_RESULT_READY / NO_GO / BLOCKED` into the root control surfaces.
+- Extended `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` to guard the propagation.
+- PASS_LOCAL boundary: this is control-surface synchronization only. It does not execute UAT,
+  accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - P9-01 Short Course UAT Result Ledger Guard
+
+- Added `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
+  DRAFT_CONTROL result-ledger template for Short Course signed UAT preparation.
+- Added `SC-UAT-LEDGER-01` through `SC-UAT-LEDGER-08` with
+  `SC_UAT_RESULT_READY / NO_GO / BLOCKED` decision values, linking each UAT
+  row back to the matching SC-REV review handoff row and SC-SIGN owner signoff
+  row.
+- Added `data-heu-short-course-uat-result-ledger="P9-01_UAT_RESULT_LEDGER"`
+  to the Short Course gap-pack UI so operators can reach the ledger path from
+  the same PASS_LOCAL control surface.
+- Added `table-fixed`, `whitespace-normal` and `break-words` guards so the
+  ledger table stays readable when evidence-reference and stop-condition text
+  is long.
+- Extended `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so
+  the ledger template, UI panel, document routing and boundary fail locally if
+  removed.
+- PASS_LOCAL boundary: this prepares the UAT result ledger only. It does not execute UAT,
+  accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-02 - P9-01 Short Course Owner Signoff Manifest
+
+- Added `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md` as the
+  controlled owner-signoff template for Short Course attendance, BHXH/chinh
+  sach, meal/allowance, invoice/payment, report-view reliance and final UAT
+  trace decisions.
+- Added `SC-SIGN-01` through `SC-SIGN-06` with required owner groups and
+  `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED` decision values.
+- Added `data-heu-short-course-owner-signoff="P9-01_OWNER_SIGNOFF_MANIFEST"`
+  to the Short Course gap-pack UI so operators can see which owner decisions
+  are still `PENDING_OWNER`.
+- Updated the Short Course gap-pack document to route owner signoff through the
+  new manifest and controlled evidence references outside Codex/chat.
+- Added `min-w-0`, `max-w-full` and `break-words` guards so the manifest path,
+  owner groups and pending-owner cards stay readable on narrow screens.
+- PASS_LOCAL boundary: this is a signoff-preparation manifest only. It does not
+  approve attendance lock, BHXH decision, meal/allowance payment, HR payment,
+  invoice/payment verification, report-view reliance, UAT acceptance, evidence
+  acceptance, owner GO/NO-GO or production GO.
+
+## 2026-07-02 - P9-01 Short Course Review Handoff
+
+- Added `data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"` to
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx` so
+  the Short Course gap pack shows a concrete owner-review queue before any
+  signed UAT or finance reliance discussion.
+- Added `SC-REV-01` through `SC-REV-06` for attendance lock packet,
+  BHXH/chinh sach decision, meal/allowance formula, invoice/payment
+  reconciliation, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` reliance and final UAT
+  trace review.
+- Updated `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
+  with the same review handoff queue and `SC_REVIEW_READY / NO_GO / BLOCKED`
+  preparation status.
+- Extended `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so
+  the review handoff UI, document queue and PASS_LOCAL boundary fail locally if
+  removed.
+- Added `table-fixed`, fixed-width review columns, `whitespace-normal` and
+  `break-words` guards so long owner/proof/stop-condition text stays readable
+  inside the review queue without changing any gate or decision.
+- PASS_LOCAL boundary: this prepares review and handoff only. It does not
+  approve attendance lock, BHXH decision, meal/allowance payment, HR payment,
+  invoice/payment verification, report-view reliance, UAT acceptance, evidence
+  acceptance, owner GO/NO-GO or production GO.
+
 ## 2026-07-03 - P8-01 HOU UAT Result Ledger Guard
 
 - Added `docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the

@@ -46,6 +46,8 @@ for (const file of [
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
@@ -270,7 +272,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Short Course attendance\/payment gap pack[\s\S]*\/short-course[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*SC-AP-01 through SC-AP-08[\s\S]*PASS_LOCAL; no attendance lock, BHXH decision, meal\/allowance payment, HR payment, invoice\/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance or production GO approved/i,
+  /Short Course attendance\/payment gap pack[\s\S]*\/short-course[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\.md[\s\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*SC-AP-01 through SC-AP-08[\s\S]*SC-REV-01 through SC-REV-06[\s\S]*SC-SIGN-01 through SC-SIGN-06[\s\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*SC_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*SHORT_COURSE_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*SC_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*PASS_LOCAL; no attendance lock, BHXH decision, meal\/allowance payment, HR payment, invoice\/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance, owner GO\/NO-GO or production GO approved/i,
   "Short Course attendance/payment gap-pack current control state",
 );
 requireText(

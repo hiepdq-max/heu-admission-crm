@@ -96,7 +96,41 @@ until signed attendance/payment UAT, policy signoff, source reconciliation,
 period-lock/reversal proof, audit evidence and owner decision evidence are
 completed outside Codex/chat.
 
-## 8. Mail/Drive Payment Intake Sample
+## 8. Review Handoff Queue
+
+The in-app review handoff panel uses `SC_REVIEW_READY / NO_GO / BLOCKED` only
+as a preparation status. It does not replace signed owner decisions, UAT
+acceptance or evidence acceptance outside Codex/chat.
+
+| Review ID | Owner | Review point | Required proof | Stop condition |
+|---|---|---|---|---|
+| SC-REV-01 | Dao Tao | Attendance lock packet | Class list, session dates, locked attendance count, signer and exception route | Attendance can still be edited, signer is missing or exception route is unclear |
+| SC-REV-02 | CTHSSV + Phap Che | BHXH/chinh sach decision | Policy basis, eligibility decision, evidence class and owner/legal signer | Policy decision is oral, unsigned or not tied to controlled evidence |
+| SC-REV-03 | HR + KHTC | Meal/allowance formula | Formula version, attendance source, exception handling and payment boundary | System can calculate or pay before policy signoff and signed UAT |
+| SC-REV-04 | KHTC | Invoice/payment reconciliation | Invoice/payment source match, voucher reference, reversal rule and period-lock rule | Payment is marked verified without voucher, reversal or source reconciliation |
+| SC-REV-05 | BGH + Audit | Report view reliance | `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` DQ result, source map and owner signoff route | Dashboard is used for reliance before report-view owner signoff |
+| SC-REV-06 | IT_DATA + Audit | Final UAT trace | `SC-UAT-01` through `SC-UAT-08` result, actor, evidence ref and reviewer decision | PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO |
+
+## 9. Owner Signoff Manifest
+
+Owner signoff is prepared through
+`docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md` with
+`SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED` and `SC-SIGN-01` through
+`SC-SIGN-06`. The manifest is a preparation template only; it does not prove
+owner approval until signatures and controlled evidence references exist
+outside Codex/chat.
+
+## 10. UAT Result Ledger Template
+
+UAT results are prepared through
+`docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` with
+`SC_UAT_RESULT_READY / NO_GO / BLOCKED` and `SC-UAT-LEDGER-01` through
+`SC-UAT-LEDGER-08`. The ledger maps each UAT case back to review handoff rows
+and owner signoff rows, with controlled evidence references outside
+Codex/chat. It does not execute UAT, accept evidence or approve owner
+GO/NO-GO.
+
+## 11. Mail/Drive Payment Intake Sample
 
 The sample file
 `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md` records a

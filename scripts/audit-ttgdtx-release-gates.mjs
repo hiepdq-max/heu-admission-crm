@@ -261,6 +261,8 @@ const requiredFiles = [
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
@@ -3784,14 +3786,58 @@ requireText(
 
 requireText(
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*SC-AP-01)(?=[\\s\\S]*SC-AP-08)(?=[\\s\\S]*SC_ATTENDANCE_PAYMENT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\\s\\S]*SC-UAT-01)(?=[\\s\\S]*SC-UAT-08)(?=[\\s\\S]*does not approve attendance lock, BHXH decision,\\s+meal\\/allowance payment, HR payment, invoice\\/payment verification, statutory\\s+accounting, period close, UAT acceptance, evidence acceptance, owner GO or\\s+production GO)", "i"),
   "Short Course attendance/payment gap pack boundary",
+);
+
+requireText(
+  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*SHORT_COURSE_OWNER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*SC-SIGN-01)(?=[\\s\\S]*SC-SIGN-06)(?=[\\s\\S]*It does not prove that any owner has signed)", "i"),
+  "Short Course owner signoff manifest boundary",
+);
+
+requireText(
+  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*SC_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*SC-UAT-LEDGER-01)(?=[\\s\\S]*SC-UAT-LEDGER-08)(?=[\\s\\S]*does not execute UAT,\\s+accept evidence, approve attendance lock, approve payment, approve owner\\s+GO\\/NO-GO or mark production GO)(?=[\\s\\S]*does not prove that any UAT case has been executed or\\s+accepted)", "i"),
+  "Short Course UAT result ledger template boundary",
 );
 
 requireText(
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   literalPattern("(?=[\\s\\S]*data-heu-short-course-attendance-payment-gap-pack=\"P9-01\")(?=[\\s\\S]*Short Course Attendance\\/Payment Gap Pack:\\s*PASS_LOCAL only)(?=[\\s\\S]*SC-AP-01)(?=[\\s\\S]*SC-AP-08)(?=[\\s\\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\\s\\S]*PASS_LOCAL does not approve attendance lock, BHXH decision,\\s+meal\\/allowance payment, HR payment, invoice\\/payment verification,\\s+period close, statutory accounting, UAT acceptance, evidence\\s+acceptance, owner GO or production GO)", "i"),
   "visible Short Course attendance/payment gap pack",
+);
+
+requireText(
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  literalPattern("(?=[\\s\\S]*data-heu-short-course-owner-signoff=\"P9-01_OWNER_SIGNOFF_MANIFEST\")(?=[\\s\\S]*SHORT_COURSE_OWNER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*SC-SIGN-01)(?=[\\s\\S]*SC-SIGN-06)(?=[\\s\\S]*PENDING_OWNER)", "i"),
+  "visible Short Course owner signoff manifest",
+);
+
+requireText(
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  literalPattern("(?=[\\s\\S]*data-heu-short-course-uat-result-ledger=\"P9-01_UAT_RESULT_LEDGER\")(?=[\\s\\S]*SC_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*SC-UAT-LEDGER-01)(?=[\\s\\S]*SC-UAT-LEDGER-08)(?=[\\s\\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*controlled evidence ref)", "i"),
+  "visible Short Course UAT result ledger",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  literalPattern("(?=[\\s\\S]*P9-01[\\s\\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\\.md)(?=[\\s\\S]*P9-01[\\s\\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*P9-01[\\s\\S]*SC-SIGN-01 through SC-SIGN-06)(?=[\\s\\S]*P9-01[\\s\\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08)(?=[\\s\\S]*P9-01[\\s\\S]*SHORT_COURSE_OWNER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*P9-01[\\s\\S]*SC_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*P9-01[\\s\\S]*owner GO\\/NO-GO or production GO)", "i"),
+  "P9-01 Short Course owner/UAT ledger propagation",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  literalPattern("(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\\.md)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*SC-SIGN-01 through SC-SIGN-06)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08)(?=[\\s\\S]*owner signoff manifest completion, UAT result ledger completion and report-view owner signoff still required)", "i"),
+  "production checklist Short Course owner/UAT ledger propagation",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  literalPattern("(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\\.md)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*SC-SIGN-01 through SC-SIGN-06)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08)(?=[\\s\\S]*Short Course attendance\\/payment gap pack[\\s\\S]*owner GO\\/NO-GO or production GO approved)", "i"),
+  "current-state Short Course owner/UAT ledger propagation",
 );
 
 requireText(

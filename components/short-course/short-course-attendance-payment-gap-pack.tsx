@@ -83,9 +83,160 @@ const gapRows = [
   },
 ];
 
+const reviewHandoffRows = [
+  {
+    code: "SC-REV-01",
+    owner: "Dao tao",
+    review: "Attendance lock packet",
+    proof:
+      "Class list, session dates, locked attendance count, signer and exception route.",
+    stop: "Attendance can still be edited, signer is missing or exception route is unclear.",
+  },
+  {
+    code: "SC-REV-02",
+    owner: "CTHSSV + Phap Che",
+    review: "BHXH/chinh sach decision",
+    proof:
+      "Policy basis, eligibility decision, evidence class and owner/legal signer.",
+    stop: "Policy decision is oral, unsigned or not tied to controlled evidence.",
+  },
+  {
+    code: "SC-REV-03",
+    owner: "HR + KHTC",
+    review: "Meal/allowance formula",
+    proof:
+      "Formula version, attendance source, exception handling and payment boundary.",
+    stop: "System can calculate or pay before policy signoff and signed UAT.",
+  },
+  {
+    code: "SC-REV-04",
+    owner: "KHTC",
+    review: "Invoice/payment reconciliation",
+    proof:
+      "Invoice/payment source match, voucher reference, reversal rule and period-lock rule.",
+    stop: "Payment is marked verified without voucher, reversal or source reconciliation.",
+  },
+  {
+    code: "SC-REV-05",
+    owner: "BGH + Audit",
+    review: "Report view reliance",
+    proof:
+      "RV_SHORT_COURSE_ATTENDANCE_PAYMENT DQ result, source map and owner signoff route.",
+    stop: "Dashboard is used for reliance before report-view owner signoff.",
+  },
+  {
+    code: "SC-REV-06",
+    owner: "IT_DATA + Audit",
+    review: "Final UAT trace",
+    proof:
+      "SC-UAT-01 through SC-UAT-08 result, actor, evidence ref and reviewer decision.",
+    stop: "PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO.",
+  },
+];
+
+const ownerSignoffRows = [
+  {
+    code: "SC-SIGN-01",
+    owner: "Dao tao",
+    decision: "Attendance lock packet and exception route",
+  },
+  {
+    code: "SC-SIGN-02",
+    owner: "CTHSSV + Phap Che",
+    decision: "BHXH/chinh sach eligibility and legal basis",
+  },
+  {
+    code: "SC-SIGN-03",
+    owner: "HR + KHTC",
+    decision: "Meal/allowance formula boundary",
+  },
+  {
+    code: "SC-SIGN-04",
+    owner: "KHTC",
+    decision: "Invoice/payment reconciliation, voucher and reversal rule",
+  },
+  {
+    code: "SC-SIGN-05",
+    owner: "BGH + Audit",
+    decision: "RV_SHORT_COURSE_ATTENDANCE_PAYMENT reliance decision",
+  },
+  {
+    code: "SC-SIGN-06",
+    owner: "IT_DATA + Audit",
+    decision: "Final UAT trace and access-scope check",
+  },
+];
+
+const uatResultLedgerRows = [
+  {
+    code: "SC-UAT-LEDGER-01",
+    uat: "SC-UAT-01",
+    review: "SC-REV-01",
+    signoff: "SC-SIGN-01",
+    evidence: "Attendance readiness screenshot/ref plus route/user label.",
+    stop: "Attendance is shown as final for payment.",
+  },
+  {
+    code: "SC-UAT-LEDGER-02",
+    uat: "SC-UAT-02",
+    review: "SC-REV-01",
+    signoff: "SC-SIGN-01",
+    evidence: "Locked attendance signer, timestamp and exception route ref.",
+    stop: "Attendance can be changed without trace.",
+  },
+  {
+    code: "SC-UAT-LEDGER-03",
+    uat: "SC-UAT-03",
+    review: "SC-REV-02",
+    signoff: "SC-SIGN-02",
+    evidence: "Policy/legal basis, eligibility and evidence-class ref.",
+    stop: "Policy decision bypasses legal/owner review.",
+  },
+  {
+    code: "SC-UAT-LEDGER-04",
+    uat: "SC-UAT-04",
+    review: "SC-REV-03",
+    signoff: "SC-SIGN-03",
+    evidence: "Formula version, attendance source and blocked-payment proof.",
+    stop: "System calculates or pays before policy signoff.",
+  },
+  {
+    code: "SC-UAT-LEDGER-05",
+    uat: "SC-UAT-05",
+    review: "SC-REV-04",
+    signoff: "SC-SIGN-04",
+    evidence: "Invoice/payment source match, voucher ref and reversal/lock rule.",
+    stop: "Payment is verified without voucher or source reconciliation.",
+  },
+  {
+    code: "SC-UAT-LEDGER-06",
+    uat: "SC-UAT-06",
+    review: "SC-REV-05",
+    signoff: "SC-SIGN-05",
+    evidence: "RV_SHORT_COURSE_ATTENDANCE_PAYMENT DQ/source/signoff ref.",
+    stop: "Dashboard is relied on before signed report-view owner decision.",
+  },
+  {
+    code: "SC-UAT-LEDGER-07",
+    uat: "SC-UAT-07",
+    review: "SC-REV-06",
+    signoff: "SC-SIGN-06",
+    evidence: "Negative route/user evidence ref with scoped result.",
+    stop: "Out-of-scope staff see private payment or policy detail.",
+  },
+  {
+    code: "SC-UAT-LEDGER-08",
+    uat: "SC-UAT-08",
+    review: "SC-REV-06",
+    signoff: "SC-SIGN-06",
+    evidence: "Actor, owner, evidence ref, reviewer and decision trace row.",
+    stop: "PASS_LOCAL, Codex or AI output is treated as owner approval.",
+  },
+];
+
 function StatusBadge({ children }: { children: string }) {
   return (
-    <span className="inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+    <span className="inline-flex max-w-full rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-left text-xs font-medium leading-5 text-amber-700">
       {children}
     </span>
   );
@@ -219,6 +370,176 @@ export function ShortCourseAttendancePaymentGapPack() {
                 {row.gap}
               </p>
             </div>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"
+        data-heu-short-course-review-decision="SC_REVIEW_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ClipboardCheck className="size-4 text-zinc-600" />
+              <span>Short Course review handoff</span>
+            </div>
+            <p className="mt-2 max-w-4xl text-sm leading-6 text-zinc-600">
+              This checklist turns the P9-01 gap pack into a review queue for
+              Dao tao, CTHSSV, KHTC, HR, Phap Che, BGH, IT_DATA and Audit. It
+              prepares owner review only; signatures and evidence acceptance
+              still happen outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>SC_REVIEW_READY / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Review</th>
+                <th className="w-[14%] px-4 py-3">Owner</th>
+                <th className="w-[20%] px-4 py-3">What to check</th>
+                <th className="w-[24%] px-4 py-3">Required proof</th>
+                <th className="w-[24%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {reviewHandoffRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4">
+                    <p className="font-mono text-xs text-zinc-500">
+                      {row.code}
+                    </p>
+                    <p className="mt-1 font-medium text-zinc-950">
+                      {row.review}
+                    </p>
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-700">
+                    {row.owner}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    Owner checks current route, source and blocker state before
+                    any signed UAT result.
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-uat-result-ledger="P9-01_UAT_RESULT_LEDGER"
+        data-heu-short-course-uat-result-decision="SC_UAT_RESULT_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ListChecks className="size-4 text-zinc-600" />
+              <span>Short Course UAT result ledger</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Record SC-UAT-01 through SC-UAT-08 in
+              docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md
+              before owner signoff. Each row needs a controlled evidence ref,
+              reviewer and linked SC-REV/SC-SIGN decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>SC_UAT_RESULT_READY / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[1020px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[16%] px-4 py-3">Ledger</th>
+                <th className="w-[12%] px-4 py-3">UAT</th>
+                <th className="w-[12%] px-4 py-3">Review</th>
+                <th className="w-[12%] px-4 py-3">Signoff</th>
+                <th className="w-[24%] px-4 py-3">Evidence ref</th>
+                <th className="w-[24%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {uatResultLedgerRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.uat}
+                  </td>
+                  <td className="break-words px-4 py-4 text-zinc-700">
+                    {row.review}
+                  </td>
+                  <td className="break-words px-4 py-4 text-zinc-700">
+                    {row.signoff}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.evidence}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 bg-zinc-50 p-5"
+        data-heu-short-course-owner-signoff="P9-01_OWNER_SIGNOFF_MANIFEST"
+        data-heu-short-course-owner-decision="SHORT_COURSE_OWNER_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ShieldCheck className="size-4 text-zinc-600" />
+              <span>Short Course owner signoff manifest</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Owner decisions must be recorded outside Codex/chat in
+              docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md with
+              controlled evidence references. Missing, unsigned, NO-GO or
+              BLOCKED owner decisions keep Short Course production locked.
+            </p>
+          </div>
+          <StatusBadge>SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {ownerSignoffRows.map((row) => (
+            <article
+              key={row.code}
+              className="min-w-0 overflow-hidden rounded-md border border-zinc-200 bg-white p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-mono text-xs text-zinc-500">
+                  {row.code}
+                </span>
+                <span className="shrink-0 rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+                  PENDING_OWNER
+                </span>
+              </div>
+              <p className="mt-3 break-words text-sm font-semibold text-zinc-950">
+                {row.owner}
+              </p>
+              <p className="mt-2 break-words text-sm leading-6 text-zinc-600">
+                {row.decision}
+              </p>
+            </article>
           ))}
         </div>
       </div>
