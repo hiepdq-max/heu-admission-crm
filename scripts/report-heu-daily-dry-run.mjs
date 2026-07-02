@@ -50,6 +50,53 @@ const trialUsers = [
   },
 ];
 
+const financeDayOneTrialStatus = [
+  {
+    label: "REAL_KHTC_TTGDTX_OPERATOR_01",
+    userUse:
+      "Mo /finance-desk de xem tong hop cong no, import readiness, source-control va dashboard P2-18 o che do read-only.",
+    expectedStatus:
+      "FIN_DAY1_PREFLIGHT_READY / NO_GO / BLOCKED and FIN_DAY1_RESULT_READY / NO_GO / BLOCKED.",
+    externalProof:
+      "Day-1 result ledger, controlled evidence IDs and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED recorded outside Git/Codex/chat.",
+    stop:
+      "Stop neu thay nut ghi so, duyet chi, chuyen tien, bank instruction, raw bank data, password, OTP, invite/reset link hoac out-of-scope totals.",
+  },
+  {
+    label: "REAL_BGH_READONLY_01",
+    userUse:
+      "Doc bao cao tien do, Finance Desk blocker va owner decision route; khong sua so lieu.",
+    expectedStatus:
+      "P5_03_CONTROLLED_TRIAL_READY / NO_GO / BLOCKED stays pending until signed evidence exists.",
+    externalProof:
+      "Owner review note and final GO/NO-GO route stay outside Git/Codex/chat.",
+    stop:
+      "Stop neu PASS_LOCAL bi hieu la owner approval, UAT acceptance, finance reliance hoac production GO.",
+  },
+  {
+    label: "REAL_AUDIT_READONLY_01",
+    userUse:
+      "Kiem tra redaction, evidence reference, audit trail va negative-control denial.",
+    expectedStatus:
+      "P0-10 evidence redaction and P6-03 audit-log routes remain PENDING until signed.",
+    externalProof:
+      "Controlled evidence reference, redaction reviewer and audit trace proof outside Git/Codex/chat.",
+    stop:
+      "Stop neu raw evidence, voucher, PII, bank statement, payment data hoac secret xuat hien trong report/email/log.",
+  },
+  {
+    label: "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    userUse:
+      "Dung de xac nhan tai khoan ngoai pham vi chi thay BLOCKED hoac EMPTY_SCOPED_STATE.",
+    expectedStatus:
+      "P6_04_PRELOGIN_READY / NO_GO / BLOCKED and access closure stay required before expansion.",
+    externalProof:
+      "Negative-control screenshot/reference is redacted and stored outside Git/Codex/chat.",
+    stop:
+      "Stop neu tai khoan ngoai pham vi thay Finance Desk totals, source evidence, audit rows, settings or protected TTGDTX data.",
+  },
+];
+
 const taskLanes = [
   {
     owner: "IT_DATA",
@@ -355,6 +402,18 @@ console.log("## 4. Nguoi dung thu va cach su dung");
 console.log("");
 for (const user of trialUsers) {
   console.log(`- ${user.label}: ${user.use}`);
+}
+console.log("");
+console.log("## 4A. Finance Day-1 controlled trial plain-language status");
+console.log("");
+console.log("Status: FIN_DAY1_REPORT_READY / NO_GO / BLOCKED");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no account assigned, no evidence accepted.");
+console.log("");
+for (const item of financeDayOneTrialStatus) {
+  console.log(`- ${item.label}: ${item.userUse}`);
+  console.log(`  Expected status: ${item.expectedStatus}`);
+  console.log(`  External proof: ${item.externalProof}`);
+  console.log(`  Stop: ${item.stop}`);
 }
 console.log("");
 console.log("## 5. Viec can giao");

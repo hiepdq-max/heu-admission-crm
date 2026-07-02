@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Day-1 Plain-Language Daily Report Lane
+
+- Updated `scripts/report-heu-daily-dry-run.mjs` with
+  `FIN_DAY1_REPORT_READY / NO_GO / BLOCKED` so the dry-run daily report shows
+  which Finance Day-1 user labels are expected to use Finance Desk, how they
+  use it, what status they should see, which proof stays outside Git/Codex/chat
+  and when to stop.
+- Tightened `scripts/audit-heu-bgh-dashboard-spec.mjs` so the Finance Day-1
+  report lane keeps `REAL_KHTC_TTGDTX_OPERATOR_01`,
+  `REAL_BGH_READONLY_01`, `REAL_AUDIT_READONLY_01` and
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01` as dry-run labels only.
+- Boundary: this is report/email dry-run support only. It does not send real
+  email, create real tasks, assign real accounts, accept evidence, execute UAT,
+  approve finance reliance, approve access closure, approve owner GO/NO-GO,
+  move money, issue bank instructions or mark production GO.
+
 ## 2026-07-02 - Finance Day-1 Controlled Trial Preflight Summary
 
 - Updated `components/finance/finance-day-one-accountant-handoff.tsx` with

@@ -215,6 +215,12 @@ requireText(
 );
 requireText(
   dailyReportScript,
+  /(?=[\s\S]*financeDayOneTrialStatus)(?=[\s\S]*Finance Day-1 controlled trial plain-language status)(?=[\s\S]*FIN_DAY1_REPORT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL_KHTC_TTGDTX_OPERATOR_01)(?=[\s\S]*REAL_BGH_READONLY_01)(?=[\s\S]*REAL_AUDIT_READONLY_01)(?=[\s\S]*REAL_OUT_OF_SCOPE_NEGATIVE_01)(?=[\s\S]*FIN_DAY1_PREFLIGHT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*FIN_DAY1_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*P5_03_CONTROLLED_TRIAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*ACCESS_RETAIN \/ REVOKE_OR_REDUCE \/ BLOCKED)(?=[\s\S]*no email sent, no real task created, no account assigned, no evidence accepted)(?=[\s\S]*bank instruction)(?=[\s\S]*password, OTP, invite\/reset link)(?=[\s\S]*raw evidence, voucher, PII, bank statement, payment data hoac secret)(?=[\s\S]*out-of-scope totals)/i,
+  "P5-03 Finance Day-1 plain-language daily report lane",
+  "scripts/report-heu-daily-dry-run.mjs",
+);
+requireText(
+  dailyReportScript,
   /(?=[\s\S]*authorityInformationRequests)(?=[\s\S]*INFO_REQUIRED_BY_AUTHORITY \/ NO_GO \/ BLOCKED)(?=[\s\S]*INFO-REQ-01)(?=[\s\S]*INFO-REQ-06)(?=[\s\S]*BGH)(?=[\s\S]*IT_DATA)(?=[\s\S]*KHTC)(?=[\s\S]*PHAP_CHE)(?=[\s\S]*Audit)(?=[\s\S]*TRUONG_PHONG \+ process owners)(?=[\s\S]*no email sent, no real task created, no user\/account\/secret collected)(?=[\s\S]*khong ghi dia chi email ca nhan)(?=[\s\S]*khong ghi SMTP value, password, token hoac secret)(?=[\s\S]*khong tao user that hay phe duyet UAT tu bao cao)/i,
   "P5-02 daily report authority information request script",
   "scripts/report-heu-daily-dry-run.mjs",
