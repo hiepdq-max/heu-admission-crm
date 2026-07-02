@@ -178,6 +178,15 @@
   `data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"` so HOU, TTGDTX,
   short-course and general admission workspaces have a consistent quick
   business-entry surface.
+- Tightened `components/leads/lead-list.tsx` with
+  `data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"` so scoped lead
+  lists can be filtered quickly by all, follow-up, unassigned, document,
+  high-priority and active groups without changing server-side scope.
+- Added `data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"` and
+  `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"` so scoped
+  lead lists can search locally by name, code, phone, major, source, segment,
+  owner and HOU labels, then open the first match with Enter or use the top
+  quick-open result cards.
 - Added `min-w-0`, `overflow-hidden`, `break-words` and `truncate` guards so
   long segment names, owner departments, partner models and operation labels do
   not force horizontal overflow.
@@ -187,6 +196,8 @@
   role scope, broaden segment access, create accounts, create leads by itself,
   import data, execute UAT, accept evidence, approve finance action, approve
   owner GO/NO-GO, run production migration or mark production GO.
+- Boundary token: does not change role scope; execute UAT; approve finance
+  action; mark production GO.
 
 ## 2026-07-02 - Quick Access Overflow Guard
 

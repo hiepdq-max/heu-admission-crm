@@ -219,6 +219,11 @@ requireText(
 );
 requireText(
   leadListPath,
+  /(?=[\s\S]*useRouter)(?=[\s\S]*normalizeSearchText)(?=[\s\S]*buildLeadSearchIndex)(?=[\s\S]*leadSearchIndex)(?=[\s\S]*handleSearchKeyDown)(?=[\s\S]*router\.push\(`\/leads\/\$\{firstQuickLead\.id\}`\))(?=[\s\S]*data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH")(?=[\s\S]*data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS")(?=[\s\S]*const quickLeadMatches = filteredLeads\.slice\(0, 3\))(?=[\s\S]*aria-label=)(?=[\s\S]*setSearchQuery\(""\))(?=[\s\S]*lg:hidden)(?=[\s\S]*hidden overflow-x-auto lg:block)/,
+  "P0-05 lead list quick search and mobile quick open",
+);
+requireText(
+  leadListPath,
   /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
   "lead list quick filter overflow guards",
 );
@@ -239,7 +244,7 @@ requireText(
 );
 requireText(
   implementationLogPath,
-  /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
+  /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"[\s\S]*data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
   "P0-05 segment workspace quick access implementation log boundary",
 );
 
