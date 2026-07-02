@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Real Data Logic Professional Legal Confirmation Register
+
+- Added `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  as a PASS_LOCAL_CONFIRMATION_REGISTER for logic, professional, legal and
+  real-data confirmation before any reliance on real HEU data.
+- The register separates current local controls from missing items and uncertain
+  items for BGH, IT_DATA, KHTC, PHAP_CHE, Audit, DAO_TAO, CTHSSV, HOU and Short
+  Course owners to confirm or supplement.
+- It records `REAL_DATA_CONFIRM_READY / NO_GO / BLOCKED`, `LOGIC-01` through
+  `LOGIC-10`, `PRO-01` through `PRO-10`, `LEGAL-01` through `LEGAL-10`,
+  `DATA-01` through `DATA-10`, `MISS-01` through `MISS-10` and `UNCERTAIN-01`
+  through `UNCERTAIN-10`.
+- Boundary: this register does not accept evidence, approve UAT, approve
+  finance reliance, approve legal position, grant access, run migration, move
+  money, issue invoices, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - TTGDTX Release Gates Fast Literal Pattern Guard
 
 - Reworked `scripts/audit-ttgdtx-release-gates.mjs` so `requireText(...)`
