@@ -41,6 +41,7 @@ const requiredFiles = [
   "app/reports/page.tsx",
   masterControlPagePath,
   blockerSummaryPath,
+  "scripts/report-heu-email-readiness.mjs",
   "scripts/report-heu-daily-dry-run.mjs",
   "app/ttgdtx/accounting-dashboard/page.tsx",
   "docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md",
@@ -62,6 +63,7 @@ const masterControlPage = exists(masterControlPagePath)
 const currentStateInventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
 const implementationLog = read("docs/HEU_IMPLEMENTATION_LOG.md");
 const dailyReportScript = read("scripts/report-heu-daily-dry-run.mjs");
+const emailReadinessScript = read("scripts/report-heu-email-readiness.mjs");
 const passLocalWorkflow = read(".github/workflows/heu-pass-local.yml");
 
 requireText(spec, /P5-02 BGH operating dashboard specification/i, "P5-02 scope");
@@ -82,7 +84,7 @@ requireText(
 );
 requireText(
   spec,
-  /(?=[\s\S]*data-heu-daily-report-task-handoff="P5-02")(?=[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED)(?=[\s\S]*build progress, controlled trial users and plain-language\s+glossary)(?=[\s\S]*IT_DATA, KHTC, BGH, Audit and Phap Che)(?=[\s\S]*does not send email, create real tasks, store\s+passwords, OTPs, invite\/reset links, bank data, raw PII or approve UAT,\s+finance action, owner GO or production GO)(?=[\s\S]*npm\.cmd run report:heu-daily-dry-run)(?=[\s\S]*GitHub Actions step summary)(?=[\s\S]*without sending mail)/i,
+  /(?=[\s\S]*data-heu-daily-report-task-handoff="P5-02")(?=[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED)(?=[\s\S]*build progress, controlled trial users and plain-language\s+glossary)(?=[\s\S]*IT_DATA, KHTC, BGH, Audit and Phap Che)(?=[\s\S]*does not send email, create real tasks, store\s+passwords, OTPs, invite\/reset links, bank data, raw PII or approve UAT,\s+finance action, owner GO or production GO)(?=[\s\S]*npm\.cmd run report:heu-daily-dry-run)(?=[\s\S]*GitHub Actions step summary)(?=[\s\S]*without sending mail)(?=[\s\S]*npm\.cmd run report:heu-email-readiness)(?=[\s\S]*EMAIL_DRY_RUN_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*hides values, does not send mail)/i,
   "daily report and task handoff dry-run implementation note",
 );
 requireText(spec, /P5-02 is PASS_LOCAL[\s\S]*does not implement a production BGH\s+dashboard[\s\S]*replace signed UAT/i, "PASS_LOCAL local-only boundary");
@@ -106,9 +108,21 @@ requireText(
   "scripts/report-heu-daily-dry-run.mjs",
 );
 requireText(
+  emailReadinessScript,
+  /(?=[\s\S]*HEU daily email readiness check)(?=[\s\S]*EMAIL_DRY_RUN_READY)(?=[\s\S]*EMAIL_CONFIG_REQUIRED)(?=[\s\S]*BLOCKED)(?=[\s\S]*READINESS_ONLY - no email is sent by this script)(?=[\s\S]*HEU_DAILY_REPORT_TO)(?=[\s\S]*HEU_DAILY_REPORT_FROM)(?=[\s\S]*HEU_SMTP_HOST)(?=[\s\S]*HEU_SMTP_PASSWORD)(?=[\s\S]*value is hidden)(?=[\s\S]*GitHub Actions secrets\/variables outside Git\/Codex\/chat)(?=[\s\S]*passwords, app passwords, OTPs, invite\/reset links, service-role keys, bank credentials, raw PII, bank statements, vouchers or raw payment data)/i,
+  "P5-02 daily email readiness script",
+  "scripts/report-heu-email-readiness.mjs",
+);
+requireText(
   passLocalWorkflow,
   /node scripts\/report-heu-daily-dry-run\.mjs >> "\$GITHUB_STEP_SUMMARY"/,
   "PASS_LOCAL workflow daily report summary hook",
+  ".github/workflows/heu-pass-local.yml",
+);
+requireText(
+  passLocalWorkflow,
+  /node scripts\/report-heu-email-readiness\.mjs >> "\$GITHUB_STEP_SUMMARY"/,
+  "PASS_LOCAL workflow email readiness summary hook",
   ".github/workflows/heu-pass-local.yml",
 );
 
@@ -163,15 +177,18 @@ if (!packageJson.scripts?.["audit:heu-bgh-dashboard-spec"]) {
 if (packageJson.scripts?.["report:heu-daily-dry-run"] !== "node scripts/report-heu-daily-dry-run.mjs") {
   fail("package.json: missing report:heu-daily-dry-run script");
 }
+if (packageJson.scripts?.["report:heu-email-readiness"] !== "node scripts/report-heu-email-readiness.mjs") {
+  fail("package.json: missing report:heu-email-readiness script");
+}
 
 const backlog = read("docs/HEU_SYSTEM_BUILD_BACKLOG.md");
 if (!/P5-02[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*safe iteration loop[\s\S]*next controlled actions queue includes P0-14 intake-ledger evidence binder and P0-15 final handoff summary[\s\S]*audit:heu-bgh-dashboard-spec/.test(backlog)) {
   fail("Backlog P5-02 must be PASS_LOCAL and reference BGH dashboard spec audit.");
 }
-if (!/P5-02[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*no email is sent and no real task is created/i.test(backlog)) {
+if (!/P5-02[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*scripts\/report-heu-email-readiness\.mjs[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*EMAIL_DRY_RUN_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*no email is sent and no real task is created/i.test(backlog)) {
   fail("Backlog P5-02 must reference the daily report/task handoff dry-run shell.");
 }
-if (!/P0-02[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*scheduled summary appends a dry-run daily report draft but does not send email/i.test(backlog)) {
+if (!/P0-02[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*scheduled summary appends a dry-run daily report draft plus email readiness checklist but does not send email/i.test(backlog)) {
   fail("Backlog P0-02 must reference the PASS_LOCAL daily report dry-run summary.");
 }
 
@@ -179,14 +196,14 @@ const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
 if (!/BGH operating dashboard specification[\s\S]*PASS_LOCAL[\s\S]*HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627\.md[\s\S]*production-readiness-blocker-summary\.tsx[\s\S]*safe iteration loop[\s\S]*next controlled actions queue includes P0-14 intake-ledger evidence binder and P0-15 final handoff summary/.test(checklist)) {
   fail("Production checklist must include BGH operating dashboard specification PASS_LOCAL evidence.");
 }
-if (!/BGH operating dashboard specification[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*no production dashboard implementation, real email sending, real task creation or GO decision/i.test(checklist)) {
+if (!/BGH operating dashboard specification[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*scripts\/report-heu-email-readiness\.mjs[\s\S]*daily report\/task handoff dry-run shell[\s\S]*DAILY_REPORT_DRY_RUN \/ NO_GO \/ BLOCKED[\s\S]*EMAIL_DRY_RUN_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*no production dashboard implementation, real email sending, real task creation or GO decision/i.test(checklist)) {
   fail("Production checklist must keep the BGH daily report/task handoff in dry-run mode.");
 }
 
-if (!/\.github\/workflows\/heu-pass-local\.yml[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*dry-run daily report draft without sending email/i.test(currentStateInventory)) {
+if (!/\.github\/workflows\/heu-pass-local\.yml[\s\S]*report:heu-daily-dry-run[\s\S]*report:heu-email-readiness[\s\S]*email readiness checklist[\s\S]*without sending email/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the PASS_LOCAL daily report dry-run summary hook.");
 }
-if (!/Accounting dashboard \/ BGH control[\s\S]*daily report\/task handoff dry-run[\s\S]*without sending email, creating real tasks or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
+if (!/Accounting dashboard \/ BGH control[\s\S]*daily report\/task handoff dry-run[\s\S]*email readiness checklist[\s\S]*without sending email, creating real tasks or approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the P5-02 daily report/task handoff dry-run boundary.");
 }
 
@@ -195,6 +212,9 @@ if (!/P5-02 Daily Report And Task Handoff Dry-Run[\s\S]*data-heu-daily-report-ta
 }
 if (!/HEU Daily Report Draft Generator[\s\S]*scripts\/report-heu-daily-dry-run\.mjs[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*GitHub Actions step summary[\s\S]*does not send email, create real tasks[\s\S]*approve owner GO or\s+mark production GO/i.test(implementationLog)) {
   fail("Implementation log must record the daily report draft generator boundary.");
+}
+if (!/HEU Daily Email Readiness Checker[\s\S]*scripts\/report-heu-email-readiness\.mjs[\s\S]*report:heu-email-readiness[\s\S]*EMAIL_DRY_RUN_READY[\s\S]*EMAIL_CONFIG_REQUIRED[\s\S]*BLOCKED[\s\S]*hiding all values[\s\S]*email readiness checklist after the daily report draft[\s\S]*does not send email[\s\S]*approve owner GO or mark production GO/i.test(implementationLog)) {
+  fail("Implementation log must record the email readiness checker boundary.");
 }
 
 const agents = read("AGENTS.md");

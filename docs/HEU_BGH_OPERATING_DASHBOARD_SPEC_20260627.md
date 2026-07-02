@@ -124,6 +124,12 @@ finance action, owner GO or production GO.
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
 PASS_LOCAL gate summary without sending mail.
+`npm.cmd run report:heu-email-readiness` prints an
+`EMAIL_DRY_RUN_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` readiness checklist for
+GitHub Actions variables/secrets such as recipient list, sender identity and
+SMTP settings. It hides values, does not send mail and keeps all passwords,
+app passwords, OTPs, invite/reset links, service-role keys, bank credentials,
+raw PII, bank statements, vouchers and raw payment data outside Git/Codex/chat.
 
 ## 9. Current Evidence
 
@@ -135,6 +141,7 @@ Current local evidence:
 - `components/master-control/production-readiness-blocker-summary.tsx`
 - `.github/workflows/heu-pass-local.yml`
 - `scripts/report-heu-daily-dry-run.mjs`
+- `scripts/report-heu-email-readiness.mjs`
 - `lib/production-readiness.ts`
 - `app/ttgdtx/accounting-dashboard/page.tsx`
 - `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
@@ -145,6 +152,7 @@ Current local evidence:
 - `npm.cmd run audit:ttgdtx-dashboard-access`
 - `npm.cmd run audit:ttgdtx-release-gates`
 - `npm.cmd run report:heu-daily-dry-run`
+- `npm.cmd run report:heu-email-readiness`
 
 ## 10. Current Result
 

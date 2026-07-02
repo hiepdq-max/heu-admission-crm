@@ -93,6 +93,7 @@ jobs:
         if: always()
         run: |
           node scripts/report-heu-daily-dry-run.mjs >> "$GITHUB_STEP_SUMMARY"
+          node scripts/report-heu-email-readiness.mjs >> "$GITHUB_STEP_SUMMARY"
           {
             echo ""
             echo "## Bao cao de hieu"

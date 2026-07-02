@@ -6091,3 +6091,22 @@
 - This is CI activation only. It does not deploy production, send email, create
   real tasks, accept UAT, approve evidence, approve finance action, approve
   owner GO or mark production GO.
+
+## 2026-07-02 - HEU Daily Email Readiness Checker
+
+- Added `scripts/report-heu-email-readiness.mjs` and
+  `npm.cmd run report:heu-email-readiness` to print
+  `EMAIL_DRY_RUN_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` for the daily report
+  mail channel.
+- The checker lists required GitHub Actions variables/secrets by name only,
+  including approved recipients, sender identity and SMTP settings, while
+  hiding all values.
+- Updated `.github/workflows/heu-pass-local.yml` so the PASS_LOCAL summary
+  appends the email readiness checklist after the daily report draft.
+- Updated the P5-02 BGH dashboard spec, backlog, production checklist,
+  current-state inventory and `audit:heu-bgh-dashboard-spec` so email remains
+  readiness-only until HEU IT_DATA configures secrets outside Git/Codex/chat.
+- This does not send email, create real tasks, store passwords, app passwords,
+  OTPs, invite/reset links, service-role keys, bank credentials, raw PII, bank
+  statements, vouchers or raw payment data, accept UAT, approve finance action,
+  approve owner GO or mark production GO.

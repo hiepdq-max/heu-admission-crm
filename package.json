@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "report:heu-daily-dry-run": "node scripts/report-heu-daily-dry-run.mjs",
+    "report:heu-email-readiness": "node scripts/report-heu-email-readiness.mjs",
     "audit:heu-ai-policy": "node scripts/audit-heu-ai-policy.mjs",
     "audit:heu-backlog-codes": "node scripts/audit-heu-backlog-codes.mjs",
     "audit:heu-bgh-dashboard-spec": "node scripts/audit-heu-bgh-dashboard-spec.mjs",
