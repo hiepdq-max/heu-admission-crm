@@ -193,6 +193,12 @@ requireText(
   "PASS_LOCAL workflow email readiness summary hook",
   ".github/workflows/heu-pass-local.yml",
 );
+requireText(
+  passLocalWorkflow,
+  /Audit AI policy and cloud-agent plan[\s\S]*npm run audit:heu-ai-policy/i,
+  "PASS_LOCAL workflow direct AI policy/cloud-agent audit",
+  ".github/workflows/heu-pass-local.yml",
+);
 
 requireText(
   blockerSource,
@@ -265,8 +271,8 @@ if (!/P5-02[\s\S]*lib\/production-readiness\.ts[\s\S]*PRODUCTION_BLOCKERS[\s\S]*
 if (!/P5-02[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md[\s\S]*Section 5\.2[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*owner labels and minimum proof[\s\S]*no evidence is accepted[\s\S]*no production GO is marked/i.test(backlog)) {
   fail("Backlog P5-02 must reference the daily report signed UAT route summary.");
 }
-if (!/P0-02[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*scheduled summary appends a dry-run daily report draft plus email readiness checklist but does not send email/i.test(backlog)) {
-  fail("Backlog P0-02 must reference the PASS_LOCAL daily report dry-run summary.");
+if (!/P0-02[\s\S]*npm\.cmd run report:heu-daily-dry-run[\s\S]*npm\.cmd run report:heu-email-readiness[\s\S]*npm\.cmd run audit:heu-ai-policy[\s\S]*direct AI policy\/cloud-agent plan audit before final handoff coverage[\s\S]*scheduled summary appends a dry-run daily report draft plus email readiness checklist but does not send email/i.test(backlog)) {
+  fail("Backlog P0-02 must reference the PASS_LOCAL daily report dry-run summary and direct AI policy audit.");
 }
 
 const checklist = read("docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md");
@@ -286,8 +292,8 @@ if (!/BGH operating dashboard specification[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260
   fail("Production checklist must keep the daily report signed UAT route summary in dry-run mode.");
 }
 
-if (!/\.github\/workflows\/heu-pass-local\.yml[\s\S]*report:heu-daily-dry-run[\s\S]*report:heu-email-readiness[\s\S]*email readiness checklist[\s\S]*without sending email/i.test(currentStateInventory)) {
-  fail("Current-state inventory must mention the PASS_LOCAL daily report dry-run summary hook.");
+if (!/\.github\/workflows\/heu-pass-local\.yml[\s\S]*audit:heu-ai-policy[\s\S]*report:heu-daily-dry-run[\s\S]*report:heu-email-readiness[\s\S]*email readiness checklist[\s\S]*without sending email/i.test(currentStateInventory)) {
+  fail("Current-state inventory must mention the PASS_LOCAL direct AI policy audit and daily report dry-run summary hook.");
 }
 if (!/Accounting dashboard \/ BGH control[\s\S]*daily report\/task handoff dry-run[\s\S]*HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702\.md[\s\S]*department\/user-label task lanes[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts[\s\S]*approving UAT\/finance\/owner GO/i.test(currentStateInventory)) {
   fail("Current-state inventory must mention the P5-02 daily report/task handoff dry-run boundary.");

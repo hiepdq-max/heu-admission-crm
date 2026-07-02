@@ -27,6 +27,7 @@ function requireText(contents, pattern, label, file) {
 for (const file of [
   "AGENTS.md",
   "package.json",
+  ".github/workflows/heu-pass-local.yml",
   "docs/HEU_IMPLEMENTATION_LOG.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
@@ -182,6 +183,34 @@ fastSection("2026-07-02 - P7-06 Cloud Agent Operating Plan", [
   "approve finance action",
   "approve owner GO/NO-GO",
   "run production migration",
+  "mark production GO",
+]);
+
+fastSection("2026-07-02 - PASS_LOCAL Workflow AI Policy Audit Guard", [
+  ".github/workflows/heu-pass-local.yml",
+  "npm run audit:heu-ai-policy",
+  "release gates",
+  "final handoff coverage",
+  "HEU_SYSTEM_BUILD_BACKLOG.md",
+  "HEU_CURRENT_STATE_INVENTORY.md",
+  "AI policy/cloud-agent plan audit",
+  "scripts/audit-heu-bgh-dashboard-spec.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "direct `audit:heu-ai-policy` step",
+  "workflow guard packaging only",
+  "does not create cloud infrastructure",
+  "buy a server",
+  "enter payment details",
+  "store secrets",
+  "send real email",
+  "create real tasks",
+  "create real users",
+  "accept UAT",
+  "accept evidence",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "deploy production",
   "mark production GO",
 ]);
 

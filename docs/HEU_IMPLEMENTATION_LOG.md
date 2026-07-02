@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-07-02 - PASS_LOCAL Workflow AI Policy Audit Guard
+
+- Updated `.github/workflows/heu-pass-local.yml` so the GitHub Actions
+  PASS_LOCAL workflow runs `npm run audit:heu-ai-policy` directly after
+  release gates and before final handoff coverage.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` so P0-02 and the current-state
+  workflow row explicitly mention the AI policy/cloud-agent plan audit in the
+  remote PASS_LOCAL gate.
+- Tightened `scripts/audit-heu-bgh-dashboard-spec.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the workflow cannot silently drop
+  the direct `audit:heu-ai-policy` step.
+- Boundary: this is workflow guard packaging only. It does not create cloud infrastructure,
+  buy a server, enter payment details, store secrets, send real email,
+  create real tasks, create real users, accept UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO, deploy production or
+  mark production GO.
+
 ## 2026-07-02 - P7-06 Cloud Agent Operating Plan
 
 - Added `docs/HEU_CLOUD_AGENT_OPERATING_PLAN_20260702.md` as a

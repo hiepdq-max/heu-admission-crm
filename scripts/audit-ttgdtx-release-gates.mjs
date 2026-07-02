@@ -131,6 +131,7 @@ const requiredFiles = [
   "docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   "docs/HEU_IMPLEMENTATION_LOG.md",
+  ".github/workflows/heu-pass-local.yml",
   "app/reports/page.tsx",
   "app/ttgdtx/payment-requests/pay/actions.ts",
   "app/ttgdtx/payment-requests/pay/page.tsx",
@@ -734,6 +735,16 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /P7-06 Cloud Agent Operating Plan[\s\S]*HEU_CLOUD_AGENT_OPERATING_PLAN_20260702\.md[\s\S]*PASS_LOCAL_PLAN[\s\S]*CLOUD_AGENT_PLAN_READY \/ NO_GO \/ BLOCKED[\s\S]*USD 20-40[\s\S]*human owner setup checklist[\s\S]*kill switch[\s\S]*audit:heu-ai-policy[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*audit:ttgdtx-release-gates[\s\S]*does not buy server[\s\S]*enter payment card[\s\S]*create cloud infrastructure[\s\S]*create autonomous AI workers[\s\S]*OpenAI\/API keys[\s\S]*send real email[\s\S]*create real tasks\/tickets[\s\S]*create real users[\s\S]*accept UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*approve owner GO\/NO-GO[\s\S]*run production migration[\s\S]*mark production GO/i,
   "P7-06 cloud agent operating plan implementation log entry",
+);
+requireText(
+  ".github/workflows/heu-pass-local.yml",
+  /Audit release gates[\s\S]*npm run audit:ttgdtx-release-gates[\s\S]*Audit AI policy and cloud-agent plan[\s\S]*npm run audit:heu-ai-policy[\s\S]*Audit final handoff coverage[\s\S]*npm run audit:heu-final-handoff-coverage[\s\S]*Write daily-readable summary[\s\S]*report-heu-daily-dry-run[\s\S]*report-heu-email-readiness/i,
+  "PASS_LOCAL workflow direct AI policy audit",
+);
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /PASS_LOCAL Workflow AI Policy Audit Guard[\s\S]*\.github\/workflows\/heu-pass-local\.yml[\s\S]*npm run audit:heu-ai-policy[\s\S]*release gates[\s\S]*final handoff coverage[\s\S]*AI policy\/cloud-agent plan audit[\s\S]*does not create cloud\s+infrastructure[\s\S]*buy a server[\s\S]*enter payment details[\s\S]*send real\s+email[\s\S]*create real tasks[\s\S]*create real users[\s\S]*accept UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*approve owner GO\/NO-GO[\s\S]*deploy production[\s\S]*mark\s+production GO/i,
+  "PASS_LOCAL workflow AI policy audit implementation log entry",
 );
 
 requireText(

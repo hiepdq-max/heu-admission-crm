@@ -59,6 +59,9 @@ jobs:
       - name: Audit release gates
         run: npm run audit:ttgdtx-release-gates
 
+      - name: Audit AI policy and cloud-agent plan
+        run: npm run audit:heu-ai-policy
+
       - name: Audit final handoff coverage
         run: npm run audit:heu-final-handoff-coverage
 
