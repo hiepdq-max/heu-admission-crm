@@ -6284,3 +6284,28 @@
   mark production GO.
 - It does not create real tasks/tickets.
 - It does not approve UAT and does not accept evidence.
+
+## 2026-07-02 - P5-02 In-App Signed UAT Route Summary
+
+- Extended `components/master-control/production-readiness-blocker-summary.tsx`
+  with `data-heu-signed-uat-route-summary="P5-02"` so Master Control shows an
+  in-app read-only signed UAT route summary.
+- The panel shows `SIGNED_UAT_ROUTE_SUMMARY_READY / NO_GO / BLOCKED`,
+  UAT-ROUTE-01 through UAT-ROUTE-11, PENDING status, owner labels and minimum
+  proof for P0-10, P0-03, Step90-Step110, P6-04, P0-19, P3-01/P3-02, P2-17,
+  P2-18/P5-03, P6-03, P6-06 and P0-09.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `scripts/audit-heu-bgh-dashboard-spec.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the UI route summary remains
+  read-only and PASS_LOCAL only.
+- This is in-app status reporting only. It does not send real email, create
+  real tasks/tickets, create real accounts, accept evidence, execute UAT,
+  approve finance action, approve owner GO/NO-GO, run production migration or
+  mark production GO.
+- It does not create real tasks/tickets and does not approve UAT.

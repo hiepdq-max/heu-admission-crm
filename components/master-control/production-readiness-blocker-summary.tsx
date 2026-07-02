@@ -144,6 +144,75 @@ const DEPARTMENT_TASK_HANDOFF_REGISTER = [
   },
 ];
 
+const SIGNED_UAT_ROUTE_SUMMARY = [
+  {
+    route: "UAT-ROUTE-01",
+    code: "P0-10",
+    owner: "IT_DATA + Audit",
+    proof: "Controlled storage, redaction class, reviewer and evidence ID.",
+  },
+  {
+    route: "UAT-ROUTE-02",
+    code: "P0-03",
+    owner: "IT_DATA + Audit",
+    proof: "Backup ID, restore target, smoke-check and owner evidence.",
+  },
+  {
+    route: "UAT-ROUTE-03",
+    code: "Step90-Step110",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    proof: "Signed migration order after accepted backup/restore evidence.",
+  },
+  {
+    route: "UAT-ROUTE-04",
+    code: "P6-04",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    proof: "Role, workspace and negative-route matrix signed outside Codex/chat.",
+  },
+  {
+    route: "UAT-ROUTE-05",
+    code: "P0-19",
+    owner: "PHAP_CHE + KHTC + BGH",
+    proof: "Legal basis, tuition policy, waiver/exception and finance gate proof.",
+  },
+  {
+    route: "UAT-ROUTE-06",
+    code: "P3-01/P3-02",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO + KHTC",
+    proof: "Lead lifecycle and handover proof with no finance-gate bypass.",
+  },
+  {
+    route: "UAT-ROUTE-07",
+    code: "P2-17",
+    owner: "KHTC + BGH + Audit",
+    proof: "Duplicate-click, overpay, RPC-only and payment dossier proof.",
+  },
+  {
+    route: "UAT-ROUTE-08",
+    code: "P2-18/P5-03",
+    owner: "KHTC + BGH + IT_DATA",
+    proof: "Read-only dashboard, Finance Desk scope and Day-1 ledger proof.",
+  },
+  {
+    route: "UAT-ROUTE-09",
+    code: "P6-03",
+    owner: "Audit + IT_DATA + KHTC",
+    proof: "Audit trace rows with actor, entity, timestamp and evidence reference.",
+  },
+  {
+    route: "UAT-ROUTE-10",
+    code: "P6-06",
+    owner: "IT_DATA + Audit + business owners",
+    proof: "Conversion proof or written waiver for protected hard-delete paths.",
+  },
+  {
+    route: "UAT-ROUTE-11",
+    code: "P0-09",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
+    proof: "Final owner GO/NO-GO manifest with every prerequisite proof path.",
+  },
+];
+
 export function ProductionReadinessBlockerSummary() {
   return (
     <section
@@ -334,6 +403,48 @@ export function ProductionReadinessBlockerSummary() {
               </article>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div
+        className="mt-5 rounded-md border border-rose-200 bg-white p-4"
+        data-heu-signed-uat-route-summary="P5-02"
+      >
+        <div className="flex items-start gap-3">
+          <ClipboardCheck className="mt-0.5 size-5 shrink-0 text-rose-700" />
+          <div>
+            <h3 className="font-semibold text-zinc-950">
+              Signed UAT route summary: read-only
+            </h3>
+            <p className="mt-1 leading-6 text-zinc-600">
+              SIGNED_UAT_ROUTE_SUMMARY_READY / NO_GO / BLOCKED. These
+              UAT-ROUTE lanes are still PENDING until controlled evidence and
+              required owner signatures exist outside Git/Codex/chat. This
+              panel does not send email, create real tasks/tickets, accept
+              evidence, execute UAT, approve finance action, approve owner GO
+              or mark production GO.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {SIGNED_UAT_ROUTE_SUMMARY.map((route) => (
+            <article
+              key={route.route}
+              className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
+            >
+              <p className="text-xs font-semibold uppercase text-rose-700">
+                {route.route} - {route.code}
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-500">
+                Status: PENDING
+              </p>
+              <p className="mt-1 text-xs font-medium text-zinc-500">
+                Owner: {route.owner}
+              </p>
+              <p className="mt-2 leading-5 text-zinc-700">{route.proof}</p>
+            </article>
+          ))}
         </div>
       </div>
 

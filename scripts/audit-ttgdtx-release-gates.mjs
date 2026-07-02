@@ -2104,6 +2104,12 @@ requireText(
 );
 
 requireText(
+  "components/master-control/production-readiness-blocker-summary.tsx",
+  /(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY)(?=[\s\S]*data-heu-signed-uat-route-summary="P5-02")(?=[\s\S]*Signed UAT route summary: read-only)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Status: PENDING)(?=[\s\S]*does not send email, create real tasks\/tickets, accept\s+evidence, execute UAT, approve finance action, approve owner GO\s+or mark production GO)/i,
+  "P5-02 in-app signed UAT route summary guard",
+);
+
+requireText(
   "scripts/report-heu-email-readiness.mjs",
   /(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY)(?=[\s\S]*HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702\.md)(?=[\s\S]*Required approval owners)(?=[\s\S]*Allowed recipient labels)(?=[\s\S]*Manual enablement steps)(?=[\s\S]*Stop conditions)(?=[\s\S]*BGH_DAILY_REPORT_ALIAS)(?=[\s\S]*EMAIL-DISPATCH-06)(?=[\s\S]*This checker does not send email, create tasks, accept UAT, approve finance action, approve owner GO or mark production GO)/i,
   "P5-02 daily email dispatch readiness report guard",

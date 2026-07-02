@@ -131,6 +131,14 @@ in-app review only. It does not send real email, create real tickets, assign
 real accounts, accept evidence, execute UAT, approve finance action, approve
 owner GO or mark production GO.
 
+`data-heu-signed-uat-route-summary="P5-02"` adds the read-only signed UAT route
+summary inside Master Control. It shows `SIGNED_UAT_ROUTE_SUMMARY_READY /
+NO_GO / BLOCKED`, UAT-ROUTE-01 through UAT-ROUTE-11, PENDING status, owner
+labels and minimum proof from the signed UAT execution log and routing hub. It
+is an in-app status surface only: it does not send real email, create real
+tasks/tickets, accept evidence, execute UAT, approve finance action, approve
+owner GO or mark production GO.
+
 `npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled

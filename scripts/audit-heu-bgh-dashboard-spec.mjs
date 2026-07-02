@@ -111,6 +111,11 @@ requireText(
 );
 requireText(
   spec,
+  /(?=[\s\S]*data-heu-signed-uat-route-summary="P5-02")(?=[\s\S]*read-only signed UAT route\s+summary inside Master Control)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/\s+NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11)(?=[\s\S]*PENDING status)(?=[\s\S]*owner\s+labels and minimum proof)(?=[\s\S]*in-app status surface only)(?=[\s\S]*does not send real email, create real\s+tasks\/tickets, accept evidence, execute UAT, approve finance action, approve\s+owner GO or mark production GO)/i,
+  "in-app signed UAT route summary implementation note",
+);
+requireText(
+  spec,
   /(?=[\s\S]*HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702\.md)(?=[\s\S]*data-heu-department-task-handoff-register="P5-02")(?=[\s\S]*DEPT_TASK_REGISTER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*BGH, IT_DATA, KHTC, PHAP_CHE, Audit, TUYEN_SINH, CTHSSV, DAO_TAO and HR)(?=[\s\S]*user labels, stage, in-app task, how the user uses it, required\s+external proof and stop condition)(?=[\s\S]*does not send real email, create real tickets, assign\s+real accounts, accept evidence, execute UAT, approve finance action, approve\s+owner GO or mark production GO)/i,
   "department task handoff register implementation note",
 );
@@ -150,6 +155,12 @@ requireText(
   blockerSummary,
   /(?=[\s\S]*DEPARTMENT_TASK_HANDOFF_REGISTER)(?=[\s\S]*data-heu-department-task-handoff-register="P5-02")(?=[\s\S]*Department task handoff register: dry-run only)(?=[\s\S]*DEPT_TASK_REGISTER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*BGH_READONLY_REVIEWER_LABEL)(?=[\s\S]*IT_DATA_BUILD_OPERATOR_LABEL)(?=[\s\S]*KHTC_ACCOUNTING_OPERATOR_LABEL)(?=[\s\S]*PHAP_CHE_REVIEWER_LABEL)(?=[\s\S]*AUDIT_READONLY_REVIEWER_LABEL)(?=[\s\S]*TUYEN_SINH_OPERATOR_LABEL)(?=[\s\S]*CTHSSV_HANDOVER_OPERATOR_LABEL)(?=[\s\S]*DAO_TAO_REVIEWER_LABEL \/ HR_REVIEWER_LABEL)(?=[\s\S]*no real email, real ticket, account creation, evidence\s+acceptance, UAT approval, finance approval or owner GO)/i,
   "P5-02 department task handoff UI shell",
+  blockerSummaryPath,
+);
+requireText(
+  blockerSummary,
+  /(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY)(?=[\s\S]*data-heu-signed-uat-route-summary="P5-02")(?=[\s\S]*Signed UAT route summary: read-only)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*Status: PENDING)(?=[\s\S]*controlled evidence and\s+required owner signatures exist outside Git\/Codex\/chat)(?=[\s\S]*does not send email, create real tasks\/tickets, accept\s+evidence, execute UAT, approve finance action, approve owner GO\s+or mark production GO)/i,
+  "P5-02 in-app signed UAT route summary UI shell",
   blockerSummaryPath,
 );
 requireText(

@@ -159,6 +159,11 @@ requireText(
 );
 requireText(
   inventory,
+  /M10 Dashboard[\s\S]*data-heu-signed-uat-route-summary="P5-02"[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*no real email sending, no real task\/ticket creation and no real account assignment/i,
+  "M10 in-app signed UAT route summary state",
+);
+requireText(
+  inventory,
   /Production readiness guard[\s\S]*TTGDTX landing guard renders shared `PRODUCTION_BLOCKERS` from `lib\/production-readiness\.ts`; internal UAT closure tracker, governance UAT execution readiness for P6-04\/P6-03, signed UAT execution routing hub, UAT execution closure template, UAT operator handoff, main execution queue with decision values and stop conditions, execution queue with safe iteration loop, P0-03\/Step90-Step110 infra readiness plan with decision values and stop conditions, P0-19\/P3-01\/P3-02 gate-handover readiness plan with decision values and stop conditions, P6-04\/P6-03 governance assurance plan with decision values and stop conditions, P2-18\/P5-03 UAT launch plan with P6-04 real-accounting queue\/result proof, first signed finance UAT checklist, finance Day-1 start-gate checklist with `docs\/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630\.md` and `FIN_START_READY \/ NO_GO \/ BLOCKED`, finance Day-1 account activation handoff with `FIN_ACTIVATION_READY \/ NO_GO \/ BLOCKED` and `docs\/HEU_FINANCE_DAY1_ACCOUNT_ACTIVATION_TEMPLATE_20260630\.md`, finance Day-1 P6-04 pre-login matrix with `P6_04_PRELOGIN_READY \/ NO_GO \/ BLOCKED` and `docs\/HEU_FINANCE_DAY1_P6_04_PRELOGIN_MATRIX_20260630\.md`, finance Day-1 real-run rehearsal with `FIN_DAY1_READY \/ NO_GO \/ BLOCKED` and `docs\/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630\.md`, decision values and stop conditions plus Day-1 result ledger and `docs\/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630\.md`, P6-06\/P2-17 risk closure plan with decision values and stop conditions, owner GO\/NO-GO checklist, owner acceptance matrix, P0-17 access closure decision gate, final owner decision manifest and owner sign-off handoff evidence path with P3-01\/P3-02 UAT requirement[\s\S]*PASS_LOCAL, NO-GO[\s\S]*TTGDTX signed UAT execution routing hub[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-08 carries the Finance Day-1 start-gate checklist and result ledger into dashboard\/Finance Desk signed UAT[\s\S]*UAT-ROUTE-11 carries the Finance Day-1 start-gate checklist, Finance Day-1 result ledger plus P0-17 access closure decision into final owner GO\/NO-GO[\s\S]*PASS_LOCAL; signed UAT and owner reliance still required[\s\S]*Backup\/restore[\s\S]*Evidence pack, UI guard, target identity lock, operator run sheet, external evidence manifest, restore smoke-check acceptance matrix with P0-19\/P3 gate preservation and P0-17 access closure state preservation, and backup\/restore closure decision manifest exist[\s\S]*Template ready; real backup\/restore evidence missing/i,
   "P0-03 backup/restore smoke-check acceptance control state",
 );
@@ -211,6 +216,11 @@ requireText(
   inventory,
   /Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*controlled evidence and required owner signatures exist[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P5-02 signed UAT route summary current control state",
+);
+requireText(
+  inventory,
+  /Accounting dashboard \/ BGH control[\s\S]*data-heu-signed-uat-route-summary="P5-02"[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  "P5-02 in-app signed UAT route summary current control state",
 );
 requireText(
   inventory,
