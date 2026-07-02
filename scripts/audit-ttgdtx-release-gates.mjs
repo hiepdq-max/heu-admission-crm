@@ -2074,6 +2074,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  /(?=[\s\S]*signed UAT route summary from)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md)(?=[\s\S]*Section 5\.2)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-ROUTE-01 through\s+UAT-ROUTE-11)(?=[\s\S]*PENDING status)(?=[\s\S]*owner labels)(?=[\s\S]*minimum proof)(?=[\s\S]*does not send email, create real tasks\/tickets,\s+accept evidence, execute UAT, approve finance action, approve owner GO\/NO-GO\s+or mark production GO)/i,
+  "P5-02 signed UAT route summary spec boundary",
+);
+
+requireText(
   "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   /(?=[\s\S]*Status:\s*PASS_LOCAL_CONFIG_HANDOFF)(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*HEU_DAILY_REPORT_TO)(?=[\s\S]*HEU_SMTP_PASSWORD)(?=[\s\S]*BGH_DAILY_REPORT_ALIAS)(?=[\s\S]*EMAIL-DISPATCH-01)(?=[\s\S]*EMAIL-DISPATCH-06)(?=[\s\S]*does not send email, create real tasks)(?=[\s\S]*Email receipt is not accepted as signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO or production GO)(?=[\s\S]*does not approve production, UAT, evidence acceptance, finance approval,\s+owner GO\/NO-GO or production GO)(?=[\s\S]*Production remains NO-GO)/i,
   "P5-02 daily email dispatch handoff guard",
@@ -2089,6 +2095,12 @@ requireText(
   "scripts/report-heu-daily-dry-run.mjs",
   /(?=[\s\S]*Blocker theo phong\/owner)(?=[\s\S]*BLOCKER_OWNER_LANES_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*lib\/production-readiness\.ts -> PRODUCTION_BLOCKERS)(?=[\s\S]*P0-03)(?=[\s\S]*Step90-Step110)(?=[\s\S]*P0-19)(?=[\s\S]*P2-17)(?=[\s\S]*P2-18)(?=[\s\S]*P6-04)(?=[\s\S]*P6-03)(?=[\s\S]*P6-06)(?=[\s\S]*P0-10)(?=[\s\S]*P0-09)(?=[\s\S]*no email sent, no real task created, no evidence accepted)/i,
   "P5-02 daily report blocker-owner lanes guard",
+);
+
+requireText(
+  "scripts/report-heu-daily-dry-run.mjs",
+  /(?=[\s\S]*Signed UAT route summary)(?=[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md Section 5\.2)(?=[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md)(?=[\s\S]*UAT-ROUTE-01)(?=[\s\S]*UAT-ROUTE-11)(?=[\s\S]*PENDING)(?=[\s\S]*no email sent, no real task created, no evidence accepted, no UAT approved)/i,
+  "P5-02 daily report signed UAT route summary guard",
 );
 
 requireText(

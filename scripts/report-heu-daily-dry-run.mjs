@@ -132,6 +132,86 @@ const productionBlockerLanes = [
   },
 ];
 
+const signedUatRouteSummary = [
+  {
+    route: "UAT-ROUTE-01",
+    code: "P0-10",
+    owner: "IT_DATA + Audit",
+    status: "PENDING",
+    proof: "Controlled storage location, redaction class, reviewer and evidence ID.",
+  },
+  {
+    route: "UAT-ROUTE-02",
+    code: "P0-03",
+    owner: "IT_DATA + Audit",
+    status: "PENDING",
+    proof: "Backup ID, restore target, preflight/postflight output and restore smoke-check evidence.",
+  },
+  {
+    route: "UAT-ROUTE-03",
+    code: "Step90-Step110",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    status: "PENDING",
+    proof: "Signed migration order after accepted backup/restore evidence and rollback point.",
+  },
+  {
+    route: "UAT-ROUTE-04",
+    code: "P6-04",
+    owner: "IT_DATA + TRUONG_PHONG + Audit",
+    status: "PENDING",
+    proof: "Synthetic account route matrix, allowed cases and blocked negative cases.",
+  },
+  {
+    route: "UAT-ROUTE-05",
+    code: "P0-19",
+    owner: "PHAP_CHE + KHTC + BGH",
+    status: "PENDING",
+    proof: "Legal basis, tuition policy, waiver/exception decision and ALLOW_FINANCE gate proof.",
+  },
+  {
+    route: "UAT-ROUTE-06",
+    code: "P3-01/P3-02",
+    owner: "TUYEN_SINH + CTHSSV + DAO_TAO + KHTC",
+    status: "PENDING",
+    proof: "Handover cannot create finance facts or bypass P0-19/P2-05/P2-03 finance gates.",
+  },
+  {
+    route: "UAT-ROUTE-07",
+    code: "P2-17",
+    owner: "KHTC + BGH + Audit",
+    status: "PENDING",
+    proof: "Duplicate-click, overpay, voucher normalization, RPC-only and BBNT/partner-invoice dossier evidence.",
+  },
+  {
+    route: "UAT-ROUTE-08",
+    code: "P2-18/P5-03",
+    owner: "KHTC + BGH + IT_DATA",
+    status: "PENDING",
+    proof: "Dashboard read-only behavior, source reconciliation, role denial, Finance Day-1 start-gate and result ledger.",
+  },
+  {
+    route: "UAT-ROUTE-09",
+    code: "P6-03",
+    owner: "Audit + IT_DATA + KHTC",
+    status: "PENDING",
+    proof: "Trace rows with actor, entity, timestamp and controlled evidence reference.",
+  },
+  {
+    route: "UAT-ROUTE-10",
+    code: "P6-06",
+    owner: "IT_DATA + Audit + business owners",
+    status: "PENDING",
+    proof: "Conversion proof or written waiver for unresolved protected paths.",
+  },
+  {
+    route: "UAT-ROUTE-11",
+    code: "P0-09",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG",
+    status: "PENDING",
+    proof: "Final owner decision manifest with signed UAT, evidence binder, migration, backup, role and risk-closure references.",
+  },
+];
+
 const departmentTaskRegister = [
   {
     department: "BGH",
@@ -257,7 +337,17 @@ for (const lane of productionBlockerLanes) {
   console.log(`- ${lane.code} - ${lane.owner}: ${lane.blocker}. Viec can xac nhan: ${lane.next}`);
 }
 console.log("");
-console.log("## 9. Blocker can dung tham quyen xac nhan");
+console.log("## 9. Signed UAT route summary");
+console.log("");
+console.log("Status: SIGNED_UAT_ROUTE_SUMMARY_READY / NO_GO / BLOCKED");
+console.log("Source: docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md Section 5.2 and docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no evidence accepted, no UAT approved.");
+console.log("");
+for (const route of signedUatRouteSummary) {
+  console.log(`- ${route.route} ${route.code} - ${route.owner}: ${route.status}. Can co: ${route.proof}`);
+}
+console.log("");
+console.log("## 10. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");

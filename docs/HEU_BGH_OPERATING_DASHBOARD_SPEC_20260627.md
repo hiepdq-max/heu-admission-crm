@@ -152,6 +152,15 @@ owner labels and the next proof each owner must confirm outside
 Git/Codex/chat. This is reporting only: it does not send email, create real
 tasks/tickets, accept evidence, execute UAT, approve finance action, approve
 owner GO/NO-GO or mark production GO.
+The draft also adds a signed UAT route summary from
+`docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 and
+`docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`, with
+`SIGNED_UAT_ROUTE_SUMMARY_READY / NO_GO / BLOCKED`, UAT-ROUTE-01 through
+UAT-ROUTE-11, PENDING status, owner labels, minimum proof and the rule that
+controlled evidence and required owner signatures remain outside Git/Codex/chat.
+This is reporting only: it does not send email, create real tasks/tickets,
+accept evidence, execute UAT, approve finance action, approve owner GO/NO-GO
+or mark production GO.
 `npm.cmd run report:heu-email-readiness` prints an
 `EMAIL_DRY_RUN_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` readiness checklist for
 GitHub Actions variables/secrets such as recipient list, sender identity and
