@@ -187,6 +187,16 @@ export type SignedUatExecutionRoute = {
   auditCommand: string;
 };
 
+export type SignedUatAuthorityAction = {
+  code: string;
+  route: string;
+  authority: string;
+  actionNeeded: string;
+  safeRecord: string;
+  decisionValue: string;
+  stopCondition: string;
+};
+
 export type ProductionEvidenceRequirement = {
   caseId: string;
   blockerCode: string;
@@ -1154,6 +1164,57 @@ export const SIGNED_UAT_EXECUTION_ROUTES: SignedUatExecutionRoute[] = [
     stopCondition:
       "Any required owner signs NO-GO/BLOCKED, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending.",
     auditCommand: "npm.cmd run audit:ttgdtx-production-owner-signoff-pack",
+  },
+];
+
+export const SIGNED_UAT_AUTHORITY_ACTIONS: SignedUatAuthorityAction[] = [
+  {
+    code: "UAT-AUTH-01",
+    route: "UAT-ROUTE-01 / P0-10",
+    authority: "IT_DATA + Audit",
+    actionNeeded:
+      "Confirm the controlled evidence location, redaction reviewer and evidence ID convention before any UAT screenshot, voucher, backup proof or signed note is referenced.",
+    safeRecord:
+      "Storage label, redaction class, reviewer role and evidence ID pattern only.",
+    decisionValue: "SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any raw evidence, secret, password, OTP, reset/invite link, raw PII, bank data, voucher or unredacted screenshot is copied into Git/Codex/chat.",
+  },
+  {
+    code: "UAT-AUTH-02",
+    route: "UAT-ROUTE-04 / P6-04",
+    authority: "IT_DATA + TRUONG_PHONG + Audit",
+    actionNeeded:
+      "Confirm which synthetic or approved operator labels may run each role/workspace route and which negative cases must stay blocked.",
+    safeRecord:
+      "User labels, department labels, route names, ALLOWED/BLOCKED/EMPTY_SCOPED_STATE result targets and reviewer role only.",
+    decisionValue: "SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "A real password, invite/reset link, broad-access account, ownerless test account or unreviewed route matrix is used.",
+  },
+  {
+    code: "UAT-AUTH-03",
+    route: "UAT-ROUTE-08 / P2-18/P5-03",
+    authority: "KHTC + BGH + IT_DATA + Audit",
+    actionNeeded:
+      "Confirm the Finance Desk and accounting dashboard browser UAT order, read-only expectation, source reconciliation owner and Day-1 ledger handoff.",
+    safeRecord:
+      "Route labels, source-comparison ID, Day-1 checklist ID, result-ledger ID, reliance decision state and owner labels only.",
+    decisionValue: "SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Finance Desk or dashboard is treated as write-capable, production-reliable, finance-approved, evidence-accepted or owner-signed from PASS_LOCAL output.",
+  },
+  {
+    code: "UAT-AUTH-04",
+    route: "UAT-ROUTE-11 / P0-09",
+    authority: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG",
+    actionNeeded:
+      "Confirm the final owner GO/NO-GO review packet contains signed UAT, evidence binder, backup/restore, migration, P0-17 access closure and risk-closure references.",
+    safeRecord:
+      "Decision packet ID, required owner labels, proof-path IDs and unresolved NO_GO/BLOCKED reasons only.",
+    decisionValue: "SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED",
+    stopCondition:
+      "Any owner decision is unsigned, stored only in Codex/chat, missing a prerequisite proof path or interpreted as production GO from a local audit.",
   },
 ];
 

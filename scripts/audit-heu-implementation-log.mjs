@@ -94,6 +94,40 @@ if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
 
+fastSection("2026-07-02 - Signed UAT Authority Action Queue", [
+  "SIGNED_UAT_AUTHORITY_ACTIONS",
+  "lib/production-readiness.ts",
+  "UAT-AUTH-01 through UAT-AUTH-04",
+  "SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED",
+  "ttgdtx-signed-uat-execution-routing-hub.tsx",
+  "data-ttgdtx-signed-uat-authority-action-queue=\"P0-08_AUTHORITY_ACTIONS\"",
+  "BGH, IT_DATA, KHTC",
+  "PHAP_CHE",
+  "Audit",
+  "TRUONG_PHONG",
+  "process-owner",
+  "TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md",
+  "UAT-HANDOFF-03B",
+  "audit-ttgdtx-signed-uat-execution-routing-hub.mjs",
+  "audit-heu-implementation-log.mjs",
+  "authority task routing only",
+  "does not execute UAT",
+  "create accounts",
+  "send invites",
+  "store passwords",
+  "collect OTPs",
+  "collect",
+  "reset/invite links",
+  "accept evidence",
+  "sign owner results",
+  "grant access",
+  "approve finance action",
+  "approve owner GO/NO-GO",
+  "run production migration",
+  "mark production GO",
+]);
+
 fastSection("2026-07-02 - P7-05 AI Delivery Team Operating Register", [
   "HEU_AI_DELIVERY_TEAM_OPERATING_REGISTER_20260702.md",
   "PASS_LOCAL_CONTROL",

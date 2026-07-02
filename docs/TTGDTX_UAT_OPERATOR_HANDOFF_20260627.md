@@ -32,6 +32,7 @@ approval evidence.
 | UAT-HANDOFF-02 | Create or reset synthetic accounts in Supabase Auth | `docs/TTGDTX_SYNTHETIC_UAT_ACCOUNT_SETUP.md` | Accounts exist; no real/temporary passwords, password reset links or account activation/invite links shared |
 | UAT-HANDOFF-03 | Open the signed UAT execution routing hub and confirm route list | `/ttgdtx`; `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md`; `data-ttgdtx-signed-uat-execution-routing-hub="P0-08_UAT_ROUTING"` | UAT-ROUTE-01 through UAT-ROUTE-11 visible with route, runbook, owner, minimum proof, stop condition and guard |
 | UAT-HANDOFF-03A | Confirm Finance Day-1 start-gate evidence path before any real-accounting route proof is used | `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md`; `FIN-START-EVID-001` through `FIN-START-EVID-005` | `FIN_START_READY / NO_GO / BLOCKED` recorded outside Git/Codex/chat; this handoff still does not create real accounts |
+| UAT-HANDOFF-03B | Confirm authority action queue before route results are recorded | `/ttgdtx`; `data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS"`; `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md` Section 3 | UAT-AUTH-01 through UAT-AUTH-04 visible with `SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED`; unresolved items stay NO_GO or BLOCKED until the right authority confirms them outside Git/Codex/chat |
 | UAT-HANDOFF-04 | Execute the browser route/account matrix and signed UAT route list | `docs/TTGDTX_BROWSER_UAT_MATRIX_20260625.md`; Section 2.1 below | ALLOWED, BLOCKED, EMPTY_SCOPED_STATE, SIGNED_UAT_READY, NO_GO or BLOCKED recorded |
 | UAT-HANDOFF-05 | Record each test result and redacted evidence reference | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` Section 5.2 | Account, route, result, evidence reference, redaction reviewer and reviewer recorded |
 | UAT-HANDOFF-06 | Complete closure rows UAT-CLOSE-01 through UAT-CLOSE-06 | `docs/TTGDTX_UAT_EXECUTION_LOG_20260625.md` | UAT_PASS, UAT_FAIL or BLOCKED |
@@ -71,6 +72,8 @@ Stop UAT and keep production NO-GO if any of these occur:
 - Owner sign-off is missing, unclear or recorded inside Codex/chat only.
 - Any `UAT-ROUTE-*` row is missing minimum proof, has raw evidence, lacks
   redaction review, lacks required owner signature or is marked NO_GO/BLOCKED.
+- Any UAT-AUTH-01 through UAT-AUTH-04 authority action is unresolved,
+  ownerless, stored only in Codex/chat or interpreted as UAT approval.
 
 ## 4. Completion Rule
 

@@ -31,7 +31,28 @@ Each UAT route must have:
 
 If any required proof is missing, the row remains `NO_GO` or `BLOCKED`.
 
-## 3. Execution Routes
+## 3. Authority Action Queue
+
+The visible hub also exposes
+`data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS"` so
+operators can see which authority must confirm unclear or missing UAT handoff
+facts before a route result is recorded.
+
+Decision lane:
+`SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED`.
+
+This queue is task routing only. It does not execute UAT, accept evidence, sign
+owner results, create accounts, grant access, approve finance action, approve
+owner GO/NO-GO or mark production GO.
+
+| Code | Route | Authority | Action needed | Safe record | Stop condition |
+|---|---|---|---|---|---|
+| UAT-AUTH-01 | UAT-ROUTE-01 / P0-10 | IT_DATA + Audit | Confirm controlled evidence location, redaction reviewer and evidence ID convention before any UAT screenshot, voucher, backup proof or signed note is referenced | Storage label, redaction class, reviewer role and evidence ID pattern only | Raw evidence, secret, password, OTP, reset/invite link, raw PII, bank data, voucher or unredacted screenshot enters Git/Codex/chat |
+| UAT-AUTH-02 | UAT-ROUTE-04 / P6-04 | IT_DATA + TRUONG_PHONG + Audit | Confirm which synthetic or approved operator labels may run each role/workspace route and which negative cases must stay blocked | User labels, department labels, route names, ALLOWED/BLOCKED/EMPTY_SCOPED_STATE result targets and reviewer role only | A real password, invite/reset link, broad-access account, ownerless test account or unreviewed route matrix is used |
+| UAT-AUTH-03 | UAT-ROUTE-08 / P2-18/P5-03 | KHTC + BGH + IT_DATA + Audit | Confirm the Finance Desk and accounting dashboard browser UAT order, read-only expectation, source reconciliation owner and Day-1 ledger handoff | Route labels, source-comparison ID, Day-1 checklist ID, result-ledger ID, reliance decision state and owner labels only | Finance Desk or dashboard is treated as write-capable, production-reliable, finance-approved, evidence-accepted or owner-signed from PASS_LOCAL output |
+| UAT-AUTH-04 | UAT-ROUTE-11 / P0-09 | BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG | Confirm the final owner GO/NO-GO review packet contains signed UAT, evidence binder, backup/restore, migration, P0-17 access closure and risk-closure references | Decision packet ID, required owner labels, proof-path IDs and unresolved NO_GO/BLOCKED reasons only | Any owner decision is unsigned, stored only in Codex/chat, missing a prerequisite proof path or interpreted as production GO from a local audit |
+
+## 4. Execution Routes
 
 | Order | Code | Route | Runbook | Owner | Minimum proof | Decision lane | Stop condition | Guard |
 |---|---|---|---|---|---|---|---|---|
@@ -47,13 +68,13 @@ If any required proof is missing, the row remains `NO_GO` or `BLOCKED`.
 | UAT-ROUTE-10 | P6-06 | `/audit` | `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | IT_DATA + Audit + business owners | Conversion proof or narrow written waiver for unresolved findings plus rollback and closure decision evidence | SIGNED_UAT_READY / NO_GO / BLOCKED | Any protected finance, evidence, approval, payment, lead or audit path can be hard-deleted without signed conversion or waiver | `npm.cmd run audit:hard-delete-conversion-decision-queue` |
 | UAT-ROUTE-11 | P0-09 | `/ttgdtx` | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` + `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` + `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure references | SIGNED_UAT_READY / NO_GO / BLOCKED | Any required owner signs NO-GO/BLOCKED, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending | `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` |
 
-## 4. Closure Rule
+## 5. Closure Rule
 
 All rows need controlled evidence reference, redaction reviewer, route result,
 reviewer name and required owner signature outside Git/Codex/chat before the UAT
 result can leave NO-GO.
 
-## 5. Strict Boundary
+## 6. Strict Boundary
 
 This routing hub must not:
 
@@ -70,13 +91,16 @@ PASS_LOCAL means the routing structure, visible panel and audit guard exist.
 Production remains NO-GO until controlled external evidence and required owner
 signatures exist.
 
-## 6. Operator Handoff Link
+## 7. Operator Handoff Link
 
 The human operator follows
 `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` after static preflight. The
 handoff must include:
 
 - `UAT-HANDOFF-03` opening `/ttgdtx` and confirming the routing hub is visible.
+- `UAT-HANDOFF-03B` confirming the authority action queue is visible with
+  UAT-AUTH-01 through UAT-AUTH-04 and that unresolved items remain NO_GO or
+  BLOCKED until the right authority confirms them outside Git/Codex/chat.
 - `UAT-HANDOFF-04` executing the browser route/account matrix and this signed
   UAT route list together.
 - `UAT-ROUTE-01` through `UAT-ROUTE-11` as the ordered route checklist.

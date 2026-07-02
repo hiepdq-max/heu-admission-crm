@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Signed UAT Authority Action Queue
+
+- Added `SIGNED_UAT_AUTHORITY_ACTIONS` in `lib/production-readiness.ts` for
+  UAT-AUTH-01 through UAT-AUTH-04 with
+  `SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED`.
+- Extended `components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx`
+  with `data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS"`
+  so `/ttgdtx` shows which BGH, IT_DATA, KHTC, PHAP_CHE, Audit,
+  TRUONG_PHONG or process-owner authority must confirm missing UAT handoff
+  facts before a route result is recorded.
+- Updated `docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md` and
+  `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` so UAT-HANDOFF-03B checks the
+  authority action queue before browser route results are recorded.
+- Tightened `scripts/audit-ttgdtx-signed-uat-execution-routing-hub.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the authority queue cannot be
+  removed while claiming signed UAT routing readiness.
+- Boundary: this is authority task routing only. It does not execute UAT,
+  create accounts, send invites, store passwords, collect OTPs, collect
+  reset/invite links, accept evidence, sign owner results, grant access,
+  approve finance action, approve owner GO/NO-GO, run production migration or
+  mark production GO.
+
 ## 2026-07-02 - Real Data Logic Professional Legal Confirmation Register
 
 - Added `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`

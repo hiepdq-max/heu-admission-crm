@@ -6,9 +6,13 @@ import {
   FileCheck2,
   Route,
   ShieldCheck,
+  UserCheck,
 } from "lucide-react";
 
-import { SIGNED_UAT_EXECUTION_ROUTES } from "@/lib/production-readiness";
+import {
+  SIGNED_UAT_AUTHORITY_ACTIONS,
+  SIGNED_UAT_EXECUTION_ROUTES,
+} from "@/lib/production-readiness";
 
 const summaryCards = [
   {
@@ -108,6 +112,65 @@ export function TtgdtxSignedUatExecutionRoutingHub() {
               </div>
               <div className="mt-2 leading-6 text-zinc-800">{item.value}</div>
             </div>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 bg-amber-50/50 p-5"
+        data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase text-amber-800">
+              <UserCheck className="size-4" />
+              Authority action queue
+            </div>
+            <p className="mt-2 max-w-4xl leading-6 text-amber-950">
+              These rows show who must confirm the next UAT handoff facts
+              outside Git/Codex/chat. They are task routing only; they do not
+              execute UAT, accept evidence or sign owner results.
+            </p>
+          </div>
+          <span className="inline-flex rounded-md border border-amber-200 bg-white px-2 py-1 font-mono text-xs font-semibold text-amber-800">
+            SIGNED_UAT_AUTHORITY_ACTION_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {SIGNED_UAT_AUTHORITY_ACTIONS.map((item) => (
+            <article
+              key={item.code}
+              className="rounded-md border border-amber-200 bg-white p-4"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-semibold text-amber-800">
+                  {item.code}
+                </span>
+                <span className="font-mono text-xs text-zinc-500">
+                  {item.route}
+                </span>
+              </div>
+              <h3 className="mt-3 text-sm font-semibold text-zinc-950">
+                {item.authority}
+              </h3>
+              <p className="mt-2 leading-6 text-zinc-700">
+                {item.actionNeeded}
+              </p>
+              <div className="mt-3 rounded-md bg-zinc-50 p-3">
+                <div className="text-[11px] font-semibold uppercase text-zinc-500">
+                  Safe record
+                </div>
+                <p className="mt-2 leading-6 text-zinc-700">
+                  {item.safeRecord}
+                </p>
+              </div>
+              <div className="mt-3 font-mono text-xs font-semibold text-amber-800">
+                {item.decisionValue}
+              </div>
+              <p className="mt-3 leading-6 text-rose-700">
+                {item.stopCondition}
+              </p>
+            </article>
           ))}
         </div>
       </div>
