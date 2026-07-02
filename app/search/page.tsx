@@ -346,6 +346,68 @@ function SearchResultCard({
   );
 }
 
+function resultKey(row: SearchResultRow, index: number) {
+  return `${row.result_type}-${row.result_code ?? row.entity_id ?? row.href ?? index}`;
+}
+
+function SearchQuickOpen({
+  results,
+  activeSegmentId,
+}: {
+  results: SearchResultRow[];
+  activeSegmentId: string | null;
+}) {
+  const quickResults = results.slice(0, 3);
+
+  if (quickResults.length === 0) {
+    return null;
+  }
+
+  return (
+    <section
+      className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-3 shadow-sm"
+      data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"
+      data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"
+    >
+      <div className="flex min-w-0 items-center justify-between gap-3 px-1">
+        <h2 className="min-w-0 truncate text-sm font-semibold text-zinc-950">
+          Mở nhanh
+        </h2>
+        <span className="shrink-0 text-xs text-zinc-500">
+          {quickResults.length}/{results.length}
+        </span>
+      </div>
+      <div className="mt-3 grid min-w-0 gap-2 lg:grid-cols-3">
+        {quickResults.map((row, index) => (
+          <Link
+            key={resultKey(row, index)}
+            href={resultHref(row, activeSegmentId)}
+            aria-label={`Mở nhanh ${row.result_label}`}
+            title={`Mở nhanh ${row.result_label}`}
+            className="group flex min-h-24 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 transition hover:border-zinc-400 hover:bg-white"
+          >
+            <span className="min-w-0 overflow-hidden">
+              <span className="block truncate text-sm font-semibold text-zinc-950">
+                {row.result_label}
+              </span>
+              <span className="mt-1 block truncate text-xs text-zinc-500">
+                {typeLabels[row.result_type] ?? row.result_type}
+                {row.result_code ? ` · ${row.result_code}` : ""}
+              </span>
+              {row.result_summary ? (
+                <span className="mt-1 block line-clamp-2 break-words text-xs leading-5 text-zinc-500">
+                  {row.result_summary}
+                </span>
+              ) : null}
+            </span>
+            <ArrowRight className="size-4 shrink-0 text-zinc-400 transition group-hover:text-zinc-900" />
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default async function HeuOsSearchPage({ searchParams }: SearchPageProps) {
   const supabase = await createClient();
   const {
@@ -485,9 +547,13 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
               P1-11
             </span>
           </div>
-          {results.map((row) => (
+          <SearchQuickOpen
+            results={results}
+            activeSegmentId={workspace.activeSegmentId}
+          />
+          {results.map((row, index) => (
             <SearchResultCard
-              key={`${row.result_type}-${row.result_code ?? row.entity_id}`}
+              key={resultKey(row, index)}
               row={row}
               activeSegmentId={workspace.activeSegmentId}
             />

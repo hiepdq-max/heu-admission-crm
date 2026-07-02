@@ -145,6 +145,12 @@ requireText(
   searchPagePath,
 );
 requireText(
+  searchPage,
+  /(?=[\s\S]*function SearchQuickOpen)(?=[\s\S]*const quickResults = results\.slice\(0, 3\))(?=[\s\S]*data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN")(?=[\s\S]*data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW")(?=[\s\S]*min-w-0 overflow-hidden rounded-lg)(?=[\s\S]*aria-label=\{`Mở nhanh \$\{row\.result_label\}`\})(?=[\s\S]*title=\{`Mở nhanh \$\{row\.result_label\}`\})(?=[\s\S]*className="group flex min-h-24 min-w-0[\s\S]*overflow-hidden)(?=[\s\S]*line-clamp-2 break-words)(?=[\s\S]*<SearchQuickOpen[\s\S]*activeSegmentId=\{workspace\.activeSegmentId\})/i,
+  "search quick-open top-three no-overflow guard",
+  searchPagePath,
+);
+requireText(
   appShell,
   /(?=[\s\S]*w-full min-w-0 justify-start gap-3 overflow-hidden)(?=[\s\S]*<span className="min-w-0 truncate">\{item\.label\}<\/span>)(?=[\s\S]*<div className="min-w-0">)(?=[\s\S]*className="break-words text-xl font-semibold tracking-normal")(?=[\s\S]*data-heu-global-quick-access="P1-11_SEARCH")(?=[\s\S]*className="flex h-8 w-full min-w-0 max-w-full items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 sm:w-auto")/i,
   "global quick access and navigation overflow guard",
@@ -164,7 +170,7 @@ requireText(
 );
 requireText(
   checklist,
-  /User-friendly TTGDTX process labels[\s\S]*PASS_LOCAL[\s\S]*audit:ttgdtx-process-labels/i,
+  /User-friendly TTGDTX process labels[\s\S]*PASS_LOCAL[\s\S]*\/search` quick-open top 3 results[\s\S]*data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"[\s\S]*no-overflow guard[\s\S]*audit:ttgdtx-process-labels/i,
   "production checklist process-label PASS_LOCAL row",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
 );

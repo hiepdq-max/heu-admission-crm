@@ -189,7 +189,7 @@ requireText(
 );
 requireText(
   inventory,
-  /Process discovery\/navigation[\s\S]*Shared TTGDTX process labels, Search suggestions and `\/ttgdtx` quick finder show business name before P2 code[\s\S]*PASS_LOCAL; signed browser UAT pending/i,
+  /Process discovery\/navigation[\s\S]*Shared TTGDTX process labels, Search suggestions, `\/search` quick-open top 3 results[\s\S]*data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"[\s\S]*no-overflow guard[\s\S]*`\/ttgdtx` quick finder show business name before P2 code[\s\S]*PASS_LOCAL; signed browser UAT pending/i,
   "TTGDTX process discovery and quick finder control state",
 );
 requireText(

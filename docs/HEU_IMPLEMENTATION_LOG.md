@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P1-11 Search Quick Open Guard
+
+- Tightened `app/search/page.tsx` so result pages show the first three results
+  in a guarded quick-open panel with
+  `data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"`.
+- Added `data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
+  `aria-label` and `title` guards so long result labels, codes and summaries
+  stay readable and keyboard/browser-assistive navigation has a stable target.
+- Updated the process-label checklist/current-state wording and local audits so
+  the quick-open panel and overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is navigation/discovery and no-overflow hardening
+  only. It does not write search data, change role scope, accept UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
 ## 2026-07-03 - P0 Register SOP Loop State Backlog Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` P0 register pack row so it

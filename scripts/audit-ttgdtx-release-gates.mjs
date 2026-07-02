@@ -3608,6 +3608,12 @@ requireText(
 );
 
 requireText(
+  "app/search/page.tsx",
+  literalPattern("(?=[\\s\\S]*function SearchQuickOpen)(?=[\\s\\S]*const quickResults = results\\.slice\\(0, 3\\))(?=[\\s\\S]*data-heu-search-quick-open=\"P1-11_SEARCH_QUICK_OPEN\")(?=[\\s\\S]*data-heu-search-quick-open-overflow-guard=\"P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW\")(?=[\\s\\S]*min-w-0 overflow-hidden rounded-lg)(?=[\\s\\S]*line-clamp-2 break-words)(?=[\\s\\S]*<SearchQuickOpen[\\s\\S]*activeSegmentId=\\{workspace\\.activeSegmentId\\})", "i"),
+  "Search quick-open top-three no-overflow guard",
+);
+
+requireText(
   "lib/ttgdtx-process-labels.ts",
   literalPattern("code: \"P5-03\"[\\s\\S]*businessName: \"HEU Finance Desk\"[\\s\\S]*label: \"HEU Finance Desk \\(P5-03\\)\"[\\s\\S]*href: \"\\/finance-desk\"[\\s\\S]*dashboard tai chinh", "i"),
   "P5-03 Finance Desk process label",

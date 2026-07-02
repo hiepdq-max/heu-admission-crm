@@ -3952,6 +3952,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-07-03 - P1-11 Search Quick Open Guard[\s\S]*app\/search\/page\.tsx[\s\S]*data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"[\s\S]*data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"[\s\S]*min-w-0[\s\S]*overflow-hidden[\s\S]*truncate[\s\S]*break-words[\s\S]*aria-label[\s\S]*title[\s\S]*does not\s+write search data[\s\S]*change role scope[\s\S]*accept UAT[\s\S]*accept\s+evidence[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production\s+GO/i,
+  "P1-11 Search quick-open guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-06-28 - HOU Ledger Handover Gap Pack[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*components\/hou\/hou-ledger-handover-gap-pack\.tsx[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*HOU_LEDGER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-hou-ledger-handover-gap-pack[\s\S]*This is HOU control packaging only[\s\S]*does not approve HOU handover[\s\S]*tuition ledger posting[\s\S]*invoice issuance[\s\S]*COM payout[\s\S]*finance action[\s\S]*UAT\s+acceptance[\s\S]*evidence acceptance[\s\S]*owner GO[\s\S]*production GO/i,
   "HOU ledger handover gap-pack log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
