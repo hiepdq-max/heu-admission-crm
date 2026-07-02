@@ -259,6 +259,7 @@ const requiredFiles = [
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md",
   "docs/HEU_RISK_CONTROL_SIGNOFF_REGISTER_20260627_V01_DRAFT.md",
@@ -3759,14 +3760,26 @@ requireText(
 
 requireText(
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
-  literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*separate from TTGDTX and Short Course)(?=[\\s\\S]*HOU-LH-01)(?=[\\s\\S]*HOU-LH-08)(?=[\\s\\S]*HOU_LEDGER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*RV_HOU_LEDGER_SUMMARY)(?=[\\s\\S]*HOU-UAT-01)(?=[\\s\\S]*HOU-UAT-06)(?=[\\s\\S]*does not approve production HOU\\s+handover, tuition ledger posting, invoice issuance, COM payout, finance action,\\s+evidence acceptance, UAT acceptance, owner GO or production GO)", "i"),
+  literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*separate from TTGDTX and Short Course)(?=[\\s\\S]*HOU-LH-01)(?=[\\s\\S]*HOU-LH-08)(?=[\\s\\S]*HOU_LEDGER_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*RV_HOU_LEDGER_SUMMARY)(?=[\\s\\S]*HOU-UAT-01)(?=[\\s\\S]*HOU-UAT-06)(?=[\\s\\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*HOU_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*HOU-UAT-LEDGER-01)(?=[\\s\\S]*HOU-UAT-LEDGER-06)(?=[\\s\\S]*does not approve production HOU\\s+handover, tuition ledger posting, invoice issuance, COM payout, finance action,\\s+evidence acceptance, UAT acceptance, owner GO or production GO)(?=[\\s\\S]*does not execute UAT,\\s+accept evidence,\\s+approve HOU handover,\\s+approve tuition ledger posting,\\s+approve invoice issuance,\\s+approve COM payout,\\s+approve owner GO or mark production GO)", "i"),
   "HOU ledger/handover gap pack boundary",
+);
+
+requireText(
+  "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*HOU_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*HOU-UAT-LEDGER-01)(?=[\\s\\S]*HOU-UAT-LEDGER-06)(?=[\\s\\S]*does not execute UAT,\\s+accept evidence, approve HOU handover,\\s+approve tuition ledger posting, approve invoice issuance, approve COM payout,\\s+approve owner GO or mark production GO)(?=[\\s\\S]*does not prove that any UAT case has been executed or\\s+accepted)", "i"),
+  "HOU UAT result ledger template boundary",
 );
 
 requireText(
   "components/hou/hou-ledger-handover-gap-pack.tsx",
   literalPattern("(?=[\\s\\S]*data-heu-hou-ledger-handover-gap-pack=\"P8-01\")(?=[\\s\\S]*HOU Ledger\\/Handover Gap Pack:\\s*PASS_LOCAL only)(?=[\\s\\S]*HOU-LH-01)(?=[\\s\\S]*HOU-LH-08)(?=[\\s\\S]*RV_HOU_LEDGER_SUMMARY)(?=[\\s\\S]*PASS_LOCAL does not approve HOU handover, tuition ledger posting,\\s+invoice issuance, COM payout, finance action, UAT acceptance,\\s+evidence acceptance, owner GO or production GO)", "i"),
   "visible HOU ledger/handover gap pack",
+);
+
+requireText(
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
+  literalPattern("(?=[\\s\\S]*data-heu-hou-uat-result-ledger=\"P8-01_UAT_RESULT_LEDGER\")(?=[\\s\\S]*HOU_UAT_RESULT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*HOU-UAT-LEDGER-01)(?=[\\s\\S]*HOU-UAT-LEDGER-06)(?=[\\s\\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\\.md)(?=[\\s\\S]*controlled evidence ref)", "i"),
+  "visible HOU UAT result ledger",
 );
 
 requireText(

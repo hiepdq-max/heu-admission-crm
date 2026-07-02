@@ -44,6 +44,7 @@ for (const file of [
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
@@ -264,7 +265,7 @@ requireText(
 );
 requireText(
   inventory,
-  /HOU ledger\/handover gap pack[\s\S]*\/hou[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*PASS_LOCAL; no HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance or production GO approved/i,
+  /HOU ledger\/handover gap pack[\s\S]*\/hou[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06[\s\S]*HOU_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*PASS_LOCAL; no HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO approved/i,
   "HOU ledger/handover gap-pack current control state",
 );
 requireText(

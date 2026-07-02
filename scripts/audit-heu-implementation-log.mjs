@@ -56,6 +56,7 @@ for (const file of [
   "docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
   "docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md",
   "docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md",
+  "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
@@ -3954,6 +3955,13 @@ requireText(
   log,
   /## 2026-07-03 - P1-11 Search Quick Open Guard[\s\S]*app\/search\/page\.tsx[\s\S]*data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"[\s\S]*data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"[\s\S]*min-w-0[\s\S]*overflow-hidden[\s\S]*truncate[\s\S]*break-words[\s\S]*aria-label[\s\S]*title[\s\S]*does not\s+write search data[\s\S]*change role scope[\s\S]*accept UAT[\s\S]*accept\s+evidence[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production\s+GO/i,
   "P1-11 Search quick-open guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
+  /## 2026-07-03 - P8-01 HOU UAT Result Ledger Guard[\s\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HOU-UAT-LEDGER-01[\s\S]*HOU-UAT-LEDGER-06[\s\S]*HOU_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*data-heu-hou-uat-result-ledger="P8-01_UAT_RESULT_LEDGER"[\s\S]*table-fixed[\s\S]*break-words[\s\S]*does not\s+execute UAT[\s\S]*accept evidence[\s\S]*approve HOU handover[\s\S]*approve tuition ledger\s+posting[\s\S]*approve invoice issuance[\s\S]*approve COM payout[\s\S]*approve owner GO[\s\S]*production GO/i,
+  "HOU UAT result ledger guard log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 

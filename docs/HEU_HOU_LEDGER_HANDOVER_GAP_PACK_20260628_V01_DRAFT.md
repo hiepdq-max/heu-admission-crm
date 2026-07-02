@@ -84,9 +84,23 @@ Codex, AI or a local PASS_LOCAL guard must not:
 - `components/hou/hou-ledger-handover-gap-pack.tsx`
 - `/hou`
 - `docs/HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT.md`
+- `docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`
 - `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`
 
 Passing this audit means only that the HOU gap-pack structure exists locally and
 the production boundary is visible. HOU remains `CAN_SUA` until handover UAT,
 tuition ledger proof, COM policy/signoff, source reconciliation and owner
 decision evidence are completed outside Codex/chat.
+
+## 8. UAT Result Ledger Template
+
+Use `docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` to record
+HOU-UAT-01 through HOU-UAT-06 result rows before relying on HOU handover,
+tuition ledger, invoice/chung-tu, COM, payment batch or report-view outputs.
+Decision values are `HOU_UAT_RESULT_READY / NO_GO / BLOCKED`.
+
+The template exposes HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06 and links each
+row to HOU-LH control gates, controlled evidence references, reviewer decision
+and owner route outside Codex/chat. It does not execute UAT, accept evidence,
+approve HOU handover, approve tuition ledger posting, approve invoice issuance,
+approve COM payout, approve owner GO or mark production GO.

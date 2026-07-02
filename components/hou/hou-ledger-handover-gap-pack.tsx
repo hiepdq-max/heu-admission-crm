@@ -3,6 +3,7 @@ import {
   FileWarning,
   GraduationCap,
   Landmark,
+  ListChecks,
   ReceiptText,
   ShieldCheck,
   ShieldAlert,
@@ -83,9 +84,54 @@ const gapRows = [
   },
 ];
 
+const uatResultLedgerRows = [
+  {
+    code: "HOU-UAT-LEDGER-01",
+    uat: "HOU-UAT-01",
+    control: "HOU-LH-01",
+    evidence: "Route/user screenshot ref plus HOU program, major and stage label.",
+    stop: "Screen implies HOU is production ready or COM can be paid.",
+  },
+  {
+    code: "HOU-UAT-LEDGER-02",
+    uat: "HOU-UAT-02",
+    control: "HOU-LH-02",
+    evidence: "Receiver accept/reject decision ref plus handover packet evidence class.",
+    stop: "Receiver can create ledger or approve COM from the handover surface.",
+  },
+  {
+    code: "HOU-UAT-LEDGER-03",
+    uat: "HOU-UAT-03",
+    control: "HOU-LH-03 / HOU-LH-04",
+    evidence: "Tuition basis, invoice/chung-tu decision and voucher or waiver route ref.",
+    stop: "Ledger can post or collection is relied on before signed proof.",
+  },
+  {
+    code: "HOU-UAT-LEDGER-04",
+    uat: "HOU-UAT-04",
+    control: "HOU-LH-07",
+    evidence: "RV_HOU_LEDGER_SUMMARY DQ/source/signoff blocker ref.",
+    stop: "Dashboard is relied on before report-view owner signoff.",
+  },
+  {
+    code: "HOU-UAT-LEDGER-05",
+    uat: "HOU-UAT-05",
+    control: "HOU-LH-05 / HOU-LH-06",
+    evidence: "Negative route/user evidence ref for restricted rate, COM or payout data.",
+    stop: "Out-of-scope staff see restricted finance, COM policy or payout detail.",
+  },
+  {
+    code: "HOU-UAT-LEDGER-06",
+    uat: "HOU-UAT-06",
+    control: "HOU-LH-08",
+    evidence: "Actor, owner, evidence ref, reviewer and decision trace row.",
+    stop: "PASS_LOCAL, Codex or AI output is treated as UAT or owner approval.",
+  },
+];
+
 function StatusBadge({ children }: { children: string }) {
   return (
-    <span className="inline-flex rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+    <span className="inline-flex max-w-full rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-left text-xs font-medium leading-5 text-amber-700">
       {children}
     </span>
   );
@@ -218,6 +264,64 @@ export function HouLedgerHandoverGapPack() {
               </p>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 p-5"
+        data-heu-hou-uat-result-ledger="P8-01_UAT_RESULT_LEDGER"
+        data-heu-hou-uat-result-decision="HOU_UAT_RESULT_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ListChecks className="size-4 text-zinc-600" />
+              <span>HOU UAT result ledger</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Record HOU-UAT-01 through HOU-UAT-06 in
+              docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md before
+              relying on HOU handover, tuition ledger, invoice/chung-tu, COM or
+              report-view outputs. Each row needs a controlled evidence ref,
+              reviewer and linked HOU-LH decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>HOU_UAT_RESULT_READY / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Ledger</th>
+                <th className="w-[13%] px-4 py-3">UAT</th>
+                <th className="w-[17%] px-4 py-3">Control</th>
+                <th className="w-[26%] px-4 py-3">Evidence ref</th>
+                <th className="w-[26%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {uatResultLedgerRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.uat}
+                  </td>
+                  <td className="break-words px-4 py-4 text-zinc-700">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.evidence}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
