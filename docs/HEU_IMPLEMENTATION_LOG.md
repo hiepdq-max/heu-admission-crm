@@ -6057,3 +6057,21 @@
   email, create real tasks, store passwords, OTPs, invite/reset links, bank
   data or raw PII, accept UAT, approve finance action, approve owner GO or mark
   production GO.
+
+## 2026-07-02 - HEU Daily Report Draft Generator
+
+- Added `scripts/report-heu-daily-dry-run.mjs` and
+  `npm.cmd run report:heu-daily-dry-run` to print a plain-language daily
+  PASS_LOCAL report draft with live git status, recent commits, trial-user
+  labels, owner task lanes, glossary notes and blockers requiring the right
+  authority.
+- Updated `.github/workflows/heu-pass-local.yml` so the scheduled PASS_LOCAL
+  gate appends the same draft to the GitHub Actions step summary after the
+  audit/lint/build gate.
+- Updated the P5-02 BGH dashboard spec, backlog, production checklist,
+  current-state inventory and `audit:heu-bgh-dashboard-spec` so the report
+  draft remains dry-run only.
+- This does not send email, create real tasks, store passwords, OTPs,
+  invite/reset links, bank credentials, raw PII, bank statements, vouchers or
+  raw payment data, accept UAT, approve finance action, approve owner GO or
+  mark production GO.

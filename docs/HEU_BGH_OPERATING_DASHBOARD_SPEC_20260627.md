@@ -120,6 +120,10 @@ glossary, plus task lanes for IT_DATA, KHTC, BGH, Audit and Phap Che. This is a
 handoff template only: it does not send email, create real tasks, store
 passwords, OTPs, invite/reset links, bank data, raw PII or approve UAT,
 finance action, owner GO or production GO.
+`npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
+draft for local use or GitHub Actions step summary, and
+`.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
+PASS_LOCAL gate summary without sending mail.
 
 ## 9. Current Evidence
 
@@ -129,6 +133,8 @@ Current local evidence:
 - `app/reports/page.tsx`
 - `app/master-control/page.tsx`
 - `components/master-control/production-readiness-blocker-summary.tsx`
+- `.github/workflows/heu-pass-local.yml`
+- `scripts/report-heu-daily-dry-run.mjs`
 - `lib/production-readiness.ts`
 - `app/ttgdtx/accounting-dashboard/page.tsx`
 - `docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md`
@@ -138,6 +144,7 @@ Current local evidence:
 - `npm.cmd run audit:heu-bgh-dashboard-spec`
 - `npm.cmd run audit:ttgdtx-dashboard-access`
 - `npm.cmd run audit:ttgdtx-release-gates`
+- `npm.cmd run report:heu-daily-dry-run`
 
 ## 10. Current Result
 

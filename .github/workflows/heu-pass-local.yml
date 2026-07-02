@@ -92,6 +92,7 @@ jobs:
       - name: Write daily-readable summary
         if: always()
         run: |
+          node scripts/report-heu-daily-dry-run.mjs >> "$GITHUB_STEP_SUMMARY"
           {
             echo ""
             echo "## Bao cao de hieu"
