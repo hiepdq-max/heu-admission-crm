@@ -25,6 +25,7 @@ approve finance action, approve owner GO or mark production GO.
 | BLOCKED | A named owner must provide missing evidence, decision, access proof or correction. |
 | DEPT_TASK_REGISTER_READY | The task lanes are ready as a controlled draft; no email/task automation is enabled. |
 | INFO_REQUIRED_BY_AUTHORITY | A question is routed to the right owner label instead of Codex guessing or approving. |
+| REAL_OPS_ROUTE_SUMMARY_READY | REAL-OPS-01 through REAL-OPS-08 are routed to owner labels for external proof/signature; no proof is accepted here. |
 
 ## 3. Department Task Register
 
@@ -56,7 +57,27 @@ of guessing or marking GO.
 | INFO-REQ-05 | Audit | Which evidence reference, redaction class and reviewer are acceptable? | Controlled evidence ID/reference only | Raw evidence, PII, bank statement or voucher is exposed |
 | INFO-REQ-06 | TRUONG_PHONG + process owners | Which route/user-label may test, which route is out of scope and who signs? | Label, route, stop condition and signer owner | Real user is created or UAT is approved from the dry-run report |
 
-## 5. Email And In-App Boundary
+## 5. Real Operation Closure Route Summary
+
+The daily report may show the real-operation closure routes in plain language
+so each department knows what it must prepare next. This is
+`REAL_OPS_ROUTE_SUMMARY_READY / NO_GO / BLOCKED` routing only. It does not
+accept evidence, execute UAT, approve finance reliance, approve legal position,
+approve migration, create real tasks, send email, assign accounts, decide owner
+GO/NO-GO or mark production GO.
+
+| Route | Owner label | What the user does | External proof/signature required outside Git/Codex/chat | Stop condition |
+|---|---|---|---|---|
+| REAL-OPS-01 | IT_DATA + Audit | Prepare backup/restore proof intake and smoke-check summary | Backup ID, restore target proof, smoke-check output and closure owner | Backup dump, database URL, service-role key, raw PII, bank data or voucher appears in the report |
+| REAL-OPS-02 | IT_DATA + KHTC + PHAP_CHE | Confirm signed Step90-Step110 migration order after P0-03 proof is accepted | Signed migration order, rollback point and signer authority | SQL is executed or migration is approved from PASS_LOCAL |
+| REAL-OPS-03 | BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG | Check UAT-ROUTE-01 through UAT-ROUTE-11 and which signature is missing | Signed UAT route results, owner signatures and exception notes | PASS_LOCAL is treated as UAT accepted or owner signed |
+| REAL-OPS-04 | KHTC + BGH + IT_DATA + Audit | Review Finance Desk/P2-18 source reconciliation, Day-1 result and P0-17 access closure | P5-03 controlled-trial proof, FIN_DAY1_RESULT and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED | Voucher posting, bank instruction, money movement, access-closure approval or production dashboard reliance is requested |
+| REAL-OPS-05 | PHAP_CHE + KHTC + BGH | Confirm P0-19 legal gate, contract/SOP basis, tuition policy and invoice/chung-tu route | Signed legal/SOP/tax or waiver decision and redaction class | AI/Codex is asked for legal conclusion, tax decision, invoice issuance or raw contract acceptance |
+| REAL-OPS-06 | IT_DATA + Audit + business owners | Check P6-06-FIND-001 through P6-06-FIND-044 and batch closure route | Conversion proof or written waiver, rollback route and redaction proof | Production deletion, cascade execution, conversion migration, cleanup or waiver is approved from the report |
+| REAL-OPS-07 | HOU owner + DAO_TAO + CTHSSV + KHTC + HR + PHAP_CHE + Audit | Separate HOU ledger/handover and Short Course attendance/payment scope before trial | HOU phase decision, Short Course phase decision, report-view signoff route and owner defer decision | HOU handover, COM payout, attendance lock, BHXH decision, HR payment or statutory accounting is approved from the report |
+| REAL-OPS-08 | BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG | Confirm REAL-OPS-01 through REAL-OPS-07 are externally closed before owner GO/NO-GO | Final owner decision manifest and signed prerequisite closure package | Daily report is treated as owner GO/NO-GO, production approval, finance approval, evidence acceptance or migration approval |
+
+## 6. Email And In-App Boundary
 
 The same lane can appear in:
 
@@ -70,7 +91,7 @@ Until then, all output is draft/read-only. The system may show task labels, but
 it must not create real tickets, send email, assign real user accounts, change
 workflow state or mark a task done for the owner.
 
-## 5. Forbidden Content
+## 7. Forbidden Content
 
 Do not place any of these in this register, daily report, email draft, software
 task label, Git commit, Codex/chat or workflow log:
@@ -82,10 +103,10 @@ task label, Git commit, Codex/chat or workflow log:
 - Bank statements, vouchers, raw payment data, raw signed evidence or private
   contract bodies.
 
-## 7. Current Result
+## 8. Current Result
 
 DEPT_TASK_REGISTER_READY is PASS_LOCAL_DRY_RUN only. It means the department
-task lanes, user labels and INFO_REQUIRED_BY_AUTHORITY owner questions are
-documented for dry-run reporting. It does not approve production, UAT,
-evidence, finance action, access creation, email sending, task automation or
-owner GO/NO-GO.
+task lanes, user labels, INFO_REQUIRED_BY_AUTHORITY owner questions and
+REAL_OPS_ROUTE_SUMMARY_READY closure route summaries are documented for dry-run
+reporting. It does not approve production, UAT, evidence, finance action,
+access creation, email sending, task automation or owner GO/NO-GO.

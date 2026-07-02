@@ -1,5 +1,35 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P5-02 Daily Report Real Ops Route Summary
+
+- Extended `scripts/report-heu-daily-dry-run.mjs` with
+  `realOperationClosureRouteSummary`,
+  `REAL_OPS_ROUTE_SUMMARY_READY / NO_GO / BLOCKED` and REAL-OPS-01 through
+  REAL-OPS-08 so the dry-run daily report explains which owner label handles
+  each real-operation closure route, how the department uses it, the external
+  proof/signature required and the stop condition.
+- Updated `docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md` with the
+  same REAL-OPS-01 through REAL-OPS-08 route table for BGH, IT_DATA, KHTC,
+  PHAP_CHE, Audit, TRUONG_PHONG, HOU owner, DAO_TAO, CTHSSV, HR and business
+  owners.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`,
+  `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the daily report real-operation
+  route summary cannot drift silently.
+- This is reporting and owner-route packaging only. It does not send real
+  email, create real tasks/tickets, assign accounts, accept evidence, execute
+  UAT, approve finance reliance, approve legal position, approve migration,
+  approve owner GO/NO-GO or mark production GO.
+- Boundary tokens flat: execute UAT; raw PII.
+- Route tokens: REAL-OPS-01 backup/restore proof; REAL-OPS-02 signed migration
+  order; REAL-OPS-03 signed UAT closure; REAL-OPS-04 finance reliance closure;
+  REAL-OPS-05 legal/invoice/chung-tu confirmation; REAL-OPS-06
+  hard-delete/cascade closure; REAL-OPS-07 HOU and Short Course scope;
+  REAL-OPS-08 final owner GO/NO-GO.
+- Forbidden content tokens: backup dump, database URL, service-role key, raw
+  PII, bank data, voucher, signed owner forms, private contracts, passwords,
+  OTPs, invite/reset links and raw payment data remain outside Git/Codex/chat.
+
 ## 2026-07-02 - REAL-OPS-08 Final Owner GO/NO-GO Intake
 
 - Added `docs/HEU_REAL_OPS_08_FINAL_OWNER_GONOGO_INTAKE_20260702.md` with

@@ -259,6 +259,97 @@ const signedUatRouteSummary = [
   },
 ];
 
+const realOperationClosureRouteSummary = [
+  {
+    route: "REAL-OPS-01",
+    owner: "IT_DATA + Audit",
+    status: "PENDING_EXTERNAL_PROOF",
+    userUse:
+      "Chuan bi backup/restore proof intake va smoke-check summary; chi ghi controlled evidence ID.",
+    externalProof:
+      "Backup ID, restore target proof, smoke-check output and closure owner outside Git/Codex/chat.",
+    stop:
+      "Stop neu backup dump, database URL, service-role key, raw PII, bank data hoac voucher xuat hien trong report.",
+  },
+  {
+    route: "REAL-OPS-02",
+    owner: "IT_DATA + KHTC + PHAP_CHE",
+    status: "PENDING_SIGNED_ORDER",
+    userUse:
+      "Xac nhan signed migration order sau khi P0-03 duoc chap nhan dung tham quyen.",
+    externalProof:
+      "Signed Step90-Step110 order, rollback point and signer authority outside Git/Codex/chat.",
+    stop:
+      "Stop neu co yeu cau chay SQL, paste migration output, approve migration tu PASS_LOCAL hoac bo qua rollback.",
+  },
+  {
+    route: "REAL-OPS-03",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG",
+    status: "PENDING_SIGNED_UAT",
+    userUse:
+      "Tong hop UAT-ROUTE-01 through UAT-ROUTE-11 va route nao con thieu chu ky.",
+    externalProof:
+      "Signed UAT route results, owner signatures and exception notes outside Git/Codex/chat.",
+    stop:
+      "Stop neu PASS_LOCAL bi hieu la UAT accepted, evidence accepted, owner signed hoac finance approved.",
+  },
+  {
+    route: "REAL-OPS-04",
+    owner: "KHTC + BGH + IT_DATA + Audit",
+    status: "PENDING_FINANCE_RELIANCE",
+    userUse:
+      "Doc Finance Desk/P2-18 source reconciliation, Day-1 result ledger and P0-17 access closure route.",
+    externalProof:
+      "P5-03 controlled-trial evidence, FIN_DAY1_RESULT and ACCESS_RETAIN / REVOKE_OR_REDUCE / BLOCKED outside Git/Codex/chat.",
+    stop:
+      "Stop neu co yeu cau post voucher, issue bank instruction, move money, approve access closure hoac rely production dashboard.",
+  },
+  {
+    route: "REAL-OPS-05",
+    owner: "PHAP_CHE + KHTC + BGH",
+    status: "PENDING_LEGAL_INVOICE_CONFIRMATION",
+    userUse:
+      "Xac nhan P0-19 legal gate, contract/SOP basis, tuition policy and invoice/chung-tu route.",
+    externalProof:
+      "Signed legal/SOP/tax or waiver decision and redaction class outside Git/Codex/chat.",
+    stop:
+      "Stop neu AI/Codex duoc yeu cau ket luan phap ly, quyet dinh thue, issue invoice hoac chap nhan raw contract.",
+  },
+  {
+    route: "REAL-OPS-06",
+    owner: "IT_DATA + Audit + business owners",
+    status: "PENDING_CONVERSION_OR_WAIVER",
+    userUse:
+      "Kiem tra P6-06-FIND-001 through P6-06-FIND-044 va batch closure route.",
+    externalProof:
+      "Conversion proof or written waiver, rollback route and redaction proof outside Git/Codex/chat.",
+    stop:
+      "Stop neu co yeu cau approve production deletion, cascade execution, conversion migration, cleanup hoac waiver tu report.",
+  },
+  {
+    route: "REAL-OPS-07",
+    owner: "HOU owner + DAO_TAO + CTHSSV + KHTC + HR + PHAP_CHE + Audit",
+    status: "PENDING_SCOPE_DECISION",
+    userUse:
+      "Tach HOU ledger/handover va Short Course attendance/payment scope truoc khi dua vao dot thu.",
+    externalProof:
+      "HOU phase decision, Short Course phase decision, report-view signoff route and owner defer decision outside Git/Codex/chat.",
+    stop:
+      "Stop neu HOU handover, COM payout, attendance lock, BHXH decision, HR payment hoac statutory accounting duoc approve tu report.",
+  },
+  {
+    route: "REAL-OPS-08",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG",
+    status: "PENDING_FINAL_OWNER_DECISION",
+    userUse:
+      "Kiem tra REAL-OPS-01 through REAL-OPS-07 da co du controlled proof truoc owner GO/NO-GO.",
+    externalProof:
+      "Final owner decision manifest and signed prerequisite closure package outside Git/Codex/chat.",
+    stop:
+      "Stop neu ai coi daily report la owner GO/NO-GO, production approval, finance approval, evidence acceptance hoac migration approval.",
+  },
+];
+
 const departmentTaskRegister = [
   {
     department: "BGH",
@@ -466,7 +557,19 @@ for (const route of signedUatRouteSummary) {
   console.log(`- ${route.route} ${route.code} - ${route.owner}: ${route.status}. Can co: ${route.proof}`);
 }
 console.log("");
-console.log("## 11. Blocker can dung tham quyen xac nhan");
+console.log("## 11. Real operation closure route summary");
+console.log("");
+console.log("Status: REAL_OPS_ROUTE_SUMMARY_READY / NO_GO / BLOCKED");
+console.log("Source: docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md and REAL-OPS-01 through REAL-OPS-08 intake docs");
+console.log("Mode: DRY_RUN only - no email sent, no real task created, no account assigned, no evidence accepted, no UAT approved.");
+console.log("");
+for (const route of realOperationClosureRouteSummary) {
+  console.log(`- ${route.route} - ${route.owner}: ${route.status}. User use: ${route.userUse}`);
+  console.log(`  External proof: ${route.externalProof}`);
+  console.log(`  Stop: ${route.stop}`);
+}
+console.log("");
+console.log("## 12. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");

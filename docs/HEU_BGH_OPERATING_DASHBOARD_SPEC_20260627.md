@@ -159,6 +159,14 @@ only: it does not create accounts, send real email, create real tasks/tickets,
 collect secrets, accept evidence, execute UAT, approve finance reliance,
 approve legal position, run production migration or mark production GO.
 
+The daily report dry-run also prints a `REAL_OPS_ROUTE_SUMMARY_READY / NO_GO /
+BLOCKED` real-operation closure route summary for REAL-OPS-01 through
+REAL-OPS-08. The summary maps each route to owner labels, how the department
+uses it, required external proof/signature and stop condition. It stays
+read-only: it does not send email, create real tasks/tickets, assign accounts,
+accept evidence, execute UAT, approve finance reliance, approve legal position,
+approve migration, approve owner GO/NO-GO or mark production GO.
+
 `npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
