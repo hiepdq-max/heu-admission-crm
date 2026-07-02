@@ -160,6 +160,11 @@ requireText(
 );
 requireText(
   inventory,
+  /M10 Dashboard[\s\S]*daily report real-operation closure route summary[\s\S]*REAL_OPS_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*REAL-OPS-01 through REAL-OPS-08[\s\S]*PENDING external proof\/signature status[\s\S]*owner labels[\s\S]*user-use guidance and stop conditions[\s\S]*no real email sending, no real task\/ticket creation and no real account assignment/i,
+  "M10 daily report real-operation route summary state",
+);
+requireText(
+  inventory,
   /M10 Dashboard[\s\S]*data-heu-signed-uat-route-summary="P5-02"[\s\S]*SIGNED_UAT_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*PENDING status[\s\S]*no real email sending, no real task\/ticket creation and no real account assignment/i,
   "M10 in-app signed UAT route summary state",
 );
@@ -217,6 +222,11 @@ requireText(
   inventory,
   /Accounting dashboard \/ BGH control[\s\S]*signed UAT route summary[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11 still PENDING[\s\S]*controlled evidence and required owner signatures exist[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts(?:, collecting secrets)?, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
   "P5-02 signed UAT route summary current control state",
+);
+requireText(
+  inventory,
+  /Accounting dashboard \/ BGH control[\s\S]*daily report real-operation closure route summary[\s\S]*REAL_OPS_ROUTE_SUMMARY_READY \/ NO_GO \/ BLOCKED[\s\S]*REAL-OPS-01 through REAL-OPS-08[\s\S]*owner labels[\s\S]*user-use guidance[\s\S]*external proof\/signature requirements and stop conditions[\s\S]*without sending email, creating real tasks\/tickets, assigning real accounts, collecting secrets, accepting evidence or approving UAT\/finance\/owner GO[\s\S]*Signed browser UAT pending/i,
+  "P5-02 real-operation route summary current control state",
 );
 requireText(
   inventory,
