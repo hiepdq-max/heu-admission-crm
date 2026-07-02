@@ -53,6 +53,7 @@ function requireSection(contents, heading, tokens, file) {
 }
 
 const formPath = "components/settings/user-create-form.tsx";
+const linkFormPath = "components/settings/user-auth-profile-link-form.tsx";
 const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
@@ -75,6 +76,7 @@ const logPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
 for (const file of [
   formPath,
+  linkFormPath,
   onboardingPath,
   actionsPath,
   settingsPagePath,
@@ -94,6 +96,7 @@ for (const file of [
 }
 
 const form = read(formPath);
+const linkForm = read(linkFormPath);
 const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
@@ -142,6 +145,36 @@ requireAllText(
   ],
   "server-side unsafe temporary password guard",
   actionsPath,
+);
+
+requireAllText(
+  linkForm,
+  [
+    "financeDayOneManualLinkChecks",
+    'data-heu-finance-day-one-manual-auth-link="P0-17-P6-04"',
+    "Finance Day-1 accounting user manual Auth link",
+    "FIN_MANUAL_LINK_READY / NO_GO / BLOCKED",
+    "FIN-LINK-01",
+    "FIN-LINK-04",
+    "REAL_KHTC_TTGDTX_OPERATOR_01",
+    "outside Codex/chat",
+    "does not collect",
+    "approve UAT",
+    "finance reliance",
+    "mark production GO",
+    "P6-04",
+    "P2-18",
+    "P5-03",
+    "P2-17",
+    "password reset link",
+    "account activation/invite link",
+    "service-role",
+    "raw PII",
+    "bank data",
+    "voucher",
+  ],
+  "Finance Day-1 manual Auth link handoff guard",
+  linkFormPath,
 );
 
 requireAllText(
@@ -851,6 +884,30 @@ requireSection(implementationLog, "2026-07-02 - P0-17 User Account Security Audi
   "accept",
   "evidence",
   "approve finance action",
+  "approve owner GO/NO-GO",
+  "mark production GO",
+], logPath);
+
+requireSection(implementationLog, "2026-07-02 - Finance Day-1 Manual Auth Link Guard", [
+  "user-auth-profile-link-form.tsx",
+  "data-heu-finance-day-one-manual-auth-link=\"P0-17-P6-04\"",
+  "FIN_MANUAL_LINK_READY / NO_GO / BLOCKED",
+  "FIN-LINK-01",
+  "FIN-LINK-04",
+  "REAL_KHTC_TTGDTX_OPERATOR_01",
+  "P6-04",
+  "P2-18",
+  "P5-03",
+  "P2-17",
+  "does not create",
+  "real accounts",
+  "collect credentials",
+  "send invites",
+  "store passwords",
+  "grant access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance reliance",
   "approve owner GO/NO-GO",
   "mark production GO",
 ], logPath);

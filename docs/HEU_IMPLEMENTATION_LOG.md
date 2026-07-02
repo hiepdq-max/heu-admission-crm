@@ -1,5 +1,21 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Day-1 Manual Auth Link Guard
+
+- Added a Finance Day-1 manual Auth link handoff in
+  `components/settings/user-auth-profile-link-form.tsx` with
+  `data-heu-finance-day-one-manual-auth-link="P0-17-P6-04"`.
+- The handoff records `FIN_MANUAL_LINK_READY / NO_GO / BLOCKED`,
+  `FIN-LINK-01` through `FIN-LINK-04`, the safe redacted label
+  `REAL_KHTC_TTGDTX_OPERATOR_01`, and the required sequence from manual
+  Supabase Auth creation to HEU profile link, P6-04, P2-18, P5-03 and P2-17.
+- Tightened `scripts/audit-heu-user-account-security.mjs` so the manual Auth
+  link handoff, no-secret boundary and implementation-log evidence cannot be
+  removed while claiming P0-17/P6-04 user-account security coverage.
+- Boundary: this guard does not create real accounts, collect credentials,
+  send invites, store passwords, grant access, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - HEU System Framework Review
 
 - Added `docs/HEU_SYSTEM_FRAMEWORK_REVIEW_20260702.md` as a

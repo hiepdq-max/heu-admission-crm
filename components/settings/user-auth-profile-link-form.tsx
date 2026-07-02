@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link2 } from "lucide-react";
+import { ClipboardCheck, Link2, ShieldAlert } from "lucide-react";
 
 import { linkAuthUserProfileAction } from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,33 @@ type UserAuthProfileLinkFormProps = {
 
 const inputClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
+
+const financeDayOneManualLinkChecks = [
+  {
+    code: "FIN-LINK-01",
+    title: "Manual Auth user already exists",
+    detail:
+      "Admin/IT_DATA creates or invites the real accounting user in Supabase Auth through an approved secure channel before this form is used.",
+  },
+  {
+    code: "FIN-LINK-02",
+    title: "Safe account label only",
+    detail:
+      "Record only redacted labels such as REAL_KHTC_TTGDTX_OPERATOR_01, owner, department, role and scope; never paste passwords, OTPs, reset links or invite links.",
+  },
+  {
+    code: "FIN-LINK-03",
+    title: "Run P6-04 before finance routes",
+    detail:
+      "After linking the HEU profile, run the Finance Day-1 P6-04 pre-login matrix before P2-18, P5-03 or P2-17 is opened for real use.",
+  },
+  {
+    code: "FIN-LINK-04",
+    title: "Stop on broad or unsigned access",
+    detail:
+      "Stop if scope is broad, owner approval is missing, negative-control access is not blocked or any secret appears in evidence.",
+  },
+];
 
 function isDepartmentHeadRole(role: OptionRow | undefined) {
   if (!role) {
@@ -257,6 +284,51 @@ export function UserAuthProfileLinkForm({
           Nếu form báo chưa chạy SQL step 39, hãy chạy file
           database/step39_user_profile_admin_tools.sql trong Supabase SQL
           Editor một lần.
+        </div>
+
+        <div
+          className="rounded-md border border-indigo-200 bg-indigo-50 p-3 text-sm leading-6 text-indigo-950"
+          data-heu-finance-day-one-manual-auth-link="P0-17-P6-04"
+        >
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-center gap-2 font-semibold">
+              <ClipboardCheck className="size-4 text-indigo-700" />
+              Finance Day-1 accounting user manual Auth link
+            </div>
+            <span className="rounded-md border border-indigo-200 bg-white px-2 py-1 text-xs font-medium text-indigo-900">
+              Decision: FIN_MANUAL_LINK_READY / NO_GO / BLOCKED
+            </span>
+          </div>
+          <p className="mt-2">
+            Use this handoff only after the real accounting account was created
+            or invited outside Codex/chat. This form links the Auth user to HEU
+            profile, department, manager and role; it does not collect
+            credentials, activate access by itself, approve UAT, approve
+            finance reliance or mark production GO.
+          </p>
+          <div className="mt-3 grid gap-2 lg:grid-cols-4">
+            {financeDayOneManualLinkChecks.map((item) => (
+              <article
+                key={item.code}
+                className="border-l-2 border-indigo-300 bg-white px-3 py-2"
+              >
+                <p className="text-xs font-semibold uppercase text-indigo-700">
+                  {item.code}
+                </p>
+                <p className="mt-1 font-medium text-zinc-950">{item.title}</p>
+                <p className="mt-2 text-xs text-zinc-700">{item.detail}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-3 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+            <ShieldAlert className="mt-0.5 size-4 shrink-0" />
+            <p>
+              Stop before submit if a password, temporary password, OTP,
+              password reset link, account activation/invite link, service-role
+              key, raw PII, bank data or voucher appears in this form,
+              screenshot, evidence note or Codex/chat.
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-end">
