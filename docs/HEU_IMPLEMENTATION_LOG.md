@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-07-02 - P0-17 Auth User Profile Link Fallback
+
+- Updated `app/settings/actions.ts` so creating a user with an email that
+  already exists in Supabase Auth now looks up the existing Auth user and
+  upserts `users_profile` instead of leaving the account invisible in CRM.
+- Updated Settings manager selectors in `components/settings/user-create-form.tsx`,
+  `components/settings/user-auth-profile-link-form.tsx` and
+  `components/settings/user-business-scope-settings.tsx` so staff users prefer
+  a same-department head, but can fall back to same-department users or
+  ADMIN/BGH/lead roles when the department head role is not yet configured.
+- Standardized Settings Vietnamese copy for existing Auth-user fallback errors
+  and added accented `trưởng nhóm` matching beside `truong nhom` so Vietnamese
+  role names route to the same manager-selection logic.
+- Extended `scripts/audit-heu-user-account-security.mjs` so these Settings
+  copy and role-detection guards fail locally if removed.
+- Added `database/step113_department_head_roles.sql` and updated
+  `database/seed.sql` for `CTHSSV_LEAD` and `ACCOUNTING_LEAD` role setup.
+- PASS_LOCAL boundary: this does not expose passwords, send reset/invite links,
+  approve UAT, approve finance reliance, approve migration order, approve owner
+  GO/NO-GO or mark production GO.
+
 ## 2026-07-02 - Current State Real Ops Daily Summary Alignment
 
 - Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` so M10 Dashboard and

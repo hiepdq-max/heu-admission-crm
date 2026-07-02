@@ -29,6 +29,8 @@ const unsafeTemporaryPasswords = new Set([
   "welcome1",
 ]);
 
+type AdminClient = ReturnType<typeof createAdminClient>;
+
 function normalizePasswordSignal(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
@@ -66,6 +68,73 @@ function isMissingRolePermissionSoftRevokeMigration(message: string) {
       normalizedMessage.includes("does not exist") ||
       normalizedMessage.includes("schema cache") ||
       normalizedMessage.includes("column"))
+  );
+}
+
+function isExistingAuthUserError(message: string) {
+  const normalizedMessage = message.toLowerCase();
+
+  return (
+    normalizedMessage.includes("already been registered") ||
+    normalizedMessage.includes("already registered") ||
+    normalizedMessage.includes("already exists") ||
+    normalizedMessage.includes("user already")
+  );
+}
+
+async function findAuthUserIdByEmail(adminClient: AdminClient, email: string) {
+  const normalizedEmail = email.toLowerCase();
+
+  for (let page = 1; page <= 20; page += 1) {
+    const { data, error } = await adminClient.auth.admin.listUsers({
+      page,
+      perPage: 100,
+    });
+
+    if (error) {
+      throw new Error("auth_user_lookup_failed");
+    }
+
+    const match = data.users.find(
+      (authUser) => authUser.email?.toLowerCase() === normalizedEmail,
+    );
+
+    if (match) {
+      return match.id;
+    }
+
+    if (data.users.length < 100) {
+      break;
+    }
+  }
+
+  return null;
+}
+
+async function upsertUserProfileForAuthUser(
+  adminClient: AdminClient,
+  input: {
+    id: string;
+    email: string;
+    fullName: string;
+    phone: string | null;
+    roleId: string;
+    departmentId: string | null;
+    managerId: string | null;
+  },
+) {
+  return adminClient.from("users_profile").upsert(
+    {
+      id: input.id,
+      email: input.email,
+      full_name: input.fullName,
+      phone: input.phone,
+      role_id: input.roleId,
+      department_id: input.departmentId,
+      manager_id: input.managerId,
+      status: "ACTIVE",
+    },
+    { onConflict: "id" },
   );
 }
 
@@ -214,7 +283,7 @@ export async function createUserAccountAction(formData: FormData) {
     redirect(`${returnPath}?error=unsafe_temporary_password`);
   }
 
-  let adminClient: ReturnType<typeof createAdminClient>;
+  let adminClient: AdminClient;
 
   try {
     adminClient = createAdminClient();
@@ -232,44 +301,69 @@ export async function createUserAccountAction(formData: FormData) {
       },
     });
 
-  if (createError || !createdUser.user) {
-    redirect(
-      `${returnPath}?error=${encodeURIComponent(
-        createError?.message ?? "Không tạo được tài khoản Auth.",
-      )}`,
-    );
+  let authUserId = createdUser.user?.id ?? null;
+  let createdAuthUser = Boolean(authUserId);
+  let linkedExistingAuthUser = false;
+
+  if (createError || !authUserId) {
+    if (createError && isExistingAuthUserError(createError.message)) {
+      try {
+        authUserId = await findAuthUserIdByEmail(adminClient, email);
+      } catch {
+        redirect(`${returnPath}?error=auth_user_lookup_failed`);
+      }
+
+      if (!authUserId) {
+        redirect(`${returnPath}?error=auth_user_exists_but_not_found`);
+      }
+
+      createdAuthUser = false;
+      linkedExistingAuthUser = true;
+    } else {
+      redirect(
+        `${returnPath}?error=${encodeURIComponent(
+          createError?.message ?? "Không tạo được tài khoản Auth.",
+        )}`,
+      );
+    }
   }
 
-  const { error: profileError } = await adminClient
-    .from("users_profile")
-    .upsert(
-      {
-        id: createdUser.user.id,
-        email,
-        full_name: fullName,
-        phone,
-        role_id: roleId,
-        department_id: departmentId,
-        manager_id: managerId,
-        status: "ACTIVE",
-      },
-      { onConflict: "id" },
-    );
+  const { error: profileError } = await upsertUserProfileForAuthUser(
+    adminClient,
+    {
+      id: authUserId,
+      email,
+      fullName,
+      phone,
+      roleId,
+      departmentId,
+      managerId,
+    },
+  );
 
   if (profileError) {
-    const { error: cleanupError } = await adminClient.auth.admin.deleteUser(
-      createdUser.user.id,
-    );
-    const cleanupMessage = cleanupError
-      ? `${profileError.message} Auth cleanup failed: ${cleanupError.message}`
-      : profileError.message;
+    let cleanupMessage = profileError.message;
+
+    if (createdAuthUser) {
+      const { error: cleanupError } = await adminClient.auth.admin.deleteUser(
+        authUserId,
+      );
+
+      cleanupMessage = cleanupError
+        ? `${profileError.message} Auth cleanup failed: ${cleanupError.message}`
+        : profileError.message;
+    }
 
     redirect(`${returnPath}?error=${encodeURIComponent(cleanupMessage)}`);
   }
 
   revalidatePath("/settings");
   revalidatePath("/settings/scopes");
-  redirect(`${returnPath}?user_created=1`);
+  redirect(
+    linkedExistingAuthUser
+      ? `${returnPath}?profile_linked=1&auth_user_existing=1`
+      : `${returnPath}?user_created=1`,
+  );
 }
 
 export async function linkAuthUserProfileAction(formData: FormData) {

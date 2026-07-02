@@ -7,7 +7,9 @@ insert into public.roles (code, name, description) values
   ('ADMISSION_HEAD', 'Truong phong tuyen sinh', 'Manage all admission leads and reports'),
   ('TEAM_LEAD', 'Truong nhom', 'Manage assigned team leads'),
   ('COUNSELOR', 'Tu van vien', 'Work with assigned leads'),
+  ('CTHSSV_LEAD', 'Truong phong CTHSSV', 'Manage CTHSSV users and scopes'),
   ('CTHSSV', 'CTHSSV', 'View enrolled student handover data'),
+  ('ACCOUNTING_LEAD', 'Ke toan truong', 'Manage accounting users and finance scopes'),
   ('ACCOUNTING', 'Ke toan', 'Verify admission payments'),
   ('AUDIT', 'Audit', 'View audit logs'),
   ('VIEWER', 'Viewer', 'Read selected reports')
@@ -89,6 +91,20 @@ select r.id, p.permission
 from public.roles r
 cross join lateral (
   values
+    ('users.manage_department'),
+    ('scope.manage_department'),
+    ('workflow_request.read'),
+    ('workflow_request.create'),
+    ('workflow_request.check')
+) as p(permission)
+where r.code in ('CTHSSV_LEAD', 'ACCOUNTING_LEAD')
+on conflict (role_id, permission) do nothing;
+
+insert into public.role_permissions (role_id, permission)
+select r.id, p.permission
+from public.roles r
+cross join lateral (
+  values
     ('leads.read_assigned'),
     ('leads.write_assigned'),
     ('activities.create'),
@@ -106,6 +122,17 @@ cross join lateral (
     ('payments.verify')
 ) as p(permission)
 where r.code = 'ACCOUNTING'
+on conflict (role_id, permission) do nothing;
+
+insert into public.role_permissions (role_id, permission)
+select r.id, p.permission
+from public.roles r
+cross join lateral (
+  values
+    ('payments.read'),
+    ('payments.verify')
+) as p(permission)
+where r.code = 'ACCOUNTING_LEAD'
 on conflict (role_id, permission) do nothing;
 
 insert into public.role_permissions (role_id, permission)

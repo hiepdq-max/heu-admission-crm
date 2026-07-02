@@ -30,6 +30,13 @@ type UserAuthProfileLinkFormProps = {
 const inputClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
+const departmentManagerRoleCodes = new Set([
+  "ADMISSION_HEAD",
+  "ACCOUNTING_LEAD",
+  "CTHSSV_LEAD",
+  "TEAM_LEAD",
+]);
+
 const financeDayOneManualLinkChecks = [
   {
     code: "FIN-LINK-01",
@@ -65,9 +72,13 @@ function isDepartmentHeadRole(role: OptionRow | undefined) {
   const normalizedName = role.name.toLowerCase();
 
   return (
+    Boolean(role.code && departmentManagerRoleCodes.has(role.code)) ||
     role.code?.endsWith("_HEAD") ||
+    role.code?.endsWith("_LEAD") ||
     normalizedName.includes("truong phong") ||
-    normalizedName.includes("trưởng phòng")
+    normalizedName.includes("truong nhom") ||
+    normalizedName.includes("trưởng phòng") ||
+    normalizedName.includes("trưởng nhóm")
   );
 }
 
@@ -137,9 +148,22 @@ export function UserAuthProfileLinkForm({
       !isDepartmentHeadRole(role)
     );
   });
+  const organizationManagers = managers.filter((manager) => {
+    const role = roles.find((item) => item.id === manager.role_id);
+    const roleCode = role?.code ?? "";
+
+    return ["ADMIN", "BGH"].includes(roleCode) || isDepartmentHeadRole(role);
+  });
   const managerOptions = selectedDepartmentId
     ? staffRole
-      ? departmentHeads
+      ? departmentHeads.length > 0
+        ? departmentHeads
+        : [
+            ...sameDepartmentOthers,
+            ...organizationManagers.filter(
+              (manager) => manager.department_id !== selectedDepartmentId,
+            ),
+          ]
       : [...departmentHeads, ...sameDepartmentOthers]
     : managers;
 

@@ -69,6 +69,13 @@ type UserBusinessScopeSettingsProps = {
 const selectClass =
   "h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
+const departmentManagerRoleCodes = new Set([
+  "ADMISSION_HEAD",
+  "ACCOUNTING_LEAD",
+  "CTHSSV_LEAD",
+  "TEAM_LEAD",
+]);
+
 const leadVisibilityOptions = [
   {
     value: "OWN",
@@ -115,9 +122,13 @@ function isDepartmentHeadRole(role: BusinessScopeRoleRow | undefined) {
   const normalizedName = role.name.toLowerCase();
 
   return (
+    departmentManagerRoleCodes.has(role.code) ||
     role.code.endsWith("_HEAD") ||
+    role.code.endsWith("_LEAD") ||
     normalizedName.includes("truong phong") ||
-    normalizedName.includes("trưởng phòng")
+    normalizedName.includes("truong nhom") ||
+    normalizedName.includes("trưởng phòng") ||
+    normalizedName.includes("trưởng nhóm")
   );
 }
 
@@ -221,9 +232,25 @@ export function UserBusinessScopeSettings({
       !isDepartmentHeadRole(role)
     );
   });
+  const organizationManagers = users.filter((candidate) => {
+    const role = roles.find((item) => item.id === candidate.role_id);
+
+    return (
+      candidate.id !== selectedUser?.id &&
+      (["ADMIN", "BGH"].includes(role?.code ?? "") ||
+        isDepartmentHeadRole(role))
+    );
+  });
   const managerOptions = draftDepartmentId
     ? staffRole
-      ? departmentHeads
+      ? departmentHeads.length > 0
+        ? departmentHeads
+        : [
+            ...sameDepartmentOthers,
+            ...organizationManagers.filter(
+              (candidate) => candidate.department_id !== draftDepartmentId,
+            ),
+          ]
       : [...departmentHeads, ...sameDepartmentOthers]
     : users.filter((candidate) => candidate.id !== selectedUser?.id);
 

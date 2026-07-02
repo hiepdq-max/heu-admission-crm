@@ -62,6 +62,8 @@ function requireSection(contents, heading, tokens, file) {
 
 const formPath = "components/settings/user-create-form.tsx";
 const linkFormPath = "components/settings/user-auth-profile-link-form.tsx";
+const businessScopePath =
+  "components/settings/user-business-scope-settings.tsx";
 const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
@@ -77,6 +79,8 @@ const userCreateReadinessCheckPath =
   "scripts/check-heu-user-create-readiness.mjs";
 const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
+const departmentHeadRolesMigrationPath =
+  "database/step113_department_head_roles.sql";
 const readinessPath = "lib/production-readiness.ts";
 const financeDayOneRunbookPath =
   "docs/HEU_FINANCE_DAY1_REAL_RUN_REHEARSAL_20260630.md";
@@ -96,6 +100,7 @@ const logPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 for (const file of [
   formPath,
   linkFormPath,
+  businessScopePath,
   onboardingPath,
   actionsPath,
   settingsPagePath,
@@ -108,6 +113,7 @@ for (const file of [
   userCreateServerKeyTemplatePath,
   userCreateReadinessCheckPath,
   userCreatePermissionMigrationPath,
+  departmentHeadRolesMigrationPath,
   readinessPath,
   financeDayOneRunbookPath,
   financeDayOneActivationTemplatePath,
@@ -124,6 +130,7 @@ for (const file of [
 
 const form = read(formPath);
 const linkForm = read(linkFormPath);
+const businessScope = read(businessScopePath);
 const onboarding = read(onboardingPath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
@@ -136,6 +143,7 @@ const seedSource = read(seedPath);
 const userCreateServerKeyTemplate = read(userCreateServerKeyTemplatePath);
 const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
+const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
 const readinessSource = read(readinessPath);
 const financeDayOneRunbook = read(financeDayOneRunbookPath);
 const financeDayOneActivationTemplate = read(financeDayOneActivationTemplatePath);
@@ -217,6 +225,22 @@ requireAllText(
 );
 
 requireAllText(
+  actions,
+  [
+    "isExistingAuthUserError",
+    "findAuthUserIdByEmail",
+    "auth_user_lookup_failed",
+    "auth_user_exists_but_not_found",
+    "upsertUserProfileForAuthUser",
+    "createdAuthUser",
+    "linkedExistingAuthUser",
+    "profile_linked=1&auth_user_existing=1",
+  ],
+  "existing Supabase Auth user profile-link fallback guard",
+  actionsPath,
+);
+
+requireAllText(
   form,
   [
     "createUserDisabledReason",
@@ -276,6 +300,9 @@ requireAllText(
     "not_allowed_create_user",
     "not_allowed_create_privileged_user",
     "canCreatePrivilegedUsers",
+    "auth_user_lookup_failed",
+    "Auth user đã tồn tại",
+    "Email đã tồn tại",
   ],
   "settings page user-account guard",
   settingsPagePath,
@@ -292,9 +319,28 @@ requireAllText(
     "not_allowed_create_privileged_user",
     "createUserDisabledReason",
     'canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}',
+    "auth_user_lookup_failed",
+    "Auth user đã tồn tại",
+    "Email đã tồn tại",
   ],
   "scoped page create-user permission guard",
   scopePagePath,
+);
+
+requireAllText(
+  `${form}\n${linkForm}\n${businessScope}`,
+  [
+    "departmentManagerRoleCodes",
+    "ACCOUNTING_LEAD",
+    "CTHSSV_LEAD",
+    "organizationManagers",
+    "departmentHeads.length > 0",
+    'normalizedName.includes("truong nhom")',
+    'normalizedName.includes("trưởng nhóm")',
+    'normalizedName.includes("trưởng phòng")',
+  ],
+  "department lead Vietnamese role detection guard",
+  `${formPath}, ${linkFormPath}, ${businessScopePath}`,
 );
 
 requireAllText(
@@ -404,6 +450,35 @@ requireAllText(
   ],
   "existing database users.create permission migration",
   userCreatePermissionMigrationPath,
+);
+
+requireAllText(
+  `${seedSource}\n${departmentHeadRolesMigration}`,
+  [
+    "CTHSSV_LEAD",
+    "ACCOUNTING_LEAD",
+    "users.manage_department",
+    "scope.manage_department",
+    "payments.verify",
+  ],
+  "department lead role seed and migration setup",
+  `${seedPath}, ${departmentHeadRolesMigrationPath}`,
+);
+
+requireAllText(
+  departmentHeadRolesMigration,
+  [
+    "Step 113 - P0-17 department head roles for user/profile setup",
+    "Migration candidate only",
+    "Do not run in production from Codex/chat",
+    "Production requires backup evidence",
+    "migration order approval",
+    "business Go/No-Go sign-off",
+    "do not paste passwords, OTPs, invite/reset links",
+    "service-role keys or raw PII",
+  ],
+  "department head role migration safety boundary",
+  departmentHeadRolesMigrationPath,
 );
 
 forbidText(
@@ -1137,6 +1212,30 @@ requireSection(implementationLog, "2026-07-02 - Finance Day-1 Manual Auth Link G
   "accept evidence",
   "approve finance reliance",
   "approve owner GO/NO-GO",
+  "mark production GO",
+], logPath);
+
+requireSection(implementationLog, "2026-07-02 - P0-17 Auth User Profile Link Fallback", [
+  "app/settings/actions.ts",
+  "already exists in Supabase Auth",
+  "upserts `users_profile`",
+  "components/settings/user-create-form.tsx",
+  "components/settings/user-auth-profile-link-form.tsx",
+  "components/settings/user-business-scope-settings.tsx",
+  "same-department head",
+  "same-department users",
+  "ADMIN/BGH/lead roles",
+  "Standardized Settings Vietnamese copy",
+  "trưởng nhóm",
+  "scripts/audit-heu-user-account-security.mjs",
+  "database/step113_department_head_roles.sql",
+  "CTHSSV_LEAD",
+  "ACCOUNTING_LEAD",
+  "does not expose passwords",
+  "send reset/invite links",
+  "approve UAT",
+  "approve finance reliance",
+  "approve migration order",
   "mark production GO",
 ], logPath);
 

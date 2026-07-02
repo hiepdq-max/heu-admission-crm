@@ -26,6 +26,7 @@ type ScopePageProps = {
     updated?: string;
     user_created?: string;
     profile_linked?: string;
+    auth_user_existing?: string;
     error?: string;
   }>;
 };
@@ -46,6 +47,10 @@ const errorMessages: Record<string, string> = {
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
+  auth_user_lookup_failed:
+    "Auth user đã tồn tại nhưng CRM chưa tra cứu được. Hãy thử lại hoặc dùng form liên kết Auth user.",
+  auth_user_exists_but_not_found:
+    "Email đã tồn tại trong Auth nhưng CRM không tìm thấy user để gắn profile.",
   not_allowed_create_user:
     "Bạn chưa được cấp quyền users.create để tạo tài khoản đăng nhập.",
   not_allowed_create_privileged_user:
