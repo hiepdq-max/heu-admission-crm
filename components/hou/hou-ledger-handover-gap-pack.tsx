@@ -86,6 +86,33 @@ const gapRows = [
   },
 ];
 
+const quickAccessRows = [
+  {
+    code: "HOU-LH-01..08",
+    label: "HOU control gates",
+    owner: "HOU owner + KHTC",
+    href: "#hou-handover-control-table",
+    summary:
+      "Open the HOU-LH checklist before handover, ledger, invoice or COM reliance.",
+  },
+  {
+    code: "HOU-UAT-LEDGER",
+    label: "UAT result ledger",
+    owner: "Audit + process owners",
+    href: "#hou-uat-result-ledger",
+    summary:
+      "Review HOU-UAT-LEDGER-01 through 06 before any signed UAT claim.",
+  },
+  {
+    code: "RV_HOU_LEDGER_SUMMARY",
+    label: "Gap summary",
+    owner: "BGH + Audit",
+    href: "#hou-gap-summary",
+    summary:
+      "Check source reconciliation, report-view signoff and production stop rules.",
+  },
+];
+
 const uatResultLedgerRows = [
   {
     code: "HOU-UAT-LEDGER-01",
@@ -179,6 +206,57 @@ export function HouLedgerHandoverGapPack() {
 
       <div
         className="border-b border-zinc-200 p-5"
+        data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS"
+        data-heu-hou-quick-open="P8-01_HOU_QUICK_OPEN_TOP3"
+        data-heu-hou-quick-access-overflow-guard="P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW"
+      >
+        <div className="mb-3 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ListChecks className="size-4 shrink-0 text-zinc-600" />
+              <span className="truncate">HOU quick access</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Top three PASS_LOCAL anchors for HOU review: control gates, UAT
+              result ledger and report-view gap summary.
+            </p>
+          </div>
+          <StatusBadge>READ_ONLY_NAVIGATION / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          {quickAccessRows.map((row) => (
+            <Link
+              key={row.code}
+              href={row.href}
+              aria-label={`Open ${row.label} for ${row.code}`}
+              title={`Open ${row.label}`}
+              className="min-w-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-4 text-left transition hover:border-zinc-300 hover:bg-white"
+            >
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </p>
+                  <p className="mt-2 truncate text-sm font-semibold text-zinc-950">
+                    {row.label}
+                  </p>
+                </div>
+                <ArrowRightLeft className="mt-0.5 size-4 shrink-0 text-zinc-500" />
+              </div>
+              <p className="mt-2 truncate text-xs font-medium text-zinc-500">
+                {row.owner}
+              </p>
+              <p className="mt-2 break-words text-sm leading-6 text-zinc-600">
+                {row.summary}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="border-b border-zinc-200 p-5"
         data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"
         data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"
       >
@@ -257,7 +335,10 @@ export function HouLedgerHandoverGapPack() {
         </div>
       </div>
 
-      <div className="grid gap-5 border-t border-zinc-200 p-5 xl:grid-cols-[1.3fr_1fr]">
+      <div
+        className="grid gap-5 border-t border-zinc-200 p-5 xl:grid-cols-[1.3fr_1fr]"
+        id="hou-handover-control-table"
+      >
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
@@ -285,7 +366,7 @@ export function HouLedgerHandoverGapPack() {
           </table>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3" id="hou-gap-summary">
           {gapRows.map((row) => (
             <div key={row.area} className="rounded-md border border-zinc-200 p-4">
               <div className="flex items-center gap-2">
@@ -307,6 +388,7 @@ export function HouLedgerHandoverGapPack() {
       </div>
 
       <div
+        id="hou-uat-result-ledger"
         className="border-t border-zinc-200 p-5"
         data-heu-hou-uat-result-ledger="P8-01_UAT_RESULT_LEDGER"
         data-heu-hou-uat-result-decision="HOU_UAT_RESULT_READY_NO_GO_BLOCKED"

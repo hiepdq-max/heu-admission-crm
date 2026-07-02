@@ -3876,6 +3876,12 @@ requireText(
   "production checklist P3 UAT execution pack reference",
 );
 
+requireText(
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
+  literalPattern("(?=[\\s\\S]*data-heu-hou-quick-access=\"P8-01_HOU_QUICK_ACCESS\")(?=[\\s\\S]*data-heu-hou-quick-open=\"P8-01_HOU_QUICK_OPEN_TOP3\")(?=[\\s\\S]*data-heu-hou-quick-access-overflow-guard=\"P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW\")(?=[\\s\\S]*READ_ONLY_NAVIGATION \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*HOU-LH-01\\.\\.08)(?=[\\s\\S]*HOU-UAT-LEDGER)(?=[\\s\\S]*RV_HOU_LEDGER_SUMMARY)(?=[\\s\\S]*href: \"#hou-handover-control-table\")(?=[\\s\\S]*href: \"#hou-uat-result-ledger\")(?=[\\s\\S]*href: \"#hou-gap-summary\")(?=[\\s\\S]*id=\"hou-handover-control-table\")(?=[\\s\\S]*id=\"hou-uat-result-ledger\")(?=[\\s\\S]*id=\"hou-gap-summary\")(?=[\\s\\S]*min-w-0)(?=[\\s\\S]*overflow-hidden)(?=[\\s\\S]*truncate)(?=[\\s\\S]*break-words)(?=[\\s\\S]*aria-label)(?=[\\s\\S]*title)", "i"),
+  "visible HOU quick access no-overflow guard",
+);
+
 if (failures.length > 0) {
   console.error("TTGDTX release-gate audit failed.");
   for (const failure of failures) {

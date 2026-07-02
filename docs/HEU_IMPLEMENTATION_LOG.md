@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P8-01 HOU Quick Access No-Overflow Guard
+
+- Added a read-only `/hou` quick-access band in
+  `components/hou/hou-ledger-handover-gap-pack.tsx` with
+  `data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS"`,
+  `data-heu-hou-quick-open="P8-01_HOU_QUICK_OPEN_TOP3"` and
+  `data-heu-hou-quick-access-overflow-guard="P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW"`.
+- The top-three anchors route operators to the HOU-LH control gate table, HOU
+  UAT result ledger and HOU gap summary without creating workflow, finance or
+  evidence actions.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `aria-label` and `title` guards so long HOU codes, owner labels and summary
+  text do not force horizontal overflow.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` so the quick
+  access markers, anchor IDs and overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is HOU read-only navigation and no-overflow
+  hardening only. It does not approve HOU handover, tuition ledger posting,
+  invoice issuance, COM payout, finance action, execute UAT, accept evidence,
+  approve owner GO/NO-GO or mark production GO.
 ## 2026-07-03 - P0-12 Local Route Smoke Guard
 
 - Hardened `scripts/smoke-heu-local-routes.mjs` so

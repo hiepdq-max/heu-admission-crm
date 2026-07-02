@@ -4500,6 +4500,13 @@ requireText(
 
 requireText(
   log,
+  /## 2026-07-03 - P8-01 HOU Quick Access No-Overflow Guard[\s\S]*hou-ledger-handover-gap-pack\.tsx[\s\S]*data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS"[\s\S]*data-heu-hou-quick-open="P8-01_HOU_QUICK_OPEN_TOP3"[\s\S]*data-heu-hou-quick-access-overflow-guard="P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*top-three anchors[\s\S]*HOU-LH control gate table[\s\S]*HOU UAT result ledger[\s\S]*HOU gap summary[\s\S]*min-w-0[\s\S]*overflow-hidden[\s\S]*truncate[\s\S]*break-words[\s\S]*aria-label[\s\S]*title[\s\S]*audit-heu-hou-ledger-handover-gap-pack\.mjs[\s\S]*does not approve HOU handover[\s\S]*tuition ledger posting[\s\S]*invoice issuance[\s\S]*COM payout[\s\S]*finance action[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "HOU quick access no-overflow guard log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
+requireText(
+  log,
   /## 2026-07-03 - P0-12 Local Route Smoke Guard[\s\S]*smoke-heu-local-routes\.mjs[\s\S]*npm\.cmd run smoke:heu-local-routes[\s\S]*localhost[\s\S]*127\.0\.0\.1[\s\S]*::1[\s\S]*protocol and credential checks[\s\S]*GET requests[\s\S]*2xx\/3xx[\s\S]*HEU_CURRENT_STATE_INVENTORY\.md[\s\S]*audit-heu-current-state-inventory\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*audit-ttgdtx-release-gates\.mjs[\s\S]*LOCALHOST_ONLY[\s\S]*does not\s+log in as a real user[\s\S]*execute signed UAT[\s\S]*accept evidence[\s\S]*call external\s+environments[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production\s+GO/i,
   "P0-12 local route smoke guard log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",

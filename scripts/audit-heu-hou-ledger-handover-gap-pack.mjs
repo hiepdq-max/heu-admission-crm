@@ -84,6 +84,12 @@ requireText(
 
 requireText(
   "components/hou/hou-ledger-handover-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS")(?=[\s\S]*data-heu-hou-quick-open="P8-01_HOU_QUICK_OPEN_TOP3")(?=[\s\S]*data-heu-hou-quick-access-overflow-guard="P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*HOU quick access)(?=[\s\S]*READ_ONLY_NAVIGATION \/ NO_GO \/ BLOCKED)(?=[\s\S]*HOU-LH-01\.\.08)(?=[\s\S]*HOU-UAT-LEDGER)(?=[\s\S]*RV_HOU_LEDGER_SUMMARY)(?=[\s\S]*href: "#hou-handover-control-table")(?=[\s\S]*href: "#hou-uat-result-ledger")(?=[\s\S]*href: "#hou-gap-summary")(?=[\s\S]*id="hou-handover-control-table")(?=[\s\S]*id="hou-uat-result-ledger")(?=[\s\S]*id="hou-gap-summary")(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*truncate)(?=[\s\S]*break-words)(?=[\s\S]*aria-label)(?=[\s\S]*title)/i,
+  "HOU quick access top-three anchors and overflow guards",
+);
+
+requireText(
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
   /(?=[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH")(?=[\s\S]*data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE")(?=[\s\S]*href="\/short-course")(?=[\s\S]*aria-label="Open Short Course control surface from HOU scope switch")(?=[\s\S]*title="Open Short Course control surface")(?=[\s\S]*href="\/master-control")(?=[\s\S]*aria-label="Open Master Control from HOU scope switch")(?=[\s\S]*title="Open Master Control")(?=[\s\S]*HOU \/ Short Course scope switch)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*flex-wrap)/i,
   "HOU quick scope switch and overflow guards",
 );
@@ -101,6 +107,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P8-01[\s\S]*read-only HOU quick access[\s\S]*data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS"[\s\S]*no-overflow guard[\s\S]*audit:heu-hou-ledger-handover-gap-pack/i,
+  "P8-01 backlog HOU quick access guard",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /HOU ledger\/handover gap pack[\s\S]*PASS_LOCAL[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*hou-ledger-handover-gap-pack\.tsx[\s\S]*\/hou[\s\S]*HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06[\s\S]*HOU_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-hou-ledger-handover-gap-pack[\s\S]*signed HOU handover UAT, tuition ledger proof, COM policy\/signoff, UAT result ledger completion and report-view owner signoff still required/i,
   "production checklist HOU gap-pack row",
@@ -110,6 +122,12 @@ requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
   /npm\.cmd run audit:heu-hou-ledger-handover-gap-pack[\s\S]*PASS[\s\S]*HOU ledger\/handover gap pack[\s\S]*\/hou[\s\S]*HEU_HOU_LEDGER_HANDOVER_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HOU-LH-01 through HOU-LH-08[\s\S]*HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06[\s\S]*HOU_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*PASS_LOCAL; no HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO approved/i,
   "current-state HOU gap-pack evidence",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /HOU ledger\/handover gap pack[\s\S]*read-only quick access[\s\S]*data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS"[\s\S]*data-heu-hou-quick-access-overflow-guard="P8-01_HOU_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*PASS_LOCAL; no HOU handover/i,
+  "current-state HOU quick access guard",
 );
 
 requireText(
