@@ -37,8 +37,28 @@ const dataModelPath = "docs/HEU_DATA_MODEL_V1.md";
 const dictionaryPath = "docs/HEU_DATA_DICTIONARY_V1.md";
 const roleMatrixPath = "docs/HEU_ROLE_PERMISSION_MATRIX_V1.md";
 const sqlMapPath = "docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md";
+const segmentOperatingPath =
+  "components/segments/segment-operating-readiness.tsx";
+const segmentOperatingFocusPath =
+  "components/segments/segment-operating-focus-layout.tsx";
+const segmentWorkspaceGuidePath =
+  "components/segments/segment-workspace-guide.tsx";
+const segmentDetailPagePath = "app/segments/[id]/page.tsx";
+const leadListPath = "components/leads/lead-list.tsx";
+const implementationLogPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
-for (const file of [dataModelPath, dictionaryPath, roleMatrixPath, sqlMapPath]) {
+for (const file of [
+  dataModelPath,
+  dictionaryPath,
+  roleMatrixPath,
+  sqlMapPath,
+  segmentOperatingPath,
+  segmentOperatingFocusPath,
+  segmentWorkspaceGuidePath,
+  segmentDetailPagePath,
+  leadListPath,
+  implementationLogPath,
+]) {
   requireFile(file);
 }
 
@@ -175,6 +195,52 @@ requireText(
   roleMatrixPath,
   /P1-03 is PASS_LOCAL[\s\S]*does\s+not approve production access, broad permissions, real-data UAT or autonomous\s+AI approval/i,
   "P1-03 PASS_LOCAL boundary",
+);
+
+requireText(
+  segmentOperatingPath,
+  /(?=[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS")(?=[\s\S]*LEAD_LIST)(?=[\s\S]*LEAD_CREATE)(?=[\s\S]*LEAD_IMPORT)(?=[\s\S]*data-heu-segment-operation-steps="P0-05_SCOPE_STEPS")/,
+  "P0-05 segment quick access and scoped step markers",
+);
+requireText(
+  segmentOperatingFocusPath,
+  /(?=[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS")(?=[\s\S]*role="tablist")(?=[\s\S]*role="tab")(?=[\s\S]*role="tabpanel")(?=[\s\S]*aria-controls=\{panelId\})(?=[\s\S]*aria-labelledby=\{`segment-operating-tab-\$\{activeSection\.id\}`\})(?=[\s\S]*ArrowRight)(?=[\s\S]*ArrowDown)(?=[\s\S]*ArrowLeft)(?=[\s\S]*ArrowUp)(?=[\s\S]*Home)(?=[\s\S]*End)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)/,
+  "segment operating focus layout accessibility and overflow guard",
+);
+requireText(
+  segmentDetailPagePath,
+  /SegmentOperatingFocusLayout[\s\S]*segmentOperatingSections[\s\S]*SegmentWorkspaceGuide[\s\S]*SegmentOperatingProfile[\s\S]*LeadList/,
+  "segment detail page focus layout order",
+);
+requireText(
+  leadListPath,
+  /(?=[\s\S]*"use client")(?=[\s\S]*type LeadQuickFilter)(?=[\s\S]*id: "followup")(?=[\s\S]*id: "unassigned")(?=[\s\S]*id: "documents")(?=[\s\S]*id: "priority")(?=[\s\S]*id: "active")(?=[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS")(?=[\s\S]*data-heu-lead-quick-filter-buttons="all followup unassigned documents priority active")(?=[\s\S]*aria-pressed=\{isActive\})/,
+  "P0-05 lead list quick filters",
+);
+requireText(
+  leadListPath,
+  /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
+  "lead list quick filter overflow guards",
+);
+requireText(
+  segmentOperatingPath,
+  /min-w-0[\s\S]*overflow-hidden[\s\S]*break-words[\s\S]*truncate/,
+  "segment operating overflow guards",
+);
+requireText(
+  segmentWorkspaceGuidePath,
+  /(?=[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE")(?=[\s\S]*Truy cập theo nghiệp vụ)(?=[\s\S]*Lead tạo trong khu này phải gắn đúng đối tượng tuyển sinh)/,
+  "P0-05 segment workspace guide marker",
+);
+requireText(
+  segmentWorkspaceGuidePath,
+  /min-w-0[\s\S]*overflow-hidden[\s\S]*break-words/,
+  "segment workspace guide overflow guards",
+);
+requireText(
+  implementationLogPath,
+  /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
+  "P0-05 segment workspace quick access implementation log boundary",
 );
 
 for (const master of canonicalMasters) {

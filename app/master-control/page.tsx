@@ -32,6 +32,10 @@ import {
   type HeuOsNavigationSummaryRow,
 } from "@/components/master-control/heu-os-visual-navigation-map";
 import {
+  MasterControlFocusLayout,
+  type MasterControlFocusSection,
+} from "@/components/master-control/master-control-focus-layout";
+import {
   MasterDataGovernance,
   type MasterDataChangeRequestRow,
   type MasterDataGovernanceRow,
@@ -123,6 +127,89 @@ const errorMessages: Record<string, string> = {
   invalid_permission_delegation_status: "Trạng thái ủy quyền không hợp lệ.",
   not_allowed_permission_matrix: "Bạn chưa có quyền thao tác ma trận quyền.",
 };
+
+const masterControlSections: MasterControlFocusSection[] = [
+  {
+    id: "overview",
+    label: "Tổng quan",
+    title: "Tổng quan điều hành",
+    description:
+      "Nhìn nhanh các blocker và việc cần xử lý trước khi mở rộng hệ thống.",
+    icon: "shield",
+  },
+  {
+    id: "navigation",
+    label: "Bản đồ",
+    title: "Bản đồ kiến trúc thông minh",
+    description:
+      "Đi theo đúng khu vực nghiệp vụ; chọn module nào thì mở đúng vùng đó.",
+    icon: "route",
+  },
+  {
+    id: "readiness",
+    label: "Module",
+    title: "Sẵn sàng theo module",
+    description:
+      "Mỗi module hiện điểm sẵn sàng, điều kiện còn thiếu và trạng thái AI.",
+    icon: "module",
+  },
+  {
+    id: "approval",
+    label: "Duyệt",
+    title: "Cổng duyệt và chặn rủi ro",
+    description:
+      "Theo dõi các điểm kiểm, điểm duyệt và điều kiện chặn trước khi đi tiếp.",
+    icon: "approval",
+  },
+  {
+    id: "workflow",
+    label: "Workflow",
+    title: "Yêu cầu và luồng xử lý",
+    description:
+      "Xem request, trạng thái kiểm tra, phê duyệt và việc đang quá hạn.",
+    icon: "workflow",
+  },
+  {
+    id: "evidence",
+    label: "Minh chứng",
+    title: "Minh chứng kiểm soát",
+    description:
+      "Quản lý tài liệu chứng minh, trạng thái kiểm và mức nhạy cảm.",
+    icon: "evidence",
+  },
+  {
+    id: "master-data",
+    label: "Dữ liệu",
+    title: "Dữ liệu gốc và thay đổi",
+    description:
+      "Kiểm soát master data, yêu cầu thay đổi và nguồn dữ liệu chính.",
+    icon: "data",
+  },
+  {
+    id: "permission",
+    label: "Quyền",
+    title: "Vai trò và phân quyền",
+    description:
+      "Xem quyền, ủy quyền, phạm vi user và các quyền rủi ro cao.",
+    icon: "permission",
+  },
+  {
+    id: "ownership",
+    label: "Owner",
+    title: "Chủ sở hữu quy trình",
+    description:
+      "Mỗi quy trình gắn owner, maker, checker, approver và bàn giao.",
+    icon: "owner",
+  },
+  {
+    id: "registry",
+    label: "Registry",
+    title: "Registry nền hệ thống",
+    description:
+      "Pháp lý, SOP, data dictionary và decision gate nằm ở một vùng riêng.",
+    icon: "registry",
+  },
+];
 
 function getMessage(params: Awaited<MasterControlPageProps["searchParams"]>) {
   if (params?.legal_created) return "Đã thêm căn cứ pháp chế.";
@@ -447,19 +534,35 @@ export default async function MasterControlPage({
     <AppShell
       active="master-control"
       title="Master Control"
-      description="Legal Registry, SOP Registry, Data Dictionary và Decision Gate cho HEU OS."
+      description="Workspace điều hành HEU OS: chọn đúng vùng để xem đúng phần cần xử lý."
     >
-      <div className="space-y-6">
+      <MasterControlFocusLayout sections={masterControlSections}>
         <ProductionReadinessBlockerSummary />
         <HeuOsVisualNavigationMap
           rows={navigationRows ?? []}
           summary={navigationSummary}
           loadError={navigationRowsError?.message ?? navigationSummaryError?.message}
         />
-        <ModuleReadinessOverview
-          rows={moduleReadiness ?? []}
-          loadError={moduleReadinessError?.message}
-        />
+        <div className="space-y-5">
+          <ModuleReadinessOverview
+            rows={moduleReadiness ?? []}
+            loadError={moduleReadinessError?.message}
+          />
+          <HeuOsMapOverview
+            modules={heuOsModules ?? []}
+            workflows={heuOsWorkflows ?? []}
+            approvals={heuOsApprovals ?? []}
+            masterData={heuOsMasterData ?? []}
+            risks={heuOsRisks ?? []}
+            loadError={
+              heuOsModulesError?.message ??
+              heuOsWorkflowsError?.message ??
+              heuOsApprovalsError?.message ??
+              heuOsMasterDataError?.message ??
+              heuOsRisksError?.message
+            }
+          />
+        </div>
         <ApprovalGateEnforcement
           rows={approvalGateRows ?? []}
           summary={approvalGateSummary}
@@ -554,20 +657,6 @@ export default async function MasterControlPage({
             processOwnershipSummaryError?.message
           }
         />
-        <HeuOsMapOverview
-          modules={heuOsModules ?? []}
-          workflows={heuOsWorkflows ?? []}
-          approvals={heuOsApprovals ?? []}
-          masterData={heuOsMasterData ?? []}
-          risks={heuOsRisks ?? []}
-          loadError={
-            heuOsModulesError?.message ??
-            heuOsWorkflowsError?.message ??
-            heuOsApprovalsError?.message ??
-            heuOsMasterDataError?.message ??
-            heuOsRisksError?.message
-          }
-        />
         <MasterControlOverview
           legalRows={legalRows ?? []}
           sopRows={sopRows ?? []}
@@ -586,7 +675,7 @@ export default async function MasterControlPage({
             decisionGatesError?.message
           }
         />
-      </div>
+      </MasterControlFocusLayout>
     </AppShell>
   );
 }

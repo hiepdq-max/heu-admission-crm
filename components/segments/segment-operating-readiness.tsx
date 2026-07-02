@@ -1,14 +1,17 @@
 import Link from "next/link";
 import {
+  ArrowRight,
   AlertTriangle,
   Bot,
   CheckCircle2,
   ClipboardCheck,
   FileSpreadsheet,
   Lock,
+  Plus,
   Route,
   Settings2,
   ShieldAlert,
+  Upload,
   Users,
 } from "lucide-react";
 
@@ -18,6 +21,10 @@ import type {
   AdmissionSegmentReadinessRow,
   AdmissionSegmentWorkspaceRow,
 } from "@/lib/admission-segments";
+import {
+  SegmentOperatingFocusLayout,
+  type SegmentOperatingFocusSection,
+} from "@/components/segments/segment-operating-focus-layout";
 import {
   operatingModelLabel,
   segmentAiGateLabel,
@@ -44,6 +51,30 @@ type SegmentOperatingProfileProps = {
   fieldRules: AdmissionSegmentFieldRuleRow[];
   loadError?: string;
 };
+
+const segmentOperatingSections: SegmentOperatingFocusSection[] = [
+  {
+    id: "profile",
+    label: "Hồ sơ",
+    title: "Hồ sơ vận hành",
+    description: "Mô hình, luật lead, đối tác/hợp đồng và chính sách AI.",
+    icon: "profile",
+  },
+  {
+    id: "workflow",
+    label: "Quy trình",
+    title: "Quy trình còn lại",
+    description: "Các phần ít dùng hơn nhưng vẫn cần kiểm soát theo đối tượng.",
+    icon: "workflow",
+  },
+  {
+    id: "fields",
+    label: "Dữ liệu",
+    title: "Trường thông tin trên lead",
+    description: "Field hiển thị, field bắt buộc và ghi chú nhập liệu.",
+    icon: "fields",
+  },
+];
 
 function Metric({
   label,
@@ -82,6 +113,15 @@ function ScoreBar({ value }: { value: number }) {
   );
 }
 
+function stepIcon(stepCode: string) {
+  if (stepCode === "LEAD_CREATE") return Plus;
+  if (stepCode === "LEAD_IMPORT") return Upload;
+  if (stepCode === "DOCUMENT_CHECKLIST") return ClipboardCheck;
+  if (stepCode === "FINANCE_COM") return FileSpreadsheet;
+  if (stepCode === "PARTNER_CONTRACT") return Users;
+  return Route;
+}
+
 export function SegmentReadinessCard({
   row,
   compact = false,
@@ -89,16 +129,16 @@ export function SegmentReadinessCard({
   const missingItems = row.missing_items ?? [];
 
   return (
-    <article className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+    <article className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
+        <div className="min-w-0">
           <p className="font-mono text-xs text-zinc-500">
             {row.segment_code}
           </p>
-          <h3 className="mt-1 font-semibold text-zinc-950">
+          <h3 className="mt-1 break-words font-semibold text-zinc-950">
             {row.segment_name}
           </h3>
-          <p className="mt-1 text-xs uppercase text-zinc-500">
+          <p className="mt-1 break-words text-xs uppercase text-zinc-500">
             {row.program_group} · {operatingModelLabel(row.operating_model)}
           </p>
         </div>
@@ -317,12 +357,70 @@ export function SegmentOperatingProfile({
   const visibleRules = fieldRules.filter((rule) => rule.is_visible);
   const requiredRules = fieldRules.filter((rule) => rule.is_required);
   const requiredSteps = steps.filter((step) => step.required_for_operation);
+  const primaryStepCodes = new Set(["LEAD_LIST", "LEAD_CREATE", "LEAD_IMPORT"]);
+  const primarySteps = steps
+    .filter((step) => primaryStepCodes.has(step.step_code))
+    .slice(0, 3);
+  const quickSteps = primarySteps.length > 0 ? primarySteps : steps.slice(0, 3);
+  const remainingSteps = steps.filter(
+    (step) => !quickSteps.some((quickStep) => quickStep.id === step.id),
+  );
 
   return (
     <section className="space-y-5">
       {readiness ? <SegmentReadinessCard row={readiness} compact /> : null}
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
+      {quickSteps.length > 0 ? (
+        <section
+          className="overflow-hidden rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+          data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"
+        >
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase text-zinc-500">
+                Truy cập nhanh
+              </p>
+              <h2 className="mt-1 text-base font-semibold text-zinc-950">
+                Việc dùng nhiều nhất trong workspace
+              </h2>
+              <p className="mt-1 break-words text-sm leading-6 text-zinc-500">
+                Lead, tạo mới và import giữ đúng phạm vi đối tượng đang chọn.
+              </p>
+            </div>
+            <div className="grid min-w-0 gap-2 sm:grid-cols-3 xl:min-w-[620px]">
+              {quickSteps.map((step) => {
+                const Icon = stepIcon(step.step_code);
+
+                return (
+                  <Link
+                    key={step.id}
+                    href={step.action_href}
+                    className="group flex min-h-20 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 text-left transition hover:border-zinc-400 hover:bg-white"
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white text-zinc-700 ring-1 ring-zinc-200">
+                        <Icon className="size-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-medium text-zinc-950">
+                          {step.step_name}
+                        </span>
+                        <span className="mt-1 block truncate text-xs text-zinc-500">
+                          {step.owner_department}
+                        </span>
+                      </span>
+                    </span>
+                    <ArrowRight className="size-4 shrink-0 text-zinc-400 transition group-hover:text-zinc-900" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <SegmentOperatingFocusLayout sections={segmentOperatingSections}>
+        <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
         <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2">
             <Settings2 className="size-4 text-zinc-600" />
@@ -379,47 +477,57 @@ export function SegmentOperatingProfile({
         </article>
       </div>
 
-      <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+      <section
+        id="operation-steps"
+        className="rounded-lg border border-zinc-200 bg-white shadow-sm"
+        data-heu-segment-operation-steps="P0-05_SCOPE_STEPS"
+      >
         <div className="border-b border-zinc-200 p-5">
-          <h2 className="text-base font-semibold">Nút thao tác trong workspace</h2>
+          <h2 className="text-base font-semibold">Quy trình còn lại</h2>
           <p className="mt-1 text-sm text-zinc-500">
-            Người dùng đi từ đây sẽ giữ đúng đối tượng tuyển sinh đang chọn.
+            Những phần ít dùng hơn vẫn giữ đúng đối tượng tuyển sinh đang chọn.
           </p>
         </div>
         <div className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-3">
-          {steps.map((step) => (
-            <article
-              key={step.id}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-medium text-zinc-950">{step.step_name}</p>
-                  <p className="mt-1 text-xs uppercase text-zinc-500">
-                    {step.step_group} · {step.owner_department}
-                  </p>
-                </div>
-                <span
-                  className={`rounded-md px-2 py-1 text-xs font-medium ${
-                    step.required_for_operation
-                      ? "bg-rose-50 text-rose-700"
-                      : "bg-zinc-100 text-zinc-600"
-                  }`}
-                >
-                  {step.required_for_operation ? "Bắt buộc" : "Tùy chọn"}
-                </span>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-zinc-600">
-                {step.control_note}
-              </p>
-              <Link
-                href={step.action_href}
-                className="mt-4 inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
+          {remainingSteps.length > 0 ? (
+            remainingSteps.map((step) => (
+              <article
+                key={step.id}
+                className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
               >
-                Mở phần này
-              </Link>
-            </article>
-          ))}
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-zinc-950">{step.step_name}</p>
+                    <p className="mt-1 text-xs uppercase text-zinc-500">
+                      {step.step_group} · {step.owner_department}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-md px-2 py-1 text-xs font-medium ${
+                      step.required_for_operation
+                        ? "bg-rose-50 text-rose-700"
+                        : "bg-zinc-100 text-zinc-600"
+                    }`}
+                  >
+                    {step.required_for_operation ? "Bắt buộc" : "Tùy chọn"}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-zinc-600">
+                  {step.control_note}
+                </p>
+                <Link
+                  href={step.action_href}
+                  className="mt-4 inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
+                >
+                  Mở phần này
+                </Link>
+              </article>
+            ))
+          ) : (
+            <p className="text-sm text-zinc-500">
+              Các thao tác chính đã nằm ở khu Truy cập nhanh.
+            </p>
+          )}
         </div>
         {requiredSteps.length === 0 ? (
           <div className="border-t border-zinc-200 p-5 text-sm text-amber-700">
@@ -428,7 +536,7 @@ export function SegmentOperatingProfile({
         ) : null}
       </section>
 
-      <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+        <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
         <div className="border-b border-zinc-200 p-5">
           <div className="flex items-center gap-2">
             <FileSpreadsheet className="size-4 text-zinc-600" />
@@ -475,7 +583,8 @@ export function SegmentOperatingProfile({
             Chưa có field bắt buộc nào cho đối tượng này.
           </div>
         ) : null}
-      </section>
+        </section>
+      </SegmentOperatingFocusLayout>
     </section>
   );
 }

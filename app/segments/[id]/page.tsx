@@ -4,6 +4,10 @@ import { Plus, RefreshCcw, Upload } from "lucide-react";
 
 import { LeadList } from "@/components/leads/lead-list";
 import { AppShell } from "@/components/layout/app-shell";
+import {
+  SegmentOperatingFocusLayout,
+  type SegmentOperatingFocusSection,
+} from "@/components/segments/segment-operating-focus-layout";
 import { SegmentOperatingProfile } from "@/components/segments/segment-operating-readiness";
 import { SegmentWorkspaceGuide } from "@/components/segments/segment-workspace-guide";
 import { Button } from "@/components/ui/button";
@@ -56,6 +60,33 @@ type SegmentLookupRow = {
   segment_name: string;
   program_group: string | null;
 };
+
+const segmentOperatingSections: SegmentOperatingFocusSection[] = [
+  {
+    id: "guide",
+    label: "Tổng quan",
+    title: "Tổng quan đối tượng tuyển sinh",
+    description:
+      "Xem mô hình triển khai, nguồn/đối tác, rủi ro tài chính và các lối vào nghiệp vụ chính.",
+    icon: "profile",
+  },
+  {
+    id: "operations",
+    label: "Vận hành",
+    title: "Hồ sơ vận hành và quy trình",
+    description:
+      "Kiểm tra readiness, bước thao tác, field bắt buộc và chính sách AI theo đúng đối tượng.",
+    icon: "workflow",
+  },
+  {
+    id: "leads",
+    label: "Lead",
+    title: "Lead trong phạm vi đối tượng",
+    description:
+      "Danh sách bên dưới chỉ nằm trong admission segment đang mở và vẫn chịu scope user.",
+    icon: "fields",
+  },
+];
 
 function toLookup<T extends Record<string, unknown>>(
   rows: T[] | null,
@@ -232,40 +263,42 @@ export default async function SegmentDetailPage({ params }: PageProps) {
         </>
       }
     >
-      <SegmentWorkspaceGuide segment={segment} />
-      <SegmentOperatingProfile
-        readiness={readinessResult.data}
-        workspace={workspaceResult.data}
-        steps={operationStepsResult.data ?? []}
-        fieldRules={fieldRulesResult.data ?? []}
-        loadError={
-          workspaceResult.error?.message ??
-          operationStepsResult.error?.message ??
-          fieldRulesResult.error?.message ??
-          readinessResult.error?.message
-        }
-      />
-
-      {leadsResult.error ? (
-        <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
-          Không đọc được lead của đối tượng này: {leadsResult.error.message}
-        </section>
-      ) : (
-        <LeadList
-          leads={leadsResult.data ?? []}
-          sources={toLookup(sourceRowsResult.data, "source_name")}
-          flows={toLookup(flowRowsResult.data, "flow_name")}
-          segments={segmentLookups}
-          campaigns={toLookup(campaignRowsResult.data, "campaign_name")}
-          partners={toLookup(partnerRowsResult.data, "partner_name")}
-          users={toLookup(userRowsResult.data, "full_name")}
-          houMajors={(houMajorRowsResult.data ?? []).map((row) => ({
-            id: String(row.id),
-            label: `${row.major_code} - ${row.major_name}`,
-          }))}
-          houStages={toLookup(houStageRowsResult.data, "stage_name")}
+      <SegmentOperatingFocusLayout sections={segmentOperatingSections}>
+        <SegmentWorkspaceGuide segment={segment} />
+        <SegmentOperatingProfile
+          readiness={readinessResult.data}
+          workspace={workspaceResult.data}
+          steps={operationStepsResult.data ?? []}
+          fieldRules={fieldRulesResult.data ?? []}
+          loadError={
+            workspaceResult.error?.message ??
+            operationStepsResult.error?.message ??
+            fieldRulesResult.error?.message ??
+            readinessResult.error?.message
+          }
         />
-      )}
+
+        {leadsResult.error ? (
+          <section className="rounded-lg border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
+            Không đọc được lead của đối tượng này: {leadsResult.error.message}
+          </section>
+        ) : (
+          <LeadList
+            leads={leadsResult.data ?? []}
+            sources={toLookup(sourceRowsResult.data, "source_name")}
+            flows={toLookup(flowRowsResult.data, "flow_name")}
+            segments={segmentLookups}
+            campaigns={toLookup(campaignRowsResult.data, "campaign_name")}
+            partners={toLookup(partnerRowsResult.data, "partner_name")}
+            users={toLookup(userRowsResult.data, "full_name")}
+            houMajors={(houMajorRowsResult.data ?? []).map((row) => ({
+              id: String(row.id),
+              label: `${row.major_code} - ${row.major_name}`,
+            }))}
+            houStages={toLookup(houStageRowsResult.data, "stage_name")}
+          />
+        )}
+      </SegmentOperatingFocusLayout>
     </AppShell>
   );
 }

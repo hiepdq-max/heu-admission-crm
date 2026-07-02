@@ -21,6 +21,60 @@
   approve UAT, approve finance reliance, approve migration order, approve owner
   GO/NO-GO or mark production GO.
 
+## 2026-07-02 - P5-02 Master Control Focus Layout
+
+- Added `components/master-control/master-control-focus-layout.tsx` as the
+  `data-heu-master-control-focus-layout="P5-02_FOCUS_LAYOUT"` shell so Master
+  Control opens as one focused operating workspace instead of one long stacked
+  page.
+- Grouped Master Control into clear tabs for blocker summary, architecture map,
+  module readiness, approval gates, workflow requests, evidence control, master
+  data, role permissions, process ownership and registry surfaces.
+- Added `components/segments/segment-operating-focus-layout.tsx` with
+  `data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"` and wired
+  `/segments/[id]` through `SegmentOperatingFocusLayout` so each admission
+  segment opens as focused tabs for `SegmentWorkspaceGuide`,
+  `SegmentOperatingProfile` and the scoped `LeadList`.
+- Tightened accessibility and speed of use with `role="tablist"`, `role="tab"`,
+  `role="tabpanel"`, `aria-controls`, `aria-labelledby`, roving tab focus and
+  Arrow/Home/End keyboard movement.
+- Tightened overflow/readability with `min-w-0`, `overflow-hidden`,
+  `break-words` and `truncate` guards so long Vietnamese labels, owner labels
+  and process text do not push the control page sideways.
+- Extended `scripts/audit-heu-bgh-dashboard-spec.mjs` so the focus layout,
+  keyboard route, aria wiring and overflow guards fail locally if removed.
+- This is UI navigation/readability packaging only. It does not create accounts,
+  send invites or passwords, send real email, create real tasks/tickets, execute
+  UAT, accept evidence, approve finance action, approve owner GO/NO-GO, run
+  production migration or mark production GO.
+
+## 2026-07-02 - P0-05 Segment Workspace Quick Access
+
+- Added `components/segments/segment-operating-focus-layout.tsx` as the
+  `data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"` shell for
+  segment detail pages so overview, operation profile and lead list can be
+  opened as focused panels instead of one long mixed page.
+- Tightened `components/segments/segment-operating-readiness.tsx` so each
+  selected admission segment workspace exposes
+  `data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"` for Lead list,
+  create Lead and import routes before the lower-frequency operation steps.
+- Added `data-heu-segment-operation-steps="P0-05_SCOPE_STEPS"` to keep the
+  remaining operation-step list visibly tied to the same selected admission
+  segment scope.
+- Tightened `components/segments/segment-workspace-guide.tsx` with
+  `data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"` so HOU, TTGDTX,
+  short-course and general admission workspaces have a consistent quick
+  business-entry surface.
+- Added `min-w-0`, `overflow-hidden`, `break-words` and `truncate` guards so
+  long segment names, owner departments, partner models and operation labels do
+  not force horizontal overflow.
+- Extended `scripts/audit-heu-data-foundation.mjs` so the segment quick-access
+  markers, scoped operation list and overflow guards fail locally if removed.
+- This is workspace navigation/readability packaging only. It does not change
+  role scope, broaden segment access, create accounts, create leads by itself,
+  import data, execute UAT, accept evidence, approve finance action, approve
+  owner GO/NO-GO, run production migration or mark production GO.
+
 ## 2026-07-02 - Quick Access Overflow Guard
 
 - Tightened `components/layout/app-shell.tsx` so global search is marked with

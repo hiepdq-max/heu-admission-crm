@@ -7,6 +7,11 @@ const blockerSourcePath = "lib/production-readiness.ts";
 const blockerSummaryPath =
   "components/master-control/production-readiness-blocker-summary.tsx";
 const masterControlPagePath = "app/master-control/page.tsx";
+const masterControlFocusLayoutPath =
+  "components/master-control/master-control-focus-layout.tsx";
+const segmentDetailPagePath = "app/segments/[id]/page.tsx";
+const segmentOperatingFocusLayoutPath =
+  "components/segments/segment-operating-focus-layout.tsx";
 const failures = [];
 
 function fail(message) {
@@ -40,6 +45,9 @@ const requiredFiles = [
   "app/page.tsx",
   "app/reports/page.tsx",
   masterControlPagePath,
+  masterControlFocusLayoutPath,
+  segmentDetailPagePath,
+  segmentOperatingFocusLayoutPath,
   blockerSummaryPath,
   "docs/HEU_DEPARTMENT_TASK_HANDOFF_REGISTER_20260702.md",
   "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
@@ -68,6 +76,15 @@ const blockerSource = exists(blockerSourcePath) ? read(blockerSourcePath) : "";
 const blockerSummary = exists(blockerSummaryPath) ? read(blockerSummaryPath) : "";
 const masterControlPage = exists(masterControlPagePath)
   ? read(masterControlPagePath)
+  : "";
+const masterControlFocusLayout = exists(masterControlFocusLayoutPath)
+  ? read(masterControlFocusLayoutPath)
+  : "";
+const segmentDetailPage = exists(segmentDetailPagePath)
+  ? read(segmentDetailPagePath)
+  : "";
+const segmentOperatingFocusLayout = exists(segmentOperatingFocusLayoutPath)
+  ? read(segmentOperatingFocusLayoutPath)
   : "";
 const currentStateInventory = read("docs/HEU_CURRENT_STATE_INVENTORY.md");
 const implementationLog = read("docs/HEU_IMPLEMENTATION_LOG.md");
@@ -329,6 +346,90 @@ requireText(
   /ProductionReadinessBlockerSummary[\s\S]*<ProductionReadinessBlockerSummary\s*\/>[\s\S]*<HeuOsVisualNavigationMap/i,
   "Master Control mounts production blocker summary before navigation map",
   masterControlPagePath,
+);
+requireText(
+  masterControlPage,
+  /MasterControlFocusLayout[\s\S]*masterControlSections[\s\S]*ProductionReadinessBlockerSummary[\s\S]*HeuOsVisualNavigationMap[\s\S]*ModuleReadinessOverview[\s\S]*ApprovalGateEnforcement[\s\S]*WorkflowRequestEngine[\s\S]*EvidenceDocumentControl[\s\S]*MasterDataGovernance[\s\S]*RolePermissionDelegationMatrix[\s\S]*ProcessOwnershipMatrix[\s\S]*MasterControlOverview/i,
+  "Master Control focus layout section order",
+  masterControlPagePath,
+);
+requireText(
+  masterControlFocusLayout,
+  /data-heu-master-control-focus-layout="P5-02_FOCUS_LAYOUT"/,
+  "P5-02 focus layout marker",
+  masterControlFocusLayoutPath,
+);
+requireText(
+  masterControlFocusLayout,
+  /role="tablist"[\s\S]*role="tab"[\s\S]*role="tabpanel"/,
+  "tablist/tab/tabpanel structure",
+  masterControlFocusLayoutPath,
+);
+requireText(
+  masterControlFocusLayout,
+  /aria-controls=\{panelId\}[\s\S]*aria-labelledby=\{`master-control-tab-\$\{activeSection\.id\}`\}/,
+  "tab-panel aria wiring",
+  masterControlFocusLayoutPath,
+);
+requireText(
+  masterControlFocusLayout,
+  /(?=[\s\S]*ArrowRight)(?=[\s\S]*ArrowDown)(?=[\s\S]*ArrowLeft)(?=[\s\S]*ArrowUp)(?=[\s\S]*Home)(?=[\s\S]*End)(?=[\s\S]*requestAnimationFrame)/i,
+  "keyboard navigation",
+  masterControlFocusLayoutPath,
+);
+requireText(
+  masterControlFocusLayout,
+  /min-w-0[\s\S]*overflow-hidden[\s\S]*break-words[\s\S]*truncate/,
+  "Master Control overflow guard classes",
+  masterControlFocusLayoutPath,
+);
+requireText(
+  implementationLog,
+  /P5-02 Master Control Focus Layout[\s\S]*master-control-focus-layout\.tsx[\s\S]*data-heu-master-control-focus-layout="P5-02_FOCUS_LAYOUT"[\s\S]*role="tablist"[\s\S]*aria-controls[\s\S]*Arrow\/Home\/End keyboard movement[\s\S]*min-w-0[\s\S]*overflow-hidden[\s\S]*break-words[\s\S]*truncate[\s\S]*audit-heu-bgh-dashboard-spec\.mjs[\s\S]*does not create accounts[\s\S]*execute\s+UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
+  "P5-02 Master Control focus layout implementation log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+requireText(
+  segmentDetailPage,
+  /SegmentOperatingFocusLayout[\s\S]*segmentOperatingSections[\s\S]*SegmentWorkspaceGuide[\s\S]*SegmentOperatingProfile[\s\S]*LeadList/i,
+  "Segment operating focus layout wiring",
+  segmentDetailPagePath,
+);
+requireText(
+  segmentOperatingFocusLayout,
+  /data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"/,
+  "Segment operating focus layout marker",
+  segmentOperatingFocusLayoutPath,
+);
+requireText(
+  segmentOperatingFocusLayout,
+  /role="tablist"[\s\S]*role="tab"[\s\S]*role="tabpanel"/,
+  "Segment tablist/tab/tabpanel structure",
+  segmentOperatingFocusLayoutPath,
+);
+requireText(
+  segmentOperatingFocusLayout,
+  /aria-controls=\{panelId\}[\s\S]*aria-labelledby=\{`segment-operating-tab-\$\{activeSection\.id\}`\}/,
+  "Segment tab-panel aria wiring",
+  segmentOperatingFocusLayoutPath,
+);
+requireText(
+  segmentOperatingFocusLayout,
+  /(?=[\s\S]*ArrowRight)(?=[\s\S]*ArrowDown)(?=[\s\S]*ArrowLeft)(?=[\s\S]*ArrowUp)(?=[\s\S]*Home)(?=[\s\S]*End)(?=[\s\S]*requestAnimationFrame)/i,
+  "Segment keyboard navigation",
+  segmentOperatingFocusLayoutPath,
+);
+requireText(
+  segmentOperatingFocusLayout,
+  /min-w-0[\s\S]*overflow-hidden[\s\S]*break-words[\s\S]*truncate/,
+  "Segment overflow guard classes",
+  segmentOperatingFocusLayoutPath,
+);
+requireText(
+  implementationLog,
+  /P5-02 Master Control Focus Layout[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*SegmentOperatingFocusLayout[\s\S]*SegmentWorkspaceGuide[\s\S]*SegmentOperatingProfile[\s\S]*LeadList[\s\S]*does not create accounts[\s\S]*execute\s+UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
+  "Segment operating focus layout implementation log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
 );
 
 const accountingPlan = read("docs/TTGDTX_ACCOUNTING_DASHBOARD_ROLE_UAT_PLAN_20260627.md");
