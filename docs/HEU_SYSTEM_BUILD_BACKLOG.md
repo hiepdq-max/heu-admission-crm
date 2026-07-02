@@ -98,6 +98,23 @@ meal/allowance payment, HR payment, invoice/payment verification, period close,
 statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or
 production GO.
 
+### P0-09 REAL-OPS-08 Final Owner GO/NO-GO Intake
+
+`docs/HEU_REAL_OPS_08_FINAL_OWNER_GONOGO_INTAKE_20260702.md` and
+`data-heu-real-ops-08-final-owner-intake="REAL-OPS-08_FINAL_OWNER"` add the
+REAL-OPS-08 final owner GO/NO-GO package intake to the Master Control closure
+board. Decision value:
+`REAL_OPS_08_FINAL_OWNER_READY / NO_GO / BLOCKED`.
+
+The intake keeps REAL-OPS-01 through REAL-OPS-07 prerequisite closure, P0-10
+redaction, P0-14 evidence binder, UAT-ROUTE-01 through UAT-ROUTE-11,
+Finance Day-1 result, P0-17 access closure, P0-03 backup/restore,
+Step90-Step110 migration order, P6-06 conversion-or-written-waiver proof,
+`P0_09_ACCEPT / NO_GO / BLOCKED` and `P0_09_FINAL_GO / NO_GO / BLOCKED` at
+controlled-reference packaging only. It does not approve production, backup,
+restore, migration, legal waiver, finance action, UAT acceptance, evidence
+acceptance, payout, dashboard reliance, owner GO/NO-GO or production GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |

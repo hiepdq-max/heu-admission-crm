@@ -134,6 +134,22 @@ production GO.
 
 Guard tokens: does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, attendance lock, BHXH decision, meal/allowance payment, HR payment, invoice/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or production GO.
 
+## REAL-OPS-08 Source Intake
+
+Use `docs/HEU_REAL_OPS_08_FINAL_OWNER_GONOGO_INTAKE_20260702.md` and
+`data-heu-real-ops-08-final-owner-intake="REAL-OPS-08_FINAL_OWNER"` to prepare
+the final owner GO/NO-GO package after REAL-OPS-01 through REAL-OPS-07 have
+controlled evidence IDs and required owner signatures. Decision value:
+`REAL_OPS_08_FINAL_OWNER_READY / NO_GO / BLOCKED`.
+
+The source intake records only prerequisite lane status, controlled evidence
+IDs, redaction reviewer, owner labels, owner decision references and final
+manifest IDs. It does not approve production, backup, restore, migration,
+legal waiver, finance action, UAT acceptance, evidence acceptance, payout,
+dashboard reliance, owner GO/NO-GO or production GO.
+
+Guard tokens: does not approve production, backup, restore, migration, legal waiver, finance action, UAT acceptance, evidence acceptance, payout, dashboard reliance, owner GO/NO-GO or production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

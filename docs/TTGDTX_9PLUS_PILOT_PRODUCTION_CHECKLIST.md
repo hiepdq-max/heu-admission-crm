@@ -156,6 +156,20 @@ meal/allowance payment, HR payment, invoice/payment verification, period close,
 statutory accounting, UAT acceptance, evidence acceptance, owner GO/NO-GO or
 production GO.
 
+## 5.6 REAL-OPS-08 Final Owner GO/NO-GO Intake
+
+`docs/HEU_REAL_OPS_08_FINAL_OWNER_GONOGO_INTAKE_20260702.md` and
+`data-heu-real-ops-08-final-owner-intake="REAL-OPS-08_FINAL_OWNER"` add the
+REAL-OPS-08 final owner GO/NO-GO intake with
+`REAL_OPS_08_FINAL_OWNER_READY / NO_GO / BLOCKED`.
+
+This is checklist packaging only. It keeps REAL-OPS-01 through REAL-OPS-07
+prerequisites, controlled evidence references, redaction review, owner quorum,
+P0-09 acceptance matrix and final owner decision manifest required outside
+Git/Codex/chat. It does not approve production, backup, restore, migration,
+legal waiver, finance action, UAT acceptance, evidence acceptance, payout,
+dashboard reliance, owner GO/NO-GO or production GO.
+
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled

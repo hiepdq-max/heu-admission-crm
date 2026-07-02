@@ -338,6 +338,9 @@ const REAL_OPERATION_CLOSURE_LANES: RealOperationClosureLane[] = [
     required:
       "Final owner GO/NO-GO manifest only after REAL-OPS-01 through REAL-OPS-07 have controlled evidence IDs.",
     stop: "Owner GO/NO-GO is requested before all prerequisite lanes have signed closure.",
+    decision: "REAL_OPS_08_FINAL_OWNER_READY / NO_GO / BLOCKED",
+    source:
+      "docs/HEU_REAL_OPS_08_FINAL_OWNER_GONOGO_INTAKE_20260702.md",
   },
 ];
 
@@ -660,6 +663,11 @@ export function ProductionReadinessBlockerSummary() {
               data-heu-real-ops-07-hou-short-course-scope-intake={
                 lane.code === "REAL-OPS-07"
                   ? "REAL-OPS-07_HOU_SHORT_COURSE"
+                  : undefined
+              }
+              data-heu-real-ops-08-final-owner-intake={
+                lane.code === "REAL-OPS-08"
+                  ? "REAL-OPS-08_FINAL_OWNER"
                   : undefined
               }
               className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"
