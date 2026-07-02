@@ -52,7 +52,28 @@ owner GO/NO-GO or mark production GO.
 | UAT-AUTH-03 | UAT-ROUTE-08 / P2-18/P5-03 | KHTC + BGH + IT_DATA + Audit | Confirm the Finance Desk and accounting dashboard browser UAT order, read-only expectation, source reconciliation owner and Day-1 ledger handoff | Route labels, source-comparison ID, Day-1 checklist ID, result-ledger ID, reliance decision state and owner labels only | Finance Desk or dashboard is treated as write-capable, production-reliable, finance-approved, evidence-accepted or owner-signed from PASS_LOCAL output |
 | UAT-AUTH-04 | UAT-ROUTE-11 / P0-09 | BGH + IT_DATA + KHTC + PHAP_CHE + Audit + TRUONG_PHONG | Confirm the final owner GO/NO-GO review packet contains signed UAT, evidence binder, backup/restore, migration, P0-17 access closure and risk-closure references | Decision packet ID, required owner labels, proof-path IDs and unresolved NO_GO/BLOCKED reasons only | Any owner decision is unsigned, stored only in Codex/chat, missing a prerequisite proof path or interpreted as production GO from a local audit |
 
-## 4. Execution Routes
+## 4. REAL-OPS-03 Signed UAT Closure Intake
+
+Use `docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md` and
+`data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"` after
+route evidence is ready for owner review. Decision:
+REAL_OPS_03_UAT_CLOSURE_READY / NO_GO / BLOCKED.
+
+| Case | Intake gate | Minimum proof before closure | Stop condition |
+|---|---|---|---|
+| REAL-OPS-03-UAT-01 | Route result index complete | UAT-ROUTE-01 through UAT-ROUTE-11 each has route result, controlled evidence ID, redaction reviewer and current decision lane | Any route is PENDING, ownerless, missing evidence ID or stored only in Git/Codex/chat |
+| REAL-OPS-03-UAT-02 | Required owner signatures mapped | Required owner label, signer role, signature date and delegated authority basis for each route | Any signature is missing, broad, oral, delegated without written basis or not tied to the exact route |
+| REAL-OPS-03-UAT-03 | Finance reliance routes closed | P2-18/P5-03 source reconciliation, Finance Day-1 start-gate checklist, result ledger and reliance decision references | Dashboard or Finance Desk is treated as reliable, write-capable or finance-approved without signed route closure |
+| REAL-OPS-03-UAT-04 | Governance routes closed | P6-04 role/workspace route matrix, P6-03 audit-log trace and P0-17 access closure decision references | Role leak, missing trace row, unresolved access-retain/revoke decision or broad temporary access remains |
+| REAL-OPS-03-UAT-05 | Exception and NO-GO handling recorded | NO_GO/BLOCKED reasons, exception ID, owner decision path and retest or waiver reference when allowed | A failed route is hidden, waived broadly, left ownerless or reclassified as PASS_LOCAL success |
+| REAL-OPS-03-UAT-06 | Final handoff boundary acknowledged | P0-09 owner package references signed UAT closure, backup/restore, migration order, evidence binder, finance result ledger and risk closure | UAT closure is interpreted as owner GO/NO-GO, production approval, migration approval or finance reliance approval |
+
+PASS_LOCAL proves only that REAL-OPS-03 signed UAT closure intake is
+structured. It does not execute UAT, accept evidence, sign owner results,
+approve finance reliance, approve legal position, approve migration, approve
+owner GO/NO-GO or mark production GO.
+
+## 5. Execution Routes
 
 | Order | Code | Route | Runbook | Owner | Minimum proof | Decision lane | Stop condition | Guard |
 |---|---|---|---|---|---|---|---|---|
@@ -66,15 +87,15 @@ owner GO/NO-GO or mark production GO.
 | UAT-ROUTE-08 | P2-18/P5-03 | `/ttgdtx/accounting-dashboard` and `/finance-desk` | `docs/P2_18_ACCOUNTING_DASHBOARD_UAT_RUNBOOK.md` + `docs/HEU_FINANCE_DESK_UAT_RUNBOOK_20260627.md` + `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` + `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | KHTC + BGH + IT_DATA | Read-only behavior, source reconciliation, role denial, P6-04 real accounting user queue/result proof, Finance Desk scope proof, Finance Day-1 start-gate checklist, Finance Day-1 result ledger and reliance decision for dashboard users | SIGNED_UAT_READY / NO_GO / BLOCKED | Dashboard can write, source reconciliation is missing, P6-04 real-accounting proof is missing, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, Finance Desk leaks scope or BGH/KHTC reliance decision is unsigned | `npm.cmd run audit:ttgdtx-dashboard-source-reconciliation` |
 | UAT-ROUTE-09 | P6-03 | `/audit` | `docs/TTGDTX_AUDIT_LOG_UAT_RUNBOOK.md` | Audit + IT_DATA + KHTC | Trace rows for create, update, check, approve, pay and source-control events with actor, entity, timestamp and controlled evidence reference | SIGNED_UAT_READY / NO_GO / BLOCKED | Trace row is missing, generic payload hides the actor/action, source-control trace is absent or evidence is unsigned | `npm.cmd run audit:ttgdtx-audit-trail-guard` |
 | UAT-ROUTE-10 | P6-06 | `/audit` | `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md` | IT_DATA + Audit + business owners | Conversion proof or narrow written waiver for unresolved findings plus rollback and closure decision evidence | SIGNED_UAT_READY / NO_GO / BLOCKED | Any protected finance, evidence, approval, payment, lead or audit path can be hard-deleted without signed conversion or waiver | `npm.cmd run audit:hard-delete-conversion-decision-queue` |
-| UAT-ROUTE-11 | P0-09 | `/ttgdtx` | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` + `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` + `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final owner decision manifest with signed UAT, evidence binder, migration, backup, role, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure references | SIGNED_UAT_READY / NO_GO / BLOCKED | Any required owner signs NO-GO/BLOCKED, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending | `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` |
+| UAT-ROUTE-11 | P0-09 | `/ttgdtx` | `docs/TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md` + `docs/HEU_FINANCE_DAY1_START_GATE_CHECKLIST_20260630.md` + `docs/HEU_FINANCE_DAY1_RESULT_LEDGER_TEMPLATE_20260630.md` | BGH + IT_DATA + KHTC + PHAP_CHE + AUDIT + TRUONG_PHONG | Final owner decision manifest with signed UAT closure, evidence binder, migration, backup, role, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, audit and risk-closure references | SIGNED_UAT_READY / NO_GO / BLOCKED | Any required owner signs NO-GO/BLOCKED, Finance Day-1 start-gate checklist is missing, Finance Day-1 result ledger is missing, P0-17 access closure is missing, any proof path is uncontrolled, or any prerequisite UAT remains pending | `npm.cmd run audit:ttgdtx-production-owner-signoff-pack` |
 
-## 5. Closure Rule
+## 6. Closure Rule
 
 All rows need controlled evidence reference, redaction reviewer, route result,
 reviewer name and required owner signature outside Git/Codex/chat before the UAT
 result can leave NO-GO.
 
-## 6. Strict Boundary
+## 7. Strict Boundary
 
 This routing hub must not:
 
@@ -91,7 +112,7 @@ PASS_LOCAL means the routing structure, visible panel and audit guard exist.
 Production remains NO-GO until controlled external evidence and required owner
 signatures exist.
 
-## 7. Operator Handoff Link
+## 8. Operator Handoff Link
 
 The human operator follows
 `docs/TTGDTX_UAT_OPERATOR_HANDOFF_20260627.md` after static preflight. The

@@ -49,6 +49,21 @@ decision references. It does not sign the migration order, approve production
 migration, execute SQL, accept evidence, accept UAT, approve finance reliance,
 approve owner GO/NO-GO or mark production GO.
 
+## REAL-OPS-03 Source Intake
+
+Use `docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md` and
+`data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"` to
+prepare the signed UAT closure lane after route evidence is ready for owner
+review. Decision value:
+`REAL_OPS_03_UAT_CLOSURE_READY / NO_GO / BLOCKED`.
+
+The source intake records only route result indexes, controlled evidence IDs,
+redaction reviewers, owner signature labels, finance reliance route closure,
+governance route closure, exception decisions and final handoff boundary
+acknowledgement. It does not execute UAT, accept evidence, sign owner results,
+approve finance reliance, approve migration, approve owner GO/NO-GO or mark
+production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

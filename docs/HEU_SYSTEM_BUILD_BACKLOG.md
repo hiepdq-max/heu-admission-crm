@@ -25,6 +25,18 @@ Mode: production-system backlog with risk controls. AI/Codex may draft, check an
 | P0-18 | Data Master / Report View compatibility bridge | BGH + IT/Data + KHTC + Audit + process owners | PASS_LOCAL | `docs/HEU_DATA_MASTER_REPORT_VIEW_COMPATIBILITY_20260628_V01_DRAFT.md`; `components/reports/data-master-report-view-bridge-panel.tsx`; `/reports`; non-destructive `STUDENT_MASTER`/`CLASS_MASTER`/`COHORT_MASTER` compatibility design; DQ-DM-01 through DQ-DM-05 checkpoints including dashboard reliance lock; DESIGN_ONLY and DRAFT_CONTROL; does not create production SQL, merge source data, import real data, approve report-view signoff, approve dashboard reliance or mark production GO |
 | P0-20 | Master Control goal register | BGH + IT/Data + Audit + process owners | PASS_LOCAL_GOAL_CONTROL | `docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md`; `MASTER_GOAL_READY / NO_GO / BLOCKED`; consolidates continuous cloud PASS_LOCAL verification when the local machine is off, expert-team lanes, department/user-label reporting, phase order A-E and stop conditions; cloud can check and report but cannot self-code, self-approve, self-deploy, send real email, create real tasks/accounts, accept UAT/evidence, approve finance/owner decisions or mark production GO |
 
+### P0-08 REAL-OPS-03 Signed UAT Closure Intake
+
+`docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md` and
+`data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"` add the
+REAL-OPS-03 signed UAT closure intake to the P0-08 signed UAT routing hub.
+Decision value: `REAL_OPS_03_UAT_CLOSURE_READY / NO_GO / BLOCKED`.
+
+The intake keeps UAT-ROUTE-01 through UAT-ROUTE-11 at PASS_LOCAL packaging
+only. It does not execute UAT, accept evidence, sign owner results, approve
+finance reliance, approve migration, approve owner GO/NO-GO or mark production
+GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |

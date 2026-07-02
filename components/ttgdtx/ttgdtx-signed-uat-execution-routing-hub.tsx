@@ -48,6 +48,63 @@ const trackerHandoff = [
   },
 ];
 
+const realOps03SignedUatClosureItems = [
+  {
+    caseId: "REAL-OPS-03-UAT-01",
+    title: "Route result index complete",
+    owner: "IT_DATA + Audit",
+    required:
+      "UAT-ROUTE-01 through UAT-ROUTE-11 each has route result, controlled evidence ID, redaction reviewer and current decision lane.",
+    stopCondition:
+      "Stop if any route is PENDING, ownerless, missing evidence ID or stored only in Git/Codex/chat.",
+  },
+  {
+    caseId: "REAL-OPS-03-UAT-02",
+    title: "Required owner signatures mapped",
+    owner: "BGH + KHTC + PHAP_CHE + IT_DATA + Audit + TRUONG_PHONG",
+    required:
+      "Required owner label, signer role, signature date and delegated authority basis are recorded for each route.",
+    stopCondition:
+      "Stop if any signature is missing, broad, oral, delegated without written basis or not tied to the exact route.",
+  },
+  {
+    caseId: "REAL-OPS-03-UAT-03",
+    title: "Finance reliance routes closed",
+    owner: "KHTC + BGH + IT_DATA + Audit",
+    required:
+      "P2-18/P5-03 source reconciliation, Finance Day-1 start-gate checklist, result ledger and reliance decision references are present.",
+    stopCondition:
+      "Stop if dashboard or Finance Desk is treated as reliable, write-capable or finance-approved without signed route closure.",
+  },
+  {
+    caseId: "REAL-OPS-03-UAT-04",
+    title: "Governance routes closed",
+    owner: "IT_DATA + Audit + TRUONG_PHONG",
+    required:
+      "P6-04 role/workspace route matrix, P6-03 audit-log trace and P0-17 access closure decision references are present.",
+    stopCondition:
+      "Stop if role leak, missing trace row, unresolved access-retain/revoke decision or broad temporary access remains.",
+  },
+  {
+    caseId: "REAL-OPS-03-UAT-05",
+    title: "Exception and NO-GO handling recorded",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    required:
+      "NO_GO/BLOCKED reasons, exception ID, owner decision path and retest or waiver reference are recorded when allowed.",
+    stopCondition:
+      "Stop if a failed route is hidden, waived broadly, left ownerless or reclassified as PASS_LOCAL success.",
+  },
+  {
+    caseId: "REAL-OPS-03-UAT-06",
+    title: "Final handoff boundary acknowledged",
+    owner: "BGH + IT_DATA + KHTC + PHAP_CHE + Audit",
+    required:
+      "P0-09 owner package references signed UAT closure, backup/restore, migration order, evidence binder, finance result ledger and risk closure.",
+    stopCondition:
+      "Stop if UAT closure is interpreted as owner GO/NO-GO, production approval, migration approval or finance reliance approval.",
+  },
+];
+
 export function TtgdtxSignedUatExecutionRoutingHub() {
   return (
     <section
@@ -172,6 +229,59 @@ export function TtgdtxSignedUatExecutionRoutingHub() {
               </p>
             </article>
           ))}
+        </div>
+      </div>
+
+      <div
+        className="border-t border-zinc-200 bg-emerald-50/50 p-5"
+        data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"
+      >
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase text-emerald-800">
+              <FileCheck2 className="size-4" />
+              REAL-OPS-03 signed UAT closure intake
+            </div>
+            <p className="mt-2 max-w-4xl leading-6 text-emerald-950">
+              Use this intake after route evidence is ready for owner review.
+              It records controlled evidence IDs, route results, redaction
+              reviewers and required owner signatures for UAT-ROUTE-01 through
+              UAT-ROUTE-11. It does not execute UAT or accept evidence.
+            </p>
+          </div>
+          <span className="inline-flex rounded-md border border-emerald-200 bg-white px-2 py-1 font-mono text-xs font-semibold text-emerald-800">
+            REAL_OPS_03_UAT_CLOSURE_READY / NO_GO / BLOCKED
+          </span>
+        </div>
+        <div className="mt-4 grid gap-3 xl:grid-cols-3">
+          {realOps03SignedUatClosureItems.map((item) => (
+            <article
+              key={item.caseId}
+              className="rounded-md border border-emerald-200 bg-white p-4"
+            >
+              <div className="font-mono text-xs font-semibold text-emerald-800">
+                {item.caseId}
+              </div>
+              <h3 className="mt-3 text-sm font-semibold text-zinc-950">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-xs font-medium text-zinc-500">
+                Owner: {item.owner}
+              </p>
+              <p className="mt-2 leading-6 text-zinc-700">
+                Required: {item.required}
+              </p>
+              <p className="mt-3 leading-6 text-rose-700">
+                Stop condition: {item.stopCondition}
+              </p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-4 rounded-md border border-emerald-200 bg-white px-3 py-2 text-emerald-900">
+          PASS_LOCAL proves only that REAL-OPS-03 signed UAT closure intake is
+          structured. It does not execute UAT, accept evidence, sign owner
+          results, approve finance reliance, approve migration, approve owner
+          GO/NO-GO or mark production GO.
         </div>
       </div>
 

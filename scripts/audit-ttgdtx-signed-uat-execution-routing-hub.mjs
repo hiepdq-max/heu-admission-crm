@@ -39,6 +39,7 @@ function escapeRegExp(value) {
 
 const requiredFiles = [
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  "docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md",
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
   "app/ttgdtx/page.tsx",
   "lib/production-readiness.ts",
@@ -89,6 +90,18 @@ requireText(
   "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
   /(?=[\s\S]*Authority Action Queue)(?=[\s\S]*data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS")(?=[\s\S]*SIGNED_UAT_AUTHORITY_ACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*UAT-AUTH-01)(?=[\s\S]*UAT-AUTH-04)(?=[\s\S]*IT_DATA \+ Audit)(?=[\s\S]*IT_DATA \+ TRUONG_PHONG \+ Audit)(?=[\s\S]*KHTC \+ BGH \+ IT_DATA \+ Audit)(?=[\s\S]*BGH \+ IT_DATA \+ KHTC \+ PHAP_CHE \+ Audit \+ TRUONG_PHONG)(?=[\s\S]*task routing only)(?=[\s\S]*does not execute UAT, accept evidence, sign\s+owner results, create accounts, grant access, approve finance action, approve\s+owner GO\/NO-GO or mark production GO)/i,
   "signed UAT authority action queue",
+);
+
+requireText(
+  "docs/HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_UAT_CLOSURE_INTAKE)(?=[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-03-UAT-01)(?=[\s\S]*REAL-OPS-03-UAT-06)(?=[\s\S]*UAT-ROUTE-01 through\s+UAT-ROUTE-11)(?=[\s\S]*Finance reliance routes closed)(?=[\s\S]*Governance routes closed)(?=[\s\S]*Final handoff boundary acknowledged)(?=[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES")(?=[\s\S]*does not execute UAT, accept evidence, sign owner\s+results, create accounts, grant access, approve finance reliance, approve\s+legal position, approve migration, approve owner GO\/NO-GO or mark production\s+GO)(?=[\s\S]*does not mean any UAT route was executed, accepted, signed,\s+evidence-approved, finance-approved, migration-approved, owner-approved or\s+production-approved)/i,
+  "REAL-OPS-03 signed UAT closure intake source document",
+);
+
+requireText(
+  "docs/TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628.md",
+  /(?=[\s\S]*REAL-OPS-03 Signed UAT Closure Intake)(?=[\s\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\.md)(?=[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES")(?=[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-03-UAT-01)(?=[\s\S]*REAL-OPS-03-UAT-06)(?=[\s\S]*Route result index complete)(?=[\s\S]*Finance reliance routes closed)(?=[\s\S]*Governance routes closed)(?=[\s\S]*PASS_LOCAL proves only that REAL-OPS-03 signed UAT closure intake is\s+structured)/i,
+  "routing hub REAL-OPS-03 signed UAT closure intake",
 );
 
 requireText(
@@ -200,6 +213,12 @@ requireText(
 
 requireText(
   "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
+  /(?=[\s\S]*realOps03SignedUatClosureItems)(?=[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES")(?=[\s\S]*REAL-OPS-03 signed UAT closure intake)(?=[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*REAL-OPS-03-UAT-01)(?=[\s\S]*REAL-OPS-03-UAT-06)(?=[\s\S]*Route result index complete)(?=[\s\S]*Finance reliance routes closed)(?=[\s\S]*Governance routes closed)(?=[\s\S]*PASS_LOCAL proves only that REAL-OPS-03 signed UAT closure intake is\s+structured)(?=[\s\S]*does not execute UAT, accept evidence, sign owner\s+results, approve finance reliance, approve migration, approve owner\s+GO\/NO-GO or mark production GO)/i,
+  "visible REAL-OPS-03 signed UAT closure intake",
+);
+
+requireText(
+  "components/ttgdtx/ttgdtx-signed-uat-execution-routing-hub.tsx",
   /(?=[\s\S]*data-ttgdtx-uat-route-tracker-handoff="SECTION_5_2")(?=[\s\S]*Operator tracker handoff)(?=[\s\S]*TTGDTX_UAT_EXECUTION_LOG_20260625\.md Section 5\.2)(?=[\s\S]*11 UAT-ROUTE rows remain PENDING until signed evidence exists)(?=[\s\S]*Controlled evidence reference, redaction reviewer, result, reviewer and owner signature)/i,
   "visible route tracker handoff points operators to Section 5.2",
 );
@@ -223,6 +242,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P0-08 REAL-OPS-03 Signed UAT Closure Intake[\s\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\.md[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*does not execute UAT, accept evidence, sign owner results, approve\s+finance reliance, approve migration, approve owner GO\/NO-GO or mark production\s+GO/i,
+  "P0-08 backlog REAL-OPS-03 signed UAT closure intake",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Internal UAT sign-off[\s\S]*TTGDTX_SIGNED_UAT_EXECUTION_ROUTING_HUB_20260628\.md[\s\S]*ttgdtx-signed-uat-execution-routing-hub\.tsx[\s\S]*SIGNED_UAT_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-ROUTE-01 through UAT-ROUTE-11[\s\S]*audit:ttgdtx-signed-uat-execution-routing-hub[\s\S]*signed multi-account UAT still required/i,
   "production checklist signed UAT routing evidence",
@@ -232,6 +257,12 @@ requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Internal UAT sign-off[\s\S]*UAT-HANDOFF-03B[\s\S]*signed UAT authority action queue[\s\S]*SIGNED_UAT_AUTHORITY_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*UAT-AUTH-01 through UAT-AUTH-04[\s\S]*signed multi-account UAT still required/i,
   "production checklist signed UAT authority action queue",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /REAL-OPS-03 Signed UAT Closure Intake[\s\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\.md[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*signed multi-account UAT required[\s\S]*does not execute UAT, accept evidence, sign owner results, approve finance\s+reliance, approve migration, approve owner GO\/NO-GO or mark production GO/i,
+  "production checklist REAL-OPS-03 signed UAT closure intake",
 );
 
 requireText(
@@ -274,6 +305,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-07-02 - Signed UAT Authority Action Queue[\s\S]*SIGNED_UAT_AUTHORITY_ACTIONS[\s\S]*UAT-AUTH-01 through UAT-AUTH-04[\s\S]*SIGNED_UAT_AUTHORITY_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*data-ttgdtx-signed-uat-authority-action-queue="P0-08_AUTHORITY_ACTIONS"[\s\S]*BGH, IT_DATA, KHTC[\s\S]*PHAP_CHE[\s\S]*Audit[\s\S]*TRUONG_PHONG[\s\S]*UAT-HANDOFF-03B[\s\S]*audit-ttgdtx-signed-uat-execution-routing-hub\.mjs[\s\S]*authority task routing only[\s\S]*does not execute UAT[\s\S]*accept evidence[\s\S]*approve owner GO\/NO-GO[\s\S]*mark production GO/i,
   "implementation log signed UAT authority action queue entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-02 - REAL-OPS-03 Signed UAT Closure Intake[\s\S]*HEU_REAL_OPS_03_SIGNED_UAT_CLOSURE_INTAKE_20260702\.md[\s\S]*PASS_LOCAL_UAT_CLOSURE_INTAKE[\s\S]*REAL_OPS_03_UAT_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*data-ttgdtx-real-ops-03-signed-uat-closure="REAL-OPS-03_UAT_ROUTES"[\s\S]*REAL-OPS-03-UAT-01 through REAL-OPS-03-UAT-06[\s\S]*audit-ttgdtx-signed-uat-execution-routing-hub\.mjs[\s\S]*does not execute UAT[\s\S]*accept evidence[\s\S]*approve finance reliance[\s\S]*approve owner GO\/NO-GO[\s\S]*mark production GO/i,
+  "implementation log REAL-OPS-03 signed UAT closure intake entry",
 );
 
 requireText(
