@@ -126,6 +126,20 @@ not provide legal advice, decide tax position, issue invoice, accept evidence,
 execute UAT, approve finance reliance, approve migration, approve owner
 GO/NO-GO or mark production GO.
 
+## 5.4 REAL-OPS-06 Hard-Delete Cascade Closure Intake
+
+`docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md`
+and `data-heu-real-ops-06-cascade-closure-intake="REAL-OPS-06_CASCADE"`
+add the REAL-OPS-06 hard-delete/cascade closure intake with
+`REAL_OPS_06_CASCADE_CLOSURE_READY / NO_GO / BLOCKED`.
+
+This is checklist packaging only. It keeps P6-06-FIND-001 through
+P6-06-FIND-044, protected-record conversion evidence, derived-helper written
+waivers, rollback/redaction proof, owner signatures and P6-06 closure manifest
+required outside Git/Codex/chat. It does not approve production deletion,
+cascade execution, waiver, conversion migration, data cleanup, rollback
+success, evidence acceptance, owner GO/NO-GO or production GO.
+
 ## 6. P0 Go/No-Go Controls
 
 P0 controls include implementation-log discipline, backup/restore, controlled

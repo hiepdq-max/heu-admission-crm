@@ -1,5 +1,40 @@
 # HEU Implementation Log
 
+## 2026-07-02 - REAL-OPS-06 Hard-Delete Cascade Closure Intake
+
+- Added `docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md`
+  with `PASS_LOCAL_CASCADE_CLOSURE_INTAKE`,
+  `REAL_OPS_06_CASCADE_CLOSURE_READY / NO_GO / BLOCKED`,
+  `data-heu-real-ops-06-cascade-closure-intake="REAL-OPS-06_CASCADE"`
+  and REAL-OPS-06-HDQ-01 through REAL-OPS-06-HDQ-06 for P6-06 current
+  finding register, protected-record conversion route, derived-helper waiver
+  route, rollback and redaction route, batch closure and authority decision
+  path.
+- Updated `components/master-control/production-readiness-blocker-summary.tsx`,
+  `docs/HEU_REAL_OPERATION_CLOSURE_PLAN_20260702.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` so Master Control exposes
+  the REAL-OPS-06 source intake beside REAL-OPS-04 and REAL-OPS-05 while
+  preserving production NO-GO.
+- Updated `scripts/audit-heu-bgh-dashboard-spec.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the new intake cannot drift
+  without local audit failure.
+- This is P6-06 closure-intake packaging only. It does not approve production
+  deletion, cascade execution, waiver, conversion migration, data cleanup,
+  rollback success, evidence acceptance, owner GO/NO-GO or production GO.
+- Guard tokens: P6-06 current finding register; protected-record conversion
+  route; derived-helper waiver route; rollback and redaction route; batch
+  closure; authority decision path.
+- Boundary tokens: does not approve production deletion, cascade execution,
+  waiver, conversion migration, data cleanup, rollback success, evidence
+  acceptance, owner GO/NO-GO or production GO.
+- Guard tokens: database exports, SQL dumps, raw PII, CCCD, bank data, payment
+  data, vouchers, credentials, passwords, temporary passwords, OTPs,
+  reset/invite links, service-role keys and production connection strings
+  remain outside Git/Codex/chat.
+- Forbidden content tokens: bank data, payment data, vouchers, credentials,
+  passwords, temporary passwords, OTPs, reset/invite links, service-role keys.
+
 ## 2026-07-02 - REAL-OPS-05 Legal Invoice Chung-Tu Confirmation Intake
 
 - Added

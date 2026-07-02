@@ -318,6 +318,9 @@ const REAL_OPERATION_CLOSURE_LANES: RealOperationClosureLane[] = [
     required:
       "Hard-delete/cascade conversion evidence or written owner waiver for every protected path still open.",
     stop: "A protected delete/cascade path has no conversion proof and no signed waiver.",
+    decision: "REAL_OPS_06_CASCADE_CLOSURE_READY / NO_GO / BLOCKED",
+    source:
+      "docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md",
   },
   {
     code: "REAL-OPS-07",
@@ -644,6 +647,11 @@ export function ProductionReadinessBlockerSummary() {
               data-heu-real-ops-05-legal-invoice-intake={
                 lane.code === "REAL-OPS-05"
                   ? "REAL-OPS-05_LEGAL_INVOICE"
+                  : undefined
+              }
+              data-heu-real-ops-06-cascade-closure-intake={
+                lane.code === "REAL-OPS-06"
+                  ? "REAL-OPS-06_CASCADE"
                   : undefined
               }
               className="border-l-2 border-rose-200 bg-rose-50 px-3 py-3"

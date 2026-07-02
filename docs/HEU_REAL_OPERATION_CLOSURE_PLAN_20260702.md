@@ -98,6 +98,23 @@ GO/NO-GO or mark production GO.
 
 Guard tokens: does not provide legal advice, decide tax position, issue invoice, accept evidence, execute UAT, approve finance reliance, approve migration, approve owner GO/NO-GO or mark production GO.
 
+## REAL-OPS-06 Source Intake
+
+Use `docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md`
+and `data-heu-real-ops-06-cascade-closure-intake="REAL-OPS-06_CASCADE"`
+to prepare the P6-06 hard-delete/cascade conversion-or-written-waiver closure
+lane after protected finding references are ready for human owner review.
+Decision value:
+`REAL_OPS_06_CASCADE_CLOSURE_READY / NO_GO / BLOCKED`.
+
+The source intake records only finding IDs, owner lanes, disposition path,
+controlled evidence IDs, redaction reviewer, rollback approach and waiver
+expiry/review date. It does not approve production deletion, cascade
+execution, waiver, conversion migration, data cleanup, rollback success,
+evidence acceptance, owner GO/NO-GO or production GO.
+
+Guard tokens: does not approve production deletion, cascade execution, waiver, conversion migration, data cleanup, rollback success, evidence acceptance, owner GO/NO-GO or production GO.
+
 ## Operating Rule
 
 For each lane, the local system may show status, owner, missing proof and stop

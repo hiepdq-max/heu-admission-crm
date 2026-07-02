@@ -65,6 +65,21 @@ controlled-reference packaging only. It does not provide legal advice, decide
 tax position, issue invoice, accept evidence, execute UAT, approve finance
 reliance, approve migration, approve owner GO/NO-GO or mark production GO.
 
+### P6-06 REAL-OPS-06 Hard-Delete Cascade Closure Intake
+
+`docs/HEU_REAL_OPS_06_HARD_DELETE_CASCADE_CLOSURE_INTAKE_20260702.md`
+and `data-heu-real-ops-06-cascade-closure-intake="REAL-OPS-06_CASCADE"`
+add the REAL-OPS-06 hard-delete/cascade conversion-or-written-waiver closure
+intake to the Master Control closure board. Decision value:
+`REAL_OPS_06_CASCADE_CLOSURE_READY / NO_GO / BLOCKED`.
+
+The intake keeps P6-06-FIND-001 through P6-06-FIND-044, owner triage batches,
+protected-record conversion routes, derived-helper written waiver routes,
+rollback/redaction proof and P6-06 closure manifest at controlled-reference
+packaging only. It does not approve production deletion, cascade execution,
+waiver, conversion migration, data cleanup, rollback success, evidence
+acceptance, owner GO/NO-GO or production GO.
+
 ## P1 - Data Foundation
 
 | ID | Item | Owner | Status | Gate |
