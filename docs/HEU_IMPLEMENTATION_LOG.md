@@ -1,5 +1,24 @@
 # HEU Implementation Log
 
+## 2026-07-02 - Finance Day-1 Controlled Trial Preflight Summary
+
+- Updated `components/finance/finance-day-one-accountant-handoff.tsx` with
+  `data-finance-day-one-preflight-summary="P5-03_FIN_DAY1_PREFLIGHT"` so the
+  first KHTC accounting trial has a visible preflight summary for
+  `FIN_START_READY / NO_GO / BLOCKED`,
+  `FIN_ACTIVATION_READY / NO_GO / BLOCKED`,
+  `P6_04_PRELOGIN_READY / NO_GO / BLOCKED`,
+  `FIN_ACCOUNTANT_GUIDE_READY / NO_GO / BLOCKED` and
+  `FIN_DAY1_RESULT_READY / NO_GO / BLOCKED`.
+- Tightened `scripts/audit-heu-finance-desk.mjs` so the Finance Day-1
+  preflight summary, stop conditions, access-closure decision and PASS_LOCAL
+  boundary cannot drift.
+- Boundary: this is read-only Finance Day-1 controlled-trial support. It does
+  not create real accounts, receive passwords, send invites, grant access,
+  execute UAT, accept evidence, approve finance reliance, approve access
+  closure, approve owner GO/NO-GO, move money, issue bank instructions or mark
+  production GO.
+
 ## 2026-07-02 - P0-17 Users Create Permission Gate
 
 - Added `users.create` as a separate role permission in `lib/permissions.ts`
