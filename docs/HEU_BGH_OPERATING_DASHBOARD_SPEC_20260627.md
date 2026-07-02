@@ -134,7 +134,16 @@ owner GO or mark production GO.
 `npm.cmd run report:heu-daily-dry-run` prints the same kind of plain-language
 draft for local use or GitHub Actions step summary, and
 `.github/workflows/heu-pass-local.yml` appends that draft to the scheduled
-PASS_LOCAL gate summary without sending mail.
+PASS_LOCAL gate summary without sending mail. The draft also includes a
+Master Control goal summary sourced from
+`docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md`, with
+`MASTER_GOAL_READY / NO_GO / BLOCKED`, the phase order A-E, the cloud
+PASS_LOCAL boundary when the local machine is off, the expert-team lanes
+Build Agent, QA/Audit Agent, Data Check Agent, Finance Trial Support,
+UAT/Evidence Coordinator, Report/Email Coordinator and Human Authority Owner,
+plus the plain-language rule that the report does not self-code, self-deploy,
+send real email, create real tasks/users, approve UAT, accept evidence,
+approve finance/owner decisions or mark production GO.
 `npm.cmd run report:heu-email-readiness` prints an
 `EMAIL_DRY_RUN_READY / EMAIL_CONFIG_REQUIRED / BLOCKED` readiness checklist for
 GitHub Actions variables/secrets such as recipient list, sender identity and

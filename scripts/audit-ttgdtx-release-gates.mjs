@@ -2016,9 +2016,21 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md",
+  /(?=[\s\S]*HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md)(?=[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*phase order A-E)(?=[\s\S]*cloud\s+PASS_LOCAL boundary)(?=[\s\S]*Build Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support,\s+UAT\/Evidence Coordinator, Report\/Email Coordinator and Human Authority Owner)(?=[\s\S]*does not self-code, self-deploy,\s+send real email, create real tasks\/users, approve UAT, accept evidence,\s+approve finance\/owner decisions or mark production GO)/i,
+  "P5-02 Master Control goal daily report spec boundary",
+);
+
+requireText(
   "docs/HEU_DAILY_EMAIL_DISPATCH_HANDOFF_20260702.md",
   /(?=[\s\S]*Status:\s*PASS_LOCAL_CONFIG_HANDOFF)(?=[\s\S]*EMAIL_DISPATCH_HANDOFF_READY \/ EMAIL_CONFIG_REQUIRED \/ BLOCKED)(?=[\s\S]*HEU_DAILY_REPORT_TO)(?=[\s\S]*HEU_SMTP_PASSWORD)(?=[\s\S]*BGH_DAILY_REPORT_ALIAS)(?=[\s\S]*EMAIL-DISPATCH-01)(?=[\s\S]*EMAIL-DISPATCH-06)(?=[\s\S]*does not send email, create real tasks)(?=[\s\S]*Email receipt is not accepted as signed UAT, evidence acceptance, finance approval, owner GO\/NO-GO or production GO)(?=[\s\S]*does not approve production, UAT, evidence acceptance, finance approval,\s+owner GO\/NO-GO or production GO)(?=[\s\S]*Production remains NO-GO)/i,
   "P5-02 daily email dispatch handoff guard",
+);
+
+requireText(
+  "scripts/report-heu-daily-dry-run.mjs",
+  /(?=[\s\S]*Muc tieu tong chi huy)(?=[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_MASTER_CONTROL_GOAL_REGISTER_20260702\.md)(?=[\s\S]*Khi may tinh tat)(?=[\s\S]*GitHub Actions co the chay PASS_LOCAL, audit, lint, build va report summary; khong tu code, tu deploy, tu approve)(?=[\s\S]*A Clean\/package dirty scope)(?=[\s\S]*E Remaining blockers)(?=[\s\S]*Build Agent, QA\/Audit Agent, Data Check Agent, Finance Trial Support)(?=[\s\S]*Human Authority Owner)(?=[\s\S]*khong production GO, khong email\/nhiem vu\/user that, khong UAT\/evidence\/finance\/owner approval)/i,
+  "P5-02 Master Control daily report summary guard",
 );
 
 requireText(

@@ -6205,3 +6205,30 @@
   raw PII, bank statements, vouchers or raw payment data, execute UAT,
   accept evidence, approve finance action, approve owner GO/NO-GO, run production
   migration or mark production GO.
+
+## 2026-07-02 - P5-02 Master Goal Daily Report Summary
+
+- Extended `scripts/report-heu-daily-dry-run.mjs` so the dry-run daily report
+  includes a Master Control goal summary sourced from
+  `docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md`.
+- The report now prints `MASTER_GOAL_READY / NO_GO / BLOCKED`, phase order A-E,
+  cloud PASS_LOCAL boundary when the local machine is off, expert-team lanes
+  and the plain-language boundary for BGH, IT_DATA, KHTC, PHAP_CHE, Audit and
+  other process-owner review.
+- Updated `docs/HEU_BGH_OPERATING_DASHBOARD_SPEC_20260627.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `scripts/audit-heu-bgh-dashboard-spec.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the goal summary stays dry-run
+  and PASS_LOCAL only.
+- This is report-summary packaging only. It does not self-code, self-deploy,
+  send real email, create real tasks/tickets, create real accounts, store
+  passwords, OTPs, invite/reset links, service-role keys, SMTP credentials,
+  raw PII, bank statements, vouchers or raw payment data, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO, run production
+  migration or mark production GO.
+- It does not accept evidence and does not run production migration.

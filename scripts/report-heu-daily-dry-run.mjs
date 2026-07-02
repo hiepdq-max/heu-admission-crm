@@ -18,6 +18,19 @@ const recentCommits = runGit(["log", "-3", "--oneline"])
   .split(/\r?\n/)
   .filter(Boolean);
 
+const masterGoal = {
+  source: "docs/HEU_MASTER_CONTROL_GOAL_REGISTER_20260702.md",
+  status: "MASTER_GOAL_READY / NO_GO / BLOCKED",
+  machineOff:
+    "GitHub Actions co the chay PASS_LOCAL, audit, lint, build va report summary; khong tu code, tu deploy, tu approve.",
+  phaseOrder:
+    "A Clean/package dirty scope -> B User / Role / Permission / Scope -> C Finance Day-1 controlled accounting trial -> D Signed UAT / evidence / signoff routing -> E Remaining blockers.",
+  expertLanes:
+    "Build Agent, QA/Audit Agent, Data Check Agent, Finance Trial Support, UAT/Evidence Coordinator, Report/Email Coordinator, Human Authority Owner.",
+  boundary:
+    "Khong production GO, khong email/nhiem vu/user that, khong UAT/evidence/finance/owner approval tu bao cao nay.",
+};
+
 const trialUsers = [
   {
     label: "KHTC_ACCOUNTING_OPERATOR_LABEL",
@@ -129,31 +142,40 @@ console.log(`- Git: ${status || "clean/unknown"}`);
 console.log(`- HEAD: ${head}`);
 console.log("- Ket luan: chi la ban nhap bao cao PASS_LOCAL; khong approve UAT, finance, owner GO hay production GO.");
 console.log("");
-console.log("## 2. Commit moi nhat");
+console.log("## 2. Muc tieu tong chi huy");
+console.log("");
+console.log(`- Status: ${masterGoal.status}`);
+console.log(`- Source: ${masterGoal.source}`);
+console.log(`- Khi may tinh tat: ${masterGoal.machineOff}`);
+console.log(`- Thu tu giai doan: ${masterGoal.phaseOrder}`);
+console.log(`- Doi phu trach: ${masterGoal.expertLanes}`);
+console.log(`- Ranh gioi: ${masterGoal.boundary}`);
+console.log("");
+console.log("## 3. Commit moi nhat");
 console.log("");
 for (const commit of recentCommits) {
   console.log(`- ${commit}`);
 }
 console.log("");
-console.log("## 3. Nguoi dung thu va cach su dung");
+console.log("## 4. Nguoi dung thu va cach su dung");
 console.log("");
 for (const user of trialUsers) {
   console.log(`- ${user.label}: ${user.use}`);
 }
 console.log("");
-console.log("## 4. Viec can giao");
+console.log("## 5. Viec can giao");
 console.log("");
 for (const lane of taskLanes) {
   console.log(`- ${lane.owner}: ${lane.task}`);
 }
 console.log("");
-console.log("## 5. Chu thich tu IT");
+console.log("## 6. Chu thich tu IT");
 console.log("");
 for (const [term, meaning] of glossary) {
   console.log(`- ${term}: ${meaning}`);
 }
 console.log("");
-console.log("## 6. Viec theo tung phong/user label");
+console.log("## 7. Viec theo tung phong/user label");
 console.log("");
 console.log("Status: DEPT_TASK_REGISTER_READY / NO_GO / BLOCKED");
 console.log("Mode: DRY_RUN only - no email sent, no real task created, no account assigned.");
@@ -162,7 +184,7 @@ for (const lane of departmentTaskRegister) {
   console.log(`- ${lane.department} (${lane.userLabel}) - ${lane.stage}: ${lane.task}`);
 }
 console.log("");
-console.log("## 7. Blocker can dung tham quyen xac nhan");
+console.log("## 8. Blocker can dung tham quyen xac nhan");
 console.log("");
 console.log("- Signed multi-account UAT van can nguoi dung/bo phan ky xac nhan ngoai Git/Codex/chat.");
 console.log("- Evidence that, backup/restore proof, migration order va owner GO/NO-GO van chua duoc local script phe duyet.");
