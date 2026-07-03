@@ -7,6 +7,8 @@ import { PartnersOverview } from "@/components/partners/partners-overview";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
   firstParam,
   getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
@@ -71,6 +73,7 @@ export default async function PartnersPage({ searchParams }: PartnersPageProps) 
     "/partners/new",
     workspace.activeSegmentId,
   );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
 
   const [{ data: partners, error }, { data: leads }, { data: users }] =
     await Promise.all([
@@ -82,12 +85,14 @@ export default async function PartnersPage({ searchParams }: PartnersPageProps) 
         .eq("is_deleted", false)
         .order("created_at", { ascending: false })
         .returns<PartnerData[]>(),
-      supabase
-        .from("leads")
-        .select("id,partner_id,status")
-        .eq("is_deleted", false)
-        .not("partner_id", "is", null)
-        .returns<LeadData[]>(),
+      applyAdmissionSegmentIds(
+        supabase
+          .from("leads")
+          .select("id,partner_id,status")
+          .eq("is_deleted", false)
+          .not("partner_id", "is", null),
+        segmentFilterIds,
+      ).returns<LeadData[]>(),
       supabase.from("users_profile").select("id,full_name"),
     ]);
 
