@@ -17,6 +17,8 @@ type Option = {
 
 type CampaignFormProps = {
   sources: Option[];
+  activeSegmentId?: string | null;
+  cancelHref?: string;
 };
 
 const initialState: CampaignFormState = {};
@@ -58,7 +60,11 @@ function Field({
   );
 }
 
-export function CampaignForm({ sources }: CampaignFormProps) {
+export function CampaignForm({
+  sources,
+  activeSegmentId = null,
+  cancelHref = "/campaigns",
+}: CampaignFormProps) {
   const [state, formAction, isPending] = useActionState(
     createCampaignAction,
     initialState,
@@ -70,6 +76,15 @@ export function CampaignForm({ sources }: CampaignFormProps) {
         <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
           {state.error}
         </div>
+      ) : null}
+
+      {activeSegmentId ? (
+        <input
+          type="hidden"
+          name="active_admission_segment_id"
+          value={activeSegmentId}
+          data-heu-campaign-workspace-return="P0-06_CAMPAIGN_WORKSPACE_RETURN"
+        />
       ) : null}
 
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
@@ -147,7 +162,7 @@ export function CampaignForm({ sources }: CampaignFormProps) {
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <Button asChild variant="outline">
-          <Link href="/campaigns">Hủy</Link>
+          <Link href={cancelHref}>Hủy</Link>
         </Button>
         <Button type="submit" disabled={isPending}>
           {isPending ? (

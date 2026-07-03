@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace-url";
 
 export type CampaignFormState = {
   error?: string;
@@ -39,6 +40,10 @@ export async function createCampaignAction(
   }
 
   const budgetValue = textValue(formData, "budget");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
 
   const { error } = await supabase.from("campaigns").insert({
     campaign_code: campaignCode,
@@ -56,5 +61,5 @@ export async function createCampaignAction(
   }
 
   revalidatePath("/campaigns");
-  redirect("/campaigns");
+  redirect(withAdmissionSegmentParam("/campaigns", activeAdmissionSegmentId));
 }

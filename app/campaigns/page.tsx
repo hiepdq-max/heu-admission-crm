@@ -6,6 +6,13 @@ import { AppShell } from "@/components/layout/app-shell";
 import { CampaignsOverview } from "@/components/campaigns/campaigns-overview";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type CampaignData = {
   id: string;
@@ -25,6 +32,12 @@ type LeadData = {
   status: string;
 };
 
+type CampaignsPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
+};
+
 function percent(count: number, total: number) {
   if (total <= 0) {
     return "0%";
@@ -33,7 +46,9 @@ function percent(count: number, total: number) {
   return `${((count / total) * 100).toFixed(1)}%`;
 }
 
-export default async function CampaignsPage() {
+export default async function CampaignsPage({
+  searchParams,
+}: CampaignsPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -42,6 +57,23 @@ export default async function CampaignsPage() {
   if (!user) {
     redirect("/login");
   }
+
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const campaignsHref = withAdmissionSegmentParam(
+    "/campaigns",
+    workspace.activeSegmentId,
+  );
+  const newCampaignHref = withAdmissionSegmentParam(
+    "/campaigns/new",
+    workspace.activeSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
 
   const [{ data: campaigns, error }, { data: leads }, { data: sources }] =
     await Promise.all([
@@ -52,12 +84,14 @@ export default async function CampaignsPage() {
         )
         .order("created_at", { ascending: false })
         .returns<CampaignData[]>(),
-      supabase
-        .from("leads")
-        .select("id,campaign_id,status")
-        .eq("is_deleted", false)
-        .not("campaign_id", "is", null)
-        .returns<LeadData[]>(),
+      applyAdmissionSegmentIds(
+        supabase
+          .from("leads")
+          .select("id,campaign_id,status")
+          .eq("is_deleted", false)
+          .not("campaign_id", "is", null),
+        segmentFilterIds,
+      ).returns<LeadData[]>(),
       supabase.from("lead_sources").select("id,source_name"),
     ]);
 
@@ -98,16 +132,21 @@ export default async function CampaignsPage() {
       active="campaigns"
       title="Chiến dịch tuyển sinh"
       description="Theo dõi chiến dịch tuyển sinh và hiệu quả chuyển đổi từ dữ liệu Supabase."
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={campaignsHref}
       actions={
         <>
           <Button asChild variant="outline">
-            <Link href="/campaigns">
+            <Link href={campaignsHref}>
               <RefreshCcw className="size-4" />
               Tải lại
             </Link>
           </Button>
           <Button asChild>
-            <Link href="/campaigns/new">
+            <Link
+              href={newCampaignHref}
+              data-heu-campaign-workspace-actions="P0-06_CAMPAIGN_WORKSPACE_ACTIONS"
+            >
               <Plus className="size-4" />
               Tạo chiến dịch
             </Link>
@@ -122,6 +161,7 @@ export default async function CampaignsPage() {
       ) : (
         <CampaignsOverview
           campaigns={campaignRows}
+          activeSegmentId={workspace.activeSegmentId}
           summary={{
             totalCampaigns: campaignRows.length,
             activeCampaigns: campaignRows.filter(

@@ -18,6 +18,11 @@ const inputClass =
 const textareaClass =
   "min-h-24 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-zinc-500 focus:ring-3 focus:ring-zinc-200";
 
+type PartnerFormProps = {
+  activeSegmentId?: string | null;
+  cancelHref?: string;
+};
+
 function Field({
   label,
   name,
@@ -49,7 +54,10 @@ function Field({
   );
 }
 
-export function PartnerForm() {
+export function PartnerForm({
+  activeSegmentId = null,
+  cancelHref = "/partners",
+}: PartnerFormProps) {
   const [state, formAction, isPending] = useActionState(
     createPartnerAction,
     initialState,
@@ -61,6 +69,15 @@ export function PartnerForm() {
         <div className="rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
           {state.error}
         </div>
+      ) : null}
+
+      {activeSegmentId ? (
+        <input
+          type="hidden"
+          name="active_admission_segment_id"
+          value={activeSegmentId}
+          data-heu-partner-workspace-return="P0-06_PARTNER_WORKSPACE_RETURN"
+        />
       ) : null}
 
       <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
@@ -147,7 +164,7 @@ export function PartnerForm() {
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <Button asChild variant="outline">
-          <Link href="/partners">Hủy</Link>
+          <Link href={cancelHref}>Hủy</Link>
         </Button>
         <Button type="submit" disabled={isPending}>
           {isPending ? (

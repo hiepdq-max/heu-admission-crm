@@ -6,6 +6,11 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PartnersOverview } from "@/components/partners/partners-overview";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type PartnerData = {
   id: string;
@@ -27,6 +32,12 @@ type LeadData = {
   status: string;
 };
 
+type PartnersPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
+};
+
 function percent(count: number, total: number) {
   if (total <= 0) {
     return "0%";
@@ -35,7 +46,7 @@ function percent(count: number, total: number) {
   return `${((count / total) * 100).toFixed(1)}%`;
 }
 
-export default async function PartnersPage() {
+export default async function PartnersPage({ searchParams }: PartnersPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -44,6 +55,22 @@ export default async function PartnersPage() {
   if (!user) {
     redirect("/login");
   }
+
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const partnersHref = withAdmissionSegmentParam(
+    "/partners",
+    workspace.activeSegmentId,
+  );
+  const newPartnerHref = withAdmissionSegmentParam(
+    "/partners/new",
+    workspace.activeSegmentId,
+  );
 
   const [{ data: partners, error }, { data: leads }, { data: users }] =
     await Promise.all([
@@ -98,16 +125,21 @@ export default async function PartnersPage() {
       active="partners"
       title="Đối tác / CTV / TTGDTX"
       description="Quản lý nguồn đối tác mang lead về và hiệu quả chuyển đổi."
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={partnersHref}
       actions={
         <>
           <Button asChild variant="outline">
-            <Link href="/partners">
+            <Link href={partnersHref}>
               <RefreshCcw className="size-4" />
               Tải lại
             </Link>
           </Button>
           <Button asChild>
-            <Link href="/partners/new">
+            <Link
+              href={newPartnerHref}
+              data-heu-partner-workspace-actions="P0-06_PARTNER_WORKSPACE_ACTIONS"
+            >
               <Plus className="size-4" />
               Tạo đối tác
             </Link>
@@ -122,6 +154,7 @@ export default async function PartnersPage() {
       ) : (
         <PartnersOverview
           partners={partnerRows}
+          activeSegmentId={workspace.activeSegmentId}
           summary={{
             totalPartners: partnerRows.length,
             activePartners: partnerRows.filter((row) => row.status === "ACTIVE")

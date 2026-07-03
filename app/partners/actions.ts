@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace-url";
 
 export type PartnerFormState = {
   error?: string;
@@ -30,6 +31,10 @@ export async function createPartnerAction(
   const partnerCode = textValue(formData, "partner_code");
   const partnerName = textValue(formData, "partner_name");
   const partnerType = textValue(formData, "partner_type");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
 
   if (!partnerCode) {
     return { error: "Vui lòng nhập mã đối tác." };
@@ -61,5 +66,5 @@ export async function createPartnerAction(
   }
 
   revalidatePath("/partners");
-  redirect("/partners");
+  redirect(withAdmissionSegmentParam("/partners", activeAdmissionSegmentId));
 }

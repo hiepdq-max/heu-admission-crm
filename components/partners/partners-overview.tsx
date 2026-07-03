@@ -1,4 +1,16 @@
-import { Building2, CheckCircle2, Phone, TrendingUp, Users } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  Phone,
+  Plus,
+  Table2,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+
+import { withAdmissionSegmentParam } from "@/lib/workspace-url";
 
 type PartnerRow = {
   id: string;
@@ -19,6 +31,7 @@ type PartnerRow = {
 
 type PartnersOverviewProps = {
   partners: PartnerRow[];
+  activeSegmentId?: string | null;
   summary: {
     totalPartners: number;
     activePartners: number;
@@ -49,9 +62,129 @@ function CountBar({ percent }: { percent: string }) {
   );
 }
 
-export function PartnersOverview({ partners, summary }: PartnersOverviewProps) {
+function partnerRowHref(partnerId: string) {
+  return `#partner-row-${partnerId}`;
+}
+
+export function PartnersOverview({
+  partners,
+  activeSegmentId = null,
+  summary,
+}: PartnersOverviewProps) {
+  const quickPartners = [...partners]
+    .sort((left, right) => {
+      const leadDelta = right.lead_count - left.lead_count;
+      if (leadDelta !== 0) {
+        return leadDelta;
+      }
+
+      const enrolledDelta = right.enrolled_count - left.enrolled_count;
+      if (enrolledDelta !== 0) {
+        return enrolledDelta;
+      }
+
+      return left.partner_name.localeCompare(right.partner_name);
+    })
+    .slice(0, 3);
+  const partnerCreateHref = withAdmissionSegmentParam(
+    "/partners/new",
+    activeSegmentId,
+  );
+  const leadsHref = withAdmissionSegmentParam("/leads", activeSegmentId);
+
   return (
     <div className="space-y-6">
+      <section
+        className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+        data-heu-partner-quick-access="P0-06_PARTNER_QUICK_ACCESS"
+        data-heu-partner-quick-open="P0-06_PARTNER_QUICK_OPEN_TOP3"
+        data-heu-partner-quick-access-overflow-guard="P0-06_PARTNER_QUICK_ACCESS_NO_OVERFLOW"
+        data-heu-partner-workspace-links="P0-06_PARTNER_WORKSPACE_LINKS"
+        data-heu-partner-anchor-nav="new leads table top3"
+      >
+        <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex min-w-0 items-center gap-2 text-sm font-semibold text-zinc-950">
+              <Building2 className="size-4 shrink-0 text-zinc-600" />
+              <span className="truncate">Mở nhanh đối tác / nguồn</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Điều hướng nhanh tới tạo đối tác, lead liên quan và các nguồn có
+              nhiều lead nhất. Phần này chỉ hỗ trợ mở đúng vị trí, không duyệt
+              COM, hợp đồng hay thanh toán.
+            </p>
+          </div>
+
+          <div className="flex shrink-0 flex-wrap gap-2 text-sm font-medium">
+            <Link
+              href={partnerCreateHref}
+              aria-label="Mở nhanh tạo đối tác"
+              title="Mở nhanh tạo đối tác"
+              className="inline-flex items-center gap-2 rounded-md bg-zinc-950 px-3 py-2 text-white hover:bg-zinc-800"
+            >
+              <Plus className="size-4" />
+              Tạo đối tác
+            </Link>
+            <Link
+              href={leadsHref}
+              aria-label="Mở nhanh danh sách lead"
+              title="Mở nhanh danh sách lead"
+              className="inline-flex items-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-700 hover:bg-zinc-100"
+            >
+              <Users className="size-4" />
+              Xem lead
+            </Link>
+            <Link
+              href="#partners-table"
+              aria-label="Mở nhanh bảng đối tác"
+              title="Mở nhanh bảng đối tác"
+              className="inline-flex items-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-700 hover:bg-zinc-100"
+            >
+              <Table2 className="size-4" />
+              Bảng đối tác
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-4 grid min-w-0 gap-3 md:grid-cols-3">
+          {quickPartners.length === 0 ? (
+            <div className="min-w-0 rounded-md border border-dashed border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-500 md:col-span-3">
+              Chưa có đối tác để mở nhanh.
+            </div>
+          ) : (
+            quickPartners.map((partner) => (
+              <Link
+                key={partner.id}
+                href={partnerRowHref(partner.id)}
+                aria-label={`Mở nhanh đối tác ${partner.partner_code}`}
+                title={`Mở nhanh đối tác ${partner.partner_code}`}
+                className="min-w-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-4 text-left transition hover:border-zinc-300 hover:bg-white"
+              >
+                <div className="flex min-w-0 items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-mono text-xs text-zinc-500">
+                      {partner.partner_code}
+                    </p>
+                    <p className="mt-2 truncate text-sm font-semibold text-zinc-950">
+                      {partner.partner_name}
+                    </p>
+                  </div>
+                  <ArrowRight className="mt-0.5 size-4 shrink-0 text-zinc-500" />
+                </div>
+                <p className="mt-2 truncate text-xs font-medium text-zinc-500">
+                  {typeLabels[partner.partner_type] ?? partner.partner_type} ·{" "}
+                  {partner.status}
+                </p>
+                <p className="mt-2 break-words text-sm leading-6 text-zinc-600">
+                  {partner.lead_count} lead · {partner.enrolled_count} nhập học
+                  · chuyển đổi {partner.conversion}
+                </p>
+              </Link>
+            ))
+          )}
+        </div>
+      </section>
+
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
           <div className="mb-4 inline-flex rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-medium text-sky-700">
@@ -87,7 +220,10 @@ export function PartnersOverview({ partners, summary }: PartnersOverviewProps) {
         </article>
       </section>
 
-      <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+      <section
+        id="partners-table"
+        className="scroll-mt-24 rounded-lg border border-zinc-200 bg-white shadow-sm"
+      >
         <div className="border-b border-zinc-200 p-5">
           <h2 className="text-base font-semibold">Danh sách đối tác</h2>
           <p className="mt-1 text-sm text-zinc-500">
@@ -119,7 +255,11 @@ export function PartnersOverview({ partners, summary }: PartnersOverviewProps) {
                 </tr>
               ) : (
                 partners.map((partner) => (
-                  <tr key={partner.id} className="align-top">
+                  <tr
+                    key={partner.id}
+                    id={`partner-row-${partner.id}`}
+                    className="scroll-mt-24 align-top"
+                  >
                     <td className="px-5 py-4">
                       <div className="flex items-start gap-3">
                         <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-zinc-100">
