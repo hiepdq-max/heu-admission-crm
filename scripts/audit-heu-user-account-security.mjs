@@ -87,6 +87,10 @@ const userScopeBaselineRepairQueuePath =
   "docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md";
 const settingsPermissionMatrixReadinessCheckPath =
   "scripts/check-heu-settings-permission-matrix-readiness.mjs";
+const positionAssignmentOwnerQueueCheckPath =
+  "scripts/check-heu-position-assignment-owner-queue.mjs";
+const positionAssignmentOwnerQueuePath =
+  "docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md";
 const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
 const departmentHeadRolesMigrationPath =
@@ -129,6 +133,8 @@ for (const file of [
   userScopeBaselineRepairCheckPath,
   userScopeBaselineRepairQueuePath,
   settingsPermissionMatrixReadinessCheckPath,
+  positionAssignmentOwnerQueueCheckPath,
+  positionAssignmentOwnerQueuePath,
   userCreatePermissionMigrationPath,
   departmentHeadRolesMigrationPath,
   organizationPositionMatrixPath,
@@ -167,6 +173,10 @@ const userScopeBaselineRepairQueue = read(userScopeBaselineRepairQueuePath);
 const settingsPermissionMatrixReadinessCheck = read(
   settingsPermissionMatrixReadinessCheckPath,
 );
+const positionAssignmentOwnerQueueCheck = read(
+  positionAssignmentOwnerQueueCheckPath,
+);
+const positionAssignmentOwnerQueue = read(positionAssignmentOwnerQueuePath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
 const organizationPositionMatrix = read(organizationPositionMatrixPath);
@@ -823,13 +833,73 @@ forbidText(
 );
 
 requireAllText(
+  positionAssignmentOwnerQueueCheck,
+  [
+    "HEU position assignment owner queue check",
+    "Secrets, emails, names, phone numbers and raw IDs are never printed",
+    "POSITION-OWNER-QUEUE-APP-GUARD",
+    "POSITION-OWNER-QUEUE-REQUIRED-SEATS",
+    "POSITION-OWNER-QUEUE-CANDIDATES",
+    "POSITION-OWNER-QUEUE-CANDIDATE-SCOPE",
+    "POSITION-OWNER-QUEUE-NO-AUTO-ASSIGN",
+    "POSITION-OWNER-QUEUE-SECRET-BOUNDARY",
+    "candidate match is evidence only, not owner approval",
+    "positions_needing_owner_create_or_link",
+    "owner-approved mapping must be applied through Settings/RPC",
+    "HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md",
+    "Raw errors are not printed.",
+  ],
+  "local position assignment owner queue script",
+  positionAssignmentOwnerQueueCheckPath,
+);
+
+forbidText(
+  positionAssignmentOwnerQueueCheck,
+  [
+    ".insert(",
+    ".delete(",
+    ".upsert(",
+    'from("heu_position_assignments").update(',
+    'from("users_profile").update(',
+    "auth.admin",
+  ],
+  "mutating or credential-management operation in owner assignment queue checker",
+  positionAssignmentOwnerQueueCheckPath,
+);
+
+requireAllText(
+  positionAssignmentOwnerQueue,
+  [
+    "HEU Position Assignment Owner Queue - 2026-07-03",
+    "Status: PASS_LOCAL_QUEUE",
+    "POSITION_OWNER_QUEUE_READY / NO_GO / BLOCKED",
+    "Required seat owner assignment is pending",
+    "candidate evidence only, not owner approval",
+    "Do not paste passwords",
+    "HT",
+    "TCHC_HEAD",
+    "legacy `HR_HEAD`",
+    "check:heu-position-assignment-owner-queue",
+    "does not create accounts",
+    "assign real users",
+    "set passwords",
+    "send reset/invite links",
+    "approve UAT",
+    "mark production GO",
+  ],
+  "position assignment owner queue doc",
+  positionAssignmentOwnerQueuePath,
+);
+
+requireAllText(
   JSON.stringify(packageJson.scripts),
   [
     "check:heu-user-create-readiness",
     "check:heu-user-scope-baseline-repair-queue",
     "check:heu-settings-permission-matrix-readiness",
+    "check:heu-position-assignment-owner-queue",
   ],
-  "package commands for user-create, scope baseline repair and Settings matrix readiness",
+  "package commands for user-create, scope baseline repair, Settings matrix and owner assignment queue readiness",
   packagePath,
 );
 
