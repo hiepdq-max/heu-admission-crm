@@ -1,0 +1,190 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+const repoRoot = process.cwd();
+const failures = [];
+
+function fail(message) {
+  failures.push(message);
+}
+
+function read(relativePath) {
+  return readFileSync(path.join(repoRoot, relativePath), "utf8");
+}
+
+function requireFile(relativePath) {
+  if (!existsSync(path.join(repoRoot, relativePath))) {
+    fail(`Missing required file: ${relativePath}`);
+  }
+}
+
+function requireText(relativePath, pattern, label) {
+  if (!existsSync(path.join(repoRoot, relativePath))) {
+    return;
+  }
+
+  const contents = read(relativePath);
+
+  if (!pattern.test(contents)) {
+    fail(`${relativePath}: missing ${label}`);
+  }
+}
+
+for (const file of [
+  "app/cthssv/page.tsx",
+  "components/layout/app-shell.tsx",
+  "database/step38_user_scopes_and_handovers.sql",
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  "docs/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  "docs/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703.md",
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  "package.json",
+]) {
+  requireFile(file);
+}
+
+requireText(
+  "app/cthssv/page.tsx",
+  /(?=[\s\S]*active="cthssv")(?=[\s\S]*data-heu-cthssv-module-readiness="M06_CTHSSV")(?=[\s\S]*data-heu-cthssv-boundary="M06_CTHSSV_PASS_LOCAL_ONLY")(?=[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*does not approve enrollment, handover\s+reliance, evidence acceptance, finance posting, UAT acceptance,\s+owner GO\/NO-GO or production GO)/i,
+  "M06 CTHSSV page boundary",
+);
+
+requireText(
+  "app/cthssv/page.tsx",
+  /(?=[\s\S]*\.from\("lead_handovers"\))(?=[\s\S]*leads!inner)(?=[\s\S]*\.in\("handover_type", cthssvHandoverTypes\))(?=[\s\S]*"leads\.admission_segment_id")(?=[\s\S]*handover\.accept_cthssv)(?=[\s\S]*current_user_role_code)(?=[\s\S]*has_permission)/,
+  "lead handover query and permission gate",
+);
+
+requireText(
+  "app/cthssv/page.tsx",
+  /(?=[\s\S]*data-heu-cthssv-quick-access="M06_CTHSSV_QUICK_ACCESS")(?=[\s\S]*data-heu-cthssv-quick-access-overflow-guard="M06_CTHSSV_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*\/leads\?quick=documents)(?=[\s\S]*\/documents)(?=[\s\S]*\/pipeline#pipeline-document-pending)(?=[\s\S]*\/master-control)(?=[\s\S]*aria-label=\{`Mo nhanh CTHSSV: \$\{link\.label\}`\})(?=[\s\S]*title=\{`Mo nhanh CTHSSV: \$\{link\.label\}`\})/,
+  "CTHSSV quick access no-overflow navigation",
+);
+
+for (const marker of [
+  "data-heu-cthssv-acceptance-matrix",
+  "data-heu-cthssv-decision-manifest",
+  "data-heu-cthssv-owner-signoff-manifest",
+  "data-heu-cthssv-uat-result-ledger",
+]) {
+  requireText(
+    "app/cthssv/page.tsx",
+    new RegExp(`${marker}": "M06_CTHSSV"`),
+    `${marker} marker`,
+  );
+}
+
+for (const token of [
+  "M06-CTHSSV-01",
+  "M06-CTHSSV-06",
+  "M06-DEC-01",
+  "M06-DEC-03",
+  "M06-SIGN-01",
+  "M06-SIGN-06",
+  "M06-UAT-01",
+  "M06-UAT-04",
+]) {
+  requireText("app/cthssv/page.tsx", new RegExp(token), `${token} case`);
+}
+
+requireText(
+  "app/cthssv/page.tsx",
+  /(?=[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md)(?=[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED)/,
+  "CTHSSV UAT ledger and owner signoff sources on page",
+);
+
+requireText(
+  "app/cthssv/page.tsx",
+  /raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs or credentials/i,
+  "raw evidence and secret boundary",
+);
+
+requireText(
+  "components/layout/app-shell.tsx",
+  /(?=[\s\S]*label: "CTHSSV")(?=[\s\S]*href: "\/cthssv")(?=[\s\S]*key: "cthssv")(?=[\s\S]*permission: "handover\.accept_cthssv")(?=[\s\S]*"cthssv")/,
+  "sidebar CTHSSV navigation",
+);
+
+requireText(
+  "database/step38_user_scopes_and_handovers.sql",
+  /(?=[\s\S]*lead_handovers)(?=[\s\S]*ADMISSION_TO_CTHSSV)(?=[\s\S]*CTHSSV_TO_ACCOUNTING)(?=[\s\S]*handover\.accept_cthssv)(?=[\s\S]*trg_lead_handovers_audit)(?=[\s\S]*can_access_lead_handover)/i,
+  "existing Step38 handover/RLS/audit foundation",
+);
+
+requireText(
+  "docs/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TEMPLATE)(?=[\s\S]*M06 CTHSSV student\/profile handover UAT and owner result ledger)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords,\s+OTPs, password reset links, account activation\/invite links, service-role keys\s+or API keys)(?=[\s\S]*CTHSSV-UAT-01)(?=[\s\S]*CTHSSV-UAT-08)(?=[\s\S]*CTHSSV-DEC-01)(?=[\s\S]*CTHSSV-DEC-06)(?=[\s\S]*does not\s+execute UAT, accept evidence, approve enrollment, approve handover reliance,\s+create student finance facts, approve finance action, approve owner GO\/NO-GO or\s+mark production GO)/i,
+  "CTHSSV UAT result ledger template",
+);
+
+requireText(
+  "docs/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_MANIFEST)(?=[\s\S]*M06 CTHSSV owner signoff control for student\/profile handover reliance)(?=[\s\S]*Production status:\s*NO-GO)(?=[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_HANDOVER_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-SIGN-01)(?=[\s\S]*CTHSSV-SIGN-06)(?=[\s\S]*CTHSSV-UAT-01 through CTHSSV-UAT-08)(?=[\s\S]*does not execute UAT, accept\s+evidence, approve enrollment, approve handover reliance, create student finance\s+facts, approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
+  "CTHSSV owner signoff manifest",
+);
+
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /M06 CTHSSV[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*signed CTHSSV owner UAT and handover reliance still required/i,
+  "current-state M06 CTHSSV cockpit",
+);
+
+requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P3-02[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*M06 CTHSSV cockpit[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*signed role-scope UAT[\s\S]*handover decision still required[\s\S]*CTHSSV owner UAT still required/i,
+  "backlog P3-02 M06 CTHSSV cockpit",
+);
+
+requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /M06 CTHSSV Module[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*Signed CTHSSV owner UAT and handover reliance decision/i,
+  "module readiness gap matrix M06 CTHSSV",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /Lead-to-student handover guard[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*signed CTHSSV owner UAT[\s\S]*signed owner signoff manifest[\s\S]*signed UAT and handover decision still required/i,
+  "production checklist CTHSSV UAT ledger boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - M06 CTHSSV Cockpit Readiness[\s\S]*app\/cthssv\/page\.tsx[\s\S]*components\/layout\/app-shell\.tsx[\s\S]*scripts\/audit-heu-cthssv-module-readiness\.mjs[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "implementation log CTHSSV cockpit boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - M06 CTHSSV UAT Result Ledger Template[\s\S]*docs\/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*CTHSSV-UAT-01 through CTHSSV-UAT-08[\s\S]*CTHSSV-DEC-01 through[\s\S]*CTHSSV-DEC-06[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "implementation log CTHSSV UAT ledger template boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - M06 CTHSSV Owner Signoff Manifest[\s\S]*docs\/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "implementation log CTHSSV owner signoff manifest boundary",
+);
+
+const packageJson = JSON.parse(read("package.json"));
+
+if (
+  packageJson.scripts?.["audit:heu-cthssv-module-readiness"] !==
+  "node scripts/audit-heu-cthssv-module-readiness.mjs"
+) {
+  fail("package.json: missing audit:heu-cthssv-module-readiness script");
+}
+
+if (failures.length > 0) {
+  console.error("HEU CTHSSV module readiness audit failed.");
+  for (const failure of failures) {
+    console.error(`- ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log(
+  "HEU CTHSSV module readiness audit passed. M06 cockpit is PASS_LOCAL only.",
+);

@@ -92,6 +92,13 @@ const navigation = [
   },
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
+  {
+    label: "CTHSSV",
+    href: "/cthssv",
+    icon: ClipboardCheck,
+    key: "cthssv",
+    permission: "handover.accept_cthssv",
+  },
   { label: "Pipeline", href: "/pipeline", icon: ListChecks, key: "pipeline" },
   {
     label: "Hồ sơ nhập học",
@@ -148,6 +155,7 @@ const segmentAwareNavigationKeys = new Set([
   "documents",
   "followups",
   "hou",
+  "cthssv",
   "reports",
   "import",
 ]);
