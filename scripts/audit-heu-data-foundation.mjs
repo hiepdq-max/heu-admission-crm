@@ -389,10 +389,21 @@ requireText(
   "segment workspace guide overflow guards",
 );
 requireText(
+  segmentWorkspaceGuidePath,
+  /(?=[\s\S]*"use client")(?=[\s\S]*useState)(?=[\s\S]*data-heu-segment-workspace-guide-focus="P0-05_WORKSPACE_GUIDE_FOCUS")(?=[\s\S]*data-heu-segment-workspace-guide-tabs="P0-05_WORKSPACE_GUIDE_TABS")(?=[\s\S]*data-heu-segment-workspace-guide-panel="P0-05_WORKSPACE_GUIDE_PANEL")(?=[\s\S]*data-heu-segment-workspace-guide-overflow-guard="P0-05_WORKSPACE_GUIDE_NO_OVERFLOW")(?=[\s\S]*role="tablist")(?=[\s\S]*role="tab")(?=[\s\S]*role="tabpanel")(?=[\s\S]*ArrowRight)(?=[\s\S]*ArrowDown)(?=[\s\S]*ArrowLeft)(?=[\s\S]*ArrowUp)(?=[\s\S]*Home)(?=[\s\S]*End)(?=[\s\S]*withAdmissionSegmentParam)(?=[\s\S]*Mo phan nghiep vu)(?=[\s\S]*activeItem\.label)(?=[\s\S]*Mo phan nay)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*truncate)(?=[\s\S]*break-words)/,
+  "segment workspace guide focus tabs and no-overflow guard",
+);
+requireText(
   implementationLogPath,
   /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"[\s\S]*data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not\s+change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
   "P0-05 segment workspace quick access implementation log boundary",
-);requireText(
+);
+requireText(
+  implementationLogPath,
+  /P0-05 Segment Workspace Guide Focus Tabs[\s\S]*components\/segments\/segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide-focus="P0-05_WORKSPACE_GUIDE_FOCUS"[\s\S]*data-heu-segment-workspace-guide-tabs="P0-05_WORKSPACE_GUIDE_TABS"[\s\S]*data-heu-segment-workspace-guide-panel="P0-05_WORKSPACE_GUIDE_PANEL"[\s\S]*data-heu-segment-workspace-guide-overflow-guard="P0-05_WORKSPACE_GUIDE_NO_OVERFLOW"[\s\S]*Arrow\/Home\/End[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*audit-heu-implementation-log\.mjs[\s\S]*does not create lead records[\s\S]*import data[\s\S]*change role scope[\s\S]*broaden segment access[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-05 segment workspace guide focus implementation log boundary",
+);
+requireText(
   implementationLogPath,
   /P0-05 Lead Detail Status Workspace Return Guard[\s\S]*components\/leads\/status-update-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*StatusUpdateForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\)[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead status update[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
   "P0-05 lead detail status implementation log boundary",

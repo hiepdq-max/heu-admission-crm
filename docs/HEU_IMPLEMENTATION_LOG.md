@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs
+
+- Converted the business-entry area in
+  `components/segments/segment-workspace-guide.tsx` into focused tabs so HOU,
+  TTGDTX, short-course and general admission segment workspaces show the
+  selected work item in one panel instead of equal-weight cards.
+- The guide exposes `data-heu-segment-workspace-guide-focus="P0-05_WORKSPACE_GUIDE_FOCUS"`,
+  `data-heu-segment-workspace-guide-tabs="P0-05_WORKSPACE_GUIDE_TABS"`,
+  `data-heu-segment-workspace-guide-panel="P0-05_WORKSPACE_GUIDE_PANEL"` and
+  `data-heu-segment-workspace-guide-overflow-guard="P0-05_WORKSPACE_GUIDE_NO_OVERFLOW"`.
+- Added `role="tablist"`, `role="tab"`, `role="tabpanel"`, Arrow/Home/End
+  keyboard navigation, `min-w-0`, `overflow-hidden`, `truncate`,
+  `break-words`, `aria-label` and `title` coverage so the selected business
+  item is clear and long labels stay contained.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the workspace-guide focus tabs
+  and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is selected-segment navigation/readability
+  hardening only. It does not create lead records, import data,
+  change role scope, broaden segment access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard
 
 - Hardened `components/settings/user-access-workflow-guide.tsx` with

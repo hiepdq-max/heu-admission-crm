@@ -126,6 +126,40 @@ if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
 
+fastSection("2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs", [
+  "components/segments/segment-workspace-guide.tsx",
+  "focused tabs",
+  "selected work item",
+  "one panel",
+  "data-heu-segment-workspace-guide-focus=\"P0-05_WORKSPACE_GUIDE_FOCUS\"",
+  "data-heu-segment-workspace-guide-tabs=\"P0-05_WORKSPACE_GUIDE_TABS\"",
+  "data-heu-segment-workspace-guide-panel=\"P0-05_WORKSPACE_GUIDE_PANEL\"",
+  "data-heu-segment-workspace-guide-overflow-guard=\"P0-05_WORKSPACE_GUIDE_NO_OVERFLOW\"",
+  "role=\"tablist\"",
+  "role=\"tab\"",
+  "role=\"tabpanel\"",
+  "Arrow/Home/End",
+  "min-w-0",
+  "overflow-hidden",
+  "truncate",
+  "break-words",
+  "aria-label",
+  "title",
+  "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "PASS_LOCAL boundary",
+  "selected-segment navigation/readability",
+  "does not create lead records",
+  "import data",
+  "change role scope",
+  "broaden segment access",
+  "execute UAT",
+  "accept evidence",
+  "approve finance action",
+  "owner GO/NO-GO",
+  "production GO",
+]);
+
 fastSection("2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard", [
   "components/settings/user-access-workflow-guide.tsx",
   'data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"',
