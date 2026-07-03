@@ -8,6 +8,7 @@ import {
   FileCheck2,
   FileSpreadsheet,
   GraduationCap,
+  Gavel,
   LayoutDashboard,
   ListChecks,
   Megaphone,
@@ -54,6 +55,13 @@ const navigation = [
     href: "/master-control",
     icon: FileCheck2,
     key: "master-control",
+    permission: "master_control.read",
+  },
+  {
+    label: "TCHC Legal Gates",
+    href: "/tchc/legal-gates",
+    icon: Gavel,
+    key: "tchc-legal-gates",
     permission: "master_control.read",
   },
   {

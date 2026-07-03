@@ -50,6 +50,33 @@
   invite/reset links, execute UAT, accept evidence, approve report/dashboard
   reliance, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - TCHC Legal Compliance Foundation
+
+- Scope: Packaged the TCHC legal/SOP compliance foundation so PHAP_CHE, TCHC,
+  BGH, IT_DATA and Audit can inspect required legal gates before workflow,
+  report-view, automation, AI or production reliance.
+- Changed: `database/step117_tchc_legal_compliance_foundation.sql`,
+  `docs/HEU_TCHC_LEGAL_COMPLIANCE_FOUNDATION_20260703.md`,
+  `app/tchc/legal-gates/page.tsx`,
+  `components/tchc/tchc-legal-gates-readonly.tsx`,
+  `components/layout/app-shell.tsx`,
+  `scripts/check-heu-tchc-legal-compliance-foundation.mjs`,
+  `package.json` and `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-tchc-legal-compliance-foundation` verifies
+  `LEGAL_TCHC_*_REVIEW_REQUIRED`, `SOP_TCHC_*`,
+  `TCHC-LEGAL-01` through `TCHC-LEGAL-14`,
+  `heu_tchc_legal_compliance_requirements`,
+  `heu_tchc_legal_compliance_status`, the read-only `/tchc/legal-gates` page
+  and AppShell navigation.
+- Verification target: `npm.cmd run check:heu-tchc-legal-compliance-foundation`
+  plus current-state, implementation-log, release-gate, Vietnamese encoding,
+  user/security, role-scope, production-readiness, lint, build and diff checks
+  before commit.
+- Boundary: This is legal/SOP placeholder and read-only gate packaging only.
+  It does not provide legal advice, issue SOP, approve legal basis, create
+  accounts, assign real users, execute UAT, accept evidence, approve report or
+  dashboard reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P10-05 Khoa Giang Vien Negative Access Checklist
 
 - Added `docs/HEU_KHOA_GIANG_VIEN_NEGATIVE_ACCESS_CHECKLIST_20260703.md` as
