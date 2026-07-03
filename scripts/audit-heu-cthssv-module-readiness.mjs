@@ -43,6 +43,8 @@ for (const file of [
   "docs/HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703.md",
   "docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md",
   "docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md",
+  "docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md",
+  "docs/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md",
   "docs/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
@@ -76,6 +78,8 @@ for (const marker of [
   "data-heu-cthssv-controlled-evidence-trace",
   "data-heu-cthssv-final-module-closure",
   "data-heu-cthssv-external-owner-action-queue",
+  "data-heu-cthssv-signed-uat-evidence-intake",
+  "data-heu-cthssv-pass-local-review-dossier",
   "data-heu-cthssv-acceptance-matrix",
   "data-heu-cthssv-decision-manifest",
   "data-heu-cthssv-owner-signoff-manifest",
@@ -99,6 +103,10 @@ for (const token of [
   "CTHSSV-CLOSE-08",
   "CTHSSV-OWNER-ACTION-01",
   "CTHSSV-OWNER-ACTION-08",
+  "CTHSSV-UAT-EVID-01",
+  "CTHSSV-UAT-EVID-08",
+  "CTHSSV-REVIEW-01",
+  "CTHSSV-REVIEW-08",
   "M06-CTHSSV-01",
   "M06-CTHSSV-06",
   "M06-DEC-01",
@@ -113,8 +121,8 @@ for (const token of [
 
 requireText(
   "app/cthssv/page.tsx",
-  /(?=[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md)(?=[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED)/,
-  "CTHSSV breakdown, role access, evidence trace, final closure, external owner action queue, UAT ledger and owner signoff sources on page",
+  /(?=[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md)(?=[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md)(?=[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED)/,
+  "CTHSSV breakdown, role access, evidence trace, final closure, external owner action queue, signed UAT evidence intake, review dossier, UAT ledger and owner signoff sources on page",
 );
 
 requireText(
@@ -143,7 +151,7 @@ requireText(
 
 requireText(
   "docs/HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_BREAKDOWN)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-00)(?=[\s\S]*CTHSSV-10)(?=[\s\S]*CTHSSV-08 now has a local role\/negative-access checklist)(?=[\s\S]*CTHSSV-09 now has a local controlled evidence\/audit trace checklist)(?=[\s\S]*CTHSSV-10 now has a local final module closure gate)(?=[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md)(?=[\s\S]*npm\.cmd run check:heu-cthssv-local-completion)(?=[\s\S]*npm\.cmd run audit:heu-cthssv-module-readiness)(?=[\s\S]*does not approve enrollment, student-state reliance, evidence\s+acceptance, finance posting, UAT acceptance, owner GO\/NO-GO or production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_BREAKDOWN)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-00)(?=[\s\S]*CTHSSV-10)(?=[\s\S]*CTHSSV-08 now has a local role\/negative-access checklist)(?=[\s\S]*CTHSSV-09 now has a local controlled evidence\/audit trace checklist)(?=[\s\S]*CTHSSV-10 now has a local final module closure gate)(?=[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md)(?=[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md)(?=[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md)(?=[\s\S]*npm\.cmd run check:heu-cthssv-local-completion)(?=[\s\S]*npm\.cmd run audit:heu-cthssv-module-readiness)(?=[\s\S]*does not approve enrollment, student-state reliance, evidence\s+acceptance, finance posting, UAT acceptance, owner GO\/NO-GO or production GO)/i,
   "CTHSSV module completion breakdown",
 );
 
@@ -155,20 +163,32 @@ requireText(
 
 requireText(
   "docs/HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_TRACE)(?=[\s\S]*CTHSSV-09 audit and controlled evidence trace)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-EVID-01)(?=[\s\S]*CTHSSV-EVID-08)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P0-10-ACCEPT-02)(?=[\s\S]*P0-10-ACCEPT-05)(?=[\s\S]*does not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance, create student finance facts,\s+approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_TRACE)(?=[\s\S]*CTHSSV-09 audit and controlled evidence trace)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-EVID-01)(?=[\s\S]*CTHSSV-EVID-08)(?=[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md)(?=[\s\S]*HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627\.md)(?=[\s\S]*P0-10-ACCEPT-02)(?=[\s\S]*P0-10-ACCEPT-05)(?=[\s\S]*does not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance, create student finance facts,\s+approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
   "CTHSSV controlled evidence trace checklist",
 );
 
 requireText(
   "docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_GATE)(?=[\s\S]*CTHSSV-10 final module closure gate)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-CLOSE-01)(?=[\s\S]*CTHSSV-CLOSE-08)(?=[\s\S]*CTHSSV-00 through CTHSSV-10)(?=[\s\S]*CTHSSV-UAT-01 through CTHSSV-UAT-08)(?=[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06)(?=[\s\S]*CTHSSV-ROLE-01 through CTHSSV-ROLE-08)(?=[\s\S]*CTHSSV-EVID-01 through CTHSSV-EVID-08)(?=[\s\S]*npm\.cmd run check:heu-cthssv-local-completion)(?=[\s\S]*does\s+not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance,\s+create student finance facts, approve finance action, approve owner GO\/NO-GO\s+or mark production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_GATE)(?=[\s\S]*CTHSSV-10 final module closure gate)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*CTHSSV-CLOSE-01)(?=[\s\S]*CTHSSV-CLOSE-08)(?=[\s\S]*CTHSSV-00 through CTHSSV-10)(?=[\s\S]*CTHSSV-UAT-01 through CTHSSV-UAT-08)(?=[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08)(?=[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06)(?=[\s\S]*CTHSSV-ROLE-01 through CTHSSV-ROLE-08)(?=[\s\S]*CTHSSV-EVID-01 through CTHSSV-EVID-08)(?=[\s\S]*npm\.cmd run check:heu-cthssv-local-completion)(?=[\s\S]*does\s+not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance,\s+create student finance facts, approve finance action, approve owner GO\/NO-GO\s+or mark production GO)/i,
   "CTHSSV final module closure gate",
 );
 
 requireText(
   "docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md",
-  /(?=[\s\S]*Status:\s*PASS_LOCAL_OWNER_ACTION_QUEUE)(?=[\s\S]*Decision lane:\s*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV-OWNER-ACTION-01)(?=[\s\S]*CTHSSV-OWNER-ACTION-08)(?=[\s\S]*signed CTHSSV owner UAT)(?=[\s\S]*signed role\/negative-access UAT)(?=[\s\S]*controlled evidence\/audit trace)(?=[\s\S]*finance gate preservation proof)(?=[\s\S]*final owner quorum GO\/NO-GO)(?=[\s\S]*does\s+not execute UAT, accept\s+evidence, approve enrollment, approve handover reliance, create student finance\s+facts, approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_OWNER_ACTION_QUEUE)(?=[\s\S]*Decision lane:\s*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV-OWNER-ACTION-01)(?=[\s\S]*CTHSSV-OWNER-ACTION-08)(?=[\s\S]*signed CTHSSV owner UAT)(?=[\s\S]*signed role\/negative-access UAT)(?=[\s\S]*controlled evidence\/audit trace)(?=[\s\S]*signed UAT evidence intake refs)(?=[\s\S]*finance gate preservation proof)(?=[\s\S]*final owner quorum GO\/NO-GO)(?=[\s\S]*does\s+not execute UAT, accept\s+evidence, approve enrollment, approve handover reliance, create student finance\s+facts, approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
   "CTHSSV external owner action queue",
+);
+
+requireText(
+  "docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_EVIDENCE_INTAKE)(?=[\s\S]*Decision lane:\s*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV-UAT-EVID-01)(?=[\s\S]*CTHSSV-UAT-EVID-08)(?=[\s\S]*evidence_ref)(?=[\s\S]*storage_class)(?=[\s\S]*owner_lane)(?=[\s\S]*linked_uat_case)(?=[\s\S]*linked_owner_action)(?=[\s\S]*linked_review_item)(?=[\s\S]*route_or_artifact)(?=[\s\S]*redaction_reviewer)(?=[\s\S]*signed_date)(?=[\s\S]*blocker_state)(?=[\s\S]*Forbidden content boundary)(?=[\s\S]*does not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance, create student finance facts,\s+approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
+  "CTHSSV signed UAT evidence intake",
+);
+
+requireText(
+  "docs/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md",
+  /(?=[\s\S]*Status:\s*PASS_LOCAL_REVIEW_DOSSIER)(?=[\s\S]*Decision lane:\s*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*Production\/UAT status:\s*NO-GO)(?=[\s\S]*CTHSSV-REVIEW-01)(?=[\s\S]*CTHSSV-REVIEW-08)(?=[\s\S]*CTHSSV_LOCAL_COMPLETION_READY: PASS_LOCAL)(?=[\s\S]*CTHSSV_REAL_OPERATION_READY: NO_GO)(?=[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08)(?=[\s\S]*CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08)(?=[\s\S]*does not execute UAT, accept evidence,\s+approve enrollment, approve handover reliance, create student finance facts,\s+approve finance action, approve owner GO\/NO-GO or mark production GO)/i,
+  "CTHSSV PASS_LOCAL review dossier",
 );
 
 requireText(
@@ -185,32 +205,68 @@ requireText(
 
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
-  /M06 CTHSSV[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*npm\.cmd run check:heu-cthssv-local-completion[\s\S]*signed CTHSSV owner UAT, controlled evidence\/audit trace, external owner action queue, final owner quorum and handover reliance still required/i,
+  /M06 CTHSSV[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*npm\.cmd run check:heu-cthssv-local-completion[\s\S]*signed CTHSSV owner UAT, controlled evidence\/audit trace, external owner action queue, final owner quorum and handover reliance still required/i,
   "current-state M06 CTHSSV cockpit",
 );
 
 requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /M06 CTHSSV signed UAT evidence intake guard[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED[\s\S]*data-heu-cthssv-signed-uat-evidence-intake="M06_CTHSSV"[\s\S]*npm\.cmd run check:heu-cthssv-local-completion[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "current-state CTHSSV signed UAT evidence intake guard",
+);
+
+requireText(
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
-  /P3-02[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*M06 CTHSSV cockpit[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*signed role-scope UAT and handover decision still required[\s\S]*signed controlled evidence\/audit trace still required[\s\S]*signed final module closure still required[\s\S]*external owner action queue still required[\s\S]*CTHSSV owner UAT still required/i,
+  /P3-02[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*M06 CTHSSV cockpit[\s\S]*M06_CTHSSV[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*signed role-scope UAT and handover decision still required[\s\S]*signed controlled evidence\/audit trace still required[\s\S]*signed final module closure still required[\s\S]*external owner action queue still required[\s\S]*CTHSSV owner UAT still required/i,
   "backlog P3-02 M06 CTHSSV cockpit",
 );
 
 requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P3-02E[\s\S]*CTHSSV signed UAT evidence intake[\s\S]*PASS_LOCAL_EVIDENCE_INTAKE[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED[\s\S]*data-heu-cthssv-signed-uat-evidence-intake="M06_CTHSSV"[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "backlog P3-02E CTHSSV signed UAT evidence intake",
+);
+
+requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
-  /M06 CTHSSV Module[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*check:heu-cthssv-local-completion[\s\S]*Signed CTHSSV owner UAT, controlled evidence\/audit trace, external owner action queue, final owner quorum and handover reliance decision/i,
+  /M06 CTHSSV Module[\s\S]*\/cthssv[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PROFILE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*check:heu-cthssv-local-completion[\s\S]*Signed CTHSSV owner UAT, controlled evidence\/audit trace, external owner action queue, final owner quorum and handover reliance decision/i,
   "module readiness gap matrix M06 CTHSSV",
 );
 
 requireText(
+  "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
+  /M06 CTHSSV signed UAT evidence intake[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md[\s\S]*data-heu-cthssv-signed-uat-evidence-intake="M06_CTHSSV"[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*Signed UAT evidence packages, redaction reviewer, role\/negative-access proof, finance gate proof, owner signoff linkage and final owner quorum evidence outside Git\/Codex\/chat/i,
+  "module readiness gap matrix CTHSSV signed UAT evidence intake",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
-  /Lead-to-student handover guard[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*CTHSSV-00 through CTHSSV-10[\s\S]*CTHSSV-ROLE-01 through CTHSSV-ROLE-08[\s\S]*CTHSSV-EVID-01 through CTHSSV-EVID-08[\s\S]*CTHSSV-CLOSE-01 through CTHSSV-CLOSE-08[\s\S]*CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*signed CTHSSV owner UAT[\s\S]*signed role\/negative-access UAT[\s\S]*signed controlled evidence\/audit trace[\s\S]*signed final module closure[\s\S]*external owner action queue closure[\s\S]*signed owner signoff manifest[\s\S]*signed UAT and handover decision still required/i,
+  /Lead-to-student handover guard[\s\S]*HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703\.md[\s\S]*HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703\.md[\s\S]*HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703\.md[\s\S]*HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md[\s\S]*HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703\.md[\s\S]*\/cthssv[\s\S]*CTHSSV-00 through CTHSSV-10[\s\S]*CTHSSV-ROLE-01 through CTHSSV-ROLE-08[\s\S]*CTHSSV-EVID-01 through CTHSSV-EVID-08[\s\S]*CTHSSV-CLOSE-01 through CTHSSV-CLOSE-08[\s\S]*CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08[\s\S]*CTHSSV-REVIEW-01 through CTHSSV-REVIEW-08[\s\S]*CTHSSV-SIGN-01 through CTHSSV-SIGN-06[\s\S]*CTHSSV_MODULE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_ROLE_SCOPE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EVIDENCE_TRACE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_FINAL_CLOSURE_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*CTHSSV_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*signed CTHSSV owner UAT[\s\S]*signed role\/negative-access UAT[\s\S]*signed controlled evidence\/audit trace[\s\S]*signed final module closure[\s\S]*external owner action queue closure[\s\S]*signed owner signoff manifest[\s\S]*signed UAT and handover decision still required/i,
   "production checklist CTHSSV UAT ledger boundary",
+);
+
+requireText(
+  "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
+  /CTHSSV signed UAT evidence intake[\s\S]*PASS_LOCAL_EVIDENCE_INTAKE[\s\S]*HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED[\s\S]*data-heu-cthssv-signed-uat-evidence-intake="M06_CTHSSV"[\s\S]*audit:heu-cthssv-module-readiness[\s\S]*check:heu-cthssv-local-completion[\s\S]*no UAT execution, evidence acceptance, enrollment approval, handover reliance, finance action, owner GO\/NO-GO or production GO/i,
+  "production checklist CTHSSV signed UAT evidence intake boundary",
 );
 
 requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-07-03 - M06 CTHSSV External Owner Action Queue[\s\S]*docs\/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703\.md[\s\S]*CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08[\s\S]*CTHSSV_EXTERNAL_OWNER_ACTION_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
   "implementation log CTHSSV external owner action queue boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - M06 CTHSSV Signed UAT Evidence Intake[\s\S]*docs\/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703\.md[\s\S]*CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08[\s\S]*CTHSSV_SIGNED_UAT_EVIDENCE_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "implementation log CTHSSV signed UAT evidence intake boundary",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - M06 CTHSSV PASS_LOCAL Review Dossier[\s\S]*docs\/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703\.md[\s\S]*CTHSSV-REVIEW-01 through CTHSSV-REVIEW-08[\s\S]*CTHSSV_PASS_LOCAL_REVIEW_READY \/ NO_GO \/ BLOCKED[\s\S]*does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO\/NO-GO or mark production GO/i,
+  "implementation log CTHSSV PASS_LOCAL review dossier boundary",
 );
 
 requireText(

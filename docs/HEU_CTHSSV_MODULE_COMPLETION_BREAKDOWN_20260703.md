@@ -3,8 +3,8 @@
 Status: PASS_LOCAL_BREAKDOWN
 Production/UAT status: NO-GO until signed CTHSSV owner UAT, signed handover
 reliance decision, role/workspace UAT, controlled evidence references, finance
-gate preservation proof, external owner action queue closure and owner GO/NO-GO
-are completed outside Git/Codex/chat.
+gate preservation proof, signed UAT evidence intake refs, external owner action
+queue closure and owner GO/NO-GO are completed outside Git/Codex/chat.
 
 Decision values: CTHSSV_MODULE_READY / NO_GO / BLOCKED
 
@@ -22,6 +22,10 @@ CTHSSV module means the local-control path around:
 - Role/workspace scope, negative-access proof and audit traceability.
 - External owner action queue for signed UAT, evidence, role, finance and final
   quorum blockers.
+- Signed UAT evidence intake refs for owner UAT, role proof, audit trace,
+  redaction review, finance gate proof and final owner quorum.
+- PASS_LOCAL review dossier for local reviewer conclusion and next external
+  owner action.
 
 PASS_LOCAL here means the local code, docs and guard scripts are packaged for
 controlled UAT. It does not approve enrollment, student-state reliance, evidence
@@ -41,7 +45,7 @@ acceptance, finance posting, UAT acceptance, owner GO/NO-GO or production GO.
 | CTHSSV-07 | Downstream finance gate preservation | PASS_LOCAL_GATED | P0-19, P2-05 and P2-03 finance gates; `CTHSSV_TO_ACCOUNTING`; `P2-05/P2-03 remain final finance gates` | No CTHSSV action creates receivable, payment, invoice, voucher, payout or revenue state. |
 | CTHSSV-08 | Role scope and negative access | PASS_LOCAL_CHECKLIST | `docs/HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`; `npm.cmd run audit:heu-role-scope-uat-pack`; `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`; CTHSSV-ROLE-01 through CTHSSV-ROLE-08; `CTHSSV_ROLE_SCOPE_READY / NO_GO / BLOCKED`; synthetic ADMIN/BGH/TUYEN_SINH/CTHSSV/DAO_TAO/KHTC/AUDIT/out-of-scope matrix | In-scope users see only scoped CTHSSV data, and negative users cannot read private profile or handover rows before signed UAT reliance. |
 | CTHSSV-09 | Audit and controlled evidence trace | PASS_LOCAL_TRACE | `docs/HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703.md`; `docs/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`; `docs/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703.md`; `docs/HEU_CONTROLLED_EVIDENCE_REDACTION_PACK_20260627.md`; CTHSSV-EVID-01 through CTHSSV-EVID-08; `CTHSSV_EVIDENCE_TRACE_READY / NO_GO / BLOCKED` | Raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs, invite/reset links and API keys stay outside Git/Codex/chat while audit rows link actor/time/state/route. |
-| CTHSSV-10 | Final module closure | PASS_LOCAL_GATE | `docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md`; `docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md`; CTHSSV-00 through CTHSSV-10; CTHSSV-CLOSE-01 through CTHSSV-CLOSE-08; CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08; `CTHSSV_FINAL_CLOSURE_READY / NO_GO / BLOCKED`; `CTHSSV_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED`; `CTHSSV_MODULE_READY / NO_GO / BLOCKED`; final owner GO/NO-GO pack | All owner signoff, signed UAT result ledger rows, role-scope evidence, finance gate proof, external owner action queue closure and blocker closures are complete outside Git/Codex/chat. |
+| CTHSSV-10 | Final module closure | PASS_LOCAL_GATE | `docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md`; `docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md`; `docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md`; `docs/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md`; CTHSSV-00 through CTHSSV-10; CTHSSV-CLOSE-01 through CTHSSV-CLOSE-08; CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08; CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08; CTHSSV-REVIEW-01 through CTHSSV-REVIEW-08; `CTHSSV_FINAL_CLOSURE_READY / NO_GO / BLOCKED`; `CTHSSV_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED`; `CTHSSV_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`; `CTHSSV_PASS_LOCAL_REVIEW_READY / NO_GO / BLOCKED`; `CTHSSV_MODULE_READY / NO_GO / BLOCKED`; final owner GO/NO-GO pack | All owner signoff, signed UAT result ledger rows, signed UAT evidence intake refs, role-scope evidence, finance gate proof, external owner action queue closure, PASS_LOCAL review dossier and blocker closures are complete outside Git/Codex/chat. |
 
 ## Small-Goal Work Order
 
@@ -62,6 +66,11 @@ Use this order when optimizing or completing M06 CTHSSV:
     module decision only outside Git/Codex/chat.
 12. Route CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08 to external
     owners before any real CTHSSV reliance.
+13. Record CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08 as controlled
+    signed UAT evidence intake refs after real owner work, without storing raw
+    evidence in Git/Codex/chat.
+14. Record CTHSSV-REVIEW-01 through CTHSSV-REVIEW-08 as a PASS_LOCAL review
+    dossier before handoff, without approving UAT or owner GO/NO-GO.
 
 Do not skip ahead from a local green guard to production reliance. The next
 slice can start only when the previous slice is either PASS_LOCAL for code work
@@ -116,7 +125,14 @@ Current local closure notes:
 - The external owner action queue now routes CTHSSV-OWNER-ACTION-01 through
   CTHSSV-OWNER-ACTION-08 into `CTHSSV_EXTERNAL_OWNER_ACTION_READY / NO_GO /
   BLOCKED` without turning local checks into owner approval.
+- The signed UAT evidence intake now routes CTHSSV-UAT-EVID-01 through
+  CTHSSV-UAT-EVID-08 into `CTHSSV_SIGNED_UAT_EVIDENCE_READY / NO_GO /
+  BLOCKED` without accepting evidence in Git/Codex/chat.
+- The PASS_LOCAL review dossier now routes CTHSSV-REVIEW-01 through
+  CTHSSV-REVIEW-08 into `CTHSSV_PASS_LOCAL_REVIEW_READY / NO_GO / BLOCKED`
+  before external owner handoff.
 
 All CTHSSV local closure slices are now packaged. The next blocker is external
 signed UAT, controlled evidence, role proof, finance gate proof, external owner
-action queue closure and final owner quorum decision outside Git/Codex/chat.
+action queue closure, signed UAT evidence intake refs and final owner quorum
+decision outside Git/Codex/chat.

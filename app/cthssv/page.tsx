@@ -414,6 +414,124 @@ const externalOwnerActionItems: ControlItem[] = [
   },
 ];
 
+const signedUatEvidenceIntakeItems: ControlItem[] = [
+  {
+    code: "CTHSSV-UAT-EVID-01",
+    title: "Signed evidence storage location",
+    evidence:
+      "Evidence ref, storage class, owner lane and forbidden-content review point to the approved controlled store.",
+    stop: "Evidence is pasted into Git/Codex/chat or storage class is unknown.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-02",
+    title: "Signed browser UAT result package",
+    evidence:
+      "Linked UAT case, route/artifact, signer lane, signed date, result and blocker state are recorded outside Codex/chat.",
+    stop: "Browser run is unsigned or treated as accepted from PASS_LOCAL.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-03",
+    title: "Role and negative access proof package",
+    evidence:
+      "Allowed and denied account proof links owner lane, redaction reviewer, route and blocker state.",
+    stop: "Role proof is missing, ownerless, broad or uses real private data in tracked work.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-04",
+    title: "Audit event trace package",
+    evidence:
+      "Audit route, actor/time/state reference and linked review item connect to a controlled evidence ref.",
+    stop: "Audit trace cannot prove actor, timestamp, route or state.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-05",
+    title: "Redaction reviewer package",
+    evidence:
+      "IT_DATA or Audit reviewer signs storage class, forbidden-content boundary and review result outside Codex/chat.",
+    stop: "Redaction reviewer is missing or raw evidence enters tracked work.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-06",
+    title: "Finance gate proof package",
+    evidence:
+      "Owner action and controlled route prove P0-19, P2-05 and P2-03 remain required before finance reliance.",
+    stop: "CTHSSV evidence is treated as receivable, payment, invoice, voucher, payout or revenue approval.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-07",
+    title: "Owner signoff linkage package",
+    evidence:
+      "Owner action, review item, signed date, result and blocker state connect UAT evidence to owner decision.",
+    stop: "Owner signoff is detached from UAT result, blocker state or evidence ref.",
+  },
+  {
+    code: "CTHSSV-UAT-EVID-08",
+    title: "Final owner quorum evidence package",
+    evidence:
+      "Final quorum result, evidence ref, owner lane, signed date and blocker state are recorded outside Codex/chat.",
+    stop: "Final owner GO/NO-GO is missing, unsigned or inferred from local checks.",
+  },
+];
+
+const passLocalReviewItems: ControlItem[] = [
+  {
+    code: "CTHSSV-REVIEW-01",
+    title: "Worktree scope",
+    evidence:
+      "HEU_CTHSSV_WORKTREE_SCOPE separates current CTHSSV files from unrelated dirty entries.",
+    stop: "Worktree scope is unknown, conflicted or treated as production approval.",
+  },
+  {
+    code: "CTHSSV-REVIEW-02",
+    title: "Cockpit boundary",
+    evidence:
+      "/cthssv keeps M06_CTHSSV route markers and PASS_LOCAL only boundary.",
+    stop: "Cockpit bypasses login, role scope, workspace scope or PASS_LOCAL boundary.",
+  },
+  {
+    code: "CTHSSV-REVIEW-03",
+    title: "Runtime local gate",
+    evidence:
+      "check:heu-cthssv-local-completion -- --runtime reports CTHSSV_LOCAL_COMPLETION_READY.",
+    stop: "Any required audit, lint or build check fails.",
+  },
+  {
+    code: "CTHSSV-REVIEW-04",
+    title: "Control artifact completeness",
+    evidence:
+      "Module breakdown, role proof, evidence trace, signed UAT evidence intake, closure, UAT ledger, owner signoff and owner action queue are linked.",
+    stop: "Any required control artifact is missing or unlinked.",
+  },
+  {
+    code: "CTHSSV-REVIEW-05",
+    title: "Case linkage",
+    evidence:
+      "CTHSSV-ROLE, CTHSSV-EVID, CTHSSV-UAT, CTHSSV-SIGN and CTHSSV-CLOSE cases keep owner/signature/evidence fields.",
+    stop: "Case linkage is broken, ownerless or stored only in Codex/chat.",
+  },
+  {
+    code: "CTHSSV-REVIEW-06",
+    title: "Finance and enrollment boundary",
+    evidence:
+      "P0-19, P2-05 and P2-03 remain final finance gates; CTHSSV stays student/profile context only.",
+    stop: "CTHSSV creates receivable, payment, invoice, voucher, payout or revenue state.",
+  },
+  {
+    code: "CTHSSV-REVIEW-07",
+    title: "External blocker preservation",
+    evidence:
+      "CTHSSV-OWNER-ACTION-01 through CTHSSV-OWNER-ACTION-08 remain explicit external blockers.",
+    stop: "External blocker is closed by local audit, AI output or unsigned browser run.",
+  },
+  {
+    code: "CTHSSV-REVIEW-08",
+    title: "Reviewer conclusion",
+    evidence:
+      "Reviewer records CTHSSV_PASS_LOCAL_REVIEW_READY, NO_GO or BLOCKED with next action.",
+    stop: "Reviewer conclusion is missing, unsigned or implies production/UAT approval.",
+  },
+];
+
 const readinessItems: ControlItem[] = [
   {
     code: "M06-CTHSSV-01",
@@ -1253,6 +1371,26 @@ export default async function CthssvPage({ searchParams }: CthssvPageProps) {
           sourceLabel="HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md"
           dataAttribute={{
             "data-heu-cthssv-external-owner-action-queue": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV signed UAT evidence intake"
+          decision="CTHSSV_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED"
+          items={signedUatEvidenceIntakeItems}
+          sourceLabel="HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-signed-uat-evidence-intake": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV PASS_LOCAL review dossier"
+          decision="CTHSSV_PASS_LOCAL_REVIEW_READY / NO_GO / BLOCKED"
+          items={passLocalReviewItems}
+          sourceLabel="HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-pass-local-review-dossier": "M06_CTHSSV",
           }}
         />
       </div>

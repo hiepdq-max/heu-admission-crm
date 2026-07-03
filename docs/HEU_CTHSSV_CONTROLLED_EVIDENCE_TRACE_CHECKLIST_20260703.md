@@ -19,6 +19,7 @@ outside Git/Codex/chat by the responsible owners.
 
 - CTHSSV_EVIDENCE_TRACE_READY / NO_GO / BLOCKED
 - CTHSSV_UAT_RESULT_READY / NO_GO / BLOCKED
+- CTHSSV_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED
 - CTHSSV_OWNER_READY / NO_GO / BLOCKED
 
 ## Required Actors
@@ -40,7 +41,7 @@ outside Git/Codex/chat by the responsible owners.
 | --- | --- | --- | --- |
 | CTHSSV-EVID-01 | Controlled evidence ID | Every CTHSSV-UAT and CTHSSV-SIGN row uses a non-secret controlled evidence reference from the approved evidence location | Evidence ID is missing, ambiguous or replaced by raw proof |
 | CTHSSV-EVID-02 | Redaction reviewer | IT_DATA/Audit reviewer signs that raw PII, CCCD, phone, bank data, vouchers and secrets are excluded from tracked work | Redaction reviewer is missing or reviewer authority is unclear |
-| CTHSSV-EVID-03 | UAT ledger linkage | CTHSSV-UAT-01 through CTHSSV-UAT-08 each point to one controlled evidence ref and one signer/date row | UAT row cannot be linked to evidence and signer |
+| CTHSSV-EVID-03 | UAT ledger and signed evidence intake linkage | CTHSSV-UAT-01 through CTHSSV-UAT-08 and `docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md` each point to controlled evidence refs and signer/date rows | UAT row cannot be linked to evidence intake and signer |
 | CTHSSV-EVID-04 | Owner signoff linkage | CTHSSV-SIGN-01 through CTHSSV-SIGN-06 each point to the related UAT case, blocker state and evidence ref | Owner signoff is detached from UAT result or blocker state |
 | CTHSSV-EVID-05 | Audit event trace | Accept/reject, handover state and evidence-reference review can be traced by actor, time, route and result | Audit trace cannot prove actor, timestamp, state or route |
 | CTHSSV-EVID-06 | Role/negative-access trace | CTHSSV-ROLE-01 through CTHSSV-ROLE-08 link account label, route, result and blocker state without exposing private data | Role proof cannot connect the account, route, result and blocker |
@@ -54,6 +55,7 @@ outside Git/Codex/chat by the responsible owners.
 | evidence_ref | Controlled redacted evidence reference only |
 | source_case | CTHSSV-EVID-01 through CTHSSV-EVID-08 |
 | linked_uat_case | CTHSSV-UAT-01 through CTHSSV-UAT-08 or N/A |
+| linked_signed_uat_evidence_case | CTHSSV-UAT-EVID-01 through CTHSSV-UAT-EVID-08 or N/A |
 | linked_owner_case | CTHSSV-SIGN-01 through CTHSSV-SIGN-06 or N/A |
 | linked_role_case | CTHSSV-ROLE-01 through CTHSSV-ROLE-08 or N/A |
 | audit_event_ref | Non-secret audit event reference, route and timestamp |

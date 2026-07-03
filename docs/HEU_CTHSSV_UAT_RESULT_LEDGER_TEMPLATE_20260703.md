@@ -13,13 +13,16 @@ mark production GO.
 
 Production status: NO-GO until signed CTHSSV owner UAT, signed handover reliance
 decision, required role-scope UAT, finance gate proof and final owner approval
-are recorded outside Codex/chat.
+are recorded outside Codex/chat; signed UAT evidence intake refs are recorded in
+`docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md` without storing raw
+evidence in Git/Codex/chat.
 
 ## Decision Values
 
 - CTHSSV_PROFILE_READY / NO_GO / BLOCKED
 - CTHSSV_HANDOVER_READY / NO_GO / BLOCKED
 - CTHSSV_UAT_RESULT_READY / NO_GO / BLOCKED
+- CTHSSV_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED
 
 ## Local Preflight
 
@@ -36,6 +39,8 @@ No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords,
 OTPs, password reset links, account activation/invite links, service-role keys
 or API keys may be pasted into Git, Codex, chat, screenshots or local proof.
 Use controlled redacted evidence references only.
+The signed UAT evidence intake pack records only the reference, storage class,
+owner lane, redaction reviewer, signed date, result and blocker state.
 
 ## UAT Case Matrix
 

@@ -13,6 +13,8 @@ const requiredFiles = [
   "docs/HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703.md",
   "docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md",
   "docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md",
+  "docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md",
+  "docs/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md",
   "docs/HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "docs/HEU_CTHSSV_OWNER_SIGNOFF_MANIFEST_20260703.md",
 ];
@@ -21,7 +23,7 @@ const commands = [
   {
     name: "audit:heu-cthssv-module-readiness",
     reason:
-      "M06 cockpit, CTHSSV-00..10, role, evidence, final closure and external owner action guards",
+      "M06 cockpit, CTHSSV-00..10, role, evidence, final closure, owner action, signed UAT evidence intake and review guards",
   },
   {
     name: "audit:heu-lead-handover-policy",
@@ -211,7 +213,7 @@ console.log(
 if (!verifyRequiredFiles() || !reportWorktreeSnapshot()) {
   console.error("CTHSSV_LOCAL_COMPLETION_READY: NO_GO at preflight.");
   console.error(
-    "CTHSSV_REAL_OPERATION_READY: NO_GO - signed UAT, controlled evidence, finance gate proof and owner quorum are still external.",
+    "CTHSSV_REAL_OPERATION_READY: NO_GO - signed UAT, controlled evidence, signed UAT evidence intake refs, finance gate proof and owner quorum are still external.",
   );
   process.exit(1);
 }
@@ -261,7 +263,7 @@ if (failed.length > 0) {
       .join("; ")}`,
   );
   console.error(
-    "CTHSSV_REAL_OPERATION_READY: NO_GO - signed UAT, controlled evidence, finance gate proof and owner quorum are still external.",
+    "CTHSSV_REAL_OPERATION_READY: NO_GO - signed UAT, controlled evidence, signed UAT evidence intake refs, finance gate proof and owner quorum are still external.",
   );
   process.exit(1);
 }
@@ -270,5 +272,5 @@ console.log(
   `CTHSSV_LOCAL_COMPLETION_READY: PASS_LOCAL (${results.length}/${results.length} checks passed, ${totalDuration} ms).`,
 );
 console.log(
-  "CTHSSV_REAL_OPERATION_READY: NO_GO - signed CTHSSV owner UAT, signed role/negative-access UAT, signed controlled evidence/audit trace, signed final module closure, handover reliance decision and external owner action queue closure are still required outside Git/Codex/chat.",
+  "CTHSSV_REAL_OPERATION_READY: NO_GO - signed CTHSSV owner UAT, signed role/negative-access UAT, signed controlled evidence/audit trace, signed UAT evidence intake refs, signed final module closure, handover reliance decision and external owner action queue closure are still required outside Git/Codex/chat.",
 );

@@ -4,8 +4,8 @@ Status: PASS_LOCAL_OWNER_ACTION_QUEUE
 Decision lane: CTHSSV_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED
 Production/UAT status: NO-GO until signed CTHSSV owner UAT, signed
 role/negative-access UAT, controlled evidence/audit trace, final module closure,
-handover reliance decision, finance gate preservation proof and final owner
-quorum GO/NO-GO are completed outside Git/Codex/chat.
+handover reliance decision, finance gate preservation proof, signed UAT evidence
+intake refs and final owner quorum GO/NO-GO are completed outside Git/Codex/chat.
 
 ## Purpose
 
@@ -27,6 +27,7 @@ All local CTHSSV closure slices are packaged, but real operation remains NO-GO:
 - Signed CTHSSV owner UAT is still required.
 - Signed role/negative-access UAT is still required.
 - Signed controlled evidence/audit trace is still required.
+- Signed UAT evidence intake refs are still required.
 - Signed final module closure is still required.
 - Handover reliance decision is still required.
 - Finance gate preservation proof is still required before KHTC/accounting
@@ -43,7 +44,7 @@ reliance decision.
 |---|---|---|---|---|
 | CTHSSV-OWNER-ACTION-01 | CTHSSV + Tuyen Sinh + Audit | Execute signed CTHSSV owner UAT for workspace-scoped handover packets and accept/reject trace | CTHSSV owner UAT result is signed with date, signer lane, route and controlled evidence ID | Unsigned browser run is treated as CTHSSV profile acceptance |
 | CTHSSV-OWNER-ACTION-02 | IT_DATA + TRUONG_PHONG + Audit | Execute signed role/negative-access UAT with authorized CTHSSV, sender, downstream and out-of-scope accounts | CTHSSV_ROLE_SCOPE_READY / NO_GO / BLOCKED is recorded with denial proof | Role proof is missing, ownerless, uses raw private data or grants broad access |
-| CTHSSV-OWNER-ACTION-03 | Audit + CTHSSV + IT_DATA | Store controlled evidence/audit trace refs for handover state, accept/reject action, role proof and redaction review | CTHSSV_EVIDENCE_TRACE_READY / NO_GO / BLOCKED has controlled evidence IDs and reviewer lane | Raw evidence enters Git/Codex/chat or audit trace cannot prove actor/time/state |
+| CTHSSV-OWNER-ACTION-03 | Audit + CTHSSV + IT_DATA | Store controlled evidence/audit trace refs for handover state, accept/reject action, role proof, signed UAT evidence intake refs and redaction review | CTHSSV_EVIDENCE_TRACE_READY / NO_GO / BLOCKED has controlled evidence IDs and reviewer lane | Raw evidence enters Git/Codex/chat or audit trace cannot prove actor/time/state |
 | CTHSSV-OWNER-ACTION-04 | CTHSSV + BGH + Audit | Sign final module closure against CTHSSV-00 through CTHSSV-10 and CTHSSV-CLOSE-01 through CTHSSV-CLOSE-08 | CTHSSV_FINAL_CLOSURE_READY / NO_GO / BLOCKED is signed outside Git/Codex/chat | Final closure is inferred from local audit success |
 | CTHSSV-OWNER-ACTION-05 | Tuyen Sinh + CTHSSV + Dao Tao + Audit | Record the handover reliance decision and enrollment boundary for student/profile state | CTHSSV_HANDOVER_READY / NO_GO / BLOCKED has signer, date, scope and blocker state | Handover is used as enrollment/class/training operation approval |
 | CTHSSV-OWNER-ACTION-06 | KHTC/accounting + CTHSSV + Audit | Prove P0-19, P2-05 and P2-03 remain the finance gates before downstream reliance | Finance gate preservation proof is signed with controlled evidence ID | CTHSSV action creates receivable, payment, invoice, voucher, payout or revenue state |
