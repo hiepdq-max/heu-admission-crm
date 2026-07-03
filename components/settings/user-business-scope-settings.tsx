@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ShieldCheck, UserCog } from "lucide-react";
+import { AlertTriangle, ShieldCheck, UserCog } from "lucide-react";
 
 import {
   updateUserBusinessScopesAction,
@@ -74,6 +74,13 @@ const departmentManagerRoleCodes = new Set([
   "ACCOUNTING_LEAD",
   "CTHSSV_LEAD",
   "TEAM_LEAD",
+]);
+
+const privilegedRoleCodes = new Set([
+  "ADMIN",
+  "BGH",
+  "HIEU_TRUONG",
+  "PHO_HIEU_TRUONG",
 ]);
 
 const leadVisibilityOptions = [
@@ -164,6 +171,17 @@ function labelFromMap(map: Map<string, string>, id: string | null) {
   return id ? map.get(id) ?? "Chưa rõ" : "Chưa gắn";
 }
 
+function hasAnyBusinessScope(
+  userId: string,
+  segmentScopeMap: Map<string, Set<string>>,
+  partnerScopeMap: Map<string, Set<string>>,
+) {
+  return (
+    (segmentScopeMap.get(userId)?.size ?? 0) > 0 ||
+    (partnerScopeMap.get(userId)?.size ?? 0) > 0
+  );
+}
+
 export function UserBusinessScopeSettings({
   users,
   roles,
@@ -188,6 +206,7 @@ export function UserBusinessScopeSettings({
     selectedUser?.manager_id ?? "",
   );
   const roleMap = new Map(roles.map((role) => [role.id, role.name]));
+  const roleById = new Map(roles.map((role) => [role.id, role]));
   const departmentMap = new Map(
     departments.map((department) => [department.id, department.name]),
   );
@@ -255,6 +274,33 @@ export function UserBusinessScopeSettings({
           ]
       : [...departmentHeads, ...sameDepartmentOthers]
     : users.filter((candidate) => candidate.id !== selectedUser?.id);
+  const activeNonPrivilegedUsers = users.filter((profile) => {
+    const roleCode = roleById.get(profile.role_id ?? "")?.code ?? "";
+
+    return profile.status === "ACTIVE" && !privilegedRoleCodes.has(roleCode);
+  });
+  const scopeRepairRows = activeNonPrivilegedUsers
+    .map((profile) => {
+      const missingLeadVisibility = !leadVisibilityMap.has(profile.id);
+      const missingBusinessScope = !hasAnyBusinessScope(
+        profile.id,
+        segmentScopeMap,
+        partnerScopeMap,
+      );
+
+      return {
+        profile,
+        missingLeadVisibility,
+        missingBusinessScope,
+      };
+    })
+    .filter((row) => row.missingLeadVisibility || row.missingBusinessScope);
+  const missingLeadVisibilityCount = scopeRepairRows.filter(
+    (row) => row.missingLeadVisibility,
+  ).length;
+  const missingBusinessScopeCount = scopeRepairRows.filter(
+    (row) => row.missingBusinessScope,
+  ).length;
 
   function firstDepartmentHeadId(departmentId: string, userId: string) {
     return (
@@ -356,6 +402,65 @@ export function UserBusinessScopeSettings({
         </div>
       ) : (
         <div className="space-y-5 p-5">
+          {scopeRepairRows.length > 0 ? (
+            <div
+              className="min-w-0 overflow-hidden rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950"
+              data-heu-scope-baseline-repair-handoff="P0-17_SCOPE_BASELINE_REPAIR_HANDOFF"
+              data-heu-scope-baseline-repair-status="USER_SCOPE_BASELINE_REPAIR_READY_NO_GO_BLOCKED"
+              data-heu-scope-baseline-repair-no-overflow="P0-17_SCOPE_REPAIR_HANDOFF_NO_OVERFLOW"
+            >
+              <div className="flex min-w-0 items-start gap-3">
+                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-700" />
+                <div className="min-w-0">
+                  <h3 className="break-words font-semibold">
+                    USER-SCOPE-REPAIR-HANDOFF: NO_GO
+                  </h3>
+                  <p className="mt-1 break-words text-amber-900">
+                    missing_visibility={missingLeadVisibilityCount};
+                    missing_business_scope={missingBusinessScopeCount}. Owner
+                    must approve the user lane before saving visibility,
+                    segment or partner scope here.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 grid min-w-0 gap-2 lg:grid-cols-2">
+                {scopeRepairRows.map((row) => {
+                  const roleName = labelFromMap(roleMap, row.profile.role_id);
+                  const issueText = [
+                    row.missingLeadVisibility ? "missing lead visibility" : null,
+                    row.missingBusinessScope ? "missing business scope" : null,
+                  ]
+                    .filter(Boolean)
+                    .join("; ");
+
+                  return (
+                    <button
+                      key={row.profile.id}
+                      type="button"
+                      onClick={() => handleSelectedUserChange(row.profile.id)}
+                      className="min-w-0 rounded-md border border-amber-200 bg-white p-3 text-left text-amber-950 transition hover:border-amber-300 hover:bg-amber-100"
+                    >
+                      <span className="block truncate font-medium">
+                        {row.profile.full_name}
+                      </span>
+                      <span className="mt-1 block truncate text-xs text-amber-800">
+                        {roleName} ; {issueText}
+                      </span>
+                      <span className="mt-2 block break-words text-xs text-zinc-600">
+                        Open this user, choose OWN/TEAM/DEPARTMENT, then add at least one approved segment or partner scope.
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-3 break-words text-xs text-amber-800">
+                This handoff does not create accounts, assign real users, set passwords,
+                send reset/invite links, approve UAT, accept evidence,
+                approve owner GO/NO-GO or mark production GO.
+              </p>
+            </div>
+          ) : null}
+
           {users.length === 0 ? (
             <div className="rounded-md border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-500">
               Chưa có user để phân việc. ADMIN cần tạo user trước.
