@@ -1,6 +1,6 @@
 # HEU Permission Scope Operation Breakdown - 2026-07-03
 
-Status: PASS_LOCAL first slice plus HOU scope closure.
+Status: PASS_LOCAL first slice plus HOU and Short Course scope closure.
 Production/UAT status: NO-GO until signed multi-account UAT, owner approval and
 the normal production gate are completed outside Codex/chat.
 
@@ -139,6 +139,47 @@ Exit rule:
   the current controlled lane.
 - This is HOU scope closure only; it does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO.
 
+## Slice 11 - Short Course Scope Closure
+
+Goal: keep Short Course intake, dashboard, attendance/BHXH/finance chains and
+workflow requests aligned with the active admission workspace before widening
+Short Course operations to more real users.
+
+Done locally:
+- PASS_LOCAL scope closure is wired through
+  `check:heu-short-course-scope-readiness`.
+- Added `npm.cmd run check:heu-short-course-scope-readiness`.
+- Attached static guard coverage to
+  `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`.
+- Updated P1-15 workflow request update action so an existing
+  `approval_requests.admission_segment_id` is checked through
+  `can_use_admission_workspace` and must resolve to a `SHORT_` admission
+  segment before any status write.
+- Verified Short Course read surfaces keep `workspaceSegmentId`, return links
+  and segment filters across `/short-course`, `/short-course/intake` and
+  `/short-course/workflows`.
+
+Current checker target:
+- `SHORT-SCOPE-APP-GUARD` proves page/action/package scope guards are wired.
+- `SHORT-SCOPE-SEGMENTS` proves the active Short Course segments exist:
+  `SHORT_UNEMPLOYMENT_SUPPORT` and `SHORT_ONSITE_HEU`.
+- `SHORT-SCOPE-STUDENTS`, `SHORT-SCOPE-CLASSES` and
+  `SHORT-SCOPE-ENROLLMENTS` prove active Short Course master/enrollment rows
+  are tagged to Short Course segment scope.
+- `SHORT-SCOPE-ATTENDANCE` proves attendance sessions/records trace to scoped
+  class and enrollment chains.
+- `SHORT-SCOPE-BHXH-FINANCE` proves BHXH cases, invoices and payments trace
+  through scoped enrollment/student/class/invoice chains.
+- `SHORT-SCOPE-WORKFLOWS` proves concrete Short Course workflow requests carry
+  Short Course segment scope.
+- `SHORT-SCOPE-ACTOR-LINK` proves Short Course actor references are either
+  empty or active CRM profiles.
+
+Exit rule:
+- All Short Course scope statuses above must stay READY before widening Short
+  Course use beyond the current controlled lane.
+- This is Short Course scope closure only; it does not approve attendance lock, BHXH decision, meal/allowance payment, HR payment, invoice/payment verification, period close, statutory accounting, UAT acceptance, evidence acceptance, owner GO or production GO.
+
 ## System-Wide Expansion Pattern
 
 Repeat the same model per module:
@@ -157,7 +198,8 @@ Recommended order:
 - Pipeline and follow-ups.
 - Reports and dashboard.
 - Finance Desk and payment requests.
-- HOU and Short Course.
+- HOU.
+- Short Course.
 - Settings and permission matrix.
 - Audit, evidence and final handoff.
 

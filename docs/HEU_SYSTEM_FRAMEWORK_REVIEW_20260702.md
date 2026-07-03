@@ -48,7 +48,7 @@ Production remains `NO-GO`.
 | `M04 SOP / Workflow` | Master Control and workflow guards exist | Read-only workflow/status/control surfaces | Official SOP issuance or owner signoff inference |
 | `M05 Tuyen sinh CRM` | Strong internal | Lifecycle and handover UAT support | Handover finalization without finance/legal gates |
 | `M06 CTHSSV` | Partial | Student handover readiness checks | Student-state reliance without signed UAT |
-| `M07 Dao tao` | Partial | Class/program readiness and gap mapping | Production class or training record reliance |
+| `M07 Dao tao` | Partial | Class/program readiness, gap mapping, training completion breakdown, attendance-lock checklist, BHXH/policy decision checklist, meal/allowance boundary checklist, invoice/payment verification checklist, report-view source reconciliation checklist, role/negative-access checklist, UAT result ledger and owner closure template | Production class or training record reliance |
 | `M08 Khoa/Giang vien` | Early | Register and scope discovery | Deep workflow coding before owner process map |
 | `M09 Tai chinh/Cong no` | Strong internal but UAT-gated | Read-only finance flow, UAT scripts and exception guards | Auto gach no, voucher posting, payout execution, bank instruction |
 | `M10 Dashboard` | Partial and read-only | BGH/Master Control blocker reporting and daily dry-run | Dashboard production reliance or evidence acceptance |
@@ -65,7 +65,7 @@ Production remains `NO-GO`.
 | `F04` Accounting dashboard | P2-18 read-only dashboard and source reconciliation exist | Signed dashboard UAT and report-view reliance signoff |
 | `F05` Finance Desk | P5-03 read-only cockpit, handoff and accountant guide exist | Signed P5-03 browser UAT, reliance decision and access closure |
 | `F06` HOU | Gap pack and route exist | HOU handover UAT, tuition ledger proof and COM policy signoff |
-| `F07` Short Course | Gap pack and route exist | Attendance/payment UAT, BHXH/policy and report-view signoff |
+| `F07` Short Course | Gap pack, route, attendance-lock checklist, BHXH/policy decision checklist, meal/allowance boundary checklist, invoice/payment verification checklist, report-view source reconciliation checklist, role/negative-access checklist, UAT result ledger and owner closure template exist | Attendance/payment UAT, BHXH/policy, invoice/payment verification, role/negative-access proof, controlled evidence trace and report-view signoff |
 | `F08` Production readiness | Blocker source, evidence binder and owner pack exist | Backup/restore proof, migration order, signed UAT, cascade closure and owner GO |
 
 ## 5. Framework Strengths

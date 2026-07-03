@@ -87,6 +87,12 @@ Codex, AI or a local PASS_LOCAL guard must not:
 - `components/short-course/short-course-attendance-payment-gap-pack.tsx`
 - `/short-course`
 - `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
+- `docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`
 - `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md`
 - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
 
@@ -111,6 +117,91 @@ acceptance or evidence acceptance outside Codex/chat.
 | SC-REV-05 | BGH + Audit | Report view reliance | `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` DQ result, source map and owner signoff route | Dashboard is used for reliance before report-view owner signoff |
 | SC-REV-06 | IT_DATA + Audit | Final UAT trace | `SC-UAT-01` through `SC-UAT-08` result, actor, evidence ref and reviewer decision | PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO |
 
+## 8.1 Attendance Lock Evidence Checklist
+
+Attendance lock evidence is prepared through
+`docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md` with
+`SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED` and SC-LOCK-EVID-01
+through SC-LOCK-EVID-06. The checklist connects SC-AP-02, SC-AP-03,
+SC-REV-01, SC-UAT-01 and SC-UAT-02 to external controlled evidence references
+for class/session scope, lock state, signer, exception route, UAT evidence and
+SC-SIGN-01 owner decision.
+
+Passing the local audit does not lock attendance, approve attendance, alter
+attendance, accept evidence, execute UAT, approve payment, approve owner
+GO/NO-GO or mark production GO.
+
+## 8.2 BHXH/Chinh Sach Decision Checklist
+
+BHXH/chinh sach decision evidence is prepared through
+`docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md` with
+`SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED` and SC-BHXH-EVID-01
+through SC-BHXH-EVID-06. The checklist connects SC-AP-04, SC-REV-02,
+SC-UAT-03 and SC-SIGN-02 to external controlled evidence references for
+policy case scope, eligibility basis, legal/SOP review, owner/legal decision
+and downstream payment/report blocks.
+
+Passing the local audit does not approve BHXH/chinh sach, decide eligibility,
+create policy effect, accept evidence, execute UAT, approve payment, approve
+owner GO/NO-GO or mark production GO.
+
+## 8.3 Meal/Allowance HR Payment Boundary Checklist
+
+Meal/allowance and HR payment boundary evidence is prepared through
+`docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md`
+with `SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED` and SC-MEAL-EVID-01
+through SC-MEAL-EVID-06. The checklist connects SC-AP-05, SC-REV-03,
+SC-UAT-04 and SC-SIGN-03 to external controlled evidence references for formula
+version, locked attendance source, TRN-04 policy dependency, exception handling,
+design-only UAT proof and blocked-payment owner decision.
+
+Passing the local audit does not calculate allowance, approve meal/allowance,
+approve HR payment, approve teacher payment, create payroll effect, accept
+evidence, execute UAT, approve owner GO/NO-GO or mark production GO.
+
+## 8.4 Invoice/Payment Verification Checklist
+
+Invoice/payment verification evidence is prepared through
+`docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
+with `SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED` and
+SC-PAY-EVID-01 through SC-PAY-EVID-06. The checklist connects SC-AP-06,
+SC-REV-04, SC-UAT-05 and SC-SIGN-04 to external controlled evidence references
+for invoice source scope, payment/voucher match, reversal rule, period-lock
+rule, verification-gated UAT proof and blocked-verification owner decision.
+
+Passing the local audit does not verify invoice/payment, post voucher, approve
+payment, approve reversal, close period, create statutory accounting effect,
+accept evidence, execute UAT, approve owner GO/NO-GO or mark production GO.
+
+## 8.5 Report-View Source Reconciliation Checklist
+
+Report-view source reconciliation evidence is prepared through
+`docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
+with `SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED` and
+SC-RV-EVID-01 through SC-RV-EVID-06. The checklist connects SC-AP-07,
+SC-REV-05, SC-UAT-06, SC-SIGN-05, DQ-RV-06 and RV-EVID-05 to external
+controlled evidence references for the `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`
+source-map row, allowed consumers, class/student/attendance/invoice/payment DQ,
+upstream TRN-03 through TRN-06 blockers, signoff-blocked UAT proof and
+report-view owner decision.
+
+Passing the local audit does not approve report-view reliance, approve
+dashboard reliance, accept DQ evidence, accept source reconciliation, execute
+UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 8.6 Role Scope And Negative-Access Checklist
+
+Role scope and negative-access evidence is prepared through
+`docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md` with
+`SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED` and SC-ROLE-EVID-01 through
+SC-ROLE-EVID-06. The checklist connects SHORT-SCOPE-APP-GUARD,
+SHORT-SCOPE-WORKFLOWS, SHORT-SCOPE-ACTOR-LINK,
+NEGATIVE_CONTROL_QUEUE_READY / NO_GO / BLOCKED, P6_04_ACCESS_READY / NO_GO / BLOCKED, SC-UAT-07, SC-REV-06 and SC-SIGN-06 to external controlled evidence
+references for route guards, workflow scope, actor links, negative-account
+denial, role-scope UAT alignment and P0-17 access closure handoff.
+
+Passing the local audit does not create accounts, assign real users, grant access, broaden scope, accept negative-control proof, accept role UAT, accept evidence, approve access closure, approve owner GO/NO-GO or mark production GO.
+
 ## 9. Owner Signoff Manifest
 
 Owner signoff is prepared through
@@ -120,7 +211,22 @@ Owner signoff is prepared through
 owner approval until signatures and controlled evidence references exist
 outside Codex/chat.
 
-## 10. UAT Result Ledger Template
+## 10. External Owner Action Queue
+
+External owner actions are prepared through
+`docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md` with
+`SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED` and SC-OWNER-ACTION-01
+through SC-OWNER-ACTION-08. The queue assigns attendance lock, BHXH/chinh sach,
+meal/allowance, invoice/payment, report-view, role/negative-access, UAT ledger
+and final owner GO/NO-GO blockers to owner lanes.
+
+Owner action token: SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08.
+
+Passing the local queue check does not execute UAT, accept evidence, approve
+finance reliance, approve access closure, approve owner GO/NO-GO or mark
+production GO.
+
+## 11. UAT Result Ledger Template
 
 UAT results are prepared through
 `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` with
@@ -130,7 +236,7 @@ and owner signoff rows, with controlled evidence references outside
 Codex/chat. It does not execute UAT, accept evidence or approve owner
 GO/NO-GO.
 
-## 11. Mail/Drive Payment Intake Sample
+## 12. Mail/Drive Payment Intake Sample
 
 The sample file
 `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md` records a

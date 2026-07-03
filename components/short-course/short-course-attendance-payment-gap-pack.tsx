@@ -6,6 +6,7 @@ import {
   FileWarning,
   HandCoins,
   ListChecks,
+  LockKeyhole,
   ShieldAlert,
   ShieldCheck,
   Utensils,
@@ -160,6 +161,269 @@ const reviewHandoffRows = [
     proof:
       "SC-UAT-01 through SC-UAT-08 result, actor, evidence ref and reviewer decision.",
     stop: "PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO.",
+  },
+];
+
+const attendanceLockEvidenceRows = [
+  {
+    code: "SC-LOCK-EVID-01",
+    control: "SC-AP-02",
+    proof:
+      "Class code/name, session date, teacher/class owner and active Short Course segment label.",
+    stop: "Class/session is missing, cross-scope or ownerless.",
+  },
+  {
+    code: "SC-LOCK-EVID-02",
+    control: "SC-AP-02/03",
+    proof: "Attendance lock state, locked/approved count and lock timestamp.",
+    stop: "Attendance can still be edited or lock state is unclear.",
+  },
+  {
+    code: "SC-LOCK-EVID-03",
+    control: "SC-AP-03",
+    proof: "Signer/reviewer label, reviewer role and review timestamp.",
+    stop: "Signer is missing, unsigned or stored only in Codex/chat.",
+  },
+  {
+    code: "SC-LOCK-EVID-04",
+    control: "SC-REV-01",
+    proof:
+      "Exception route, correction rule, exception owner and audit trace reference.",
+    stop: "Attendance correction can bypass trace or owner review.",
+  },
+  {
+    code: "SC-LOCK-EVID-05",
+    control: "SC-UAT-01/02",
+    proof:
+      "Controlled UAT evidence reference for attendance readiness and attendance evidence trace.",
+    stop: "Screenshot/ref is uncontrolled, raw-sensitive or missing.",
+  },
+  {
+    code: "SC-LOCK-EVID-06",
+    control: "SC-SIGN-01",
+    proof: "Owner decision state for attendance lock packet before finance reliance.",
+    stop: "Payment, meal/allowance, BHXH or report reliance starts before owner signoff.",
+  },
+];
+
+const bhxhPolicyDecisionRows = [
+  {
+    code: "SC-BHXH-EVID-01",
+    control: "SC-AP-04",
+    proof:
+      "Policy case identifier, active Short Course segment label and student/class linkage without raw PII in Git.",
+    stop: "Policy case is missing, cross-scope or tied only to raw uncontrolled evidence.",
+  },
+  {
+    code: "SC-BHXH-EVID-02",
+    control: "SC-AP-04",
+    proof: "Eligibility decision state, basis code and effective-date boundary.",
+    stop: "Eligibility is oral, ambiguous, unsigned or lacks effective-date boundary.",
+  },
+  {
+    code: "SC-BHXH-EVID-03",
+    control: "SC-REV-02",
+    proof: "Legal/SOP basis reference, evidence class and redaction class.",
+    stop: "Legal basis is missing, unreviewed or stores raw sensitive proof in Git/Codex/chat.",
+  },
+  {
+    code: "SC-BHXH-EVID-04",
+    control: "SC-UAT-03",
+    proof:
+      "Controlled UAT evidence reference for BHXH/chinh sach route behavior and negative stop condition.",
+    stop: "UAT evidence is uncontrolled, raw-sensitive, missing or bypasses owner/legal review.",
+  },
+  {
+    code: "SC-BHXH-EVID-05",
+    control: "SC-SIGN-02",
+    proof: "Owner/legal signer label, role, decision timestamp and decision state.",
+    stop: "Signer is missing, unsigned, delegated without authority or stored only in Codex/chat.",
+  },
+  {
+    code: "SC-BHXH-EVID-06",
+    control: "SC-AP-05/06",
+    proof:
+      "Downstream block proof showing meal/allowance, HR payment, invoice/payment and dashboard reliance remain locked until policy signoff.",
+    stop: "Any downstream calculation, payment, verification or report reliance starts before signed policy decision.",
+  },
+];
+
+const mealAllowanceBoundaryRows = [
+  {
+    code: "SC-MEAL-EVID-01",
+    control: "SC-AP-05",
+    proof: "Formula version, formula owner and effective-date boundary.",
+    stop: "Formula is oral, ambiguous, unsigned or lacks effective-date boundary.",
+  },
+  {
+    code: "SC-MEAL-EVID-02",
+    control: "SC-AP-05",
+    proof:
+      "Attendance source reference tied to locked attendance packet and active Short Course segment label.",
+    stop: "Attendance source is unlocked, cross-scope, unsigned or not tied to TRN-03.",
+  },
+  {
+    code: "SC-MEAL-EVID-03",
+    control: "SC-AP-04/05",
+    proof:
+      "Policy dependency reference showing BHXH/chinh sach decision state from TRN-04 before any formula reliance.",
+    stop: "Formula relies on policy effect before signed policy decision.",
+  },
+  {
+    code: "SC-MEAL-EVID-04",
+    control: "SC-REV-03",
+    proof:
+      "Exception handling rule for absent/late/waived/adjusted attendance and manual owner route.",
+    stop: "Exception can bypass owner review or audit trace.",
+  },
+  {
+    code: "SC-MEAL-EVID-05",
+    control: "SC-UAT-04",
+    proof:
+      "Controlled UAT evidence reference proving the route stays design-only and blocked from payment execution.",
+    stop: "System calculates, approves or pays allowance/HR/teacher amount automatically.",
+  },
+  {
+    code: "SC-MEAL-EVID-06",
+    control: "SC-SIGN-03",
+    proof:
+      "Owner signer label, role, decision timestamp and blocked-payment proof before finance reliance.",
+    stop: "Payment, payroll, invoice/payment verification or report reliance starts before owner signoff.",
+  },
+];
+
+const invoicePaymentVerificationRows = [
+  {
+    code: "SC-PAY-EVID-01",
+    control: "SC-AP-06",
+    proof:
+      "Invoice identifier, Short Course segment label, class/enrollment linkage and redaction class.",
+    stop: "Invoice is missing, cross-scope, duplicated or stored only in uncontrolled proof.",
+  },
+  {
+    code: "SC-PAY-EVID-02",
+    control: "SC-AP-06",
+    proof:
+      "Payment status source, amount match state, payment date boundary and controlled voucher reference.",
+    stop: "Payment is marked verified without source match, voucher reference or date boundary.",
+  },
+  {
+    code: "SC-PAY-EVID-03",
+    control: "SC-REV-04",
+    proof:
+      "Reversal/refund/adjustment rule with owner route and audit trace for mismatch cases.",
+    stop: "Mismatch can be fixed manually without reversal rule, owner route or audit trail.",
+  },
+  {
+    code: "SC-PAY-EVID-04",
+    control: "SC-REV-04",
+    proof:
+      "Period-lock rule proving verified payment cannot close or affect statutory accounting before owner signoff.",
+    stop: "Period close, statutory accounting or report reliance starts before signed evidence.",
+  },
+  {
+    code: "SC-PAY-EVID-05",
+    control: "SC-UAT-05",
+    proof:
+      "Controlled UAT evidence reference proving invoice/payment drilldown stays verification-gated.",
+    stop: "UAT evidence is missing, uncontrolled or shows payment verified without voucher/reversal proof.",
+  },
+  {
+    code: "SC-PAY-EVID-06",
+    control: "SC-SIGN-04",
+    proof:
+      "Owner signer label, role, decision timestamp and blocked-verification proof before finance/report reliance.",
+    stop: "Verified payment, period close, statutory accounting or dashboard reliance starts before owner signoff.",
+  },
+];
+
+const reportViewReconciliationRows = [
+  {
+    code: "SC-RV-EVID-01",
+    control: "SC-AP-07",
+    proof:
+      "RV_SHORT_COURSE_ATTENDANCE_PAYMENT source-map row, controlled source list and allowed consumer list.",
+    stop: "Report view has missing source, hidden source or unlisted dashboard consumer.",
+  },
+  {
+    code: "SC-RV-EVID-02",
+    control: "DQ-RV-06",
+    proof:
+      "Class, student, attendance, invoice and payment linkage DQ result with controlled evidence reference.",
+    stop: "Dashboard relies on payment period before attendance/payment linkage proof.",
+  },
+  {
+    code: "SC-RV-EVID-03",
+    control: "SC-REV-05",
+    proof:
+      "Source reconciliation result tying attendance lock, BHXH policy, meal/allowance and invoice/payment checklist states to the report view.",
+    stop: "Source reconciliation omits upstream TRN-03 through TRN-06 blockers.",
+  },
+  {
+    code: "SC-RV-EVID-04",
+    control: "SC-UAT-06",
+    proof:
+      "Controlled UAT evidence reference proving /reports and /short-course keep the report view signoff-blocked.",
+    stop: "Dashboard can be relied on before signed UAT and report-view owner decision.",
+  },
+  {
+    code: "SC-RV-EVID-05",
+    control: "SC-SIGN-05",
+    proof:
+      "Owner signer label, role, decision timestamp and report-view reliance decision state.",
+    stop: "Signer is missing, unsigned, delegated without authority or stored only in Codex/chat.",
+  },
+  {
+    code: "SC-RV-EVID-06",
+    control: "RV-EVID-05",
+    proof:
+      "Evidence attachment queue reference proving report-view source reconciliation remains outside Git/Codex/chat when sensitive.",
+    stop: "Raw attendance, payment, voucher, bank, personal or Drive evidence is stored in Git/Codex/chat.",
+  },
+];
+
+const roleNegativeAccessRows = [
+  {
+    code: "SC-ROLE-EVID-01",
+    control: "SHORT-SCOPE-APP-GUARD",
+    proof:
+      "/short-course, /short-course/intake, /short-course/workflows and related actions prove auth, workspace and Short Course segment guards before sensitive behavior.",
+    stop: "Route queries Short Course data before auth/workspace guard or relies on UI-only hiding.",
+  },
+  {
+    code: "SC-ROLE-EVID-02",
+    control: "SHORT-SCOPE-WORKFLOWS",
+    proof:
+      "Workflow requests with concrete Short Course targets carry Short Course segment scope and cannot be updated from a different workspace.",
+    stop: "Out-of-scope workspace can change workflow status or see private workflow detail.",
+  },
+  {
+    code: "SC-ROLE-EVID-03",
+    control: "SHORT-SCOPE-ACTOR-LINK",
+    proof:
+      "Actor labels for attendance, policy, invoice/payment and workflow rows resolve to active CRM profiles without raw identity data.",
+    stop: "Actor is missing, inactive, broad, unidentified or stored with raw PII in Git/Codex/chat.",
+  },
+  {
+    code: "SC-ROLE-EVID-04",
+    control: "NEGATIVE_CONTROL_QUEUE_READY",
+    proof:
+      "REAL_OUT_OF_SCOPE_NEGATIVE_01 or owner-approved Short Course negative label receives BLOCKED or EMPTY_SCOPED_STATE for private Short Course data.",
+    stop: "Negative account sees Short Course private payment, policy, attendance or student detail.",
+  },
+  {
+    code: "SC-ROLE-EVID-05",
+    control: "P6_04_ACCESS_READY",
+    proof:
+      "P6-04 role-scope UAT pack proves allowed DAO_TAO, CTHSSV, KHTC, HR, PHAP_CHE, IT_DATA and Audit lanes plus denied out-of-scope lane.",
+    stop: "Any role sees private Short Course data outside approved scope or can execute finance/action paths.",
+  },
+  {
+    code: "SC-ROLE-EVID-06",
+    control: "SC-UAT-07 / SC-SIGN-06",
+    proof:
+      "Controlled evidence ref, reviewer, owner signer and P0-17 access closure handoff exist for role/negative-access result.",
+    stop: "Signed role UAT, reviewer decision or access closure handoff is missing, unsigned or stored only in Codex/chat.",
   },
 ];
 
@@ -555,6 +819,391 @@ export function ShortCourseAttendancePaymentGapPack() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div
+        id="short-course-attendance-lock-evidence"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-attendance-lock-evidence="TRN-03_ATTENDANCE_LOCK_EVIDENCE"
+        data-heu-short-course-attendance-lock-decision="SC_ATTENDANCE_LOCK_EVIDENCE_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <LockKeyhole className="size-4 text-zinc-600" />
+              <span>Attendance lock evidence checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-03 evidence in
+              docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md.
+              SC-LOCK-EVID-01 through SC-LOCK-EVID-06 must prove class/session
+              scope, lock state, signer, exception route, SC-UAT-01/02 evidence
+              refs and SC-SIGN-01 owner decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {attendanceLockEvidenceRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_EVIDENCE: PASS_LOCAL does not lock attendance,
+          approve attendance, alter attendance, accept evidence, execute UAT,
+          approve payment, approve owner GO/NO-GO or mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-bhxh-policy-decision"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-bhxh-policy-decision="TRN-04_BHXH_POLICY_DECISION"
+        data-heu-short-course-bhxh-policy-status="SC_BHXH_POLICY_DECISION_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ShieldCheck className="size-4 text-zinc-600" />
+              <span>BHXH/chinh sach decision checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-04 evidence in
+              docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md.
+              SC-BHXH-EVID-01 through SC-BHXH-EVID-06 must prove policy case
+              scope, eligibility basis, legal/SOP review, SC-UAT-03 evidence,
+              SC-SIGN-02 owner/legal decision and downstream payment/report
+              blocks outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {bhxhPolicyDecisionRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_POLICY_DECISION: PASS_LOCAL does not approve
+          BHXH/chinh sach, decide eligibility, create policy effect, accept
+          evidence, execute UAT, approve payment, approve owner GO/NO-GO or
+          mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-meal-allowance-boundary"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-meal-allowance-boundary="TRN-05_MEAL_ALLOWANCE_PAYMENT_BOUNDARY"
+        data-heu-short-course-meal-allowance-status="SC_MEAL_ALLOWANCE_BOUNDARY_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <Utensils className="size-4 text-zinc-600" />
+              <span>Meal/allowance payment boundary checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-05 evidence in
+              docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md.
+              SC-MEAL-EVID-01 through SC-MEAL-EVID-06 must prove formula
+              version, locked attendance source, TRN-04 policy dependency,
+              exception handling, SC-UAT-04 design-only evidence and SC-SIGN-03
+              blocked-payment owner decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {mealAllowanceBoundaryRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_PAYMENT_BOUNDARY: PASS_LOCAL does not calculate
+          allowance, approve meal/allowance, approve HR payment, approve teacher
+          payment, create payroll effect, accept evidence, execute UAT, approve
+          owner GO/NO-GO or mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-invoice-payment-verification"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-invoice-payment-verification="TRN-06_INVOICE_PAYMENT_VERIFICATION"
+        data-heu-short-course-invoice-payment-status="SC_INVOICE_PAYMENT_VERIFICATION_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <Banknote className="size-4 text-zinc-600" />
+              <span>Invoice/payment verification checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-06 evidence in
+              docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md.
+              SC-PAY-EVID-01 through SC-PAY-EVID-06 must prove invoice source
+              scope, payment/voucher match, reversal rule, period-lock rule,
+              SC-UAT-05 verification evidence and SC-SIGN-04 blocked-verification
+              owner decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {invoicePaymentVerificationRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_PAYMENT_VERIFICATION: PASS_LOCAL does not verify
+          invoice/payment, post voucher, approve payment, approve reversal,
+          close period, create statutory accounting effect, accept evidence,
+          execute UAT, approve owner GO/NO-GO or mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-report-view-reconciliation"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-report-view-source-reconciliation="TRN-07_REPORT_VIEW_SOURCE_RECONCILIATION"
+        data-heu-short-course-report-view-status="SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ClipboardCheck className="size-4 text-zinc-600" />
+              <span>Report-view source reconciliation checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-07 evidence in
+              docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md.
+              SC-RV-EVID-01 through SC-RV-EVID-06 must prove source-map scope,
+              DQ-RV-06 linkage, upstream TRN-03 through TRN-06 blockers,
+              SC-UAT-06 signoff-block evidence and SC-SIGN-05 report-view owner
+              decision outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[1040px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {reportViewReconciliationRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_REPORT_VIEW_RECONCILIATION: PASS_LOCAL does not
+          approve report-view reliance, approve dashboard reliance, accept DQ
+          evidence, accept source reconciliation, execute UAT, accept evidence,
+          approve owner GO/NO-GO or mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-role-negative-access"
+        className="border-t border-zinc-200 p-5"
+        data-heu-short-course-role-negative-access="TRN-08_ROLE_NEGATIVE_ACCESS"
+        data-heu-short-course-role-negative-access-status="SC_ROLE_NEGATIVE_ACCESS_READY_NO_GO_BLOCKED"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ClipboardCheck className="size-4 text-zinc-600" />
+              <span>Role scope and negative-access checklist</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Prepare TRN-08 evidence in
+              docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md.
+              SC-ROLE-EVID-01 through SC-ROLE-EVID-06 must prove guarded
+              Short Course routes, workflow scope, actor links, negative-account
+              denial, P6-04 role-scope UAT alignment and P0-17 access closure
+              handoff outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>
+            SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED
+          </StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[1040px] table-fixed text-sm">
+            <thead className="bg-zinc-50 text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[18%] px-4 py-3">Evidence</th>
+                <th className="w-[14%] px-4 py-3">Control</th>
+                <th className="w-[34%] px-4 py-3">Required proof</th>
+                <th className="w-[34%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200">
+              {roleNegativeAccessRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.control}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.proof}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_ROLE_NEGATIVE_ACCESS: PASS_LOCAL does not create accounts, assign real users, grant access, broaden scope, accept negative-control proof, accept role UAT, accept evidence, approve access closure, approve owner GO/NO-GO or mark production GO.
+        </p>
       </div>
 
       <div

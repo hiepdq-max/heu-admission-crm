@@ -1,5 +1,222 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P9-02 Dao Tao Training Module Completion Breakdown
+
+- Added `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` as the
+  PASS_LOCAL_BREAKDOWN map for M07 Dao Tao and P9-01 Short Course / Day Nghe.
+- The breakdown splits the training module into TRN-00 through TRN-10 covering
+  baseline scope, workspace scope, student/class/enrollment chain, attendance
+  lock, BHXH/chinh sach, meal/allowance, invoice/payment, report-view signoff,
+  role/negative-access, audit trace and owner closure.
+- Added `scripts/check-heu-training-module-completion-breakdown.mjs` and
+  `npm.cmd run check:heu-training-module-completion-breakdown` so the local
+  training work order and `TRAINING_MODULE_READY / NO_GO / BLOCKED` boundary
+  cannot silently disappear.
+- Propagated the training completion route into current-state, system backlog,
+  module readiness, framework review and production checklist references.
+- PASS_LOCAL boundary: this is training module control packaging only. It does
+  not approve class operation, attendance lock, BHXH decision, payment,
+  evidence acceptance, UAT acceptance, owner GO/NO-GO or production GO.
+- Boundary token: does not approve class operation.
+
+## 2026-07-03 - TRN-03 Short Course Attendance Lock Evidence Checklist
+
+- Added `docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-03 attendance lock and
+  exception-route UAT preparation.
+- The checklist defines SC-LOCK-EVID-01 through SC-LOCK-EVID-06 and
+  `SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED` for class/session
+  scope, lock state, signer, exception route, SC-UAT-01/02 evidence refs and
+  SC-SIGN-01 owner decision before finance reliance.
+- Added the visible `/short-course` panel with
+  `data-heu-short-course-attendance-lock-evidence="TRN-03_ATTENDANCE_LOCK_EVIDENCE"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-03 attendance-lock evidence boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not lock attendance, approve attendance, alter
+  attendance, accept evidence, execute UAT, approve payment, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary token: alter attendance; owner GO/NO-GO.
+
+## 2026-07-03 - TRN-04 Short Course BHXH Policy Decision Checklist
+
+- Added `docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-04 BHXH/chinh sach decision
+  UAT preparation.
+- The checklist defines SC-BHXH-EVID-01 through SC-BHXH-EVID-06 and
+  `SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED` for policy case scope,
+  eligibility basis, legal/SOP review, SC-UAT-03 evidence refs, SC-SIGN-02
+  owner/legal decision and downstream payment/report blocks.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-bhxh-policy-decision="TRN-04_BHXH_POLICY_DECISION"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-04 BHXH/chinh sach decision boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not approve BHXH/chinh sach, decide
+  eligibility, create policy effect, accept evidence, execute UAT, approve
+  payment, approve owner GO/NO-GO or mark production GO.
+- Boundary token: decide eligibility; create policy effect; approve payment;
+  owner GO/NO-GO.
+
+## 2026-07-03 - TRN-05 Short Course Meal Allowance Payment Boundary Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-05 meal/allowance and HR
+  payment boundary UAT preparation.
+- The checklist defines SC-MEAL-EVID-01 through SC-MEAL-EVID-06 and
+  `SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED` for formula version,
+  locked attendance source, TRN-04 policy dependency, exception handling,
+  SC-UAT-04 design-only evidence and SC-SIGN-03 blocked-payment owner decision.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-meal-allowance-boundary="TRN-05_MEAL_ALLOWANCE_PAYMENT_BOUNDARY"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-05 meal/allowance and HR payment boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not calculate allowance, approve
+  meal/allowance, approve HR payment, approve teacher payment, create payroll
+  effect, accept evidence, execute UAT, approve owner GO/NO-GO or mark
+  production GO.
+- Boundary token: calculate allowance; approve meal/allowance; approve HR
+  payment; approve teacher payment; create payroll effect; owner GO/NO-GO.
+
+## 2026-07-03 - TRN-06 Short Course Invoice Payment Verification Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-06 invoice/payment verification
+  UAT preparation.
+- The checklist defines SC-PAY-EVID-01 through SC-PAY-EVID-06 and
+  `SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED` for invoice source
+  scope, payment/voucher match, reversal rule, period-lock rule, SC-UAT-05
+  verification evidence and SC-SIGN-04 blocked-verification owner decision.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-invoice-payment-verification="TRN-06_INVOICE_PAYMENT_VERIFICATION"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-06 invoice/payment verification boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not verify invoice/payment, post voucher,
+  approve payment, approve reversal, close period, create statutory accounting effect,
+  accept evidence, execute UAT, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not verify invoice/payment.
+
+## 2026-07-03 - TRN-07 Short Course Report View Source Reconciliation Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-07 report-view source
+  reconciliation UAT preparation.
+- The checklist defines SC-RV-EVID-01 through SC-RV-EVID-06 and
+  `SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED` for the
+  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` source-map row, DQ-RV-06 linkage,
+  upstream TRN-03 through TRN-06 blocker alignment, SC-UAT-06 signoff-blocked
+  proof, SC-SIGN-05 owner decision and RV-EVID-05 evidence attachment queue.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-report-view-source-reconciliation="TRN-07_REPORT_VIEW_SOURCE_RECONCILIATION"`
+  and propagated the checklist through the Short Course gap pack, Report View
+  source map, training module breakdown, backlog, current-state, module
+  readiness and production checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-07 report-view source reconciliation boundary cannot silently
+  disappear.
+- PASS_LOCAL boundary: this does not approve report-view reliance, approve dashboard reliance, accept DQ evidence, accept source reconciliation, execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not approve report-view reliance.
+
+## 2026-07-03 - TRN-08 Short Course Role Negative Access Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-08 role scope and
+  negative-access UAT preparation.
+- The checklist defines SC-ROLE-EVID-01 through SC-ROLE-EVID-06 and
+  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED` for Short Course route
+  guards, SHORT-SCOPE-APP-GUARD, SHORT-SCOPE-WORKFLOWS,
+  SHORT-SCOPE-ACTOR-LINK, negative-control denial, P6-04 role-scope UAT
+  alignment and P0-17 access closure handoff.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-role-negative-access="TRN-08_ROLE_NEGATIVE_ACCESS"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-08 role/negative-access boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, grant access, broaden scope, accept negative-control proof, accept role UAT, accept evidence, approve access closure, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not create accounts.
+
+## 2026-07-03 - TRN-08 Short Course Role Negative Access Dedicated Checker
+
+- Added `scripts/check-heu-short-course-role-negative-access.mjs` and
+  `check:heu-short-course-role-negative-access` so the TRN-08 role
+  negative-access packet can be checked directly before any Short Course
+  read-only user test or access-closure discussion.
+- The checker verifies
+  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`,
+  SC-ROLE-EVID-01 through SC-ROLE-EVID-06,
+  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED`, the `/short-course`
+  role/negative-access panel, `SHORT-SCOPE-APP-GUARD`,
+  `SHORT-SCOPE-WORKFLOWS`, `SHORT-SCOPE-ACTOR-LINK`, the negative-control
+  queue dependency, P6-04 role-scope dependency and production checklist
+  propagation.
+- Updated `scripts/check-heu-training-module-completion-breakdown.mjs` so the
+  training module completion check now requires the dedicated TRN-08 checker.
+- This is local checker packaging only. It does not create accounts, assign
+  real users, grant access, broaden scope, accept negative-control proof,
+  accept role UAT, accept evidence, approve access closure, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Short Course External Owner Action Queue
+
+- Added `docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md` as the
+  PASS_LOCAL_OWNER_ACTION_QUEUE for the remaining Short Course / Day Nghe
+  real-operation blockers after TRN-00 through TRN-10 local packaging.
+- The queue defines `SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED` and
+  SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08 for attendance lock,
+  BHXH/chinh sach, meal/allowance, invoice/payment, report-view source
+  reconciliation, role/negative-access UAT, UAT result ledger completion and
+  final owner GO/NO-GO.
+- Added `scripts/check-heu-short-course-external-owner-action-queue.mjs` and
+  `check:heu-short-course-external-owner-action-queue` so the owner-action
+  queue, training breakdown linkage, gap-pack linkage and local-only boundary
+  cannot silently disappear.
+- Linked the queue from the Short Course gap pack and training module
+  completion breakdown while keeping real operation at NO-GO until signed owner
+  and UAT evidence exists outside Git/Codex/chat.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
+  payment, approve teacher payment, verify invoice/payment, approve report-view
+  reliance, grant access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - TRN-09/TRN-10 Short Course Evidence Trace And Owner Closure Alignment
+
+- Updated `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` so
+  TRN-09 uses `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`
+  as the PASS_LOCAL_TEMPLATE for SC-UAT-LEDGER-01 through
+  SC-UAT-LEDGER-08, SC-REV-06 and SC-UAT-08 controlled evidence trace rows.
+- Updated TRN-10 so `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`
+  plus the UAT result ledger are the PASS_LOCAL_TEMPLATE for
+  `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED`, SC-SIGN-01 through SC-SIGN-06
+  and final owner/UAT closure planning.
+- Propagated the TRN-09/TRN-10 local-template conclusion through backlog,
+  current-state and framework review references while keeping real operation
+  NO-GO until signed owner/UAT evidence exists outside Git/Codex/chat.
+- Verification target: `npm.cmd run check:heu-training-module-completion-breakdown`.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve access closure, approve report-view reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not execute UAT.
+
 ## 2026-07-03 - AI Dirty Scope Packaging Ledger
 
 - Scope: Added a PASS_LOCAL packaging ledger for the current mixed dirty
