@@ -30,6 +30,7 @@
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
+    "check:heu-ai-dirty-scope-packaging-ledger": "node scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs",
     "check:heu-report-catalog-department-intake": "node scripts/check-heu-report-catalog-department-intake.mjs",
     "check:heu-root-drive-department-confirmation-intake": "node scripts/check-heu-root-drive-department-confirmation-intake.mjs",
     "smoke:heu-local-routes": "node scripts/smoke-heu-local-routes.mjs",

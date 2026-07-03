@@ -1,5 +1,23 @@
 # HEU Implementation Log
 
+## 2026-07-03 - AI Dirty Scope Packaging Ledger
+
+- Scope: Added a PASS_LOCAL packaging ledger for the current mixed dirty
+  worktree so AI builders can see lane counts, shared-control collision risk,
+  required focused guards and the safe package order before staging.
+- Changed: `docs/HEU_AI_DIRTY_SCOPE_PACKAGING_LEDGER_20260703.md`,
+  `scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs`, `package.json` and
+  this implementation log.
+- Result: `check:heu-ai-dirty-scope-packaging-ledger` verifies the current lane
+  map for Accounting, Admissions, P0-17/User, Short Course/TRN,
+  shared-control, executive/dashboard, Report View/Data Master, Finance,
+  database and manual-routing dirty scopes. It also locks the rule that shared
+  control files require hunk-level or index-blob staging before any lane commit.
+- Boundary: This is coordination and routing only. It does not modify business
+  data, create accounts, handle passwords, send email, create tasks, run
+  migrations, execute UAT, accept evidence, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - AI Build Collision Triage Guard
 
 - Scope: Added a PASS_LOCAL control guard for multi-AI dirty-worktree
