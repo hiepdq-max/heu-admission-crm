@@ -22,6 +22,7 @@
     "check:heu-settings-permission-matrix-readiness": "node scripts/check-heu-settings-permission-matrix-readiness.mjs",
     "check:heu-tchc-position-report-foundation": "node scripts/check-heu-tchc-position-report-foundation.mjs",
     "check:heu-tchc-legal-compliance-foundation": "node scripts/check-heu-tchc-legal-compliance-foundation.mjs",
+    "check:heu-tchc-records-archive-system": "node scripts/check-heu-tchc-records-archive-system.mjs",
     "check:heu-position-assignment-owner-queue": "node scripts/check-heu-position-assignment-owner-queue.mjs",
     "check:heu-negative-control-account-queue": "node scripts/check-heu-negative-control-account-queue.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",

@@ -5,6 +5,7 @@ import {
   CalendarClock,
   ClipboardCheck,
   Database,
+  Archive,
   FileCheck2,
   FileSpreadsheet,
   GraduationCap,
@@ -62,6 +63,13 @@ const navigation = [
     href: "/tchc/legal-gates",
     icon: Gavel,
     key: "tchc-legal-gates",
+    permission: "master_control.read",
+  },
+  {
+    label: "TCHC Van thu luu tru",
+    href: "/tchc/records-archive",
+    icon: Archive,
+    key: "tchc-records-archive",
     permission: "master_control.read",
   },
   {

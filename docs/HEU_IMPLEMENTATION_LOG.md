@@ -77,6 +77,41 @@
   accounts, assign real users, execute UAT, accept evidence, approve report or
   dashboard reliance, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - TCHC Records Archive System
+
+- Scope: Packaged the TCHC records/archive foundation plus draft metadata
+  intake guard so TCHC, PHAP_CHE, BGH and Audit can inspect document flow,
+  archive status and handover queue metadata before any official SOP, UAT,
+  evidence acceptance or production reliance.
+- Changed: `database/step118_tchc_records_archive_system.sql`,
+  `database/step119_tchc_records_archive_intake_audit.sql`,
+  `docs/HEU_TCHC_RECORDS_ARCHIVE_SYSTEM_20260703.md`,
+  `app/tchc/records-archive/page.tsx`,
+  `app/tchc/records-archive/intake/page.tsx`,
+  `app/tchc/records-archive/intake/actions.ts`,
+  `components/tchc/tchc-records-archive-readonly.tsx`,
+  `components/tchc/tchc-records-archive-intake-template.tsx`,
+  `components/layout/app-shell.tsx`,
+  `scripts/check-heu-tchc-records-archive-system.mjs`, `package.json` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-tchc-records-archive-system` verifies
+  `heu_tchc_document_register`, `heu_tchc_archive_register`,
+  `heu_tchc_archive_handover_register`,
+  `heu_tchc_records_archive_dashboard`, the `/tchc/records-archive` readonly
+  cockpit, the draft intake route, controlled insert policy and audit trigger
+  handoff.
+- Safety: Draft intake blocks raw Drive links, OTP/password/CCCD/bank-like
+  text, keeps `control_status = DRAFT_CONTROL` and displays only controlled
+  error codes such as `TCHC_RECORDS_ARCHIVE_INTAKE_UNAVAILABLE`.
+- Verification target: `npm.cmd run check:heu-tchc-records-archive-system`
+  plus current-state, implementation-log, release-gate, Vietnamese encoding,
+  user/security, role-scope, production-readiness, SQL/data foundation, lint,
+  build and diff checks before commit.
+- Boundary: This is records/archive metadata and draft-intake packaging only.
+  It does not upload raw files, store raw Drive links, create official records,
+  move/delete/archive-dispose files, approve legal basis, issue SOP, execute
+  UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P10-05 Khoa Giang Vien Negative Access Checklist
 
 - Added `docs/HEU_KHOA_GIANG_VIEN_NEGATIVE_ACCESS_CHECKLIST_20260703.md` as
