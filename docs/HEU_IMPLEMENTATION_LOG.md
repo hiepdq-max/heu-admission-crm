@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-07-03 - Settings Permission Matrix Runtime Readiness
+
+- Scope: Packaged the read-only Settings permission matrix runtime checker for
+  P0-17 owner-side readiness review.
+- Changed: `scripts/check-heu-settings-permission-matrix-readiness.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
+  implementation log.
+- Result: `check:heu-settings-permission-matrix-readiness` reports
+  `SETTINGS-MATRIX-APP-GUARD`, `SETTINGS-MATRIX-POSITIONS`,
+  `SETTINGS-MATRIX-PERMISSIONS`, `SETTINGS-MATRIX-ASSIGNMENTS`,
+  `SETTINGS-MATRIX-ROLE-RISK`, `SETTINGS-MATRIX-ACTIVE-USERS` and
+  `SETTINGS-MATRIX-SECRET-BOUNDARY` using counts and hashed row labels only.
+- Verification: `node --check scripts/check-heu-settings-permission-matrix-readiness.mjs`;
+  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
+  release checks before commit handoff.
+- Boundary: This is PASS_LOCAL checker packaging only. It does not create
+  accounts, assign real users, set passwords, send reset/invite links, approve
+  position assignments, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - User Scope Baseline Repair Checker Command
 
 - Scope: Packaged the read-only P0-17 scope baseline repair checker command so

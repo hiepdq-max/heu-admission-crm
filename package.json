@@ -12,6 +12,7 @@
     "check:heu-lead-import-scope-readiness": "node scripts/check-heu-lead-import-scope-readiness.mjs",
     "check:heu-hou-scope-readiness": "node scripts/check-heu-hou-scope-readiness.mjs",
     "check:heu-user-scope-baseline-repair-queue": "node scripts/check-heu-user-scope-baseline-repair-queue.mjs",
+    "check:heu-settings-permission-matrix-readiness": "node scripts/check-heu-settings-permission-matrix-readiness.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
     "smoke:heu-local-routes": "node scripts/smoke-heu-local-routes.mjs",

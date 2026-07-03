@@ -85,6 +85,8 @@ const userScopeBaselineRepairCheckPath =
   "scripts/check-heu-user-scope-baseline-repair-queue.mjs";
 const userScopeBaselineRepairQueuePath =
   "docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md";
+const settingsPermissionMatrixReadinessCheckPath =
+  "scripts/check-heu-settings-permission-matrix-readiness.mjs";
 const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
 const departmentHeadRolesMigrationPath =
@@ -126,6 +128,7 @@ for (const file of [
   userCreateReadinessCheckPath,
   userScopeBaselineRepairCheckPath,
   userScopeBaselineRepairQueuePath,
+  settingsPermissionMatrixReadinessCheckPath,
   userCreatePermissionMigrationPath,
   departmentHeadRolesMigrationPath,
   organizationPositionMatrixPath,
@@ -161,6 +164,9 @@ const userCreateServerKeyTemplate = read(userCreateServerKeyTemplatePath);
 const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
 const userScopeBaselineRepairCheck = read(userScopeBaselineRepairCheckPath);
 const userScopeBaselineRepairQueue = read(userScopeBaselineRepairQueuePath);
+const settingsPermissionMatrixReadinessCheck = read(
+  settingsPermissionMatrixReadinessCheckPath,
+);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
 const organizationPositionMatrix = read(organizationPositionMatrixPath);
@@ -786,9 +792,44 @@ requireAllText(
 );
 
 requireAllText(
+  settingsPermissionMatrixReadinessCheck,
+  [
+    "HEU Settings permission matrix readiness check",
+    "Secrets, emails, names, phone numbers and raw IDs are never printed",
+    "SETTINGS-MATRIX-APP-GUARD",
+    "SETTINGS-MATRIX-POSITIONS",
+    "SETTINGS-MATRIX-PERMISSIONS",
+    "SETTINGS-MATRIX-ASSIGNMENTS",
+    "SETTINGS-MATRIX-ROLE-RISK",
+    "SETTINGS-MATRIX-ACTIVE-USERS",
+    "SETTINGS-MATRIX-SECRET-BOUNDARY",
+    "required_unassigned",
+    "owner assignment pending",
+    "heu_org_positions",
+    "heu_position_permission_matrix",
+    "heu_position_assignments",
+    "permission_matrix.manage",
+    "Raw errors are not printed.",
+  ],
+  "local Settings permission matrix readiness script",
+  settingsPermissionMatrixReadinessCheckPath,
+);
+
+forbidText(
+  settingsPermissionMatrixReadinessCheck,
+  [".message"],
+  "raw Supabase Settings permission matrix error disclosure",
+  settingsPermissionMatrixReadinessCheckPath,
+);
+
+requireAllText(
   JSON.stringify(packageJson.scripts),
-  ["check:heu-user-create-readiness", "check:heu-user-scope-baseline-repair-queue"],
-  "package commands for user-create and scope baseline repair readiness",
+  [
+    "check:heu-user-create-readiness",
+    "check:heu-user-scope-baseline-repair-queue",
+    "check:heu-settings-permission-matrix-readiness",
+  ],
+  "package commands for user-create, scope baseline repair and Settings matrix readiness",
   packagePath,
 );
 
