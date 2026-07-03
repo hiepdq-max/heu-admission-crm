@@ -1,5 +1,25 @@
 # HEU Implementation Log
 
+## 2026-07-03 - Negative Control Account Queue Checker
+
+- Scope: Packaged the read-only P0-17 negative-control account queue for
+  out-of-scope browser/UAT planning.
+- Changed: `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
+  implementation log.
+- Result: `check:heu-negative-control-account-queue` reports
+  `NEGATIVE_CONTROL_QUEUE_READY / NO_GO / BLOCKED`, target protected lanes,
+  non-ADMIN/BGH visibility baseline and candidate counts without printing
+  personal data, credentials or raw IDs.
+- Verification: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
+  release checks before commit handoff.
+- Boundary: This is PASS_LOCAL owner-action queue packaging only. It does not
+  create accounts, assign real users, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - Position Assignment Owner Queue Checker
 
 - Scope: Packaged the read-only P0-17 owner queue for required HEU position

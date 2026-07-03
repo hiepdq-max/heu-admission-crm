@@ -91,6 +91,10 @@ const positionAssignmentOwnerQueueCheckPath =
   "scripts/check-heu-position-assignment-owner-queue.mjs";
 const positionAssignmentOwnerQueuePath =
   "docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md";
+const negativeControlAccountQueueCheckPath =
+  "scripts/check-heu-negative-control-account-queue.mjs";
+const negativeControlAccountQueuePath =
+  "docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md";
 const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
 const departmentHeadRolesMigrationPath =
@@ -135,6 +139,8 @@ for (const file of [
   settingsPermissionMatrixReadinessCheckPath,
   positionAssignmentOwnerQueueCheckPath,
   positionAssignmentOwnerQueuePath,
+  negativeControlAccountQueueCheckPath,
+  negativeControlAccountQueuePath,
   userCreatePermissionMigrationPath,
   departmentHeadRolesMigrationPath,
   organizationPositionMatrixPath,
@@ -177,6 +183,10 @@ const positionAssignmentOwnerQueueCheck = read(
   positionAssignmentOwnerQueueCheckPath,
 );
 const positionAssignmentOwnerQueue = read(positionAssignmentOwnerQueuePath);
+const negativeControlAccountQueueCheck = read(
+  negativeControlAccountQueueCheckPath,
+);
+const negativeControlAccountQueue = read(negativeControlAccountQueuePath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
 const organizationPositionMatrix = read(organizationPositionMatrixPath);
@@ -892,14 +902,73 @@ requireAllText(
 );
 
 requireAllText(
+  negativeControlAccountQueueCheck,
+  [
+    "HEU negative-control account queue check",
+    "Secrets, emails, names, phone numbers and raw IDs are never printed",
+    "NEGATIVE-CONTROL-APP-GUARD",
+    "NEGATIVE-CONTROL-BASELINE",
+    "NEGATIVE-CONTROL-TTGDTX-QUEUE",
+    "NEGATIVE-CONTROL-MODULE-QUEUE",
+    "NEGATIVE-CONTROL-NO-AUTO-CREATE",
+    "NEGATIVE-CONTROL-SECRET-BOUNDARY",
+    "owner create/link pending for REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "candidate evidence only, not signed UAT",
+    "TC9_TTGDTX_LINKED",
+    "UNIVERSITY_TRANSFER_HOU",
+    "SHORT_",
+    "Raw errors are not printed.",
+  ],
+  "local negative-control account queue script",
+  negativeControlAccountQueueCheckPath,
+);
+
+forbidText(
+  negativeControlAccountQueueCheck,
+  [
+    ".insert(",
+    ".delete(",
+    ".upsert(",
+    'from("users_profile").update(',
+    'from("user_admission_segment_scopes").update(',
+    "auth.admin",
+    "resetPasswordForEmail",
+  ],
+  "mutating or credential-management operation in negative-control queue checker",
+  negativeControlAccountQueueCheckPath,
+);
+
+requireAllText(
+  negativeControlAccountQueue,
+  [
+    "HEU Negative Control Account Queue - 2026-07-03",
+    "Status: PASS_LOCAL_QUEUE",
+    "NEGATIVE_CONTROL_QUEUE_READY / NO_GO / BLOCKED",
+    "REAL_OUT_OF_SCOPE_NEGATIVE_01",
+    "TC9_TTGDTX_LINKED",
+    "Do not paste passwords",
+    "candidate evidence only, not owner approval",
+    "check:heu-negative-control-account-queue",
+    "does not create accounts",
+    "set passwords",
+    "send reset/invite links",
+    "approve UAT",
+    "mark production GO",
+  ],
+  "negative-control account queue doc",
+  negativeControlAccountQueuePath,
+);
+
+requireAllText(
   JSON.stringify(packageJson.scripts),
   [
     "check:heu-user-create-readiness",
     "check:heu-user-scope-baseline-repair-queue",
     "check:heu-settings-permission-matrix-readiness",
     "check:heu-position-assignment-owner-queue",
+    "check:heu-negative-control-account-queue",
   ],
-  "package commands for user-create, scope baseline repair, Settings matrix and owner assignment queue readiness",
+  "package commands for user-create, scope baseline repair, Settings matrix, owner assignment and negative-control queue readiness",
   packagePath,
 );
 
