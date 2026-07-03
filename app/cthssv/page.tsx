@@ -98,6 +98,322 @@ const handoverTypeLabels: Record<string, string> = {
   ADMISSION_TO_ACCOUNTING: "Tuyen sinh -> Ke toan",
 };
 
+const moduleBreakdownItems: ControlItem[] = [
+  {
+    code: "CTHSSV-00",
+    title: "Module scope baseline",
+    evidence:
+      "Inventory, backlog and gap matrix keep M06 as PASS_LOCAL scope before signed owner reliance.",
+    stop: "M06 is treated as enrollment, finance, UAT or production approval.",
+  },
+  {
+    code: "CTHSSV-01",
+    title: "Workspace and route access",
+    evidence:
+      "/cthssv opens only for ADMIN/BGH or handover.accept_cthssv with active workspace scope.",
+    stop: "Out-of-scope users can open or rely on CTHSSV handover data.",
+  },
+  {
+    code: "CTHSSV-02",
+    title: "Handover data foundation",
+    evidence:
+      "Step38 lead_handovers, ADMISSION_TO_CTHSSV, CTHSSV_TO_ACCOUNTING and audit trigger remain the source.",
+    stop: "Handover packets are unscoped, unaudited or detached from source lead identity.",
+  },
+  {
+    code: "CTHSSV-03",
+    title: "Profile packet readiness",
+    evidence:
+      "M06-CTHSSV-01 through M06-CTHSSV-06 cover identity, document state, scope, trace, downstream and redaction.",
+    stop: "CTHSSV accepts a profile with unclear packet identity, scope or controlled evidence reference.",
+  },
+  {
+    code: "CTHSSV-04",
+    title: "Accept/reject trace",
+    evidence:
+      "M06-DEC-01 through M06-DEC-03 keep actor, state, reason and reliance decision separate.",
+    stop: "Accept/reject action lacks actor, timestamp, state, reason or owner decision.",
+  },
+  {
+    code: "CTHSSV-05",
+    title: "Owner signoff manifest",
+    evidence:
+      "CTHSSV-SIGN-01 through CTHSSV-SIGN-06 route signer authority and final owner quorum.",
+    stop: "Owner signoff is missing, delegated without authority or stored only in Codex/chat.",
+  },
+  {
+    code: "CTHSSV-06",
+    title: "UAT result ledger",
+    evidence:
+      "CTHSSV-UAT-01 through CTHSSV-UAT-08 require signer, date, controlled evidence ref and blocker state.",
+    stop: "Unsigned browser proof is treated as UAT pass or owner GO/NO-GO.",
+  },
+  {
+    code: "CTHSSV-07",
+    title: "Finance gate preservation",
+    evidence:
+      "CTHSSV_TO_ACCOUNTING remains context only; P0-19, P2-05 and P2-03 stay final finance gates.",
+    stop: "CTHSSV action creates receivable, payment, invoice, voucher, payout or revenue state.",
+  },
+  {
+    code: "CTHSSV-08",
+    title: "Role and negative access",
+    evidence:
+      "Role-scope UAT proves CTHSSV users see only scoped packets and negative users cannot read private rows.",
+    stop: "In-scope or negative-account proof is missing, indirect or unsigned.",
+  },
+  {
+    code: "CTHSSV-09",
+    title: "Audit and evidence trace",
+    evidence:
+      "Controlled evidence refs and audit traces link UAT ledger rows to owner signoff without raw PII.",
+    stop: "Raw evidence enters Git/Codex/chat or audit trace cannot prove actor/time/state.",
+  },
+  {
+    code: "CTHSSV-10",
+    title: "Final module closure",
+    evidence:
+      "Final owner quorum records CTHSSV_MODULE_READY, NO_GO or BLOCKED after every blocker closes.",
+    stop: "Any required owner, signed UAT result, role proof, finance gate proof or blocker closure is missing.",
+  },
+];
+
+const roleNegativeAccessItems: ControlItem[] = [
+  {
+    code: "CTHSSV-ROLE-01",
+    title: "Route access gate",
+    evidence:
+      "/cthssv requires authenticated ADMIN, BGH or handover.accept_cthssv before any CTHSSV packet is visible.",
+    stop: "Anonymous or out-of-scope user opens the CTHSSV cockpit.",
+  },
+  {
+    code: "CTHSSV-ROLE-02",
+    title: "Workspace segment scope",
+    evidence:
+      "Handover and lead queries use the active admission segment filter before rendering rows.",
+    stop: "Cross-segment CTHSSV packet is visible.",
+  },
+  {
+    code: "CTHSSV-ROLE-03",
+    title: "Source sender lane",
+    evidence:
+      "Tuyen Sinh can source the packet but cannot sign CTHSSV owner acceptance.",
+    stop: "Source sender can mark CTHSSV owner acceptance.",
+  },
+  {
+    code: "CTHSSV-ROLE-04",
+    title: "CTHSSV receiver lane",
+    evidence:
+      "CTHSSV sees only scoped Tuyen Sinh -> CTHSSV and CTHSSV -> KHTC/accounting packets.",
+    stop: "CTHSSV sees unrelated private student/profile data.",
+  },
+  {
+    code: "CTHSSV-ROLE-05",
+    title: "Dao Tao reliance boundary",
+    evidence:
+      "Dao Tao review remains enrollment/class reliance only and cannot approve CTHSSV profile acceptance.",
+    stop: "Dao Tao or CTHSSV cockpit approves enrollment/class operation.",
+  },
+  {
+    code: "CTHSSV-ROLE-06",
+    title: "KHTC/accounting boundary",
+    evidence:
+      "KHTC/accounting cannot rely on CTHSSV context before P0-19/P2-05/P2-03 finance gates.",
+    stop: "CTHSSV action creates receivable, payment, invoice, voucher, payout or revenue state.",
+  },
+  {
+    code: "CTHSSV-ROLE-07",
+    title: "Negative user denial",
+    evidence:
+      "OUT_OF_SCOPE_NEGATIVE_USER cannot read CTHSSV route, handover rows, private profile rows or evidence refs.",
+    stop: "Negative account can view CTHSSV private data.",
+  },
+  {
+    code: "CTHSSV-ROLE-08",
+    title: "Audit and redaction proof",
+    evidence:
+      "IT_DATA/Audit record controlled redacted evidence refs, account label, route, result and blocker state.",
+    stop: "Raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs, invite/reset links or API keys enter Git/Codex/chat.",
+  },
+];
+
+const evidenceTraceItems: ControlItem[] = [
+  {
+    code: "CTHSSV-EVID-01",
+    title: "Controlled evidence ID",
+    evidence:
+      "Every UAT and owner row uses a non-secret controlled evidence reference from the approved evidence location.",
+    stop: "Evidence ID is missing, ambiguous or replaced by raw proof.",
+  },
+  {
+    code: "CTHSSV-EVID-02",
+    title: "Redaction reviewer",
+    evidence:
+      "IT_DATA/Audit confirms raw PII, CCCD, phone, bank data, vouchers and secrets are excluded from tracked work.",
+    stop: "Reviewer authority is missing or unclear.",
+  },
+  {
+    code: "CTHSSV-EVID-03",
+    title: "UAT ledger linkage",
+    evidence:
+      "CTHSSV-UAT-01 through CTHSSV-UAT-08 each link evidence ref, signer and signed date.",
+    stop: "UAT row cannot be tied back to controlled evidence and signer.",
+  },
+  {
+    code: "CTHSSV-EVID-04",
+    title: "Owner signoff linkage",
+    evidence:
+      "CTHSSV-SIGN-01 through CTHSSV-SIGN-06 point to related UAT case, blocker state and evidence ref.",
+    stop: "Owner signoff is detached from UAT result or blocker state.",
+  },
+  {
+    code: "CTHSSV-EVID-05",
+    title: "Audit event trace",
+    evidence:
+      "Accept/reject, handover state and evidence-review route can be traced by actor, time, route and result.",
+    stop: "Audit trace cannot prove actor, timestamp, state or route.",
+  },
+  {
+    code: "CTHSSV-EVID-06",
+    title: "Role proof trace",
+    evidence:
+      "CTHSSV-ROLE-01 through CTHSSV-ROLE-08 link account label, route, result and blocker state.",
+    stop: "Role proof cannot connect account, route, result and blocker.",
+  },
+  {
+    code: "CTHSSV-EVID-07",
+    title: "Finance gate trace",
+    evidence:
+      "CTHSSV_TO_ACCOUNTING stays context only and points back to P0-19, P2-05 and P2-03 gates.",
+    stop: "CTHSSV evidence is used as finance approval or posting proof.",
+  },
+  {
+    code: "CTHSSV-EVID-08",
+    title: "Forbidden-content stop",
+    evidence:
+      "P0-10-ACCEPT-02 and P0-10-ACCEPT-05 stay mandatory before any evidence reference enters tracked work.",
+    stop: "Raw PII, CCCD, phone, bank data, vouchers, passwords, OTPs, invite/reset links, service-role keys or API keys enter Git/Codex/chat.",
+  },
+];
+
+const finalClosureItems: ControlItem[] = [
+  {
+    code: "CTHSSV-CLOSE-01",
+    title: "Local slice completeness",
+    evidence:
+      "CTHSSV-00 through CTHSSV-09 have PASS_LOCAL package evidence before final closure is discussed.",
+    stop: "Any local slice remains undocumented or unguarded.",
+  },
+  {
+    code: "CTHSSV-CLOSE-02",
+    title: "Signed UAT ledger",
+    evidence:
+      "CTHSSV-UAT-01 through CTHSSV-UAT-08 require signer, date, result and controlled evidence ref.",
+    stop: "Unsigned browser run is treated as UAT pass.",
+  },
+  {
+    code: "CTHSSV-CLOSE-03",
+    title: "Owner signoff manifest",
+    evidence:
+      "CTHSSV-SIGN-01 through CTHSSV-SIGN-06 require named human owners and blocker state.",
+    stop: "Owner decision is missing, unauthorized or recorded only in Codex/chat.",
+  },
+  {
+    code: "CTHSSV-CLOSE-04",
+    title: "Role proof closed",
+    evidence:
+      "CTHSSV-ROLE-01 through CTHSSV-ROLE-08 prove scoped access and negative denial.",
+    stop: "Role/workspace bypass remains open.",
+  },
+  {
+    code: "CTHSSV-CLOSE-05",
+    title: "Evidence trace closed",
+    evidence:
+      "CTHSSV-EVID-01 through CTHSSV-EVID-08 link evidence ref, audit event, reviewer and blocker.",
+    stop: "Raw evidence enters tracked work or audit trace is incomplete.",
+  },
+  {
+    code: "CTHSSV-CLOSE-06",
+    title: "Finance gates preserved",
+    evidence:
+      "P0-19, P2-05 and P2-03 remain required before KHTC/accounting reliance.",
+    stop: "CTHSSV cockpit creates receivable, payment, invoice, voucher, payout or revenue state.",
+  },
+  {
+    code: "CTHSSV-CLOSE-07",
+    title: "Blocker closure",
+    evidence:
+      "Every NO_GO or BLOCKED item has owner, due date and closure evidence outside Git/Codex/chat.",
+    stop: "A blocker is closed by AI/PASS_LOCAL only.",
+  },
+  {
+    code: "CTHSSV-CLOSE-08",
+    title: "Final owner quorum",
+    evidence:
+      "Final owner quorum records CTHSSV_FINAL_CLOSURE_READY, NO_GO or BLOCKED outside Codex/chat.",
+    stop: "Final module decision is inferred from local audit success.",
+  },
+];
+
+const externalOwnerActionItems: ControlItem[] = [
+  {
+    code: "CTHSSV-OWNER-ACTION-01",
+    title: "Signed CTHSSV owner UAT",
+    evidence:
+      "CTHSSV and Tuyen Sinh owners sign the browser UAT result outside Git/Codex/chat.",
+    stop: "Unsigned browser run is treated as CTHSSV profile acceptance.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-02",
+    title: "Signed role and negative access UAT",
+    evidence:
+      "IT_DATA, TRUONG_PHONG and Audit sign scoped allow/deny proof for CTHSSV users and out-of-scope users.",
+    stop: "Role proof is missing, ownerless, uses raw private data or grants broad access.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-03",
+    title: "Controlled evidence and audit trace",
+    evidence:
+      "Audit and CTHSSV store controlled evidence IDs for handover state, accept/reject action, role proof and redaction review.",
+    stop: "Raw evidence enters Git/Codex/chat or audit trace cannot prove actor/time/state.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-04",
+    title: "Signed final module closure",
+    evidence:
+      "CTHSSV and BGH sign CTHSSV_FINAL_CLOSURE_READY, NO_GO or BLOCKED outside Git/Codex/chat.",
+    stop: "Final closure is inferred from local audit success.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-05",
+    title: "Handover reliance decision",
+    evidence:
+      "Tuyen Sinh, CTHSSV and Dao Tao record CTHSSV_HANDOVER_READY, NO_GO or BLOCKED with signer/date.",
+    stop: "Handover is used as enrollment, class or training operation approval.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-06",
+    title: "Finance gate preservation proof",
+    evidence:
+      "KHTC/accounting signs that P0-19, P2-05 and P2-03 remain required before downstream reliance.",
+    stop: "CTHSSV action creates receivable, payment, invoice, voucher, payout or revenue state.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-07",
+    title: "Blocker register closure",
+    evidence:
+      "Every CTHSSV NO_GO or BLOCKED row has owner, due date and controlled evidence path.",
+    stop: "A blocker is closed by AI/PASS_LOCAL only or has no owner.",
+  },
+  {
+    code: "CTHSSV-OWNER-ACTION-08",
+    title: "Final owner quorum GO/NO-GO",
+    evidence:
+      "BGH, IT_DATA, KHTC, PHAP_CHE, Audit and TRUONG_PHONG record CTHSSV_EXTERNAL_OWNER_ACTION_READY, NO_GO or BLOCKED outside Git/Codex/chat.",
+    stop: "Final owner quorum GO/NO-GO is missing, unsigned or inferred from local checks.",
+  },
+];
+
 const readinessItems: ControlItem[] = [
   {
     code: "M06-CTHSSV-01",
@@ -853,6 +1169,36 @@ export default async function CthssvPage({ searchParams }: CthssvPageProps) {
         </section>
 
         <ControlGrid
+          title="M06 CTHSSV module completion breakdown"
+          decision="CTHSSV_MODULE_READY / NO_GO / BLOCKED"
+          items={moduleBreakdownItems}
+          sourceLabel="HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-module-completion-breakdown": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV role and negative access"
+          decision="CTHSSV_ROLE_SCOPE_READY / NO_GO / BLOCKED"
+          items={roleNegativeAccessItems}
+          sourceLabel="HEU_CTHSSV_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-role-negative-access": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV controlled evidence trace"
+          decision="CTHSSV_EVIDENCE_TRACE_READY / NO_GO / BLOCKED"
+          items={evidenceTraceItems}
+          sourceLabel="HEU_CTHSSV_CONTROLLED_EVIDENCE_TRACE_CHECKLIST_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-controlled-evidence-trace": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
           title="M06 CTHSSV acceptance matrix"
           decision="CTHSSV_PROFILE_READY / NO_GO / BLOCKED"
           items={readinessItems}
@@ -887,6 +1233,26 @@ export default async function CthssvPage({ searchParams }: CthssvPageProps) {
           sourceLabel="HEU_CTHSSV_UAT_RESULT_LEDGER_TEMPLATE_20260703.md"
           dataAttribute={{
             "data-heu-cthssv-uat-result-ledger": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV final module closure"
+          decision="CTHSSV_FINAL_CLOSURE_READY / NO_GO / BLOCKED"
+          items={finalClosureItems}
+          sourceLabel="HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-final-module-closure": "M06_CTHSSV",
+          }}
+        />
+
+        <ControlGrid
+          title="M06 CTHSSV external owner action queue"
+          decision="CTHSSV_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED"
+          items={externalOwnerActionItems}
+          sourceLabel="HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md"
+          dataAttribute={{
+            "data-heu-cthssv-external-owner-action-queue": "M06_CTHSSV",
           }}
         />
       </div>
