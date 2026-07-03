@@ -71,6 +71,8 @@ const groupOrder = [
   "IT_DATA",
   "KHOA",
   "NGAN_HAN",
+  "TCHC",
+  "TO_CHUC_NHAN_SU",
   "HR",
 ];
 
@@ -84,6 +86,8 @@ const groupLabels: Record<string, string> = {
   AUDIT: "Audit",
   IT_DATA: "IT/Data",
   KHOA: "Khoa",
+  TCHC: "TCHC",
+  TO_CHUC_NHAN_SU: "TCHC",
   NGAN_HAN: "Ngắn hạn",
   HR: "Tổ chức",
 };
@@ -112,6 +116,77 @@ function assignmentStateClass(value: string) {
   }
 
   return "border-zinc-200 bg-zinc-50 text-zinc-600";
+}
+
+const legacyTchcPositionDisplay: Record<
+  string,
+  { code: string; name: string }
+> = {
+  HR_HEAD: {
+    code: "TCHC_HEAD",
+    name: "Truong phong To chuc hanh chinh",
+  },
+  HR_01: {
+    code: "TCHC_01",
+    name: "To chuc hanh chinh 01",
+  },
+  HR_02: {
+    code: "TCHC_02",
+    name: "To chuc hanh chinh 02",
+  },
+  HR_03: {
+    code: "TCHC_03",
+    name: "To chuc hanh chinh 03",
+  },
+};
+
+function displayPositionCode(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  return legacyTchcPositionDisplay[value]?.code ?? value;
+}
+
+function displayPositionName(row: Pick<HeuPositionMatrixStatusRow, "position_code" | "position_name">) {
+  return legacyTchcPositionDisplay[row.position_code]?.name ?? row.position_name;
+}
+
+function displayRoleCode(value: string) {
+  if (value === "HR_LEAD") {
+    return "TCHC_LEAD";
+  }
+
+  if (value === "HR") {
+    return "TCHC";
+  }
+
+  return value;
+}
+
+function displayRoleName(row: Pick<HeuPositionMatrixStatusRow, "default_role_code" | "default_role_name">) {
+  if (row.default_role_code === "HR_LEAD") {
+    return "Truong phong To chuc hanh chinh";
+  }
+
+  if (row.default_role_code === "HR") {
+    return "Nhan su To chuc hanh chinh";
+  }
+
+  return row.default_role_name ?? row.default_role_code;
+}
+
+function displayDepartmentName(row: Pick<HeuPositionMatrixStatusRow, "department_code" | "department_name" | "position_group">) {
+  if (
+    row.department_code === "HR" ||
+    row.department_code === "TCHC" ||
+    row.position_group === "TO_CHUC_NHAN_SU" ||
+    row.position_group === "TCHC"
+  ) {
+    return "Phong To chuc hanh chinh (TCHC)";
+  }
+
+  return row.department_name ?? row.department_code;
 }
 
 function normalizeSearch(value: string) {
@@ -189,13 +264,19 @@ export function PositionAssignmentMatrix({
       selectedGroup === "ALL" || row.position_group === selectedGroup;
     const haystack = [
       row.position_code,
+      displayPositionCode(row.position_code),
       row.position_name,
+      displayPositionName(row),
       row.department_name,
+      displayDepartmentName(row),
       row.default_role_name,
       row.default_role_code,
+      displayRoleName(row),
+      displayRoleCode(row.default_role_code),
       row.assigned_full_name,
       row.assigned_email,
       row.reports_to_position_code,
+      displayPositionCode(row.reports_to_position_code),
       row.reports_to_position_name,
     ]
       .filter(Boolean)
@@ -223,6 +304,7 @@ export function PositionAssignmentMatrix({
       data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"
       data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"
       data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"
+      data-heu-position-group-labels="TCHC TO_CHUC_NHAN_SU_LEGACY HR_TECH_LEGACY"
       className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm"
     >
       <div className="border-b border-zinc-200 p-5">
@@ -358,11 +440,11 @@ export function PositionAssignmentMatrix({
                       <tr key={row.id} className="align-top">
                         <td className="px-4 py-4">
                           <p className="font-semibold text-zinc-950">
-                            {row.position_name}
+                            {displayPositionName(row)}
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-700">
-                              {row.position_code}
+                              {displayPositionCode(row.position_code)}
                             </span>
                             <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-700">
                               {groupLabel(row.position_group)}
@@ -378,13 +460,13 @@ export function PositionAssignmentMatrix({
                         </td>
                         <td className="px-4 py-4">
                           <p className="font-medium text-zinc-900">
-                            {row.default_role_name ?? row.default_role_code}
+                            {displayRoleName(row)}
                           </p>
                           <p className="mt-1 text-xs text-zinc-500">
-                            {row.default_role_code}
+                            {displayRoleCode(row.default_role_code)}
                           </p>
                           <p className="mt-2 text-sm text-zinc-700">
-                            {row.department_name ?? row.department_code}
+                            {displayDepartmentName(row)}
                           </p>
                           <p className="mt-1 text-xs text-zinc-500">
                             {row.permission_count} quyền mặc định
@@ -393,9 +475,15 @@ export function PositionAssignmentMatrix({
                         <td className="px-4 py-4 text-zinc-700">
                           {row.reports_to_position_name ? (
                             <>
-                              <p>{row.reports_to_position_name}</p>
+                              <p>
+                                {row.reports_to_position_code
+                                  ? (legacyTchcPositionDisplay[
+                                      row.reports_to_position_code
+                                    ]?.name ?? row.reports_to_position_name)
+                                  : row.reports_to_position_name}
+                              </p>
                               <p className="mt-1 text-xs text-zinc-500">
-                                {row.reports_to_position_code}
+                                {displayPositionCode(row.reports_to_position_code)}
                               </p>
                             </>
                           ) : (

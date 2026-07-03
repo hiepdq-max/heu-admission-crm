@@ -25,7 +25,7 @@ values
   ('IT_DATA', 'IT/Data', 'ACTIVE'),
   ('KHOA', 'Khoa', 'ACTIVE'),
   ('NGAN_HAN', 'Dao tao ngan han', 'ACTIVE'),
-  ('HR', 'To chuc nhan su', 'ACTIVE')
+  ('TCHC', 'Phong To chuc hanh chinh (TCHC)', 'ACTIVE')
 on conflict (code) do update set
   name = excluded.name,
   status = excluded.status,
@@ -47,8 +47,8 @@ values
   ('KHOA', 'Nhan su khoa', 'Operate faculty workflows in assigned scope'),
   ('NGAN_HAN_LEAD', 'Truong bo phan ngan han', 'Manage short-course operations and users'),
   ('NGAN_HAN', 'Nhan su ngan han', 'Operate short-course workflows in assigned scope'),
-  ('HR_LEAD', 'Truong phong to chuc nhan su', 'Manage HR and organization assignments'),
-  ('HR', 'Nhan su to chuc nhan su', 'Operate HR workflows in assigned scope')
+  ('TCHC_LEAD', 'Truong phong To chuc hanh chinh', 'Manage administrative organization and staffing assignments'),
+  ('TCHC', 'Nhan su To chuc hanh chinh', 'Operate administrative organization workflows in assigned scope')
 on conflict (code) do update set
   name = excluded.name,
   description = excluded.description,
@@ -108,7 +108,7 @@ where r.code in (
   'IT_DATA_HEAD',
   'KHOA_LEAD',
   'NGAN_HAN_LEAD',
-  'HR_LEAD'
+  'TCHC_LEAD'
 )
 on conflict (role_id, permission) do nothing;
 
@@ -121,7 +121,7 @@ cross join lateral (
     ('workflow_request.read'),
     ('workflow_request.create')
 ) as p(permission)
-where r.code in ('DAO_TAO', 'KHOA', 'NGAN_HAN', 'HR', 'LEGAL', 'AUDIT', 'IT_DATA')
+where r.code in ('DAO_TAO', 'KHOA', 'NGAN_HAN', 'TCHC', 'LEGAL', 'AUDIT', 'IT_DATA')
 on conflict (role_id, permission) do nothing;
 
 insert into public.role_permissions (role_id, permission)
@@ -294,10 +294,20 @@ values
   ('NGAN_HAN_04', 'Dao tao ngan han 04', 'DAO_TAO_NGAN_HAN', 'NGAN_HAN', 'NGAN_HAN', 'NGAN_HAN_HEAD', 904, false, 'DRAFT', null),
   ('NGAN_HAN_05', 'Dao tao ngan han 05', 'DAO_TAO_NGAN_HAN', 'NGAN_HAN', 'NGAN_HAN', 'NGAN_HAN_HEAD', 905, false, 'DRAFT', null),
 
-  ('HR_HEAD', 'Truong phong to chuc nhan su', 'TO_CHUC_NHAN_SU', 'HR', 'HR_LEAD', 'PHT_VAN_HANH', 1000, true, 'DRAFT', null),
-  ('HR_01', 'To chuc nhan su 01', 'TO_CHUC_NHAN_SU', 'HR', 'HR', 'HR_HEAD', 1001, false, 'DRAFT', null),
-  ('HR_02', 'To chuc nhan su 02', 'TO_CHUC_NHAN_SU', 'HR', 'HR', 'HR_HEAD', 1002, false, 'DRAFT', null),
-  ('HR_03', 'To chuc nhan su 03', 'TO_CHUC_NHAN_SU', 'HR', 'HR', 'HR_HEAD', 1003, false, 'DRAFT', null)
+  ('TCHC_HEAD', 'Truong phong To chuc hanh chinh', 'TCHC', 'TCHC', 'TCHC_LEAD', 'PHT_VAN_HANH', 1000, true, 'DRAFT', 'Owner cua toan bo bao cao TCHC.'),
+  ('TCHC_DEPUTY', 'Pho phong To chuc hanh chinh', 'TCHC', 'TCHC', 'TCHC_LEAD', 'TCHC_HEAD', 1005, false, 'DRAFT', 'Du phong phe duyet noi bo khi Truong phong vang mat.'),
+  ('TCHC_VAN_THU_LUU_TRU', 'Van thu - luu tru', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1010, true, 'DRAFT', 'Quan ly cong van den/di, so van ban, ho so luu tru.'),
+  ('TCHC_HANH_CHINH_NHAN_SU', 'Hanh chinh nhan su', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1020, true, 'DRAFT', 'Quan ly ho so nhan su, bien dong, cham cong/nghi phep theo pham vi TCHC.'),
+  ('TCHC_HO_SO_NHAN_SU', 'Ho so nhan su', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HANH_CHINH_NHAN_SU', 1021, false, 'DRAFT', 'Phu trach cap nhat, doi chieu va luu tru ho so nhan su.'),
+  ('TCHC_CSVC_TAI_SAN', 'Co so vat chat - tai san', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1030, true, 'DRAFT', 'Quan ly tai san, thiet bi, phong hoc, sua chua va hien trang CSVC.'),
+  ('TCHC_BAO_TRI_SUA_CHUA', 'Bao tri - sua chua', 'TCHC', 'TCHC', 'TCHC', 'TCHC_CSVC_TAI_SAN', 1031, false, 'DRAFT', 'Theo doi yeu cau sua chua, nghiem thu va ton dong CSVC.'),
+  ('TCHC_MUA_SAM_CAP_PHAT', 'Mua sam - cap phat', 'TCHC', 'TCHC', 'TCHC', 'TCHC_CSVC_TAI_SAN', 1032, false, 'DRAFT', 'Theo doi de xuat mua sam, cap phat van phong pham, vat tu va thiet bi.'),
+  ('TCHC_LE_TAN_HAU_CAN', 'Le tan - hau can', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1040, false, 'DRAFT', 'Quan ly tiep don, hau can su kien, phong hop va lich phuc vu.'),
+  ('TCHC_BAO_VE_AN_NINH', 'Bao ve - an ninh trat tu', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1041, false, 'DRAFT', 'Theo doi ca truc, su co an ninh, ra vao va an toan truong.'),
+  ('TCHC_PHUONG_TIEN', 'Phuong tien - lai xe', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1042, false, 'DRAFT', 'Quan ly lich xe, nhien lieu, bao duong va dieu phoi phuong tien.'),
+  ('TCHC_VE_SINH_MOI_TRUONG', 'Ve sinh - moi truong', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1043, false, 'DRAFT', 'Theo doi ve sinh khuon vien, lop hoc, nha ve sinh va moi truong.'),
+  ('TCHC_Y_TE_HOC_DUONG', 'Y te hoc duong', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1044, false, 'DRAFT', 'Theo doi y te truong hoc, so cap cuu, tu thuoc va an toan suc khoe.'),
+  ('TCHC_TONG_HOP_BAO_CAO', 'Tong hop bao cao TCHC', 'TCHC', 'TCHC', 'TCHC', 'TCHC_HEAD', 1050, false, 'DRAFT', 'Tong hop bao cao tu cac vi tri TCHC truoc khi trinh truong phong.')
 on conflict (position_code) do update set
   position_name = excluded.position_name,
   position_group = excluded.position_group,

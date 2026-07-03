@@ -24,6 +24,32 @@
   reliance, approve teaching payment, approve payroll, approve owner GO/NO-GO or
   mark production GO.
 
+## 2026-07-03 - TCHC Position Report Foundation
+
+- Scope: Packaged the first TCHC position/report foundation so Phong To chuc
+  hanh chinh has standard position codes, report requirement metadata and a
+  local checker before any signed UAT or report reliance.
+- Changed: `database/step115_tchc_department_position_correction.sql`,
+  `database/step116_tchc_position_report_foundation.sql`,
+  `database/step114_organization_position_permission_matrix.sql`,
+  `components/settings/position-assignment-matrix.tsx`,
+  `docs/HEU_TCHC_POSITION_REPORT_FOUNDATION_20260703.md`,
+  `scripts/check-heu-tchc-position-report-foundation.mjs`,
+  `package.json` and `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-tchc-position-report-foundation` verifies
+  `TCHC_HEAD`, `TCHC_DEPUTY`, the TCHC operator positions,
+  `heu_position_report_requirements`,
+  `heu_position_report_requirement_status`,
+  `RPT_TCHC_*` report contracts and the Settings position matrix display
+  mapping.
+- Verification target: `npm.cmd run check:heu-tchc-position-report-foundation`
+  plus current-state, implementation-log, release-gate, Vietnamese encoding,
+  lint, build and diff checks before commit.
+- Boundary: This is metadata/report-contract packaging only. It does not run a
+  production migration, create accounts, assign real users, set passwords, send
+  invite/reset links, execute UAT, accept evidence, approve report/dashboard
+  reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P10-05 Khoa Giang Vien Negative Access Checklist
 
 - Added `docs/HEU_KHOA_GIANG_VIEN_NEGATIVE_ACCESS_CHECKLIST_20260703.md` as
