@@ -200,12 +200,14 @@ export function UserBusinessScopeSettings({
       scope.lead_visibility,
     ]),
   );
-  const selectedSegments = selectedUser
-    ? segmentScopeMap.get(selectedUser.id) ?? new Set<string>()
-    : new Set<string>();
-  const selectedPartners = selectedUser
-    ? partnerScopeMap.get(selectedUser.id) ?? new Set<string>()
-    : new Set<string>();
+  const [draftSegmentIds, setDraftSegmentIds] = useState<string[]>(() =>
+    selectedUser ? Array.from(segmentScopeMap.get(selectedUser.id) ?? []) : [],
+  );
+  const [draftPartnerIds, setDraftPartnerIds] = useState<string[]>(() =>
+    selectedUser ? Array.from(partnerScopeMap.get(selectedUser.id) ?? []) : [],
+  );
+  const selectedSegments = new Set(draftSegmentIds);
+  const selectedPartners = new Set(draftPartnerIds);
   const draftRole = roles.find((role) => role.id === draftRoleId);
   const effectiveLeadVisibility = selectedUser
     ? leadVisibilityMap.get(selectedUser.id) ??
@@ -275,6 +277,12 @@ export function UserBusinessScopeSettings({
     setDraftRoleId(nextUser?.role_id ?? "");
     setDraftDepartmentId(nextUser?.department_id ?? "");
     setDraftManagerId(nextUser?.manager_id ?? "");
+    setDraftSegmentIds(
+      nextUser ? Array.from(segmentScopeMap.get(nextUser.id) ?? []) : [],
+    );
+    setDraftPartnerIds(
+      nextUser ? Array.from(partnerScopeMap.get(nextUser.id) ?? []) : [],
+    );
   }
 
   function handleDraftRoleChange(roleId: string) {
@@ -293,6 +301,32 @@ export function UserBusinessScopeSettings({
     if (staffRole && selectedUser) {
       setDraftManagerId(firstDepartmentHeadId(departmentId, selectedUser.id));
     }
+  }
+
+  function toggleDraftSegment(segmentId: string, checked: boolean) {
+    setDraftSegmentIds((current) => {
+      const next = new Set(current);
+
+      if (checked) {
+        next.add(segmentId);
+        return Array.from(next);
+      }
+
+      return current.filter((id) => id !== segmentId);
+    });
+  }
+
+  function toggleDraftPartner(partnerId: string, checked: boolean) {
+    setDraftPartnerIds((current) => {
+      const next = new Set(current);
+
+      if (checked) {
+        next.add(partnerId);
+        return Array.from(next);
+      }
+
+      return current.filter((id) => id !== partnerId);
+    });
   }
 
   return (
@@ -548,6 +582,26 @@ export function UserBusinessScopeSettings({
                         <legend className="px-1 text-xs font-semibold uppercase text-zinc-500">
                           Đối tượng tuyển sinh được làm
                         </legend>
+                        <div className="mt-2 flex flex-wrap justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setDraftSegmentIds(
+                                segments.map((segment) => segment.id),
+                              )
+                            }
+                            className="rounded-md border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"
+                          >
+                            Chọn tất cả
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDraftSegmentIds([])}
+                            className="rounded-md border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"
+                          >
+                            Bỏ chọn
+                          </button>
+                        </div>
                         <div className="mt-2 grid gap-2 sm:grid-cols-2">
                           {segments.map((segment) => (
                             <label
@@ -558,7 +612,13 @@ export function UserBusinessScopeSettings({
                                 type="checkbox"
                                 name="segment_ids"
                                 value={segment.id}
-                                defaultChecked={selectedSegments.has(segment.id)}
+                                checked={selectedSegments.has(segment.id)}
+                                onChange={(event) =>
+                                  toggleDraftSegment(
+                                    segment.id,
+                                    event.target.checked,
+                                  )
+                                }
                                 className="mt-1 size-4"
                               />
                               <span>
@@ -580,6 +640,26 @@ export function UserBusinessScopeSettings({
                         <legend className="px-1 text-xs font-semibold uppercase text-zinc-500">
                           Trung tâm/đối tác được làm
                         </legend>
+                        <div className="mt-2 flex flex-wrap justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setDraftPartnerIds(
+                                partners.map((partner) => partner.id),
+                              )
+                            }
+                            className="rounded-md border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"
+                          >
+                            Chọn tất cả
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDraftPartnerIds([])}
+                            className="rounded-md border border-zinc-200 px-2 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"
+                          >
+                            Bỏ chọn
+                          </button>
+                        </div>
                         <div className="mt-2 grid max-h-80 gap-2 overflow-y-auto sm:grid-cols-2">
                           {partners.map((partner) => (
                             <label
@@ -590,7 +670,13 @@ export function UserBusinessScopeSettings({
                                 type="checkbox"
                                 name="partner_ids"
                                 value={partner.id}
-                                defaultChecked={selectedPartners.has(partner.id)}
+                                checked={selectedPartners.has(partner.id)}
+                                onChange={(event) =>
+                                  toggleDraftPartner(
+                                    partner.id,
+                                    event.target.checked,
+                                  )
+                                }
                                 className="mt-1 size-4"
                               />
                               <span>
