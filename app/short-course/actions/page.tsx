@@ -18,6 +18,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { maskVoucherOrRawId } from "@/lib/sensitive-display";
 import { createClient } from "@/lib/supabase/server";
 import {
   admissionWorkspaceSegmentIds,
@@ -573,7 +574,9 @@ function buildPaymentTasks(rows: PaymentRow[], segmentId: string | null) {
           : `Kiểm tra thanh toán ${row.payment_code}`,
       reason: [
         `Số tiền: ${formatMoney(row.payment_amount_vnd)}`,
-        row.voucher_no ? `chứng từ ${row.voucher_no}` : "chưa có số chứng từ",
+        row.voucher_no
+          ? `chứng từ ${maskVoucherOrRawId(row.voucher_no)}`
+          : "chưa có số chứng từ",
         `ngày ${formatDate(row.payment_date)}`,
       ].join(" · "),
       group: "PAYMENT",

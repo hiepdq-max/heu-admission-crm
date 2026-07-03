@@ -12,6 +12,7 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { maskPhone } from "@/lib/sensitive-display";
 import { createClient } from "@/lib/supabase/server";
 import {
   firstParam,
@@ -691,7 +692,11 @@ export default async function ShortCourseIntakePage({
                     <div>
                       <p className="font-semibold">{lead.student_name}</p>
                       <p className="mt-1 text-sm text-zinc-500">
-                        {lead.lead_code} · {lead.student_phone ?? "Chưa có SĐT"} ·{" "}
+                        {lead.lead_code} ·{" "}
+                        {lead.student_phone
+                          ? maskPhone(lead.student_phone)
+                          : "Chưa có SĐT"}{" "}
+                        ·{" "}
                         {formatLeadStatus(lead.lead_status)}
                       </p>
                       <p className="mt-2 text-sm text-zinc-600">
@@ -828,7 +833,9 @@ export default async function ShortCourseIntakePage({
                       <p className="mt-1 text-sm text-zinc-500">
                         {enrollment.enrollment_code} ·{" "}
                         {enrollment.student_code ?? "Chưa có mã học viên"} ·{" "}
-                        {enrollment.student_phone ?? "Chưa có SĐT"}
+                        {enrollment.student_phone
+                          ? maskPhone(enrollment.student_phone)
+                          : "Chưa có SĐT"}
                       </p>
                       <p className="mt-2 text-sm text-zinc-600">
                         {enrollment.enrollment_offering_name ??

@@ -188,6 +188,7 @@ const errorMessages: Record<string, string> = {
     "Tài khoản chưa có quyền tạo, kiểm hoặc duyệt phiếu xử lý.",
   workspace_not_allowed:
     "Tài khoản không được thao tác trong đối tượng tuyển sinh đang chọn.",
+  not_short_course_workspace: "Không thuộc phạm vi Short Course.",
 };
 
 function formatNumber(value: number | null | undefined) {

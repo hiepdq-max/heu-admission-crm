@@ -18,6 +18,11 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import {
+  maskIdentityNo,
+  maskPhone,
+  maskVoucherOrRawId,
+} from "@/lib/sensitive-display";
 import { createClient } from "@/lib/supabase/server";
 import {
   admissionWorkspaceSegmentIds,
@@ -706,6 +711,124 @@ async function loadScopedEnrollmentIds(
   return (data ?? []).map((row) => row.id);
 }
 
+async function loadScopedStudentIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  segmentIds: string[] | null,
+) {
+  let query = supabase
+    .from("short_student_master")
+    .select("id")
+    .eq("status", "ACTIVE");
+  query = applyAdmissionSegmentIds(query, segmentIds);
+  const { data } = await query.limit(5000).returns<SelectOption[]>();
+  return (data ?? []).map((row) => row.id);
+}
+
+async function loadScopedAttendanceSessionIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  classIds: string[],
+) {
+  if (classIds.length === 0) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("short_attendance_sessions")
+    .select("id")
+    .eq("record_status", "ACTIVE")
+    .in("class_id", classIds)
+    .limit(5000)
+    .returns<SelectOption[]>();
+
+  return (data ?? []).map((row) => row.id);
+}
+
+async function loadScopedBhxhCaseIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  enrollmentIds: string[],
+) {
+  if (enrollmentIds.length === 0) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("short_bhxh_policy_cases")
+    .select("id")
+    .eq("record_status", "ACTIVE")
+    .in("enrollment_id", enrollmentIds)
+    .limit(5000)
+    .returns<SelectOption[]>();
+
+  return (data ?? []).map((row) => row.id);
+}
+
+async function loadScopedInvoiceIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  enrollmentIds: string[],
+) {
+  if (enrollmentIds.length === 0) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("short_finance_invoices")
+    .select("id")
+    .eq("record_status", "ACTIVE")
+    .in("enrollment_id", enrollmentIds)
+    .limit(5000)
+    .returns<SelectOption[]>();
+
+  return (data ?? []).map((row) => row.id);
+}
+
+async function loadScopedPaymentIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  enrollmentIds: string[],
+) {
+  if (enrollmentIds.length === 0) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("short_payments")
+    .select("id")
+    .eq("record_status", "ACTIVE")
+    .in("enrollment_id", enrollmentIds)
+    .limit(5000)
+    .returns<SelectOption[]>();
+
+  return (data ?? []).map((row) => row.id);
+}
+
+async function loadScopedRiskEntityIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  segmentIds: string[] | null,
+) {
+  const [studentIds, classIds, enrollmentIds] = await Promise.all([
+    loadScopedStudentIds(supabase, segmentIds),
+    loadScopedClassIds(supabase, segmentIds),
+    loadScopedEnrollmentIds(supabase, segmentIds),
+  ]);
+  const [attendanceIds, bhxhIds, invoiceIds, paymentIds] = await Promise.all([
+    loadScopedAttendanceSessionIds(supabase, classIds),
+    loadScopedBhxhCaseIds(supabase, enrollmentIds),
+    loadScopedInvoiceIds(supabase, enrollmentIds),
+    loadScopedPaymentIds(supabase, enrollmentIds),
+  ]);
+
+  return Array.from(
+    new Set([
+      ...studentIds,
+      ...classIds,
+      ...enrollmentIds,
+      ...attendanceIds,
+      ...bhxhIds,
+      ...invoiceIds,
+      ...paymentIds,
+    ]),
+  );
+}
+
 async function loadStudents(
   supabase: Awaited<ReturnType<typeof createClient>>,
   segmentIds: string[] | null,
@@ -735,8 +858,8 @@ async function loadStudents(
       code: row.student_code,
       title: row.student_name,
       subtitle: [
-        row.student_phone ? `SĐT: ${row.student_phone}` : "Chưa có SĐT",
-        row.identity_no ? `CCCD: ${row.identity_no}` : "Chưa có CCCD",
+        row.student_phone ? `SĐT: ${maskPhone(row.student_phone)}` : "Chưa có SĐT",
+        row.identity_no ? `CCCD: ${maskIdentityNo(row.identity_no)}` : "Chưa có CCCD",
       ].join(" · "),
       status: row.student_status,
       statusLabel: row.student_status,
@@ -1090,13 +1213,15 @@ async function loadPayments(
       subtitle: [
         `Ngày: ${formatDate(row.payment_date)}`,
         `Hình thức: ${row.payment_method ?? "Chưa rõ"}`,
-        row.voucher_no ? `Chứng từ: ${row.voucher_no}` : "Chưa có chứng từ",
+        row.voucher_no
+          ? `Chứng từ: ${maskVoucherOrRawId(row.voucher_no)}`
+          : "Chưa có chứng từ",
       ].join(" · "),
       status: row.payment_status,
       statusLabel: row.payment_status,
       owner: "KHTC",
       updatedAt: row.updated_at,
-      badges: [`Invoice: ${row.invoice_id}`],
+      badges: [`Invoice: ${maskVoucherOrRawId(row.invoice_id)}`],
       amount: row.payment_amount_vnd,
     })),
     error,
@@ -1105,8 +1230,17 @@ async function loadPayments(
 
 async function loadRisks(
   supabase: Awaited<ReturnType<typeof createClient>>,
+  segmentIds: string[] | null,
   entityId: string | null,
 ) {
+  const scopedEntityIds = segmentIds
+    ? await loadScopedRiskEntityIds(supabase, segmentIds)
+    : null;
+
+  if (segmentIds && scopedEntityIds?.length === 0) {
+    return { rows: [] as DrilldownRow[], error: null };
+  }
+
   let query = supabase
     .from("short_risk_alerts")
     .select(
@@ -1114,6 +1248,10 @@ async function loadRisks(
     )
     .eq("record_status", "ACTIVE")
     .not("alert_status", "in", "(RESOLVED,DISMISSED)");
+
+  if (scopedEntityIds) {
+    query = query.in("entity_id", scopedEntityIds);
+  }
 
   if (entityId) {
     query = query.eq("id", entityId);
@@ -1199,7 +1337,7 @@ export default async function ShortCourseDrilldownPage({
       result = await loadPayments(supabase, segmentIds, entityId);
       break;
     case "risks":
-      result = await loadRisks(supabase, entityId);
+      result = await loadRisks(supabase, segmentIds, entityId);
       break;
     case "students":
     default:

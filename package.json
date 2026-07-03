@@ -12,6 +12,7 @@
     "check:heu-cthssv-local-completion": "node scripts/check-heu-cthssv-local-completion.mjs",
     "check:heu-lead-import-scope-readiness": "node scripts/check-heu-lead-import-scope-readiness.mjs",
     "check:heu-hou-scope-readiness": "node scripts/check-heu-hou-scope-readiness.mjs",
+    "check:heu-short-course-scope-readiness": "node scripts/check-heu-short-course-scope-readiness.mjs",
     "check:heu-khoa-giang-vien-foundation": "node scripts/check-heu-khoa-giang-vien-foundation.mjs",
     "check:heu-khoa-giang-vien-source-map": "node scripts/check-heu-khoa-giang-vien-source-map.mjs",
     "check:heu-khoa-giang-vien-owner-signoff": "node scripts/check-heu-khoa-giang-vien-owner-signoff.mjs",

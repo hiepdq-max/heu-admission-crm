@@ -32,6 +32,7 @@ type ShortCoursePageProps = {
 };
 
 type StudentLiteRow = {
+  id: string;
   student_status: string | null;
 };
 
@@ -51,21 +52,25 @@ type EnrollmentLiteRow = {
 };
 
 type AttendanceLiteRow = {
+  id: string;
   session_status: string | null;
   attendance_locked: boolean | null;
 };
 
 type BhxhLiteRow = {
+  id: string;
   eligibility_status: string | null;
   case_status: string | null;
 };
 
 type InvoiceLiteRow = {
+  id: string;
   balance_amount_vnd: number | string | null;
   invoice_status: string | null;
 };
 
 type PaymentLiteRow = {
+  id: string;
   payment_amount_vnd: number | string | null;
   payment_status: string | null;
 };
@@ -362,7 +367,7 @@ export default async function ShortCoursePage({
   function studentQuery() {
     let query = supabase
       .from("short_student_master")
-      .select("student_status", { count: "exact" })
+      .select("id,student_status", { count: "exact" })
       .eq("status", "ACTIVE");
 
     if (activeSegmentId) {
@@ -415,7 +420,7 @@ export default async function ShortCoursePage({
   function attendanceQuery() {
     let query = supabase
       .from("short_attendance_sessions")
-      .select("session_status,attendance_locked", { count: "exact" })
+      .select("id,session_status,attendance_locked", { count: "exact" })
       .eq("record_status", "ACTIVE");
 
     if (activeSegmentId) {
@@ -428,7 +433,7 @@ export default async function ShortCoursePage({
   function bhxhQuery() {
     let query = supabase
       .from("short_bhxh_policy_cases")
-      .select("eligibility_status,case_status", { count: "exact" })
+      .select("id,eligibility_status,case_status", { count: "exact" })
       .eq("record_status", "ACTIVE");
 
     if (activeSegmentId) {
@@ -441,7 +446,7 @@ export default async function ShortCoursePage({
   function invoiceQuery() {
     let query = supabase
       .from("short_finance_invoices")
-      .select("balance_amount_vnd,invoice_status", { count: "exact" })
+      .select("id,balance_amount_vnd,invoice_status", { count: "exact" })
       .eq("record_status", "ACTIVE");
 
     if (activeSegmentId) {
@@ -454,7 +459,7 @@ export default async function ShortCoursePage({
   function paymentQuery() {
     let query = supabase
       .from("short_payments")
-      .select("payment_amount_vnd,payment_status", { count: "exact" })
+      .select("id,payment_amount_vnd,payment_status", { count: "exact" })
       .eq("record_status", "ACTIVE");
 
     if (activeSegmentId) {
@@ -500,7 +505,21 @@ export default async function ShortCoursePage({
   const bhxhRows = bhxhResult.data ?? [];
   const invoiceRows = invoiceResult.data ?? [];
   const paymentRows = paymentResult.data ?? [];
-  const riskRows = riskResult.data ?? [];
+  const rawRiskRows = riskResult.data ?? [];
+  const scopedRiskEntityIds = new Set([
+    ...studentRows.map((row) => row.id),
+    ...classRows.map((row) => row.id),
+    ...enrollmentRows.map((row) => row.id),
+    ...attendanceRows.map((row) => row.id),
+    ...bhxhRows.map((row) => row.id),
+    ...invoiceRows.map((row) => row.id),
+    ...paymentRows.map((row) => row.id),
+  ]);
+  const riskRows = activeSegmentId
+    ? rawRiskRows.filter(
+        (row) => row.entity_id && scopedRiskEntityIds.has(row.entity_id),
+      )
+    : rawRiskRows;
 
   const verifiedPaymentRows = paymentRows.filter(
     (row) => row.payment_status === "VERIFIED",
@@ -523,7 +542,7 @@ export default async function ShortCoursePage({
     bhxh_case_count: countResultValue(bhxhResult),
     invoice_count: countResultValue(invoiceResult),
     payment_count: countResultValue(paymentResult),
-    open_risk_count: countResultValue(riskResult),
+    open_risk_count: riskRows.length,
     student_needs_fix_count: countRows(
       studentRows,
       (row) => row.student_status === "STAGING",
@@ -617,7 +636,7 @@ export default async function ShortCoursePage({
       verifiedPaymentRows,
       (row) => row.payment_amount_vnd,
     ),
-    dashboard_exception_count: countResultValue(riskResult),
+    dashboard_exception_count: riskRows.length,
     dashboard_critical_exception_count: criticalRiskCount,
     dashboard_high_exception_count: highRiskCount,
   };

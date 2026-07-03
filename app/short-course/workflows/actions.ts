@@ -105,6 +105,16 @@ async function assertWorkspaceAllowed(
   if (error || !allowed) {
     redirectError(formData, error?.message ?? "workspace_not_allowed");
   }
+
+  const { data: segment, error: segmentError } = await supabase
+    .from("admission_segments")
+    .select("segment_code")
+    .eq("id", segmentId)
+    .maybeSingle<{ segment_code: string | null }>();
+
+  if (segmentError || !segment?.segment_code?.startsWith("SHORT_")) {
+    redirectError(formData, "not_short_course_workspace");
+  }
 }
 
 export async function createShortCourseWorkflowRequestAction(
@@ -222,9 +232,13 @@ export async function updateShortCourseWorkflowRequestAction(
   const { data: existingRequest, error: existingRequestError } =
     await readClient
       .from("approval_requests")
-      .select("request_status,requested_by")
+      .select("request_status,requested_by,admission_segment_id")
       .eq("id", requestId)
-      .maybeSingle<{ request_status: string; requested_by: string | null }>();
+      .maybeSingle<{
+        request_status: string;
+        requested_by: string | null;
+        admission_segment_id: string | null;
+      }>();
 
   if (existingRequestError || !existingRequest) {
     redirectError(
@@ -236,6 +250,7 @@ export async function updateShortCourseWorkflowRequestAction(
   const currentRequest = existingRequest as {
     request_status: string;
     requested_by: string | null;
+    admission_segment_id: string | null;
   };
 
   const transitionMap: Record<string, string[]> = {
@@ -262,6 +277,11 @@ export async function updateShortCourseWorkflowRequestAction(
   const { supabase, user } = await requireWorkflowPermission(
     formData,
     requiredPermission,
+  );
+  await assertWorkspaceAllowed(
+    formData,
+    supabase,
+    currentRequest.admission_segment_id,
   );
   const now = new Date().toISOString();
   const updatePayload: Record<string, string | null> = {

@@ -54,6 +54,31 @@
   GO.
 - Boundary token: does not mark production GO.
 
+## 2026-07-03 - Short Course Scope Privacy Readiness Guard
+
+- Scope: Hardened Short Course workspace scope and sensitive display before
+  any controlled Short Course trial: route summaries, drilldown, intake and
+  workflow updates stay scoped to Short Course/admission segment context, while
+  phone, identity, voucher and raw invoice references are masked before display.
+- Changed: `app/short-course/page.tsx`,
+  `app/short-course/drilldown/page.tsx`, `app/short-course/intake/page.tsx`,
+  `app/short-course/actions/page.tsx`,
+  `app/short-course/workflows/page.tsx`,
+  `app/short-course/workflows/actions.ts`, `lib/sensitive-display.ts`,
+  `scripts/check-heu-short-course-scope-readiness.mjs`, `package.json` and this
+  implementation log.
+- Result: `check:heu-short-course-scope-readiness` verifies
+  `SHORT-SCOPE-APP-GUARD`, `SHORT-SCOPE-PRIVACY-DISPLAY`,
+  `SHORT-SCOPE-SEGMENTS`, `SHORT-SCOPE-STUDENTS`, `SHORT-SCOPE-CLASSES`,
+  `SHORT-SCOPE-ENROLLMENTS`, `SHORT-SCOPE-ATTENDANCE`,
+  `SHORT-SCOPE-BHXH-FINANCE`, `SHORT-SCOPE-WORKFLOWS`,
+  `SHORT-SCOPE-ACTOR-LINK` and `SHORT-SCOPE-SUMMARY`.
+- Boundary: This is Short Course local scope and display hardening only. It
+  does not change database schema, import raw data, send email, create
+  accounts, execute UAT, accept evidence, approve attendance lock, approve
+  BHXH/chinh sach, approve invoice/payment verification, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - Business User Responsibility Register
 
 - Scope: Added a P0-17 business user responsibility register so unfinished
