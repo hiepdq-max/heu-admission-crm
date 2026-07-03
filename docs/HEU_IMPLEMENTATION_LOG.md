@@ -1,5 +1,30 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-14 Documents Quick Access Hub
+
+- Replaced the placeholder documents module with `app/documents/page.tsx` as
+  a read-only quick-access hub for lead documents, import, pipeline, reports,
+  Master Control and checklist master settings.
+- The hub exposes `data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS"`,
+  `data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"`,
+  `data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW"`
+  and `data-heu-documents-anchor-nav="leads import pipeline reports control settings"`.
+- Kept workspace scope through `firstParam`, `withAdmissionSegmentParam`,
+  `workspaceSegmentId={requestedSegmentId}` and
+  `workspaceReturnTo={scopedHref("/documents")}`.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `line-clamp-2`, `aria-label` and `title` guards so long document,
+  evidence and settings labels do not force horizontal overflow.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the P0-14 documents quick access,
+  current-state route summary and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is read-only documents navigation and control
+  routing only. It does not upload real documents, accept evidence, change role
+  scope, grant access, execute UAT, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard
 
 - Tightened `components/leads/status-update-form.tsx` so the lead-detail

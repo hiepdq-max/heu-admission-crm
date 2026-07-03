@@ -151,6 +151,33 @@ fastSection("2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard", [
   "approve finance action",
   "production GO",
 ]);
+fastSection("2026-07-03 - P0-14 Documents Quick Access Hub", [
+  "app/documents/page.tsx",
+  "data-heu-documents-quick-access=\"P0-14_DOCUMENTS_QUICK_ACCESS\"",
+  "data-heu-documents-quick-open=\"P0-14_DOCUMENTS_QUICK_OPEN_TOP6\"",
+  "data-heu-documents-quick-access-overflow-guard=\"P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW\"",
+  "data-heu-documents-anchor-nav=\"leads import pipeline reports control settings\"",
+  "firstParam",
+  "withAdmissionSegmentParam",
+  "workspaceSegmentId={requestedSegmentId}",
+  "workspaceReturnTo={scopedHref("/documents")}",
+  "settings-operating-masters",
+  "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-current-state-inventory.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "scripts/audit-ttgdtx-release-gates.mjs",
+  "read-only documents navigation",
+  "does not",
+  "upload real documents",
+  "accept evidence",
+  "change role scope",
+  "grant access",
+  "execute UAT",
+  "approve finance action",
+  "owner GO/NO-GO",
+  "production GO",
+]);
+
 fastSection("2026-07-03 - P0-14 Import Workspace Guard", [
   "app/import/page.tsx",
   "firstParam",

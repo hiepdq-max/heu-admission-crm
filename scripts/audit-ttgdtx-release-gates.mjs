@@ -830,6 +830,11 @@ requireText(
 );
 requireText(
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Process discovery\/navigation[\s\S]*documents quick access[\s\S]*data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"[\s\S]*no-overflow guard/i,
+  "P0-14 documents quick access current-state release gate",
+);
+requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
   /npm\.cmd run smoke:heu-local-routes[\s\S]*PASS_LOCAL route smoke[\s\S]*localhost-only `HEU_BASE_URL`[\s\S]*LOCALHOST_ONLY[\s\S]*no signed UAT[\s\S]*evidence acceptance[\s\S]*external environment call[\s\S]*production GO/i,
   "current-state local route smoke evidence",
 );

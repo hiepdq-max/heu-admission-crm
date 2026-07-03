@@ -45,6 +45,7 @@ const segmentWorkspaceGuidePath =
   "components/segments/segment-workspace-guide.tsx";
 const segmentDetailPagePath = "app/segments/[id]/page.tsx";
 const workspaceUrlPath = "lib/workspace-url.ts";
+const documentsPagePath = "app/documents/page.tsx";
 const importPagePath = "app/import/page.tsx";
 const importActionsPath = "app/import/actions.ts";
 const leadImportFormPath = "components/import/lead-import-form.tsx";
@@ -64,6 +65,7 @@ for (const file of [
   segmentWorkspaceGuidePath,
   segmentDetailPagePath,
   workspaceUrlPath,
+  documentsPagePath,
   importPagePath,
   importActionsPath,
   leadImportFormPath,
@@ -260,6 +262,11 @@ requireText(
   /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
   "lead list quick filter overflow guards",
 );requireText(
+  documentsPagePath,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*withAdmissionSegmentParam)(?=[\s\S]*workspaceSegmentId=\{requestedSegmentId\})(?=[\s\S]*workspaceReturnTo=\{scopedHref\("\/documents"\)\})(?=[\s\S]*data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS")(?=[\s\S]*data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6")(?=[\s\S]*data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*data-heu-documents-anchor-nav="leads import pipeline reports control settings")(?=[\s\S]*scopedHref\("\/leads"\))(?=[\s\S]*scopedHref\("\/import"\))(?=[\s\S]*scopedHref\("\/pipeline"\))(?=[\s\S]*scopedHref\("\/reports"\))(?=[\s\S]*href: "\/master-control")(?=[\s\S]*scopedHref\("\/settings#settings-operating-masters"\))(?=[\s\S]*READ_ONLY_NAVIGATION)(?=[\s\S]*aria-label)(?=[\s\S]*title)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*truncate)(?=[\s\S]*break-words)(?=[\s\S]*line-clamp-2)/,
+  "P0-14 documents quick access and no-overflow guard",
+);
+requireText(
   leadImportFormPath,
   /(?=[\s\S]*data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS")(?=[\s\S]*data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE")(?=[\s\S]*data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*data-heu-import-anchor-nav="defaults csv submit result")(?=[\s\S]*useRef<HTMLTextAreaElement>)(?=[\s\S]*csvTextRef\.current\.value = sampleCsv)(?=[\s\S]*withAdmissionSegmentParam\("\/leads", defaultSegmentId\))(?=[\s\S]*min-w-0 overflow-hidden rounded-lg)(?=[\s\S]*break-words)(?=[\s\S]*truncate)/,
   "P0-14 import quick access and no-overflow guard",
@@ -302,6 +309,11 @@ requireText(
   implementationLogPath,
   /P0-05 Lead Detail Status Workspace Return Guard[\s\S]*components\/leads\/status-update-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*StatusUpdateForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\)[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead status update[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
   "P0-05 lead detail status implementation log boundary",
+);
+requireText(
+  implementationLogPath,
+  /P0-14 Documents Quick Access Hub[\s\S]*app\/documents\/page\.tsx[\s\S]*data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS"[\s\S]*data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"[\s\S]*data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*data-heu-documents-anchor-nav="leads import pipeline reports control settings"[\s\S]*withAdmissionSegmentParam[\s\S]*settings-operating-masters[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not upload real documents[\s\S]*accept evidence[\s\S]*change role scope[\s\S]*grant access[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "P0-14 documents quick access implementation log boundary",
 );
 requireText(
   implementationLogPath,
