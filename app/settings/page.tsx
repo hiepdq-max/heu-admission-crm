@@ -1,6 +1,18 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Database } from "lucide-react";
+import {
+  ArrowRight,
+  ClipboardList,
+  Database,
+  GraduationCap,
+  KeyRound,
+  ShieldCheck,
+  SlidersHorizontal,
+  UserPlus,
+  UsersRound,
+  WalletCards,
+  type LucideIcon,
+} from "lucide-react";
 
 import { AppShell } from "@/components/layout/app-shell";
 import {
@@ -61,6 +73,7 @@ import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
 import { UserAccessWorkflowGuide } from "@/components/settings/user-access-workflow-guide";
 import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
+import { UserOperationCutoverPanel } from "@/components/settings/user-operation-cutover-panel";
 import {
   UserBusinessScopeSettings,
   type BusinessScopeDepartmentRow,
@@ -117,12 +130,12 @@ const errorMessages: Record<string, string> = {
     "Bạn chưa được cấp quyền users.create để tạo tài khoản đăng nhập.",
   not_allowed_create_privileged_user:
     "Quyền users.create không được tạo user ADMIN/BGH. ADMIN phải thực hiện tài khoản đặc quyền.",
-  invalid_manager: "Người quản lý trực tiếp không được trùng với chính user đó.",
+  invalid_manager:
+    "Người quản lý trực tiếp không được trùng với chính user đó.",
   missing_user_or_role: "Thiếu user hoặc role cần cập nhật.",
   missing_user: "Thiếu user cần cập nhật.",
   missing_role: "Thiếu role cần cập nhật quyền.",
-  not_allowed_scope:
-    "Bạn không có quyền phân phạm vi cho tài khoản này.",
+  not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
   invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
   lead_visibility_all_admin_only:
     "Chỉ ADMIN mới được gán quyền xem lead toàn hệ thống.",
@@ -135,7 +148,8 @@ const errorMessages: Record<string, string> = {
   duplicate_source_code:
     "Mã nguồn lead này đã tồn tại. Hãy sửa dòng nguồn hiện có hoặc dùng mã khác.",
   missing_program_data: "Thiếu mã hoặc tên hệ đào tạo.",
-  missing_flow_data: "Thiếu mã, tên, mô tả, owner hoặc rủi ro của luồng tuyển sinh.",
+  missing_flow_data:
+    "Thiếu mã, tên, mô tả, owner hoặc rủi ro của luồng tuyển sinh.",
   duplicate_flow_code:
     "Mã luồng tuyển sinh này đã tồn tại. Hãy sửa dòng hiện có hoặc dùng mã khác.",
   duplicate_program_code:
@@ -159,6 +173,130 @@ const errorMessages: Record<string, string> = {
   cannot_lock_self:
     "Không thể tự hạ role ADMIN hoặc khóa chính tài khoản đang đăng nhập.",
 };
+
+const settingsQuickAccessItems: Array<{
+  href: string;
+  label: string;
+  detail: string;
+  icon: LucideIcon;
+}> = [
+  {
+    href: "#settings-user-onboarding",
+    label: "Tạo / liên kết user",
+    detail: "Auth, profile và tài khoản vận hành.",
+    icon: UserPlus,
+  },
+  {
+    href: "#settings-users",
+    label: "Người dùng & quyền",
+    detail: "Role, phòng ban, quản lý và permission.",
+    icon: UsersRound,
+  },
+  {
+    href: "#settings-scopes",
+    label: "Phạm vi lead",
+    detail: "Workspace, đối tượng và nguồn được xem.",
+    icon: ShieldCheck,
+  },
+  {
+    href: "#settings-programs",
+    label: "Hệ / ngành",
+    detail: "Danh mục chương trình và ngành tuyển sinh.",
+    icon: GraduationCap,
+  },
+  {
+    href: "#settings-dynamic-config",
+    label: "Cấu hình động",
+    detail: "Rule, field, điều kiện và form tuyển sinh.",
+    icon: SlidersHorizontal,
+  },
+  {
+    href: "#settings-hou-foundation",
+    label: "HOU nền tảng",
+    detail: "Đợt học, địa điểm, ngành và chính sách.",
+    icon: WalletCards,
+  },
+  {
+    href: "#settings-hou-commission",
+    label: "COM / KHTC",
+    detail: "Chính sách hoa hồng và chu kỳ thanh toán.",
+    icon: KeyRound,
+  },
+  {
+    href: "#settings-operating-masters",
+    label: "Luồng / nguồn / checklist",
+    detail: "Flow, segment, lead source và giấy tờ.",
+    icon: ClipboardList,
+  },
+];
+
+function SettingsQuickAccess() {
+  return (
+    <section
+      className="rounded-lg border bg-white p-4 shadow-sm"
+      data-heu-settings-quick-access="P0-17_SETTINGS_QUICK_ACCESS"
+      data-heu-settings-quick-open="P0-17_SETTINGS_QUICK_OPEN_TOP8"
+      data-heu-settings-quick-access-overflow-guard="P0-17_SETTINGS_QUICK_ACCESS_NO_OVERFLOW"
+      data-heu-settings-anchor-nav="users create scope checklist source flow program dynamic hou security"
+    >
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase text-muted-foreground">
+            P0-17 · Cài đặt vận hành
+          </p>
+          <h2 className="mt-1 truncate text-base font-semibold text-slate-950">
+            Mở nhanh đúng phần cần chỉnh
+          </h2>
+          <p className="mt-1 max-w-3xl break-words text-sm text-muted-foreground">
+            Chọn một mục để nhảy thẳng tới khối cấu hình tương ứng; các nút này
+            chỉ điều hướng trong trang.
+          </p>
+        </div>
+        <Button asChild variant="outline" size="sm" className="shrink-0">
+          <Link
+            href="/settings/supabase-check"
+            aria-label="Mở kiểm tra Supabase"
+            title="Mở kiểm tra Supabase"
+          >
+            <Database className="size-4" />
+            Supabase
+          </Link>
+        </Button>
+      </div>
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        {settingsQuickAccessItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={`Mở phần ${item.label}`}
+              title={`Mở phần ${item.label}`}
+              className="group flex min-h-20 min-w-0 items-center gap-3 overflow-hidden rounded-md border bg-slate-50 p-3 text-left transition hover:border-slate-300 hover:bg-white"
+            >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white text-slate-600 shadow-sm">
+                <Icon className="size-4" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1 overflow-hidden">
+                <span className="block truncate text-sm font-semibold text-slate-950">
+                  {item.label}
+                </span>
+                <span className="mt-1 block break-words text-xs leading-5 text-muted-foreground">
+                  {item.detail}
+                </span>
+              </span>
+              <ArrowRight
+                className="size-4 shrink-0 text-muted-foreground transition group-hover:text-slate-900"
+                aria-hidden="true"
+              />
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 type RolePermissionStatusRow = RolePermissionRow & {
@@ -207,7 +345,9 @@ async function loadRolePermissions(supabase: SupabaseServerClient) {
     .returns<RolePermissionRow[]>();
 }
 
-export default async function SettingsPage({ searchParams }: SettingsPageProps) {
+export default async function SettingsPage({
+  searchParams,
+}: SettingsPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -308,7 +448,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       .eq("status", "ACTIVE")
       .order("partner_type", { ascending: true })
       .order("partner_name", { ascending: true })
-      .returns<Array<{ id: string; partner_name: string; partner_type: string; area: string | null }>>(),
+      .returns<
+        Array<{
+          id: string;
+          partner_name: string;
+          partner_type: string;
+          area: string | null;
+        }>
+      >(),
     supabase
       .from("user_admission_segment_scopes")
       .select("user_id,segment_id")
@@ -413,7 +560,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   ]);
 
   const error = params?.error
-    ? errorMessages[params.error] ?? decodeURIComponent(params.error)
+    ? (errorMessages[params.error] ?? decodeURIComponent(params.error))
     : usersError?.message;
   const canViewSensitiveHouFinance = [
     "ADMIN",
@@ -474,7 +621,9 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
         .returns<HouCommissionEligibilityRuleRow[]>(),
       supabase
         .from("hou_commission_cycles")
-        .select("id,cycle_code,cycle_name,period_start,period_end,payment_due_date,status")
+        .select(
+          "id,cycle_code,cycle_name,period_start,period_end,payment_due_date,status",
+        )
         .order("period_start", { ascending: false })
         .returns<HouCommissionCycleRow[]>(),
       supabase
@@ -501,13 +650,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     ].filter(Boolean);
 
     if (canViewHouCommissionStrategy) {
-      const { data: revenueShareData, error: revenueShareError } = await supabase
-        .from("hou_revenue_share_versions")
-        .select(
-          "id,share_code,share_name,heu_share_percent,hou_share_percent,effective_from,effective_to,source_document,status",
-        )
-        .order("effective_from", { ascending: false })
-        .returns<HouRevenueShareVersionRow[]>();
+      const { data: revenueShareData, error: revenueShareError } =
+        await supabase
+          .from("hou_revenue_share_versions")
+          .select(
+            "id,share_code,share_name,heu_share_percent,hou_share_percent,effective_from,effective_to,source_document,status",
+          )
+          .order("effective_from", { ascending: false })
+          .returns<HouRevenueShareVersionRow[]>();
 
       houRevenueShares = revenueShareData ?? [];
 
@@ -544,168 +694,202 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             Đã liên kết Auth user vào CRM.
           </section>
         ) : null}
-        {params?.admission_config_created || params?.admission_config_updated ? (
+        {params?.admission_config_created ||
+        params?.admission_config_updated ? (
           <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
             Đã lưu cấu hình tuyển sinh động P0-17.
           </section>
         ) : null}
 
-        <UserAccessWorkflowGuide />
-        <RealUserOnboardingPanel />
-        <UserCreateForm
-          roles={roles ?? []}
-          departments={departments ?? []}
-          managers={(users ?? []).map((profile) => ({
-            id: profile.id,
-            full_name: profile.full_name,
-            email: profile.email,
-            role_id: profile.role_id,
-            department_id: profile.department_id,
-          }))}
-          canCreateAuthUser={hasServiceRoleKey && canCreateUsers}
-          createUserDisabledReason={
-            hasServiceRoleKey ? undefined : "missing_service_role_key"
-          }
-          canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}
-        />
-        <UserAuthProfileLinkForm
-          roles={roles ?? []}
-          departments={departments ?? []}
-          managers={(users ?? []).map((profile) => ({
-            id: profile.id,
-            full_name: profile.full_name,
-            email: profile.email,
-            role_id: profile.role_id,
-            department_id: profile.department_id,
-          }))}
-        />
+        <SettingsQuickAccess />
 
-        <UserSettingsOverview
-          currentUserId={user.id}
-          users={users ?? []}
-          roles={roles ?? []}
-          departments={departments ?? []}
-          permissions={permissions ?? []}
-          message={
-            params?.updated
-              ? "Đã cập nhật cấu hình user."
-              : params?.checklist_created
-                ? "Đã thêm giấy tờ hồ sơ mới."
-                : params?.checklist_updated
-                  ? "Đã cập nhật checklist hồ sơ."
-                  : params?.source_created
-                    ? "Đã thêm nguồn lead mới."
-                    : params?.source_updated
-                      ? "Đã cập nhật nguồn lead."
-                      : params?.flow_created
-                        ? "Đã thêm luồng tuyển sinh mới."
-                        : params?.flow_updated
-                          ? "Đã cập nhật luồng tuyển sinh."
-                          : params?.program_created
-                        ? "Đã thêm hệ đào tạo mới."
-                        : params?.program_updated
-                          ? "Đã cập nhật hệ đào tạo."
-                          : params?.major_created
-                            ? "Đã thêm ngành tuyển sinh mới."
-                            : params?.major_updated
-                              ? "Đã cập nhật ngành tuyển sinh."
-                              : params?.hou_location_created
-                                ? "Đã thêm địa điểm học HOU mới."
-                              : params?.hou_location_updated
-                                  ? "Đã cập nhật địa điểm học HOU."
-                                  : params?.permissions_updated
-                                    ? "Đã cập nhật quyền cho role."
-                                    : params?.scopes_updated
-                                      ? "Đã cập nhật phạm vi làm việc của user."
-                              : undefined
-          }
-          error={error}
-        />
-        <UserBusinessScopeSettings
-          users={(users ?? []) as BusinessScopeUserRow[]}
-          roles={(roles ?? []) as BusinessScopeRoleRow[]}
-          departments={(departments ?? []) as BusinessScopeDepartmentRow[]}
-          segments={(admissionSegments ?? []).map((segment) => ({
-            id: segment.id,
-            label: segment.segment_name,
-            group: segment.program_group,
-          }))}
-          partners={(partnerScopeOptions ?? []).map((partner) => ({
-            id: partner.id,
-            label: partner.partner_name,
-            group: [partner.partner_type, partner.area].filter(Boolean).join(" · "),
-          }))}
-          userSegmentScopes={userSegmentScopes ?? []}
-          userPartnerScopes={userPartnerScopes ?? []}
-          userLeadVisibilityScopes={userLeadVisibilityScopes ?? []}
-          canManageUserProfiles
-          canAssignAllLeadVisibility={canAssignAllLeadVisibility}
-          loadError={
-            userSegmentScopesError?.message ??
-            userPartnerScopesError?.message ??
-            userLeadVisibilityScopesError?.message
-          }
-        />
-        <ProgramMajorSettings
-          programs={programs ?? []}
-          majors={majors ?? []}
-          loadError={programsError?.message ?? majorsError?.message}
-        />
-        <AdmissionDynamicConfigSettings
-          overview={dynamicConfigOverview ?? []}
-          summary={dynamicConfigSummary?.[0]}
-          programRules={admissionProgramRules ?? []}
-          formFields={admissionFormFields ?? []}
-          conditionRules={admissionConditionRules ?? []}
-          segments={admissionSegments ?? []}
-          programs={programs ?? []}
-          majors={majors ?? []}
-          loadError={
-            dynamicConfigSummaryError?.message ??
-            dynamicConfigOverviewError?.message ??
-            admissionProgramRulesError?.message ??
-            admissionFormFieldsError?.message ??
-            admissionConditionRulesError?.message
-          }
-        />
-        <HouFoundationSettings
-          programs={houPrograms ?? []}
-          locations={houLocations ?? []}
-          majors={houMajors ?? []}
-          stages={houStages ?? []}
-          terms={houTerms ?? []}
-          policies={houPolicies ?? []}
-          canViewSensitiveFinance={canViewSensitiveHouFinance}
-          loadError={
-            houProgramsError?.message ??
-            houLocationsError?.message ??
-            houMajorsError?.message ??
-            houStagesError?.message ??
-            houTermsError?.message ??
-            houPoliciesError?.message
-          }
-        />
-        <HouCommissionSettings
-          canViewHouCommission={canViewHouCommission}
-          canViewStrategicFinance={canViewHouCommissionStrategy}
-          policies={houCommissionPolicies}
-          lines={houCommissionLines}
-          rules={houCommissionRules}
-          cycles={houCommissionCycles}
-          tuitionRates={houTuitionRates}
-          revenueShares={houRevenueShares}
-          loadError={houCommissionLoadError}
-        />
-        <AdmissionFlowSettings
-          flows={admissionFlows ?? []}
-          loadError={admissionFlowsError?.message}
-        />
-        <AdmissionSegmentSettings
-          segments={admissionSegments ?? []}
-          loadError={admissionSegmentsError?.message}
-        />
-        <LeadSourceSettings sources={leadSources ?? []} />
-        <ChecklistSettings checklists={checklists ?? []} />
+        <section
+          id="settings-user-onboarding"
+          className="scroll-mt-24 space-y-6"
+        >
+          <UserAccessWorkflowGuide />
+          <RealUserOnboardingPanel />
+          <UserOperationCutoverPanel />
+          <UserCreateForm
+            roles={roles ?? []}
+            departments={departments ?? []}
+            managers={(users ?? []).map((profile) => ({
+              id: profile.id,
+              full_name: profile.full_name,
+              email: profile.email,
+              role_id: profile.role_id,
+              department_id: profile.department_id,
+            }))}
+            canCreateAuthUser={hasServiceRoleKey && canCreateUsers}
+            createUserDisabledReason={
+              hasServiceRoleKey ? undefined : "missing_service_role_key"
+            }
+            canCreatePrivilegedUsers={currentRoleCode === "ADMIN"}
+          />
+          <UserAuthProfileLinkForm
+            roles={roles ?? []}
+            departments={departments ?? []}
+            managers={(users ?? []).map((profile) => ({
+              id: profile.id,
+              full_name: profile.full_name,
+              email: profile.email,
+              role_id: profile.role_id,
+              department_id: profile.department_id,
+            }))}
+          />
+        </section>
+
+        <section id="settings-users" className="scroll-mt-24">
+          <UserSettingsOverview
+            currentUserId={user.id}
+            users={users ?? []}
+            roles={roles ?? []}
+            departments={departments ?? []}
+            permissions={permissions ?? []}
+            message={
+              params?.updated
+                ? "Đã cập nhật cấu hình user."
+                : params?.checklist_created
+                  ? "Đã thêm giấy tờ hồ sơ mới."
+                  : params?.checklist_updated
+                    ? "Đã cập nhật checklist hồ sơ."
+                    : params?.source_created
+                      ? "Đã thêm nguồn lead mới."
+                      : params?.source_updated
+                        ? "Đã cập nhật nguồn lead."
+                        : params?.flow_created
+                          ? "Đã thêm luồng tuyển sinh mới."
+                          : params?.flow_updated
+                            ? "Đã cập nhật luồng tuyển sinh."
+                            : params?.program_created
+                              ? "Đã thêm hệ đào tạo mới."
+                              : params?.program_updated
+                                ? "Đã cập nhật hệ đào tạo."
+                                : params?.major_created
+                                  ? "Đã thêm ngành tuyển sinh mới."
+                                  : params?.major_updated
+                                    ? "Đã cập nhật ngành tuyển sinh."
+                                    : params?.hou_location_created
+                                      ? "Đã thêm địa điểm học HOU mới."
+                                      : params?.hou_location_updated
+                                        ? "Đã cập nhật địa điểm học HOU."
+                                        : params?.permissions_updated
+                                          ? "Đã cập nhật quyền cho role."
+                                          : params?.scopes_updated
+                                            ? "Đã cập nhật phạm vi làm việc của user."
+                                            : undefined
+            }
+            error={error}
+          />
+        </section>
+
+        <section id="settings-scopes" className="scroll-mt-24">
+          <UserBusinessScopeSettings
+            users={(users ?? []) as BusinessScopeUserRow[]}
+            roles={(roles ?? []) as BusinessScopeRoleRow[]}
+            departments={(departments ?? []) as BusinessScopeDepartmentRow[]}
+            segments={(admissionSegments ?? []).map((segment) => ({
+              id: segment.id,
+              label: segment.segment_name,
+              group: segment.program_group,
+            }))}
+            partners={(partnerScopeOptions ?? []).map((partner) => ({
+              id: partner.id,
+              label: partner.partner_name,
+              group: [partner.partner_type, partner.area]
+                .filter(Boolean)
+                .join(" · "),
+            }))}
+            userSegmentScopes={userSegmentScopes ?? []}
+            userPartnerScopes={userPartnerScopes ?? []}
+            userLeadVisibilityScopes={userLeadVisibilityScopes ?? []}
+            canManageUserProfiles
+            canAssignAllLeadVisibility={canAssignAllLeadVisibility}
+            loadError={
+              userSegmentScopesError?.message ??
+              userPartnerScopesError?.message ??
+              userLeadVisibilityScopesError?.message
+            }
+          />
+        </section>
+
+        <section id="settings-programs" className="scroll-mt-24">
+          <ProgramMajorSettings
+            programs={programs ?? []}
+            majors={majors ?? []}
+            loadError={programsError?.message ?? majorsError?.message}
+          />
+        </section>
+
+        <section id="settings-dynamic-config" className="scroll-mt-24">
+          <AdmissionDynamicConfigSettings
+            overview={dynamicConfigOverview ?? []}
+            summary={dynamicConfigSummary?.[0]}
+            programRules={admissionProgramRules ?? []}
+            formFields={admissionFormFields ?? []}
+            conditionRules={admissionConditionRules ?? []}
+            segments={admissionSegments ?? []}
+            programs={programs ?? []}
+            majors={majors ?? []}
+            loadError={
+              dynamicConfigSummaryError?.message ??
+              dynamicConfigOverviewError?.message ??
+              admissionProgramRulesError?.message ??
+              admissionFormFieldsError?.message ??
+              admissionConditionRulesError?.message
+            }
+          />
+        </section>
+
+        <section id="settings-hou-foundation" className="scroll-mt-24">
+          <HouFoundationSettings
+            programs={houPrograms ?? []}
+            locations={houLocations ?? []}
+            majors={houMajors ?? []}
+            stages={houStages ?? []}
+            terms={houTerms ?? []}
+            policies={houPolicies ?? []}
+            canViewSensitiveFinance={canViewSensitiveHouFinance}
+            loadError={
+              houProgramsError?.message ??
+              houLocationsError?.message ??
+              houMajorsError?.message ??
+              houStagesError?.message ??
+              houTermsError?.message ??
+              houPoliciesError?.message
+            }
+          />
+        </section>
+
+        <section id="settings-hou-commission" className="scroll-mt-24">
+          <HouCommissionSettings
+            canViewHouCommission={canViewHouCommission}
+            canViewStrategicFinance={canViewHouCommissionStrategy}
+            policies={houCommissionPolicies}
+            lines={houCommissionLines}
+            rules={houCommissionRules}
+            cycles={houCommissionCycles}
+            tuitionRates={houTuitionRates}
+            revenueShares={houRevenueShares}
+            loadError={houCommissionLoadError}
+          />
+        </section>
+
+        <section
+          id="settings-operating-masters"
+          className="scroll-mt-24 space-y-6"
+        >
+          <AdmissionFlowSettings
+            flows={admissionFlows ?? []}
+            loadError={admissionFlowsError?.message}
+          />
+          <AdmissionSegmentSettings
+            segments={admissionSegments ?? []}
+            loadError={admissionSegmentsError?.message}
+          />
+          <LeadSourceSettings sources={leadSources ?? []} />
+          <ChecklistSettings checklists={checklists ?? []} />
+        </section>
       </div>
     </AppShell>
   );

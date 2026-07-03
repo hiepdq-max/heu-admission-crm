@@ -14,6 +14,7 @@ import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
 import { UserAccessWorkflowGuide } from "@/components/settings/user-access-workflow-guide";
 import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
+import { UserOperationCutoverPanel } from "@/components/settings/user-operation-cutover-panel";
 import {
   UserScopeEnforcementPanel,
   type UserScopeEffectiveAccessRow,
@@ -302,6 +303,7 @@ export default async function ScopeSettingsPage({
         <>
           <UserAccessWorkflowGuide />
           <RealUserOnboardingPanel />
+          <UserOperationCutoverPanel />
           <UserCreateForm
             roles={roles ?? []}
             departments={departments ?? []}
