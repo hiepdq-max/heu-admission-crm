@@ -7850,3 +7850,18 @@
   `scripts/audit-heu-current-state-inventory.mjs` so the authority request
   lane remains dry-run/read-only.
 - This is authority routing only. It does not send real email, create real tasks/tickets, create real accounts, collect secrets, collect passwords, collect OTPs, store SMTP credentials, accept evidence, execute UAT, approve finance action, approve owner GO/NO-GO, run production migration or mark production GO.
+
+## 2026-07-03 - AI Workstream Scope Router
+
+- Added `docs/HEU_AI_WORKSTREAM_SCOPE_ROUTER_20260703.md` and
+  `scripts/check-heu-ai-workstream-scope-router.mjs` as a read-only routing
+  control for mixed AI/IT workstreams.
+- The checker reads local Git state only, groups dirty files by lane, reports
+  shared-file risk and prints `CURRENT_ROUTE_DECISION` plus `NEXT_SAFE_LANE`
+  before any packaging decision.
+- Current mixed-worktree behavior is intentional: it reports `NO_GO` for route
+  decision while the checker itself remains `AI_WORKSTREAM_ROUTER_READY:
+  PASS_LOCAL_CONTROL`.
+- This slice does not create users, send email, create tasks, call Supabase,
+  run migrations, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
