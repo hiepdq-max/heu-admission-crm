@@ -1,5 +1,141 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P10-06 Khoa Giang Vien Evidence Trace Source Reconciliation
+
+- Added
+  `docs/HEU_KHOA_GIANG_VIEN_EVIDENCE_TRACE_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
+  as the PASS_LOCAL_EVIDENCE_TRACE checklist for M08 controlled evidence refs,
+  source reconciliation, report-view DQ, negative access, UAT ledger and owner
+  signoff linkage.
+- The checklist defines KHOA-EVID-01 through KHOA-EVID-08,
+  `KHOA_EVIDENCE_TRACE_READY / NO_GO / BLOCKED` and
+  `KHOA_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED`, tied back to KHOA-SRC,
+  KHOA-DQ, KHOA-RV-EVID, KHOA-PRIV, KHOA-NEG, KHOA-UAT and KHOA-SIGN rows.
+- Extended `/khoa` with the read-only P10-06 evidence-trace panel,
+  `data-heu-khoa-evidence-trace="P10-06_EVIDENCE_TRACE_SOURCE_RECONCILIATION"`
+  and the no-overflow guard for the trace table.
+- Added `scripts/check-heu-khoa-giang-vien-evidence-trace.mjs` and
+  `check:heu-khoa-giang-vien-evidence-trace` to guard the checklist, UI and
+  propagation through current-state, backlog, gap matrix, Report View source
+  map, Data Master compatibility and production checklist.
+- PASS_LOCAL boundary: this does not approve report-view reliance, approve
+  dashboard reliance, accept DQ evidence, accept source reconciliation, execute
+  UAT, accept evidence, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching payment, approve payroll, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - P10-05 Khoa Giang Vien Negative Access Checklist
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_NEGATIVE_ACCESS_CHECKLIST_20260703.md` as
+  the PASS_LOCAL_NEGATIVE_ACCESS checklist for M08 role denial, private teacher
+  field blocking, payment/payroll boundary visibility and controlled evidence
+  redaction.
+- The checklist defines KHOA-NEG-01 through KHOA-NEG-08 and
+  `KHOA_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED`, tied back to KHOA-PRIV-06,
+  KHOA-UAT-07 and KHOA-SIGN-06.
+- Extended `/khoa` with the read-only P10-05 negative-access panel,
+  `data-heu-khoa-negative-access="P10-05_NEGATIVE_ACCESS_CHECKLIST"` and the
+  no-overflow guard for the access-proof table.
+- Added `scripts/check-heu-khoa-giang-vien-negative-access.mjs` and
+  `check:heu-khoa-giang-vien-negative-access` to guard the checklist, UI and
+  propagation through current-state, backlog, gap matrix and production
+  checklist.
+- PASS_LOCAL boundary: this does not grant access, change role scope, create
+  accounts, import real teacher data, execute UAT, accept evidence, approve
+  teacher profile display, approve teacher profile reliance, approve teaching
+  payment, approve payroll, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P10-04 Khoa Giang Vien Teacher Profile Privacy Register
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_TEACHER_PROFILE_PRIVACY_REGISTER_20260703.md`
+  as the PASS_LOCAL_PRIVACY_REGISTER for M08 teacher profile display-field
+  lanes, privacy class, controlled evidence route and negative access proof.
+- The register defines KHOA-PRIV-01 through KHOA-PRIV-06 and
+  `KHOA_TEACHER_PROFILE_PRIVACY_READY / NO_GO / BLOCKED`, tied back to
+  KHOA-REV-02, KHOA-SIGN-02, KHOA-UAT-02 and KHOA-SRC-02/KHOA-DQ-02.
+- Extended `/khoa` with the read-only P10-04 teacher profile privacy panel,
+  `data-heu-khoa-teacher-profile-privacy="P10-04_TEACHER_PROFILE_PRIVACY_REGISTER"`
+  and the no-overflow guard for the privacy table.
+- Added `scripts/check-heu-khoa-giang-vien-teacher-profile-privacy.mjs` and
+  `check:heu-khoa-giang-vien-teacher-profile-privacy` to guard the register,
+  UI and propagation through current-state, backlog, gap matrix and production
+  checklist.
+- PASS_LOCAL boundary: this does not import real teacher data, approve teacher
+  profile display, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching completion, approve teaching payment, approve
+  payroll, accept evidence, execute UAT, approve owner GO/NO-GO or mark
+  production GO.
+- Boundary token: does not approve teacher profile display.
+
+## 2026-07-03 - P10-03 Khoa Giang Vien Owner Signoff Manifest
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_OWNER_SIGNOFF_MANIFEST_20260703.md` as the
+  PASS_LOCAL_MANIFEST owner decision template for M08 Khoa/Giang vien.
+- The manifest defines KHOA-SIGN-01 through KHOA-SIGN-06,
+  `KHOA_OWNER_READY / NO_GO / BLOCKED`, required closure fields for signer lane,
+  evidence ref, linked review/UAT/source case and blocker state, with evidence
+  and signatures kept outside Git/Codex/chat.
+- Extended `/khoa` with the P10-03 owner-signoff manifest attributes and
+  required evidence/stop-condition display while preserving the P10-01 owner
+  signoff anchor.
+- Added `scripts/check-heu-khoa-giang-vien-owner-signoff.mjs` and
+  `check:heu-khoa-giang-vien-owner-signoff` to guard the manifest, UI and
+  propagation through current-state, backlog, gap matrix and production
+  checklist.
+- PASS_LOCAL boundary: this does not approve owner signature, class delivery
+  reliance, teacher profile reliance, teaching completion, attendance lock,
+  teaching payment, payroll, evidence acceptance, UAT acceptance, report-view
+  reliance, owner GO/NO-GO or production GO.
+- Boundary token: does not approve teaching payment.
+
+## 2026-07-03 - P10-02 Khoa Giang Vien Delivery Source Map
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_DELIVERY_SOURCE_MAP_20260703.md` as the
+  DRAFT_CONTROL source map for `RV_KHOA_GIANG_VIEN_DELIVERY`.
+- The source map defines KHOA-SRC-01 through KHOA-SRC-08, KHOA-DQ-01 through
+  KHOA-DQ-08, KHOA-RV-EVID-01 through KHOA-RV-EVID-06,
+  `KHOA_DELIVERY_SOURCE_READY / NO_GO / BLOCKED` and
+  `RV_KHOA_GIANG_VIEN_DELIVERY / NO_GO / BLOCKED`.
+- Updated Report View Register, Report View Source Map, Data Master / Report
+  View Compatibility and SQL Object Master Map so Khoa/Giang vien has
+  FACULTY_DEPARTMENT_MASTER, TEACHER_PROFILE_MASTER and TEACHING_DELIVERY_MASTER
+  planning entries without running a production migration.
+- Extended `/khoa` with the read-only P10-02 source-map panel and added
+  `scripts/check-heu-khoa-giang-vien-source-map.mjs` plus
+  `check:heu-khoa-giang-vien-source-map` to guard the docs, UI and propagation.
+- PASS_LOCAL boundary: this does not approve class delivery reliance, teacher
+  profile reliance, teaching completion, attendance lock, teaching payment,
+  payroll, evidence acceptance, UAT acceptance, report-view reliance, owner
+  GO/NO-GO or production GO.
+- Boundary token: does not approve teaching payment.
+
+## 2026-07-03 - P10-01 Khoa Giang Vien Gap Pack
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md` and
+  `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
+  M08 Khoa/Giang vien PASS_LOCAL foundation.
+- Added `components/khoa/khoa-giang-vien-gap-pack.tsx` and `app/khoa/page.tsx`
+  so `/khoa` exposes KHOA-GV-01 through KHOA-GV-08, KHOA-REV-01 through
+  KHOA-REV-06, KHOA-SIGN-01 through KHOA-SIGN-06 and KHOA-UAT-LEDGER-01 through
+  KHOA-UAT-LEDGER-08 with `KHOA_GV_READY / NO_GO / BLOCKED`,
+  `KHOA_REVIEW_READY / NO_GO / BLOCKED`, `KHOA_OWNER_READY / NO_GO / BLOCKED`
+  and `KHOA_UAT_RESULT_READY / NO_GO / BLOCKED`.
+- Added `scripts/check-heu-khoa-giang-vien-foundation.mjs` and
+  `check:heu-khoa-giang-vien-foundation` to verify the docs, UI route,
+  AppShell navigation, current-state, backlog and gap-matrix propagation.
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so M08 is no
+  longer an undefined early placeholder; it is a controlled PASS_LOCAL
+  foundation that still requires signed Khoa/Giang vien UAT, teacher profile
+  privacy approval, source reconciliation, owner signoff manifest completion and
+  report-view owner signoff before reliance.
+- This is Khoa/Giang vien control packaging only. It does not approve class
+  delivery reliance, teacher profile reliance, teaching completion, attendance
+  lock, teaching payment, payroll, evidence acceptance, UAT acceptance, owner
+  GO/NO-GO or production GO.
+- Boundary token: does not approve class delivery reliance.
+
 ## 2026-07-03 - Negative Control Account Queue Checker
 
 - Scope: Packaged the read-only P0-17 negative-control account queue for

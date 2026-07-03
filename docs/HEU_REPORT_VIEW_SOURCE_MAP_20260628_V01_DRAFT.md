@@ -31,6 +31,7 @@ unapproved sensitive data.
 | RV_TTGDTX_UAT_READINESS | `lib/production-readiness.ts`; `TTGDTX_PRODUCTION_OWNER_SIGNOFF_PACK_20260627.md`; UAT operator handoff docs; current-state inventory | Master Control; TTGDTX landing guard | P0-03/P0-09/P0-13/P0-14/P0-15 evidence path checks | BGH + IT_DATA + KHTC + PHAP_CHE + Audit | SOURCE_MAP_DRAFT |
 | RV_HOU_LEDGER_SUMMARY | `leads` HOU fields; `hou_programs`; `hou_majors`; `hou_locations`; `hou_admission_stages`; `hou_financial_policies`; `hou_commission_claims`; `hou_commission_claim_lines`; `hou_commission_payment_batches`; `hou_commission_payment_lines`; `hou_evidence_files` | `/hou`; HOU workspace | HOU handover, tuition confirmation, evidence and commission policy checks | HOU owner + KHTC + IT_DATA + Audit | SOURCE_MAP_DRAFT |
 | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | `short_course_data_foundation_summary`; `short_course_dashboard_kpis`; `short_course_exception_summary`; `short_course_exception_register`; `short_attendance_session_readiness`; `short_bhxh_policy_case_readiness`; `short_finance_invoice_readiness`; `short_payment_readiness` | `/short-course`; Short Course dashboard | Class/student/attendance/payment linkage; exception register; attendance lock evidence | DAO_TAO + KHTC + IT_DATA + Audit | SOURCE_MAP_DRAFT |
+| RV_KHOA_GIANG_VIEN_DELIVERY | `docs/HEU_KHOA_GIANG_VIEN_DELIVERY_SOURCE_MAP_20260703.md`; `docs/HEU_KHOA_GIANG_VIEN_EVIDENCE_TRACE_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`; `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`; `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`; `admission_departments`; staff/position controls; future owner-signed Khoa register | `/khoa`; Khoa/Giang vien dashboard | KHOA-DQ-01 through KHOA-DQ-08, KHOA-EVID-01 through KHOA-EVID-08 and DQ-RV-09 for faculty scope, teacher profile privacy, assignment trace, teaching evidence, payment/payroll stop rule, source reconciliation and report-view signoff | DAO_TAO + Khoa owner + HR + KHTC + PHAP_CHE + IT_DATA + Audit | SOURCE_MAP_DRAFT |
 | RV_AUDIT_RISK_CONTROL | `audit_logs`; hard-delete/cascade finding register; controlled evidence binder docs; risk/signoff register | `/audit`; Master Control; BGH blocker summary | P6-03 audit-log UAT; P6-06 conversion/waiver decision | Audit + IT_DATA + affected owners | SOURCE_MAP_DRAFT |
 | RV_AI_ALLOWED_CONTEXT | `HEU_AI_ASSISTANT_POLICY_20260627.md`; `HEU_AI_AGENT_SCOPE_REGISTER_20260627_V01_DRAFT.md`; Data Dictionary; Report View Register; Risk Control Signoff Register | `/ai-assistant`; AI checklist/risk boards | AI scope, no raw restricted data, prompt/output audit design | BGH + IT_DATA + Audit | SOURCE_MAP_DRAFT |
 
@@ -47,6 +48,9 @@ unapproved sensitive data.
 | KPI_HOU_COM_RISK | HOU commission claims with high-risk/dropout/debt-offset signals | RV_HOU_LEDGER_SUMMARY | KHTC/Audit review queue | Does not finalize COM payable |
 | KPI_SHORT_ATTENDANCE_LOCK_GAP | Short-course classes/sessions needing attendance lock/approval | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | Attendance/payment UAT preparation | Does not approve BHXH, meal or HR payment |
 | KPI_SHORT_PAYMENT_READY | Short-course payment records ready for verification in controlled views | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | Payment verification queue | Does not close payment period |
+| KPI_KHOA_TEACHER_PROFILE_SCOPE_GAP | Teacher-profile fields still missing privacy/signoff classification | RV_KHOA_GIANG_VIEN_DELIVERY | HR/PHAP_CHE review queue | Does not approve teacher profile display in production |
+| KPI_KHOA_DELIVERY_EVIDENCE_TRACE_GAP | Teaching sessions missing controlled evidence or completion exception route | RV_KHOA_GIANG_VIEN_DELIVERY | Audit and UAT preparation | Does not prove teaching completion, attendance lock or evidence acceptance |
+| KPI_KHOA_PAYMENT_BOUNDARY_BLOCKED | Payment/payroll formulas or claims blocked until policy/UAT signoff | RV_KHOA_GIANG_VIEN_DELIVERY | KHTC + HR risk review | Does not calculate, approve or pay teaching payment/payroll |
 | KPI_AUDIT_OPEN_CRITICAL | Open critical audit/risk/cascade findings | RV_AUDIT_RISK_CONTROL | Owner blocker dashboard | Does not waive findings |
 | KPI_AI_ALLOWED_SCOPE | AI-readable context is restricted to approved docs/report views | RV_AI_ALLOWED_CONTEXT | AI pilot readiness review | Does not enable AI production action |
 
@@ -63,6 +67,7 @@ unapproved sensitive data.
 | DQ-RV-07 | Audit/Risk | Audit log and owner decision references are visible | Waiver is shown without signed owner decision |
 | DQ-RV-08 | AI | AI source is approved read-only context only | AI reads raw restricted data or writes workflow state |
 
+| DQ-RV-09 | Khoa/Giang vien | KHOA-DQ-01 through KHOA-DQ-08 and KHOA-EVID-01 through KHOA-EVID-08 prove faculty scope, teacher profile privacy, class assignment trace, teaching evidence, payment/payroll stop rule, source reconciliation and report-view signoff route | Teacher data, teaching completion, payment/payroll or dashboard reliance is trusted before signed UAT and owner signoff |
 ## 6. Evidence Attachment Queue
 
 | Evidence ID | Report view | Required evidence | Decision value | Stop condition |
@@ -74,6 +79,12 @@ unapproved sensitive data.
 | RV-EVID-05 | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | Short Course attendance/payment UAT; BHXH policy proof; report-view signoff | SC_ATTENDANCE_PAYMENT_READY / NO_GO / BLOCKED | Payment period is relied on before attendance lock and finance evidence are signed |
 | RV-EVID-06 | RV_AUDIT_RISK_CONTROL / RV_AI_ALLOWED_CONTEXT | P6-03 audit-log UAT; P6-06 conversion-or-waiver decision; AI scope approval | AUDIT_AI_SCOPE_READY / NO_GO / BLOCKED | Risk waiver, AI scope or audit trace is treated as accepted without owner evidence |
 
+| RV-EVID-07 | RV_KHOA_GIANG_VIEN_DELIVERY | Khoa/Giang vien source map; `docs/HEU_KHOA_GIANG_VIEN_EVIDENCE_TRACE_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`; KHOA-RV-EVID-01 through KHOA-RV-EVID-06; KHOA-EVID-01 through KHOA-EVID-08; KHOA-UAT result ledger; owner signoff route | KHOA_DELIVERY_SOURCE_READY / KHOA_EVIDENCE_TRACE_READY / KHOA_SOURCE_RECONCILIATION_READY / RV_KHOA_GIANG_VIEN_DELIVERY / NO_GO / BLOCKED | Khoa dashboard, teaching completion, teacher profile display or teaching payment/payroll is relied on before signed UAT, source reconciliation and owner signoff |
+P10-06 Khoa/Giang vien evidence trace decision tokens:
+KHOA_EVIDENCE_TRACE_READY / NO_GO / BLOCKED and
+KHOA_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED.
+Legacy P10-02 Khoa source-map decision token:
+KHOA_DELIVERY_SOURCE_READY / RV_KHOA_GIANG_VIEN_DELIVERY / NO_GO / BLOCKED.
 The queue names controlled evidence references only. It does not upload files,
 accept evidence, approve signoff, waive blockers or store raw evidence in
 Git/Codex/chat.

@@ -93,6 +93,12 @@ const navigation = [
   { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
   { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
   {
+    label: "Khoa/GV",
+    href: "/khoa",
+    icon: Users,
+    key: "khoa",
+  },
+  {
     label: "CTHSSV",
     href: "/cthssv",
     icon: ClipboardCheck,

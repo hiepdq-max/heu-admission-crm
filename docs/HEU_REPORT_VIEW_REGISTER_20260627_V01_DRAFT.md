@@ -31,6 +31,7 @@ forbidden interpretations for each logical report view.
 | RV_TTGDTX_UAT_READINESS | TTGDTX/9+ | IT_DATA + Audit | Master Control | UAT/signoff/blocker status | SOURCE_MAP_DRAFT |
 | RV_HOU_LEDGER_SUMMARY | HOU | HOU owner + KHTC | HOU dashboard | HOU handover/tuition/commission separation | SOURCE_MAP_DRAFT |
 | RV_SHORT_COURSE_ATTENDANCE_PAYMENT | Short Course | DAO_TAO + KHTC | Short Course dashboard | Class/student/attendance/payment linkage | SOURCE_MAP_DRAFT |
+| RV_KHOA_GIANG_VIEN_DELIVERY | Khoa/Giang vien | DAO_TAO + Khoa owner + HR + KHTC + PHAP_CHE + Audit | Khoa dashboard | Faculty/bo mon owner map, teacher profile privacy, class assignment, teaching evidence, payment/payroll stop rule and owner signoff route | SOURCE_MAP_DRAFT |
 | RV_AUDIT_RISK_CONTROL | Audit | Audit | Audit dashboard | Risk owner, event log, signoff state | SOURCE_MAP_DRAFT |
 | RV_AI_ALLOWED_CONTEXT | AI | IT_DATA + Audit | AI assistant | Scope level, no restricted raw data, read-only | SOURCE_MAP_DRAFT |
 
