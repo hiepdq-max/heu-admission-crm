@@ -1,5 +1,28 @@
 # HEU Implementation Log
 
+## 2026-07-03 - User Scope Baseline Repair Checker Command
+
+- Scope: Packaged the read-only P0-17 scope baseline repair checker command so
+  owner-side repair can identify missing lead visibility and missing business
+  scope without exposing personal data or changing real user scope.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
+  implementation log. The queue document remains
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`.
+- Result: `check:heu-user-scope-baseline-repair-queue` reports
+  `USER_SCOPE_BASELINE_REPAIR_READY / NO_GO / BLOCKED` with safe owner repair
+  labels, counts for missing lead visibility and missing segment/partner scope,
+  and a fixed repair order `USER-SCOPE-REPAIR-01` through
+  `USER-SCOPE-REPAIR-04`. It is read-only and prints no secrets, emails, names,
+  phone numbers, service-role keys, reset links or raw IDs.
+- Verification: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
+  release checks before commit handoff.
+- Boundary: This is PASS_LOCAL checker packaging only. It does not create
+  accounts, assign real users, set passwords, send reset/invite links, change
+  lead visibility, add segment/partner scope, execute UAT, accept evidence,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - IT/Data Fast Local Control Loop
 
 - Scope: Added a fast PASS_LOCAL loop for IT/Data to check the smallest

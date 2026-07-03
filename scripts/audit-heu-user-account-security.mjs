@@ -81,6 +81,10 @@ const userCreateServerKeyTemplatePath =
   "docs/HEU_USER_CREATE_SERVER_KEY_TEMPLATE_20260702.md";
 const userCreateReadinessCheckPath =
   "scripts/check-heu-user-create-readiness.mjs";
+const userScopeBaselineRepairCheckPath =
+  "scripts/check-heu-user-scope-baseline-repair-queue.mjs";
+const userScopeBaselineRepairQueuePath =
+  "docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md";
 const userCreatePermissionMigrationPath =
   "database/step112_admin_user_create_permission.sql";
 const departmentHeadRolesMigrationPath =
@@ -120,6 +124,8 @@ for (const file of [
   seedPath,
   userCreateServerKeyTemplatePath,
   userCreateReadinessCheckPath,
+  userScopeBaselineRepairCheckPath,
+  userScopeBaselineRepairQueuePath,
   userCreatePermissionMigrationPath,
   departmentHeadRolesMigrationPath,
   organizationPositionMatrixPath,
@@ -153,6 +159,8 @@ const permissionsSource = read(permissionsPath);
 const seedSource = read(seedPath);
 const userCreateServerKeyTemplate = read(userCreateServerKeyTemplatePath);
 const userCreateReadinessCheck = read(userCreateReadinessCheckPath);
+const userScopeBaselineRepairCheck = read(userScopeBaselineRepairCheckPath);
+const userScopeBaselineRepairQueue = read(userScopeBaselineRepairQueuePath);
 const userCreatePermissionMigration = read(userCreatePermissionMigrationPath);
 const departmentHeadRolesMigration = read(departmentHeadRolesMigrationPath);
 const organizationPositionMatrix = read(organizationPositionMatrixPath);
@@ -705,9 +713,82 @@ forbidText(
 );
 
 requireAllText(
+  userScopeBaselineRepairCheck,
+  [
+    "HEU user scope baseline repair queue check",
+    "Secrets, emails, names, phone numbers and raw IDs are never printed",
+    "USER-SCOPE-REPAIR-APP-GUARD",
+    "USER-SCOPE-REPAIR-DB-READ",
+    "USER-SCOPE-REPAIR-LEAD-VISIBILITY",
+    "USER-SCOPE-REPAIR-BUSINESS-SCOPE",
+    "USER-SCOPE-REPAIR-NO-BROAD-VISIBILITY",
+    "USER-SCOPE-REPAIR-WORKSPACE",
+    "USER-SCOPE-REPAIR-OWNER-LABELS",
+    "USER-SCOPE-REPAIR-NO-AUTO-ACTION",
+    "USER-SCOPE-REPAIR-SECRET-BOUNDARY",
+    "USER-SCOPE-REPAIR-01",
+    "USER-SCOPE-REPAIR-02",
+    "USER-SCOPE-REPAIR-03",
+    "USER-SCOPE-REPAIR-04",
+    "safe_owner_repair_labels",
+    "hash labels are for secure owner-side lookup only",
+    "HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md",
+    "Raw errors are not printed.",
+  ],
+  "local user scope baseline repair queue script",
+  userScopeBaselineRepairCheckPath,
+);
+
+forbidText(
+  userScopeBaselineRepairCheck,
+  [
+    ".insert(",
+    ".delete(",
+    ".upsert(",
+    ".update(",
+    "auth.admin.createUser",
+    "auth.admin.updateUserById",
+    "auth.admin.deleteUser",
+    "auth.admin.listUsers",
+    "resetPasswordForEmail",
+  ],
+  "mutating or credential-management operation in scope baseline repair checker",
+  userScopeBaselineRepairCheckPath,
+);
+
+requireAllText(
+  userScopeBaselineRepairQueue,
+  [
+    "HEU User Scope Baseline Repair Queue - 2026-07-03",
+    "Status: PASS_LOCAL_QUEUE",
+    "USER_SCOPE_BASELINE_REPAIR_READY / NO_GO / BLOCKED",
+    "Current decision: NO_GO",
+    "USER-SCOPE-REPAIR-01",
+    "USER-SCOPE-REPAIR-02",
+    "USER-SCOPE-REPAIR-03",
+    "USER-SCOPE-REPAIR-04",
+    "safe_owner_repair_labels",
+    "redacted hash labels plus role code",
+    "check:heu-user-scope-baseline-repair-queue",
+    "does not create accounts",
+    "assign real users",
+    "set passwords",
+    "send reset/invite links",
+    "change lead visibility",
+    "add segment/partner scope",
+    "execute UAT",
+    "accept evidence",
+    "approve owner GO/NO-GO",
+    "mark production GO",
+  ],
+  "user scope baseline repair queue doc",
+  userScopeBaselineRepairQueuePath,
+);
+
+requireAllText(
   JSON.stringify(packageJson.scripts),
-  ["check:heu-user-create-readiness"],
-  "package command for user-create readiness",
+  ["check:heu-user-create-readiness", "check:heu-user-scope-baseline-repair-queue"],
+  "package commands for user-create and scope baseline repair readiness",
   packagePath,
 );
 
