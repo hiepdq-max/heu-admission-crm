@@ -38,6 +38,9 @@ const requiredFiles = [
   "docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
   "components/hou/hou-ledger-handover-gap-pack.tsx",
   "app/hou/page.tsx",
+  "app/hou/actions.ts",
+  "scripts/check-heu-hou-scope-readiness.mjs",
+  "docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md",
   "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   "docs/HEU_CURRENT_STATE_INVENTORY.md",
@@ -56,6 +59,10 @@ const packageJson = exists("package.json") ? JSON.parse(read("package.json")) : 
 
 if (!packageJson.scripts?.["audit:heu-hou-ledger-handover-gap-pack"]) {
   fail("package.json: missing audit:heu-hou-ledger-handover-gap-pack script");
+}
+
+if (!packageJson.scripts?.["check:heu-hou-scope-readiness"]) {
+  fail("package.json: missing check:heu-hou-scope-readiness script");
 }
 
 requireText(
@@ -104,6 +111,30 @@ requireText(
   "app/hou/page.tsx",
   /(?=[\s\S]*HouLedgerHandoverGapPack)(?=[\s\S]*<HouLedgerHandoverGapPack \/>)/i,
   "HOU page mounts gap-pack panel",
+);
+
+requireText(
+  "app/hou/page.tsx",
+  /(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*admissionWorkspaceSegmentIds)(?=[\s\S]*applyAdmissionSegmentIds)(?=[\s\S]*firstParam)(?=[\s\S]*withAdmissionSegmentParam\("\/hou", workspace\.activeSegmentId\))(?=[\s\S]*admission_segment_id)(?=[\s\S]*workspaceSegmentId=\{workspace\.activeSegmentId\})(?=[\s\S]*workspaceReturnTo=\{refreshHref\})(?=[\s\S]*\.in\("claim_line_id", scopedClaimLineIds\))(?=[\s\S]*\.in\("id", scopedPaymentBatchIds\))/i,
+  "HOU page admission workspace scope and scoped COM payment reads",
+);
+
+requireText(
+  "app/hou/actions.ts",
+  /(?=[\s\S]*getHouClaimsWorkspaceScopeError)(?=[\s\S]*getHouClaimLinesWorkspaceScopeError)(?=[\s\S]*can_use_admission_workspace)(?=[\s\S]*can_access_business_scope)(?=[\s\S]*await getHouClaimsWorkspaceScopeError\(supabase, \[claim\.id\]\))(?=[\s\S]*claimLines\.map\(\(line\) => line\.claim_id\))(?=[\s\S]*await getHouClaimLinesWorkspaceScopeError\()/i,
+  "HOU COM actions require workspace/business scope before writes",
+);
+
+requireText(
+  "scripts/check-heu-hou-scope-readiness.mjs",
+  /(?=[\s\S]*HOU-SCOPE-APP-GUARD)(?=[\s\S]*HOU-SCOPE-SEGMENT)(?=[\s\S]*HOU-SCOPE-LEAD-TAG)(?=[\s\S]*HOU-SCOPE-CLAIMS)(?=[\s\S]*HOU-SCOPE-CLAIM-LINES)(?=[\s\S]*HOU-SCOPE-PAYMENT-LINES)(?=[\s\S]*HOU-SCOPE-PAYMENT-BATCHES)(?=[\s\S]*HOU-SCOPE-EVIDENCE)(?=[\s\S]*HOU-SCOPE-ACTOR-LINK)(?=[\s\S]*Secrets, emails, names, phone numbers, bank accounts, vouchers and raw IDs are never printed)/i,
+  "HOU scope readiness checker",
+);
+
+requireText(
+  "docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md",
+  /(?=[\s\S]*check:heu-hou-scope-readiness)(?=[\s\S]*Slice 10 - HOU Scope Closure)(?=[\s\S]*HOU-SCOPE-APP-GUARD)(?=[\s\S]*HOU-SCOPE-LEAD-TAG)(?=[\s\S]*HOU-SCOPE-PAYMENT-LINES)(?=[\s\S]*PASS_LOCAL)(?=[\s\S]*does not approve HOU handover[\s\S]*tuition\s+ledger posting[\s\S]*invoice issuance[\s\S]*COM payout[\s\S]*finance action[\s\S]*UAT acceptance[\s\S]*evidence acceptance[\s\S]*owner GO[\s\S]*production GO)/i,
+  "permission scope breakdown HOU scope closure slice",
 );
 
 requireText(

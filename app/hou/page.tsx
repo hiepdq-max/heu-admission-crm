@@ -25,6 +25,13 @@ import {
 } from "@/components/hou/hou-payment-batches";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import {
+  admissionWorkspaceSegmentIds,
+  applyAdmissionSegmentIds,
+  firstParam,
+  getAdmissionWorkspaceContext,
+  withAdmissionSegmentParam,
+} from "@/lib/workspace";
 
 type HouLeadRow = {
   id: string;
@@ -38,6 +45,7 @@ type HouLeadRow = {
   assigned_to: string | null;
   next_followup_at: string | null;
   updated_at: string;
+  admission_segment_id: string | null;
   hou_program_id: string | null;
   hou_major_id: string | null;
   hou_location_id: string | null;
@@ -198,6 +206,12 @@ type HouCommissionRiskRow = {
   totalNetVnd: number;
   paidNetVnd: number;
   breakeven?: HouBreakevenCheckRow;
+};
+
+type HouControlPageProps = {
+  searchParams?: Promise<{
+    segment?: string | string[];
+  }>;
 };
 
 const statusLabels: Record<string, string> = {
@@ -958,7 +972,9 @@ function ClaimTable({
   );
 }
 
-export default async function HouControlPage() {
+export default async function HouControlPage({
+  searchParams,
+}: HouControlPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -967,6 +983,15 @@ export default async function HouControlPage() {
   if (!user) {
     redirect("/login");
   }
+
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const workspace = await getAdmissionWorkspaceContext(
+    supabase,
+    user.id,
+    requestedSegmentId,
+  );
+  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
 
   const [
     leadsResult,
@@ -977,12 +1002,15 @@ export default async function HouControlPage() {
     usersResult,
     rolesResult,
   ] = await Promise.all([
-    supabase
-      .from("leads")
-      .select(
-        "id,lead_code,student_name,student_phone,status,priority,interested_program,interested_major,assigned_to,next_followup_at,updated_at,hou_program_id,hou_major_id,hou_location_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
-      )
-      .eq("is_deleted", false)
+    applyAdmissionSegmentIds(
+      supabase
+        .from("leads")
+        .select(
+          "id,lead_code,student_name,student_phone,status,priority,interested_program,interested_major,assigned_to,next_followup_at,updated_at,admission_segment_id,hou_program_id,hou_major_id,hou_location_id,hou_stage_id,hou_admission_system_status,hou_admission_system_synced_at,hou_first_term_tuition_confirmed,hou_first_term_tuition_confirmed_at,hou_enrollment_recorded_at",
+        )
+        .eq("is_deleted", false),
+      segmentFilterIds,
+    )
       .order("updated_at", { ascending: false })
       .limit(5000)
       .returns<HouLeadRow[]>(),
@@ -1056,35 +1084,41 @@ export default async function HouControlPage() {
   const evidenceRows = evidenceResult.data ?? [];
   const claimRows = claimsResult.data ?? [];
   const claimIds = claimRows.map((claim) => claim.id);
-  const [claimLinesResult, paymentLinesResult, paymentBatchesResult] =
+  const claimLinesResult =
     canSeeFinancial && claimIds.length > 0
-      ? await Promise.all([
-          supabase
-            .from("hou_commission_claim_lines")
-            .select(
-              "id,claim_id,component_name,gross_amount_vnd,tax_withheld_vnd,debt_offset_amount_vnd,net_amount_vnd,line_status",
-            )
-            .in("claim_id", claimIds)
-            .returns<HouClaimLineRow[]>(),
-          supabase
-            .from("hou_commission_payment_lines")
-            .select("id,payment_batch_id,claim_line_id,paid_amount_vnd,status")
-            .neq("status", "CANCELLED")
-            .returns<HouPaymentLineRow[]>(),
-          supabase
-            .from("hou_commission_payment_batches")
-            .select(
-              "id,payment_batch_code,payment_batch_name,payment_method,status,accounting_voucher_no,total_gross_vnd,total_tax_withheld_vnd,total_debt_offset_vnd,total_net_vnd,requested_at,approved_at,paid_at,note,created_at",
-            )
-            .order("created_at", { ascending: false })
-            .limit(20)
-            .returns<HouPaymentBatchRawRow[]>(),
-        ])
-      : [
-          { data: [] as HouClaimLineRow[], error: null },
-          { data: [] as HouPaymentLineRow[], error: null },
-          { data: [] as HouPaymentBatchRawRow[], error: null },
-        ];
+      ? await supabase
+          .from("hou_commission_claim_lines")
+          .select(
+            "id,claim_id,component_name,gross_amount_vnd,tax_withheld_vnd,debt_offset_amount_vnd,net_amount_vnd,line_status",
+          )
+          .in("claim_id", claimIds)
+          .returns<HouClaimLineRow[]>()
+      : { data: [] as HouClaimLineRow[], error: null };
+  const scopedClaimLineIds = (claimLinesResult.data ?? []).map((line) => line.id);
+  const paymentLinesResult =
+    canSeeFinancial && scopedClaimLineIds.length > 0
+      ? await supabase
+          .from("hou_commission_payment_lines")
+          .select("id,payment_batch_id,claim_line_id,paid_amount_vnd,status")
+          .in("claim_line_id", scopedClaimLineIds)
+          .neq("status", "CANCELLED")
+          .returns<HouPaymentLineRow[]>()
+      : { data: [] as HouPaymentLineRow[], error: null };
+  const scopedPaymentBatchIds = Array.from(
+    new Set((paymentLinesResult.data ?? []).map((line) => line.payment_batch_id)),
+  );
+  const paymentBatchesResult =
+    canSeeFinancial && scopedPaymentBatchIds.length > 0
+      ? await supabase
+          .from("hou_commission_payment_batches")
+          .select(
+            "id,payment_batch_code,payment_batch_name,payment_method,status,accounting_voucher_no,total_gross_vnd,total_tax_withheld_vnd,total_debt_offset_vnd,total_net_vnd,requested_at,approved_at,paid_at,note,created_at",
+          )
+          .in("id", scopedPaymentBatchIds)
+          .order("created_at", { ascending: false })
+          .limit(20)
+          .returns<HouPaymentBatchRawRow[]>()
+      : { data: [] as HouPaymentBatchRawRow[], error: null };
   const tuitionRatesResult = canSeeFinancial
     ? await supabase
         .from("hou_tuition_credit_rates")
@@ -1413,14 +1447,22 @@ export default async function HouControlPage() {
         : programMap.get(key) ?? "Không rõ chương trình",
   );
 
+  const refreshHref = withAdmissionSegmentParam("/hou", workspace.activeSegmentId);
+
   return (
     <AppShell
       active="hou"
       title="Kiểm soát HOU"
-      description="Theo dõi lead liên thông đại học HOU, minh chứng, học phí kỳ đầu và claim COM từ dữ liệu Supabase."
+      description={
+        workspace.activeSegment
+          ? `Đang xem riêng đối tượng: ${workspace.activeSegment.label}.`
+          : "Theo dõi lead liên thông đại học HOU, minh chứng, học phí kỳ đầu và claim COM từ dữ liệu Supabase."
+      }
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={refreshHref}
       actions={
         <Button asChild variant="outline">
-          <Link href="/hou">
+          <Link href={refreshHref}>
             <RefreshCcw className="size-4" />
             Tải lại
           </Link>

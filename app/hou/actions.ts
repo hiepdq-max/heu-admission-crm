@@ -46,6 +46,25 @@ type PaymentLineForStatus = {
   claim_line_id: string;
 };
 
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+
+type ClaimScopeRow = {
+  id: string;
+  lead_id: string | null;
+};
+
+type ClaimLineScopeRow = {
+  id: string;
+  claim_id: string;
+};
+
+type LeadScopeRow = {
+  id: string;
+  admission_segment_id: string | null;
+  partner_id: string | null;
+  is_deleted: boolean;
+};
+
 function textValue(formData: FormData, key: string) {
   const value = String(formData.get(key) ?? "").trim();
   return value.length > 0 ? value : null;
@@ -132,6 +151,125 @@ function paymentStatusLabel(targetStatus: string) {
   return labels[targetStatus] ?? targetStatus;
 }
 
+function uniqueValues(values: Array<string | null | undefined>) {
+  return Array.from(new Set(values.filter((value): value is string => Boolean(value))));
+}
+
+async function getHouClaimsWorkspaceScopeError(
+  supabase: SupabaseServerClient,
+  claimIds: string[],
+) {
+  const uniqueClaimIds = uniqueValues(claimIds);
+
+  if (uniqueClaimIds.length === 0) {
+    return "Không có claim COM HOU hợp lệ để xác minh phạm vi workspace.";
+  }
+
+  const { data: claims, error: claimsError } = await supabase
+    .from("hou_commission_claims")
+    .select("id,lead_id")
+    .in("id", uniqueClaimIds)
+    .neq("claim_status", "CANCELLED")
+    .returns<ClaimScopeRow[]>();
+
+  if (claimsError || !claims || claims.length !== uniqueClaimIds.length) {
+    return (
+      "Không xác minh được claim COM HOU trong phạm vi hiện tại. Chi tiết: " +
+      (claimsError?.message ?? "thiếu claim hoặc claim đã bị hủy")
+    );
+  }
+
+  const leadIds = uniqueValues(claims.map((claim) => claim.lead_id));
+
+  if (leadIds.length !== claims.length) {
+    return "Một số claim COM HOU chưa gắn lead nên không thể xác minh phạm vi workspace.";
+  }
+
+  const { data: leads, error: leadsError } = await supabase
+    .from("leads")
+    .select("id,admission_segment_id,partner_id,is_deleted")
+    .in("id", leadIds)
+    .eq("is_deleted", false)
+    .returns<LeadScopeRow[]>();
+
+  if (leadsError || !leads || leads.length !== leadIds.length) {
+    return (
+      "Không xác minh được lead gốc của claim COM HOU. Chi tiết: " +
+      (leadsError?.message ?? "lead không tồn tại hoặc đã bị xoá")
+    );
+  }
+
+  for (const lead of leads) {
+    if (!lead.admission_segment_id) {
+      return "Lead gốc của claim COM HOU chưa có admission_segment_id nên bị chặn thao tác.";
+    }
+
+    const { data: workspaceAllowed, error: workspaceError } = await supabase.rpc(
+      "can_use_admission_workspace",
+      {
+        target_segment_id: lead.admission_segment_id,
+      },
+    );
+
+    if (workspaceError || !workspaceAllowed) {
+      return (
+        workspaceError?.message ??
+        "Tài khoản chưa được phân quyền thao tác workspace của claim COM HOU này."
+      );
+    }
+
+    const { data: businessAllowed, error: businessError } = await supabase.rpc(
+      "can_access_business_scope",
+      {
+        lead_segment_id: lead.admission_segment_id,
+        lead_partner_id: lead.partner_id,
+      },
+    );
+
+    if (businessError || !businessAllowed) {
+      return (
+        businessError?.message ??
+        "Tài khoản chưa được phân quyền phạm vi segment/partner của claim COM HOU này."
+      );
+    }
+  }
+
+  return null;
+}
+
+async function getHouClaimLinesWorkspaceScopeError(
+  supabase: SupabaseServerClient,
+  claimLineIds: string[],
+) {
+  const uniqueClaimLineIds = uniqueValues(claimLineIds);
+
+  if (uniqueClaimLineIds.length === 0) {
+    return "Không có dòng COM HOU hợp lệ để xác minh phạm vi workspace.";
+  }
+
+  const { data: claimLines, error: claimLinesError } = await supabase
+    .from("hou_commission_claim_lines")
+    .select("id,claim_id")
+    .in("id", uniqueClaimLineIds)
+    .returns<ClaimLineScopeRow[]>();
+
+  if (
+    claimLinesError ||
+    !claimLines ||
+    claimLines.length !== uniqueClaimLineIds.length
+  ) {
+    return (
+      "Không xác minh được dòng COM HOU trong phạm vi hiện tại. Chi tiết: " +
+      (claimLinesError?.message ?? "thiếu dòng COM")
+    );
+  }
+
+  return getHouClaimsWorkspaceScopeError(
+    supabase,
+    claimLines.map((line) => line.claim_id),
+  );
+}
+
 export async function reviewHouCommissionClaimAction(
   _previousState: HouClaimReviewState,
   formData: FormData,
@@ -211,6 +349,11 @@ export async function reviewHouCommissionClaimAction(
       "Claim đã PAID/CANCELLED nên không được đổi trạng thái ở bước duyệt.",
       fields,
     );
+  }
+
+  const scopeError = await getHouClaimsWorkspaceScopeError(supabase, [claim.id]);
+  if (scopeError) {
+    return formError(scopeError, fields);
   }
 
   if (claim.claim_status === "APPROVED" && targetStatus !== "RISK_HOLD") {
@@ -423,6 +566,14 @@ export async function createHouCommissionPaymentBatchAction(
       "Chỉ được lập kỳ thanh toán cho dòng COM ở trạng thái APPROVED.",
       fields,
     );
+  }
+
+  const scopeError = await getHouClaimsWorkspaceScopeError(
+    supabase,
+    claimLines.map((line) => line.claim_id),
+  );
+  if (scopeError) {
+    return paymentFormError(scopeError, fields);
   }
 
   const { data: existingPaymentLines, error: existingPaymentLinesError } =
@@ -684,6 +835,14 @@ export async function updateHouCommissionPaymentBatchStatusAction(
       "Kỳ thanh toán này chưa có dòng thanh toán hợp lệ.",
       fields,
     );
+  }
+
+  const scopeError = await getHouClaimLinesWorkspaceScopeError(
+    supabase,
+    claimLineIds,
+  );
+  if (scopeError) {
+    return paymentFormError(scopeError, fields);
   }
 
   const { error: updateBatchError } = await supabase

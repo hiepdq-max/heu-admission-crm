@@ -1,5 +1,29 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P8-01 HOU Scope Readiness Guard
+
+- Updated `app/hou/page.tsx` so `/hou` reads leads through
+  `getAdmissionWorkspaceContext`, `admissionWorkspaceSegmentIds` and
+  `applyAdmissionSegmentIds`, preserves `workspaceReturnTo`, and scopes HOU COM
+  payment-line/payment-batch reads back to visible HOU claim lines.
+- Updated `app/hou/actions.ts` so HOU COM claim review, payment-batch creation
+  and payment-batch status updates call `getHouClaimsWorkspaceScopeError` or
+  `getHouClaimLinesWorkspaceScopeError` before writes, requiring
+  `can_use_admission_workspace` plus `can_access_business_scope`.
+- Added `scripts/check-heu-hou-scope-readiness.mjs` and
+  `check:heu-hou-scope-readiness` for local, redacted HOU scope checks with
+  `HOU-SCOPE-APP-GUARD`, `HOU-SCOPE-LEAD-TAG`,
+  `HOU-SCOPE-PAYMENT-LINES` and related readiness statuses.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the HOU
+  scope guard, checker, Slice 10 and no-approval boundary fail locally if
+  removed.
+- PASS_LOCAL boundary: this is HOU scope-readiness hardening only. It does not
+  approve HOU handover, tuition ledger posting, invoice issuance, COM payout,
+  finance action, UAT acceptance, evidence acceptance, owner GO or production
+  GO.
+
 ## 2026-07-03 - P8/P9 Quick Access Label Wrap Guard
 
 - Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` and

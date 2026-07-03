@@ -1,6 +1,6 @@
 # HEU Permission Scope Operation Breakdown - 2026-07-03
 
-Status: PASS_LOCAL first slice.
+Status: PASS_LOCAL first slice plus HOU scope closure.
 Production/UAT status: NO-GO until signed multi-account UAT, owner approval and
 the normal production gate are completed outside Codex/chat.
 
@@ -91,6 +91,7 @@ Goal: make audit failure actionable and repeatable.
 Required commands:
 - `npm.cmd run check:heu-user-create-readiness`
 - `npm.cmd run check:heu-permission-scope-readiness`
+- `npm.cmd run check:heu-hou-scope-readiness`
 - `npm.cmd run audit:heu-user-account-security`
 - `npm.cmd run audit:heu-role-scope-uat-pack`
 - `npm.cmd run audit:ttgdtx-role-scope-access`
@@ -101,6 +102,42 @@ Required commands:
 Exit rule:
 - All commands must pass before moving to the next module.
 - Any production/UAT/finance/owner GO remains outside PASS_LOCAL.
+
+## Slice 10 - HOU Scope Closure
+
+Goal: keep HOU control center, COM claim review and COM payment batch actions
+aligned with the same admission workspace scope before widening HOU operations
+to more real users.
+
+Done locally:
+- PASS_LOCAL scope closure is wired through `check:heu-hou-scope-readiness`.
+- Added `npm.cmd run check:heu-hou-scope-readiness`.
+- Attached the checker and static guards to
+  `npm.cmd run audit:heu-hou-ledger-handover-gap-pack`.
+- Updated `/hou` to read leads through `getAdmissionWorkspaceContext`,
+  `admissionWorkspaceSegmentIds` and `applyAdmissionSegmentIds`.
+- Updated `/hou` payment-line and payment-batch reads so visible HOU COM
+  payment rows originate from claim lines that belong to scoped HOU leads.
+- Added server-side guards before HOU COM claim review, COM payment batch
+  creation and COM payment batch status updates. Each action verifies the
+  claim's source lead and requires `can_use_admission_workspace` plus
+  `can_access_business_scope` before writing.
+
+Current checker target:
+- `HOU-SCOPE-APP-GUARD` proves the page/action/package scope guard is wired.
+- `HOU-SCOPE-LEAD-TAG` proves HOU-marked active leads are tagged to
+  `UNIVERSITY_TRANSFER_HOU`.
+- `HOU-SCOPE-CLAIMS`, `HOU-SCOPE-CLAIM-LINES`,
+  `HOU-SCOPE-PAYMENT-LINES`, `HOU-SCOPE-PAYMENT-BATCHES` and
+  `HOU-SCOPE-EVIDENCE` prove HOU COM/evidence rows trace back to scoped HOU
+  leads.
+- `HOU-SCOPE-ACTOR-LINK` proves HOU claim/payment actors are either empty or
+  active CRM profiles.
+
+Exit rule:
+- All HOU scope statuses above must stay READY before widening HOU use beyond
+  the current controlled lane.
+- This is HOU scope closure only; it does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO.
 
 ## System-Wide Expansion Pattern
 
