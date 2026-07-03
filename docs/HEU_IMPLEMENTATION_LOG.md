@@ -1,5 +1,29 @@
 # HEU Implementation Log
 
+## 2026-07-03 - Root Drive Department Confirmation Intake
+
+- Added `docs/HEU_ROOT_DRIVE_DEPARTMENT_CONFIRMATION_INTAKE_20260703.md` as a
+  PASS_LOCAL intake pack for the HEU Root Drive structure and department
+  confirmation questions from the user-provided request.
+- Performed a read-only Google Drive folder listing for the provided Root Drive
+  URL and recorded the observed level-1 folders, including the standard folders,
+  module folders `05_DAO_TAO`, `06_CTHSSV`, `07_KHOA`,
+  `08_DAO_TAO_NGAN_HAN_DAY_NGHE` and the extra folder
+  `00_HEU_SYSTEM_GOVERNANCE_CONTROL` that still needs owner/mapping
+  confirmation.
+- Recorded the read-only listing boundary: folder names were observed, but
+  access/sharing status and access closure still require owner confirmation,
+  permission log and signed evidence outside Git/Codex/chat.
+- Added `scripts/check-heu-root-drive-department-confirmation-intake.mjs` and
+  `check:heu-root-drive-department-confirmation-intake` so the folder snapshot,
+  department lanes A-O, safe-data boundary and stop conditions are checked
+  locally.
+- This is Drive metadata/control-question packaging only. It does not move
+  Drive files, change sharing permissions, import raw data, create Google
+  Forms, create dashboards, run Apps Script, send email, create accounts,
+  accept evidence, execute UAT, approve legal position, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - Business User Responsibility Register
 
 - Scope: Added a P0-17 business user responsibility register so unfinished
