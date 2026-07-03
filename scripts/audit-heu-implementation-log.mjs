@@ -103,6 +103,13 @@ const systemAiTrendTaskBreakdown = read(
 );
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 
+requireText(
+  log,
+  /## 2026-07-03 - IT\/Data Fast Local Control Loop[\s\S]*scripts\/check-heu-fast-local-loop\.mjs[\s\S]*scripts\/check-heu-it-data-daily-control\.mjs[\s\S]*HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703\.md[\s\S]*scripts\/audit-heu-current-state-inventory\.mjs[\s\S]*scripts\/audit-heu-implementation-log\.mjs[\s\S]*HEU_FAST_LOOP_WORKTREE[\s\S]*HEU_FAST_LOOP_WORKTREE_AREAS[\s\S]*HEU_FAST_LOOP_AREA_SAMPLE[\s\S]*HEU_FAST_LOOP_NEXT_GUARDS[\s\S]*HEU_FAST_LOOP_WORKTREE_SAMPLE[\s\S]*HEU_FAST_LOOP_WORKTREE_SCOPE[\s\S]*app[\s\S]*components[\s\S]*docs[\s\S]*scripts[\s\S]*database[\s\S]*other[\s\S]*up to three changed paths per area[\s\S]*node --check[\s\S]*npx\.cmd eslint[\s\S]*migration-order[\s\S]*SQL object map[\s\S]*HEU_FAST_LOOP_RUNTIME_PREFLIGHT[\s\S]*active Next dev\/build process[\s\S]*\.next\/lock[\s\S]*DIRTY_WARN_ONLY[\s\S]*-- --security[\s\S]*-- --strict-worktree[\s\S]*HEU_FAST_LOCAL_LOOP_READY:[\s\S]*PASS_LOCAL[\s\S]*stops at the first `NO_GO`[\s\S]*check:heu-fast-local-loop[\s\S]*check:heu-it-data-daily-control[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*--runtime[\s\S]*This is local read-only control-loop packaging only[\s\S]*does not[\s\S]*create accounts[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance\s+reliance[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "IT/Data fast local control loop log boundary",
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+);
+
 const fastFailures = [];
 
 function fastRequire(contents, tokens, label, file) {

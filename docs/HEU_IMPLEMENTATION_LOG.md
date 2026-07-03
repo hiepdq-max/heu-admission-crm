@@ -1,5 +1,47 @@
 # HEU Implementation Log
 
+## 2026-07-03 - IT/Data Fast Local Control Loop
+
+- Scope: Added a fast PASS_LOCAL loop for IT/Data to check the smallest
+  operating-control set before widening any HEU slice.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`, `package.json`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `npm.cmd run check:heu-fast-local-loop` prints
+  `HEU_FAST_LOOP_WORKTREE`, `HEU_FAST_LOOP_WORKTREE_AREAS`,
+  `HEU_FAST_LOOP_AREA_SAMPLE`, `HEU_FAST_LOOP_NEXT_GUARDS`,
+  `HEU_FAST_LOOP_WORKTREE_SAMPLE` and `HEU_FAST_LOOP_WORKTREE_SCOPE`, then runs
+  daily control, current-state inventory and Vietnamese text encoding guards in
+  the default fast mode. The area summary groups dirty paths into `app`,
+  `components`, `docs`, `scripts`, `database` and `other`; area samples show up
+  to three changed paths per area before handoff. Next-guard hints route
+  app/components changes to `--runtime`, docs changes to current-state,
+  implementation-log and Vietnamese text audits, script changes to
+  `node --check` plus `npx.cmd eslint`, database changes to migration-order and
+  SQL object map audits, and handoff checks to `--strict-worktree`. Runtime mode
+  prints `HEU_FAST_LOOP_RUNTIME_PREFLIGHT` and returns `NO_GO` before
+  lint/build when an active Next dev/build process for this repo or `.next/lock`
+  would make build verification unreliable. Dirty worktree state is
+  `DIRTY_WARN_ONLY` by default so existing changes are preserved, while
+  `-- --security` adds the P0-17/P6-04 user-account security audit and
+  `-- --strict-worktree` returns `NO_GO` for clean handoff checks. The loop then
+  reports `HEU_FAST_LOCAL_LOOP_READY: PASS_LOCAL` or stops at the first `NO_GO`.
+- Verification: `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`; run
+  `npm.cmd run check:heu-fast-local-loop -- --runtime` only when UI, route,
+  server-action or shared runtime code changed; run
+  `npm.cmd run check:heu-fast-local-loop -- --security` only when the current
+  slice touches P0-17/P6-04 user, role, password or cutover controls.
+- Boundary: This is local read-only control-loop packaging only. It does not
+  create accounts, assign users, set or send passwords, send email, create
+  tasks, run migrations, execute UAT, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - M06 CTHSSV Owner Signoff Manifest
 
 - Scope: Added the PASS_LOCAL owner signoff manifest for M06 CTHSSV
