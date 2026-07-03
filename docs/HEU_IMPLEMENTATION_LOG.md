@@ -24,6 +24,36 @@
   accept evidence, execute UAT, approve legal position, approve finance
   reliance, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - Department Report Catalog Intake
+
+- Scope: Registered the external department report-catalog workbook as a
+  PASS_LOCAL intake source for Report View/Dashboard planning without importing
+  the raw workbook into Git.
+- Changed: `docs/HEU_REPORT_CATALOG_DEPARTMENT_INTAKE_20260703.md`,
+  `scripts/check-heu-report-catalog-department-intake.mjs`, `package.json`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and this implementation log.
+- Result: The intake records `REPORT_CATALOG_INTAKE_READY / NO_GO / BLOCKED`,
+  `XLSX_SOURCE_OUTSIDE_GIT`, `reports=81`, `departments=13`, `sheets=11`,
+  priority/status/frequency summary counts, the 13 department lanes, GATE-01
+  through GATE-08 Report View controls, RACI owner/checker/approver lanes and
+  the destination proposal `09_DASHBOARD_BAO_CAO/00_DANH_MUC_BAO_CAO/`.
+- Verification: `npm.cmd run check:heu-report-catalog-department-intake`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`; run the fast local loop before
+  any broader Report View slice.
+- Boundary: This is source-intake metadata only. It does not import raw
+  workbook data into Git, copy the source XLSX into the app repository, create
+  dashboard reliance, read raw/source tables for dashboard, accept evidence,
+  execute UAT, approve legal/SOP position, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not import raw workbook data into Git; does not copy
+  the source XLSX into the app repository; does not create dashboard reliance;
+  does not read raw/source tables for dashboard; does not accept evidence; does
+  not execute UAT; does not approve legal/SOP position; does not approve
+  finance reliance; does not approve owner GO/NO-GO; does not mark production
+  GO.
+- Boundary token: does not mark production GO.
+
 ## 2026-07-03 - Business User Responsibility Register
 
 - Scope: Added a P0-17 business user responsibility register so unfinished
