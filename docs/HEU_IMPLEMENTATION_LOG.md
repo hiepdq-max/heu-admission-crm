@@ -57,6 +57,27 @@
   real lead status update, create lead records, execute UAT, accept evidence,
   approve finance action, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - P0-05 Lead Activity Follow-up Workspace Revalidation Guard
+
+- Tightened `components/leads/activity-form.tsx` so the lead-detail activity
+  form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `ActivityForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `createLeadActivityAction` reads
+  `active_admission_segment_id`; when `next_followup_at` is submitted, it
+  revalidates `/followups`, `/pipeline` and their workspace-scoped URLs through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the activity form marker,
+  hidden workspace field, page prop flow and scoped follow-up/pipeline
+  revalidation fail locally if removed.
+- PASS_LOCAL boundary: this is lead activity follow-up workspace revalidation
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  execute a real lead activity submission, create lead records, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
 ## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard
 
 - Added a read-only `/short-course` quick-access band in

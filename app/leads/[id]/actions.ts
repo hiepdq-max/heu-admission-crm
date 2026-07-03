@@ -323,12 +323,17 @@ export async function createLeadActivityAction(
   const content = textValue(formData, "content");
   const nextAction = textValue(formData, "next_action");
   const nextFollowupAt = textValue(formData, "next_followup_at");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
   const fields = submittedFields(formData, [
     "activity_type",
     "activity_result",
     "content",
     "next_action",
     "next_followup_at",
+    "active_admission_segment_id",
   ]);
 
   if (!leadId) {
@@ -401,6 +406,17 @@ export async function createLeadActivityAction(
   }
 
   revalidatePath(`/leads/${leadId}`);
+  if (nextFollowupAt) {
+    revalidatePath("/followups");
+    revalidatePath(
+      withAdmissionSegmentParam("/followups", activeAdmissionSegmentId),
+    );
+    revalidatePath("/pipeline");
+    revalidatePath(
+      withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId),
+    );
+    revalidatePath("/");
+  }
 
   return { success: "Đã ghi hoạt động tư vấn." };
 }

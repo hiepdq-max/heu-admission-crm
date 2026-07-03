@@ -808,7 +808,10 @@ export default async function LeadDetailPage({ params }: PageProps) {
           activeSegmentId={lead.admission_segment_id}
         />
       </div>
-      <ActivityForm leadId={lead.id} />
+      <ActivityForm
+        leadId={lead.id}
+        activeSegmentId={lead.admission_segment_id}
+      />
       <ActivityTimeline
         activities={activitiesResult.data ?? []}
         users={toLookup(userRowsResult.data, "full_name")}

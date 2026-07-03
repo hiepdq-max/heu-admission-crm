@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 type ActivityFormProps = {
   leadId: string;
+  activeSegmentId?: string | null;
 };
 
 const initialState: ActivityFormState = {};
@@ -52,7 +53,7 @@ function FieldError({ state, name }: { state: ActivityFormState; name: string })
   return <p className="text-xs font-medium text-rose-600">{message}</p>;
 }
 
-export function ActivityForm({ leadId }: ActivityFormProps) {
+export function ActivityForm({ leadId, activeSegmentId }: ActivityFormProps) {
   const [state, formAction, isPending] = useActionState(
     createLeadActivityAction,
     initialState,
@@ -77,8 +78,14 @@ export function ActivityForm({ leadId }: ActivityFormProps) {
         }
         action={formAction}
         className="mt-5 space-y-4"
+        data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"
       >
         <input name="lead_id" type="hidden" value={leadId} />
+        <input
+          name="active_admission_segment_id"
+          type="hidden"
+          value={activeSegmentId ?? ""}
+        />
 
         {state.error ? (
           <div className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">

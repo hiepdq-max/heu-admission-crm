@@ -52,6 +52,7 @@ const leadImportFormPath = "components/import/lead-import-form.tsx";
 const leadListPath = "components/leads/lead-list.tsx";
 const leadDetailPagePath = "app/leads/[id]/page.tsx";
 const leadDetailActionsPath = "app/leads/[id]/actions.ts";
+const activityFormPath = "components/leads/activity-form.tsx";
 const statusUpdateFormPath = "components/leads/status-update-form.tsx";
 const implementationLogPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
@@ -72,6 +73,7 @@ for (const file of [
   leadListPath,
   leadDetailPagePath,
   leadDetailActionsPath,
+  activityFormPath,
   statusUpdateFormPath,
   implementationLogPath,
 ]) {
@@ -258,6 +260,22 @@ requireText(
   "P0-05 lead detail status action scoped revalidation",
 );
 requireText(
+  leadDetailPagePath,
+  /(?=[\s\S]*<ActivityForm)(?=[\s\S]*activeSegmentId=\{lead\.admission_segment_id\})/,
+  "P0-05 lead activity form receives workspace return",
+);
+requireText(
+  activityFormPath,
+  /(?=[\s\S]*activeSegmentId\?: string \| null)(?=[\s\S]*data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN")(?=[\s\S]*name="active_admission_segment_id"[\s\S]*value=\{activeSegmentId \?\? ""\})/,
+  "P0-05 lead activity follow-up workspace return",
+);
+requireText(
+  leadDetailActionsPath,
+  /(?=[\s\S]*createLeadActivityAction)(?=[\s\S]*activeAdmissionSegmentId = textValue\([\s\S]*"active_admission_segment_id"[\s\S]*\))(?=[\s\S]*if \(nextFollowupAt\)[\s\S]*revalidatePath\("\/followups"\)[\s\S]*withAdmissionSegmentParam\("\/followups", activeAdmissionSegmentId\)[\s\S]*revalidatePath\("\/pipeline"\)[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\))/,
+  "P0-05 lead activity scoped follow-up and pipeline revalidation",
+);
+
+requireText(
   leadListPath,
   /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
   "lead list quick filter overflow guards",
@@ -310,6 +328,12 @@ requireText(
   /P0-05 Lead Detail Status Workspace Return Guard[\s\S]*components\/leads\/status-update-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*StatusUpdateForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\)[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead status update[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
   "P0-05 lead detail status implementation log boundary",
 );
+requireText(
+  implementationLogPath,
+  /P0-05 Lead Activity Follow-up Workspace Revalidation Guard[\s\S]*components\/leads\/activity-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*ActivityForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*createLeadActivityAction[\s\S]*withAdmissionSegmentParam[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead activity submission[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-05 lead activity follow-up implementation log boundary",
+);
+
 requireText(
   implementationLogPath,
   /P0-14 Documents Quick Access Hub[\s\S]*app\/documents\/page\.tsx[\s\S]*data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS"[\s\S]*data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"[\s\S]*data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*data-heu-documents-anchor-nav="leads import pipeline reports control settings"[\s\S]*withAdmissionSegmentParam[\s\S]*settings-operating-masters[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not upload real documents[\s\S]*accept evidence[\s\S]*change role scope[\s\S]*grant access[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
