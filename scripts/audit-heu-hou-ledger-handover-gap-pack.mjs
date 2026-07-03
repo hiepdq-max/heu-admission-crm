@@ -90,6 +90,12 @@ requireText(
 
 requireText(
   "components/hou/hou-ledger-handover-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-hou-quick-access="P8-01_HOU_QUICK_ACCESS")(?=[\s\S]*className="mt-2 break-words text-sm font-semibold leading-5 text-zinc-950"[\s\S]*\{row\.label\})(?=[\s\S]*className="mt-2 break-words text-xs font-medium leading-5 text-zinc-500"[\s\S]*\{row\.owner\})/i,
+  "HOU quick access label and owner wrap guards",
+);
+
+requireText(
+  "components/hou/hou-ledger-handover-gap-pack.tsx",
   /(?=[\s\S]*data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH")(?=[\s\S]*data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE")(?=[\s\S]*href="\/short-course")(?=[\s\S]*aria-label="Open Short Course control surface from HOU scope switch")(?=[\s\S]*title="Open Short Course control surface")(?=[\s\S]*href="\/master-control")(?=[\s\S]*aria-label="Open Master Control from HOU scope switch")(?=[\s\S]*title="Open Master Control")(?=[\s\S]*HOU \/ Short Course scope switch)(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*flex-wrap)/i,
   "HOU quick scope switch and overflow guards",
 );

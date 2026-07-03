@@ -85,6 +85,12 @@ requireText(
 
 requireText(
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS")(?=[\s\S]*className="mt-2 break-words text-sm font-semibold leading-5 text-zinc-950"[\s\S]*\{row\.label\})(?=[\s\S]*className="mt-2 break-words text-xs font-medium leading-5 text-zinc-500"[\s\S]*\{row\.owner\})/i,
+  "Short Course quick access label and owner wrap guards",
+);
+
+requireText(
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   /(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF")(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*table-fixed)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*whitespace-normal)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*break-words)(?=[\s\S]*data-heu-short-course-review-decision="SC_REVIEW_READY_NO_GO_BLOCKED")(?=[\s\S]*Short Course review handoff)(?=[\s\S]*SC_REVIEW_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SC-REV-01)(?=[\s\S]*SC-REV-06)(?=[\s\S]*Attendance lock packet)(?=[\s\S]*Invoice\/payment reconciliation)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*signatures and evidence acceptance[\s\S]*outside Codex\/chat)(?=[\s\S]*PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO)/i,
   "Short Course review handoff queue",
 );

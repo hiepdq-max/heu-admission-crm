@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P8/P9 Quick Access Label Wrap Guard
+
+- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` and
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx` so
+  HOU and Short Course quick-access card labels and owner lines use
+  `break-words` with stable leading instead of truncating long control names.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
+  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
+  quick-access label/owner wrap guards fail locally if removed.
+- PASS_LOCAL boundary: this is read-only HOU/Short Course quick-access
+  readability and no-overflow hardening only. It does not approve HOU handover,
+  attendance lock, tuition ledger posting, invoice issuance, COM payout,
+  BHXH decision, meal/allowance payment, HR payment, finance action, execute UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-14 Documents Quick Access Hub
 
 - Replaced the placeholder documents module with `app/documents/page.tsx` as

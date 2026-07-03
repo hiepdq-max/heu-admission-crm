@@ -345,13 +345,13 @@ export function ShortCourseAttendancePaymentGapPack() {
                   <p className="truncate font-mono text-xs text-zinc-500">
                     {row.code}
                   </p>
-                  <p className="mt-2 truncate text-sm font-semibold text-zinc-950">
+                  <p className="mt-2 break-words text-sm font-semibold leading-5 text-zinc-950">
                     {row.label}
                   </p>
                 </div>
                 <ArrowRightLeft className="mt-0.5 size-4 shrink-0 text-zinc-500" />
               </div>
-              <p className="mt-2 truncate text-xs font-medium text-zinc-500">
+              <p className="mt-2 break-words text-xs font-medium leading-5 text-zinc-500">
                 {row.owner}
               </p>
               <p className="mt-2 break-words text-sm leading-6 text-zinc-600">
