@@ -1,5 +1,32 @@
 # HEU Implementation Log
 
+## 2026-07-03 - Business User Responsibility Register
+
+- Scope: Added a P0-17 business user responsibility register so unfinished
+  HEU work items route to exactly one accountable user slot plus checker lanes
+  before real account creation, role/scope assignment, signed UAT, finance
+  reliance or owner review.
+- Changed: `docs/HEU_BUSINESS_USER_RESPONSIBILITY_REGISTER_20260703.md`,
+  `components/settings/business-user-responsibility-panel.tsx`,
+  `app/settings/page.tsx`, `app/settings/scopes/page.tsx`,
+  `scripts/check-heu-business-user-responsibility-register.mjs`,
+  `package.json` and `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-business-user-responsibility-register` verifies
+  `BUSINESS_USER_RESPONSIBILITY_READY / NO_GO / BLOCKED`, all owner slots,
+  open-work assignment rows, Settings and Settings Scope route wiring, package
+  script exposure and this implementation-log entry.
+- Safety: The register keeps person state as `PENDING_PERSON`; real names,
+  emails, passwords, OTPs, invite/reset links and evidence remain outside
+  Git/Codex/chat until approved through the secure channel.
+- Verification target: `npm.cmd run check:heu-business-user-responsibility-register`
+  plus current-state, implementation-log, release-gate, Vietnamese encoding,
+  user/security, role-scope, production-readiness, lint, build and diff checks
+  before commit.
+- Boundary: This is responsibility routing and PASS_LOCAL register packaging
+  only. It does not create users, set passwords, send reset/invite links,
+  assign role scope, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P10-06 Khoa Giang Vien Evidence Trace Source Reconciliation
 
 - Added
