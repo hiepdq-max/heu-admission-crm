@@ -1,5 +1,19 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard
+
+- Tightened `components/settings/position-assignment-matrix.tsx` so the
+  position matrix quick-access surface now exposes
+  `data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"`
+  alongside `data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"`.
+- Preserved the existing `data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"`
+  and guarded layout tokens `min-w-0`, `overflow-hidden`, `overflow-x-auto`,
+  `truncate`, `break-words` and `shrink-0`.
+- Extended `scripts/audit-heu-user-account-security.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the position quick-access
+  no-overflow marker fails locally if removed.
+- PASS_LOCAL boundary: this is read-only position-matrix navigation/display hardening only. It does not create accounts, send passwords, grant access, change role scope, approve role assignments for production, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs
 
 - Converted the business-entry area in

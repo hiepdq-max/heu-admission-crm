@@ -221,6 +221,7 @@ export function PositionAssignmentMatrix({
       data-heu-position-assignment-matrix="P0-17"
       data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"
       data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"
+      data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"
       data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"
       className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm"
     >

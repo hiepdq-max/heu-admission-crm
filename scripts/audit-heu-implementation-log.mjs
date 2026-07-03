@@ -160,6 +160,34 @@ fastSection("2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs", [
   "production GO",
 ]);
 
+fastSection("2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard", [
+  "components/settings/position-assignment-matrix.tsx",
+  "data-heu-position-matrix-quick-access=\"P0-17_POSITION_QUICK_ACCESS\"",
+  "data-heu-position-matrix-quick-access-overflow-guard=\"P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW\"",
+  "data-heu-position-matrix-overflow-guard=\"P0-17_NO_OVERFLOW\"",
+  "min-w-0",
+  "overflow-hidden",
+  "overflow-x-auto",
+  "truncate",
+  "break-words",
+  "shrink-0",
+  "scripts/audit-heu-user-account-security.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "PASS_LOCAL boundary",
+  "read-only position-matrix navigation/display hardening only",
+  "does not",
+  "create accounts",
+  "send passwords",
+  "grant access",
+  "change role scope",
+  "approve role assignments for production",
+  "accept UAT",
+  "accept evidence",
+  "approve finance action",
+  "owner GO/NO-GO",
+  "production GO",
+]);
+
 fastSection("2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard", [
   "components/settings/user-access-workflow-guide.tsx",
   'data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"',

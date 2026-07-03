@@ -417,6 +417,7 @@ requireAllText(
     'data-heu-position-assignment-matrix="P0-17"',
     'data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"',
     'data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"',
+    'data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"',
     'data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"',
     "Ma trận vị trí và user",
     "assignHeuPositionByEmailAction",
@@ -450,6 +451,25 @@ requireSection(implementationLog, "2026-07-02 - P0-17 Position Assignment Contro
   "approve UAT",
   "approve finance reliance",
   "mark production GO",
+], logPath);
+
+
+requireSection(implementationLog, "2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard", [
+  "components/settings/position-assignment-matrix.tsx",
+  "data-heu-position-matrix-quick-access=\"P0-17_POSITION_QUICK_ACCESS\"",
+  "data-heu-position-matrix-quick-access-overflow-guard=\"P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW\"",
+  "data-heu-position-matrix-overflow-guard=\"P0-17_NO_OVERFLOW\"",
+  "read-only position-matrix navigation/display hardening only",
+  "does not create accounts",
+  "send passwords",
+  "grant access",
+  "change role scope",
+  "approve role assignments for production",
+  "accept UAT",
+  "accept evidence",
+  "approve finance action",
+  "owner GO/NO-GO",
+  "production GO",
 ], logPath);
 
 requireAllText(
