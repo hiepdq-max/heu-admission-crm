@@ -1,5 +1,14 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P3 Backlog UAT Execution Pack Release-Gate Repair
+
+- Corrected the P3-02 backlog wording so the release-gate required phrase
+  `signed role-scope UAT and handover decision still required` remains intact
+  while preserving the separate CTHSSV owner UAT blocker.
+- PASS_LOCAL boundary: this is backlog/log wording repair only. It does not
+  execute UAT, accept evidence, approve handover reliance, create finance facts,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard
 
 - Tightened `components/settings/position-assignment-matrix.tsx` so the
