@@ -27,6 +27,34 @@
   assign role scope, execute UAT, accept evidence, approve finance reliance,
   approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - User Scope Baseline Snapshot Refresh
+
+- Scope: Refreshed the P0-17 user-scope baseline repair queue after the local
+  snapshot showed `missing_visibility=2`, `missing_business_scope=2` and the
+  added `DAO_TAO_LEAD` owner-safe label.
+- Changed: `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `scripts/check-heu-user-scope-baseline-repair-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: The queue now records `active_profiles=6`,
+  `active_non_admin_bgh=3`, `owner_action_packet=profile_count=2`,
+  `role_codes=DAO_TAO_LEAD,TCHC_LEAD`, `decision_count=4`,
+  `lead_visibility_choice_required` and `segment_or_partner_scope_required`
+  without exposing names, emails, phone numbers or raw IDs.
+- Verification target:
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only`;
+  live `npm.cmd run check:heu-user-scope-baseline-repair-queue` may still
+  return `NO_GO` until the owner closes the real scope blockers;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run audit:ttgdtx-release-gates`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`; `npm.cmd run lint`;
+  `npm.cmd run build`.
+- Boundary: This is live-snapshot routing only. It does not change lead
+  visibility, grant business scope, create accounts, assign real users, set
+  passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P10-06 Khoa Giang Vien Evidence Trace Source Reconciliation
 
 - Added

@@ -19,6 +19,7 @@ const privilegedRoleCodes = new Set([
   "PHO_HIEU_TRUONG",
 ]);
 const statuses = [];
+const staticOnly = process.argv.includes("--static-only");
 
 function addStatus(code, status, detail) {
   statuses.push({ code, status, detail });
@@ -81,6 +82,62 @@ function formatOwnerRepairLabels(rows, issueCode, roleById) {
   });
 
   return labels.length > 0 ? labels.join(", ") : "none";
+}
+
+function formatOwnerActionPacket(missingLeadVisibility, missingBusinessScope, roleById) {
+  const profilesById = new Map();
+
+  for (const profile of missingLeadVisibility) {
+    profilesById.set(profile.id, {
+      profile,
+      missingLeadVisibility: true,
+      missingBusinessScope: false,
+    });
+  }
+
+  for (const profile of missingBusinessScope) {
+    const current = profilesById.get(profile.id) ?? {
+      profile,
+      missingLeadVisibility: false,
+      missingBusinessScope: false,
+    };
+
+    current.missingBusinessScope = true;
+    profilesById.set(profile.id, current);
+  }
+
+  const packets = Array.from(profilesById.values()).sort((left, right) => {
+    const leftRole = roleById.get(left.profile.role_id)?.code ?? "NO_ROLE";
+    const rightRole = roleById.get(right.profile.role_id)?.code ?? "NO_ROLE";
+
+    return leftRole.localeCompare(rightRole) || left.profile.id.localeCompare(right.profile.id);
+  });
+  const roleCodes = Array.from(
+    new Set(
+      packets.map((packet) => roleById.get(packet.profile.role_id)?.code ?? "NO_ROLE"),
+    ),
+  );
+  const decisionCount =
+    missingLeadVisibility.length + missingBusinessScope.length;
+  const requiredDecisions = [
+    missingLeadVisibility.length > 0
+      ? "lead_visibility_choice_required"
+      : null,
+    missingBusinessScope.length > 0
+      ? "segment_or_partner_scope_required"
+      : null,
+  ].filter(Boolean);
+
+  return [
+    `owner_action_packet=profile_count=${packets.length}`,
+    `role_codes=${roleCodes.length > 0 ? roleCodes.join(",") : "none"}`,
+    `decision_count=${decisionCount}`,
+    `required_decisions=${
+      requiredDecisions.length > 0 ? requiredDecisions.join(",") : "none"
+    }`,
+    "repair_order=USER-SCOPE-REPAIR-01 before USER-SCOPE-REPAIR-02 before USER-SCOPE-REPAIR-03",
+    "TCHC_LEAD packet is owner-side routing only when present",
+  ].join("; ");
 }
 
 async function fetchAllRows(adminClient, table, select, buildQuery = (query) => query) {
@@ -148,8 +205,8 @@ function checkStaticGuards() {
       repairQueue.includes("USER-SCOPE-REPAIR-04")
         ? "queue-order-ok"
         : null,
-      repairQueue.includes("missing_visibility=1") &&
-      repairQueue.includes("missing_business_scope=1")
+      repairQueue.includes("missing_visibility=2") &&
+      repairQueue.includes("missing_business_scope=2")
         ? "live-blocker-ok"
         : null,
       repairQueue.includes("safe_owner_repair_labels")
@@ -180,20 +237,30 @@ function checkStaticGuards() {
   }
 }
 
-const localEnv = parseEnvFile(envPath);
-const missingKeys = requiredEnvKeys.filter((key) => !isMeaningfulSecret(localEnv[key]));
+const localEnv = staticOnly ? {} : parseEnvFile(envPath);
+const missingKeys = staticOnly
+  ? []
+  : requiredEnvKeys.filter((key) => !isMeaningfulSecret(localEnv[key]));
 
-addStatus(
-  "USER-SCOPE-REPAIR-ENV",
-  missingKeys.length === 0 ? "READY" : "NO_GO",
-  missingKeys.length === 0
-    ? ".env.local has required Supabase env keys. Values are intentionally hidden."
-    : `.env.local missing or placeholder keys: ${missingKeys.join(", ")}.`,
-);
+if (!staticOnly) {
+  addStatus(
+    "USER-SCOPE-REPAIR-ENV",
+    missingKeys.length === 0 ? "READY" : "NO_GO",
+    missingKeys.length === 0
+      ? ".env.local has required Supabase env keys. Values are intentionally hidden."
+      : `.env.local missing or placeholder keys: ${missingKeys.join(", ")}.`,
+  );
+}
 
 checkStaticGuards();
 
-if (missingKeys.length === 0) {
+if (staticOnly) {
+  addStatus(
+    "USER-SCOPE-REPAIR-STATIC-ONLY",
+    "READY",
+    "Static-only mode verified the PASS_LOCAL queue package without reading live Supabase data or changing scope.",
+  );
+} else if (missingKeys.length === 0) {
   try {
     const adminClient = createClient(
       localEnv.NEXT_PUBLIC_SUPABASE_URL,
@@ -362,6 +429,16 @@ if (missingKeys.length === 0) {
           )}`,
           "hash labels are for secure owner-side lookup only",
         ].join("; "),
+      );
+
+      addStatus(
+        "USER-SCOPE-REPAIR-OWNER-PACKET",
+        "READY",
+        formatOwnerActionPacket(
+          missingLeadVisibility,
+          missingBusinessScope,
+          roleById,
+        ),
       );
 
       addStatus(
