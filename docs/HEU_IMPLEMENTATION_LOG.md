@@ -1,5 +1,29 @@
 # HEU Implementation Log
 
+## 2026-07-03 - System AI Trend Anti-Overflow Task Breakdown
+
+- Added
+  `docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md` as a
+  controlled PASS_LOCAL_PLAN register for decomposing system snapshot, AI trend
+  benchmark and anti-overflow work into `GOAL-00` through `GOAL-04`.
+- Captured the dirty-worktree scope map by module, the official AI benchmark
+  themes for OpenAI Agents SDK guardrails/human review, Claude Code hooks and
+  subagents, Gemini structured outputs/function calling and GitHub Copilot
+  repository instructions/custom agents/MCP.
+- Split anti-overflow into UI/layout overflow guards (`NO_OVERFLOW`, `min-w-0`,
+  `truncate`, `break-words`, `overflow-hidden`, `overflow-x-auto`,
+  `aria-label`, stable grids) and scope/context overflow guards for one-slice
+  work, dirty-target diff checks, no raw data and no GO authority.
+- Extended `scripts/audit-heu-ai-policy.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the register, small-goal
+  breakdown, advisory-only benchmark and local-only boundary fail locally if
+  removed.
+- PASS_LOCAL boundary: result is `PASS_LOCAL_PLAN` with decision value
+  `SYSTEM_AI_TREND_TASK_READY / NO_GO / BLOCKED`. This does not add AI service calls,
+  model credentials, prompt storage, autonomous workers, app runtime changes,
+  DB/schema changes, Supabase access changes, UAT execution, evidence acceptance,
+  finance action, owner GO/NO-GO or production GO. Production: NO-GO.
+
 ## 2026-07-03 - P3 Backlog UAT Execution Pack Release-Gate Repair
 
 - Corrected the P3-02 backlog wording so the release-gate required phrase

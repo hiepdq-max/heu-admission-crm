@@ -76,6 +76,11 @@ const masterGoalRegister = requireText(
   /Status:\s*PASS_LOCAL_GOAL_CONTROL[\s\S]*MASTER_GOAL_READY \/ NO_GO \/ BLOCKED[\s\S]*Continuous Build Goal When Local Machine Is Off[\s\S]*cloud PASS_LOCAL\s+verification, not autonomous coding[\s\S]*Expert Team Build Goal[\s\S]*Build Agent[\s\S]*Human Authority Owner[\s\S]*Production remains NO-GO/i,
   "Master Control goal register",
 );
+const systemAiTrendTaskBreakdown = requireText(
+  "docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md",
+  /Status:\s*PASS_LOCAL_PLAN[\s\S]*Decision values:\s*SYSTEM_AI_TREND_TASK_READY \/ NO_GO \/ BLOCKED[\s\S]*Production status:\s*NO-GO[\s\S]*Scope:\s*docs\/audit control only/i,
+  "system AI trend anti-overflow task breakdown register",
+);
 const checklistGenerator = requireText(
   "components/ai/ai-task-checklist-generator.tsx",
   /data-heu-ai-task-checklist-generator="P7-02"/i,
@@ -97,6 +102,26 @@ requireText(
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
   /Production AI remains\s+locked/i,
   "production AI locked statement",
+);
+requireText(
+  "docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md",
+  /Official AI Trend Benchmark[\s\S]*OpenAI Agents SDK[\s\S]*guardrails\/human review[\s\S]*Claude Code hooks[\s\S]*subagents[\s\S]*Gemini structured outputs[\s\S]*function calling[\s\S]*GitHub Copilot[\s\S]*repository instructions[\s\S]*custom agents[\s\S]*MCP/i,
+  "official AI trend benchmark",
+);
+requireText(
+  "docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md",
+  /GOAL-00 System Snapshot Only[\s\S]*GOAL-01 AI Control Baseline[\s\S]*GOAL-02 Anti-Overflow Inventory[\s\S]*GOAL-03 One-Slice Selection[\s\S]*GOAL-04 Verification Gate/i,
+  "small goal decomposition",
+);
+requireText(
+  "docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md",
+  /UI\/layout overflow[\s\S]*NO_OVERFLOW[\s\S]*min-w-0[\s\S]*truncate[\s\S]*break-words[\s\S]*overflow-hidden[\s\S]*overflow-x-auto[\s\S]*aria-label[\s\S]*Scope\/context overflow[\s\S]*choose exactly one small target[\s\S]*read staged and unstaged diff[\s\S]*no raw data[\s\S]*no production, UAT, evidence, finance or owner GO approval/i,
+  "anti-overflow UI and scope controls",
+);
+requireText(
+  "docs/HEU_SYSTEM_AI_TREND_ANTI_OVERFLOW_TASK_BREAKDOWN_20260703.md",
+  /does not:[\s\S]*add AI service calls[\s\S]*model credentials[\s\S]*prompt storage[\s\S]*autonomous workers[\s\S]*change app runtime[\s\S]*DB schema[\s\S]*Supabase access[\s\S]*approve production, UAT, evidence, finance reliance, owner GO\/NO-GO or\s+production GO/i,
+  "local-only no-runtime no-GO boundary",
 );
 requireText(
   "docs/HEU_AI_ASSISTANT_POLICY_20260627.md",
@@ -302,6 +327,12 @@ if (/password|OTP|SMTP|raw PII|bank statement|voucher/i.test(masterGoalRegister)
 }
 if (/password|OTP|SMTP|raw PII|bank statement|voucher|API key|token/i.test(cloudAgentPlan) && !/outside Git\/Codex\/chat/i.test(cloudAgentPlan)) {
   fail("P7-06 cloud agent operating plan must keep secrets and sensitive evidence outside Git/Codex/chat.");
+}
+if (
+  /raw PII|bank data|vouchers|service-role keys|auth users/i.test(systemAiTrendTaskBreakdown) &&
+  !/outside Git\/Codex\/chat/i.test(systemAiTrendTaskBreakdown)
+) {
+  fail("System AI trend task breakdown must keep sensitive evidence outside Git/Codex/chat.");
 }
 
 if (failures.length > 0) {
