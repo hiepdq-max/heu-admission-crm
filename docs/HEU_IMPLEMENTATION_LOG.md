@@ -1,5 +1,27 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard
+
+- Added a read-only `/short-course` quick-access band in
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx` with
+  `data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS"`,
+  `data-heu-short-course-quick-open="P9-01_SHORT_COURSE_QUICK_OPEN_TOP3"` and
+  `data-heu-short-course-quick-access-overflow-guard="P9-01_SHORT_COURSE_QUICK_ACCESS_NO_OVERFLOW"`.
+- The top-three anchors route operators to the SC-AP control gate table,
+  Short Course owner signoff manifest and Short Course UAT result ledger
+  without creating workflow, finance or evidence actions.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `aria-label` and `title` guards so long Short Course codes, owner labels and
+  summary text do not force horizontal overflow.
+- Extended `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs`
+  so the quick access markers, anchor IDs and overflow guard fail locally if
+  removed.
+- PASS_LOCAL boundary: this is Short Course read-only navigation and
+  no-overflow hardening only. It does not approve attendance lock, BHXH
+  decision, meal/allowance payment, HR payment, invoice/payment verification,
+  period close, statutory accounting, execute UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-14 Import Workspace Guard
 
 - Reused the shared `firstParam` and `withAdmissionSegmentParam` helpers in

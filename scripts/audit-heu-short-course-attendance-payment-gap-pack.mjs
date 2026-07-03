@@ -79,6 +79,12 @@ requireText(
 
 requireText(
   "components/short-course/short-course-attendance-payment-gap-pack.tsx",
+  /(?=[\s\S]*data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS")(?=[\s\S]*data-heu-short-course-quick-open="P9-01_SHORT_COURSE_QUICK_OPEN_TOP3")(?=[\s\S]*data-heu-short-course-quick-access-overflow-guard="P9-01_SHORT_COURSE_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*Short Course quick access)(?=[\s\S]*READ_ONLY_NAVIGATION \/ NO_GO \/ BLOCKED)(?=[\s\S]*SC-AP-01\.\.08)(?=[\s\S]*SC-SIGN-01\.\.06)(?=[\s\S]*SC-UAT-LEDGER)(?=[\s\S]*href: "#short-course-control-table")(?=[\s\S]*href: "#short-course-owner-signoff")(?=[\s\S]*href: "#short-course-uat-result-ledger")(?=[\s\S]*id="short-course-control-table")(?=[\s\S]*id="short-course-owner-signoff")(?=[\s\S]*id="short-course-uat-result-ledger")(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*truncate)(?=[\s\S]*break-words)(?=[\s\S]*aria-label)(?=[\s\S]*title)/i,
+  "Short Course quick access top-three anchors and overflow guards",
+);
+
+requireText(
+  "components/short-course/short-course-attendance-payment-gap-pack.tsx",
   /(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF")(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*table-fixed)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*whitespace-normal)(?=[\s\S]*data-heu-short-course-review-handoff="P9-01_REVIEW_HANDOFF"[\s\S]*break-words)(?=[\s\S]*data-heu-short-course-review-decision="SC_REVIEW_READY_NO_GO_BLOCKED")(?=[\s\S]*Short Course review handoff)(?=[\s\S]*SC_REVIEW_READY \/ NO_GO \/ BLOCKED)(?=[\s\S]*SC-REV-01)(?=[\s\S]*SC-REV-06)(?=[\s\S]*Attendance lock packet)(?=[\s\S]*Invoice\/payment reconciliation)(?=[\s\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\s\S]*signatures and evidence acceptance[\s\S]*outside Codex\/chat)(?=[\s\S]*PASS_LOCAL, Codex or AI output is treated as UAT acceptance or owner GO)/i,
   "Short Course review handoff queue",
 );
@@ -108,6 +114,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_SYSTEM_BUILD_BACKLOG.md",
+  /P9-01[\s\S]*read-only Short Course quick access[\s\S]*data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS"[\s\S]*no-overflow guard[\s\S]*audit:heu-short-course-attendance-payment-gap-pack/i,
+  "P9-01 backlog Short Course quick access guard",
+);
+
+requireText(
   "docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md",
   /Short Course attendance\/payment gap pack[\s\S]*PASS_LOCAL[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\.md[\s\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*short-course-attendance-payment-gap-pack\.tsx[\s\S]*\/short-course[\s\S]*SC-SIGN-01 through SC-SIGN-06[\s\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08[\s\S]*SHORT_COURSE_OWNER_READY \/ NO_GO \/ BLOCKED[\s\S]*SC_UAT_RESULT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*signed attendance\/payment UAT, BHXH\/policy signoff, source reconciliation, owner signoff manifest completion, UAT result ledger completion and report-view owner signoff still required/i,
   "production checklist Short Course gap-pack row",
@@ -120,6 +132,12 @@ requireText(
 );
 
 requireText(
+  "docs/HEU_CURRENT_STATE_INVENTORY.md",
+  /Short Course attendance\/payment gap pack[\s\S]*read-only quick access[\s\S]*data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS"[\s\S]*data-heu-short-course-quick-access-overflow-guard="P9-01_SHORT_COURSE_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*PASS_LOCAL; no attendance lock/i,
+  "current-state Short Course quick access guard",
+);
+
+requireText(
   "docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md",
   /Short Course \/ Day Nghe[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702\.md[\s\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*SC-AP-01 through SC-AP-08[\s\S]*SC-SIGN-01 through SC-SIGN-06[\s\S]*SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08[\s\S]*CAN_SUA[\s\S]*UAT result ledger[\s\S]*owner signoff manifest[\s\S]*Signed attendance\/payment UAT, BHXH\/policy signoff, source reconciliation, Short Course UAT result ledger, owner signoff manifest and report-view owner signoff[\s\S]*Short Course attendance\/payment gap pack[\s\S]*HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703\.md[\s\S]*audit:heu-short-course-attendance-payment-gap-pack/i,
   "module readiness Short Course gap-pack routing",
@@ -129,6 +147,12 @@ requireText(
   "docs/HEU_IMPLEMENTATION_LOG.md",
   /## 2026-06-28 - Short Course Attendance Payment Gap Pack[\s\S]*HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT\.md[\s\S]*components\/short-course\/short-course-attendance-payment-gap-pack\.tsx[\s\S]*SC-AP-01 through\s+SC-AP-08[\s\S]*SC_ATTENDANCE_PAYMENT_READY \/ NO_GO \/ BLOCKED[\s\S]*audit:heu-short-course-attendance-payment-gap-pack[\s\S]*This is Short Course control packaging only[\s\S]*does not approve attendance\s+lock[\s\S]*BHXH decision[\s\S]*meal\/allowance payment[\s\S]*HR payment[\s\S]*invoice\/payment\s+verification[\s\S]*period close[\s\S]*statutory accounting[\s\S]*UAT acceptance[\s\S]*evidence\s+acceptance[\s\S]*owner GO[\s\S]*production GO/i,
   "implementation log Short Course gap-pack entry",
+);
+
+requireText(
+  "docs/HEU_IMPLEMENTATION_LOG.md",
+  /## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard[\s\S]*short-course-attendance-payment-gap-pack\.tsx[\s\S]*data-heu-short-course-quick-access="P9-01_SHORT_COURSE_QUICK_ACCESS"[\s\S]*data-heu-short-course-quick-open="P9-01_SHORT_COURSE_QUICK_OPEN_TOP3"[\s\S]*data-heu-short-course-quick-access-overflow-guard="P9-01_SHORT_COURSE_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*top-three anchors[\s\S]*SC-AP control gate table[\s\S]*Short Course owner signoff manifest[\s\S]*Short Course UAT result ledger[\s\S]*min-w-0[\s\S]*overflow-hidden[\s\S]*truncate[\s\S]*break-words[\s\S]*aria-label[\s\S]*title[\s\S]*audit-heu-short-course-attendance-payment-gap-pack\.mjs[\s\S]*does not approve attendance lock[\s\S]*BHXH[\s\S]*meal\/allowance payment[\s\S]*HR payment[\s\S]*invoice\/payment verification[\s\S]*period close[\s\S]*statutory accounting[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "implementation log Short Course quick access guard entry",
 );
 
 requireText(
