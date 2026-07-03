@@ -25,6 +25,7 @@ import {
   SegmentOperatingFocusLayout,
   type SegmentOperatingFocusSection,
 } from "@/components/segments/segment-operating-focus-layout";
+import { SegmentStepFocusPanel } from "@/components/segments/segment-step-focus-panel";
 import {
   operatingModelLabel,
   segmentAiGateLabel,
@@ -33,6 +34,7 @@ import {
   segmentReadinessStatusLabel,
   segmentReadinessTone,
 } from "@/lib/admission-segments";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type SegmentReadinessOverviewProps = {
   rows: AdmissionSegmentReadinessRow[];
@@ -57,21 +59,24 @@ const segmentOperatingSections: SegmentOperatingFocusSection[] = [
     id: "profile",
     label: "Hồ sơ",
     title: "Hồ sơ vận hành",
-    description: "Mô hình, luật lead, đối tác/hợp đồng và chính sách AI.",
+    description:
+      "Mô hình, luật lead, đối tác/hợp đồng và chính sách AI.",
     icon: "profile",
   },
   {
     id: "workflow",
     label: "Quy trình",
     title: "Quy trình còn lại",
-    description: "Các phần ít dùng hơn nhưng vẫn cần kiểm soát theo đối tượng.",
+    description:
+      "Các phần ít dùng hơn nhưng vẫn cần kiểm soát theo đối tượng.",
     icon: "workflow",
   },
   {
     id: "fields",
     label: "Dữ liệu",
     title: "Trường thông tin trên lead",
-    description: "Field hiển thị, field bắt buộc và ghi chú nhập liệu.",
+    description:
+      "Field hiển thị, field bắt buộc và ghi chú nhập liệu.",
     icon: "fields",
   },
 ];
@@ -122,6 +127,22 @@ function stepIcon(stepCode: string) {
   return Route;
 }
 
+function scopedActionHref(href: string, segmentId: string | null) {
+  if (
+    !segmentId ||
+    href.startsWith("#") ||
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    !href.startsWith("/")
+  ) {
+    return href;
+  }
+
+  return withAdmissionSegmentParam(href, segmentId);
+}
+
 export function SegmentReadinessCard({
   row,
   compact = false,
@@ -132,9 +153,7 @@ export function SegmentReadinessCard({
     <article className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <p className="font-mono text-xs text-zinc-500">
-            {row.segment_code}
-          </p>
+          <p className="font-mono text-xs text-zinc-500">{row.segment_code}</p>
           <h3 className="mt-1 break-words font-semibold text-zinc-950">
             {row.segment_name}
           </h3>
@@ -208,8 +227,8 @@ export function SegmentReadinessCard({
         </div>
       ) : (
         <div className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
-          Đối tượng đã có đủ khung vận hành nền. Vẫn cần người phụ trách duyệt
-          trước khi mở automation/AI.
+          Đối tượng đã có đủ khung vận hành nền. Vẫn cần
+          người phụ trách duyệt trước khi mở automation/AI.
         </div>
       )}
 
@@ -291,20 +310,26 @@ export function SegmentReadinessOverview({
               </h2>
             </div>
             <p className="mt-2 max-w-4xl text-sm leading-6 text-zinc-500">
-              Mỗi đối tượng tuyển sinh là một workspace riêng: lead riêng,
-              import riêng, field bắt buộc riêng, quyền user riêng, COM/hợp
-              đồng/tài chính và AI đều theo đúng phạm vi.
+              Mỗi đối tượng tuyển sinh là một workspace riêng:
+              lead riêng, import riêng, field bắt buộc riêng, quyền user
+              riêng, COM/hợp đồng/tài chính và AI đều theo đúng
+              phạm vi.
             </p>
           </div>
           <span className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs font-medium text-zinc-600">
-            Chọn đối tượng nào · Làm đúng phần đó · Không lẫn dữ liệu
+            Chọn đối tượng nào · Làm đúng phần đó · Không
+            lẫn dữ liệu
           </span>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric label="Sẵn sàng" value={readyCount} icon={CheckCircle2} />
-        <Metric label="Chờ duyệt" value={temporaryCount} icon={ClipboardCheck} />
+        <Metric
+          label="Chờ duyệt"
+          value={temporaryCount}
+          icon={ClipboardCheck}
+        />
         <Metric label="Cần phân user" value={needsScopeCount} icon={Users} />
         <Metric label="AI đang khóa" value={aiLockedCount} icon={Lock} />
       </div>
@@ -315,8 +340,8 @@ export function SegmentReadinessOverview({
             Tình trạng vận hành từng đối tượng
           </h3>
           <p className="mt-1 text-sm text-zinc-500">
-            Đối tượng nào chưa phân user hoặc chưa có rule bắt buộc sẽ hiện
-            đúng điểm cần bổ sung.
+            Đối tượng nào chưa phân user hoặc chưa có rule bắt
+            buộc sẽ hiện đúng điểm cần bổ sung.
           </p>
         </div>
         <div className="grid gap-4 p-5 xl:grid-cols-2">
@@ -349,7 +374,8 @@ export function SegmentOperatingProfile({
         <span className="font-mono">
           database/step44_admission_segment_operating_os.sql
         </span>{" "}
-        để bật hồ sơ vận hành riêng cho đối tượng này. Chi tiết: {loadError}
+        để bật hồ sơ vận hành riêng cho đối tượng này. Chi
+        tiết: {loadError}
       </section>
     );
   }
@@ -357,6 +383,12 @@ export function SegmentOperatingProfile({
   const visibleRules = fieldRules.filter((rule) => rule.is_visible);
   const requiredRules = fieldRules.filter((rule) => rule.is_required);
   const requiredSteps = steps.filter((step) => step.required_for_operation);
+  const segmentId =
+    readiness?.segment_id ??
+    workspace?.segment_id ??
+    steps[0]?.segment_id ??
+    fieldRules[0]?.segment_id ??
+    null;
   const primaryStepCodes = new Set(["LEAD_LIST", "LEAD_CREATE", "LEAD_IMPORT"]);
   const primarySteps = steps
     .filter((step) => primaryStepCodes.has(step.step_code))
@@ -374,6 +406,7 @@ export function SegmentOperatingProfile({
         <section
           className="overflow-hidden rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
           data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"
+          data-heu-segment-scoped-action-hrefs="P0-05_WORKSPACE_SCOPED_ACTION_HREFS"
         >
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0">
@@ -384,7 +417,8 @@ export function SegmentOperatingProfile({
                 Việc dùng nhiều nhất trong workspace
               </h2>
               <p className="mt-1 break-words text-sm leading-6 text-zinc-500">
-                Lead, tạo mới và import giữ đúng phạm vi đối tượng đang chọn.
+                Lead, tạo mới và import giữ đúng phạm vi đối
+                tượng đang chọn.
               </p>
             </div>
             <div className="grid min-w-0 gap-2 sm:grid-cols-3 xl:min-w-[620px]">
@@ -394,7 +428,7 @@ export function SegmentOperatingProfile({
                 return (
                   <Link
                     key={step.id}
-                    href={step.action_href}
+                    href={scopedActionHref(step.action_href, segmentId)}
                     className="group flex min-h-20 min-w-0 items-center justify-between gap-3 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 text-left transition hover:border-zinc-400 hover:bg-white"
                   >
                     <span className="flex min-w-0 items-center gap-3">
@@ -421,168 +455,142 @@ export function SegmentOperatingProfile({
 
       <SegmentOperatingFocusLayout sections={segmentOperatingSections}>
         <div className="grid gap-4 xl:grid-cols-[1fr_1fr]">
-        <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <Settings2 className="size-4 text-zinc-600" />
-            <h2 className="text-base font-semibold">Hồ sơ vận hành</h2>
-          </div>
-          {workspace ? (
-            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-              <div className="rounded-md bg-zinc-50 p-3">
-                <dt className="font-medium text-zinc-950">Mô hình</dt>
-                <dd className="mt-1 text-zinc-600">
-                  {operatingModelLabel(workspace.operating_model)}
-                </dd>
-              </div>
-              <div className="rounded-md bg-zinc-50 p-3">
-                <dt className="font-medium text-zinc-950">Luật lead</dt>
-                <dd className="mt-1 text-zinc-600">
-                  {workspace.lead_scope_rule}
-                </dd>
-              </div>
-              <div className="rounded-md bg-zinc-50 p-3">
-                <dt className="font-medium text-zinc-950">Đối tác/hợp đồng</dt>
-                <dd className="mt-1 text-zinc-600">
-                  {workspace.required_partner ? "Cần đối tác" : "Không bắt buộc"}{" "}
-                  · {workspace.required_contract ? "Cần hợp đồng" : "Theo phát sinh"}
-                </dd>
-              </div>
-              <div className="rounded-md bg-zinc-50 p-3">
-                <dt className="font-medium text-zinc-950">AI</dt>
-                <dd className="mt-1 text-zinc-600">
-                  {workspace.ai_allowed ? "Có thể bật sau duyệt" : "Đang khóa"}
-                </dd>
-              </div>
-            </dl>
-          ) : (
-            <p className="mt-4 text-sm text-zinc-500">
-              Chưa có hồ sơ vận hành cho đối tượng này.
+          <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+            <div className="flex items-center gap-2">
+              <Settings2 className="size-4 text-zinc-600" />
+              <h2 className="text-base font-semibold">Hồ sơ vận hành</h2>
+            </div>
+            {workspace ? (
+              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                <div className="rounded-md bg-zinc-50 p-3">
+                  <dt className="font-medium text-zinc-950">Mô hình</dt>
+                  <dd className="mt-1 text-zinc-600">
+                    {operatingModelLabel(workspace.operating_model)}
+                  </dd>
+                </div>
+                <div className="rounded-md bg-zinc-50 p-3">
+                  <dt className="font-medium text-zinc-950">Luật lead</dt>
+                  <dd className="mt-1 text-zinc-600">
+                    {workspace.lead_scope_rule}
+                  </dd>
+                </div>
+                <div className="rounded-md bg-zinc-50 p-3">
+                  <dt className="font-medium text-zinc-950">
+                    Đối tác/hợp đồng
+                  </dt>
+                  <dd className="mt-1 text-zinc-600">
+                    {workspace.required_partner
+                      ? "Cần đối tác"
+                      : "Không bắt buộc"}{" "}
+                    ·{" "}
+                    {workspace.required_contract
+                      ? "Cần hợp đồng"
+                      : "Theo phát sinh"}
+                  </dd>
+                </div>
+                <div className="rounded-md bg-zinc-50 p-3">
+                  <dt className="font-medium text-zinc-950">AI</dt>
+                  <dd className="mt-1 text-zinc-600">
+                    {workspace.ai_allowed
+                      ? "Có thể bật sau duyệt"
+                      : "Đang khóa"}
+                  </dd>
+                </div>
+              </dl>
+            ) : (
+              <p className="mt-4 text-sm text-zinc-500">
+                Chưa có hồ sơ vận hành cho đối tượng này.
+              </p>
+            )}
+          </article>
+
+          <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+            <div className="flex items-center gap-2">
+              <Bot className="size-4 text-zinc-600" />
+              <h2 className="text-base font-semibold">Chính sách AI</h2>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-zinc-600">
+              {workspace?.ai_policy ??
+                "AI chưa được cấu hình cho đối tượng này."}
             </p>
-          )}
-        </article>
-
-        <article className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <Bot className="size-4 text-zinc-600" />
-            <h2 className="text-base font-semibold">Chính sách AI</h2>
-          </div>
-          <p className="mt-3 text-sm leading-6 text-zinc-600">
-            {workspace?.ai_policy ??
-              "AI chưa được cấu hình cho đối tượng này."}
-          </p>
-          <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
-            AI không được tự duyệt, không tự chi COM, không xem dữ liệu ngoài
-            phạm vi user và đối tượng tuyển sinh.
-          </p>
-        </article>
-      </div>
-
-      <section
-        id="operation-steps"
-        className="rounded-lg border border-zinc-200 bg-white shadow-sm"
-        data-heu-segment-operation-steps="P0-05_SCOPE_STEPS"
-      >
-        <div className="border-b border-zinc-200 p-5">
-          <h2 className="text-base font-semibold">Quy trình còn lại</h2>
-          <p className="mt-1 text-sm text-zinc-500">
-            Những phần ít dùng hơn vẫn giữ đúng đối tượng tuyển sinh đang chọn.
-          </p>
+            <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800">
+              AI không được tự duyệt, không tự chi COM, không xem
+              dữ liệu ngoài phạm vi user và đối tượng tuyển
+              sinh.
+            </p>
+          </article>
         </div>
-        <div className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-3">
-          {remainingSteps.length > 0 ? (
-            remainingSteps.map((step) => (
+
+        <section
+          id="operation-steps"
+          className="rounded-lg border border-zinc-200 bg-white shadow-sm"
+          data-heu-segment-operation-steps="P0-05_SCOPE_STEPS"
+        >
+          <div className="border-b border-zinc-200 p-5">
+            <h2 className="text-base font-semibold">Quy trình còn lại</h2>
+            <p className="mt-1 text-sm text-zinc-500">
+              Những phần ít dùng hơn vẫn giữ đúng đối tượng
+              tuyển sinh đang chọn.
+            </p>
+          </div>
+          <SegmentStepFocusPanel steps={remainingSteps} segmentId={segmentId} />
+          {requiredSteps.length === 0 ? (
+            <div className="border-t border-zinc-200 p-5 text-sm text-amber-700">
+              Chưa có bước bắt buộc nào cho đối tượng này.
+            </div>
+          ) : null}
+        </section>
+
+        <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
+          <div className="border-b border-zinc-200 p-5">
+            <div className="flex items-center gap-2">
+              <FileSpreadsheet className="size-4 text-zinc-600" />
+              <h2 className="text-base font-semibold">
+                Trường thông tin trên lead
+              </h2>
+            </div>
+            <p className="mt-1 text-sm text-zinc-500">
+              Đây là lớp cấu hình hiển thị/required theo đối
+              tượng. Phần form sẽ tiếp tục được ràng buộc sâu
+              hơn ở bước sau.
+            </p>
+          </div>
+          <div className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-3">
+            {visibleRules.map((rule) => (
               <article
-                key={step.id}
+                key={rule.id}
                 className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-medium text-zinc-950">{step.step_name}</p>
-                    <p className="mt-1 text-xs uppercase text-zinc-500">
-                      {step.step_group} · {step.owner_department}
+                    <p className="font-medium text-zinc-950">
+                      {rule.field_label}
+                    </p>
+                    <p className="mt-1 font-mono text-xs text-zinc-500">
+                      {rule.field_code}
                     </p>
                   </div>
                   <span
                     className={`rounded-md px-2 py-1 text-xs font-medium ${
-                      step.required_for_operation
+                      rule.is_required
                         ? "bg-rose-50 text-rose-700"
                         : "bg-zinc-100 text-zinc-600"
                     }`}
                   >
-                    {step.required_for_operation ? "Bắt buộc" : "Tùy chọn"}
+                    {rule.is_required ? "Bắt buộc" : "Tùy chọn"}
                   </span>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-zinc-600">
-                  {step.control_note}
+                  {rule.help_text}
                 </p>
-                <Link
-                  href={step.action_href}
-                  className="mt-4 inline-flex rounded-md border border-zinc-300 bg-white px-3 py-2 text-xs font-medium text-zinc-800 hover:bg-zinc-100"
-                >
-                  Mở phần này
-                </Link>
               </article>
-            ))
-          ) : (
-            <p className="text-sm text-zinc-500">
-              Các thao tác chính đã nằm ở khu Truy cập nhanh.
-            </p>
-          )}
-        </div>
-        {requiredSteps.length === 0 ? (
-          <div className="border-t border-zinc-200 p-5 text-sm text-amber-700">
-            Chưa có bước bắt buộc nào cho đối tượng này.
+            ))}
           </div>
-        ) : null}
-      </section>
-
-        <section className="rounded-lg border border-zinc-200 bg-white shadow-sm">
-        <div className="border-b border-zinc-200 p-5">
-          <div className="flex items-center gap-2">
-            <FileSpreadsheet className="size-4 text-zinc-600" />
-            <h2 className="text-base font-semibold">
-              Trường thông tin trên lead
-            </h2>
-          </div>
-          <p className="mt-1 text-sm text-zinc-500">
-            Đây là lớp cấu hình hiển thị/required theo đối tượng. Phần form sẽ
-            tiếp tục được ràng buộc sâu hơn ở bước sau.
-          </p>
-        </div>
-        <div className="grid gap-3 p-5 md:grid-cols-2 xl:grid-cols-3">
-          {visibleRules.map((rule) => (
-            <article
-              key={rule.id}
-              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-medium text-zinc-950">{rule.field_label}</p>
-                  <p className="mt-1 font-mono text-xs text-zinc-500">
-                    {rule.field_code}
-                  </p>
-                </div>
-                <span
-                  className={`rounded-md px-2 py-1 text-xs font-medium ${
-                    rule.is_required
-                      ? "bg-rose-50 text-rose-700"
-                      : "bg-zinc-100 text-zinc-600"
-                  }`}
-                >
-                  {rule.is_required ? "Bắt buộc" : "Tùy chọn"}
-                </span>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-zinc-600">
-                {rule.help_text}
-              </p>
-            </article>
-          ))}
-        </div>
-        {requiredRules.length === 0 ? (
-          <div className="border-t border-zinc-200 p-5 text-sm text-amber-700">
-            Chưa có field bắt buộc nào cho đối tượng này.
-          </div>
-        ) : null}
+          {requiredRules.length === 0 ? (
+            <div className="border-t border-zinc-200 p-5 text-sm text-amber-700">
+              Chưa có field bắt buộc nào cho đối tượng này.
+            </div>
+          ) : null}
         </section>
       </SegmentOperatingFocusLayout>
     </section>

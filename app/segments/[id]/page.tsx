@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Plus, RefreshCcw, Upload } from "lucide-react";
+import {
+  ArrowRight,
+  LayoutDashboard,
+  ListChecks,
+  Plus,
+  RefreshCcw,
+  Upload,
+  type LucideIcon,
+} from "lucide-react";
 
 import { LeadList } from "@/components/leads/lead-list";
 import { AppShell } from "@/components/layout/app-shell";
@@ -20,6 +28,7 @@ import type {
   AdmissionSegmentWorkspaceRow,
 } from "@/lib/admission-segments";
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -59,6 +68,14 @@ type SegmentLookupRow = {
   id: string;
   segment_name: string;
   program_group: string | null;
+};
+
+type SegmentQuickAction = {
+  href: string;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+  primary?: boolean;
 };
 
 const segmentOperatingSections: SegmentOperatingFocusSection[] = [
@@ -108,6 +125,119 @@ function canOpenSegment(
   }
 
   return scopes.some((scope) => scope.segment_id === segmentId);
+}
+
+function segmentHubHref(segmentCode: string, segmentId: string) {
+  if (segmentCode === "UNIVERSITY_TRANSFER_HOU") {
+    return withAdmissionSegmentParam("/hou", segmentId);
+  }
+
+  if (segmentCode === "TC9_TTGDTX_LINKED") {
+    return withAdmissionSegmentParam("/ttgdtx", segmentId);
+  }
+
+  if (segmentCode.startsWith("SHORT_")) {
+    return withAdmissionSegmentParam("/short-course", segmentId);
+  }
+
+  return withAdmissionSegmentParam("/reports", segmentId);
+}
+
+function SegmentWorkspaceQuickActions({
+  segment,
+  loadedLeadCount,
+  readinessScore,
+}: {
+  segment: AdmissionSegmentCatalogRow;
+  loadedLeadCount: number;
+  readinessScore: number | null;
+}) {
+  const actions: SegmentQuickAction[] = [
+    {
+      href: withAdmissionSegmentParam("/leads", segment.id),
+      label: "Xem lead",
+      description: `${loadedLeadCount} lead tải nhanh trong workspace`,
+      icon: ListChecks,
+      primary: true,
+    },
+    {
+      href: withAdmissionSegmentParam("/leads/new", segment.id),
+      label: "Tạo lead",
+      description: "Form tự gắn đúng đối tượng đang chọn",
+      icon: Plus,
+    },
+    {
+      href: withAdmissionSegmentParam("/import", segment.id),
+      label: "Import",
+      description: "CSV giữ phạm vi segment để tránh lẫn dữ liệu",
+      icon: Upload,
+    },
+    {
+      href: segmentHubHref(segment.segment_code, segment.id),
+      label: "Hub nghiệp vụ",
+      description:
+        readinessScore === null
+          ? "Mở màn hình vận hành chính của đối tượng"
+          : `Readiness ${readinessScore}% · mở hub liên quan`,
+      icon: LayoutDashboard,
+    },
+  ];
+
+  return (
+    <section
+      className="overflow-hidden rounded-lg border border-zinc-200 bg-white p-3 shadow-sm"
+      data-heu-segment-workspace-action-strip="P0-05_SEGMENT_ACTION_STRIP"
+    >
+      <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+        {actions.map((action) => {
+          const Icon = action.icon;
+
+          return (
+            <Link
+              key={action.label}
+              href={action.href}
+              className={`group flex min-h-20 min-w-0 items-center justify-between gap-3 rounded-md border px-3 py-3 transition ${
+                action.primary
+                  ? "border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-800 hover:border-zinc-400 hover:bg-white"
+              }`}
+            >
+              <span className="flex min-w-0 items-center gap-3">
+                <span
+                  className={`flex size-9 shrink-0 items-center justify-center rounded-md ${
+                    action.primary
+                      ? "bg-white text-zinc-950"
+                      : "bg-white text-zinc-700 ring-1 ring-zinc-200"
+                  }`}
+                >
+                  <Icon className="size-4" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold">
+                    {action.label}
+                  </span>
+                  <span
+                    className={`mt-1 block line-clamp-2 text-xs leading-5 ${
+                      action.primary ? "text-zinc-200" : "text-zinc-500"
+                    }`}
+                  >
+                    {action.description}
+                  </span>
+                </span>
+              </span>
+              <ArrowRight
+                className={`size-4 shrink-0 transition ${
+                  action.primary
+                    ? "text-zinc-300 group-hover:text-white"
+                    : "text-zinc-400 group-hover:text-zinc-900"
+                }`}
+              />
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 export default async function SegmentDetailPage({ params }: PageProps) {
@@ -263,6 +393,11 @@ export default async function SegmentDetailPage({ params }: PageProps) {
         </>
       }
     >
+      <SegmentWorkspaceQuickActions
+        segment={segment}
+        loadedLeadCount={leadsResult.data?.length ?? 0}
+        readinessScore={readinessResult.data?.readiness_score ?? null}
+      />
       <SegmentOperatingFocusLayout sections={segmentOperatingSections}>
         <SegmentWorkspaceGuide segment={segment} />
         <SegmentOperatingProfile

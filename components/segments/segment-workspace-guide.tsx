@@ -11,31 +11,36 @@ import {
 } from "lucide-react";
 
 import type { AdmissionSegmentCatalogRow } from "@/lib/admission-segments";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type SegmentWorkspaceGuideProps = {
   segment: AdmissionSegmentCatalogRow;
 };
 
-function getSegmentWorkItems(segmentCode: string) {
+function scopedHref(href: string, segmentId: string) {
+  return withAdmissionSegmentParam(href, segmentId);
+}
+
+function getSegmentWorkItems(segmentCode: string, segmentId: string) {
   if (segmentCode === "UNIVERSITY_TRANSFER_HOU") {
     return [
       {
         label: "HOU",
         description: "Theo dõi hệ HOU, ngành, địa điểm học, bước xử lý và COM.",
         icon: GraduationCap,
-        href: "/hou",
+        href: scopedHref("/hou", segmentId),
       },
       {
         label: "Hồ sơ HOU",
         description: "Kiểm tra hồ sơ, học phí kỳ đầu và minh chứng trước khi chốt COM.",
         icon: ClipboardCheck,
-        href: "/documents",
+        href: scopedHref("/documents", segmentId),
       },
       {
         label: "Kế toán COM",
         description: "Chỉ xử lý COM sau khi đủ điều kiện và có chứng từ đối soát.",
         icon: Banknote,
-        href: "/hou",
+        href: scopedHref("/hou", segmentId),
       },
     ];
   }
@@ -46,19 +51,19 @@ function getSegmentWorkItems(segmentCode: string) {
         label: "TTGDTX",
         description: "Lead trong khu này là danh sách học sinh do TTGDTX/đối tác cung cấp.",
         icon: Building2,
-        href: "/partners",
+        href: scopedHref("/ttgdtx", segmentId),
       },
       {
         label: "Hồ sơ liên kết",
         description: "Theo dõi hợp đồng, thẩm quyền, mô hình học văn hóa và trung cấp.",
         icon: FileText,
-        href: "/documents",
+        href: scopedHref("/ttgdtx/master", segmentId),
       },
       {
         label: "COM/đối soát",
         description: "COM theo chính sách liên kết, tránh trùng nguồn và chi sai kỳ.",
         icon: Banknote,
-        href: "/partners",
+        href: scopedHref("/ttgdtx/reconciliation", segmentId),
       },
     ];
   }
@@ -69,47 +74,47 @@ function getSegmentWorkItems(segmentCode: string) {
         label: "Khóa ngắn hạn",
         description: "Quản lý học viên, khóa học, lịch học và chứng chỉ theo từng khóa.",
         icon: ClipboardCheck,
-        href: "/documents",
+        href: scopedHref("/short-course/intake", segmentId),
       },
       {
         label: "Học phí",
         description: "Theo dõi thu học phí, nguồn hỗ trợ nếu có và chứng từ kế toán.",
         icon: Banknote,
-        href: "/reports",
+        href: scopedHref("/short-course/drilldown?type=payments", segmentId),
       },
       {
         label: "Rủi ro chính sách",
         description: "Kiểm tra điều kiện nếu khóa có liên quan trợ cấp hoặc chính sách hỗ trợ.",
         icon: ShieldAlert,
-        href: "/audit",
+        href: scopedHref("/short-course/actions", segmentId),
       },
     ];
   }
 
   return [
-    {
-      label: "Tuyển sinh",
-      description: "Quản lý lead, tư vấn, hồ sơ và bàn giao theo đúng đối tượng.",
-      icon: Users,
-      href: "/leads",
-    },
-    {
-      label: "Hồ sơ",
-      description: "Kiểm tra hồ sơ nhập học và điều kiện trước khi chuyển trạng thái.",
-      icon: ClipboardCheck,
-      href: "/documents",
-    },
-    {
-      label: "Tài chính",
-      description: "Theo dõi học phí, COM và công nợ theo chính sách đang hiệu lực.",
-      icon: Banknote,
-      href: "/reports",
-    },
-  ];
+      {
+        label: "Tuyển sinh",
+        description: "Quản lý lead, tư vấn, hồ sơ và bàn giao theo đúng đối tượng.",
+        icon: Users,
+        href: scopedHref("/leads", segmentId),
+      },
+      {
+        label: "Hồ sơ",
+        description: "Kiểm tra hồ sơ nhập học và điều kiện trước khi chuyển trạng thái.",
+        icon: ClipboardCheck,
+        href: scopedHref("/documents", segmentId),
+      },
+      {
+        label: "Tài chính",
+        description: "Theo dõi học phí, COM và công nợ theo chính sách đang hiệu lực.",
+        icon: Banknote,
+        href: scopedHref("/reports", segmentId),
+      },
+    ];
 }
 
 export function SegmentWorkspaceGuide({ segment }: SegmentWorkspaceGuideProps) {
-  const workItems = getSegmentWorkItems(segment.segment_code);
+  const workItems = getSegmentWorkItems(segment.segment_code, segment.id);
 
   return (
     <section className="space-y-4">
@@ -181,6 +186,7 @@ export function SegmentWorkspaceGuide({ segment }: SegmentWorkspaceGuideProps) {
       <div
         className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-3 shadow-sm"
         data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"
+        data-heu-segment-workspace-scoped-links="P0-05_SEGMENT_SCOPED_WORK_LINKS"
       >
         <div className="mb-3 flex items-center justify-between gap-3 px-1">
           <h2 className="text-sm font-semibold text-zinc-950">
