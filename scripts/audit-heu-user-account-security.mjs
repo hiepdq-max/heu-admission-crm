@@ -67,6 +67,8 @@ const businessScopePath =
 const positionMatrixPath =
   "components/settings/position-assignment-matrix.tsx";
 const onboardingPath = "components/settings/real-user-onboarding-panel.tsx";
+const userAccessWorkflowGuidePath =
+  "components/settings/user-access-workflow-guide.tsx";
 const actionsPath = "app/settings/actions.ts";
 const settingsPagePath = "app/settings/page.tsx";
 const scopePagePath = "app/settings/scopes/page.tsx";
@@ -107,6 +109,7 @@ for (const file of [
   businessScopePath,
   positionMatrixPath,
   onboardingPath,
+  userAccessWorkflowGuidePath,
   actionsPath,
   settingsPagePath,
   scopePagePath,
@@ -139,6 +142,7 @@ const linkForm = read(linkFormPath);
 const businessScope = read(businessScopePath);
 const positionMatrix = read(positionMatrixPath);
 const onboarding = read(onboardingPath);
+const userAccessWorkflowGuide = read(userAccessWorkflowGuidePath);
 const actions = read(actionsPath);
 const settingsPage = read(settingsPagePath);
 const scopePage = read(scopePagePath);
@@ -335,6 +339,26 @@ requireAllText(
   ],
   "settings page user-account guard",
   settingsPagePath,
+);
+
+
+requireAllText(
+  userAccessWorkflowGuide,
+  [
+    'data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"',
+    'data-heu-user-access-workflow-overflow-guard="P0-17_USER_ACCESS_WORKFLOW_NO_OVERFLOW"',
+    'data-heu-user-access-steps="AUTH_LINK POSITION_ASSIGN PASSWORD_RESET LOGIN_CHECK"',
+    "Tao/link user, gan quyen va ban giao mat khau",
+    "Khong gui mat khau qua Codex/chat/email thuong hoac file dinh kem.",
+    "Khong gan ADMIN neu user khong lam nhiem vu quan tri he thong.",
+    "min-w-0",
+    "overflow-hidden",
+    "truncate",
+    "break-words",
+    "shrink-0",
+  ],
+  "P0-17 user access workflow guide no-overflow guard",
+  userAccessWorkflowGuidePath,
 );
 
 requireAllText(
@@ -669,15 +693,25 @@ requireAllText(
 
 requireOrderedText(
   settingsPage,
-  ["RealUserOnboardingPanel", "<RealUserOnboardingPanel />", "<UserCreateForm"],
-  "real-user onboarding panel before create-user form",
+  [
+    "UserAccessWorkflowGuide",
+    "<UserAccessWorkflowGuide />",
+    "<RealUserOnboardingPanel />",
+    "<UserCreateForm",
+  ],
+  "user access workflow guide before create-user form",
   settingsPagePath,
 );
 
 requireOrderedText(
   scopePage,
-  ["RealUserOnboardingPanel", "<RealUserOnboardingPanel />", "<UserCreateForm"],
-  "real-user onboarding panel before scoped create-user form",
+  [
+    "UserAccessWorkflowGuide",
+    "<UserAccessWorkflowGuide />",
+    "<RealUserOnboardingPanel />",
+    "<UserCreateForm",
+  ],
+  "user access workflow guide before scoped create-user form",
   scopePagePath,
 );
 

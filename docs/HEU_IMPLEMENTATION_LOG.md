@@ -1,5 +1,20 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard
+
+- Hardened `components/settings/user-access-workflow-guide.tsx` with
+  `data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"` and
+  `data-heu-user-access-workflow-overflow-guard="P0-17_USER_ACCESS_WORKFLOW_NO_OVERFLOW"`.
+- The guide stays mounted before `RealUserOnboardingPanel` and `UserCreateForm`
+  on `/settings` and `/settings/scopes`, so operators see the account workflow
+  and password-safety rules before using create/link forms.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words` and `shrink-0`
+  guards so long workflow/rule text stays inside the read-only guide.
+- Extended `scripts/audit-heu-user-account-security.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the guide marker, no-overflow
+  guard and mount order fail locally if removed.
+- PASS_LOCAL boundary: this is read-only account-workflow guidance and no-overflow hardening only. It does not create accounts, send passwords, grant access, change role scope, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P0-14 Documents To Lead Filter Guard
 
 - Tightened `app/documents/page.tsx` so the lead entry opens

@@ -126,6 +126,40 @@ if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
 
+fastSection("2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard", [
+  "components/settings/user-access-workflow-guide.tsx",
+  'data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"',
+  'data-heu-user-access-workflow-overflow-guard="P0-17_USER_ACCESS_WORKFLOW_NO_OVERFLOW"',
+  "RealUserOnboardingPanel",
+  "UserCreateForm",
+  "/settings",
+  "/settings/scopes",
+  "account workflow",
+  "password-safety rules",
+  "min-w-0",
+  "overflow-hidden",
+  "truncate",
+  "break-words",
+  "shrink-0",
+  "scripts/audit-heu-user-account-security.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "guide marker",
+  "no-overflow",
+  "mount order",
+  "fail locally",
+  "PASS_LOCAL boundary",
+  "read-only account-workflow guidance",
+  "does not create accounts",
+  "send passwords",
+  "grant access",
+  "change role scope",
+  "accept UAT",
+  "accept evidence",
+  "approve finance action",
+  "owner GO/NO-GO",
+  "production GO",
+]);
+
 fastSection("2026-07-03 - P0-14 Documents To Lead Filter Guard", [
   "app/documents/page.tsx",
   'scopedHref("/leads?quick=documents")',

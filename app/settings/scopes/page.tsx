@@ -12,6 +12,7 @@ import {
 } from "@/components/settings/user-business-scope-settings";
 import { UserCreateForm } from "@/components/settings/user-create-form";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
+import { UserAccessWorkflowGuide } from "@/components/settings/user-access-workflow-guide";
 import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
 import {
   UserScopeEnforcementPanel,
@@ -299,6 +300,7 @@ export default async function ScopeSettingsPage({
 
       {canCreateUsers ? (
         <>
+          <UserAccessWorkflowGuide />
           <RealUserOnboardingPanel />
           <UserCreateForm
             roles={roles ?? []}
