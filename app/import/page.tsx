@@ -7,6 +7,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import {
+  firstParam,
   getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
@@ -34,10 +35,6 @@ function toOptions<T extends Record<string, unknown>>(
     id: String(row.id),
     label: String(row[labelKey] ?? ""),
   }));
-}
-
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
 }
 
 function filterRowsByScope<T extends { id: unknown }>(
@@ -90,7 +87,10 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
           </Button>
         }
       >
-        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+        <section
+          className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800"
+          data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD"
+        >
           <div className="flex items-start gap-3">
             <Route className="mt-0.5 size-5 shrink-0" />
             <div>

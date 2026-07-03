@@ -44,6 +44,10 @@ const segmentOperatingFocusPath =
 const segmentWorkspaceGuidePath =
   "components/segments/segment-workspace-guide.tsx";
 const segmentDetailPagePath = "app/segments/[id]/page.tsx";
+const workspaceUrlPath = "lib/workspace-url.ts";
+const importPagePath = "app/import/page.tsx";
+const importActionsPath = "app/import/actions.ts";
+const leadImportFormPath = "components/import/lead-import-form.tsx";
 const leadListPath = "components/leads/lead-list.tsx";
 const implementationLogPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
@@ -56,6 +60,10 @@ for (const file of [
   segmentOperatingFocusPath,
   segmentWorkspaceGuidePath,
   segmentDetailPagePath,
+  workspaceUrlPath,
+  importPagePath,
+  importActionsPath,
+  leadImportFormPath,
   leadListPath,
   implementationLogPath,
 ]) {
@@ -211,6 +219,10 @@ requireText(
   segmentDetailPagePath,
   /SegmentOperatingFocusLayout[\s\S]*segmentOperatingSections[\s\S]*SegmentWorkspaceGuide[\s\S]*SegmentOperatingProfile[\s\S]*LeadList/,
   "segment detail page focus layout order",
+);requireText(
+  workspaceUrlPath,
+  /(?=[\s\S]*export function firstParam)(?=[\s\S]*export function withAdmissionSegmentParam)(?=[\s\S]*url\.searchParams\.set\("segment", segmentId\))(?=[\s\S]*export function withoutAdmissionSegmentParam)(?=[\s\S]*export function workspaceRedirectPath)/,
+  "workspace URL helper exports",
 );
 requireText(
   leadListPath,
@@ -226,6 +238,25 @@ requireText(
   leadListPath,
   /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
   "lead list quick filter overflow guards",
+);requireText(
+  leadImportFormPath,
+  /(?=[\s\S]*data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS")(?=[\s\S]*data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE")(?=[\s\S]*data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW")(?=[\s\S]*data-heu-import-anchor-nav="defaults csv submit result")(?=[\s\S]*useRef<HTMLTextAreaElement>)(?=[\s\S]*csvTextRef\.current\.value = sampleCsv)(?=[\s\S]*withAdmissionSegmentParam\("\/leads", defaultSegmentId\))(?=[\s\S]*min-w-0 overflow-hidden rounded-lg)(?=[\s\S]*break-words)(?=[\s\S]*truncate)/,
+  "P0-14 import quick access and no-overflow guard",
+);
+requireText(
+  importPagePath,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*lockSegmentSelection)(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  "P0-14 import page workspace guard and scoped lead link",
+);
+requireText(
+  leadImportFormPath,
+  /(?=[\s\S]*data-heu-import-workspace-lock="P0-14_IMPORT_WORKSPACE_LOCK")(?=[\s\S]*lockSegmentSelection)(?=[\s\S]*type="hidden"[\s\S]*name="default_admission_segment_id"[\s\S]*value=\{defaultSegmentId\})/,
+  "P0-14 import form locked workspace segment",
+);
+requireText(
+  importActionsPath,
+  /(?=[\s\S]*if \(!defaultAdmissionSegmentId\))(?=[\s\S]*can_use_admission_workspace)(?=[\s\S]*requiresSegmentScope)(?=[\s\S]*allowedSegmentIds\.has\(defaultAdmissionSegmentId\))(?=[\s\S]*csvAdmissionSegmentId[\s\S]*csvAdmissionSegmentId !== defaultAdmissionSegmentId)(?=[\s\S]*allowedPartnerIds\.has\(defaultPartnerId\))/,
+  "P0-14 import action workspace and partner write guard",
 );
 requireText(
   segmentOperatingPath,
@@ -246,6 +277,15 @@ requireText(
   implementationLogPath,
   /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"[\s\S]*data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
   "P0-05 segment workspace quick access implementation log boundary",
+);requireText(
+  implementationLogPath,
+  /P0-14 Import Workspace Guard[\s\S]*app\/import\/page\.tsx[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD"[\s\S]*components\/import\/lead-import-form\.tsx[\s\S]*data-heu-import-workspace-lock="P0-14_IMPORT_WORKSPACE_LOCK"[\s\S]*default_admission_segment_id[\s\S]*app\/import\/actions\.tsx?[\s\S]*can_use_admission_workspace[\s\S]*segment-scope checks[\s\S]*partner-scope checks[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*grant access[\s\S]*write lead data[\s\S]*execute\s+import[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-14 import workspace implementation log boundary",
+);
+requireText(
+  implementationLogPath,
+  /P0-14 Import Quick Access Guard[\s\S]*lead-import-form\.tsx[\s\S]*data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS"[\s\S]*data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE"[\s\S]*data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*grant access[\s\S]*write lead data[\s\S]*execute\s+import[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-14 import quick access implementation log boundary",
 );
 
 for (const master of canonicalMasters) {

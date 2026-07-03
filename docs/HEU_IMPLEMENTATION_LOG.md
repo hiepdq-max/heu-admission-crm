@@ -1,5 +1,49 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-14 Import Workspace Guard
+
+- Reused the shared `firstParam` and `withAdmissionSegmentParam` helpers in
+  `app/import/page.tsx` so `/import` keeps a workspace-scoped return path and
+  lead-list link.
+- Marked the import no-workspace stop state with
+  `data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD"` so
+  P0-14 cannot silently fall back into an unscoped import screen.
+- Tightened `components/import/lead-import-form.tsx` with
+  `data-heu-import-workspace-lock="P0-14_IMPORT_WORKSPACE_LOCK"` around the
+  locked hidden `default_admission_segment_id` field.
+- Preserved the existing `app/import/actions.ts` server-side controls:
+  `can_use_admission_workspace`, segment-scope checks, CSV-vs-workspace
+  mismatch checks and partner-scope checks stay required before any insert.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the no-workspace guard, locked
+  segment field and server-side workspace/partner write guards fail locally if
+  removed.
+- PASS_LOCAL boundary: this is import navigation and workspace-scope guard
+  hardening only. It does not change role scope, grant access, create leads,
+  write lead data, execute import, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Import Quick Access Guard
+
+- Tightened `components/import/lead-import-form.tsx` so `/import` exposes
+  workspace-scoped quick access for defaults, CSV input, submit and result
+  areas with `data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS"`.
+- Added `data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE"` so the
+  local CSV sample can be pasted into the controlled textarea without changing
+  the server import action or bypassing the final Import lead submit.
+- Added
+  `data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `aria-label` and
+  `title` guards so long workspace/source/flow/partner labels do not force
+  horizontal overflow.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the import quick-access marker,
+  sample paste affordance and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is import navigation and no-overflow hardening
+  only. It does not change role scope, grant access, write lead data, execute import,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
 ## 2026-07-03 - P8-01 HOU Quick Access No-Overflow Guard
 
 - Added a read-only `/hou` quick-access band in
