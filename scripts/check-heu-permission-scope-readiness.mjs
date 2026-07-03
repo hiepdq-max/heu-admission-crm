@@ -10,7 +10,12 @@ const requiredEnvKeys = [
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
 ];
-const privilegedRoleCodes = new Set(["ADMIN", "BGH"]);
+const privilegedRoleCodes = new Set([
+  "ADMIN",
+  "BGH",
+  "HIEU_TRUONG",
+  "PHO_HIEU_TRUONG",
+]);
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
 const statuses = [];
 
@@ -227,7 +232,7 @@ if (missingKeys.length === 0) {
         (profile) => !privilegedRoleCodes.has(profile.roles?.code ?? ""),
       );
       const missingRoleProfiles = activeProfiles.filter((profile) => !profile.role_id);
-      const activeWithoutExplicitLeadVisibility = activeProfiles.filter(
+      const activeNonPrivilegedWithoutExplicitLeadVisibility = activeNonPrivilegedProfiles.filter(
         (profile) => !visibilityByUser.has(profile.id),
       );
       const activeNonPrivilegedWithoutBusinessScope =
@@ -280,14 +285,14 @@ if (missingKeys.length === 0) {
 
       addStatus(
         "PERMISSION-SCOPE-LEAD-VISIBILITY",
-        activeWithoutExplicitLeadVisibility.length === 0 &&
+        activeNonPrivilegedWithoutExplicitLeadVisibility.length === 0 &&
           invalidLeadVisibilityRows.length === 0
           ? "READY"
           : "NO_GO",
-        activeWithoutExplicitLeadVisibility.length === 0 &&
+        activeNonPrivilegedWithoutExplicitLeadVisibility.length === 0 &&
           invalidLeadVisibilityRows.length === 0
-          ? "Every active profile has an explicit valid lead visibility row."
-          : `Profiles missing explicit lead visibility: ${activeWithoutExplicitLeadVisibility.length}; invalid visibility rows: ${invalidLeadVisibilityRows.length}.`,
+          ? "Every active non-ADMIN/BGH profile has an explicit valid lead visibility row."
+          : `Active non-ADMIN/BGH profiles missing explicit lead visibility: ${activeNonPrivilegedWithoutExplicitLeadVisibility.length}; invalid visibility rows: ${invalidLeadVisibilityRows.length}.`,
       );
 
       addStatus(

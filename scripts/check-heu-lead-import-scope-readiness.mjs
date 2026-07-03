@@ -10,7 +10,12 @@ const requiredEnvKeys = [
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
 ];
-const privilegedRoleCodes = new Set(["ADMIN", "BGH"]);
+const privilegedRoleCodes = new Set([
+  "ADMIN",
+  "BGH",
+  "HIEU_TRUONG",
+  "PHO_HIEU_TRUONG",
+]);
 const statuses = [];
 
 function addStatus(code, status, detail) {
