@@ -31,6 +31,7 @@ type DocumentChecklistProps = {
   leadId: string;
   checklist: ChecklistRow[];
   documents: LeadDocumentRow[];
+  activeSegmentId?: string | null;
 };
 
 const statusLabels: Record<string, string> = {
@@ -64,10 +65,12 @@ function DocumentChecklistItem({
   leadId,
   item,
   document,
+  activeSegmentId,
 }: {
   leadId: string;
   item: ChecklistRow;
   document?: LeadDocumentRow;
+  activeSegmentId?: string | null;
 }) {
   const initialState: DocumentFormState = {};
   const [state, formAction, isPending] = useActionState(
@@ -96,8 +99,14 @@ function DocumentChecklistItem({
       }
       action={formAction}
       className="rounded-md border border-zinc-200 bg-white p-4"
+      data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN"
     >
       <input name="lead_id" type="hidden" value={leadId} />
+      <input
+        name="active_admission_segment_id"
+        type="hidden"
+        value={activeSegmentId ?? ""}
+      />
       <input name="checklist_id" type="hidden" value={item.id} />
       <input name="document_type" type="hidden" value={item.document_code} />
 
@@ -221,6 +230,7 @@ export function DocumentChecklist({
   leadId,
   checklist,
   documents,
+  activeSegmentId,
 }: DocumentChecklistProps) {
   const documentMap = new Map(
     documents.map((document) => [document.document_type, document]),
@@ -253,6 +263,7 @@ export function DocumentChecklist({
             leadId={leadId}
             item={item}
             document={documentMap.get(item.document_code)}
+            activeSegmentId={activeSegmentId}
           />
         ))}
       </div>

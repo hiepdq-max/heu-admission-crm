@@ -821,6 +821,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
           leadId={lead.id}
           checklist={checklistRows}
           documents={documentRows}
+          activeSegmentId={lead.admission_segment_id}
         />
       </div>
     </AppShell>

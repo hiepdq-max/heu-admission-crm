@@ -440,12 +440,17 @@ export async function updateLeadDocumentAction(
   const status = textValue(formData, "status");
   const fileUrl = textValue(formData, "file_url");
   const note = textValue(formData, "note");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
   const fields = submittedFields(formData, [
     "checklist_id",
     "document_type",
     "status",
     "file_url",
     "note",
+    "active_admission_segment_id",
   ]);
 
   if (!leadId || !checklistId || !documentType) {
@@ -489,6 +494,9 @@ export async function updateLeadDocumentAction(
   }
 
   revalidatePath(`/leads/${leadId}`);
+  revalidatePath(
+    withAdmissionSegmentParam(`/leads/${leadId}`, activeAdmissionSegmentId),
+  );
 
   return { success: "Đã cập nhật hồ sơ." };
 }

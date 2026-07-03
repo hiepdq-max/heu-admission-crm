@@ -54,6 +54,7 @@ const leadDetailPagePath = "app/leads/[id]/page.tsx";
 const leadDetailActionsPath = "app/leads/[id]/actions.ts";
 const activityFormPath = "components/leads/activity-form.tsx";
 const statusUpdateFormPath = "components/leads/status-update-form.tsx";
+const documentChecklistPath = "components/leads/document-checklist.tsx";
 const implementationLogPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
 for (const file of [
@@ -75,6 +76,7 @@ for (const file of [
   leadDetailActionsPath,
   activityFormPath,
   statusUpdateFormPath,
+  documentChecklistPath,
   implementationLogPath,
 ]) {
   requireFile(file);
@@ -274,6 +276,22 @@ requireText(
   /(?=[\s\S]*createLeadActivityAction)(?=[\s\S]*activeAdmissionSegmentId = textValue\([\s\S]*"active_admission_segment_id"[\s\S]*\))(?=[\s\S]*if \(nextFollowupAt\)[\s\S]*revalidatePath\("\/followups"\)[\s\S]*withAdmissionSegmentParam\("\/followups", activeAdmissionSegmentId\)[\s\S]*revalidatePath\("\/pipeline"\)[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\))/,
   "P0-05 lead activity scoped follow-up and pipeline revalidation",
 );
+requireText(
+  leadDetailPagePath,
+  /(?=[\s\S]*<DocumentChecklist)(?=[\s\S]*activeSegmentId=\{lead\.admission_segment_id\})/,
+  "P0-05 lead document checklist receives workspace return",
+);
+requireText(
+  documentChecklistPath,
+  /(?=[\s\S]*activeSegmentId\?: string \| null)(?=[\s\S]*data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN")(?=[\s\S]*name="active_admission_segment_id"[\s\S]*value=\{activeSegmentId \?\? ""\})/,
+  "P0-05 lead document checklist workspace return",
+);
+requireText(
+  leadDetailActionsPath,
+  /(?=[\s\S]*updateLeadDocumentAction)(?=[\s\S]*activeAdmissionSegmentId = textValue\([\s\S]*"active_admission_segment_id"[\s\S]*\))(?=[\s\S]*withAdmissionSegmentParam[\s\S]*activeAdmissionSegmentId)/,
+  "P0-05 lead document scoped detail revalidation",
+);
+
 
 requireText(
   leadListPath,
@@ -333,6 +351,12 @@ requireText(
   /P0-05 Lead Activity Follow-up Workspace Revalidation Guard[\s\S]*components\/leads\/activity-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*ActivityForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*createLeadActivityAction[\s\S]*withAdmissionSegmentParam[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead activity submission[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
   "P0-05 lead activity follow-up implementation log boundary",
 );
+requireText(
+  implementationLogPath,
+  /P0-05 Lead Document Workspace Return Guard[\s\S]*components\/leads\/document-checklist\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*DocumentChecklist[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*updateLeadDocumentAction[\s\S]*withAdmissionSegmentParam[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real document update[\s\S]*upload or accept evidence[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-05 lead document implementation log boundary",
+);
+
 
 requireText(
   implementationLogPath,

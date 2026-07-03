@@ -180,6 +180,35 @@ fastSection("2026-07-03 - P0-05 Lead Activity Follow-up Workspace Revalidation G
   "approve finance action",
   "production GO",
 ]);
+
+
+fastSection("2026-07-03 - P0-05 Lead Document Workspace Return Guard", [
+  "components/leads/document-checklist.tsx",
+  "active_admission_segment_id",
+  "data-heu-lead-document-workspace-return=\"P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN\"",
+  "app/leads/[id]/page.tsx",
+  "DocumentChecklist",
+  "activeSegmentId={lead.admission_segment_id}",
+  "updateLeadDocumentAction",
+  "withAdmissionSegmentParam",
+  "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "document checklist marker",
+  "hidden workspace field",
+  "page prop flow",
+  "scoped detail revalidation",
+  "PASS_LOCAL boundary",
+  "lead document checklist workspace-return",
+  "does not grant access",
+  "change role scope",
+  "bypass P0-19",
+  "real document update",
+  "upload or accept evidence",
+  "create lead records",
+  "execute UAT",
+  "approve finance action",
+  "production GO",
+]);
 fastSection("2026-07-03 - P0-14 Documents Quick Access Hub", [
   "app/documents/page.tsx",
   "data-heu-documents-quick-access=\"P0-14_DOCUMENTS_QUICK_ACCESS\"",
