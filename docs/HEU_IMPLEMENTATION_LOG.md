@@ -92,6 +92,24 @@
   execute a real document update, upload or accept evidence, create lead records, execute UAT, approve finance action, approve owner GO/NO-GO or mark
   production GO.
 
+## 2026-07-03 - P0-05 Lead Condition Workspace Return Guard
+
+- Tightened `components/leads/lead-condition-checklist.tsx` so each condition
+  form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-condition-workspace-return="P0-05_LEAD_CONDITION_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `LeadConditionChecklist` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `updateLeadConditionAction` reads
+  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
+  scoped lead-detail URL from `withAdmissionSegmentParam` while preserving
+  `/hou` revalidation.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the condition form marker,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is condition checklist workspace-return hardening only. It does not grant access, change role scope, bypass P0-19, accept evidence,
+  approve COM, approve finance action, execute UAT, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard
 
 - Added a read-only `/short-course` quick-access band in

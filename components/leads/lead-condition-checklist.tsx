@@ -43,6 +43,7 @@ type LeadConditionChecklistProps = {
   templates: LeadConditionTemplateRow[];
   checks: LeadConditionCheckRow[];
   loadError?: string;
+  activeSegmentId?: string | null;
 };
 
 const initialState: ConditionFormState = {};
@@ -81,10 +82,12 @@ function ConditionRow({
   leadId,
   template,
   check,
+  activeSegmentId,
 }: {
   leadId: string;
   template: LeadConditionTemplateRow;
   check?: LeadConditionCheckRow;
+  activeSegmentId?: string | null;
 }) {
   const [state, formAction, isPending] = useActionState(
     updateLeadConditionAction,
@@ -105,8 +108,14 @@ function ConditionRow({
     <form
       action={formAction}
       className="rounded-md border border-zinc-200 bg-white p-4"
+      data-heu-lead-condition-workspace-return="P0-05_LEAD_CONDITION_WORKSPACE_RETURN"
     >
       <input type="hidden" name="lead_id" value={leadId} />
+      <input
+        type="hidden"
+        name="active_admission_segment_id"
+        value={activeSegmentId ?? ""}
+      />
       <input type="hidden" name="condition_template_id" value={template.id} />
       {lockedRequired ? <input type="hidden" name="is_required" value="on" /> : null}
 
@@ -216,6 +225,7 @@ export function LeadConditionChecklist({
   templates,
   checks,
   loadError,
+  activeSegmentId,
 }: LeadConditionChecklistProps) {
   const checksByCode = new Map(checks.map((check) => [check.condition_code, check]));
   const requiredTemplates = templates.filter((template) => {
@@ -303,6 +313,7 @@ export function LeadConditionChecklist({
                     leadId={leadId}
                     template={template}
                     check={checksByCode.get(template.condition_code)}
+                    activeSegmentId={activeSegmentId}
                   />
                 ))
               )}

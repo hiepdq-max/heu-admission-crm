@@ -519,11 +519,16 @@ export async function updateLeadConditionAction(
   const isChecked = formData.get("is_checked") === "on";
   const requestedRequired = formData.get("is_required") === "on";
   const note = textValue(formData, "note");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
   const fields = submittedFields(formData, [
     "condition_template_id",
     "is_checked",
     "is_required",
     "note",
+    "active_admission_segment_id",
   ]);
 
   if (!leadId || !conditionTemplateId) {
@@ -588,6 +593,9 @@ export async function updateLeadConditionAction(
   }
 
   revalidatePath(`/leads/${leadId}`);
+  revalidatePath(
+    withAdmissionSegmentParam(`/leads/${leadId}`, activeAdmissionSegmentId),
+  );
   revalidatePath("/hou");
 
   return { success: "Đã cập nhật điều kiện." };

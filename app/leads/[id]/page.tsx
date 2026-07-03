@@ -754,6 +754,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
           templates={conditionTemplates}
           checks={conditionChecks}
           loadError={conditionChecklistLoadError}
+          activeSegmentId={lead.admission_segment_id}
         />
       </div>
       <div id="hou-info" className="scroll-mt-24">
