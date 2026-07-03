@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -36,6 +37,39 @@ type SettingsReturnPath = "/settings" | "/settings/scopes";
 
 function settingsReturnPath(value: string | null): SettingsReturnPath {
   return value === "/settings/scopes" ? "/settings/scopes" : "/settings";
+}
+
+async function requestOrigin() {
+  const requestHeaders = await headers();
+  const forwardedHost = requestHeaders.get("x-forwarded-host");
+  const host = forwardedHost ?? requestHeaders.get("host");
+
+  if (host) {
+    const protocol =
+      requestHeaders.get("x-forwarded-proto") ??
+      (host.startsWith("localhost") || host.startsWith("127.0.0.1")
+        ? "http"
+        : "https");
+
+    return `${protocol}://${host}`;
+  }
+
+  const configuredSiteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
+
+  if (configuredSiteUrl) {
+    return configuredSiteUrl.startsWith("http")
+      ? configuredSiteUrl.replace(/\/$/, "")
+      : `https://${configuredSiteUrl.replace(/\/$/, "")}`;
+  }
+
+  return "http://localhost:3000";
+}
+
+async function passwordRecoveryRedirectUrl() {
+  const callbackUrl = new URL("/auth/callback", await requestOrigin());
+  callbackUrl.searchParams.set("next", "/auth/update-password");
+  return callbackUrl.toString();
 }
 
 async function requireSettingsAuthenticatedUser(
@@ -353,7 +387,9 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
     redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: await passwordRecoveryRedirectUrl(),
+  });
 
   if (error) {
     redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
