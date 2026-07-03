@@ -19,10 +19,7 @@
   `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the HOU
   scope guard, checker, Slice 10 and no-approval boundary fail locally if
   removed.
-- PASS_LOCAL boundary: this is HOU scope-readiness hardening only. It does not
-  approve HOU handover, tuition ledger posting, invoice issuance, COM payout,
-  finance action, UAT acceptance, evidence acceptance, owner GO or production
-  GO.
+- PASS_LOCAL boundary: this is HOU scope-readiness hardening only. It does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO.
 
 ## 2026-07-03 - P8/P9 Quick Access Label Wrap Guard
 
