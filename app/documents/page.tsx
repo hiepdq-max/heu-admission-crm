@@ -62,7 +62,7 @@ export default async function DocumentsPage({
     {
       label: "Danh sach lead",
       description: "Mo lead de vao dung checklist ho so cua tung nguoi hoc.",
-      href: scopedHref("/leads"),
+      href: scopedHref("/leads?quick=documents"),
       icon: ListChecks,
     },
     {
@@ -74,7 +74,7 @@ export default async function DocumentsPage({
     {
       label: "Pipeline ho so",
       description: "Xem nhom cho ho so, da nop ho so va buoc chuyen trang thai.",
-      href: scopedHref("/pipeline"),
+      href: scopedHref("/pipeline#pipeline-document-pending"),
       icon: FolderKanban,
     },
     {

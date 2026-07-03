@@ -48,6 +48,7 @@ type LookupRow = {
 type LeadsPageProps = {
   searchParams?: Promise<{
     segment?: string | string[];
+    quick?: string | string[];
   }>;
 };
 
@@ -73,6 +74,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const requestedQuickFilter = firstParam(resolvedSearchParams.quick);
   const workspace = await getAdmissionWorkspaceContext(
     supabase,
     user.id,
@@ -204,6 +206,8 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
             label: `${row.major_code} - ${row.major_name}`,
           }))}
           houStages={toLookup(houStageRows, "stage_name")}
+          activeSegmentId={workspace.activeSegmentId}
+          initialQuickFilter={requestedQuickFilter}
         />
       )}
     </AppShell>

@@ -12,6 +12,7 @@ import {
 import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
 import {
+  firstParam,
   getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
@@ -53,10 +54,6 @@ function filterRowsByScope<T extends { id: unknown }>(
   return (rows ?? []).filter((row) => allowedIds.has(String(row.id)));
 }
 
-function firstParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
-
 export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const supabase = await createClient();
   const {
@@ -87,7 +84,10 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
         workspaceSegmentId={workspace.activeSegmentId}
         workspaceReturnTo={workspaceReturnTo}
       >
-        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
+        <section
+          className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800"
+          data-heu-lead-create-no-workspace-guard="P0-05_LEAD_CREATE_NO_WORKSPACE_GUARD"
+        >
           <div className="flex items-start gap-3">
             <Route className="mt-0.5 size-5 shrink-0" />
             <div>

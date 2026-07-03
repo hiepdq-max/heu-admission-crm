@@ -1,5 +1,66 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-14 Documents To Lead Filter Guard
+
+- Tightened `app/documents/page.tsx` so the lead entry opens
+  `/leads?quick=documents` through `scopedHref("/leads?quick=documents")`,
+  preserving the active `segment` parameter.
+- Extended `app/leads/page.tsx` to read `quick` from `searchParams` and pass
+  `initialQuickFilter={requestedQuickFilter}` into `LeadList`.
+- Extended `components/leads/lead-list.tsx` with
+  `normalizeLeadQuickFilter`, `initialQuickFilter` and
+  `data-heu-lead-list-initial-quick-filter="P0-05_LEAD_LIST_INITIAL_QUICK_FILTER"`
+  so the documents hub lands directly on the document-status lead group.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the documents-to-lead filter
+  route fails locally if removed.
+- PASS_LOCAL boundary: this is read-only documents-to-lead navigation/filter
+  hardening only. It does not upload real documents, accept evidence,
+  write lead data, change role scope, grant access, execute UAT, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Create Workspace Guard
+
+- Tightened `app/leads/new/page.tsx` so the create-lead no-workspace stop state
+  is explicitly marked with
+  `data-heu-lead-create-no-workspace-guard="P0-05_LEAD_CREATE_NO_WORKSPACE_GUARD"`.
+- Reused the shared `firstParam` and `withAdmissionSegmentParam` helpers for
+  create-lead workspace routing instead of keeping a local parser.
+- Tightened `components/leads/lead-form.tsx` with
+  `data-heu-lead-create-workspace-lock="P0-05_LEAD_CREATE_WORKSPACE_LOCK"` so
+  the locked hidden `admission_segment_id` field remains guarded.
+- Updated `app/leads/actions.ts` so successful create redirects through
+  `withAdmissionSegmentParam("/leads", admissionSegmentId)` after the existing
+  `can_use_admission_workspace`, role permission and segment-scope checks pass.
+- Extended `scripts/audit-heu-data-foundation.mjs` so no-workspace guard,
+  locked segment field, scoped cancel and scoped post-create redirect fail
+  locally if removed.
+- PASS_LOCAL boundary: this is create-lead navigation and workspace-scope guard
+  hardening only. It does not create real leads, grant access, change role
+  scope, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Workspace Deep-Link Guard
+
+- Tightened `components/leads/lead-list.tsx` so quick-open cards, mobile lead
+  links, table lead links and Enter-to-open search navigation use the
+  client-safe `lib/workspace-url.ts` `withAdmissionSegmentParam` helper through
+  the shared `leadHref` helper.
+- Updated `app/leads/page.tsx` to pass `workspace.activeSegmentId` into
+  `LeadList`, keeping lead detail links tied to the selected admission segment
+  workspace.
+- Added quick-open `aria-label` and `title` values so guarded lead opening has
+  a stable browser-assistive target while preserving the existing
+  `data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"` and
+  `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"` controls.
+- Extended `scripts/audit-heu-data-foundation.mjs` so the workspace deep-link
+  helper and `/leads` page prop fail locally if removed; the guard fails locally
+  before PASS_LOCAL if the scoped link path is removed.
+- PASS_LOCAL boundary: this is navigation scope preservation only. It does not
+  change role scope, grant access, write lead data, update lead status,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
 ## 2026-07-03 - P8-01 HOU Scope Readiness Guard
 
 - Updated `app/hou/page.tsx` so `/hou` reads leads through

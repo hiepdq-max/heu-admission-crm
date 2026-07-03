@@ -520,7 +520,10 @@ export function LeadForm({
         </div>
       ) : null}
 
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <section
+        className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+        data-heu-lead-create-workspace-lock="P0-05_LEAD_CREATE_WORKSPACE_LOCK"
+      >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-lg font-semibold">Workspace tuyển sinh</h2>

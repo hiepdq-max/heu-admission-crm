@@ -13,6 +13,7 @@ import {
   normalizedOptionLabel,
 } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace-url";
 
 export type LeadFormState = {
   error?: string;
@@ -639,9 +640,5 @@ export async function createLeadAction(
     }
   }
 
-  redirect(
-    admissionSegmentId
-      ? `/leads?segment=${encodeURIComponent(admissionSegmentId)}`
-      : "/leads",
-  );
+  redirect(withAdmissionSegmentParam("/leads", admissionSegmentId));
 }

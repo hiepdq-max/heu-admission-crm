@@ -13,6 +13,8 @@ import {
   X,
 } from "lucide-react";
 
+import { withAdmissionSegmentParam } from "@/lib/workspace-url";
+
 type LeadRow = {
   id: string;
   lead_code: string;
@@ -53,6 +55,8 @@ type LeadListProps = {
   users: LookupRow[];
   houMajors: LookupRow[];
   houStages: LookupRow[];
+  activeSegmentId?: string | null;
+  initialQuickFilter?: string | null;
 };
 
 const statusLabels: Record<string, string> = {
@@ -116,6 +120,11 @@ type LeadSearchLookups = {
   userMap: Map<string, string>;
   houMajorMap: Map<string, string>;
   houStageMap: Map<string, string>;
+};
+
+type ManualQuickFilterState = {
+  base: LeadQuickFilter;
+  value: LeadQuickFilter;
 };
 
 const closedStatuses = new Set(["ENROLLED", "LOST", "DUPLICATE"]);
@@ -209,6 +218,12 @@ const quickFilters: LeadQuickFilterDefinition[] = [
   },
 ];
 
+function normalizeLeadQuickFilter(value: string | null | undefined) {
+  return (
+    quickFilters.find((filter) => filter.id === value)?.id ?? "all"
+  );
+}
+
 function toMap(rows: LookupRow[]) {
   return new Map(rows.map((row) => [row.id, row.label]));
 }
@@ -238,6 +253,10 @@ function formatArea(lead: Pick<LeadRow, "province" | "district" | "ward">) {
   return currentArea;
 }
 
+function leadHref(leadId: string, activeSegmentId?: string | null) {
+  return withAdmissionSegmentParam(`/leads/${leadId}`, activeSegmentId);
+}
+
 export function LeadList({
   leads,
   sources,
@@ -248,9 +267,18 @@ export function LeadList({
   users,
   houMajors,
   houStages,
+  activeSegmentId,
+  initialQuickFilter,
 }: LeadListProps) {
   const router = useRouter();
-  const [activeFilter, setActiveFilter] = useState<LeadQuickFilter>("all");
+  const normalizedInitialQuickFilter =
+    normalizeLeadQuickFilter(initialQuickFilter);
+  const [manualActiveFilter, setManualActiveFilter] =
+    useState<ManualQuickFilterState | null>(null);
+  const activeFilter =
+    manualActiveFilter?.base === normalizedInitialQuickFilter
+      ? manualActiveFilter.value
+      : normalizedInitialQuickFilter;
   const [searchQuery, setSearchQuery] = useState("");
   const sourceMap = useMemo(() => toMap(sources), [sources]);
   const flowMap = useMemo(() => toMap(flows), [flows]);
@@ -326,7 +354,7 @@ export function LeadList({
     }
 
     event.preventDefault();
-    router.push(`/leads/${firstQuickLead.id}`);
+    router.push(leadHref(firstQuickLead.id, activeSegmentId));
   }
 
   if (leads.length === 0) {
@@ -348,6 +376,7 @@ export function LeadList({
     <section
       className="min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm"
       data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"
+      data-heu-lead-list-initial-quick-filter="P0-05_LEAD_LIST_INITIAL_QUICK_FILTER"
     >
       <div className="flex flex-col gap-4 border-b border-zinc-200 p-5">
         <div className="min-w-0">
@@ -401,7 +430,12 @@ export function LeadList({
                 key={filter.id}
                 type="button"
                 aria-pressed={isActive}
-                onClick={() => setActiveFilter(filter.id)}
+                onClick={() =>
+                  setManualActiveFilter({
+                    base: normalizedInitialQuickFilter,
+                    value: filter.id,
+                  })
+                }
                 className={`flex min-h-20 min-w-0 flex-col justify-between overflow-hidden rounded-md border p-3 text-left transition ${
                   isActive
                     ? "border-zinc-950 bg-zinc-950 text-white"
@@ -451,7 +485,9 @@ export function LeadList({
               {quickLeadMatches.map((lead) => (
                 <Link
                   key={lead.id}
-                  href={`/leads/${lead.id}`}
+                  href={leadHref(lead.id, activeSegmentId)}
+                  aria-label={`Mở nhanh lead ${lead.lead_code}`}
+                  title={`Mở nhanh lead ${lead.lead_code}`}
                   className="group flex min-h-20 min-w-0 items-center justify-between gap-3 rounded-md border border-zinc-200 bg-white px-3 py-3 transition hover:border-zinc-400"
                 >
                   <span className="min-w-0">
@@ -502,7 +538,7 @@ export function LeadList({
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <Link
-                        href={`/leads/${lead.id}`}
+                        href={leadHref(lead.id, activeSegmentId)}
                         className="block truncate font-medium text-zinc-950"
                       >
                         {lead.student_name}
@@ -541,7 +577,7 @@ export function LeadList({
                   </div>
 
                   <Link
-                    href={`/leads/${lead.id}`}
+                    href={leadHref(lead.id, activeSegmentId)}
                     className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-100"
                   >
                     Mở lead
@@ -594,7 +630,7 @@ export function LeadList({
                   <tr key={lead.id} className="align-top">
                     <td className="px-5 py-4">
                       <Link
-                        href={`/leads/${lead.id}`}
+                        href={leadHref(lead.id, activeSegmentId)}
                         className="font-medium text-zinc-950 hover:underline"
                       >
                         {lead.student_name}
