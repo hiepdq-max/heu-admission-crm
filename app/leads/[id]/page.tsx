@@ -805,6 +805,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
           currentLostReason={lead.lost_reason}
           currentNextFollowupAt={lead.next_followup_at}
           currentNote={lead.note}
+          activeSegmentId={lead.admission_segment_id}
         />
       </div>
       <ActivityForm leadId={lead.id} />

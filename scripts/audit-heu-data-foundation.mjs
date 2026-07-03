@@ -49,6 +49,9 @@ const importPagePath = "app/import/page.tsx";
 const importActionsPath = "app/import/actions.ts";
 const leadImportFormPath = "components/import/lead-import-form.tsx";
 const leadListPath = "components/leads/lead-list.tsx";
+const leadDetailPagePath = "app/leads/[id]/page.tsx";
+const leadDetailActionsPath = "app/leads/[id]/actions.ts";
+const statusUpdateFormPath = "components/leads/status-update-form.tsx";
 const implementationLogPath = "docs/HEU_IMPLEMENTATION_LOG.md";
 
 for (const file of [
@@ -65,6 +68,9 @@ for (const file of [
   importActionsPath,
   leadImportFormPath,
   leadListPath,
+  leadDetailPagePath,
+  leadDetailActionsPath,
+  statusUpdateFormPath,
   implementationLogPath,
 ]) {
   requireFile(file);
@@ -235,6 +241,21 @@ requireText(
   "P0-05 lead list quick search and mobile quick open",
 );
 requireText(
+  leadDetailPagePath,
+  /(?=[\s\S]*<StatusUpdateForm)(?=[\s\S]*activeSegmentId=\{lead\.admission_segment_id\})/,
+  "P0-05 lead detail status form receives workspace return",
+);
+requireText(
+  statusUpdateFormPath,
+  /(?=[\s\S]*activeSegmentId\?: string \| null)(?=[\s\S]*data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN")(?=[\s\S]*name="active_admission_segment_id"[\s\S]*value=\{activeSegmentId \?\? ""\})/,
+  "P0-05 lead detail status form workspace return",
+);
+requireText(
+  leadDetailActionsPath,
+  /(?=[\s\S]*withAdmissionSegmentParam)(?=[\s\S]*updateLeadStatusAction)(?=[\s\S]*activeAdmissionSegmentId = textValue\([\s\S]*"active_admission_segment_id"[\s\S]*\))(?=[\s\S]*revalidatePath\(\s*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\)[\s,]*\))/,
+  "P0-05 lead detail status action scoped revalidation",
+);
+requireText(
   leadListPath,
   /(?=[\s\S]*min-w-0)(?=[\s\S]*overflow-hidden)(?=[\s\S]*break-words)(?=[\s\S]*truncate)(?=[\s\S]*shrink-0)(?=[\s\S]*overflow-x-auto)/,
   "lead list quick filter overflow guards",
@@ -278,6 +299,11 @@ requireText(
   /P0-05 Segment Workspace Quick Access[\s\S]*segment-operating-focus-layout\.tsx[\s\S]*data-heu-segment-operating-focus-layout="P1-11_SEGMENT_FOCUS"[\s\S]*segment-operating-readiness\.tsx[\s\S]*data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"[\s\S]*segment-workspace-guide\.tsx[\s\S]*data-heu-segment-workspace-guide="P0-05_WORKSPACE_GUIDE"[\s\S]*lead-list\.tsx[\s\S]*data-heu-lead-list-quick-filters="P0-05_LEAD_QUICK_FILTERS"[\s\S]*data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"[\s\S]*data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*mark production GO/i,
   "P0-05 segment workspace quick access implementation log boundary",
 );requireText(
+  implementationLogPath,
+  /P0-05 Lead Detail Status Workspace Return Guard[\s\S]*components\/leads\/status-update-form\.tsx[\s\S]*active_admission_segment_id[\s\S]*data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"[\s\S]*app\/leads\/\[id\]\/page\.tsx[\s\S]*StatusUpdateForm[\s\S]*activeSegmentId=\{lead\.admission_segment_id\}[\s\S]*withAdmissionSegmentParam\("\/pipeline", activeAdmissionSegmentId\)[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not grant access[\s\S]*change role scope[\s\S]*bypass P0-19[\s\S]*real lead status update[\s\S]*create lead records[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance action[\s\S]*production GO/i,
+  "P0-05 lead detail status implementation log boundary",
+);
+requireText(
   implementationLogPath,
   /P0-14 Import Workspace Guard[\s\S]*app\/import\/page\.tsx[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD"[\s\S]*components\/import\/lead-import-form\.tsx[\s\S]*data-heu-import-workspace-lock="P0-14_IMPORT_WORKSPACE_LOCK"[\s\S]*default_admission_segment_id[\s\S]*app\/import\/actions\.tsx?[\s\S]*can_use_admission_workspace[\s\S]*segment-scope checks[\s\S]*partner-scope checks[\s\S]*audit-heu-data-foundation\.mjs[\s\S]*does not change role scope[\s\S]*grant access[\s\S]*write lead data[\s\S]*execute\s+import[\s\S]*execute UAT[\s\S]*approve finance action[\s\S]*production GO/i,
   "P0-14 import workspace implementation log boundary",

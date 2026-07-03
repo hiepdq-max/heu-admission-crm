@@ -125,6 +125,32 @@ function fastSection(title, tokens) {
 if (!packageJson.scripts?.["audit:heu-implementation-log"]) {
   fastFailures.push("package.json: missing audit:heu-implementation-log script");
 }
+fastSection("2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard", [
+  "components/leads/status-update-form.tsx",
+  "active_admission_segment_id",
+  "data-heu-lead-detail-status-workspace-return=\"P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN\"",
+  "app/leads/[id]/page.tsx",
+  "StatusUpdateForm",
+  "activeSegmentId={lead.admission_segment_id}",
+  "updateLeadStatusAction",
+  "withAdmissionSegmentParam(\"/pipeline\", activeAdmissionSegmentId)",
+  "scripts/audit-heu-data-foundation.mjs",
+  "scripts/audit-heu-implementation-log.mjs",
+  "detail status form marker",
+  "hidden workspace field",
+  "page prop flow",
+  "PASS_LOCAL boundary",
+  "lead-detail status workspace-return hardening",
+  "does not grant access",
+  "change role scope",
+  "bypass P0-19",
+  "real lead status update",
+  "create lead records",
+  "execute UAT",
+  "accept evidence",
+  "approve finance action",
+  "production GO",
+]);
 fastSection("2026-07-03 - P0-14 Import Workspace Guard", [
   "app/import/page.tsx",
   "firstParam",

@@ -1,5 +1,22 @@
 # HEU Implementation Log
 
+## 2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard
+
+- Tightened `components/leads/status-update-form.tsx` so the lead-detail
+  status form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `StatusUpdateForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Reused the scoped `updateLeadStatusAction` revalidation path, including
+  `withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId)`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the detail status form marker,
+  hidden workspace field and page prop flow fail locally if removed.
+- PASS_LOCAL boundary: this is lead-detail status workspace-return hardening
+  only. It does not grant access, change role scope, bypass P0-19, execute a
+  real lead status update, create lead records, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard
 
 - Added a read-only `/short-course` quick-access band in

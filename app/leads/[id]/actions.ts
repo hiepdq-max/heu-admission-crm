@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
 import { createClient } from "@/lib/supabase/server";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type FormFields = Record<string, string>;
 type FieldErrors = Record<string, string>;
@@ -586,11 +587,16 @@ export async function updateLeadStatusAction(
   const lostReason = textValue(formData, "lost_reason");
   const nextFollowupAt = textValue(formData, "next_followup_at");
   const note = textValue(formData, "note");
+  const activeAdmissionSegmentId = textValue(
+    formData,
+    "active_admission_segment_id",
+  );
   const fields = submittedFields(formData, [
     "status",
     "lost_reason",
     "next_followup_at",
     "note",
+    "active_admission_segment_id",
   ]);
 
   if (!leadId) {
@@ -667,6 +673,9 @@ export async function updateLeadStatusAction(
   revalidatePath(`/leads/${leadId}`);
   revalidatePath("/leads");
   revalidatePath("/pipeline");
+  revalidatePath(
+    withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId),
+  );
   revalidatePath("/followups");
   revalidatePath("/reports");
   revalidatePath("/");
