@@ -1,5 +1,26 @@
 # HEU Implementation Log
 
+## 2026-07-03 - AI Build Collision Triage Guard
+
+- Scope: Added a PASS_LOCAL control guard for multi-AI dirty-worktree
+  coordination so concurrent builders can see scope collisions, shared control
+  file risk and the next safest packaging lane before staging.
+- Changed: `docs/HEU_AI_BUILD_COLLISION_TRIAGE_20260703.md`,
+  `scripts/check-heu-ai-build-collision-triage.mjs`, `package.json` and this
+  implementation log.
+- Result: `check:heu-ai-build-collision-triage` reads live `git status` when
+  the local runner permits Git child processes, groups dirty files into Short
+  Course, Accounting, P0-17/User, Admissions, Report View/Data Master, Finance,
+  database, audit/production-readiness, shared-control and manual scopes, then
+  prints `AI_BUILD_GIT_STATUS`, `AI_BUILD_OVERLAP_RISK`,
+  `AI_BUILD_SHARED_CONTROL_FILES` and `AI_BUILD_NEXT_ACTION`. If Git is blocked
+  by the runner, it prints `AI_BUILD_GIT_STATUS: unavailable` and routes back
+  to direct terminal `git status` before packaging.
+- Boundary: This is coordination and routing only. It does not modify business
+  data, create accounts, send email, create tasks, run migrations, execute UAT,
+  accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
 ## 2026-07-03 - Root Drive Department Confirmation Intake
 
 - Added `docs/HEU_ROOT_DRIVE_DEPARTMENT_CONFIRMATION_INTAKE_20260703.md` as a
