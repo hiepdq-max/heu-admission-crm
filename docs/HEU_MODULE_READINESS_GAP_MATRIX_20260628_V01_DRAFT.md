@@ -119,3 +119,7 @@ The build can continue, but only in this order:
 
 Production remains NO-GO until backup/restore, migration order, signed UAT,
 hard-delete/cascade closure and final owner Go/No-Go are complete.
+
+### P9-10 Short Course signed UAT evidence intake
+
+Short Course signed UAT evidence intake is CAN_SUA/PASS_LOCAL_EVIDENCE_INTAKE only: docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md, /short-course, SC-UAT-EVID-01 through SC-UAT-EVID-08, SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED and check:heu-short-course-signed-uat-evidence-intake route signed Short Course UAT references after external owners finish real UAT. Required next gate remains signed Short Course UAT, signed evidence packages, role/negative-access proof, source reconciliation, report-view signoff and final owner quorum evidence outside Git/Codex/chat; no evidence acceptance, access closure, owner GO/NO-GO or production GO is approved.

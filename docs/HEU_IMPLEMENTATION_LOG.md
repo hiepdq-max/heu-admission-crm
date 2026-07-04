@@ -61,7 +61,7 @@
 
 - Added the executive dashboard report-view reliance strip with
   `data-heu-executive-report-reliance="STD-03_REPORT_RELIANCE_QUICK_STATUS"`.
-- The strip gives BGH/Hiá»‡u trÆ°á»Ÿng quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
+- The strip gives BGH/Hieu truong quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
   `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and
   `RV_AUDIT_RISK_CONTROL`, showing owner lane, decision state, DQ lock and
   blocker before the user opens the underlying module or source map.
@@ -8765,3 +8765,30 @@
 - Changed: accounting ACCT docs/checkers, `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`, `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`, `scripts/check-heu-user-scope-baseline-repair-queue.mjs`, `scripts/check-heu-negative-control-account-queue.mjs`, `scripts/check-heu-finance-payment-scope-readiness.mjs`, `package.json` and current-state inventory.
 - Result: `check:heu-accounting-module-breakdown`, `check:heu-accounting-negative-control-owner-action-queue`, `check:heu-accounting-open-blocker-action-queue` and `check:heu-accounting-no-duplicate-control-ledger` pass locally. `check:heu-accounting-local-readiness -- --summary` remains `ACCT_LOCAL_READY: NO_GO` because ACCT-00 scope/negative-account proof, ACCT-11 external evidence/owner decisions and ACCT-12 signed route/owner closure are still external blockers.
 - Boundary: PASS_LOCAL blocker-routing only. It does not create accounts, change role/scope, execute browser UAT, accept evidence, approve finance reliance, post vouchers, move money, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P9-10 Short Course Signed UAT Evidence Intake
+
+- Added `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` as the
+  PASS_LOCAL_EVIDENCE_INTAKE route for Short Course signed UAT evidence refs.
+- Added SC-UAT-EVID-01 through SC-UAT-EVID-08 and
+  `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED` for storage class, owner
+  lane, linked UAT/review/signoff/report-view cases, redaction reviewer,
+  signed date, result and blocker state outside Git/Codex/chat.
+- Added the `/short-course` read-only panel with
+  `data-heu-short-course-signed-uat-evidence-intake="P9-10_SIGNED_UAT_EVIDENCE_INTAKE"`
+  and
+  `data-heu-short-course-signed-uat-evidence-overflow-guard="P9-10_SHORT_COURSE_SIGNED_UAT_EVIDENCE_NO_OVERFLOW"`.
+- Added `scripts/check-heu-short-course-signed-uat-evidence-intake.mjs` and
+  `check:heu-short-course-signed-uat-evidence-intake`.
+- Propagated P9-10 into the Short Course gap pack, UAT result ledger, owner
+  signoff manifest, external owner action queue, report-view source map,
+  current-state inventory, system backlog, readiness gap matrix and production
+  checklist.
+- Aligned the Short Course UAT result-ledger boundary sentence to the TTGDTX
+  release-gate exact token while keeping this as PASS_LOCAL control packaging
+  only.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
+  payment, approve teacher payment, verify invoice/payment, approve report-view
+  reliance, approve dashboard reliance, approve role UAT, approve access
+  closure, approve owner GO/NO-GO or mark production GO.

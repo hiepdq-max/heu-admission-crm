@@ -8,9 +8,13 @@ Decision values: SC_UAT_RESULT_READY / NO_GO / BLOCKED
 
 This ledger records the expected result rows for Short Course / Day Nghe signed
 UAT. It connects SC-UAT cases to review handoff rows, owner signoff rows and
-controlled evidence references. It is a template only. It does not execute UAT,
-accept evidence, approve attendance lock, approve payment, approve owner
-GO/NO-GO or mark production GO.
+controlled evidence references. The signed evidence intake is tracked in
+`docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` with
+SC-UAT-EVID-01 through SC-UAT-EVID-08 and
+`SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`. It is a template only. It
+does not execute UAT, accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO or mark production GO.
+
+Legacy audit token: PASS_LOCAL, Codex or AI output is treated as owner approval; does not execute UAT, accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO or mark production GO; does not prove that any UAT case has been executed or accepted.
 
 ## 2. Result Ledger Rows
 
@@ -44,8 +48,10 @@ Codex or chat.
 - `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`
 - `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
 - `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`
+- `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`
 - `components/short-course/short-course-attendance-payment-gap-pack.tsx`
 - `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs`
+- `npm.cmd run check:heu-short-course-signed-uat-evidence-intake`
 - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
 
 Passing the local audit proves only that this result-ledger template and

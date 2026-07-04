@@ -219,3 +219,7 @@ production, the highest priority blockers are:
 14. Run P0-15 final handoff coverage and record live git state, local check results, Stage D/NO-GO and P0-03/P0-09/P0-13/P0-14 evidence paths, including P0-03 restore smoke-check proof for P0-19/P3 gate preservation and the P0-09 final owner decision manifest, with P0-14 controlled evidence intake ledger, redaction reviewer, owner signature state, P2-18/P5-03 real-accounting finance reliance proof, Finance Day-1 start-gate checklist, Finance Day-1 result ledger, P0-17 access closure decision, P6-04/P6-03/P6-06 proof paths and `docs/HEU_NON_TTGDTX_CASCADE_FINDING_REGISTER_20260628.md`, before owner GO/NO-GO.
 15. Keep P0-05 implementation log audit green so every safe build slice records scope, checks and local-only boundary before commit.
 16. Complete role/workspace permission tests.
+
+### Short Course signed UAT evidence intake
+
+`docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` records SC-UAT-EVID-01 through SC-UAT-EVID-08 and SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED through `npm.cmd run check:heu-short-course-signed-uat-evidence-intake`. signed Short Course UAT, role/negative-access proof, source reconciliation, report-view signoff and final owner quorum evidence remain required. No real UAT execution, evidence acceptance, access closure, owner GO/NO-GO or production GO is approved.

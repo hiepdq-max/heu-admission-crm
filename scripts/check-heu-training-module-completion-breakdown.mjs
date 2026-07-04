@@ -43,6 +43,8 @@ const roleNegativeAccessPath =
   "docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md";
 const externalOwnerActionPath =
   "docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md";
+const signedUatEvidencePath =
+  "docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md";
 const ownerManifestPath =
   "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md";
 const uatLedgerPath = "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md";
@@ -65,6 +67,7 @@ for (const file of [
   reportViewReconciliationPath,
   roleNegativeAccessPath,
   externalOwnerActionPath,
+  signedUatEvidencePath,
   ownerManifestPath,
   uatLedgerPath,
   reportViewSourceMapPath,
@@ -90,6 +93,7 @@ const invoicePayment = read(invoicePaymentPath);
 const reportViewReconciliation = read(reportViewReconciliationPath);
 const roleNegativeAccess = read(roleNegativeAccessPath);
 const externalOwnerAction = read(externalOwnerActionPath);
+const signedUatEvidence = read(signedUatEvidencePath);
 const ownerManifest = read(ownerManifestPath);
 const uatLedger = read(uatLedgerPath);
 const reportViewSourceMap = read(reportViewSourceMapPath);
@@ -128,6 +132,7 @@ requireAll(
     "HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md",
     "HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md",
     "HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md",
+    "HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md",
     "SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED",
     "SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED",
     "SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED",
@@ -135,6 +140,7 @@ requireAll(
     "SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED",
     "SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED",
     "SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED",
+    "SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED",
     "SC-LOCK-EVID-01",
     "SC-LOCK-EVID-06",
     "SC-BHXH-EVID-01",
@@ -149,6 +155,8 @@ requireAll(
     "SC-ROLE-EVID-06",
     "SC-OWNER-ACTION-01",
     "SC-OWNER-ACTION-08",
+    "SC-UAT-EVID-01",
+    "SC-UAT-EVID-08",
     "SHORT-SCOPE-STUDENTS",
     "SHORT-SCOPE-CLASSES",
     "SHORT-SCOPE-ENROLLMENTS",
@@ -168,6 +176,7 @@ requireAll(
     "RV_SHORT_COURSE_ATTENDANCE_PAYMENT",
     "npm.cmd run check:heu-training-module-completion-breakdown",
     "npm.cmd run check:heu-short-course-external-owner-action-queue",
+    "npm.cmd run check:heu-short-course-signed-uat-evidence-intake",
     "npm.cmd run check:heu-short-course-scope-readiness",
     "npm.cmd run audit:heu-short-course-attendance-payment-gap-pack",
     "npm.cmd run audit:heu-role-scope-uat-pack",
@@ -378,11 +387,33 @@ requireAll(
 );
 
 requireAll(
+  signedUatEvidence,
+  [
+    "Status: PASS_LOCAL_EVIDENCE_INTAKE",
+    "SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED",
+    "SC-UAT-EVID-01",
+    "SC-UAT-EVID-08",
+    "SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08",
+    "RV_SHORT_COURSE_ATTENDANCE_PAYMENT",
+    "does not execute UAT",
+    "accept evidence",
+    "approve access closure",
+    "approve owner GO/NO-GO",
+    "mark production GO",
+  ],
+  "Short Course signed UAT evidence intake",
+  signedUatEvidencePath,
+);
+
+requireAll(
   reportViewSourceMap,
   [
     "RV_SHORT_COURSE_ATTENDANCE_PAYMENT",
     "HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md",
     "SC-RV-EVID-01 through SC-RV-EVID-06",
+    "HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md",
+    "SC-UAT-EVID-01 through SC-UAT-EVID-08",
+    "SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED",
     "SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED",
     "DQ-RV-06",
     "RV-EVID-05",
@@ -421,6 +452,7 @@ for (const scriptName of [
   "check:heu-short-course-scope-readiness",
   "check:heu-short-course-role-negative-access",
   "check:heu-short-course-external-owner-action-queue",
+  "check:heu-short-course-signed-uat-evidence-intake",
   "audit:heu-short-course-attendance-payment-gap-pack",
   "audit:heu-role-scope-uat-pack",
   "audit:heu-current-state-inventory",

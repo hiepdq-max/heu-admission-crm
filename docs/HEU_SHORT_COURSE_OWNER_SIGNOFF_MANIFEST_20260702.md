@@ -12,6 +12,13 @@ reliance and audit traceability. It prepares the signoff package only. It does
 not approve attendance lock, BHXH decision, payment, UAT acceptance, evidence
 acceptance, owner GO/NO-GO or production GO from Codex/chat.
 
+Signed UAT evidence references are linked through
+`docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` with
+SC-UAT-EVID-01 through SC-UAT-EVID-08 and
+`SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`. Each owner row should record
+`linked_signed_uat_evidence_case` only after the controlled evidence reference
+is recorded outside Git/Codex/chat.
+
 ## 2. Required Owner Decisions
 
 | Decision ID | Owner | Scope | Required evidence reference | Allowed result |
@@ -44,7 +51,9 @@ Codex or chat.
 
 - `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`
 - `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`
+- `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`
 - `components/short-course/short-course-attendance-payment-gap-pack.tsx`
+- `npm.cmd run check:heu-short-course-signed-uat-evidence-intake`
 - `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs`
 - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
 

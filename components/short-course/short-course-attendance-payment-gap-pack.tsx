@@ -527,6 +527,57 @@ const uatResultLedgerRows = [
   },
 ];
 
+const signedUatEvidenceRows = [
+  {
+    code: "SC-UAT-EVID-01",
+    owner: "Audit + IT_DATA",
+    evidence: "Controlled storage location and forbidden-content review.",
+    stop: "Evidence is pasted into Git/Codex/chat or storage class is unknown.",
+  },
+  {
+    code: "SC-UAT-EVID-02",
+    owner: "Dao tao + Audit",
+    evidence: "Signed attendance lock and exception-route UAT refs.",
+    stop: "Attendance lock is treated as accepted from PASS_LOCAL.",
+  },
+  {
+    code: "SC-UAT-EVID-03",
+    owner: "CTHSSV + Phap Che",
+    evidence: "Signed BHXH/chinh sach decision and legal basis refs.",
+    stop: "Policy effect is trusted without owner/legal signoff.",
+  },
+  {
+    code: "SC-UAT-EVID-04",
+    owner: "HR + KHTC",
+    evidence: "Signed meal/allowance and HR payment boundary refs.",
+    stop: "System calculates or pays before signed payment boundary.",
+  },
+  {
+    code: "SC-UAT-EVID-05",
+    owner: "KHTC + Audit",
+    evidence: "Signed invoice/payment, voucher, reversal and period-lock refs.",
+    stop: "Invoice/payment is verified or period-closed without controlled evidence.",
+  },
+  {
+    code: "SC-UAT-EVID-06",
+    owner: "BGH + IT_DATA + Audit",
+    evidence: "Signed RV_SHORT_COURSE_ATTENDANCE_PAYMENT source reconciliation refs.",
+    stop: "Dashboard/report view is relied on before signed owner decision.",
+  },
+  {
+    code: "SC-UAT-EVID-07",
+    owner: "IT_DATA + Audit",
+    evidence: "Signed role/negative-access UAT refs for scoped and denied accounts.",
+    stop: "Out-of-scope user can see private attendance, policy or payment detail.",
+  },
+  {
+    code: "SC-UAT-EVID-08",
+    owner: "Final owner quorum",
+    evidence: "Final owner quorum, linked UAT ledger and linked signoff refs.",
+    stop: "Owner GO/NO-GO is missing, unsigned or inferred from local checks.",
+  },
+];
+
 function StatusBadge({ children }: { children: string }) {
   return (
     <span className="inline-flex max-w-full rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-left text-xs font-medium leading-5 text-amber-700">
@@ -1269,8 +1320,69 @@ export function ShortCourseAttendancePaymentGapPack() {
       </div>
 
       <div
-        id="short-course-owner-signoff"
+        id="short-course-signed-uat-evidence"
         className="border-t border-zinc-200 bg-zinc-50 p-5"
+        data-heu-short-course-signed-uat-evidence-intake="P9-10_SIGNED_UAT_EVIDENCE_INTAKE"
+        data-heu-short-course-signed-uat-evidence-doc="HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704"
+        data-heu-short-course-signed-uat-evidence-decision="SC_SIGNED_UAT_EVIDENCE_READY_NO_GO_BLOCKED"
+        data-heu-short-course-signed-uat-evidence-overflow-guard="P9-10_SHORT_COURSE_SIGNED_UAT_EVIDENCE_NO_OVERFLOW"
+      >
+        <div className="mb-4 flex min-w-0 flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-950">
+              <ClipboardCheck className="size-4 text-zinc-600" />
+              <span>Short Course signed UAT evidence intake</span>
+            </div>
+            <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-zinc-600">
+              Record SC-UAT-EVID-01 through SC-UAT-EVID-08 in
+              docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md
+              after external owners complete real UAT. This captures only
+              controlled evidence references, signer lanes, redaction reviewer,
+              signed date, result and blocker state outside Codex/chat.
+            </p>
+          </div>
+          <StatusBadge>SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED</StatusBadge>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[980px] table-fixed text-sm">
+            <thead className="bg-white text-left text-xs font-medium uppercase text-zinc-500">
+              <tr>
+                <th className="w-[16%] px-4 py-3">Evidence</th>
+                <th className="w-[18%] px-4 py-3">Owner lane</th>
+                <th className="w-[33%] px-4 py-3">Required ref</th>
+                <th className="w-[33%] px-4 py-3">Stop condition</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200 bg-white">
+              {signedUatEvidenceRows.map((row) => (
+                <tr key={row.code} className="align-top">
+                  <td className="break-words px-4 py-4 font-mono text-xs text-zinc-500">
+                    {row.code}
+                  </td>
+                  <td className="break-words px-4 py-4 font-medium text-zinc-950">
+                    {row.owner}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-zinc-600">
+                    {row.evidence}
+                  </td>
+                  <td className="whitespace-normal break-words px-4 py-4 text-amber-700">
+                    {row.stop}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 break-words text-sm leading-6 text-amber-700">
+          PENDING_EXTERNAL_SIGNED_UAT_EVIDENCE: PASS_LOCAL does not execute UAT, accept evidence, approve attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR payment, approve teacher payment, verify invoice/payment, approve report-view reliance, approve dashboard reliance, approve role UAT, approve access closure, approve owner GO/NO-GO or mark production GO.
+        </p>
+      </div>
+
+      <div
+        id="short-course-owner-signoff"
+        className="border-t border-zinc-200 bg-white p-5"
         data-heu-short-course-owner-signoff="P9-01_OWNER_SIGNOFF_MANIFEST"
         data-heu-short-course-owner-decision="SHORT_COURSE_OWNER_READY_NO_GO_BLOCKED"
       >

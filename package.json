@@ -110,7 +110,8 @@
     "audit:ttgdtx-synthetic-uat-pack": "node scripts/audit-ttgdtx-synthetic-uat-pack.mjs",
     "audit:ttgdtx-uat-readiness": "node scripts/audit-ttgdtx-uat-readiness.mjs",
     "audit:ttgdtx-release-gates": "node scripts/audit-ttgdtx-release-gates.mjs",
-    "audit:heu-cthssv-module-readiness": "node scripts/audit-heu-cthssv-module-readiness.mjs"
+    "audit:heu-cthssv-module-readiness": "node scripts/audit-heu-cthssv-module-readiness.mjs",
+    "check:heu-short-course-signed-uat-evidence-intake": "node scripts/check-heu-short-course-signed-uat-evidence-intake.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

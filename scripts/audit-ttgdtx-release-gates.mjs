@@ -3894,8 +3894,6 @@ requireText(
 
 requireText(
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
-  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
-  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*SC-AP-01)(?=[\\s\\S]*SC-AP-08)(?=[\\s\\S]*SC_ATTENDANCE_PAYMENT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\\s\\S]*SC-UAT-01)(?=[\\s\\S]*SC-UAT-08)(?=[\\s\\S]*does not approve attendance lock, BHXH decision,\\s+meal\\/allowance payment, HR payment, invoice\\/payment verification, statutory\\s+accounting, period close, UAT acceptance, evidence acceptance, owner GO or\\s+production GO)", "i"),
   "Short Course attendance/payment gap pack boundary",
 );

@@ -18,8 +18,38 @@ function requireFile(relativePath) {
   }
 }
 
+function sectionScopedContents(contents, pattern) {
+  const source = pattern.source;
+  const headingStart = source.indexOf("## ");
+
+  if (headingStart === -1) {
+    return contents;
+  }
+
+  const gapStart = source.indexOf("[\\s\\S]*", headingStart);
+  if (gapStart === -1) {
+    return contents;
+  }
+
+  const heading = source
+    .slice(headingStart, gapStart)
+    .replace(/\\\//g, "/")
+    .replace(/\\\./g, ".")
+    .replace(/\\-/g, "-");
+  const sectionStart = contents.indexOf(heading);
+
+  if (sectionStart === -1) {
+    return contents;
+  }
+
+  const nextSection = contents.indexOf("\n## ", sectionStart + heading.length);
+  return nextSection === -1 ? contents.slice(sectionStart) : contents.slice(sectionStart, nextSection);
+}
+
 function requireText(contents, pattern, label, file) {
-  if (!pattern.test(contents)) {
+  const scopedContents = file === "docs/HEU_IMPLEMENTATION_LOG.md" ? sectionScopedContents(contents, pattern) : contents;
+
+  if (!pattern.test(scopedContents)) {
     fail(`${file}: missing ${label}`);
   }
 }

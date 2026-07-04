@@ -3,8 +3,8 @@
 Status: PASS_LOCAL_BREAKDOWN
 Production/UAT status: NO-GO until signed attendance/payment UAT,
 BHXH/policy signoff, source reconciliation, role/workspace UAT, controlled
-evidence references, report-view owner signoff and owner GO/NO-GO are completed
-outside Git/Codex/chat.
+evidence references, signed evidence intake rows, report-view owner signoff and
+owner GO/NO-GO are completed outside Git/Codex/chat.
 
 Decision values: TRAINING_MODULE_READY / NO_GO / BLOCKED
 
@@ -41,7 +41,7 @@ GO/NO-GO or production GO.
 | TRN-06 | Invoice/payment verification | PASS_LOCAL_CHECKLIST | `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`; `SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED`; SC-PAY-EVID-01 through SC-PAY-EVID-06; SC-AP-06; SC-REV-04; SC-SIGN-04; SC-UAT-05; `SHORT-SCOPE-BHXH-FINANCE` | Payment verification, voucher/reversal rule and period-lock proof are signed before finance reliance. |
 | TRN-07 | Report-view source reconciliation | PASS_LOCAL_CHECKLIST | `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`; `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`; `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`; `SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED`; SC-RV-EVID-01 through SC-RV-EVID-06; SC-AP-07; SC-REV-05; SC-UAT-06; SC-SIGN-05 | BGH + Audit sign DQ/source/report-view reliance before any dashboard reliance. |
 | TRN-08 | Role scope and negative access | PASS_LOCAL_CHECKLIST | `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`; `SHORT-SCOPE-WORKFLOWS`; `SHORT-SCOPE-ACTOR-LINK`; `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`; `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`; `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED`; SC-ROLE-EVID-01 through SC-ROLE-EVID-06; SC-UAT-07; SC-REV-06; SC-SIGN-06 | In-scope users see only scoped training data, and negative users cannot see private payment or policy detail. |
-| TRN-09 | Audit and controlled evidence trace | PASS_LOCAL_TEMPLATE | SC-REV-06; SC-UAT-08; `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`; SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08; `SC_UAT_RESULT_READY / NO_GO / BLOCKED`; `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack` | Actor, owner, evidence ref, reviewer and decision trace rows exist outside Codex/chat. |
+| TRN-09 | Audit and controlled evidence trace | PASS_LOCAL_TEMPLATE | SC-REV-06; SC-UAT-08; `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`; `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`; SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08; SC-UAT-EVID-01 through SC-UAT-EVID-08; `SC_UAT_RESULT_READY / NO_GO / BLOCKED`; `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`; `npm.cmd run check:heu-short-course-signed-uat-evidence-intake`; `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack` | Actor, owner, evidence ref, storage class, reviewer and decision trace rows exist outside Codex/chat. |
 | TRN-10 | Owner closure and final module decision | PASS_LOCAL_TEMPLATE | `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`; `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`; `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED`; SC-SIGN-01 through SC-SIGN-06; SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08 | All owner signoff, UAT result ledger rows and report-view owner signoff are complete outside Git/Codex/chat. |
 
 ## Small-Goal Work Order
@@ -70,6 +70,7 @@ Run these commands while working this module:
 ```powershell
 npm.cmd run check:heu-training-module-completion-breakdown
 npm.cmd run check:heu-short-course-external-owner-action-queue
+npm.cmd run check:heu-short-course-signed-uat-evidence-intake
 npm.cmd run audit:heu-short-course-attendance-payment-gap-pack
 npm.cmd run check:heu-short-course-scope-readiness
 npm.cmd run audit:heu-role-scope-uat-pack
@@ -131,8 +132,9 @@ is external owner/UAT evidence collection, not another local code slice:
   remaining blocker is external IT_DATA + Audit role/negative-access UAT with
   controlled evidence refs for SC-ROLE-EVID-01 through SC-ROLE-EVID-06.
 - TRN-09 is locally packaged through the Short Course UAT result ledger
-  template; the remaining blocker is external controlled evidence trace rows
-  for SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08.
+  template and signed UAT evidence intake; the remaining blocker is external
+  controlled evidence trace rows for SC-UAT-LEDGER-01 through
+  SC-UAT-LEDGER-08 and SC-UAT-EVID-01 through SC-UAT-EVID-08.
 - TRN-10 is locally packaged through the Short Course owner signoff manifest
   and UAT result ledger template; the remaining blocker is external owner
   signatures, final UAT result acceptance and report-view owner signoff.

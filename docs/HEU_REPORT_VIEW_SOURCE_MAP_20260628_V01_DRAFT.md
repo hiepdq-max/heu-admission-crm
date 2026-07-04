@@ -103,3 +103,7 @@ Git/Codex/chat.
 Report views remain DRAFT_CONTROL until owner signoff and UAT evidence exist.
 Production remains NO-GO until backup/restore, migration order, signed UAT,
 hard-delete/cascade closure and final owner Go/No-Go are complete.
+
+### P9-10 Short Course signed UAT evidence intake addendum
+
+RV-EVID-05 / RV_SHORT_COURSE_ATTENDANCE_PAYMENT now references docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md for SC-UAT-EVID-01 through SC-UAT-EVID-08 and SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED. This is a source-map route only; dashboard/report-view reliance still waits for signed source reconciliation, signed Short Course UAT, role/negative-access proof, controlled evidence references and owner signoff outside Git/Codex/chat.
