@@ -35,6 +35,29 @@ Direct terminal evidence from `git status --short --branch`,
 Current index rule: staged entries must remain `0` until a single lane is
 selected and hunk-level staging is complete.
 
+## Live Snapshot Guard - 2026-07-04
+
+Decision value: LIVE_DIRTY_SCOPE_SNAPSHOT_REQUIRED / NO_GO / BLOCKED.
+
+The dirty-scope ledger checker must not pass only because the table above still
+contains an old fixed count. The table is historical routing evidence; the
+current truth comes from live Git at run time.
+
+`npm.cmd run check:heu-ai-dirty-scope-packaging-ledger` must:
+
+- read `git status --short --branch` and `git status --short`;
+- print `DIRTY_SCOPE_LIVE_WORKTREE` with branch, changed, staged, untracked,
+  scope count and index state;
+- print `DIRTY_SCOPE_LIVE_COUNTS` from the current lane classifier;
+- print `DIRTY_SCOPE_LIVE_SHARED_CONTROL_FILES` so shared hunk staging risk is
+  visible before any commit;
+- fail or block packaging if Git status is unavailable;
+- treat live counts as evidence output, not as a hardcoded pass condition.
+
+Live count drift is expected while multiple AI builders are active. A changed
+count is not a failure by itself; a mixed staged index, unavailable Git status,
+or broad staging of shared-control files is the packaging risk.
+
 ## Error Findings From Current AI Build Surface
 
 | Code | Finding | Effect | Required fix |
