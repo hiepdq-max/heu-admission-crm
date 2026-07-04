@@ -1,32 +1,39 @@
 import Link from "next/link";
 import {
+  ArrowRight,
   Bot,
   BookOpenCheck,
   CalendarClock,
+  ChevronDown,
   ClipboardCheck,
   Database,
   Archive,
   FileCheck2,
   FileSpreadsheet,
+  FileText,
   GraduationCap,
   Gavel,
   LayoutDashboard,
   ListChecks,
   Megaphone,
+  Plus,
   Route,
   Search,
   Settings,
   ShieldCheck,
+  Upload,
   Users,
   BarChart3,
   Handshake,
   LogOut,
   WalletCards,
+  type LucideIcon,
 } from "lucide-react";
 
 import { logoutAction } from "@/app/login/actions";
 import { AdmissionWorkspaceSwitcher } from "@/components/layout/admission-workspace-switcher";
 import { Button } from "@/components/ui/button";
+import { isExecutiveRole } from "@/lib/executive-roles";
 import { createClient } from "@/lib/supabase/server";
 import {
   getAdmissionWorkspaceContext,
@@ -43,46 +50,69 @@ type AppShellProps = {
   workspaceReturnTo?: string;
 };
 
-const navigation = [
-  { label: "Dashboard", href: "/", icon: LayoutDashboard, key: "dashboard" },
+type WorkspaceQuickLink = {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  navKey?: string;
+  tone?: "primary" | "default";
+};
+
+type NavigationGroupKey = "quick" | "admission" | "finance" | "control";
+
+type NavigationItem = {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  key: string;
+  group: NavigationGroupKey;
+  permission?: string;
+  permissions?: string[];
+  adminOnly?: boolean;
+};
+
+const navigationGroups: Array<{ key: NavigationGroupKey; label: string }> = [
+  { key: "quick", label: "Lối vào nhanh" },
+  { key: "admission", label: "Nghiệp vụ tuyển sinh" },
+  { key: "finance", label: "Tài chính và báo cáo" },
+  { key: "control", label: "Kiểm soát hệ thống" },
+];
+
+const navigation: NavigationItem[] = [
+  {
+    label: "Dashboard",
+    href: "/",
+    icon: LayoutDashboard,
+    key: "dashboard",
+    group: "quick",
+  },
   {
     label: "Tìm kiếm",
     href: "/search",
     icon: Search,
     key: "search",
-  },
-  {
-    label: "Master Control",
-    href: "/master-control",
-    icon: FileCheck2,
-    key: "master-control",
-    permission: "master_control.read",
-  },
-  {
-    label: "TCHC Legal Gates",
-    href: "/tchc/legal-gates",
-    icon: Gavel,
-    key: "tchc-legal-gates",
-    permission: "master_control.read",
-  },
-  {
-    label: "TCHC Van thu luu tru",
-    href: "/tchc/records-archive",
-    icon: Archive,
-    key: "tchc-records-archive",
-    permission: "master_control.read",
+    group: "quick",
   },
   {
     label: "Đối tượng TS",
     href: "/segments",
     icon: Route,
     key: "segments",
+    group: "quick",
+  },
+  {
+    label: "Lead tuyển sinh",
+    href: "/leads",
+    icon: Users,
+    key: "leads",
+    group: "quick",
   },
   {
     label: "Ngắn hạn ERP",
     href: "/short-course",
     icon: BookOpenCheck,
     key: "short-course",
+    group: "admission",
     permission: "short_course.dashboard.read",
   },
   {
@@ -90,13 +120,79 @@ const navigation = [
     href: "/ttgdtx",
     icon: Handshake,
     key: "ttgdtx",
+    group: "admission",
     permission: "ttgdtx.contract.read",
+  },
+  {
+    label: "Kiểm soát HOU",
+    href: "/hou",
+    icon: GraduationCap,
+    key: "hou",
+    group: "admission",
+  },
+  {
+    label: "Khoa/GV",
+    href: "/khoa",
+    icon: Users,
+    key: "khoa",
+    group: "admission",
+  },
+  {
+    label: "CTHSSV",
+    href: "/cthssv",
+    icon: ClipboardCheck,
+    key: "cthssv",
+    group: "admission",
+    permission: "handover.accept_cthssv",
+  },
+  {
+    label: "Pipeline",
+    href: "/pipeline",
+    icon: ListChecks,
+    key: "pipeline",
+    group: "admission",
+  },
+  {
+    label: "Hồ sơ nhập học",
+    href: "/documents",
+    icon: ClipboardCheck,
+    key: "documents",
+    group: "admission",
+  },
+  {
+    label: "Lịch tư vấn",
+    href: "/followups",
+    icon: CalendarClock,
+    key: "followups",
+    group: "admission",
+  },
+  {
+    label: "Đối tác / CTV",
+    href: "/partners",
+    icon: Database,
+    key: "partners",
+    group: "admission",
+  },
+  {
+    label: "Chiến dịch",
+    href: "/campaigns",
+    icon: Megaphone,
+    key: "campaigns",
+    group: "admission",
+  },
+  {
+    label: "Import dữ liệu",
+    href: "/import",
+    icon: FileSpreadsheet,
+    key: "import",
+    group: "admission",
   },
   {
     label: "Finance Desk",
     href: "/finance-desk",
     icon: WalletCards,
     key: "finance-desk",
+    group: "finance",
     permission: "finance_desk.read",
   },
   {
@@ -104,52 +200,60 @@ const navigation = [
     href: "/finance/advance-payment",
     icon: WalletCards,
     key: "finance-advance-payment",
+    group: "finance",
     permission: "finance_desk.read",
   },
-  { label: "Lead tuyển sinh", href: "/leads", icon: Users, key: "leads" },
-  { label: "Kiểm soát HOU", href: "/hou", icon: GraduationCap, key: "hou" },
   {
-    label: "Khoa/GV",
-    href: "/khoa",
-    icon: Users,
-    key: "khoa",
+    label: "Báo cáo",
+    href: "/reports",
+    icon: BarChart3,
+    key: "reports",
+    group: "finance",
   },
   {
-    label: "CTHSSV",
-    href: "/cthssv",
-    icon: ClipboardCheck,
-    key: "cthssv",
-    permission: "handover.accept_cthssv",
-  },
-  { label: "Pipeline", href: "/pipeline", icon: ListChecks, key: "pipeline" },
-  {
-    label: "Hồ sơ nhập học",
-    href: "/documents",
-    icon: ClipboardCheck,
-    key: "documents",
+    label: "Master Control",
+    href: "/master-control",
+    icon: FileCheck2,
+    key: "master-control",
+    group: "control",
+    permission: "master_control.read",
   },
   {
-    label: "Lịch tư vấn",
-    href: "/followups",
-    icon: CalendarClock,
-    key: "followups",
+    label: "TCHC Van thu luu tru",
+    href: "/tchc/records-archive",
+    icon: Archive,
+    key: "tchc-records-archive",
+    group: "control",
+    permission: "master_control.read",
   },
-  { label: "Đối tác / CTV", href: "/partners", icon: Database, key: "partners" },
-  { label: "Chiến dịch", href: "/campaigns", icon: Megaphone, key: "campaigns" },
-  { label: "Báo cáo", href: "/reports", icon: BarChart3, key: "reports" },
   {
-    label: "Import dữ liệu",
-    href: "/import",
-    icon: FileSpreadsheet,
-    key: "import",
+    label: "TCHC Legal Gates",
+    href: "/tchc/legal-gates",
+    icon: Gavel,
+    key: "tchc-legal-gates",
+    group: "control",
+    permission: "master_control.read",
   },
-  { label: "Audit log", href: "/audit", icon: ShieldCheck, key: "audit" },
-  { label: "AI Assistant", href: "/ai-assistant", icon: Bot, key: "ai-assistant" },
+  {
+    label: "Audit log",
+    href: "/audit",
+    icon: ShieldCheck,
+    key: "audit",
+    group: "control",
+  },
+  {
+    label: "AI Assistant",
+    href: "/ai-assistant",
+    icon: Bot,
+    key: "ai-assistant",
+    group: "control",
+  },
   {
     label: "Phạm vi user",
     href: "/settings/scopes",
     icon: ShieldCheck,
     key: "scopes",
+    group: "control",
     permissions: [
       "scope.manage_department",
       "users.create",
@@ -162,6 +266,7 @@ const navigation = [
     href: "/settings",
     icon: Settings,
     key: "settings",
+    group: "control",
     adminOnly: true,
   },
 ];
@@ -198,6 +303,121 @@ function workspaceHref(key: string, href: string, activeSegmentId: string | null
   return href;
 }
 
+function workspaceHubLink(
+  segmentCode: string,
+  segmentId: string,
+): WorkspaceQuickLink {
+  if (segmentCode === "UNIVERSITY_TRANSFER_HOU") {
+    return {
+      label: "Hub HOU",
+      href: withAdmissionSegmentParam("/hou", segmentId),
+      icon: GraduationCap,
+      navKey: "hou",
+    };
+  }
+
+  if (segmentCode === "TC9_TTGDTX_LINKED") {
+    return {
+      label: "Hub TTGDTX",
+      href: withAdmissionSegmentParam("/ttgdtx", segmentId),
+      icon: Handshake,
+      navKey: "ttgdtx",
+    };
+  }
+
+  if (segmentCode.startsWith("SHORT_")) {
+    return {
+      label: "ERP ngắn hạn",
+      href: withAdmissionSegmentParam("/short-course", segmentId),
+      icon: BookOpenCheck,
+      navKey: "short-course",
+    };
+  }
+
+  return {
+    label: "Báo cáo",
+    href: withAdmissionSegmentParam("/reports", segmentId),
+    icon: BarChart3,
+    navKey: "reports",
+  };
+}
+
+function buildWorkspaceQuickLinks(
+  segmentId: string | null,
+  segmentCode: string | null | undefined,
+  visibleNavigationKeys: Set<string>,
+  canCreateLead: boolean,
+) {
+  if (!segmentId) {
+    return [];
+  }
+
+  const links: WorkspaceQuickLink[] = [
+    {
+      label: "Workspace",
+      href: `/segments/${segmentId}`,
+      icon: Route,
+      navKey: "segments",
+    },
+    {
+      label: "Lead",
+      href: withAdmissionSegmentParam("/leads", segmentId),
+      icon: Users,
+      navKey: "leads",
+      tone: "primary",
+    },
+    {
+      label: "Follow-up",
+      href: withAdmissionSegmentParam("/followups", segmentId),
+      icon: CalendarClock,
+      navKey: "followups",
+    },
+    {
+      label: "Hồ sơ",
+      href: withAdmissionSegmentParam("/documents", segmentId),
+      icon: FileText,
+      navKey: "documents",
+    },
+    {
+      label: "Pipeline",
+      href: withAdmissionSegmentParam("/pipeline", segmentId),
+      icon: ListChecks,
+      navKey: "pipeline",
+    },
+    {
+      label: "Import",
+      href: withAdmissionSegmentParam("/import", segmentId),
+      icon: Upload,
+      navKey: "import",
+    },
+  ];
+
+  if (canCreateLead) {
+    links.splice(2, 0, {
+      label: "Tạo lead",
+      href: withAdmissionSegmentParam("/leads/new", segmentId),
+      icon: Plus,
+      navKey: "leads",
+      tone: "primary",
+    });
+  }
+
+  if (segmentCode) {
+    links.push(workspaceHubLink(segmentCode, segmentId));
+  }
+
+  links.push({
+    label: "Báo cáo",
+    href: withAdmissionSegmentParam("/reports", segmentId),
+    icon: BarChart3,
+    navKey: "reports",
+  });
+
+  return links.filter(
+    (link) => !link.navKey || visibleNavigationKeys.has(link.navKey),
+  );
+}
+
 export async function AppShell({
   active,
   title,
@@ -218,6 +438,7 @@ export async function AppShell({
   const { data: currentRoleCode } = user
     ? await supabase.rpc("current_user_role_code")
     : { data: null };
+  const isExecutive = isExecutiveRole(currentRoleCode);
   const permissionNames = [
     ...new Set(
       navigation
@@ -258,6 +479,23 @@ export async function AppShell({
       );
     },
   );
+  const visibleNavigationKeys = new Set(
+    visibleNavigation.map((item) => item.key),
+  );
+  const workspaceQuickLinks = buildWorkspaceQuickLinks(
+    workspace?.activeSegmentId ?? null,
+    workspace?.activeSegment?.segmentCode,
+    visibleNavigationKeys,
+    !isExecutive,
+  );
+  const groupedNavigation = navigationGroups
+    .map((group) => ({
+      ...group,
+      items: visibleNavigation.filter((item) => item.group === group.key),
+    }))
+    .filter((group) => group.items.length > 0);
+  const activeNavigationGroupKey =
+    visibleNavigation.find((item) => item.key === active)?.group ?? "quick";
 
   return (
     <main className="min-h-screen bg-zinc-100 text-zinc-950">
@@ -273,31 +511,57 @@ export async function AppShell({
             </div>
           </div>
 
-          <nav className="space-y-1 px-3 py-4">
-            {visibleNavigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = active === item.key;
+          <nav
+            className="space-y-5 px-3 py-4"
+            data-heu-sidebar-navigation-groups="P0-13_SIDEBAR_NAV_GROUPS"
+            data-heu-sidebar-collapsible-groups="P0-13_COLLAPSIBLE_NAV_GROUPS"
+          >
+            {groupedNavigation.map((group) => {
+              const isOpenByDefault =
+                group.key === "quick" || group.key === activeNavigationGroupKey;
 
               return (
-                <Button
-                  key={item.key}
-                  asChild
-                  variant={isActive ? "default" : "ghost"}
-                  className={`w-full min-w-0 justify-start gap-3 overflow-hidden ${
-                    isActive ? "" : "text-zinc-600"
-                  }`}
+                <details
+                  key={group.key}
+                  open={isOpenByDefault}
+                  className="group/nav rounded-md"
                 >
-                  <Link
-                    href={workspaceHref(
-                      item.key,
-                      item.href,
-                      workspace?.activeSegmentId ?? null,
-                    )}
-                  >
-                    <Icon className="size-4" />
-                    <span className="min-w-0 truncate">{item.label}</span>
-                  </Link>
-                </Button>
+                  <summary className="flex h-8 cursor-pointer list-none items-center justify-between rounded-md px-2 text-xs font-semibold uppercase tracking-normal text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 [&::-webkit-details-marker]:hidden">
+                    <span className="truncate">{group.label}</span>
+                    <span className="flex items-center gap-1 text-zinc-400">
+                      {group.items.length}
+                      <ChevronDown className="size-3.5 transition group-open/nav:rotate-180" />
+                    </span>
+                  </summary>
+                  <div className="mt-1 space-y-1">
+                    {group.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = active === item.key;
+
+                      return (
+                        <Button
+                          key={item.key}
+                          asChild
+                          variant={isActive ? "default" : "ghost"}
+                          className={`w-full min-w-0 justify-start gap-3 overflow-hidden ${
+                            isActive ? "" : "text-zinc-600"
+                          }`}
+                        >
+                          <Link
+                            href={workspaceHref(
+                              item.key,
+                              item.href,
+                              workspace?.activeSegmentId ?? null,
+                            )}
+                          >
+                            <Icon className="size-4" />
+                            <span className="min-w-0 truncate">{item.label}</span>
+                          </Link>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </details>
               );
             })}
           </nav>
@@ -318,8 +582,9 @@ export async function AppShell({
                 <form
                   action="/search"
                   method="get"
-                  className="flex h-8 w-full min-w-0 max-w-full items-center gap-1 rounded-lg border border-zinc-200 bg-white px-2 sm:w-auto"
+                  className="flex h-8 w-full min-w-0 max-w-full items-center gap-1 overflow-hidden rounded-lg border border-zinc-200 bg-white px-2 sm:w-auto"
                   data-heu-global-quick-access="P1-11_SEARCH"
+                  data-heu-global-quick-access-overflow-guard="P1-11_GLOBAL_SEARCH_NO_OVERFLOW"
                 >
                   {workspace?.activeSegmentId ? (
                     <input
@@ -337,7 +602,9 @@ export async function AppShell({
                   />
                   <button
                     type="submit"
-                    className="rounded-md px-1.5 py-1 text-xs font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                    aria-label="Tim kiem HEU OS"
+                    title="Tim kiem HEU OS"
+                    className="shrink-0 rounded-md px-1.5 py-1 text-xs font-medium text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
                   >
                     Tìm
                   </button>
@@ -364,29 +631,79 @@ export async function AppShell({
 
           {workspace ? (
             <div className="border-b border-zinc-200 bg-white px-4 py-3 lg:px-8">
-              <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <p className="text-xs font-medium uppercase text-zinc-500">
-                    P0-13 · Workspace đang làm việc
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-zinc-900">
-                    {workspace.activeSegment
-                      ? workspace.activeSegment.label
-                      : workspace.canSeeAllSegments
-                        ? "Tất cả đối tượng tuyển sinh"
-                        : "Chưa chọn đối tượng tuyển sinh"}
-                  </p>
-                  <p className="mt-1 text-xs text-zinc-500">
-                    Lead, Pipeline, Lịch tư vấn và Báo cáo sẽ đi theo lựa chọn
-                    này.
-                  </p>
+              <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium uppercase text-zinc-500">
+                      P0-13 · Workspace đang làm việc
+                    </p>
+                    <p className="mt-1 break-words text-sm font-medium text-zinc-900">
+                      {workspace.activeSegment
+                        ? workspace.activeSegment.label
+                        : workspace.canSeeAllSegments
+                          ? "Tất cả đối tượng tuyển sinh"
+                          : "Chưa chọn đối tượng tuyển sinh"}
+                    </p>
+                    <p className="mt-1 break-words text-xs text-zinc-500">
+                      Lead, Pipeline, Lịch tư vấn và Báo cáo sẽ đi theo lựa chọn
+                      này.
+                    </p>
+                  </div>
+                  <AdmissionWorkspaceSwitcher
+                    options={workspace.segmentOptions}
+                    activeSegmentId={workspace.activeSegmentId}
+                    canSeeAllSegments={workspace.canSeeAllSegments}
+                    returnTo={workspaceReturnTo}
+                  />
                 </div>
-                <AdmissionWorkspaceSwitcher
-                  options={workspace.segmentOptions}
-                  activeSegmentId={workspace.activeSegmentId}
-                  canSeeAllSegments={workspace.canSeeAllSegments}
-                  returnTo={workspaceReturnTo}
-                />
+                {workspaceQuickLinks.length > 0 ? (
+                  <div
+                    className="mt-3 min-w-0 overflow-x-auto pb-1"
+                    data-heu-workspace-quick-links="P0-13_WORKSPACE_QUICK_LINKS"
+                    data-heu-workspace-quick-open="P0-13_WORKSPACE_QUICK_OPEN_DAILY"
+                    data-heu-workspace-quick-links-overflow-guard="P0-13_WORKSPACE_QUICK_LINKS_NO_OVERFLOW"
+                    data-heu-workspace-anchor-nav="workspace leads create followups documents pipeline import hub reports"
+                  >
+                    <div className="flex min-w-max gap-2 pr-1">
+                      {workspaceQuickLinks.map((link) => {
+                        const Icon = link.icon;
+                        const isPrimary = link.tone === "primary";
+
+                        return (
+                          <Link
+                            key={`${link.label}-${link.href}`}
+                            href={link.href}
+                            aria-label={`Mở nhanh workspace: ${link.label}`}
+                            title={`Mở nhanh workspace: ${link.label}`}
+                            className={`group flex h-10 min-w-36 max-w-44 items-center justify-between gap-2 overflow-hidden rounded-md border px-3 text-sm font-medium transition ${
+                              isPrimary
+                                ? "border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800"
+                                : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 hover:text-zinc-950"
+                            }`}
+                          >
+                            <span className="flex min-w-0 items-center gap-2 overflow-hidden">
+                              <Icon
+                                className={`size-4 shrink-0 ${
+                                  isPrimary ? "text-white" : "text-zinc-500"
+                                }`}
+                              />
+                              <span className="min-w-0 truncate">
+                                {link.label}
+                              </span>
+                            </span>
+                            <ArrowRight
+                              className={`size-4 shrink-0 transition ${
+                                isPrimary
+                                  ? "text-white/70 group-hover:text-white"
+                                  : "text-zinc-400 group-hover:text-zinc-900"
+                              }`}
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : null}

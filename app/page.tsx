@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Plus, Search } from "lucide-react";
+import { FileCheck2, Plus, Search } from "lucide-react";
 
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview";
+import {
+  ExecutiveDashboardOverview,
+  type ExecutiveDashboardPermissions,
+} from "@/components/dashboard/executive-dashboard-overview";
 import { AppShell } from "@/components/layout/app-shell";
 import { AdmissionSegmentOverview } from "@/components/segments/admission-segment-overview";
 import { Button } from "@/components/ui/button";
@@ -13,6 +17,7 @@ import {
   type AdmissionSegmentLeadStatRow,
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
+import { isExecutiveRole } from "@/lib/executive-roles";
 import { createClient } from "@/lib/supabase/server";
 import {
   admissionWorkspaceSegmentIds,
@@ -202,15 +207,29 @@ export default async function Home({ searchParams }: HomePageProps) {
         .neq("status", "LOST"),
       segmentFilterIds,
     ),
-    supabase
-      .from("lead_activities")
-      .select("id", { count: "exact", head: true })
-      .gte("created_at", todayStart),
-    supabase
-      .from("lead_documents")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "CHECKED")
-      .gte("checked_at", todayStart),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("lead_activities")
+        .select("id,leads!inner(admission_segment_id)", {
+          count: "exact",
+          head: true,
+        })
+        .gte("created_at", todayStart),
+      segmentFilterIds,
+      "leads.admission_segment_id",
+    ),
+    applyAdmissionSegmentIds(
+      supabase
+        .from("lead_documents")
+        .select("id,leads!inner(admission_segment_id)", {
+          count: "exact",
+          head: true,
+        })
+        .eq("status", "CHECKED")
+        .gte("checked_at", todayStart),
+      segmentFilterIds,
+      "leads.admission_segment_id",
+    ),
     applyAdmissionSegmentIds(
       supabase
         .from("leads")
@@ -272,10 +291,12 @@ export default async function Home({ searchParams }: HomePageProps) {
     ...definition,
     count: pipelineResults[index]?.count ?? 0,
   }));
+  const roleCode = (currentRoleResult.data as string | null) ?? null;
+  const isExecutiveDashboard = isExecutiveRole(roleCode);
   const visibleSegmentRowsBase = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
     segmentScopeRowsResult.data ?? [],
-    currentRoleResult.data === "ADMIN" || currentRoleResult.data === "BGH",
+    isExecutiveDashboard,
   );
   const visibleSegmentRows = workspace.activeSegmentId
     ? visibleSegmentRowsBase.filter(
@@ -339,14 +360,60 @@ export default async function Home({ searchParams }: HomePageProps) {
     `${formatNumber(overdueResult.count)} lead đang quá hạn chăm sóc`,
     `${formatNumber(todayFollowupResult.count)} lead cần follow-up trong hôm nay`,
   ];
-  const canWriteInWorkspace = Boolean(workspace.activeSegmentId);
+  const executivePermissionNames = [
+    "master_control.read",
+    "finance_desk.read",
+    "scope.manage_department",
+    "users.create",
+    "permission_matrix.read",
+    "permission_matrix.manage",
+  ];
+  const executivePermissionResults = isExecutiveDashboard
+    ? await Promise.all(
+        executivePermissionNames.map((permission) =>
+          supabase.rpc("has_permission", {
+            permission_name: permission,
+          }),
+        ),
+      )
+    : [];
+  const executivePermissionMap = new Map(
+    executivePermissionNames.map((permission, index) => [
+      permission,
+      Boolean(executivePermissionResults[index]?.data),
+    ]),
+  );
+  const hasExecutivePermission = (permission: string) =>
+    roleCode === "ADMIN" || Boolean(executivePermissionMap.get(permission));
+  const executivePermissions: ExecutiveDashboardPermissions = {
+    canOpenMasterControl: hasExecutivePermission("master_control.read"),
+    canOpenFinanceDesk: hasExecutivePermission("finance_desk.read"),
+    canOpenScopeControl:
+      hasExecutivePermission("scope.manage_department") ||
+      hasExecutivePermission("users.create") ||
+      hasExecutivePermission("permission_matrix.read") ||
+      hasExecutivePermission("permission_matrix.manage"),
+  };
+  const canWriteInWorkspace =
+    Boolean(workspace.activeSegmentId) && !isExecutiveDashboard;
+  const segmentOverview = (
+    <AdmissionSegmentOverview
+      segments={segmentOverviewData.segments}
+      uncategorizedCount={segmentOverviewData.uncategorizedCount}
+      compact
+    />
+  );
 
   return (
     <AppShell
       active="dashboard"
-      title="Dashboard tuyển sinh"
+      title={
+        isExecutiveDashboard ? "Dashboard Hiệu trưởng" : "Dashboard tuyển sinh"
+      }
       description={
-        workspace.activeSegment
+        isExecutiveDashboard
+          ? "Trung tâm điều hành read-only cho BGH: module, blocker, báo cáo, phân quyền và bằng chứng."
+          : workspace.activeSegment
           ? `Đang xem dashboard riêng cho: ${workspace.activeSegment.label}.`
           : "Theo dõi lead, follow-up, hồ sơ và chuyển đổi nhập học từ dữ liệu Supabase."
       }
@@ -356,7 +423,30 @@ export default async function Home({ searchParams }: HomePageProps) {
         workspace.activeSegmentId,
       )}
       actions={
-        <>
+        isExecutiveDashboard ? (
+          <>
+            <Button asChild variant="outline">
+              <Link
+                href={withAdmissionSegmentParam(
+                  "/reports",
+                  workspace.activeSegmentId,
+                )}
+              >
+                <Search className="size-4" />
+                Báo cáo
+              </Link>
+            </Button>
+            {executivePermissions.canOpenMasterControl ? (
+              <Button asChild>
+                <Link href="/master-control">
+                  <FileCheck2 className="size-4" />
+                  Master Control
+                </Link>
+              </Button>
+            ) : null}
+          </>
+        ) : (
+          <>
           <Button asChild variant="outline">
             <Link
               href={withAdmissionSegmentParam(
@@ -386,22 +476,32 @@ export default async function Home({ searchParams }: HomePageProps) {
               Tạo lead
             </Button>
           )}
-        </>
+          </>
+        )
       }
     >
-      <DashboardOverview
-        kpis={kpis}
-        pipeline={pipeline}
-        urgentLeads={urgentLeads}
-        activities={activities}
-        segmentOverview={
-          <AdmissionSegmentOverview
-            segments={segmentOverviewData.segments}
-            uncategorizedCount={segmentOverviewData.uncategorizedCount}
-            compact
-          />
-        }
-      />
+      {isExecutiveDashboard ? (
+        <ExecutiveDashboardOverview
+          roleCode={roleCode}
+          activeSegmentId={workspace.activeSegmentId}
+          activeSegmentLabel={workspace.activeSegment?.label ?? null}
+          kpis={kpis}
+          pipeline={pipeline}
+          activities={activities}
+          permissions={executivePermissions}
+          segmentOverview={segmentOverview}
+        />
+      ) : (
+        <DashboardOverview
+          kpis={kpis}
+          pipeline={pipeline}
+          urgentLeads={urgentLeads}
+          activities={activities}
+          activeSegmentId={workspace.activeSegmentId}
+          canWriteInWorkspace={canWriteInWorkspace}
+          segmentOverview={segmentOverview}
+        />
+      )}
     </AppShell>
   );
 }

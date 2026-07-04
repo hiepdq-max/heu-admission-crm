@@ -1,5 +1,119 @@
 # HEU Implementation Log
 
+## 2026-07-03 - HEU Standard System Blueprint
+
+- Added `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` as the controlled
+  system-wide blueprint for architecture, business operation, professional
+  ownership, legal/SOP control, data/report standards, executive dashboard
+  design and next implementation priorities.
+- The blueprint consolidates the current inventory, backlog, module readiness
+  gap matrix, framework review, real-data/professional/legal confirmation
+  register, Legal/SOP/Governance matrix, executive-role classification,
+  navigation shell and workspace-scope logic into one DRAFT_CONTROL design.
+- The next safe implementation slice is `STD-01`: add a read-only
+  `Dashboard Hieu truong/BGH` landing surface for `HIEU_TRUONG`,
+  `PHO_HIEU_TRUONG`, `BGH` and `ADMIN` instead of showing only the admissions
+  dashboard.
+- This is controlled design only. It does not approve production, UAT,
+  evidence acceptance, legal position, official SOP issuance, finance reliance,
+  access grant, migration, bank instruction, owner GO/NO-GO or production GO.
+
+## 2026-07-03 - STD-01 Executive Dashboard Quick Access
+
+- Added `lib/executive-roles.ts` so `ADMIN`, `BGH`, `HIEU_TRUONG` and
+  `PHO_HIEU_TRUONG` share one executive/BGH-equivalent classification.
+- Updated `lib/workspace.ts` and `app/page.tsx` so executive users can see the
+  all-segment read-only overview and land on `Dashboard Hieu truong/BGH`
+  instead of the admissions-only dashboard.
+- Added `components/dashboard/executive-dashboard-overview.tsx` with
+  `data-heu-executive-dashboard="STD-01_EXECUTIVE_DASHBOARD"` and
+  `data-heu-executive-quick-access="STD-01_EXECUTIVE_QUICK_ACCESS"` for
+  read-only module health, production blockers, report quick access,
+  permission-gated Master Control/Finance/Scope links and admissions signals.
+- Updated `components/layout/app-shell.tsx` so executive roles keep workspace
+  read quick links but do not receive the `Tao lead` workspace quick action.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-01`
+  as `PASS_LOCAL_UI` and route the next safe slice to `STD-02`.
+- This is local read-only dashboard and quick-access hardening only. It does
+  not create leads, create accounts, grant access, approve report-view
+  reliance, execute UAT, accept evidence, approve finance action, approve legal
+  position, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-02 Executive Dashboard Readiness Guard
+
+- Added `scripts/check-heu-executive-dashboard-readiness.mjs` and
+  `check:heu-executive-dashboard-readiness` in `package.json`.
+- The checker verifies the shared executive-role helper, `HIEU_TRUONG` and
+  `PHO_HIEU_TRUONG` classification, workspace all-segment read scope,
+  `Dashboard Hieu truong/BGH` routing on `/`, executive no-create quick action
+  boundary, read-only dashboard anchors, permission-gated quick links,
+  production NO-GO wording, report-view reliance stop conditions, blueprint
+  propagation and this implementation-log boundary.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-02`
+  as `PASS_LOCAL_GUARD` and route the next safe slice to `STD-03`.
+- The checker prints `EXECUTIVE_DASHBOARD_READY / NO_GO / BLOCKED:
+  PASS_LOCAL_UI` only for local UI/control readiness. It does not create
+  accounts, grant access, execute UAT, accept evidence, approve report-view
+  reliance, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-03 Executive Report Reliance Quick Status
+
+- Added the executive dashboard report-view reliance strip with
+  `data-heu-executive-report-reliance="STD-03_REPORT_RELIANCE_QUICK_STATUS"`.
+- The strip gives BGH/Hiá»‡u trÆ°á»Ÿng quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and
+  `RV_AUDIT_RISK_CONTROL`, showing owner lane, decision state, DQ lock and
+  blocker before the user opens the underlying module or source map.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies `OWNER_SIGNOFF_PENDING`, `DQ-DM-05`,
+  `NO_DASHBOARD_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO`, the four
+  report-view codes and the blueprint/log propagation.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-03` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-04`.
+- This is local read-only report-reliance visibility only. It does not approve
+  report-view reliance, approve dashboard reliance, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-04 Executive Legal SOP Owner Action Queue
+
+- Added the executive dashboard Legal/SOP owner-action queue with
+  `data-heu-executive-legal-sop-queue="STD-04_LEGAL_SOP_OWNER_ACTION_QUEUE"`.
+- The queue exposes `LEGAL-STD-01` through `LEGAL-STD-06` for legal-basis
+  review, SOP owner signoff, invoice/chung-tu policy, evidence class, sensitive
+  metadata role scope and external owner decision authority.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the Legal/SOP queue anchors, `DRAFT_CONTROL`,
+  `NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`, `NO_ACCESS_GRANT`, `NO_FINANCE_ACTION`,
+  `NO_PRODUCTION_GO`, all six `LEGAL-STD-*` rows and the blueprint/log
+  propagation.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-04` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-05`.
+- This is local read-only Legal/SOP visibility only. It does not approve legal
+  position, issue official SOP, grant access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-05 Executive Module Maturity Action Row
+
+- Added the executive dashboard M01-M12 maturity action row with
+  `data-heu-executive-module-maturity="STD-05_MODULE_MATURITY_ACTION_ROW"`.
+- The row shows module code, status, owner lane, next required action and stop
+  rule so BGH can see which module is strong internal, PASS_LOCAL packaged,
+  read-only UAT gated, CAN_SUA, CHUA_DU_DIEU_KIEN or advisory only.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the M01-M12 row, `NO_UAT_ACCEPTANCE`,
+  `NO_REPORT_VIEW_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO` and
+  `NO_PRODUCTION_GO` before the executive dashboard can be reported
+  PASS_LOCAL_UI.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-05` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-06`.
+- This is local read-only module maturity visibility only. It does not accept
+  UAT, accept evidence, approve report-view reliance, approve dashboard
+  reliance, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+
 ## 2026-07-03 - P9-02 Dao Tao Training Module Completion Breakdown
 
 - Added `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` as the

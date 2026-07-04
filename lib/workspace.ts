@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 
+import { isExecutiveRole } from "@/lib/executive-roles";
 import { createClient } from "@/lib/supabase/server";
 export {
   firstParam,
@@ -131,8 +132,7 @@ export async function getAdmissionWorkspaceContext(
   const cookieSegmentId =
     cookieStore.get(ACTIVE_ADMISSION_SEGMENT_COOKIE)?.value ?? null;
   const { data: currentRoleCode } = await supabase.rpc("current_user_role_code");
-  const canSeeAllSegments =
-    currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
+  const canSeeAllSegments = isExecutiveRole(currentRoleCode);
 
   const { data: workspaceRows, error: workspaceError } = await supabase
     .from("current_user_admission_workspaces")
