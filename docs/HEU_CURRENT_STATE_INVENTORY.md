@@ -198,3 +198,7 @@ M06 CTHSSV signed UAT evidence intake guard: `docs/HEU_CTHSSV_SIGNED_UAT_EVIDENC
 | Pilot scope | TTGDTX 9+ accounting end-to-end |
 | Strong internal modules | M05, M09, M12 |
 | Most important blockers | Backup/restore evidence, signed UAT, migration order, hard-delete/cascade conversion or written waiver and owner GO/NO-GO |
+
+## 2026-07-04 - PASS_LOCAL ACCT Blocker-Routing Control
+
+M09 Tai chinh/Cong no and M10 Dashboard now have a local accounting blocker-routing control slice with `check:heu-accounting-local-readiness`, `check:heu-accounting-module-breakdown`, `check:heu-accounting-negative-control-owner-action-queue`, `check:heu-accounting-open-blocker-action-queue`, `check:heu-accounting-no-duplicate-control-ledger`, `check:heu-accounting-risk-closure-ledger` and `check:heu-accounting-owner-closure-ledger`. Report View source references remain read-only. Verdict is `ACCT_LOCAL_READY / NO_GO / BLOCKED`: current local summary is NO_GO because ACCT-00 scope/negative-account proof, ACCT-11 external evidence/owner decisions and ACCT-12 signed route/owner closure remain outside Git/Codex/chat. This control does not create accounts, change scope, execute UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or mark production GO.

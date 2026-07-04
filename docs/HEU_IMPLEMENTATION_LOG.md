@@ -8758,3 +8758,10 @@
 - This slice does not create users, send email, create tasks, call Supabase,
   run migrations, execute UAT, accept evidence, approve finance reliance,
   approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT Blocker Routing Control Package
+
+- Scope: Packaged the Accounting ACCT-00 through ACCT-12 blocker-routing controls so parallel AI work routes accounting blockers through one owner-action chain instead of mixing scope repair, negative-account proof, no-duplicate payout controls, risk closure and signed owner/UAT closure in unrelated slices.
+- Changed: accounting ACCT docs/checkers, `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`, `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`, `scripts/check-heu-user-scope-baseline-repair-queue.mjs`, `scripts/check-heu-negative-control-account-queue.mjs`, `scripts/check-heu-finance-payment-scope-readiness.mjs`, `package.json` and current-state inventory.
+- Result: `check:heu-accounting-module-breakdown`, `check:heu-accounting-negative-control-owner-action-queue`, `check:heu-accounting-open-blocker-action-queue` and `check:heu-accounting-no-duplicate-control-ledger` pass locally. `check:heu-accounting-local-readiness -- --summary` remains `ACCT_LOCAL_READY: NO_GO` because ACCT-00 scope/negative-account proof, ACCT-11 external evidence/owner decisions and ACCT-12 signed route/owner closure are still external blockers.
+- Boundary: PASS_LOCAL blocker-routing only. It does not create accounts, change role/scope, execute browser UAT, accept evidence, approve finance reliance, post vouchers, move money, approve owner GO/NO-GO or mark production GO.
