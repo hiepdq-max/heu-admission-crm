@@ -72,6 +72,77 @@ isolated code error; it is collision risk:
 | 5 | P0-17/User operation | User activation, scope baseline, negative account and system-wide permission edits are security-sensitive | `npm.cmd run audit:heu-user-account-security`; `npm.cmd run audit:heu-role-scope-uat-pack` |
 | 6 | Finance payment scope | Finance Day-1 and payment scope must remain read-only until signed evidence and owner decisions | `npm.cmd run audit:heu-finance-desk`; `npm.cmd run check:heu-finance-payment-scope-readiness` |
 
+## Soft Connector Routing Addendum - 2026-07-04
+
+Decision value: AI_BUILD_SOFT_CONNECTOR_READY / HIGH_OVERLAP / BLOCKED.
+
+This addendum turns the collision triage into a working "soft connector" for
+multiple AI builders. It is a routing guard, not a module approval.
+
+Latest local routing snapshot for this slice:
+
+- `npm.cmd run check:heu-ai-build-collision-triage` reported
+  `AI_BUILD_OVERLAP_RISK: HIGH`, `changed=201`, `staged=0`,
+  `untracked=59`, `scopes=10` and `stage_state=CLEAN_INDEX`.
+- `npm.cmd run check:heu-fast-local-loop -- --snapshot-only` reported
+  `MIXED_AREA_DIRTY`, `scripts=77` as the top dirty area, and no PASS_LOCAL
+  claim because snapshot mode only reads state.
+- The fast-loop operator route said `run_registered_dynamic_guards` first and
+  selected `candidate_manual=npm.cmd run check:heu-executive-report-dashboard-scope-contract-readiness`
+  from the largest live candidate group.
+- The Short Course path must not be packaged as a standalone closeout if the
+  guard chain expands into Dao Tao plus Khoa/Giang vien. In that case relabel
+  the slice as a `DAO_TAO_M07_M08_DEPENDENCY_CHAIN` before staging.
+
+Every active AI builder must declare this lane card before edits:
+
+| Field | Required value |
+|---|---|
+| `lane_id` | One focused lane, for example `AI_ROUTING`, `EXECUTIVE_CHECKERS`, `SHORT_COURSE_TRN`, `DAO_TAO_M07_M08`, `ACCOUNTING_ACCT`, `ADMISSIONS_CRM`, `P0_17_USER_SCOPE`, `FINANCE_DAY1` or `DATABASE_SQL` |
+| `files_touched` | Exact files expected for the lane before edit and before staging |
+| `shared_control_files` | Any shared docs/scripts/package files, with `HUNK_STAGE_REQUIRED` |
+| `dependency_guards` | Focused npm guard list for this lane |
+| `stop_rule` | The first failed guard, mixed staged scope, secret/evidence exposure, or any production/UAT/finance/owner approval language |
+| `handoff_status` | `PASS_LOCAL`, `NO_GO` or `BLOCKED`, never production GO |
+
+Soft connector staging rules:
+
+1. Start each lane with `git diff --cached --name-status`; it must be empty
+   unless the current lane intentionally staged exactly its own files.
+2. Run `npm.cmd run check:heu-ai-build-collision-triage` and
+   `npm.cmd run check:heu-fast-local-loop -- --snapshot-only` before choosing
+   a package lane.
+3. Run registered dynamic guards before packaging when fast-loop prints
+   `run_registered_dynamic_guards`.
+4. Use hunk-level staging for shared control files:
+   `docs/HEU_IMPLEMENTATION_LOG.md`, `package.json`,
+   `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+   `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+   `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+   `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`, `AGENTS.md` and shared
+   audit/check scripts.
+5. Do not package a checker if it passes only because untracked dependency docs
+   or scripts exist locally; package that dependency chain first.
+6. Do not use broad `git add .`, broad `git add docs`, broad `git add scripts`
+   or any staged set that mixes unrelated lanes.
+7. If a lane expands into another module, stop, relabel the lane, update the
+   lane card, and rerun the focused guards before staging.
+
+Current soft connector route for the next AI:
+
+| Step | Route | Guard |
+|---|---|---|
+| 1 | Run registered dynamic guards from fast-loop, because the live dirty state is script-heavy | `npm.cmd run check:heu-fast-local-loop -- --snapshot-only` then the printed dynamic guards |
+| 2 | Package Executive checker cluster only if all focused Executive guards pass and shared hunks are isolated | `npm.cmd run check:heu-executive-report-dashboard-scope-contract-readiness` plus related Executive checks |
+| 3 | Package Short Course only as a Dao Tao dependency chain when Khoa/Giang vien dependencies are included | `npm.cmd run check:heu-dao-tao-local-readiness` |
+| 4 | Package Accounting ACCT only after user-scope baseline and negative-control blockers are reported, not hidden | `npm.cmd run check:heu-accounting-local-readiness` |
+| 5 | Package P0-17/User scope only with security guards and no real accounts/passwords/secrets | `npm.cmd run audit:heu-user-account-security`; `npm.cmd run audit:heu-role-scope-uat-pack` |
+
+Soft connector PASS_LOCAL means the route is clear enough for the next small
+slice. It does not create or operate an autonomous AI worker, send email, create
+tasks, create accounts, handle passwords, accept evidence, execute UAT, approve
+finance reliance, approve owner GO/NO-GO, run migrations or mark production GO.
+
 ## PASS_LOCAL Boundary
 
 This triage only classifies live dirty scope and recommends a safe packaging
