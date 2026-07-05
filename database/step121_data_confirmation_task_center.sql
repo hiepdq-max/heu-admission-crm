@@ -5,6 +5,9 @@
 -- - Lock the five task-center statuses requested by the executive decision.
 -- - CONTROLLED_PILOT_DEPARTMENT_ONLY: lock task routing to the six controlled
 --   pilot departments only.
+-- - DCTC_SOURCE_PROVENANCE_LOCK_READY: route tasks require source label,
+--   data domain, source route, DQ check ref, controlled evidence ref,
+--   due/batch and owner decision ref before CHO_XAC_NHAN.
 -- - Preserve status history through audit_log triggers and a status-history table.
 -- - Route confirmation by assigned user, owner user, department lane or approved
 --   data-confirmation permissions without seeding real tasks.
@@ -291,6 +294,9 @@ begin
     raise exception 'Not allowed to route data-confirmation tasks';
   end if;
 
+  -- DCTC_SOURCE_PROVENANCE_LOCK_READY /
+  -- SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN:
+  -- the task center only routes approved source metadata, never raw payloads.
   if cleaned_task_code is null
     or cleaned_department_code is null
     or cleaned_source_record_label is null
@@ -648,6 +654,7 @@ select
   t.locked_by,
   locker.full_name as locked_by_name,
   t.locked_at,
+  ('DCTC_TASK:' || t.task_code) as audit_trace_ref,
   coalesce(public.can_confirm_data_confirmation_task(
     t.department_code,
     t.assigned_user_id,
@@ -692,6 +699,7 @@ select
   actor.full_name as actor_user_name,
   h.action_note,
   h.controlled_evidence_ref,
+  ('DCTC_HISTORY:' || h.id::text) as audit_trace_ref,
   h.created_at
 from public.heu_data_confirmation_task_status_history h
 join public.heu_data_confirmation_tasks t on t.id = h.task_id
@@ -844,7 +852,7 @@ insert into public.data_dictionary_tables (
     'M00_MASTER_CONTROL',
     'REPORT_VIEW',
     'IT_DATA + Audit',
-    'Read-only report view for department/user confirmation tasks after RLS and workspace scope filters.',
+    'Read-only report view for department/user confirmation tasks after RLS and workspace scope filters, with DCTC_TASK audit_trace_ref for audit-log lookup.',
     'INTERNAL',
     false,
     'CAN_SUA'

@@ -67,6 +67,7 @@ type DataConfirmationTaskRow = {
   confirmed_at: string | null;
   locked_by_name: string | null;
   locked_at: string | null;
+  audit_trace_ref: string;
   can_current_user_confirm: boolean;
   updated_at: string;
 };
@@ -86,6 +87,7 @@ type DataConfirmationHistoryRow = {
   actor_user_name: string | null;
   action_note: string | null;
   controlled_evidence_ref: string | null;
+  audit_trace_ref: string;
   created_at: string;
 };
 
@@ -360,6 +362,7 @@ function StatusTimeline({
       className="min-w-0 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
       data-heu-dctc-status-history-timeline="STATUS_HISTORY_TIMELINE_READY"
       data-heu-dctc-status-history-scope="STATUS_HISTORY_SCOPE_PARITY"
+      data-heu-dctc-audit-trace="DCTC_AUDIT_TRACE_READY"
       data-heu-dctc-status-history-boundary="RLS_TIMELINE_VIEW_ONLY NO_DIRECT_HISTORY_TABLE_UPDATE NO_RAW_ERROR_DISCLOSURE NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
     >
       <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -377,7 +380,7 @@ function StatusTimeline({
           </p>
         </div>
         <span className="w-fit rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-semibold text-zinc-600">
-          audit metadata
+          DCTC_AUDIT_TRACE_READY
         </span>
       </div>
 
@@ -418,6 +421,9 @@ function StatusTimeline({
                   <p className="mt-1 break-words text-xs text-zinc-500">
                     Actor: {row.actor_user_name ?? "system or pending user"} at{" "}
                     {formatDate(row.created_at)}
+                  </p>
+                  <p className="mt-1 break-all text-xs text-zinc-500">
+                    Audit trace: {row.audit_trace_ref}
                   </p>
                 </div>
                 <div className="min-w-0 text-xs text-zinc-600 lg:max-w-md">
@@ -509,6 +515,7 @@ function RoutingForm({
       className="min-w-0 overflow-hidden rounded-lg border border-emerald-200 bg-white shadow-sm"
       data-heu-dctc-route-form="RPC_ROUTE_TO_CHO_XAC_NHAN"
       data-heu-dctc-route-assignee-lock="ASSIGNEE_OR_OWNER_REQUIRED"
+      data-heu-dctc-source-provenance-lock="DCTC_SOURCE_PROVENANCE_LOCK_READY SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN NO_RAW_SOURCE_PAYLOAD"
     >
       <div className="border-b border-emerald-100 bg-emerald-50 p-5">
         <div className="flex min-w-0 items-start gap-3">
@@ -849,6 +856,9 @@ function TaskRow({ task }: { task: DataConfirmationTaskRow }) {
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
               Owner decision: {task.owner_decision_ref ?? "pending"}
             </span>
+            <span className="break-all rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
+              Audit trace: {task.audit_trace_ref}
+            </span>
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
               Blocker: {task.blocker_state}
             </span>
@@ -975,6 +985,7 @@ export default async function DataConfirmationPage({
           "confirmed_at",
           "locked_by_name",
           "locked_at",
+          "audit_trace_ref",
           "can_current_user_confirm",
           "updated_at",
         ].join(","),
@@ -1018,6 +1029,7 @@ export default async function DataConfirmationPage({
           "actor_user_name",
           "action_note",
           "controlled_evidence_ref",
+          "audit_trace_ref",
           "created_at",
         ].join(","),
       );
@@ -1059,7 +1071,7 @@ export default async function DataConfirmationPage({
       <div
         className="space-y-6"
         data-heu-data-confirmation-task-center-route="DCTC_RUNTIME_ROUTE"
-        data-heu-data-confirmation-task-center-boundary="PASS_LOCAL_RUNTIME_ROUTE RLS_VIEW_ONLY RPC_ROUTE_TO_CHO_XAC_NHAN RPC_CONFIRM_ONLY NO_AUTO_SEED NO_RAW_DATA_IMPORT NO_DIRECT_TABLE_UPDATE NO_EMAIL_SEND NO_ACCOUNT_CREATE NO_TICKET_CREATE NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
+        data-heu-data-confirmation-task-center-boundary="PASS_LOCAL_RUNTIME_ROUTE RLS_VIEW_ONLY RPC_ROUTE_TO_CHO_XAC_NHAN RPC_CONFIRM_ONLY DCTC_SOURCE_PROVENANCE_LOCK_READY DCTC_DEPARTMENT_QUEUE_SCOPE_READY DCTC_AUDIT_TRACE_READY NO_AUTO_SEED NO_RAW_DATA_IMPORT NO_DIRECT_TABLE_UPDATE NO_EMAIL_SEND NO_ACCOUNT_CREATE NO_TICKET_CREATE NO_AUDIT_LOG_MUTATION NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
       >
         <section className="min-w-0 border-b border-zinc-200 pb-5">
           <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -1156,7 +1168,11 @@ export default async function DataConfirmationPage({
               })}
             </section>
 
-            <section className="min-w-0 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+            <section
+              className="min-w-0 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+              data-heu-dctc-department-queue-boundary="DEPARTMENT_QUERY_PARAM_FILTERS_QUEUE_AND_TIMELINE NO_ACCESS_GRANT_FROM_FILTER"
+              data-heu-dctc-department-queue-scope="DCTC_DEPARTMENT_QUEUE_SCOPE_READY"
+            >
               <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                 <div className="flex min-w-0 items-start gap-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-zinc-700">
@@ -1168,7 +1184,8 @@ export default async function DataConfirmationPage({
                     </h2>
                     <p className="mt-1 break-words text-sm text-zinc-600">
                       role={String(roleResult.data ?? "UNKNOWN")}; queue_scope=
-                      {activeScope}; read_permission={String(canReadTasks)};
+                      {activeScope}; department_scope={activeDepartment ?? "ALL"};
+                      read_permission={String(canReadTasks)};
                       route_permission={String(canRouteTasks)}
                     </p>
                   </div>

@@ -35,9 +35,30 @@ Every real-data task must use one of these states:
 | `BLOCKED_BY_SCOPE` | The assigned user cannot see the row, sees too much, or scope is unclear. | Repair scope baseline first. |
 | `SIGNED_UAT_READY_EXTERNAL` | External signed UAT/evidence reference is recorded outside Git/Codex/chat. | Only Phase 04 owner gate may use it. |
 
+DCTC status bridge:
+
+`DCTC_STATUS_BRIDGE_READY`
+
+| `task_center_status` | Department confirmation state | SQL blocker state / handoff result | Stop rule |
+| --- | --- | --- | --- |
+| `CHO_XAC_NHAN` | `PENDING_DEPARTMENT_CONFIRMATION` | `WAITING_OWNER_CONFIRMATION` | Owner/user confirmation is still missing. |
+| `DUNG` | `CONFIRMED_BY_DEPARTMENT` | `CONFIRMED_BY_DEPARTMENT` | Still not report reliance, UAT pass, evidence acceptance or production GO. |
+| `CAN_SUA` | `RETURNED_FOR_REPAIR` | `RETURNED_FOR_REPAIR` | Requires confirmation note and repair route; do not overwrite source data from Codex. |
+| `KHONG_THUOC_TOI` | `BLOCKED_BY_SCOPE` | `OUT_OF_SCOPE` | Re-route to the correct owner lane or scope-repair lane before reliance. |
+| `DA_KHOA` | `SIGNED_UAT_READY_EXTERNAL` | `LOCKED` | Lock only after external signed-result/evidence ref is recorded; `NO_SIGNED_UAT_ACCEPTANCE_FROM_DA_KHOA`. |
+
 Required task record:
 
-`required_task_record=source_record_label,department_owner_lane,assigned_user_label,required_route,scope_gate,confirmation_status,controlled_evidence_id,audit_log_ref,due_date_or_batch,owner_decision_ref`
+`DCTC_SOURCE_PROVENANCE_LOCK_READY`
+
+`required_task_record=source_record_label,source_route,data_domain,dq_check_ref,department_owner_lane,assigned_user_label,required_route,scope_gate,confirmation_status,controlled_evidence_id,audit_log_ref,audit_trace_ref,due_date_or_batch,owner_decision_ref`
+
+`SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN`
+
+The task center may route a row to `CHO_XAC_NHAN` only when the source label,
+source route, data domain, DQ check ref, controlled evidence ref, due/batch and
+owner decision ref are present. It records source provenance only; it must not
+copy raw source payloads into Git/Codex/chat.
 
 ## 3. Department Confirmation Queue
 
@@ -70,11 +91,13 @@ not replace those queues.
 
 ## 5. Current Live Blockers
 
-The current real-data confirmation task register is locally ready, but real
-operation remains NO-GO because the user/scope/cutover gates still report:
+The current real-data confirmation task register is locally ready, and the
+role-aware user/scope baseline is clean. Real operation remains NO-GO because
+the cutover gates still report:
 
-- `missing_visibility=2`
-- `missing_business_scope=2`
+- `missing_visibility=0`
+- `missing_business_scope=0`
+- `department_lane_mismatch=0`
 - `required_positions=15`
 - `unassigned_required_positions=11`
 - `ttgdtx_negative_candidates=0`
@@ -89,6 +112,7 @@ readiness.
 Each confirmation task must have:
 
 - `audit_log_ref`
+- `audit_trace_ref`
 - `controlled_evidence_id`
 - `owner_decision_ref`
 - `scope_gate`
@@ -100,6 +124,16 @@ Forbidden in Git/Codex/chat:
 - passwords, temporary passwords, OTPs, reset links or invite links;
 - service-role keys, API keys, SMTP passwords or private keys;
 - raw signed UAT evidence, raw Drive links or downloadable attachment URLs.
+
+Audit trace boundary:
+
+- `audit_trace_ref` is a read-only lookup token from the DCTC task/status-history
+  views, not raw audit payload.
+- `DCTC_AUDIT_TRACE_READY` means the task and timeline views expose safe trace
+  refs after RLS filtering as `DCTC_TASK` and `DCTC_HISTORY` references.
+- `NO_AUDIT_LOG_MUTATION` remains mandatory: PASS_LOCAL may verify trace tokens
+  only; it must not mutate `audit_logs`, accept evidence, accept UAT, approve
+  owner GO/NO-GO or mark production GO.
 
 ## 7. PASS_LOCAL Boundary
 
@@ -123,6 +157,6 @@ mark production GO.
 `CORE_DEPARTMENT_DATA_CONFIRMATION_READY` is PASS_LOCAL_TASK_REGISTER only.
 
 `REAL_DATA_CONFIRMATION_READY: NO_GO` remains true until owner-approved users,
-scope baseline repairs, required position assignments, negative-control proof,
-controlled evidence references, signed UAT and final owner GO/NO-GO are closed
-outside Git/Codex/chat.
+owner-approved scope-baseline closure, required position assignments,
+negative-control proof, controlled evidence references, signed UAT and final
+owner GO/NO-GO are closed outside Git/Codex/chat.

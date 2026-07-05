@@ -167,13 +167,13 @@ requireText(
 
 requireText(
   map,
-  /DATA_CONFIRMATION_TASK_MASTER[\s\S]*heu_data_confirmation_tasks[\s\S]*heu_data_confirmation_task_status_history[\s\S]*heu_data_confirmation_task_center[\s\S]*heu_data_confirmation_task_status_timeline[\s\S]*route_data_confirmation_task[\s\S]*confirm_data_confirmation_task[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*PASS_LOCAL_SCHEMA_CONTRACT[\s\S]*status timeline scope parity[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*must not auto-seed real tasks/i,
+  /DATA_CONFIRMATION_TASK_MASTER[\s\S]*heu_data_confirmation_tasks[\s\S]*heu_data_confirmation_task_status_history[\s\S]*heu_data_confirmation_task_center[\s\S]*heu_data_confirmation_task_status_timeline[\s\S]*audit_trace_ref[\s\S]*DCTC_TASK[\s\S]*DCTC_HISTORY[\s\S]*route_data_confirmation_task[\s\S]*confirm_data_confirmation_task[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*PASS_LOCAL_SCHEMA_CONTRACT[\s\S]*status timeline scope parity[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*must not auto-seed real tasks/i,
   "DCTC master object PASS_LOCAL schema contract",
 );
 
 requireText(
   map,
-  /Step121 DCTC schema contract[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*`DATA_CONFIRMATION_TASK_MASTER`, `WORKFLOW_REQUEST_MASTER`, `AUDIT_LOG`, `REPORT_VIEW_MASTER_CONTRACT`/i,
+  /Step121 DCTC schema contract[\s\S]*audit_trace_ref[\s\S]*DCTC_TASK[\s\S]*DCTC_HISTORY[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*`DATA_CONFIRMATION_TASK_MASTER`, `WORKFLOW_REQUEST_MASTER`, `AUDIT_LOG`, `REPORT_VIEW_MASTER_CONTRACT`/i,
   "Step121 DCTC canonical target mapping",
 );
 

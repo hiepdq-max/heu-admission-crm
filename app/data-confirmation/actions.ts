@@ -25,6 +25,8 @@ const DCTC_ROUTE_UNAVAILABLE = "DCTC_ROUTE_UNAVAILABLE";
 const DCTC_CONFIRM_UNAVAILABLE = "DCTC_CONFIRM_UNAVAILABLE";
 const DCTC_ROUTE_ASSIGNEE_OR_OWNER_REQUIRED =
   "assignee_or_owner_required_for_confirmation_task";
+const DCTC_SOURCE_PROVENANCE_LOCK_READY =
+  "source_metadata_required_before_cho_xac_nhan";
 const DCTC_LOCK_NOTE_REQUIRED = "confirmation_note_required_for_locked_status";
 const DCTC_REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED =
   "confirmation_note_required_for_repair_or_out_of_scope";
@@ -70,7 +72,7 @@ export async function routeDataConfirmationTaskAction(formData: FormData) {
     !dueDateOrBatch ||
     !ownerDecisionRef
   ) {
-    redirectWithError("missing_required_route_task_metadata");
+    redirectWithError(DCTC_SOURCE_PROVENANCE_LOCK_READY);
   }
 
   if (!ownerUserId && !assignedUserId) {
