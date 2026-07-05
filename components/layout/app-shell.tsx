@@ -220,6 +220,14 @@ const navigation: NavigationItem[] = [
     permission: "master_control.read",
   },
   {
+    label: "Data confirmation",
+    href: "/data-confirmation",
+    icon: ClipboardCheck,
+    key: "data-confirmation",
+    group: "control",
+    permission: "data_confirmation.read",
+  },
+  {
     label: "TCHC Van thu luu tru",
     href: "/tchc/records-archive",
     icon: Archive,

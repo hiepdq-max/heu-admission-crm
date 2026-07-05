@@ -145,7 +145,11 @@
     "check:heu-executive-uat-evidence-acceptance-lock-readiness": "node scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs",
     "check:heu-executive-production-blocker-triage-readiness": "node scripts/check-heu-executive-production-blocker-triage-readiness.mjs",
     "check:heu-executive-priority-command-strip-readiness": "node scripts/check-heu-executive-priority-command-strip-readiness.mjs",
-    "check:heu-executive-active-focus-header-readiness": "node scripts/check-heu-executive-active-focus-header-readiness.mjs"
+    "check:heu-executive-active-focus-header-readiness": "node scripts/check-heu-executive-active-focus-header-readiness.mjs",
+    "check:heu-core-department-data-confirmation-task-register": "node scripts/check-heu-core-department-data-confirmation-task-register.mjs",
+    "check:heu-data-confirmation-task-center-schema": "node scripts/check-heu-data-confirmation-task-center-schema.mjs",
+    "check:heu-data-confirmation-task-center-route": "node scripts/check-heu-data-confirmation-task-center-route.mjs",
+    "check:heu-executive-data-confirmation-task-center": "node scripts/check-heu-executive-data-confirmation-task-center.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

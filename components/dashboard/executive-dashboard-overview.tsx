@@ -227,6 +227,23 @@ type ExecutivePriorityFocusItem = {
   icon: LucideIcon;
 };
 
+type ExecutiveDataConfirmationTask = {
+  code: string;
+  ownerLane: string;
+  dataObject: string;
+  status: "CHO_XAC_NHAN" | "DUNG" | "CAN_SUA" | "KHONG_THUOC_TOI" | "DA_KHOA";
+  statusLabel: string;
+  requiredProof: string;
+  stopRule: string;
+  href: string;
+};
+
+type ExecutiveDataConfirmationStatus = {
+  code: ExecutiveDataConfirmationTask["status"];
+  label: string;
+  meaning: string;
+};
+
 type ExecutiveFinanceProof = {
   code: string;
   label: string;
@@ -597,6 +614,11 @@ const executiveSectionNavItems: ExecutiveSectionNavItem[] = [
     href: "#executive-quick-access",
   },
   {
+    code: "DCT",
+    label: "Data confirmation",
+    href: "#executive-data-confirmation-task-center",
+  },
+  {
     code: "RPT",
     label: "Reports",
     href: "#executive-report-reliance",
@@ -836,6 +858,97 @@ const executivePriorityFocusItems: ExecutivePriorityFocusItem[] = [
     state: "Final owner GO/NO-GO unsigned",
     focusMode: "blockers",
     icon: AlertTriangle,
+  },
+];
+
+const dataConfirmationStatuses: ExecutiveDataConfirmationStatus[] = [
+  {
+    code: "CHO_XAC_NHAN",
+    label: "Chờ xác nhận",
+    meaning: "Owner lane còn phải xác nhận source ref, DQ check và evidence ref.",
+  },
+  {
+    code: "DUNG",
+    label: "Đúng",
+    meaning: "Owner xác nhận metadata đúng nhưng chưa tự động thành UAT/evidence GO.",
+  },
+  {
+    code: "CAN_SUA",
+    label: "Cần sửa",
+    meaning: "Có mismatch hoặc thiếu nguồn, cần route sửa ngoài Codex.",
+  },
+  {
+    code: "KHONG_THUOC_TOI",
+    label: "Không thuộc tôi",
+    meaning: "Owner hiện tại từ chối trách nhiệm, phải chuyển đúng lane.",
+  },
+  {
+    code: "DA_KHOA",
+    label: "Đã khóa",
+    meaning: "Chỉ khóa sau kết quả ký và gate evidence bên ngoài.",
+  },
+];
+
+const dataConfirmationTaskRows: ExecutiveDataConfirmationTask[] = [
+  {
+    code: "DCTC-KHTC-001",
+    ownerLane: "KHTC / Accounting",
+    dataObject: "Finance receivable and collection source",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "Finance owner source ref, DQ check and controlled evidence ref.",
+    stopRule: "No finance/report reliance until owner source is confirmed.",
+    href: "/finance-desk",
+  },
+  {
+    code: "DCTC-TS-001",
+    ownerLane: "Admissions / Tuyen sinh",
+    dataObject: "Lead and document source status",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "Admissions owner source ref, document DQ result and blocker state.",
+    stopRule: "No official admissions number from private or unconfirmed rows.",
+    href: "/leads",
+  },
+  {
+    code: "DCTC-CTHSSV-001",
+    ownerLane: "CTHSSV",
+    dataObject: "Student handover and readiness metadata",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "CTHSSV owner evidence ref and handover reliance decision.",
+    stopRule: "No handover reliance, enrollment approval or evidence acceptance.",
+    href: "/cthssv",
+  },
+  {
+    code: "DCTC-DT-001",
+    ownerLane: "Dao Tao",
+    dataObject: "Class, cohort and program master",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "Dao Tao owner source reconciliation and signed confirmation.",
+    stopRule: "No class/cohort dashboard reliance before signed confirmation.",
+    href: "/short-course",
+  },
+  {
+    code: "DCTC-KHOA-001",
+    ownerLane: "Khoa / Giang vien",
+    dataObject: "Teaching delivery and source evidence",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "Faculty owner source reconciliation and report-view signoff.",
+    stopRule: "No teaching delivery, payment or report-view reliance.",
+    href: "/khoa",
+  },
+  {
+    code: "DCTC-SC-001",
+    ownerLane: "Short Course",
+    dataObject: "Attendance, payment and source reconciliation",
+    status: "CHO_XAC_NHAN",
+    statusLabel: "Chờ xác nhận",
+    requiredProof: "Short Course owner attendance/payment UAT evidence ref.",
+    stopRule: "No attendance lock, payment verification or owner GO.",
+    href: "/short-course",
   },
 ];
 
@@ -2305,6 +2418,13 @@ function buildQuickLinks(
       tone: "primary",
     },
     {
+      label: "Xác nhận dữ liệu",
+      description: "Queue chờ xác nhận theo phòng",
+      href: "#executive-data-confirmation-task-center",
+      icon: ClipboardCheck,
+      tone: "primary",
+    },
+    {
       label: "Lead",
       description: "Xem tuyển sinh theo workspace",
       href: withAdmissionSegmentParam("/leads", activeSegmentId),
@@ -2379,6 +2499,28 @@ function getDashboardPermissionHref(
   return permissions[row.runtimeSignal] ? row.href : "/settings/scopes";
 }
 
+function getDataConfirmationStatusClass(
+  status: ExecutiveDataConfirmationTask["status"],
+) {
+  if (status === "DUNG") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "CAN_SUA") {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
+
+  if (status === "KHONG_THUOC_TOI") {
+    return "border-sky-200 bg-sky-50 text-sky-700";
+  }
+
+  if (status === "DA_KHOA") {
+    return "border-zinc-300 bg-zinc-100 text-zinc-700";
+  }
+
+  return "border-orange-200 bg-orange-50 text-orange-700";
+}
+
 function normalizeExecutiveFocusMode(
   value: string | null | undefined,
 ): ExecutiveFocusMode {
@@ -2400,7 +2542,7 @@ const persistentExecutiveSectionCodes = ["OVR", "PRI", "NXT", "QCK"];
 
 const executiveFocusSectionCodes: Record<ExecutiveFocusMode, string[]> = {
   all: [],
-  reports: ["RPT"],
+  reports: ["DCT", "RPT"],
   finance: ["FIN"],
   evidence: ["EVD"],
   roles: ["ROL"],
@@ -2478,7 +2620,7 @@ export function ExecutiveDashboardOverview({
       data-heu-executive-visual-qa="STD-09_EXECUTIVE_VISUAL_QA_SOURCE_GUARD"
       data-heu-executive-visual-qa-boundary="PASS_LOCAL_VISUAL_QA AUTH_REQUIRED NO_SCREENSHOT_CLAIM NO_UAT_ACCEPTANCE NO_APPROVAL_ACTION NO_PRODUCTION_GO"
       data-heu-executive-visual-qa-viewports="desktop_1440 mobile_390"
-      data-heu-executive-section-order="overview section_navigator focus_next_action priority_focus quick_access report_reliance finance uat_evidence role_scope legal_sop module_maturity kpis blockers admissions segment_overview"
+      data-heu-executive-section-order="overview section_navigator focus_next_action priority_focus quick_access data_confirmation report_reliance finance uat_evidence role_scope legal_sop module_maturity kpis blockers admissions segment_overview"
     >
       <section
         id="executive-overview"
@@ -2961,6 +3103,107 @@ export function ExecutiveDashboardOverview({
           })}
         </div>
       </section>
+
+      {showFocusedSection("reports") ? (
+      <section
+        id="executive-data-confirmation-task-center"
+        className="scroll-mt-24 min-w-0 overflow-hidden rounded-lg border border-zinc-200 bg-white p-3 shadow-sm sm:p-4"
+        data-heu-executive-data-confirmation-task-center="STD-45_DATA_CONFIRMATION_TASK_CENTER"
+        data-heu-executive-data-confirmation-boundary="PASS_LOCAL_DATA_CONFIRMATION_TASK_CENTER READ_ONLY METADATA_ONLY CHO_XAC_NHAN DUNG CAN_SUA KHONG_THUOC_TOI DA_KHOA NO_REAL_TASK NO_REAL_EMAIL NO_ACCOUNT_CREATE NO_DATABASE_MUTATION NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
+        data-heu-executive-data-confirmation-overflow-guard="STD-45_NO_OVERFLOW"
+      >
+        <div className="flex flex-col gap-3 border-b border-zinc-200 pb-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <ClipboardCheck className="size-4 shrink-0 text-zinc-600" />
+              <h3 className="break-words text-sm font-semibold text-zinc-950">
+                Data Confirmation Task Center
+              </h3>
+            </div>
+            <p className="mt-2 max-w-3xl break-words text-sm leading-6 text-zinc-600">
+              Mỗi dòng là một việc xác nhận dữ liệu thật theo phòng. Dữ liệu
+              chưa có owner/source/evidence bên ngoài thì giữ ở trạng thái chờ
+              xác nhận và không được dùng làm số chính thức.
+            </p>
+          </div>
+          <div className="shrink-0 rounded-md border border-orange-200 bg-orange-50 px-3 py-2 text-xs font-semibold uppercase text-orange-700">
+            REAL_DATA_CONFIRMATION_READY / NO_GO / BLOCKED
+          </div>
+        </div>
+
+        <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-5">
+          {dataConfirmationStatuses.map((item) => (
+            <div
+              key={item.code}
+              className={`min-w-0 rounded-md border p-3 ${getDataConfirmationStatusClass(
+                item.code,
+              )}`}
+            >
+              <p className="break-words font-mono text-[11px] font-semibold">
+                {item.code}
+              </p>
+              <p className="mt-1 break-words text-sm font-semibold">
+                {item.label}
+              </p>
+              <p className="mt-1 break-words text-xs leading-5 opacity-80">
+                {item.meaning}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 grid min-w-0 gap-3 lg:grid-cols-2">
+          {dataConfirmationTaskRows.map((row) => (
+            <Link
+              key={row.code}
+              href={withAdmissionSegmentParam(row.href, activeSegmentId)}
+              className="group min-w-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50 p-3 transition hover:border-zinc-400 hover:bg-white"
+              aria-label={`Open data confirmation task ${row.code}`}
+              title={`Open data confirmation task ${row.code}`}
+            >
+              <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <p className="break-words font-mono text-xs font-semibold text-zinc-500">
+                    {row.code}
+                  </p>
+                  <p className="mt-1 break-words text-sm font-semibold text-zinc-950">
+                    {row.ownerLane}
+                  </p>
+                </div>
+                <span
+                  className={`inline-flex shrink-0 items-center rounded-md border px-2 py-1 text-xs font-semibold ${getDataConfirmationStatusClass(
+                    row.status,
+                  )}`}
+                >
+                  {row.statusLabel}
+                </span>
+              </div>
+              <p className="mt-3 break-words text-sm text-zinc-700">
+                {row.dataObject}
+              </p>
+              <div className="mt-3 grid min-w-0 gap-2 sm:grid-cols-2">
+                <div className="min-w-0 rounded-md border border-zinc-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold uppercase text-zinc-500">
+                    External proof
+                  </p>
+                  <p className="mt-1 break-words text-xs leading-5 text-zinc-700">
+                    {row.requiredProof}
+                  </p>
+                </div>
+                <div className="min-w-0 rounded-md border border-zinc-200 bg-white p-2">
+                  <p className="text-[11px] font-semibold uppercase text-zinc-500">
+                    Stop rule
+                  </p>
+                  <p className="mt-1 break-words text-xs leading-5 text-zinc-700">
+                    {row.stopRule}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+      ) : null}
 
       {showFocusedSection("reports") ? (
       <section
