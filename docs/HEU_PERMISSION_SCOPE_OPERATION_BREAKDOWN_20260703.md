@@ -223,15 +223,22 @@ Done locally:
   `PENDING_DEPARTMENT_CONFIRMATION`, `CONFIRMED_BY_DEPARTMENT`,
   `RETURNED_FOR_REPAIR`, `BLOCKED_BY_SCOPE` and
   `SIGNED_UAT_READY_EXTERNAL`.
+- It locks `DCTC_STATUS_BRIDGE_READY` so `CHO_XAC_NHAN` maps to
+  `PENDING_DEPARTMENT_CONFIRMATION` / `WAITING_OWNER_CONFIRMATION`, `DUNG`
+  maps to `CONFIRMED_BY_DEPARTMENT`, `CAN_SUA` maps to
+  `RETURNED_FOR_REPAIR`, `KHONG_THUOC_TOI` maps to `BLOCKED_BY_SCOPE` /
+  `OUT_OF_SCOPE`, and `DA_KHOA` maps to `SIGNED_UAT_READY_EXTERNAL` /
+  `LOCKED` with `NO_SIGNED_UAT_ACCEPTANCE_FROM_DA_KHOA`.
 - It requires
-  `required_task_record=source_record_label,department_owner_lane,assigned_user_label,required_route,scope_gate,confirmation_status,controlled_evidence_id,audit_log_ref,due_date_or_batch,owner_decision_ref`.
+  `required_task_record=source_record_label,source_route,data_domain,dq_check_ref,department_owner_lane,assigned_user_label,required_route,scope_gate,confirmation_status,controlled_evidence_id,audit_log_ref,audit_trace_ref,due_date_or_batch,owner_decision_ref`.
 - It covers KHTC/Accounting, TUYEN_SINH, CTHSSV, DAO_TAO, KHOA,
   SHORT_COURSE, IT_DATA, AUDIT and BGH lanes with task IDs
   `DCTC-KHTC-001`, `DCTC-TUYEN-SINH-001`, `DCTC-CTHSSV-001`,
   `DCTC-DAO-TAO-001`, `DCTC-KHOA-001`, `DCTC-SHORT-COURSE-001`,
   `DCTC-IT-DATA-001`, `DCTC-AUDIT-001` and `DCTC-BGH-001`.
-- It keeps current blockers visible: `missing_visibility=2`,
-  `missing_business_scope=2`, `required_positions=15`,
+- It keeps current blockers visible: `missing_visibility=0`,
+  `missing_business_scope=0`, `department_lane_mismatch=0`,
+  `required_positions=15`,
   `unassigned_required_positions=11`, `ttgdtx_negative_candidates=0` and
   `pending_external_evidence_lanes=4`.
 - Updated implementation log and `audit:heu-user-account-security` so this

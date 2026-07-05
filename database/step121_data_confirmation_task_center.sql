@@ -10,6 +10,9 @@
 --   due/batch and owner decision ref before CHO_XAC_NHAN.
 -- - DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY: owner and assigned users
 --   must be active and match the task department before CHO_XAC_NHAN.
+-- - DCTC_RPC_ONLY_MUTATION_LOCK_READY: authenticated users may read the
+--   filtered task/timeline surfaces, but task creation and status mutation must
+--   go through route_data_confirmation_task and confirm_data_confirmation_task.
 -- - Preserve status history through audit_log triggers and a status-history table.
 -- - Route confirmation by assigned user, owner user, or scope-bound department /
 --   workspace lane; global route/manage permission is not a final confirmation
@@ -602,30 +605,12 @@ using (
 
 drop policy if exists "heu_dctc_tasks_controlled_insert"
 on public.heu_data_confirmation_tasks;
-create policy "heu_dctc_tasks_controlled_insert"
-on public.heu_data_confirmation_tasks for insert
-to authenticated
-with check (
-  public.can_route_data_confirmation_task()
-  and task_center_status = 'CHO_XAC_NHAN'
-  and blocker_state = 'WAITING_OWNER_CONFIRMATION'
-  and record_status = 'ACTIVE'
-  and public.dctc_user_matches_department(owner_user_id, department_code)
-  and public.dctc_user_matches_department(assigned_user_id, department_code)
-);
-
 drop policy if exists "heu_dctc_tasks_controlled_update"
 on public.heu_data_confirmation_tasks;
-create policy "heu_dctc_tasks_controlled_update"
-on public.heu_data_confirmation_tasks for update
-to authenticated
-using (public.can_route_data_confirmation_task())
-with check (
-  record_status = 'ACTIVE'
-  and public.can_route_data_confirmation_task()
-  and public.dctc_user_matches_department(owner_user_id, department_code)
-  and public.dctc_user_matches_department(assigned_user_id, department_code)
-);
+-- DCTC_RPC_ONLY_MUTATION_LOCK_READY / NO_DIRECT_TABLE_UPDATE:
+-- Do not recreate direct insert/update policies for authenticated users.
+-- route_data_confirmation_task and confirm_data_confirmation_task are the only
+-- authenticated write paths for task rows and status history.
 
 drop policy if exists "heu_dctc_history_select"
 on public.heu_data_confirmation_task_status_history;
@@ -648,23 +633,9 @@ using (
 
 drop policy if exists "heu_dctc_history_rpc_insert_only"
 on public.heu_data_confirmation_task_status_history;
-create policy "heu_dctc_history_rpc_insert_only"
-on public.heu_data_confirmation_task_status_history for insert
-to authenticated
-with check (
-  actor_user_id = auth.uid()
-  and exists (
-    select 1
-    from public.heu_data_confirmation_tasks t
-    where t.id = heu_data_confirmation_task_status_history.task_id
-      and public.can_confirm_data_confirmation_task(
-        t.department_code,
-        t.assigned_user_id,
-        t.owner_user_id,
-        t.admission_segment_id
-      )
-  )
-);
+-- DCTC_RPC_ONLY_MUTATION_LOCK_READY / NO_DIRECT_STATUS_HISTORY_INSERT:
+-- Status history is appended only inside route_data_confirmation_task and
+-- confirm_data_confirmation_task so the task state and history cannot drift.
 
 drop trigger if exists trg_heu_data_confirmation_tasks_updated_at
 on public.heu_data_confirmation_tasks;
@@ -777,8 +748,10 @@ where t.record_status = 'ACTIVE'
 
 grant select on public.heu_data_confirmation_task_status_timeline to authenticated;
 
-grant select, insert, update on public.heu_data_confirmation_tasks to authenticated;
-grant select, insert on public.heu_data_confirmation_task_status_history to authenticated;
+revoke insert, update, delete on public.heu_data_confirmation_tasks from authenticated;
+revoke insert, update, delete on public.heu_data_confirmation_task_status_history from authenticated;
+grant select on public.heu_data_confirmation_tasks to authenticated;
+grant select on public.heu_data_confirmation_task_status_history to authenticated;
 
 insert into public.permission_registry (
   permission_code,

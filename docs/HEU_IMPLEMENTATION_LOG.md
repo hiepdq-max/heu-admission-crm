@@ -1,5 +1,54 @@
 # HEU Implementation Log
 
+## 2026-07-05 - DCTC Scope-Bound Confirmer Lock
+
+- Scope: Tightened the DCTC submitter authority so final task confirmation must
+  remain inside the task lane, not a global route/manage or broad confirm
+  bypass.
+- Result: `can_confirm_data_confirmation_task` now records
+  `DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY` and
+  `NO_GLOBAL_CONFIRM_PERMISSION_BYPASS`: a waiting `CHO_XAC_NHAN` row can be
+  submitted only by `assigned_user_id`, `owner_user_id`, or a same-department /
+  same-workspace lane with `data_confirmation.confirm`. The `/data-confirmation`
+  form exposes the same boundary through `CONFIRM_SUBMITTER_SCOPE_LOCK`,
+  `can_current_user_confirm` and `RPC_CONFIRM_ONLY`.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `app/data-confirmation/page.tsx`,
+  `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this log.
+- Boundary: PASS_LOCAL scope-bound confirmer lock only. This does not grant
+  access, change scope, assign users, seed real tasks, mutate source data,
+  accept evidence, accept UAT, approve owner GO/NO-GO or mark production GO.
+  Production remains NO-GO.
+
+## 2026-07-05 - DCTC RPC-Only Mutation Lock
+
+- Scope: Locked Data Confirmation Task Center task creation and status
+  mutation to the approved RPC paths only.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`, `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and this
+  implementation log.
+- Result: `DCTC_RPC_ONLY_MUTATION_LOCK_READY`, `NO_DIRECT_TABLE_UPDATE` and
+  `NO_DIRECT_STATUS_HISTORY_INSERT` keep authenticated users on select-only
+  task/history access while `route_data_confirmation_task` and
+  `confirm_data_confirmation_task` remain the controlled write paths.
+- Boundary: This does not grant access, change scope, seed real tasks, run
+  production SQL, create email/task/account records, accept evidence, accept
+  UAT, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-05 - DCTC Owner Assignee Department Match Lock
 
 - Scope: Tightened the Data Confirmation Task Center owner/assignee pair so a
