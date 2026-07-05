@@ -8,9 +8,12 @@
 -- - DCTC_SOURCE_PROVENANCE_LOCK_READY: route tasks require source label,
 --   data domain, source route, DQ check ref, controlled evidence ref,
 --   due/batch and owner decision ref before CHO_XAC_NHAN.
+-- - DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY: owner and assigned users
+--   must be active and match the task department before CHO_XAC_NHAN.
 -- - Preserve status history through audit_log triggers and a status-history table.
--- - Route confirmation by assigned user, owner user, department lane or approved
---   data-confirmation permissions without seeding real tasks.
+-- - Route confirmation by assigned user, owner user, or scope-bound department /
+--   workspace lane; global route/manage permission is not a final confirmation
+--   bypass and no real tasks are seeded.
 -- Migration candidate only. Do not run in production from Codex/chat.
 -- Production requires backup evidence, restore dry-run, signed migration order,
 -- signed UAT, controlled evidence, owner GO/NO-GO and production Go/No-Go.
@@ -220,10 +223,12 @@ stable
 security definer
 set search_path = public
 as $$
+  -- DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY /
+  -- NO_GLOBAL_CONFIRM_PERMISSION_BYPASS:
+  -- final confirmation must stay inside the task's assigned, owner,
+  -- department or workspace lane.
   select
-    public.can_route_data_confirmation_task()
-    or public.has_permission('data_confirmation.confirm')
-    or task_assigned_user_id = auth.uid()
+    task_assigned_user_id = auth.uid()
     or task_owner_user_id = auth.uid()
     or exists (
       select 1
@@ -232,6 +237,7 @@ as $$
       where up.id = auth.uid()
         and up.status = 'ACTIVE'
         and d.code = task_department_code
+        and public.has_permission('data_confirmation.confirm')
     )
     or (
       task_segment_id is not null
@@ -240,9 +246,31 @@ as $$
     )
 $$;
 
+create or replace function public.dctc_user_matches_department(
+  candidate_user_id uuid,
+  task_department_code text
+)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.users_profile up
+    join public.admission_departments d on d.id = up.department_id
+    where up.id = candidate_user_id
+      and up.status = 'ACTIVE'
+      and d.status = 'ACTIVE'
+      and d.code = task_department_code
+  )
+$$;
+
 grant execute on function public.can_read_data_confirmation_task(text, uuid, uuid, uuid) to authenticated;
 grant execute on function public.can_route_data_confirmation_task() to authenticated;
 grant execute on function public.can_confirm_data_confirmation_task(text, uuid, uuid, uuid) to authenticated;
+grant execute on function public.dctc_user_matches_department(uuid, text) to authenticated;
 
 create or replace function public.route_data_confirmation_task(
   p_task_code text,
@@ -340,6 +368,15 @@ begin
     'SHORT_COURSE'
   ) then
     raise exception 'Invalid data-confirmation department code';
+  end if;
+
+  -- DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY /
+  -- OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT:
+  -- a waiting task belongs to one department lane only.
+  if not public.dctc_user_matches_department(p_owner_user_id, cleaned_department_code)
+    or not public.dctc_user_matches_department(p_assigned_user_id, cleaned_department_code)
+  then
+    raise exception 'Owner and assigned users must match the data-confirmation department';
   end if;
 
   insert into public.heu_data_confirmation_tasks (
@@ -573,6 +610,8 @@ with check (
   and task_center_status = 'CHO_XAC_NHAN'
   and blocker_state = 'WAITING_OWNER_CONFIRMATION'
   and record_status = 'ACTIVE'
+  and public.dctc_user_matches_department(owner_user_id, department_code)
+  and public.dctc_user_matches_department(assigned_user_id, department_code)
 );
 
 drop policy if exists "heu_dctc_tasks_controlled_update"
@@ -584,6 +623,8 @@ using (public.can_route_data_confirmation_task())
 with check (
   record_status = 'ACTIVE'
   and public.can_route_data_confirmation_task()
+  and public.dctc_user_matches_department(owner_user_id, department_code)
+  and public.dctc_user_matches_department(assigned_user_id, department_code)
 );
 
 drop policy if exists "heu_dctc_history_select"

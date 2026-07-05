@@ -108,6 +108,12 @@ requireTokens(
     "public.can_read_data_confirmation_task",
     "public.can_route_data_confirmation_task",
     "public.can_confirm_data_confirmation_task",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
+    "task_assigned_user_id = auth.uid()",
+    "task_owner_user_id = auth.uid()",
+    "d.code = task_department_code",
+    "and public.has_permission('data_confirmation.confirm')",
     "public.route_data_confirmation_task",
     "p_due_date_or_batch text default null",
     "p_owner_decision_ref text default null",
@@ -194,6 +200,12 @@ requireNoPattern(
   "internal lane in DCTC route department validation",
   sqlPath,
 );
+requireNoPattern(
+  sql,
+  /public\.can_route_data_confirmation_task\(\)\s+or\s+public\.has_permission\('data_confirmation\.confirm'\)/i,
+  "global confirm permission bypass",
+  sqlPath,
+);
 
 if (
   packageJson.scripts?.["check:heu-data-confirmation-task-center-schema"] !==
@@ -240,6 +252,8 @@ requireTokens(
     "CHO_XAC_NHAN",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "KHONG_THUOC_TOI",
@@ -287,6 +301,8 @@ requireTokens(
     "owner_user_id",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA lock requires note and controlled evidence ref",
@@ -363,6 +379,8 @@ requireTokens(
     "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "CONTROLLED_PILOT_DEPARTMENT_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "assigned_user_id",
     "owner_user_id",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
@@ -413,6 +431,8 @@ requireTokens(
     "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "CONTROLLED_PILOT_DEPARTMENT_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "status-timeline scope columns",
     "assigned_user_id",
     "owner_user_id",
@@ -455,6 +475,9 @@ console.log(
 );
 console.log(
   "scope_gate_route_lock=DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN; route_requires=scope_gate_ref",
+);
+console.log(
+  "scope_bound_confirmer_lock=DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY; bypass=NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
 );
 console.log("audit_trace_ref=DCTC_TASK|DCTC_HISTORY");
 console.log(

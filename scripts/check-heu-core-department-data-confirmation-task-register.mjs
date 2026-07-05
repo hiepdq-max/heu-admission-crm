@@ -146,6 +146,13 @@ requireTokens(
     "OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
+    "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "same-department",
+    "same-workspace",
+    "data_confirmation.confirm",
+    "global confirm permission is not a bypass",
     "owner_user_id",
     "assigned_user_id",
     "scope_gate_ref",
@@ -284,6 +291,9 @@ requireTokens(
     "OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "2026-07-05 - DCTC Scope-Bound Confirmer Lock",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "owner_user_id",
     "assigned_user_id",
     "scope_gate_ref",
@@ -334,6 +344,9 @@ console.log(
 );
 console.log(
   "dctc_scope_gate_route_lock=DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN|SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+);
+console.log(
+  "dctc_scope_bound_confirmer_lock=DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY|NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
 );
 console.log(
   "Boundary: metadata-only; no accounts, scope changes, database mutation, real tasks/email, evidence acceptance, UAT acceptance, owner GO/NO-GO or production GO.",

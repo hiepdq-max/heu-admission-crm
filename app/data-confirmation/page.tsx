@@ -521,6 +521,7 @@ function RoutingForm({
       data-heu-dctc-route-form="RPC_ROUTE_TO_CHO_XAC_NHAN"
       data-heu-dctc-route-assignee-lock="OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN"
       data-heu-dctc-owner-assignee-pair-lock="DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN"
+      data-heu-dctc-route-user-department-lock="DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT"
       data-heu-dctc-scope-gate-lock="DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN NO_ACCESS_GRANT_FROM_SCOPE_GATE_REF"
       data-heu-dctc-source-provenance-lock="DCTC_SOURCE_PROVENANCE_LOCK_READY SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN NO_RAW_SOURCE_PAYLOAD"
     >
@@ -540,7 +541,8 @@ function RoutingForm({
               Tao task `CHO_XAC_NHAN` tu metadata da duoc phe duyet. Form nay
               khong import raw data, khong upload evidence va khong chap nhan
               UAT hay owner GO. Owner user va Assigned user la bat buoc truoc
-              khi route; scope gate ref la bat buoc nhung khong cap quyen.
+              khi route va phai cung department voi task; scope gate ref la
+              bat buoc nhung khong cap quyen.
             </p>
           </div>
         </div>
@@ -743,6 +745,8 @@ function RoutingForm({
             khong gui email va khong chap nhan evidence/UAT/production.
             `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN` yeu cau ca
             owner lane va assigned user truoc khi route.
+            `OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT` yeu cau owner va
+            assigned user la active user cung department voi task.
             `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN` chi ghi ref scope
             gate, khong cap quyen.
           </p>
@@ -1103,6 +1107,7 @@ export default async function DataConfirmationPage({
         className="space-y-6"
         data-heu-data-confirmation-task-center-route="DCTC_RUNTIME_ROUTE"
         data-heu-data-confirmation-task-center-boundary="PASS_LOCAL_RUNTIME_ROUTE RLS_VIEW_ONLY RPC_ROUTE_TO_CHO_XAC_NHAN RPC_CONFIRM_ONLY DCTC_SOURCE_PROVENANCE_LOCK_READY DCTC_DEPARTMENT_QUEUE_SCOPE_READY DCTC_AUDIT_TRACE_READY DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY NO_GLOBAL_CONFIRM_PERMISSION_BYPASS NO_AUTO_SEED NO_RAW_DATA_IMPORT NO_DIRECT_TABLE_UPDATE NO_EMAIL_SEND NO_ACCOUNT_CREATE NO_TICKET_CREATE NO_AUDIT_LOG_MUTATION NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
+        data-heu-data-confirmation-task-center-user-department-lock="DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT"
       >
         <section className="min-w-0 border-b border-zinc-200 pb-5">
           <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

@@ -167,11 +167,15 @@ requireTokens(
     "can_current_user_confirm",
     "data-heu-dctc-confirm-transition=\"CONFIRM_FROM_CHO_XAC_NHAN_ONLY\"",
     "data-heu-dctc-confirm-submitter-scope=\"CONFIRM_SUBMITTER_SCOPE_LOCK\"",
+    "data-heu-dctc-confirm-scope-bound=\"DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY NO_GLOBAL_CONFIRM_PERMISSION_BYPASS\"",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "row.task_center_status === \"CHO_XAC_NHAN\"",
     "Boolean(row.can_current_user_confirm)",
-    "data_confirmation.confirm moi submit",
+    "route/manage hoac global confirm khong",
+    "bypass task lane",
     "task da co ket qua thi khong submit",
     "data-heu-dctc-confirm-form=\"RPC_CONFIRM_ONLY REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF\"",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
@@ -422,9 +426,13 @@ requireTokens(
     "audit_trace_ref",
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "does not auto-seed real tasks",
     "production GO",
   ],
@@ -474,6 +482,8 @@ requireTokens(
     "KHTC, Tuyen sinh, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "does not auto-seed real tasks",
     "owner GO/NO-GO or production GO",
   ],
@@ -520,6 +530,8 @@ requireTokens(
     "KHTC, Admissions, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course",
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
@@ -566,6 +578,8 @@ requireTokens(
     "audit_trace_ref",
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY",
+    "NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF",
@@ -610,6 +624,9 @@ console.log(
 );
 console.log(
   "scope_gate_route_lock=DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN; route_requires=SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+);
+console.log(
+  "scope_bound_confirmer_lock=DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY; bypass=NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
 );
 console.log("audit_trace_ref=DCTC_AUDIT_TRACE_READY");
 console.log(

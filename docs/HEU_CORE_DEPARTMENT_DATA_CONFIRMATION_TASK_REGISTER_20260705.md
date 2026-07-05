@@ -66,12 +66,19 @@ Owner/assignee pair lock:
 
 `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`
 
+`DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY`
+
+`OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT`
+
 Before DCTC routes approved source metadata into `CHO_XAC_NHAN`, the route must
 name both `department_owner_lane` / `owner_user_id` and
 `assigned_user_label` / `assigned_user_id`. This keeps every waiting task tied
-to a department owner lane and a responsible user; it does not assign real users
-outside owner-approved scope, grant access, seed real tasks, accept evidence,
-accept UAT, approve owner GO/NO-GO or mark production GO.
+to a department owner lane and a responsible user. The SQL route also rejects
+owner/assigned users that are not active users in the task `department_code`,
+so a KHTC task cannot be assigned into Admissions, CTHSSV, Dao Tao, Khoa or
+Short Course by mistake. This does not assign real users outside owner-approved
+scope, grant access, seed real tasks, accept evidence, accept UAT, approve owner
+GO/NO-GO or mark production GO.
 
 Scope gate route lock:
 
@@ -84,6 +91,22 @@ carry `scope_gate_ref` / `scope_gate` that points to the approved
 permission/scope gate or pending scope-repair gate. This is a reference-only
 control; it does not grant access, change scope, assign users, seed real tasks,
 accept evidence, accept UAT, approve owner GO/NO-GO or mark production GO.
+
+Scope-bound confirmer lock:
+
+`DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY`
+
+`NO_GLOBAL_CONFIRM_PERMISSION_BYPASS`
+
+`CONFIRM_SUBMITTER_SCOPE_LOCK`
+
+When an existing DCTC task is still in `CHO_XAC_NHAN`, the submitter must be
+the task `assigned_user_id`, the task `owner_user_id`, or a same-department /
+same-workspace lane with `data_confirmation.confirm`. Route/manage permission
+or a global confirm permission is not a bypass for final department/user
+confirmation. This lock does not grant access, change scope, assign users, seed
+real tasks, accept evidence, accept UAT, approve owner GO/NO-GO or mark
+production GO.
 
 ## 2.1 Report View Source Conflict Route Lock
 
