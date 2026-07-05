@@ -130,6 +130,54 @@ function checkFinanceRelianceSourceContract() {
       : "STD-35 Finance reliance fast index is missing dashboard, blueprint or implementation-log coverage.",
   );
 
+  const readonlyLockDashboardReady = hasAllText(executiveDashboard, [
+    /data-heu-executive-finance-readonly-reliance-lock="STD-41_EXECUTIVE_FINANCE_READONLY_RELIANCE_LOCK"[\s\S]*data-heu-executive-finance-readonly-reliance-lock-boundary="PASS_LOCAL_FINANCE_READONLY_RELIANCE_LOCK READ_ONLY RELIANCE_LOCK SCOPE_BOUND_DASHBOARD P2-18 P5-03 FIN_DAY1 ACCT_LOCAL P6-04 SOURCE_MAP_REQUIRED OWNER_SIGNOFF_PENDING CONTROLLED_EVIDENCE_REQUIRED SIGNED_UAT_PENDING NO_DASHBOARD_RELIANCE NO_REPORT_VIEW_RELIANCE NO_COLLECTION_RELIANCE NO_DEBT_CLEARING NO_VOUCHER_POSTING NO_INVOICE_ISSUANCE NO_PAYMENT_EXECUTION NO_BANK_INSTRUCTION NO_MONEY_MOVEMENT NO_STATUTORY_ACCOUNTING NO_FINANCE_RELIANCE NO_UAT_ACCEPTANCE NO_EVIDENCE_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"[\s\S]*data-heu-executive-finance-readonly-reliance-lock-overflow-guard="STD-41_NO_OVERFLOW"/,
+    "FIN-LOCK-01",
+    "FIN-LOCK-02",
+    "FIN-LOCK-03",
+    "FIN-LOCK-04",
+    "FIN-LOCK-05",
+    "FIN-LOCK-06",
+    "P2-18 accounting dashboard",
+    "P5-03 Finance Desk",
+    "Collection / reconciliation",
+    "Payment request / payout",
+    "ACCT local + Finance Day-1",
+    "Role/scope-bound finance visibility",
+    "NO_DEBT_CLEARING",
+    "NO_INVOICE_ISSUANCE",
+    "NO_MONEY_MOVEMENT",
+  ]);
+  const readonlyLockBlueprintReady = hasAllText(blueprint, [
+    "STD-41",
+    "STD-41_EXECUTIVE_FINANCE_READONLY_RELIANCE_LOCK",
+    "PASS_LOCAL_FINANCE_READONLY_RELIANCE_LOCK",
+    "RELIANCE_LOCK",
+    "NO_DEBT_CLEARING",
+    "NO_INVOICE_ISSUANCE",
+    "NO_MONEY_MOVEMENT",
+  ]);
+  const readonlyLockLogReady = hasAllText(implementationLog, [
+    "STD-41 Executive Finance Readonly Reliance Lock",
+    'data-heu-executive-finance-readonly-reliance-lock="STD-41_EXECUTIVE_FINANCE_READONLY_RELIANCE_LOCK"',
+    "FIN-LOCK-01",
+    "FIN-LOCK-06",
+    "PASS_LOCAL_FINANCE_READONLY_RELIANCE_LOCK",
+    "check:heu-executive-finance-readonly-reliance-lock-readiness",
+    /does not[\s\S]*approve finance reliance/i,
+    "mark production GO",
+  ]);
+
+  addStatus(
+    "FINANCE-READONLY-RELIANCE-LOCK",
+    readonlyLockDashboardReady && readonlyLockBlueprintReady && readonlyLockLogReady
+      ? "READY"
+      : "NO_GO",
+    readonlyLockDashboardReady && readonlyLockBlueprintReady && readonlyLockLogReady
+      ? "STD-41 Finance read-only reliance lock is wired to dashboard, blueprint and implementation log."
+      : "STD-41 Finance read-only reliance lock is missing dashboard, blueprint or implementation-log coverage.",
+  );
+
   const dashboardReady = hasAllText(executiveDashboard, [
     /data-heu-executive-finance-source-contract="STD-15_FINANCE_RELIANCE_SOURCE_CONTRACT"[\s\S]*data-heu-executive-finance-source-boundary="READ_ONLY SOURCE_MAP_REQUIRED OWNER_SIGNOFF_PENDING CONTROLLED_EVIDENCE_REQUIRED NO_VOUCHER_POSTING NO_PAYMENT_EXECUTION NO_BANK_INSTRUCTION NO_STATUTORY_ACCOUNTING NO_FINANCE_RELIANCE NO_PRODUCTION_GO"[\s\S]*data-heu-executive-finance-source-overflow-guard="STD-15_NO_OVERFLOW"/,
     "FIN-SRC-01",

@@ -34,6 +34,92 @@ If any link in this chain is missing, the affected area must stay
 | AI Scope Boundary | Approved AI scope, prompt/output audit plan and blocked actions | BGH + IT_DATA + Audit | Draft checklist/risk prompts from approved registers | Let AI write, approve, pay, delete, waive, sign off or mark go-live | Signed AI scope registry and prompt/output audit logging |
 | Owner Decision Boundary | Signoff register, evidence reference and human decision | BGH + accountable owners + Audit | Draft decision manifest and missing-owner warnings | Record owner GO/NO-GO inside Codex or infer approval from PASS_LOCAL | Final owner decision outside Codex/chat |
 
+## 3A. STD-14 Authority Checklist
+
+Before any workflow can be treated as operationally reliable, the owner lane
+must answer these seven questions. If one answer is missing, the item remains
+`NO_GO`, `BLOCKED`, `CAN_SUA` or `CHUA_DU_DIEU_KIEN`.
+
+| Code | Required question | Owner lane | Required proof | Stop rule |
+|---|---|---|---|---|
+| AUTH-LEGAL-BASIS | Can cu phap ly nao? | PHAP_CHE + process owner | Legal article, contract clause, policy or approved rule | No legal conclusion or legal-basis approval from dashboard |
+| AUTH-SOP-VERSION | SOP nao dang ap dung? | PHAP_CHE + owner department + IT_DATA | SOP title, version, owner, effective scope and dependency | No official SOP issuance or version-log replacement |
+| AUTH-MAKER | Ai nhap / tao du lieu? | Process owner + IT_DATA | Maker role, route, input source and scope boundary | No account creation, data-entry approval or scope expansion |
+| AUTH-CHECKER | Ai kiem tra? | Checker lane + Audit | Checker role, checklist, negative-control and audit trace | No PASS_LOCAL result may replace signed checker evidence |
+| AUTH-APPROVER | Ai duyet? | Approver lane + BGH when required | Approver role, threshold, exception path and signoff route | No approval action, owner GO or waiver inside dashboard |
+| AUTH-EVIDENCE | Chung tu nam o dau? | Audit + IT_DATA + process owner | Controlled evidence ref, redaction class and retention route | No raw PII, bank, voucher, password or reset-link in Git/Codex/chat |
+| AUTH-SIGNER | Ai ky / chot ben ngoai he thong? | BGH + accountable owner + Audit | External signer, date, evidence ref and owner decision path | No inferred approval from PASS_LOCAL, AI output or dashboard status |
+
+`STD-14_LEGAL_SOP_AUTHORITY_CHECKLIST` is a DRAFT_CONTROL checklist only with
+`PHAP_CHE_REVIEW_REQUIRED`, `SOP_OWNER_SIGNOFF_REQUIRED`,
+`MAKER_CHECKER_APPROVER_REQUIRED`, `CONTROLLED_EVIDENCE_REQUIRED` and
+`EXTERNAL_SIGNOFF_REQUIRED` boundaries.
+
+Boundary tokens: `NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`, `NO_FINANCE_ACTION`,
+`NO_OWNER_GO`, `NO_PRODUCTION_GO`.
+
+It does not provide legal advice, issue official SOP, grant access, approve
+finance action, accept UAT, accept evidence, approve owner GO/NO-GO or mark
+production GO.
+
+Literal boundary: does not mark production GO.
+
+## 3B. STD-34 Required Answer Index
+
+`STD-34_EXECUTIVE_LEGAL_SOP_REQUIRED_ANSWER_INDEX` is the executive quick
+index for the seven required answers in each controlled workflow:
+legal basis, SOP, maker, checker, approver, evidence location and external
+signer.
+
+| Code | Workflow | Required answer focus | Stop rule |
+|---|---|---|---|
+| LAW-IDX-01 | F01 Lead to student | Legal/tuition gate, admissions handover SOP, maker/checker/approver and P3/P0-19 evidence signer | No handover reliance if legal gate, SOP version, evidence or signer is missing |
+| LAW-IDX-02 | F02 TTGDTX tuition | Contract, tuition policy, collection/invoice SOP, KHTC/PHAP_CHE/Audit checker and finance/legal UAT signer | No finance reliance if policy, source id, DQ or external signoff is missing |
+| LAW-IDX-03 | F03 Payment and payout | Contract clause, BBNT, payment request SOP, approval separation, payment dossier and signer | No payment execution, bank instruction or statutory accounting from dashboard |
+| LAW-IDX-04 | F06 Short Course | Course policy, BHXH/support rule, attendance/payment SOP and owner signoff | No attendance/payment reliance until policy, UAT and owner signoff exist |
+| LAW-IDX-05 | M02 Role and sensitive access | Data-sharing basis, privacy class, activation SOP, P6-04 negative proof and owner decision | No access grant, permission expansion or owner GO from dashboard state |
+| LAW-IDX-06 | M10 Dashboard/report reliance | Report-view reliance decision, source-map SOP, DQ-DM-05 and report owner signoff | No dashboard reliance, raw source opening or legal conclusion |
+
+Boundary tokens: `PASS_LOCAL_LEGAL_SOP_REQUIRED_ANSWER_INDEX`,
+`REQUIRED_ANSWER_INDEX`, `PHAP_CHE_REVIEW_REQUIRED`,
+`SOP_OWNER_SIGNOFF_REQUIRED`, `MAKER_CHECKER_APPROVER_REQUIRED`,
+`CONTROLLED_EVIDENCE_REQUIRED`, `EXTERNAL_SIGNOFF_REQUIRED`,
+`NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`, `NO_APPROVAL_ACTION`,
+`NO_FINANCE_ACTION`, `NO_OWNER_GO` and `NO_PRODUCTION_GO`.
+
+It does not provide legal advice, issue official SOP, approve workflow state,
+approve finance action, accept UAT, accept evidence, approve owner GO/NO-GO or
+mark production GO.
+
+## 3C. STD-40 Evidence Authority Queue
+
+`STD-40_EXECUTIVE_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE` is the executive
+Legal/SOP queue for missing evidence and authority before any controlled
+workflow can be treated as reliable.
+
+| Code | Queue | Owner lane | Required evidence or authority | Stop rule |
+|---|---|---|---|---|
+| LAW-QUEUE-01 | Legal basis hold | PHAP_CHE + process owner | Legal Article Master ref, P0-19/contract/policy proof and external PHAP_CHE signer | No legal advice, legal conclusion or legal-basis reliance from dashboard |
+| LAW-QUEUE-02 | SOP version hold | PHAP_CHE + owner department + IT_DATA | SOP Register row, Version Log entry and signed SOP owner route | No official SOP issuance, version-log replacement or workflow approval |
+| LAW-QUEUE-03 | Maker/checker/approver hold | Process owner + Audit + BGH when threshold applies | Role-lane matrix, approval threshold note, audit trace and owner decision route | No approval action, finance action or delegated-authority inference |
+| LAW-QUEUE-04 | Controlled evidence hold | Audit + IT_DATA + process owner | Controlled evidence id, redaction reviewer, file registry route and audit-log reference | No raw evidence movement, UAT acceptance or evidence acceptance |
+| LAW-QUEUE-05 | External signer hold | BGH + accountable owner + Audit | Signoff Register row, owner decision packet and controlled evidence reference | No owner GO/NO-GO inferred from PASS_LOCAL or dashboard state |
+| LAW-QUEUE-06 | Dashboard/report reliance legal hold | BGH + IT_DATA + PHAP_CHE + Audit | Report View Register, source map, DQ result, signer lane and legal/SOP dependency | No dashboard reliance, report-view reliance or legal conclusion |
+
+Boundary tokens: `PASS_LOCAL_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`,
+`EVIDENCE_AUTHORITY_QUEUE`, `PHAP_CHE_REVIEW_REQUIRED`,
+`SOP_OWNER_SIGNOFF_REQUIRED`, `MAKER_CHECKER_APPROVER_REQUIRED`,
+`CONTROLLED_EVIDENCE_REQUIRED`, `EXTERNAL_SIGNOFF_REQUIRED`,
+`OWNER_SIGNOFF_PENDING`, `NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`,
+`NO_APPROVAL_ACTION`, `NO_FINANCE_ACTION`, `NO_DASHBOARD_RELIANCE`,
+`NO_REPORT_VIEW_RELIANCE`, `NO_RAW_EVIDENCE_MOVEMENT`,
+`NO_EVIDENCE_ACCEPTANCE`, `NO_UAT_ACCEPTANCE`, `NO_OWNER_GO` and
+`NO_PRODUCTION_GO`.
+
+It does not provide legal advice, issue official SOP, approve workflow state,
+execute finance, accept UAT, accept evidence, approve owner GO/NO-GO or mark
+production GO.
+
 ## 4. Placement And Registry Rule
 
 - Legal contracts and legal-basis references stay in the PHAP_CHE legal tree.

@@ -49,6 +49,7 @@ type UrgentLeadRow = {
 
 type HomePageProps = {
   searchParams?: Promise<{
+    focus?: string | string[];
     segment?: string | string[];
   }>;
 };
@@ -123,6 +124,7 @@ export default async function Home({ searchParams }: HomePageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
+  const requestedExecutiveFocus = firstParam(resolvedSearchParams.focus);
   const workspace = await getAdmissionWorkspaceContext(
     supabase,
     user.id,
@@ -394,8 +396,7 @@ export default async function Home({ searchParams }: HomePageProps) {
       hasExecutivePermission("permission_matrix.read") ||
       hasExecutivePermission("permission_matrix.manage"),
   };
-  const canWriteInWorkspace =
-    Boolean(workspace.activeSegmentId) && !isExecutiveDashboard;
+  const canWriteInWorkspace = Boolean(workspace.activeSegmentId) && !isExecutiveDashboard;
   const segmentOverview = (
     <AdmissionSegmentOverview
       segments={segmentOverviewData.segments}
@@ -485,6 +486,7 @@ export default async function Home({ searchParams }: HomePageProps) {
           roleCode={roleCode}
           activeSegmentId={workspace.activeSegmentId}
           activeSegmentLabel={workspace.activeSegment?.label ?? null}
+          focusMode={requestedExecutiveFocus}
           kpis={kpis}
           pipeline={pipeline}
           activities={activities}

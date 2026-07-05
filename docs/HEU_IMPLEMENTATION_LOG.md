@@ -8792,3 +8792,1526 @@
   payment, approve teacher payment, verify invoice/payment, approve report-view
   reliance, approve dashboard reliance, approve role UAT, approve access
   closure, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-06 Executive Finance Read-Only Reliance Proof
+
+- Added the executive dashboard finance read-only reliance proof lane with
+  `data-heu-executive-finance-readonly="STD-06_FINANCE_READONLY_RELIANCE_PROOF"`.
+- The lane exposes `P2-18`, `P5-03`, `FIN-DAY1` and `ACCT-LOCAL` so BGH/KHTC
+  can see the exact missing signed browser UAT, source reconciliation,
+  Finance Day-1 evidence, accounting local readiness, negative-control proof
+  and owner closure dependencies before any finance reliance discussion.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-06 anchors, P2-18/P5-03/FIN-DAY1/ACCT-LOCAL proof
+  rows and `READ_ONLY`, `NO_VOUCHER`, `NO_PAYMENT`, `NO_BANK_INSTRUCTION`,
+  `NO_STATUTORY_ACCOUNTING`, `NO_FINANCE_RELIANCE` and `NO_PRODUCTION_GO`
+  boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-06` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-07`.
+- This is local read-only finance visibility only. It does not post vouchers,
+  move money, issue bank instructions, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-07 Executive Section Navigator
+
+- Added the executive dashboard section navigator with
+  `data-heu-executive-section-navigator="STD-07_EXECUTIVE_SECTION_NAVIGATOR"`.
+- The navigator exposes quick anchors for overview, quick access, report
+  reliance, finance proof, Legal/SOP, M01-M12 module maturity, blockers and
+  admissions signals under the `Executive focus` label so BGH can jump to the
+  needed section without scanning the full page.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-07 anchors, target section IDs, quick links,
+  `NO_HIDDEN_NO_GO`, `NO_APPROVAL_ACTION`, `NO_STATE_MUTATION` and
+  `NO_PRODUCTION_GO` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-07` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-08`.
+- This is local quick-navigation visibility only. It does not hide NO-GO
+  blockers, mutate workflow state, create approval actions, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-08 Executive Responsive Density And Section Order
+
+- Added the executive dashboard responsive density guard with
+  `data-heu-executive-responsive-density="STD-08_RESPONSIVE_DENSITY_SECTION_ORDER"`.
+- Tightened the executive dashboard with compact `space-y-3 sm:space-y-4`,
+  `p-3 sm:p-4` density, `scroll-mt-24` anchor offsets, a smaller Legal/SOP card
+  minimum height and tighter KPI/blocker/admissions grids for laptop and mobile
+  scanning.
+- Locked the explicit section order as overview, quick access, section
+  navigator, report reliance, finance proof, Legal/SOP, module maturity, KPIs,
+  blockers, admissions and segment overview.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-08 density anchor, section order, `scroll-mt-24`,
+  compact spacing tokens, `NO_HIDDEN_BLOCKERS`, `NO_OVERLAP`,
+  `NO_PRODUCTION_GO` and `NO_APPROVAL_ACTION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-08` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-09`.
+- This is local responsive layout hardening only. It does not hide blockers,
+  mutate workflow state, create approval actions, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-09 Executive Dashboard Visual QA Guard
+
+- Added the executive dashboard visual QA source guard with
+  `data-heu-executive-visual-qa="STD-09_EXECUTIVE_VISUAL_QA_SOURCE_GUARD"`,
+  `PASS_LOCAL_VISUAL_QA`, `AUTH_REQUIRED`, `NO_SCREENSHOT_CLAIM`,
+  `NO_UAT_ACCEPTANCE`, `NO_APPROVAL_ACTION` and `NO_PRODUCTION_GO` boundaries.
+- Added `scripts/check-heu-executive-dashboard-visual-qa.mjs` and
+  `check:heu-executive-dashboard-visual-qa` so local verification checks the
+  executive dashboard anchor targets, overflow-safe source layout tokens and
+  localhost-only `/` route behavior.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the main
+  dashboard guard verifies the STD-09 marker, desktop/mobile source viewport
+  labels, package script and visual QA boundary wording.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-09` is
+  `PASS_LOCAL_VISUAL_QA` only and the next safe slice routes to `STD-10`
+  authenticated desktop/mobile screenshot QA when an approved local test
+  account/session is available.
+- This is local source-layout and auth-route verification only. It does not
+  claim authenticated screenshots, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-11 Executive Priority Focus Rail
+
+- Added the executive dashboard priority focus rail with
+  `data-heu-executive-priority-focus="STD-11_EXECUTIVE_PRIORITY_FOCUS_RAIL"`.
+- The rail gives BGH one compact read-only lane for `FIN`, `LAW`, `RPT`, `ROL`
+  and `BLK` so Finance reliance, Legal/SOP, Report reliance, Role/scope and
+  Production blockers can be reached before scanning the full dashboard.
+- Updated the executive section order to
+  overview, section navigator, priority focus, quick access, report reliance,
+  finance proof, Legal/SOP, module maturity, KPIs, blockers, admissions and
+  segment overview.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` and
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs` so the local guards
+  verify the STD-11 marker, priority lane codes, `NO_HIDDEN_NO_GO`,
+  `NO_STATE_MUTATION`, `NO_APPROVAL_ACTION` and overflow boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-10` remains
+  `AUTH_REQUIRED` until an approved authenticated browser session exists, while
+  `STD-11` is the current PASS_LOCAL_UI quick-access hardening slice.
+- This is local read-only priority navigation only. It does not hide NO-GO
+  blockers, mutate workflow state, create approval actions, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-12 Role Lane Governance Matrix
+
+- Added `lib/heu-role-lanes.ts` with `HEU_ROLE_LANE_MATRIX` and
+  `HEU_ROLE_LANE_BOUNDARY` for `HIEU_TRUONG`, `PHO_HIEU_TRUONG`, `BGH`,
+  `KHTC`, `PHAP_CHE`, `IT_DATA` and `AUDIT`.
+- Updated `lib/executive-roles.ts` so BGH-equivalent checks use
+  `normalizeHeuRoleCode` from the shared role-lane matrix before testing
+  executive roles.
+- Added `scripts/check-heu-role-lane-governance.mjs` and
+  `check:heu-role-lane-governance` so local verification checks role-lane
+  coverage, negative boundaries and package wiring before finance or operations
+  reliance is discussed.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the main
+  executive dashboard guard also verifies the role-lane matrix, package script,
+  `PASS_LOCAL_ROLE_GUARD`, `NO_ACCESS_GRANT`, `NO_FINANCE_EXECUTION` and
+  `NO_LEGAL_CONCLUSION` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-12` is the
+  formal role-lane standardization slice after the executive read-only
+  dashboard and priority focus rail.
+- This is local role governance only. It does not grant access, create
+  accounts, expand permissions, execute finance, issue legal conclusions,
+  accept UAT, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-13 Report Source Map Reliance Guard
+
+- Added `data-heu-report-view-reliance-contract="STD-13_REPORT_VIEW_SOURCE_MAP_RELIANCE_CONTRACT"`
+  to `components/reports/report-view-source-map-panel.tsx` with
+  `DRAFT_CONTROL`, `DQ-DM-05`, `OWNER_SIGNOFF_PENDING`,
+  `CONTROLLED_EVIDENCE_REQUIRED`, `NO_DASHBOARD_RELIANCE`,
+  `NO_FINANCE_ACTION`, `NO_STATUTORY_ACCOUNTING`, `NO_UAT_ACCEPTANCE`,
+  `NO_OWNER_GO` and `NO_PRODUCTION_GO` boundaries.
+- Added `data-heu-report-view-dq-dm05-contract="STD-13_DQ_DM05_DASHBOARD_RELIANCE_LOCK"`
+  to `components/reports/data-master-report-view-bridge-panel.tsx` so the
+  DQ-DM-05 dashboard reliance lock is visible and locally guarded.
+- Extended `scripts/check-heu-reports-dashboard-scope-readiness.mjs` so the
+  reports/dashboard readiness guard checks the Report View Source Map panel,
+  Data Master / Report View bridge, executive dashboard report strip, source
+  map docs, blueprint and implementation log before running data-scope checks.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-13` is the
+  formal `PASS_LOCAL_REPORT_SOURCE_GUARD` report/source-map guard after the
+  executive dashboard and role-lane standardization slices.
+- This is local report/source-map contract hardening only. It does not approve
+  report-view reliance, approve dashboard reliance, read raw workbooks, read raw
+  bank files, read vouchers, accept evidence, execute UAT, approve finance
+  action, issue statutory accounting, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-14 Legal SOP Authority Checklist
+
+- Added the executive Legal/SOP authority checklist with
+  `data-heu-executive-legal-sop-authority-checklist="STD-14_LEGAL_SOP_AUTHORITY_CHECKLIST"`.
+- The checklist requires `AUTH-LEGAL-BASIS`, `AUTH-SOP-VERSION`, `AUTH-MAKER`,
+  `AUTH-CHECKER`, `AUTH-APPROVER`, `AUTH-EVIDENCE` and `AUTH-SIGNER` before a
+  workflow can be treated as operationally reliable.
+- Updated `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
+  with the same STD-14 authority checklist so the UI and Legal/SOP matrix share
+  one DRAFT_CONTROL question set.
+- Added `scripts/check-heu-legal-sop-authority-readiness.mjs` and
+  `check:heu-legal-sop-authority-readiness`, then extended
+  `scripts/check-heu-executive-dashboard-readiness.mjs` so the main executive
+  dashboard guard verifies STD-14, package wiring, blueprint and log coverage.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-14` is the
+  formal `PASS_LOCAL_LEGAL_SOP_GUARD` for legal basis, SOP version,
+  maker/checker/approver, controlled evidence and external signer questions.
+- This is local Legal/SOP authority visibility only. It does not provide legal
+  advice, issue official SOP, grant access, approve finance action, accept UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-15 Finance Reliance Source Contract
+
+- Added the executive finance source contract with
+  `data-heu-executive-finance-source-contract="STD-15_FINANCE_RELIANCE_SOURCE_CONTRACT"`.
+- The contract exposes `FIN-SRC-01` through `FIN-SRC-05` for receivable,
+  collection, reconciliation, payment request and payout-evidence source routes.
+- Each row shows source route, owner lane, required controlled evidence and an
+  explicit stop rule before BGH/KHTC may rely on the number.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs` and
+  `scripts/check-heu-finance-payment-scope-readiness.mjs` so local guards verify
+  `STD-15_FINANCE_RELIANCE_SOURCE_CONTRACT`, `SOURCE_MAP_REQUIRED`,
+  `NO_PAYMENT_EXECUTION` and `PASS_LOCAL_FINANCE_RELIANCE_GUARD` coverage.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-15` is the
+  formal finance read-only reliance source contract after Legal/SOP authority.
+- This is local finance reliance visibility only. It does not post vouchers,
+  execute payment, move money, issue bank instructions, approve statutory
+  accounting, accept UAT, accept evidence, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-16 Executive UAT Evidence Route
+
+- Added the executive UAT/evidence route checklist with
+  `data-heu-executive-uat-evidence-route="STD-16_UAT_EVIDENCE_ROUTE_CHECKLIST"`.
+- The checklist exposes `UAT-EVID-01` through `UAT-EVID-05` for P0-14
+  controlled evidence intake, P6-04 role/workspace UAT, P2-18 accounting
+  dashboard UAT, P5-03 Finance Desk UAT and the P0-09/P0-15 owner decision
+  package.
+- Added `scripts/check-heu-uat-evidence-route-readiness.mjs` and
+  `check:heu-uat-evidence-route-readiness`, then extended the executive
+  dashboard readiness and visual-QA guards to verify the STD-16 route,
+  `PASS_LOCAL_EVIDENCE_ROUTE`, `SIGNED_UAT_PENDING`,
+  `NO_EVIDENCE_ACCEPTANCE` and `NO_ACCESS_CLOSURE` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-16` is the
+  formal evidence-route slice after finance reliance source mapping.
+- This is local UAT/evidence routing only. It does not collect evidence,
+  execute UAT, accept evidence, grant access, close access, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-17 Executive Focus Mode
+
+- Added the executive focus mode strip with
+  `data-heu-executive-focus-mode="STD-17_EXECUTIVE_FOCUS_MODE"` so BGH can use
+  `focus=reports`, `focus=finance`, `focus=evidence`, `focus=legal`,
+  `focus=modules` or `focus=blockers` instead of scanning every section.
+- Updated `app/page.tsx` to read the `focus` query parameter and pass it into
+  `ExecutiveDashboardOverview` as `focusMode`.
+- Added `scripts/check-heu-executive-focus-mode-readiness.mjs` and
+  `check:heu-executive-focus-mode-readiness` with `PASS_LOCAL_FOCUS_MODE`, then
+  extended the executive
+  dashboard readiness and visual-QA guards to verify `STD-17_EXECUTIVE_FOCUS_MODE`,
+  `FOCUS_QUERY_PARAM`, `NO_STATE_MUTATION`, `NO_HIDDEN_NO_GO` and the six focus
+  query links.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-17` is the
+  formal quick-focus layer after the UAT/evidence route checklist.
+- This is local query-param focus navigation only. It does not mutate workflow state,
+  hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-18 Executive Focus Next Action
+
+- Added the active-focus next-action card with
+  `data-heu-executive-focus-next-action="STD-18_EXECUTIVE_FOCUS_NEXT_ACTION"`
+  so BGH sees one owner lane, target section and stop rule for the selected
+  focus mode.
+- Added `NEXT-ALL`, `NEXT-RPT`, `NEXT-FIN`, `NEXT-EVD`, `NEXT-LAW`,
+  `NEXT-M12` and `NEXT-BLK` as read-only route hints for all focus modes.
+- Added `scripts/check-heu-executive-focus-next-action-readiness.mjs` and
+  `check:heu-executive-focus-next-action-readiness`, then extended the
+  executive dashboard readiness and visual-QA guards to verify
+  `STD-18_EXECUTIVE_FOCUS_NEXT_ACTION`, `PASS_LOCAL_NEXT_ACTION`,
+  `READ_ONLY_ROUTE_HINT`, `NO_STATE_MUTATION` and `NO_HIDDEN_NO_GO`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-18` is the
+  formal active-focus next-action layer after query-param focus mode.
+- This is local read-only route guidance only. It does not mutate workflow state,
+  hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-19 Executive Global Focus Shortcuts
+
+- Added executive-only AppShell focus shortcuts with
+  `data-heu-executive-global-focus-shortcuts="STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS"`
+  so BGH can jump from any screen to the executive dashboard focus modes.
+- Added `Tổng quan`, `Báo cáo`, `Tài chính`, `Bằng chứng`, `Phân quyền`,
+  `Pháp chế`, `M01-M12` and `Blocker` as read-only route hints that
+  still preserve the existing P0-13 workspace quick strip.
+- Added `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs` and
+  `check:heu-executive-global-focus-shortcuts-readiness`, then extended the
+  executive dashboard readiness guard to verify
+  `STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS`,
+  `PASS_LOCAL_GLOBAL_FOCUS_SHORTCUTS`, `EXECUTIVE_ONLY`,
+  `READ_ONLY_ROUTE_HINT`, `NO_ACCESS_GRANT` and `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-19` is the
+  formal global shortcut layer after active-focus next action.
+- This is local executive shortcut navigation only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-20 Executive Focus Lane Separation
+
+- Split the AppShell quick area into a dedicated executive focus lane and the
+  existing P0-13 workspace quick strip.
+- Added
+  `data-heu-executive-focus-lane-separation="STD-20_EXECUTIVE_FOCUS_LANE_SEPARATION"`
+  so BGH focus shortcuts remain visually separate from workspace actions such
+  as Lead, Follow-up, documents, pipeline, import and segment hub.
+- Kept `STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS` on the executive focus lane
+  while preserving `P0-13_WORKSPACE_QUICK_LINKS` on the workspace strip.
+- Added `scripts/check-heu-executive-focus-lane-separation-readiness.mjs` and
+  `check:heu-executive-focus-lane-separation-readiness`, then extended the
+  executive dashboard readiness and global-focus guards to verify
+  `PASS_LOCAL_FOCUS_LANE_SEPARATION`, `EXECUTIVE_ONLY`,
+  `SEPARATE_FROM_WORKSPACE`, `NO_ACCESS_GRANT` and
+  `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-20` is the
+  formal lane-separation layer after global focus shortcuts.
+- This is local executive navigation separation only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-21 AppShell Quick Lane Labels
+
+- Added compact AppShell lane labels with
+  `data-heu-quick-lane-labels="STD-21_QUICK_LANE_LABELS"` on the executive
+  focus lane and
+  `data-heu-workspace-quick-lane-label="STD-21_WORKSPACE_QUICK_LANE_LABEL"` on
+  the P0-13 workspace quick strip.
+- The labels stay short: `BGH focus` with `Read-only`, and `Workspace` with
+  `P0-13`, so users can scan the two shortcut rows without long helper copy.
+- Added `scripts/check-heu-appshell-quick-lane-labels-readiness.mjs` and
+  `check:heu-appshell-quick-lane-labels-readiness`, then extended the
+  executive dashboard readiness guard to verify `PASS_LOCAL_QUICK_LANE_LABELS`,
+  `COMPACT_LABELS`, `NO_LONG_COPY`, `NO_ACCESS_GRANT` and
+  `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-21` is the
+  formal compact lane-label layer after lane separation.
+- This is local AppShell readability hardening only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-22 Executive Focus Scoped Navigator
+
+- Added
+  `data-heu-executive-focus-scoped-navigator="STD-22_EXECUTIVE_FOCUS_SCOPED_NAVIGATOR"`
+  to the executive section navigator.
+- The navigator now uses `visibleSectionNavItems` from
+  `getExecutiveSectionNavItemsForFocus(currentFocusMode)` so BGH sees
+  persistent Overview/Priority/Next action/Quick access plus only the active
+  focus section links.
+- Added `scripts/check-heu-executive-focus-scoped-navigator-readiness.mjs` and
+  `check:heu-executive-focus-scoped-navigator-readiness`, then extended the
+  executive dashboard readiness and visual-QA source guards to verify
+  `PASS_LOCAL_FOCUS_SCOPED_NAVIGATOR`, `VISIBLE_SECTION_LINKS_ONLY` and
+  `NO_HIDDEN_TARGET_LINK`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-22` is the
+  formal focus-scoped navigator layer after compact lane labels.
+- This is local navigation-scope hardening only. It does not mutate workflow
+  state, hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-23 Executive Role Scope Focus
+
+- Added
+  `data-heu-executive-role-scope-decision="STD-23_EXECUTIVE_ROLE_SCOPE_DECISION_STRIP"`
+  to the executive dashboard so BGH can inspect the current role lane,
+  executive role matrix and correct-person/correct-work stop rules.
+- Added `focus=roles`, `NEXT-ROL`, the `ROL` navigator target and the AppShell
+  `Phân quyền` shortcut with
+  `data-heu-executive-role-scope-focus-shortcut="STD-23_EXECUTIVE_ROLE_SCOPE_FOCUS_SHORTCUT"`.
+- Added `EXEC-ROLE-01` through `EXEC-ROLE-04` for current role normalization,
+  executive read-only dashboard scope, professional lane separation and
+  negative access proof pending.
+- Added `scripts/check-heu-executive-role-scope-focus-readiness.mjs` and
+  `check:heu-executive-role-scope-focus-readiness`, then extended executive
+  dashboard readiness, focus-mode, global-focus, focus-scoped navigator and
+  visual-QA source guards with `PASS_LOCAL_EXECUTIVE_ROLE_SCOPE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-23` is the
+  formal role/scope focus layer after focus-scoped navigation.
+- This is local executive role/scope visibility only. It does not grant access,
+  expand permissions, create accounts, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Dependency Lock
+
+- Added `ACCT-00-NEGATIVE-ACCOUNT-DEPENDENCY-LOCK` to
+  `check:heu-negative-control-account-queue` so negative-account provisioning
+  is gated by post-repair verification, zero scope findings and owner evidence
+  routing.
+- The lock emits
+  `negative_account_dependency_lock=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY`,
+  `required_inputs=scope_post_repair_verification_closed,scope_baseline_closed,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_dependency_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,workspace_preference_inside_scope_confirmed,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded,post_repair_snapshot_recorded`,
+  `blocked_if=scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0`
+  and `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_PROVISIONING`.
+- Updated the ACCT-00 negative queue, owner-action queue, open-blocker queue
+  and module breakdown checks to require the dependency lock before owner-side
+  provisioning can be treated as eligible.
+- This is PASS_LOCAL control hardening only. It does not create accounts,
+  grant scope, change visibility, accept evidence, infer UAT pass, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Execution Dependency Input
+
+- Updated `ACCT-00-NEGATIVE-ACCOUNT-EXECUTION-PACKET` so execution now requires
+  `negative_account_dependency_lock_closed` instead of relying directly on
+  `scope_repair_execution_closed`.
+- The execution packet now emits and audits
+  `required_inputs=negative_account_dependency_lock_closed,provisioning_decision_closed,target_account_label_recorded,secure_admin_channel_recorded`
+  plus
+  `blocked_if=negative_account_dependency_lock_closed=no,scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0`.
+- Propagated the same dependency input through the ACCT-00 negative queue,
+  owner-action queue, open-blocker queue and accounting module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not create accounts,
+  link Auth, grant scope, accept evidence, infer UAT pass, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Browser Evidence Dependency Lock
+
+- Added `ACCT-00-NEGATIVE-BROWSER-EVIDENCE-DEPENDENCY-LOCK` to
+  `check:heu-negative-control-account-queue` so browser denial evidence cannot
+  start while `negative_account_ready=no` or `ttgdtx_negative_candidates=0`.
+- The lock emits
+  `negative_browser_evidence_dependency_lock=ACCT-00_NEGATIVE_BROWSER_EVIDENCE_DEPENDENCY`,
+  `required_inputs=negative_account_post_execution_verification_closed,negative_account_ready,controlled_evidence_id_recorded,reviewer_recorded,owner_lane_confirmed`,
+  `required_dependency_record=ttgdtx_negative_candidates>=1,negative_account_label_recorded,auth_profile_link_verified,non_target_business_scope_verified,target_segment_exclusion_verified,lead_visibility_non_all_verified,settings_permission_denial_ready,controlled_evidence_id_recorded`,
+  `blocked_if=negative_account_ready=no,ttgdtx_negative_candidates=0,scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0`
+  and `next_allowed_step=ACCT-00_NEGATIVE_BROWSER_DENIAL`.
+- Propagated the same dependency lock through the ACCT-00 negative queue,
+  owner-action queue, open-blocker queue and accounting module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not run browser UAT,
+  accept evidence, infer UAT pass, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Repair Decision Dependency Lock
+
+- Added `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK` to
+  `check:heu-user-scope-baseline-repair-queue` so owner-side scope repair
+  execution cannot be treated as eligible from hash labels or PASS_LOCAL queue
+  output alone.
+- The lock emits
+  `scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`,
+  `required_inputs=scope_baseline_decision_checklist_closed,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded`,
+  `required_dependency_record=approved_visibility_choice_recorded,approved_business_scope_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_decision_checklist_closed=no,owner_lane_confirmed=no,lead_visibility_choice_recorded=no,business_scope_choice_recorded=no,secure_admin_channel_recorded=no`
+  and `next_allowed_step=ACCT-00_SCOPE_REPAIR_EXECUTION`.
+- Propagated the same dependency lock through the scope repair queue,
+  negative-control queue, owner-action queue, open-blocker queue and accounting
+  module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not change visibility,
+  grant scope, accept evidence, infer UAT pass, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Repair Owner Decision Matrix
+
+- Added `ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX` to
+  `check:heu-user-scope-baseline-repair-queue` so the current safe hash labels
+  for `missing_visibility=2` and `missing_business_scope=2` must be mapped to
+  owner-side decisions before the baseline owner checklist can be treated as
+  ready.
+- The matrix emits
+  `scope_repair_owner_decision_matrix=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX`,
+  `profile_count=2`, `decision_count=4`,
+  `required_owner_record=owner_label_mapped,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id`,
+  `blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing`
+  and `next_allowed_step=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`.
+- Propagated the same owner-decision matrix through the scope repair queue,
+  negative-control queue, owner-action queue, open-blocker queue and accounting
+  module breakdown guard.
+- This is PASS_LOCAL owner-decision routing only. It does not change
+  visibility, grant scope, accept evidence, infer UAT pass, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-24 Executive Report Source Map Triage
+
+- Added
+  `data-heu-executive-report-source-map-triage="STD-24_EXECUTIVE_REPORT_SOURCE_MAP_TRIAGE"`
+  to the executive dashboard report focus.
+- Added `RPT-SRC-01` through `RPT-SRC-05` so BGH can check report-view
+  contract, `DQ-DM-05`, owner signoff route, controlled evidence reference and
+  reliance decision before trusting dashboard numbers.
+- Added `scripts/check-heu-executive-report-source-map-triage-readiness.mjs`
+  and `check:heu-executive-report-source-map-triage-readiness`, then extended
+  executive dashboard readiness, reports/dashboard scope and visual-QA guards
+  with `PASS_LOCAL_REPORT_SOURCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-24` is the
+  formal report/source-map triage layer after executive role/scope focus.
+- This is local report/source-map visibility only. It does not approve
+  report-view reliance, dashboard reliance, finance action, statutory
+  accounting, UAT, evidence acceptance, owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Owner Approval Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` so the scope
+  form renders
+  `data-heu-scope-owner-approval-ack="P0-17_SCOPE_OWNER_APPROVAL_ACK"` and
+  requires `scope_owner_approved=yes` before a lead-visibility,
+  admission-segment or partner-scope save can submit.
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction` checks
+  `scope_owner_approved` and redirects with `scope_owner_approval_required`
+  before any `user_admission_segment_scopes`, `user_partner_scopes` or
+  `user_lead_visibility_scopes` write when the owner-approved secure channel
+  confirmation is missing.
+- Updated `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the save
+  guard is tied to the current `DAO_TAO_LEAD` and `TCHC_LEAD` repair queue.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign positions,
+  set passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Controlled Evidence ID Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` so the scope
+  form renders
+  `data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"`
+  and requires `scope_controlled_evidence_id` before a lead-visibility,
+  admission-segment or partner-scope save can submit.
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction`
+  validates the safe evidence token before any `user_admission_segment_scopes`,
+  `user_partner_scopes` or `user_lead_visibility_scopes` write, returning
+  `scope_controlled_evidence_id_required` or
+  `scope_controlled_evidence_id_invalid` when the value is missing or unsafe.
+- The accepted token is recorded in the scope note as
+  `controlled_evidence_id=<safe token>` so the owner-side
+  `controlled_evidence_id_recorded` requirement is tied to the actual Settings
+  save path.
+- Added `lead_visibility_note_with_controlled_evidence=true` so
+  `user_lead_visibility_scopes` stores the same redacted
+  `controlled_evidence_id=<safe token>` note as segment/partner scope rows.
+- Updated `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the evidence
+  ID guard is tied to the current `DAO_TAO_LEAD` and `TCHC_LEAD` repair queue.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign positions,
+  set passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Position Assignment Owner Execution Save Guard
+
+- Updated `components/settings/position-assignment-matrix.tsx` so the position
+  assignment form renders
+  `data-heu-position-owner-execution-ack="P0-17_POSITION_OWNER_EXECUTION_ACK"`
+  and requires `position_owner_execution_ack=yes` before the operator can submit
+  the `assignHeuPositionByEmailAction` path.
+- Added
+  `data-heu-position-controlled-evidence-id="P0-17_POSITION_ASSIGNMENT_CONTROLLED_EVIDENCE_ID"`
+  and required `position_assignment_controlled_evidence_id` to the same form.
+- Updated `app/settings/actions.ts` so `assignHeuPositionByEmailAction` calls
+  `requirePositionOwnerExecutionGate` before `assign_heu_position_by_email` and
+  returns `position_owner_execution_ack_required`,
+  `position_controlled_evidence_id_required` or
+  `position_controlled_evidence_id_invalid` when the owner execution packet or
+  evidence reference is missing.
+- The accepted token is appended to `target_note` as
+  `controlled_evidence_id=<safe token>` with
+  `owner-approved position assignment channel confirmed`, tying
+  `settings_rpc_assignment_recorded` and `controlled_evidence_id_recorded` to
+  the actual Settings save path.
+- Updated `docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`, plus the
+  position-owner checker and `audit:heu-user-account-security`, so the guard is
+  required locally while `unassigned_required_positions=11` remains an external
+  owner-mapping blocker.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users by itself, change scope, set passwords, send reset/invite links, execute
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+- Boundary tokens: assign real users by itself; execute UAT; approve finance
+  reliance; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Profile Update Owner Evidence Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` and
+  `components/settings/user-settings-overview.tsx` so both profile update forms
+  render `data-heu-profile-update-owner-ack="P0-17_PROFILE_UPDATE_OWNER_ACK"`
+  and require `profile_update_owner_ack=yes` before the operator can submit
+  role, department, manager or status changes.
+- Added
+  `data-heu-profile-update-controlled-evidence-id="P0-17_PROFILE_UPDATE_CONTROLLED_EVIDENCE_ID"`
+  and required `profile_update_controlled_evidence_id` to both forms.
+- Updated `app/settings/actions.ts` so `updateUserProfileAction` calls
+  `requireProfileUpdateOwnerGate` after `assertProfileUpdateScopeBaseline` and
+  before the `users_profile` update, returning
+  `profile_update_owner_ack_required`,
+  `profile_update_controlled_evidence_id_required` or
+  `profile_update_controlled_evidence_id_invalid` when the owner packet or safe
+  evidence token is missing.
+- The accepted token is a redacted controlled evidence reference only; raw
+  evidence stays outside Git/Codex/chat and outside the `users_profile` row.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security`, so both UI paths and the server ordering
+  remain required locally.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  set passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: assign real users; assign positions; execute UAT; approve
+  finance reliance; approve owner GO/NO-GO; mark production GO.
+- Boundary token: approve finance reliance.
+- Boundary phrase: does not create accounts, link Auth, assign real users,
+  assign positions, change lead visibility, add segment/partner scope, set
+  passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Post-Repair Rerun Proof UI Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` with
+  `data-heu-scope-post-repair-rerun-proof="ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF"`
+  in the same scope form that already requires
+  `scope_owner_approved=yes` and `scope_controlled_evidence_id`.
+- Added the required rerun packet:
+  `required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun`.
+- Added the required result packet:
+  `required_result_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,controlled_evidence_id_recorded`.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so post-repair proof remains visible before
+  cutover.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility by itself, add
+  segment/partner scope by itself, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO
+  or mark production GO.
+- Boundary tokens: change lead visibility by itself; add segment/partner scope
+  by itself; execute UAT; accept evidence; approve owner GO/NO-GO; mark
+  production GO.
+- Boundary token: add segment/partner scope by itself.
+- Boundary phrase: does not create accounts, link Auth, assign real users,
+  assign positions, change lead visibility by itself, add segment/partner scope
+  by itself, set passwords, send reset/invite links, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - Negative Browser Route Matrix UI Guard
+
+- Updated `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-negative-browser-route-matrix="ACCT-00_NEGATIVE_BROWSER_ROUTES"` so
+  the user-permission cutover panel shows the negative-control browser routes.
+- Added the in-app route matrix tokens:
+  `negative_route_matrix=ACCT-00_NEGATIVE_BROWSER_ROUTES`,
+  `target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`, `route_count=5`,
+  `required_routes=lead,finance,evidence,audit,settings` and
+  `expected_result=BLOCKED_OR_EMPTY_SCOPED_STATE`.
+- Added the required closure record:
+  `required_closure=lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded`.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so the route matrix remains visible before
+  system-wide permission expansion.
+- PASS_LOCAL boundary: this does not run browser UAT, accept evidence, create
+  accounts, link Auth, assign real users, assign positions, change lead
+  visibility, add segment/partner scope, set passwords, send reset/invite
+  links, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+- Boundary tokens: run browser UAT; accept evidence; create accounts; link
+  Auth; approve finance reliance; approve owner GO/NO-GO; mark production GO.
+- Boundary tokens: change lead visibility; add segment/partner scope; set
+  passwords; send reset/invite links.
+
+## 2026-07-03 - Credential Handoff Owner Evidence Save Guard
+
+- Updated `components/settings/position-assignment-matrix.tsx` so both
+  credential forms render
+  `data-heu-credential-owner-handoff-ack="P0-17_CREDENTIAL_OWNER_HANDOFF_ACK"`
+  and require `credential_owner_handoff_ack=yes`.
+- Added
+  `data-heu-credential-controlled-evidence-id="P0-17_CREDENTIAL_CONTROLLED_EVIDENCE_ID"`
+  and required `credential_controlled_evidence_id` to both credential forms.
+- Updated `app/settings/actions.ts` so `setUserTemporaryPasswordAction` and
+  `sendUserPasswordResetEmailAction` call `requireCredentialOwnerHandoffGate`
+  after `assertCredentialScopeBaseline` and before `updateUserById` or
+  `resetPasswordForEmail`.
+- The server returns `credential_owner_handoff_ack_required`,
+  `credential_controlled_evidence_id_required` or
+  `credential_controlled_evidence_id_invalid` when the owner handoff packet or
+  safe evidence token is missing.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security`, so credential handoff remains
+  owner/evidence-gated in PASS_LOCAL.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  choose passwords, send reset/invite links by itself, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+- Boundary tokens: choose passwords; send reset/invite links by itself; execute
+  UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+- Boundary token: assign real users.
+
+## 2026-07-03 - STD-25 Executive Legal SOP Triage
+
+- Added
+  `data-heu-executive-legal-sop-triage="STD-25_EXECUTIVE_LEGAL_SOP_TRIAGE"`
+  to the executive dashboard Legal/SOP focus before the authority checklist.
+- Added `LEGAL-TRIAGE-01` through `LEGAL-TRIAGE-05` so BGH can quickly check
+  legal basis, SOP version, maker/checker/approver route, controlled evidence
+  and external signer route before relying on any workflow.
+- Added `scripts/check-heu-executive-legal-sop-triage-readiness.mjs` and
+  `check:heu-executive-legal-sop-triage-readiness`, then extended executive
+  dashboard readiness, Legal/SOP authority and visual-QA guards with
+  `PASS_LOCAL_LEGAL_SOP_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-25` is the
+  formal Legal/SOP triage layer after report/source-map triage.
+- This is local Legal/SOP visibility only. It does not provide legal advice,
+  issue official SOP, approve workflow state, execute finance, accept UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-26 Executive Finance Reliance Triage
+
+- Added
+  `data-heu-executive-finance-reliance-triage="STD-26_EXECUTIVE_FINANCE_RELIANCE_TRIAGE"`
+  to the executive dashboard Finance focus before the source-contract table.
+- Added `FIN-REL-01` through `FIN-REL-05` so BGH/KHTC can quickly check signed
+  P2-18/P5-03 route evidence, Finance Day-1 ledger, P6-04 role/scope proof,
+  owner reliance decision and the forbidden-action lock before trusting finance
+  numbers.
+- Added `scripts/check-heu-executive-finance-reliance-triage-readiness.mjs`
+  and `check:heu-executive-finance-reliance-triage-readiness`, then extended
+  executive dashboard readiness, finance/payment scope and visual-QA guards
+  with `PASS_LOCAL_FINANCE_RELIANCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-26` is the
+  formal Finance reliance triage layer after Legal/SOP triage.
+- This is local Finance reliance visibility only. It does not post vouchers,
+  execute payment, issue bank instructions, approve finance reliance, accept
+  UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-27 Executive UAT Evidence Triage
+
+- Added
+  `data-heu-executive-uat-evidence-closure-triage="STD-27_EXECUTIVE_UAT_EVIDENCE_CLOSURE_TRIAGE"`
+  to the executive dashboard UAT/evidence focus before the signed-route
+  checklist.
+- Added `UAT-CLOSE-01` through `UAT-CLOSE-05` so BGH can quickly check
+  controlled evidence location, signed UAT route state, role/access closure
+  dependency, finance/legal reliance dependency and final owner decision pack
+  before closing blockers.
+- Added `scripts/check-heu-executive-uat-evidence-triage-readiness.mjs` and
+  `check:heu-executive-uat-evidence-triage-readiness`, then extended executive
+  dashboard readiness, UAT/evidence route and visual-QA guards with
+  `PASS_LOCAL_UAT_EVIDENCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-27` is the
+  formal UAT/evidence closure triage layer after Finance reliance triage.
+- This is local UAT/evidence visibility only. It does not collect evidence,
+  does not execute UAT, does not accept evidence, grant access, close access,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-28 Executive Production Blocker Triage
+
+- Added
+  `data-heu-executive-production-blocker-triage="STD-28_EXECUTIVE_PRODUCTION_BLOCKER_TRIAGE"`
+  to the executive dashboard blockers focus before the raw production blocker
+  list.
+- Added `BLK-CLOSE-01` through `BLK-CLOSE-05` so BGH can quickly check
+  backup/restore proof, Step90-Step110 migration order signoff, signed UAT
+  route closure, finance/legal reliance closure and the final owner GO/NO-GO
+  packet before any production discussion.
+- Added
+  `scripts/check-heu-executive-production-blocker-triage-readiness.mjs` and
+  `check:heu-executive-production-blocker-triage-readiness`, then extended
+  executive dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_PRODUCTION_BLOCKER_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-28` is the
+  formal production blocker owner triage layer after UAT/evidence closure.
+- This is local production blocker visibility only. It does not collect
+  evidence, execute UAT, accept evidence, approve migration, does not approve
+  waiver, approve finance reliance, issue legal conclusion, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-29 Executive Priority Command Strip
+
+- Added
+  `data-heu-executive-priority-command-strip="STD-29_EXECUTIVE_PRIORITY_COMMAND_STRIP"`
+  to the executive dashboard priority focus rail.
+- Converted the priority focus cards from anchor-only links into
+  `focusHref(item.focusMode)` commands so BGH can open focused read-only views
+  for finance, UAT/evidence, Legal/SOP, reports, role/scope and blockers with
+  `VISIBLE_FOCUS_ONLY` instead of scanning the full dashboard.
+- Added
+  `scripts/check-heu-executive-priority-command-strip-readiness.mjs` and
+  `check:heu-executive-priority-command-strip-readiness`, then extended
+  executive dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_PRIORITY_COMMAND_STRIP`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-29` is the
+  formal quick-access command strip after production blocker triage.
+- This is local route-hint visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-30 Executive Active Focus Header
+
+- Added
+  `data-heu-executive-active-focus-header="STD-30_EXECUTIVE_ACTIVE_FOCUS_HEADER"`
+  to the executive dashboard overview header.
+- The header now shows the current `focus` query state through
+  `ACTIVE_FOCUS_VISIBLE`, displays the selected focus label/description and
+  provides a `RETURN_TO_ALL` route hint through `focusHref("all")`.
+- Added `scripts/check-heu-executive-active-focus-header-readiness.mjs` and
+  `check:heu-executive-active-focus-header-readiness`, then extended executive
+  dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_ACTIVE_FOCUS_HEADER`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-30` is the
+  formal active-focus header after the priority command strip.
+- This is local route-hint visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-31 Executive Global Focus Compact Labels
+
+- Replaced long AppShell executive focus labels with compact labels:
+  `Tổng quan`, `Báo cáo`, `Tài chính`, `Bằng chứng`, `Phân quyền`,
+  `Pháp chế`, `M01-M12` and `Blocker`.
+- Added
+  `data-heu-executive-focus-compact-labels="STD-31_EXECUTIVE_GLOBAL_FOCUS_COMPACT_LABELS"`
+  to the executive focus strip so compact labels have a dedicated PASS_LOCAL
+  guard separate from the existing STD-19 route shortcut guard.
+- Added `scripts/check-heu-executive-global-focus-compact-labels-readiness.mjs`
+  and `check:heu-executive-global-focus-compact-labels-readiness`, then
+  extended executive dashboard readiness and global-focus shortcut guards with
+  `PASS_LOCAL_GLOBAL_FOCUS_COMPACT_LABELS`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-31` is the
+  formal compact-label layer after the active focus header.
+- This is local route-label visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Post-Repair Rerun Proof Packet
+
+- Added `ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET` to
+  `check:heu-user-scope-baseline-repair-queue` so post-repair verification
+  cannot proceed from a stale scope snapshot after owner-side scope repair.
+- The packet emits
+  `scope_post_repair_rerun_proof_packet=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF`,
+  `required_inputs=scope_repair_execution_closed,post_repair_snapshot_recorded,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun`,
+  `required_result_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,ttgdtx_negative_candidates_recomputed,finance_payment_scope_ready_recorded,role_scope_pack_passed,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_closed=no,post_repair_snapshot_recorded=no,controlled_evidence_id_recorded=no,negative_control_queue_re_run_recorded=no`
+  and `next_allowed_step=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION`.
+- Propagated the packet through the user-scope repair queue, negative-control
+  account queue, negative-control owner-action queue, open-blocker action queue
+  and accounting module breakdown checker.
+- PASS_LOCAL boundary: this does not change scope, create accounts, accept
+  evidence, execute UAT, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-00 Owner External Closure Handoff Packet
+
+- Added `ACCT-00-OWNER-EXTERNAL-CLOSURE-HANDOFF-PACKET` to
+  `check:heu-negative-control-account-queue` so ACCT-00 cannot hand off into
+  ACCT-12 from partial scope repair, missing negative account, missing browser
+  route denial or missing controlled evidence.
+- The packet emits
+  `owner_external_closure_handoff_packet=ACCT-00_OWNER_EXTERNAL_CLOSURE_HANDOFF`,
+  `required_inputs=scope_post_repair_verification_closed,negative_account_post_execution_verification_closed,negative_browser_denial_closed,negative_control_final_proof_decision_recorded,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,ttgdtx_negative_candidates>=1,negative_control_proof_decision_recorded,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,blocker_state_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=missing_visibility>0,missing_business_scope>0,ttgdtx_negative_candidates=0,negative_control_proof_ready=no,controlled_evidence_id_recorded=no`
+  and `next_allowed_step=ACCT-12_NEGATIVE_CONTROL_PROOF_DEPENDENCY`.
+- Propagated the handoff through the negative-control account queue,
+  negative-control owner-action queue, open-blocker action queue and accounting
+  module breakdown guard.
+- PASS_LOCAL boundary: this does not change scope, create accounts, run browser
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-11 Risk External Evidence Handoff Packet
+
+- Added `ACCT-11-RISK-EXTERNAL-EVIDENCE-HANDOFF-PACKET` to
+  `check:heu-accounting-risk-closure-ledger` so ACCT-12 finance reliance cannot
+  treat ACCT-11 as closed from final-risk decision routing alone.
+- The packet emits
+  `risk_external_evidence_handoff_packet=ACCT-11_RISK_EXTERNAL_EVIDENCE_HANDOFF`,
+  `risk_closure_ready=no`,
+  `required_inputs=audit_trace_closed,hard_delete_cascade_closed,backup_restore_proof_closed,migration_order_signed,rollback_redaction_proof_closed,final_risk_decision_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded`,
+  `required_owner_closure=pending_risk_external_evidence=0,pending_risk_owner=0,pending_acceptance_owner=0,audit_log_trigger_coverage_recorded,p6_06_findings_triaged,backup_id_recorded,restore_smoke_check_recorded,step90_step110_order_signed,rollback_path_recorded,redaction_path_recorded,protected_evidence_retained,final_risk_decision_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded`,
+  `blocked_if=pending_risk_external_evidence>0,pending_risk_owner>0,pending_acceptance_owner>0,final_risk_decision_recorded=no,owner_quorum_recorded=no,controlled_evidence_ids_recorded=no`
+  and `next_allowed_step=ACCT-12_FINANCE_RELIANCE_DEPENDENCY`.
+- Propagated the handoff through the risk closure ledger, open-blocker action
+  queue and accounting module breakdown guard.
+- PASS_LOCAL boundary: this does not inspect raw backup/database exports,
+  accept evidence, approve migration, approve finance reliance, approve UAT,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope External Closure Handoff Packet
+
+- Added `ACCT-00-SCOPE-EXTERNAL-CLOSURE-HANDOFF-PACKET` to
+  `check:heu-user-scope-baseline-repair-queue` so negative-account dependency
+  cannot rely on post-repair verification without final scope owner closure.
+- The packet emits
+  `scope_external_closure_handoff_packet=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`,
+  `scope_baseline_closed=no`,
+  `required_inputs=scope_baseline_decision_checklist_closed,scope_repair_execution_closed,scope_post_repair_rerun_proof_closed,scope_post_repair_verification_closed,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,lead_visibility_choice_recorded,business_scope_choice_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_inside_scope_confirmed,post_repair_snapshot_recorded,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0,controlled_evidence_id_recorded=no`
+  and `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY`.
+- Propagated the handoff through the user-scope repair queue,
+  negative-control account queue, negative-control owner-action queue,
+  open-blocker action queue and accounting module breakdown guard.
+- PASS_LOCAL boundary: this does not change scope, create accounts, accept
+  evidence, execute UAT, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-12 Negative-Control Scope Handoff Dependency
+
+- Tightened `ACCT-12-NEGATIVE-CONTROL-PROOF-DEPENDENCY-LOCK` so signed route
+  evidence intake cannot rely on ACCT-00 negative-control proof unless
+  `ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed` and `scope_baseline_closed`
+  are recorded first.
+- The dependency now requires
+  `required_inputs=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed,negative_control_final_proof_decision_packet_closed,negative_control_proof_decision_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded,blocker_state_recorded`,
+  `required_dependency_record=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed,ACCT-00_NEGATIVE_CONTROL_FINAL_PROOF_DECISION_closed,scope_baseline_closed,negative_control_proof_ready_verified,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,linked_signed_route_evidence_packet_recorded`
+  and
+  `blocked_if=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed=no,scope_baseline_closed=no,negative_control_proof_ready=no,ttgdtx_negative_candidates=0,missing_visibility>0,missing_business_scope>0`.
+- Propagated the dependency through the ACCT-12 owner closure ledger,
+  accounting module breakdown and open-blocker action queue guards.
+- PASS_LOCAL boundary: this does not close scope baseline, create accounts,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Role Permission Owner Evidence Save Guard
+
+- Added an owner/evidence save gate to `updateRolePermissionsAction` so Settings
+  role permission changes must pass `requireRolePermissionOwnerGate` before any
+  `role_permissions` revoke/update/upsert path runs.
+- The Settings form now requires
+  `data-heu-role-permission-owner-ack="P0-17_ROLE_PERMISSION_OWNER_ACK"`,
+  `role_permission_owner_ack=yes`,
+  `role_permission_owner_packet=P0-17_ROLE_PERMISSION_OWNER_PACKET`,
+  `role_permission_change_recorded`,
+  `data-heu-role-permission-controlled-evidence-id="P0-17_ROLE_PERMISSION_CONTROLLED_EVIDENCE_ID"`,
+  `role_permission_controlled_evidence_id` and
+  `controlled_evidence_id_recorded`.
+- The server rejects incomplete packets with
+  `role_permission_owner_ack_required`,
+  `role_permission_controlled_evidence_id_required` and
+  `role_permission_controlled_evidence_id_invalid`, then writes
+  `owner-approved role permission channel confirmed` and
+  `controlled_evidence_id=<safe token>` only after the safe evidence token is
+  present.
+- Updated `audit:heu-user-account-security` to lock the Role Permission Owner
+  Evidence Save Guard in code, UI, breakdown and implementation-log evidence.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  choose passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: assign real users; change lead visibility; send reset/invite links.
+
+## 2026-07-04 - External Evidence Reference Lane UI Guard
+
+- Added an external evidence reference lane matrix to
+  `components/settings/user-operation-cutover-panel.tsx` so the Settings
+  cutover panel renders
+  `data-heu-external-evidence-reference-lanes="P0-17_EXTERNAL_EVIDENCE_REFERENCE_LANES"`.
+- The matrix records
+  `external_evidence_reference_lane_matrix=P0-17_EXTERNAL_EVIDENCE_REFERENCE_LANES`,
+  `reference_lane_count=4`, `pending_lanes=4`, `ready_lanes=0`,
+  `redacted_external_reference_recorded`, `p6_04_signed_uat_reference_recorded`,
+  `access_closure_reference_recorded`,
+  `negative_control_browser_proof_reference_recorded` and
+  `owner_cutover_decision_recorded`.
+- The four required lanes remain
+  `P6_04_SIGNED_UAT_REFERENCE:READY_EXTERNAL_REFERENCE`,
+  `ACCESS_CLOSURE_REFERENCE:READY_EXTERNAL_REFERENCE`,
+  `NEGATIVE_CONTROL_BROWSER_PROOF_REFERENCE:READY_EXTERNAL_REFERENCE` and
+  `OWNER_CUTOVER_DECISION_REFERENCE:READY_OWNER_SIGNOFF`.
+- Updated `audit:heu-user-account-security` so the external evidence lane
+  matrix stays attached to `USER-CUTOVER-EXTERNAL-EVIDENCE` and
+  `P0-17_EXTERNAL_EVIDENCE_CLOSURE_PACKET`.
+- PASS_LOCAL boundary: this does not upload evidence, accept evidence, execute
+  UAT, approve finance reliance, approve owner GO/NO-GO, mark production GO,
+  create accounts, link Auth, assign real users, assign positions, change lead
+  visibility, add segment/partner scope, choose passwords or send reset/invite
+  links.
+- Boundary tokens: execute UAT; change lead visibility; send reset/invite links.
+
+## 2026-07-04 - Activation Owner Seat Closure UI Guard
+
+- Added the activation owner-seat closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-owner-seat-closure="OWNER-MAP-01_POSITION_ASSIGNMENT_CLOSURE"`.
+- The matrix records
+  `activation_owner_seat_closure_packet=OWNER-MAP-01_POSITION_ASSIGNMENT_CLOSURE`,
+  `owner_seat_closure_status=NO_GO`, `required_positions=15`,
+  `unassigned_required_positions=11`, `matching_active_candidate_profiles=0`,
+  `ACTIVATION-WORKSHEET-OWNER-SEATS`,
+  `ACTIVATION-WORKSHEET-OWNER-SEAT-CLOSURE-PACKET` and
+  `ACTIVATION-WORKSHEET-POSITION-OWNER-DECISION-MATRIX`.
+- The matrix also locks
+  `required_closure=position_owner_decision_matrix_recorded,owner_person_mapping_recorded,auth_profile_link_recorded,position_assignment_recorded,post_assignment_snapshot_recorded,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=unassigned_required_positions=0,missing_role_positions=0,missing_department_positions=0`.
+- Updated `audit:heu-user-account-security` so the activation owner-seat
+  closure matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not assign real users, create accounts, link
+  Auth, assign positions, change lead visibility, add segment/partner scope,
+  set passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: link Auth; approve finance reliance.
+
+## 2026-07-04 - STD-32 Executive Department Role Lane Map
+
+- Added `HEU_DEPARTMENT_ROLE_LANE_MAP` and
+  `HEU_DEPARTMENT_ROLE_LANE_BOUNDARY` to `lib/heu-role-lanes.ts` so the
+  executive role/scope focus can show correct-person/correct-work ownership by
+  department without touching live permissions.
+- Added
+  `data-heu-executive-department-role-lane-map="STD-32_EXECUTIVE_DEPARTMENT_ROLE_LANE_MAP"`
+  to `components/dashboard/executive-dashboard-overview.tsx`, covering
+  `DEPT-TUYEN-SINH`, `DEPT-DAO-TAO`, `DEPT-CTHSSV`, `DEPT-KHOA-GV`,
+  `DEPT-TCHC`, `DEPT-KHTC`, `DEPT-PHAP-CHE`, `DEPT-IT-DATA` and `DEPT-AUDIT`
+  with owner lane, operating scope, required evidence and stop rule.
+- Added
+  `scripts/check-heu-executive-department-role-lane-map-readiness.mjs` and
+  `check:heu-executive-department-role-lane-map-readiness`, then extended
+  executive dashboard readiness, executive role/scope focus and role-lane
+  governance guards with `PASS_LOCAL_DEPARTMENT_ROLE_LANE_MAP`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-32` is the
+  formal executive oversight layer after compact focus labels.
+- PASS_LOCAL boundary: this does not create accounts, assign roles, grant
+  access, expand permissions, replace P6-04 signed role/scope UAT, execute UAT,
+  accept evidence, approve finance action, issue legal conclusions, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-33 Executive Report Source Fast Index
+
+- Added `ExecutiveReportSourceFastIndex` and
+  `executiveReportSourceFastIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Reports focus
+  shows one compact table for report-view, owner lane, source route, DQ gate,
+  evidence route and stop rule before the longer STD-24 triage cards.
+- Added
+  `data-heu-executive-report-source-fast-index="STD-33_EXECUTIVE_REPORT_SOURCE_FAST_INDEX"`
+  with `RPT-IDX-01` through `RPT-IDX-06` for
+  `RV_TTGDTX_FINANCE_SUMMARY`, `RV_TTGDTX_CONG_NO_THUC_THU`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`,
+  `RV_AUDIT_RISK_CONTROL` and `RV_AI_ALLOWED_CONTEXT`.
+- Added
+  `scripts/check-heu-executive-report-source-fast-index-readiness.mjs` and
+  `check:heu-executive-report-source-fast-index-readiness`, then extended
+  executive dashboard readiness, report source-map triage and reports dashboard
+  scope guards with `PASS_LOCAL_REPORT_SOURCE_FAST_INDEX`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-33` is the
+  formal report/source fast-index layer after STD-24 report source-map triage.
+- PASS_LOCAL boundary: this does not open raw source, does not accept DQ
+  evidence, does not approve report-view reliance, approve dashboard reliance,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-04 - STD-39 Executive Report Dashboard Scope Contract
+
+- Added `ExecutiveReportDashboardScopeContract` and
+  `executiveReportDashboardScopeContractRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Reports focus
+  states which report view feeds which executive dashboard consumer, under
+  which scope gate and source contract, before any dashboard number can be
+  relied on.
+- Added
+  `data-heu-executive-report-dashboard-scope-contract="STD-39_EXECUTIVE_REPORT_DASHBOARD_SCOPE_CONTRACT"`
+  with `RPT-SCOPE-01` through `RPT-SCOPE-06` for
+  `RV_TTGDTX_FINANCE_SUMMARY`, `RV_TTGDTX_CONG_NO_THUC_THU`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`,
+  `RV_AUDIT_RISK_CONTROL` and `RV_AI_ALLOWED_CONTEXT`.
+- Added
+  `scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`
+  and `check:heu-executive-report-dashboard-scope-contract-readiness`, then
+  extended executive dashboard readiness, report source fast-index,
+  report source-map triage, reports dashboard scope and visual QA guards with
+  `PASS_LOCAL_REPORT_DASHBOARD_SCOPE_CONTRACT`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-39` is the
+  formal report-view-to-dashboard scope contract layer after the report/source
+  fast index and before source-map triage.
+- PASS_LOCAL boundary: this does not open raw source, accept DQ evidence,
+  approve report-view reliance, approve dashboard reliance, execute UAT, accept
+  evidence, approve finance action, issue legal conclusions, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-34 Executive Legal SOP Required Answer Index
+
+- Added `ExecutiveLegalSopRequiredAnswerIndex` and
+  `executiveLegalSopRequiredAnswerIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Legal/SOP
+  focus shows a compact required-answer index before the longer STD-25 triage
+  and STD-14 authority cards.
+- Added
+  `data-heu-executive-legal-sop-required-answer-index="STD-34_EXECUTIVE_LEGAL_SOP_REQUIRED_ANSWER_INDEX"`
+  with `LAW-IDX-01` through `LAW-IDX-06` for F01 Lead to student, F02 TTGDTX
+  tuition, F03 Payment and payout, F06 Short Course, M02 Role and sensitive
+  access, and M10 Dashboard/report reliance.
+- Added
+  `scripts/check-heu-executive-legal-sop-required-answer-index-readiness.mjs`
+  and `check:heu-executive-legal-sop-required-answer-index-readiness`, then
+  extended executive dashboard readiness, Legal/SOP triage and Legal/SOP
+  authority guards with `PASS_LOCAL_LEGAL_SOP_REQUIRED_ANSWER_INDEX`.
+- Updated
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-34` is the formal
+  required-answer index for legal basis, SOP, maker, checker, approver,
+  evidence and external signer.
+- PASS_LOCAL boundary: this does not provide legal advice, issue official SOP,
+  approve workflow state, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-35 Executive Finance Reliance Fast Index
+
+- Added `ExecutiveFinanceRelianceFastIndex` and
+  `financeRelianceFastIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Finance focus
+  shows one compact table before the longer STD-26 triage and STD-15 source
+  contract cards.
+- Added
+  `data-heu-executive-finance-reliance-fast-index="STD-35_EXECUTIVE_FINANCE_RELIANCE_FAST_INDEX"`
+  with `FIN-IDX-01` through `FIN-IDX-06` for P2-18 accounting dashboard,
+  P5-03 Finance Desk, Finance Day-1, ACCT local readiness, payment/payout and
+  role-scope negative proof.
+- Added
+  `scripts/check-heu-executive-finance-reliance-fast-index-readiness.mjs` and
+  `check:heu-executive-finance-reliance-fast-index-readiness`, then extended
+  executive dashboard readiness, finance reliance triage, finance payment
+  scope and visual QA guards with `PASS_LOCAL_FINANCE_RELIANCE_FAST_INDEX`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-35` is the
+  formal finance reliance fast-index layer for source contract, proof,
+  decision gate, forbidden action and next read-only route.
+- PASS_LOCAL boundary: this does not post vouchers, execute payment, move
+  money, issue bank instructions, approve finance reliance, accept UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-36 Executive UAT Evidence Fast Action Queue
+
+- Added `ExecutiveUatEvidenceFastAction` and `uatEvidenceFastActionRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the UAT/evidence
+  focus starts with a compact action queue before the longer STD-27 triage and
+  STD-16 route cards.
+- Added
+  `data-heu-executive-uat-evidence-fast-action="STD-36_EXECUTIVE_UAT_EVIDENCE_FAST_ACTION_QUEUE"`
+  with `UAT-FAST-01` through `UAT-FAST-06` for P0-14 controlled evidence
+  intake, P6-04 role/workspace proof, P2-18/P5-03 finance signed proof,
+  P0-19 legal/SOP confirmation, P6-03/P6-06 audit and cascade closure and
+  P0-09/P0-15 final owner packet.
+- Added
+  `scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs` and
+  `check:heu-executive-uat-evidence-fast-action-readiness`, then extended
+  executive dashboard readiness, UAT/evidence route and visual QA guards with
+  `PASS_LOCAL_UAT_EVIDENCE_FAST_ACTION_QUEUE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-36` is the
+  formal UAT/evidence fast-action layer for owner lane, first action, evidence
+  key, read-only route and stop rule before any UAT/evidence closure discussion.
+- PASS_LOCAL boundary: this does not upload evidence, collect evidence, execute
+  UAT, accept evidence, grant access, close access, expand permissions, approve
+  finance reliance, issue legal conclusions, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - STD-37 Executive Dashboard Scope Visibility Invariant
+
+- Added `ExecutiveDashboardScopeVisibility` and `dashboardScopeVisibilityRows`
+  to `components/dashboard/executive-dashboard-overview.tsx` so the
+  Role/scope focus states the rule `Quyen o dau, dashboard o day`.
+- Added
+  `data-heu-executive-dashboard-scope-visibility="STD-37_EXECUTIVE_DASHBOARD_SCOPE_VISIBILITY_INVARIANT"`
+  with `SCOPE-VIS-01` through `SCOPE-VIS-05` for executive all-segment
+  read-only visibility, non-executive visible-segment scope, KHTC finance lane,
+  PHAP_CHE/SOP lane and IT_DATA/Audit evidence lane.
+- Added `scripts/check-heu-dashboard-scope-visibility-invariant-readiness.mjs`
+  and `check:heu-dashboard-scope-visibility-invariant-readiness`, then extended
+  executive dashboard readiness, role/scope focus and visual QA guards with
+  `PASS_LOCAL_DASHBOARD_SCOPE_VISIBILITY`.
+- The checker locks the code path through `lib/workspace.ts` and `app/page.tsx`:
+  `canSeeAllSegments` is derived from executive role, non-executive fallback is
+  limited by `visibleSegmentIds`, and dashboard metrics use
+  `admissionWorkspaceSegmentIds(workspace)` plus `applyAdmissionSegmentIds`.
+- PASS_LOCAL boundary: this does not grant access, expand permissions, open a
+  cross-scope dashboard, open raw source, mutate workflow state, execute UAT,
+  accept evidence, approve finance action, issue legal conclusions, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-38 Executive Dashboard Permission Matrix
+
+- Added `ExecutiveDashboardPermissionMatrix`,
+  `executiveDashboardPermissionMatrixRows`, `getDashboardPermissionSignal` and
+  `getDashboardPermissionHref` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Role/scope
+  focus shows route visibility from the dashboard runtime permissions.
+- Added
+  `data-heu-executive-dashboard-permission-matrix="STD-38_EXECUTIVE_DASHBOARD_PERMISSION_MATRIX"`
+  with `EXEC-PERM-01` through `EXEC-PERM-07` for executive overview, Master
+  Control, Finance Desk, scope control, report source map, Legal/SOP queue and
+  Audit/evidence route visibility.
+- The matrix locks `runtimePermissionGate`, `canOpenMasterControl`,
+  `canOpenFinanceDesk`, `canOpenScopeControl`, `master_control.read`,
+  `finance_desk.read`, `scope.manage_department`, `users.create`,
+  `permission_matrix.read` and `permission_matrix.manage`, then shows
+  `READ_ONLY_DASHBOARD_VISIBLE`, `ROUTE_VISIBLE_BY_PERMISSION` or
+  `ROUTE_LINK_BLOCKED_PENDING_PERMISSION` as the current signal.
+- Added
+  `scripts/check-heu-executive-dashboard-permission-matrix-readiness.mjs` and
+  `check:heu-executive-dashboard-permission-matrix-readiness`, then extended
+  executive dashboard readiness, role/scope focus and visual QA guards with
+  `PASS_LOCAL_EXECUTIVE_DASHBOARD_PERMISSION_MATRIX`.
+- PASS_LOCAL boundary: this does not create accounts, grant access, assign
+  roles, expand permissions, open raw source, mutate workflow state, execute
+  UAT, accept evidence, approve finance action, issue legal conclusions,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Activation Scope Closure UI Guard
+
+- Added the activation scope-closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-scope-closure="PROFILE-SCOPE-03_SCOPE_CLOSURE"`.
+- The matrix records
+  `activation_scope_closure_packet=PROFILE-SCOPE-03_SCOPE_CLOSURE`,
+  `scope_closure_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`, `ACTIVATION-WORKSHEET-SCOPE-BASELINE`,
+  `ACTIVATION-WORKSHEET-SCOPE-CLOSURE-PACKET`, `PROFILE-SCOPE-03` and
+  `next_allowed_step=POSITION-ASSIGN-04`.
+- The matrix also locks
+  `required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,active_workspace_inside_scope_recorded,owner_lane_confirmed,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0`.
+- Updated `audit:heu-user-account-security` so the activation scope-closure
+  matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, assign real users, create
+  accounts, link Auth, assign positions, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary tokens: add segment/partner scope; create accounts; approve owner GO/NO-GO.
+
+## 2026-07-04 - Activation Negative-Control Closure UI Guard
+
+- Added the activation negative-control closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-negative-control-closure="NEGATIVE-CONTROL-05_CLOSURE"`.
+- The matrix records
+  `activation_negative_control_closure_packet=NEGATIVE-CONTROL-05_CLOSURE`,
+  `negative_control_closure_status=NO_GO`,
+  `target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`,
+  `target_segment=TC9_TTGDTX_LINKED`, `ttgdtx_negative_candidates=0`,
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL`,
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL-CLOSURE-PACKET`,
+  `NEGATIVE-CONTROL-05` and `next_allowed_step=P6-UAT-06`.
+- The matrix also locks
+  `required_closure=negative_account_label_recorded,non_target_business_scope_recorded,target_segment_exclusion_recorded,settings_permission_denial_ready,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=ttgdtx_negative_candidates>=1,lead_visibility_non_all_verified,target_segment_exclusion_verified,negative_control_queue_re_run_recorded`.
+- Updated `audit:heu-user-account-security` so the activation negative-control
+  closure matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, change lead visibility, add segment/partner scope, grant target segment
+  access, run browser UAT, accept evidence, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary exact tokens: assign real users; grant target segment access; approve owner GO/NO-GO.
+
+## 2026-07-04 - User Cutover Scope Baseline Closure UI Guard
+
+- Added the operational cutover scope-baseline closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-user-cutover-scope-baseline-closure="CUTOVER-SCOPE-BASELINE-03_SCOPE_BASELINE_CLOSURE"`.
+- The matrix records
+  `cutover_scope_baseline_closure_packet=CUTOVER-SCOPE-BASELINE-03_SCOPE_BASELINE_CLOSURE`,
+  `cutover_scope_baseline_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`, `USER-CUTOVER-SCOPE-BASELINE`,
+  `CUTOVER-SCOPE-BASELINE-03`, `CUTOVER-NEGATIVE-04` and
+  `next_allowed_step=CUTOVER-NEGATIVE-04`.
+- The matrix also locks
+  `required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,workspace_preference_inside_scope_confirmed,scope_repair_queue_rerun_recorded,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,scope_baseline_closed=true`.
+- Updated `audit:heu-user-account-security` so the operational cutover
+  scope-baseline closure matrix cannot disappear while cutover remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: add segment/partner scope; set workspace preference;
+  approve owner GO/NO-GO.
+
+## 2026-07-04 - Scope Baseline Owner Decision Checklist UI Guard
+
+- Added the ACCT-00 scope baseline owner-decision checklist matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-scope-baseline-owner-decision-checklist="ACCT-00_SCOPE_BASELINE_OWNER_DECISION"`.
+- The matrix records
+  `scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`,
+  `scope_baseline_owner_decision_status=NO_GO`,
+  `owner_action_packet=profile_count=2`, `decision_count=4`,
+  `role_codes=DAO_TAO_LEAD,TCHC_LEAD`, `USER-SCOPE-REPAIR-01`,
+  `USER-SCOPE-REPAIR-02`, `ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST`,
+  `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK` and
+  `next_allowed_step=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`.
+- The matrix also locks
+  `required_owner_record=owner_label_mapped,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id`
+  and
+  `blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing`.
+- Updated `audit:heu-user-account-security` so the owner-decision checklist
+  matrix cannot disappear while the scope baseline remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: change lead visibility; add segment/partner scope;
+  set workspace preference; create accounts; link Auth; assign real users.
+  run browser UAT; accept evidence; approve finance reliance; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.
+
+## 2026-07-04 - STD-44 Executive Effective Access Read-Only Gate
+
+- Added the executive effective-access read-only gate to
+  `components/dashboard/executive-dashboard-overview.tsx` with
+  `data-heu-executive-effective-access-readonly="STD-44_EXECUTIVE_EFFECTIVE_ACCESS_READONLY_GATE"`.
+- Added `EXEC-ACCESS-01` through `EXEC-ACCESS-06` so `HIEU_TRUONG`,
+  `PHO_HIEU_TRUONG` and `BGH` are checked against the read-only cockpit rule
+  before dashboard reliance.
+- Added
+  `scripts/check-heu-executive-effective-access-readonly-readiness.mjs` and
+  `check:heu-executive-effective-access-readonly-readiness`; the checker reads
+  active `role_permissions`, `user_scope_effective_access` and
+  `user_scope_enforcement_summary` without printing emails, names, raw user
+  IDs, secrets, bank data, vouchers or signed evidence.
+- The gate reports `PASS_LOCAL_EXECUTIVE_EFFECTIVE_ACCESS_READONLY_GUARD` for
+  the source/control packaging, and reports `LIVE_EXECUTIVE_PERMISSION_NO_GO`
+  when `BGH`, `HIEU_TRUONG` or `PHO_HIEU_TRUONG` still has active approve,
+  pay, manage, create, update, delete, check, verify, lock, issue,
+  sensitive-read or other action permissions.
+- Updated executive dashboard readiness, visual QA and the standard blueprint
+  so `STD-43` completion depends on the live `STD-44` executive read-only gate.
+- Added `database/step120_executive_readonly_permission_lock.sql` and
+  `scripts/apply-heu-executive-readonly-soft-revoke.mjs` for
+  `EXEC-ACCESS-REVOKE-01`; the apply script defaults to `MODE=DRY_RUN`, requires
+  `--confirm=EXECUTIVE_READONLY_SOFT_REVOKE_20260704`, soft-revokes by setting
+  `role_permissions.status = INACTIVE` and `heu_position_permission_matrix.status
+  = INACTIVE`, and keeps `hard_delete=false` plus `admin_role_untouched=true`.
+- Applied the controlled live soft-revoke after dry-run: `role_permission_rows=98`
+  and `position_permission_rows=12`; follow-up STD-44 live check reports
+  `EXEC-EFFECTIVE-ACCESS-BGH`, `EXEC-EFFECTIVE-ACCESS-HIEU_TRUONG`,
+  `EXEC-EFFECTIVE-ACCESS-PHO_HIEU_TRUONG` and
+  `EXEC-EFFECTIVE-ACCESS-LIVE-READONLY-GATE` as `READY`.
+- PASS_LOCAL boundary: the checker remains read-only and does not change role permissions;
+  the apply script only performs reversible soft-revoke for the
+  three executive roles and does not create accounts, assign roles, grant
+  access, expand permissions, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-42 Executive UAT Evidence Acceptance Lock
+
+- Added `STD-42_EXECUTIVE_UAT_EVIDENCE_ACCEPTANCE_LOCK` to the executive
+  dashboard evidence focus between the STD-36 fast action queue and the STD-27
+  closure triage.
+- Added `UAT-LOCK-01` through `UAT-LOCK-06` so BGH can distinguish visible
+  route status from signed acceptance for P0-14 controlled evidence intake,
+  P6-04 role/scope UAT proof, P2-18/P5-03 finance UAT, P0-19 legal/SOP
+  confirmation, P6-03/P6-06 audit/cascade closure and the P0-09/P0-15 final
+  owner packet.
+- Added the dashboard marker
+  `data-heu-executive-uat-evidence-acceptance-lock="STD-42_EXECUTIVE_UAT_EVIDENCE_ACCEPTANCE_LOCK"`
+  with `PASS_LOCAL_UAT_EVIDENCE_ACCEPTANCE_LOCK`, `ACCEPTANCE_LOCK`,
+  `REDACTION_REVIEW_REQUIRED`, `NO_RAW_EVIDENCE_MOVEMENT`,
+  `NO_UAT_ACCEPTANCE`, `NO_EVIDENCE_ACCEPTANCE`, `NO_OWNER_GO` and
+  `NO_PRODUCTION_GO` boundaries.
+- Added
+  `scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`,
+  `check:heu-executive-uat-evidence-acceptance-lock-readiness`, and wired the
+  STD-42 tokens into the executive dashboard, visual QA, UAT/evidence route,
+  fast-action and triage readiness guards.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-42` is the
+  formal acceptance-lock standard before any UAT/evidence closure discussion.
+- PASS_LOCAL boundary: this does not collect evidence, upload evidence, move
+  raw evidence, execute UAT, accept UAT, accept evidence, grant access, close
+  access, expand permissions, approve finance reliance, approve dashboard
+  reliance, issue legal conclusions, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - STD-43 Executive Operating Brain Completion Gate
+
+- Added `STD-43_EXECUTIVE_OPERATING_BRAIN_COMPLETION_GATE` to the executive
+  dashboard overview so BGH can see the whole read-only operating brain in one
+  place before drilling into focused sections.
+- Added the dashboard marker
+  `data-heu-executive-operating-brain-completion="STD-43_EXECUTIVE_OPERATING_BRAIN_COMPLETION_GATE"`.
+  The marker carries `PASS_LOCAL_EXECUTIVE_OPERATING_BRAIN_COMPLETION`.
+- Added `BRAIN-GATE-01` through `BRAIN-GATE-06` for executive landing,
+  role/scope dashboard visibility, report/source reliance map, Legal/SOP
+  authority backbone, finance read-only reliance lock and UAT/evidence
+  acceptance lock, plus `BRAIN-GATE-07` for the live STD-44 executive
+  effective-access read-only gate.
+- The gate carries `Quyen o dau thi chi duoc xem dashboard o day` and links the
+  objective to STD-01, STD-37, STD-38, STD-39, STD-40, STD-41, STD-42 and
+  STD-44 with
+  `SCOPE_BOUND_DASHBOARD`, `ROUTE_VISIBILITY_MATRIX`,
+  `REPORT_VIEW_TO_DASHBOARD_SCOPE`, `EVIDENCE_AUTHORITY_QUEUE`,
+  `RELIANCE_LOCK`, `ACCEPTANCE_LOCK`,
+  `EXECUTIVE_EFFECTIVE_ACCESS_READONLY` and `LIVE_EXECUTIVE_PERMISSION_NO_GO`.
+- Added
+  `scripts/check-heu-executive-operating-brain-completion-readiness.mjs`,
+  `check:heu-executive-operating-brain-completion-readiness`, and wired the
+  STD-43 marker into the executive dashboard readiness and visual QA guards.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-43` is the
+  formal completion gate for the Dashboard Hieu truong/BGH operating brain.
+- PASS_LOCAL boundary: this does not create accounts, assign roles, grant
+  access, expand permissions, mutate workflow state, approve dashboard
+  reliance, approve report-view reliance, approve finance reliance, issue legal
+  conclusions, execute UAT, accept UAT, accept evidence, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-41 Executive Finance Readonly Reliance Lock
+
+- Added `ExecutiveFinanceReadonlyRelianceLock` and
+  `financeReadonlyRelianceLockRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Finance focus
+  separates visible read-only use from reliance or execution.
+- Added
+  `data-heu-executive-finance-readonly-reliance-lock="STD-41_EXECUTIVE_FINANCE_READONLY_RELIANCE_LOCK"`
+  with `FIN-LOCK-01` through `FIN-LOCK-06` for P2-18 accounting dashboard,
+  P5-03 Finance Desk, collection/reconciliation, payment request/payout,
+  ACCT local + Finance Day-1 and role/scope-bound finance visibility.
+- Added
+  `scripts/check-heu-executive-finance-readonly-reliance-lock-readiness.mjs`
+  and `check:heu-executive-finance-readonly-reliance-lock-readiness`, then
+  extended executive dashboard readiness, finance fast-index, finance triage,
+  finance/payment scope and visual-QA guards with
+  `PASS_LOCAL_FINANCE_READONLY_RELIANCE_LOCK`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-41` is the
+  formal read-only reliance lock for visible finance blocker views versus
+  forbidden finance actions.
+- PASS_LOCAL boundary: this does not clear debt, issue invoices, post vouchers,
+  execute payment, move money, issue bank instructions, approve finance
+  reliance, accept UAT, accept evidence, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - M06 CTHSSV Reports Status Panel
+
+- Scope: Added the `/reports` read-only CTHSSV status panel for
+  `RV_CTHSSV_HANDOVER_STATUS` so reporting users can see the local blocker lane
+  and route back to `/cthssv` without opening raw handover/evidence data.
+- Updated `components/reports/reports-overview.tsx` with
+  `data-heu-cthssv-report-status-panel="M06_CTHSSV_REPORT_STATUS_PANEL"`,
+  `data-heu-cthssv-report-status-panel-overflow-guard="M06_CTHSSV_REPORT_STATUS_PANEL_NO_OVERFLOW"`
+  and `data-heu-cthssv-report-status-report-view="RV_CTHSSV_HANDOVER_STATUS"`.
+- Updated `scripts/check-heu-reports-dashboard-scope-readiness.mjs`,
+  `scripts/audit-heu-cthssv-module-readiness.mjs` and
+  `scripts/check-heu-cthssv-local-completion.mjs` so the panel remains tied to
+  `CTHSSV_REPORTING_HANDOFF_READY`, `DQ-RV-10 / RV-EVID-08`,
+  `NO_REPORT_VIEW_RELIANCE`, `NO_DASHBOARD_RELIANCE` and `NO_OWNER_GO`.
+- Updated the CTHSSV reporting handoff index, Report View Register, Source Map,
+  current-state inventory, backlog, readiness gap matrix and production
+  checklist with the P3-02J local-only report status row.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV Owner Evidence Handoff Proof
+
+- Scope: Added the PASS_LOCAL owner evidence handoff proof packet so M06
+  owners have a controlled list of signer lanes, evidence refs, rerun commands
+  and blocker states to complete outside Git/Codex/chat after local CTHSSV
+  checks pass.
+- Added `docs/HEU_CTHSSV_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md` with
+  `CTHSSV-HANDOFF-PROOF-01` through `CTHSSV-HANDOFF-PROOF-08`,
+  `CTHSSV_OWNER_EVIDENCE_HANDOFF_READY / NO_GO / BLOCKED`,
+  `proof_item`, `owner_lane`, `required_controlled_evidence_ref`,
+  `linked_local_gate`, `rerun_command`, `decision_value`, `blocker_state` and
+  `forbidden_interpretation`.
+- Added the `/cthssv` read-only panel
+  `data-heu-cthssv-owner-evidence-handoff-proof="M06_CTHSSV"` so the cockpit
+  exposes the proof packet without storing raw evidence.
+- Updated `scripts/audit-heu-cthssv-module-readiness.mjs` and
+  `scripts/check-heu-cthssv-local-completion.mjs`, plus the CTHSSV module
+  breakdown, external owner action queue, current-state inventory, backlog,
+  readiness gap matrix and production checklist with the P3-02K local-only
+  proof row.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV External Execution Proof Alignment
+
+- Scope: Aligned the external execution handoff packet with the owner evidence
+  handoff proof packet so CTHSSV-EXEC-04 and CTHSSV-EXEC-08 cannot be treated
+  as ready without CTHSSV-HANDOFF-PROOF-01 through CTHSSV-HANDOFF-PROOF-08.
+- Updated `docs/HEU_CTHSSV_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260704.md` with
+  `PASS_LOCAL_EXTERNAL_EXECUTION_PROOF_ALIGNMENT`,
+  `linked_owner_evidence_proof`, `owner_evidence_handoff_result`,
+  `docs/HEU_CTHSSV_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md` and
+  `npm.cmd run check:heu-reports-dashboard-scope-readiness` in the external
+  rerun chain.
+- Updated the `/cthssv` external execution panel copy so
+  `data-heu-cthssv-external-execution-handoff="M06_CTHSSV"` surfaces owner
+  evidence handoff proof alongside signed evidence, closure rows and final
+  quorum rerun fields.
+- Propagated P3-02L into current-state inventory, system backlog, readiness
+  gap matrix, production checklist, module completion breakdown and
+  `scripts/audit-heu-cthssv-module-readiness.mjs`.
+- PASS_LOCAL boundary: this does not send real email, create real
+  tasks/tickets, assign real accounts, execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV Aggregate Proof Reflection
+
+- Scope: Reflected P3-02L external execution proof alignment inside the
+  aggregate M06/P3-02 readiness packet and `/cthssv` aggregate panel so the
+  aggregate story cannot omit CTHSSV-HANDOFF-PROOF-01 through
+  CTHSSV-HANDOFF-PROOF-08.
+- Updated `docs/HEU_CTHSSV_AGGREGATE_READINESS_ALIGNMENT_20260704.md` with
+  `PASS_LOCAL_AGGREGATE_PROOF_REFLECTION`, P3-02L,
+  `PASS_LOCAL_EXTERNAL_EXECUTION_PROOF_ALIGNMENT`,
+  `linked_owner_evidence_proof_items` and
+  `linked_external_execution_proof_alignment`.
+- Updated the `/cthssv` aggregate panel copy so
+  `data-heu-cthssv-aggregate-readiness-alignment="M06_CTHSSV"` surfaces
+  P3-02E through P3-02L and proof alignment.
+- Propagated P3-02M into current-state inventory, system backlog, readiness
+  gap matrix, production checklist, module completion breakdown and
+  `scripts/audit-heu-cthssv-module-readiness.mjs`.
+- PASS_LOCAL boundary: this does not send real email, create real
+  tasks/tickets, assign real accounts, execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-40 Executive Legal SOP Evidence Authority Queue
+
+- Added `ExecutiveLegalSopEvidenceAuthorityQueue` and
+  `executiveLegalSopEvidenceAuthorityQueueRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Legal/SOP
+  focus shows missing evidence and authority before STD-25 triage and STD-14
+  authority cards.
+- Added
+  `data-heu-executive-legal-sop-evidence-authority-queue="STD-40_EXECUTIVE_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE"`
+  with `LAW-QUEUE-01` through `LAW-QUEUE-06` for legal-basis hold, SOP version
+  hold, maker/checker/approver hold, controlled-evidence hold, external signer
+  hold and dashboard/report reliance legal hold.
+- Added
+  `scripts/check-heu-executive-legal-sop-evidence-authority-queue-readiness.mjs`
+  and `check:heu-executive-legal-sop-evidence-authority-queue-readiness`, then
+  extended executive dashboard readiness, Legal/SOP required-answer, Legal/SOP
+  triage, Legal/SOP authority and visual-QA guards with
+  `PASS_LOCAL_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`.
+- Updated
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-40` is the formal
+  evidence-authority queue for legal basis, SOP version, maker/checker/approver,
+  controlled evidence, external signer and report/dashboard reliance holds.
+- Corrected the STD-40 blueprint row to carry machine-readable
+  `STD-40_EXECUTIVE_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`, `LAW-QUEUE-01`,
+  `LAW-QUEUE-06`, `NO_RAW_EVIDENCE_MOVEMENT`, `NO_EVIDENCE_ACCEPTANCE` and
+  `NO_UAT_ACCEPTANCE` tokens required by the local readiness guards.
+- PASS_LOCAL boundary: this does not provide legal advice, issue official SOP,
+  approve workflow state, execute finance, accept UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
