@@ -142,6 +142,28 @@ requireTokens(
     "SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN",
     "source route, data domain, DQ check ref, controlled evidence ref",
     "copy raw source payloads",
+    "DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY",
+    "OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "owner_user_id",
+    "assigned_user_id",
+    "scope_gate_ref",
+    "Report View Source Conflict Route Lock",
+    "DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY",
+    "HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md",
+    "NO_GO_SOURCE_CONFLICT",
+    "REPORT_VIEW_SOURCE_CONFLICT_DCTC_ROUTE_READY",
+    "Finance/TTGDTX totals conflict",
+    "Admissions/handover conflict",
+    "Class delivery conflict",
+    "Short Course attendance/payment conflict",
+    "NO_DASHBOARD_ONLY_CONFLICT_CLOSURE",
+    "NO_PRIVATE_DEPARTMENT_NUMBER",
+    "NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION",
+    "NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE",
+    "NO_PRODUCTION_GO_FROM_PASS_LOCAL",
+    "report_view_ref",
     "DCTC_AUDIT_TRACE_READY",
     "NO_AUDIT_LOG_MUTATION",
     "DCTC-KHTC-001",
@@ -252,6 +274,20 @@ requireTokens(
     "REAL_DATA_CONFIRMATION_READY: NO_GO",
     "DCTC_STATUS_BRIDGE_READY",
     "audit:heu-user-account-security",
+    "2026-07-05 - DCTC Report Source Conflict Route Lock",
+    "DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY",
+    "NO_GO_SOURCE_CONFLICT",
+    "NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION",
+    "NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE",
+    "2026-07-05 - DCTC Owner Assignee Pair Lock",
+    "DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY",
+    "OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
+    "owner_user_id",
+    "assigned_user_id",
+    "scope_gate_ref",
+    "Production remains NO-GO",
   ],
   "implementation log propagation",
   logPath,
@@ -289,6 +325,15 @@ console.log(
 );
 console.log(
   "dctc_status_bridge=CHO_XAC_NHAN:PENDING_DEPARTMENT_CONFIRMATION|DUNG:CONFIRMED_BY_DEPARTMENT|CAN_SUA:RETURNED_FOR_REPAIR|KHONG_THUOC_TOI:OUT_OF_SCOPE|DA_KHOA:LOCKED",
+);
+console.log(
+  "dctc_report_source_conflict_route=DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY|NO_GO_SOURCE_CONFLICT|NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION",
+);
+console.log(
+  "dctc_owner_assignee_pair_lock=DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY|OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN",
+);
+console.log(
+  "dctc_scope_gate_route_lock=DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN|SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN",
 );
 console.log(
   "Boundary: metadata-only; no accounts, scope changes, database mutation, real tasks/email, evidence acceptance, UAT acceptance, owner GO/NO-GO or production GO.",

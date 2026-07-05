@@ -261,3 +261,59 @@ M05 document review/reporting compatibility guard: M05 Tuyen sinh CRM review_req
 | Pilot scope | TTGDTX 9+ accounting end-to-end |
 | Strong internal modules | M05, M09, M12 |
 | Most important blockers | Backup/restore evidence, signed UAT, migration order, hard-delete/cascade conversion or written waiver and owner GO/NO-GO |
+
+## 10. DCTC PASS_LOCAL Packaging Addendum - 2026-07-05
+
+Data Confirmation Task Center core is packaged as PASS_LOCAL only for local
+guard verification.
+
+Required checks:
+
+- `npm.cmd run check:heu-data-confirmation-task-center-schema`
+- `npm.cmd run check:heu-data-confirmation-task-center-route`
+- `npm.cmd run check:heu-core-department-data-confirmation-task-register`
+- `npm.cmd run check:heu-executive-data-confirmation-task-center`
+
+Schema contract tokens: `database/step121_data_confirmation_task_center.sql`,
+`PASS_LOCAL_SCHEMA_CONTRACT`, `heu_data_confirmation_tasks`,
+`heu_data_confirmation_task_status_history`,
+`heu_data_confirmation_task_center`,
+`heu_data_confirmation_task_status_timeline`, `audit_trace_ref`,
+`DCTC_TASK`, `DCTC_HISTORY`, `route_data_confirmation_task`,
+`confirm_data_confirmation_task`, `DCTC_SOURCE_PROVENANCE_LOCK_READY`,
+`source_record_label`, `source_route`, `data_domain`, `dq_check_ref`,
+`controlled_evidence_ref`, `SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+`due_date_or_batch`, `owner_decision_ref`, `scope_gate_ref`,
+`ASSIGNEE_OR_OWNER_REQUIRED`, `DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`,
+`OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+`DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+`SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+`CONTROLLED_PILOT_DEPARTMENT_ONLY`, status-timeline scope columns
+`assigned_user_id` and `owner_user_id`, `CHO_XAC_NHAN`,
+`CONFIRM_FROM_CHO_XAC_NHAN_ONLY`, `CONFIRM_SUBMITTER_SCOPE_LOCK`,
+`REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED`,
+`CAN_SUA and KHONG_THUOC_TOI require confirmation note`,
+`KHONG_THUOC_TOI`, `DA_KHOA`, and
+`DA_KHOA lock requires note and controlled evidence ref`.
+
+Runtime route tokens: `PASS_LOCAL_RUNTIME_ROUTE`,
+`components/layout/app-shell.tsx`, `data_confirmation.read`,
+`DCTC_READ_PERMISSION_REQUIRED`,
+`NO_QUEUE_QUERY_WITHOUT_DATA_CONFIRMATION_READ`, `/data-confirmation`,
+`DCTC_DEPARTMENT_QUEUE_SCOPE_READY`, `department_code`,
+`DEPARTMENT_QUERY_PARAM_FILTERS_QUEUE_AND_TIMELINE`, `ASSIGNED_TO_ME`,
+`OWNED_BY_ME`, `RPC_ROUTE_TO_CHO_XAC_NHAN`,
+`CONTROLLED_PILOT_LANE_READY`, `KHTC`, `TUYEN_SINH`, `CTHSSV`,
+`DAO_TAO`, `KHOA`, `SHORT_COURSE`, metadata only,
+`STATUS_HISTORY_TIMELINE_READY`, `RLS_TIMELINE_VIEW_ONLY`,
+`STATUS_HISTORY_SCOPE_PARITY`, `DCTC_AUDIT_TRACE_READY`,
+`NO_AUDIT_LOG_MUTATION` and `RPC_CONFIRM_ONLY`.
+
+Executive DCTC tokens: `STD-45_DATA_CONFIRMATION_TASK_CENTER`,
+`task_center_status`, `DUNG`, `CAN_SUA`, `DA_KHOA`, `DCTC-KHTC-001`,
+`DCTC-TUYEN-SINH-001`, `DCTC-CTHSSV-001`, `DCTC-DAO-TAO-001`,
+`DCTC-KHOA-001`, `DCTC-SHORT-COURSE-001`.
+
+Boundary: this does not auto-seed real tasks, does not import raw data, does
+not create real email, task/ticket, account, does not accept evidence, does not
+approve UAT, owner GO/NO-GO or production GO. Production remains NO-GO.

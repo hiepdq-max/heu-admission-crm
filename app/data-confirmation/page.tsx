@@ -59,6 +59,7 @@ type DataConfirmationTaskRow = {
   controlled_evidence_ref: string | null;
   due_date_or_batch: string | null;
   owner_decision_ref: string | null;
+  scope_gate_ref: string | null;
   task_center_status: TaskCenterStatus;
   blocker_state: string;
   status_note: string | null;
@@ -82,6 +83,7 @@ type DataConfirmationHistoryRow = {
   source_record_label: string;
   due_date_or_batch: string | null;
   owner_decision_ref: string | null;
+  scope_gate_ref: string | null;
   previous_status: TaskCenterStatus | null;
   next_status: TaskCenterStatus;
   actor_user_name: string | null;
@@ -434,6 +436,9 @@ function StatusTimeline({
                     Owner decision: {row.owner_decision_ref ?? "pending"}
                   </p>
                   <p className="mt-1 break-words">
+                    Scope gate: {row.scope_gate_ref ?? "pending"}
+                  </p>
+                  <p className="mt-1 break-words">
                     Evidence ref: {row.controlled_evidence_ref ?? "pending"}
                   </p>
                 </div>
@@ -514,7 +519,9 @@ function RoutingForm({
     <section
       className="min-w-0 overflow-hidden rounded-lg border border-emerald-200 bg-white shadow-sm"
       data-heu-dctc-route-form="RPC_ROUTE_TO_CHO_XAC_NHAN"
-      data-heu-dctc-route-assignee-lock="ASSIGNEE_OR_OWNER_REQUIRED"
+      data-heu-dctc-route-assignee-lock="OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN"
+      data-heu-dctc-owner-assignee-pair-lock="DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN"
+      data-heu-dctc-scope-gate-lock="DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN NO_ACCESS_GRANT_FROM_SCOPE_GATE_REF"
       data-heu-dctc-source-provenance-lock="DCTC_SOURCE_PROVENANCE_LOCK_READY SOURCE_METADATA_REQUIRED_BEFORE_CHO_XAC_NHAN NO_RAW_SOURCE_PAYLOAD"
     >
       <div className="border-b border-emerald-100 bg-emerald-50 p-5">
@@ -532,8 +539,8 @@ function RoutingForm({
             <p className="mt-2 max-w-3xl break-words text-sm leading-6 text-zinc-600">
               Tao task `CHO_XAC_NHAN` tu metadata da duoc phe duyet. Form nay
               khong import raw data, khong upload evidence va khong chap nhan
-              UAT hay owner GO. Owner user hoac Assigned user la bat buoc truoc
-              khi route.
+              UAT hay owner GO. Owner user va Assigned user la bat buoc truoc
+              khi route; scope gate ref la bat buoc nhung khong cap quyen.
             </p>
           </div>
         </div>
@@ -664,6 +671,19 @@ function RoutingForm({
         </label>
         <label className="min-w-0">
           <span className="mb-1 block text-xs font-medium uppercase text-zinc-500">
+            Scope gate ref
+          </span>
+          <input
+            className={fieldClass}
+            maxLength={160}
+            name="scope_gate_ref"
+            placeholder="VD: SCOPE-GATE-P6-04-PENDING"
+            required
+            type="text"
+          />
+        </label>
+        <label className="min-w-0">
+          <span className="mb-1 block text-xs font-medium uppercase text-zinc-500">
             Segment
           </span>
           <select className={fieldClass} name="admission_segment_id">
@@ -721,6 +741,10 @@ function RoutingForm({
             Boundary: `route_data_confirmation_task` chi tao task
             `CHO_XAC_NHAN` tu metadata da duoc phe duyet; khong tao raw data,
             khong gui email va khong chap nhan evidence/UAT/production.
+            `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN` yeu cau ca
+            owner lane va assigned user truoc khi route.
+            `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN` chi ghi ref scope
+            gate, khong cap quyen.
           </p>
         </div>
       </form>
@@ -737,6 +761,7 @@ function ConfirmationForm({ task }: { task: DataConfirmationTaskRow }) {
       className="grid min-w-0 gap-3 border-t border-zinc-200 bg-zinc-50 p-4 lg:grid-cols-[180px_minmax(220px,1fr)_minmax(220px,1fr)_auto]"
       data-heu-dctc-confirm-form="RPC_CONFIRM_ONLY REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF"
       data-heu-dctc-confirm-submitter-scope="CONFIRM_SUBMITTER_SCOPE_LOCK"
+      data-heu-dctc-confirm-scope-bound="DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY NO_GLOBAL_CONFIRM_PERMISSION_BYPASS"
       data-heu-dctc-confirm-transition="CONFIRM_FROM_CHO_XAC_NHAN_ONLY"
     >
       <input name="task_id" type="hidden" value={task.id} />
@@ -794,8 +819,9 @@ function ConfirmationForm({ task }: { task: DataConfirmationTaskRow }) {
       {disabled ? (
         <p className="break-words text-xs text-zinc-500 lg:col-span-4">
           CONFIRM_SUBMITTER_SCOPE_LOCK: chi assigned user, owner user, phong
-          phu trach hoac user co quyen data_confirmation.confirm moi submit
-          duoc task `CHO_XAC_NHAN`. REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED:
+          phu trach/workspace co quyen data_confirmation.confirm moi submit
+          duoc task `CHO_XAC_NHAN`; route/manage hoac global confirm khong
+          bypass task lane. REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED:
           Can sua/Khong thuoc toi phai co ghi chu. CONFIRM_FROM_CHO_XAC_NHAN_ONLY:
           task da co ket qua thi khong submit lai trong DCTC.
         </p>
@@ -855,6 +881,9 @@ function TaskRow({ task }: { task: DataConfirmationTaskRow }) {
             </span>
             <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
               Owner decision: {task.owner_decision_ref ?? "pending"}
+            </span>
+            <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
+              Scope gate: {task.scope_gate_ref ?? "pending"}
             </span>
             <span className="break-all rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-zinc-700">
               Audit trace: {task.audit_trace_ref}
@@ -977,6 +1006,7 @@ export default async function DataConfirmationPage({
           "controlled_evidence_ref",
           "due_date_or_batch",
           "owner_decision_ref",
+          "scope_gate_ref",
           "task_center_status",
           "blocker_state",
           "status_note",
@@ -1024,6 +1054,7 @@ export default async function DataConfirmationPage({
           "source_record_label",
           "due_date_or_batch",
           "owner_decision_ref",
+          "scope_gate_ref",
           "previous_status",
           "next_status",
           "actor_user_name",
@@ -1071,7 +1102,7 @@ export default async function DataConfirmationPage({
       <div
         className="space-y-6"
         data-heu-data-confirmation-task-center-route="DCTC_RUNTIME_ROUTE"
-        data-heu-data-confirmation-task-center-boundary="PASS_LOCAL_RUNTIME_ROUTE RLS_VIEW_ONLY RPC_ROUTE_TO_CHO_XAC_NHAN RPC_CONFIRM_ONLY DCTC_SOURCE_PROVENANCE_LOCK_READY DCTC_DEPARTMENT_QUEUE_SCOPE_READY DCTC_AUDIT_TRACE_READY NO_AUTO_SEED NO_RAW_DATA_IMPORT NO_DIRECT_TABLE_UPDATE NO_EMAIL_SEND NO_ACCOUNT_CREATE NO_TICKET_CREATE NO_AUDIT_LOG_MUTATION NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
+        data-heu-data-confirmation-task-center-boundary="PASS_LOCAL_RUNTIME_ROUTE RLS_VIEW_ONLY RPC_ROUTE_TO_CHO_XAC_NHAN RPC_CONFIRM_ONLY DCTC_SOURCE_PROVENANCE_LOCK_READY DCTC_DEPARTMENT_QUEUE_SCOPE_READY DCTC_AUDIT_TRACE_READY DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY NO_GLOBAL_CONFIRM_PERMISSION_BYPASS NO_AUTO_SEED NO_RAW_DATA_IMPORT NO_DIRECT_TABLE_UPDATE NO_EMAIL_SEND NO_ACCOUNT_CREATE NO_TICKET_CREATE NO_AUDIT_LOG_MUTATION NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
       >
         <section className="min-w-0 border-b border-zinc-200 pb-5">
           <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

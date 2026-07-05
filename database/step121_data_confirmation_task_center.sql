@@ -53,6 +53,7 @@ create table if not exists public.heu_data_confirmation_tasks (
   controlled_evidence_ref text,
   due_date_or_batch text not null,
   owner_decision_ref text not null,
+  scope_gate_ref text not null,
   task_center_status public.data_confirmation_task_status not null default 'CHO_XAC_NHAN',
   blocker_state text not null default 'WAITING_OWNER_CONFIRMATION',
   status_note text,
@@ -114,6 +115,9 @@ add column if not exists due_date_or_batch text;
 
 alter table public.heu_data_confirmation_tasks
 add column if not exists owner_decision_ref text;
+
+alter table public.heu_data_confirmation_tasks
+add column if not exists scope_gate_ref text;
 
 create table if not exists public.heu_data_confirmation_task_status_history (
   id uuid primary key default gen_random_uuid(),
@@ -253,6 +257,7 @@ create or replace function public.route_data_confirmation_task(
   p_controlled_evidence_ref text default null,
   p_due_date_or_batch text default null,
   p_owner_decision_ref text default null,
+  p_scope_gate_ref text default null,
   p_status_note text default null
 )
 returns uuid
@@ -271,6 +276,7 @@ declare
   cleaned_controlled_evidence_ref text;
   cleaned_due_date_or_batch text;
   cleaned_owner_decision_ref text;
+  cleaned_scope_gate_ref text;
   cleaned_status_note text;
   new_task_id uuid := gen_random_uuid();
 begin
@@ -284,6 +290,7 @@ begin
   cleaned_controlled_evidence_ref = nullif(trim(coalesce(p_controlled_evidence_ref, '')), '');
   cleaned_due_date_or_batch = nullif(trim(coalesce(p_due_date_or_batch, '')), '');
   cleaned_owner_decision_ref = nullif(trim(coalesce(p_owner_decision_ref, '')), '');
+  cleaned_scope_gate_ref = nullif(trim(coalesce(p_scope_gate_ref, '')), '');
   cleaned_status_note = nullif(trim(coalesce(p_status_note, '')), '');
 
   if acting_user_id is null then
@@ -310,8 +317,18 @@ begin
     raise exception 'Task code, department, source label, data domain, source route, DQ check ref, controlled evidence ref, due date or batch and owner decision ref are required';
   end if;
 
-  if p_owner_user_id is null and p_assigned_user_id is null then
-    raise exception 'Data-confirmation task requires assigned user or owner user lane';
+  -- DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN /
+  -- SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN:
+  -- the route must carry the scope/permission gate reference, but it does not grant access.
+  if cleaned_scope_gate_ref is null then
+    raise exception 'Data-confirmation task requires scope gate ref before CHO_XAC_NHAN';
+  end if;
+
+  -- DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY /
+  -- OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN:
+  -- routed tasks must name both the owner lane and assigned user.
+  if p_owner_user_id is null or p_assigned_user_id is null then
+    raise exception 'Data-confirmation task requires both owner user lane and assigned user before CHO_XAC_NHAN';
   end if;
 
   if cleaned_department_code not in (
@@ -339,6 +356,7 @@ begin
     controlled_evidence_ref,
     due_date_or_batch,
     owner_decision_ref,
+    scope_gate_ref,
     task_center_status,
     blocker_state,
     status_note,
@@ -358,6 +376,7 @@ begin
     cleaned_controlled_evidence_ref,
     cleaned_due_date_or_batch,
     cleaned_owner_decision_ref,
+    cleaned_scope_gate_ref,
     'CHO_XAC_NHAN',
     'WAITING_OWNER_CONFIRMATION',
     cleaned_status_note,
@@ -397,6 +416,7 @@ grant execute on function public.route_data_confirmation_task(
   uuid,
   uuid,
   uuid,
+  text,
   text,
   text,
   text,
@@ -644,6 +664,7 @@ select
   t.controlled_evidence_ref,
   t.due_date_or_batch,
   t.owner_decision_ref,
+  t.scope_gate_ref,
   t.task_center_status,
   t.blocker_state,
   t.status_note,
@@ -693,6 +714,7 @@ select
   t.source_record_label,
   t.due_date_or_batch,
   t.owner_decision_ref,
+  t.scope_gate_ref,
   h.previous_status,
   h.next_status,
   h.actor_user_id,

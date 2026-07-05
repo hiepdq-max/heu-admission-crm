@@ -23,8 +23,10 @@ const allowedRouteDepartments = new Set([
 
 const DCTC_ROUTE_UNAVAILABLE = "DCTC_ROUTE_UNAVAILABLE";
 const DCTC_CONFIRM_UNAVAILABLE = "DCTC_CONFIRM_UNAVAILABLE";
-const DCTC_ROUTE_ASSIGNEE_OR_OWNER_REQUIRED =
-  "assignee_or_owner_required_for_confirmation_task";
+const DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY =
+  "owner_and_assignee_required_before_cho_xac_nhan";
+const DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN =
+  "scope_gate_required_before_cho_xac_nhan";
 const DCTC_SOURCE_PROVENANCE_LOCK_READY =
   "source_metadata_required_before_cho_xac_nhan";
 const DCTC_LOCK_NOTE_REQUIRED = "confirmation_note_required_for_locked_status";
@@ -57,6 +59,7 @@ export async function routeDataConfirmationTaskAction(formData: FormData) {
   const controlledEvidenceRef = textValue(formData, "controlled_evidence_ref");
   const dueDateOrBatch = textValue(formData, "due_date_or_batch");
   const ownerDecisionRef = textValue(formData, "owner_decision_ref");
+  const scopeGateRef = textValue(formData, "scope_gate_ref");
   const statusNote = textValue(formData, "status_note");
   const ownerUserId = uuidValue(formData, "owner_user_id");
   const assignedUserId = uuidValue(formData, "assigned_user_id");
@@ -75,8 +78,12 @@ export async function routeDataConfirmationTaskAction(formData: FormData) {
     redirectWithError(DCTC_SOURCE_PROVENANCE_LOCK_READY);
   }
 
-  if (!ownerUserId && !assignedUserId) {
-    redirectWithError(DCTC_ROUTE_ASSIGNEE_OR_OWNER_REQUIRED);
+  if (!scopeGateRef) {
+    redirectWithError(DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN);
+  }
+
+  if (!ownerUserId || !assignedUserId) {
+    redirectWithError(DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY);
   }
 
   const supabase = await createClient();
@@ -98,6 +105,7 @@ export async function routeDataConfirmationTaskAction(formData: FormData) {
     p_due_date_or_batch: dueDateOrBatch,
     p_owner_decision_ref: ownerDecisionRef,
     p_owner_user_id: ownerUserId,
+    p_scope_gate_ref: scopeGateRef,
     p_source_record_label: sourceRecordLabel,
     p_source_route: sourceRoute,
     p_status_note: statusNote || null,

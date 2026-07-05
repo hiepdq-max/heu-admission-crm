@@ -48,9 +48,9 @@ which lane is NO-GO, and which blocker must close before reliance.
 | Priority | Master Control lane | Current local state | Real-operation state | Smallest next blocker |
 | --- | --- | --- | --- | --- |
 | 1 | HEU Master Control overview | `MASTER_CONTROL_SYSTEM_STATUS_READY / NO_GO / BLOCKED`; PASS_LOCAL status table recorded in this register | NO-GO for broad use | Keep current-state, backlog, gap matrix and implementation-log checks green before moving to the next slice |
-| 2 | User/permission operation | `HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md` records role, department, position, route and blocked-action checks under `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`; `check:heu-role-position-operation-test-matrix` is PASS_LOCAL, while `Guide writing decision: NO_GO`, `missing_visibility=2`, `missing_business_scope=2`, `unassigned_required_positions=11` and `REAL_OUT_OF_SCOPE_NEGATIVE_01` blockers remain visible | NO-GO for broad access expansion, guide finalization or real-user widening | Signed role-scope baseline, required position assignment, negative-access proof and owner scope decision are still required |
+| 2 | User/permission operation | `HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md` records role, department, position, route and blocked-action checks under `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`; `check:heu-role-position-operation-test-matrix` is PASS_LOCAL with role-aware baseline `missing_visibility=0`, `missing_business_scope=0`, `department_lane_mismatch=0`, while `Guide writing decision: NO_GO`, `required_positions=15`, `unassigned_required_positions=11`, `ttgdtx_negative_candidates=0`, `pending_external_evidence_lanes=4` and `REAL_OUT_OF_SCOPE_NEGATIVE_01` blockers remain visible | NO-GO for broad access expansion, guide finalization or real-user widening | Required position assignment, negative-control proof, signed role-scope/UAT evidence and owner scope/cutover decision are still required |
 | 3 | Data Master / Report View | `SINGLE_SOURCE_DATA_REPORT_CHAIN`, `NO_DEPARTMENT_PRIVATE_NUMBER` and report-view source map are PASS_LOCAL controls | NO-GO for dashboard reliance | Owner-confirmed source refs, DQ result and report-view owner signoff remain external |
-| 4 | Data Confirmation Task Center | Metadata-only queue starts at `CHO_XAC_NHAN` for KHTC, Admissions, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course | NO-GO for data reliance | Owner marks `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI` or `DA_KHOA` outside Git/Codex/chat with controlled evidence |
+| 4 | Data Confirmation Task Center | Metadata-only queue starts at `CHO_XAC_NHAN` for KHTC, Admissions, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course; real-data reliance waits for approved user/position/scope closure, negative-control proof and external evidence gates | NO-GO for data reliance | Owner marks `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI` or `DA_KHOA` outside Git/Codex/chat with controlled evidence after required position assignment, negative-control proof and external UAT/evidence blockers close |
 | 5 | Accounting / Finance Desk / TTGDTX 9+ | Read-only controlled trial surfaces are PASS_LOCAL only | NO-GO for accounting, payment, payout or finance approval | Signed finance UAT, access closure, evidence acceptance and owner GO/NO-GO are still required |
 | 6 | Admissions / Tuyen sinh | Local document/source/owner-closure controls are PASS_LOCAL packaged | NO-GO for enrollment, handover acceptance or dashboard reliance | Signed owner UAT, document evidence, source proof and report-view signoff remain external |
 | 7 | CTHSSV | Local handover/readiness/evidence-reference controls are PASS_LOCAL packaged | NO-GO for real handover or enrollment reliance | Signed owner UAT, controlled evidence refs and external execution proof remain external |
@@ -155,11 +155,20 @@ Minimum Data Confirmation Task Center queue:
 | `confirmation_task_id` | `owner_lane` | `data_object` | `task_center_status` | Required external proof |
 | --- | --- | --- | --- | --- |
 | `DCTC-KHTC-001` | KHTC / Accounting | Finance receivable and collection source | `CHO_XAC_NHAN` | Finance owner source ref, DQ check and controlled evidence ref |
-| `DCTC-TS-001` | Admissions / Tuyen sinh | Lead/document source status | `CHO_XAC_NHAN` | Admissions owner source ref, document DQ result and blocker state |
+| `DCTC-TUYEN-SINH-001` | Admissions / Tuyen sinh | Lead/document source status | `CHO_XAC_NHAN` | Admissions owner source ref, document DQ result and blocker state |
 | `DCTC-CTHSSV-001` | CTHSSV | Student handover/readiness metadata | `CHO_XAC_NHAN` | CTHSSV owner evidence ref and handover reliance decision |
-| `DCTC-DT-001` | Dao Tao | Class/cohort/program master | `CHO_XAC_NHAN` | Dao Tao owner source reconciliation and signed confirmation |
+| `DCTC-DAO-TAO-001` | Dao Tao | Class/cohort/program master | `CHO_XAC_NHAN` | Dao Tao owner source reconciliation and signed confirmation |
 | `DCTC-KHOA-001` | Khoa / Giang vien | Teaching delivery/source evidence | `CHO_XAC_NHAN` | Faculty owner source reconciliation and report-view signoff |
-| `DCTC-SC-001` | Short Course | Attendance/payment/source reconciliation | `CHO_XAC_NHAN` | Short Course owner attendance/payment UAT evidence ref |
+| `DCTC-SHORT-COURSE-001` | Short Course | Attendance/payment/source reconciliation | `CHO_XAC_NHAN` | Short Course owner attendance/payment UAT evidence ref |
+
+Canonical task-id rule:
+
+- The six department task IDs in this executive register must match the core
+  department register, `/reports` task map and `/data-confirmation` route:
+  `DCTC-KHTC-001`, `DCTC-TUYEN-SINH-001`, `DCTC-CTHSSV-001`,
+  `DCTC-DAO-TAO-001`, `DCTC-KHOA-001` and `DCTC-SHORT-COURSE-001`.
+- Legacy shorthand IDs are not canonical for the Data Confirmation Task Center
+  executive surface.
 
 Transition rules:
 

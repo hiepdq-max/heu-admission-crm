@@ -16717,6 +16717,88 @@
   GO/NO-GO; mark production GO.
 - Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.
 
+## 2026-07-05 - Data Confirmation Task Center Core Packaging Addendum
+
+- Scope: Packaged the Data Confirmation Task Center core as a single
+  PASS_LOCAL slice without opening production, finance, UAT or owner GO.
+- Schema anchor: `2026-07-05 - Data Confirmation Task Center Schema Contract`;
+  changed `database/step121_data_confirmation_task_center.sql` and
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`; check command
+  is `check:heu-data-confirmation-task-center-schema`; status is
+  `PASS_LOCAL_SCHEMA_CONTRACT`.
+- Schema result tokens: `heu_data_confirmation_tasks`,
+  `heu_data_confirmation_task_status_history`,
+  `heu_data_confirmation_task_center`,
+  `heu_data_confirmation_task_status_timeline`,
+  `route_data_confirmation_task`, `confirm_data_confirmation_task`,
+  `DCTC_SOURCE_PROVENANCE_LOCK_READY`, `source_record_label`,
+  `source_route`, `data_domain`, `dq_check_ref`,
+  `controlled_evidence_ref`, `due_date_or_batch`, `owner_decision_ref`,
+  `scope_gate_ref`, `ASSIGNEE_OR_OWNER_REQUIRED`,
+  `DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`,
+  `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `CONTROLLED_PILOT_DEPARTMENT_ONLY`, `CONFIRM_SUBMITTER_SCOPE_LOCK`,
+  status-timeline scope columns `assigned_user_id` and `owner_user_id`,
+  `CONFIRM_FROM_CHO_XAC_NHAN_ONLY`, `audit_trace_ref`, `DCTC_TASK`,
+  `DCTC_HISTORY`, `REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED`,
+  `CAN_SUA and KHONG_THUOC_TOI require confirmation note` and
+  `DA_KHOA lock requires note and controlled evidence ref`.
+- Runtime anchor: `2026-07-05 - Data Confirmation Task Center Runtime Route`;
+  changed `app/data-confirmation/page.tsx`,
+  `app/data-confirmation/actions.ts`, `components/layout/app-shell.tsx` and
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`; check command
+  is `check:heu-data-confirmation-task-center-route`; status is
+  `PASS_LOCAL_RUNTIME_ROUTE`.
+- Runtime result tokens: `RLS_VIEW_ONLY`, `RPC_ROUTE_TO_CHO_XAC_NHAN`,
+  `CONTROLLED_PILOT_LANE_READY`, `CONTROLLED_PILOT_DEPARTMENT_ONLY`,
+  controlled department pilot lanes, `data_confirmation.read`,
+  `DCTC_READ_PERMISSION_REQUIRED`, `ASSIGNED_TO_ME`, `OWNED_BY_ME`,
+  `DCTC_DEPARTMENT_QUEUE_SCOPE_READY`, `department_code`,
+  `DEPARTMENT_QUERY_PARAM_FILTERS_QUEUE_AND_TIMELINE`,
+  `STATUS_HISTORY_TIMELINE_READY`, `STATUS_HISTORY_SCOPE_PARITY`,
+  `DCTC_AUDIT_TRACE_READY`, `NO_AUDIT_LOG_MUTATION`, `RPC_CONFIRM_ONLY`,
+  `DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF`.
+- Core department register anchor:
+  `2026-07-05 - Core Department Data Confirmation Task Register`;
+  changed `HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `check-heu-core-department-data-confirmation-task-register.mjs` and
+  `check:heu-core-department-data-confirmation-task-register`; status is
+  `CORE_DEPARTMENT_DATA_CONFIRMATION_READY / NO_GO / BLOCKED` with
+  `REAL_DATA_CONFIRMATION_READY: NO_GO` and `DCTC_STATUS_BRIDGE_READY`.
+- DCTC route locks: `2026-07-05 - DCTC Report Source Conflict Route Lock`,
+  `DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY`, `NO_GO_SOURCE_CONFLICT`,
+  `NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION`,
+  `NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE`,
+  `2026-07-05 - DCTC Owner Assignee Pair Lock`,
+  `DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`,
+  `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `2026-07-05 - DCTC Scope Gate Route Lock`,
+  `DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`, `owner_user_id`,
+  `assigned_user_id` and `scope_gate_ref`.
+- Executive DCTC anchor: `Data Confirmation Task Center`,
+  `STD-45_DATA_CONFIRMATION_TASK_CENTER`, `task_center_status`,
+  `CHO_XAC_NHAN`, `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI`, `DA_KHOA`,
+  `check-heu-executive-data-confirmation-task-center.mjs`,
+  `DCTC Canonical Department Task ID Alignment`,
+  `DCTC-TUYEN-SINH-001`, `DCTC-DAO-TAO-001`,
+  `DCTC-SHORT-COURSE-001`, `Whole-System Master Control Status Table`,
+  `MASTER_CONTROL_SYSTEM_STATUS_READY / NO_GO / BLOCKED`,
+  `WHOLE_SYSTEM_MASTER_CONTROL_STATUS_TABLE`,
+  `HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md`,
+  `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`,
+  `check:heu-role-position-operation-test-matrix`,
+  `DCTC Role-Aware User-Scope Blocker Alignment`, `missing_visibility=0`,
+  `missing_business_scope=0`, `department_lane_mismatch=0`,
+  `required_positions=15`, `unassigned_required_positions=11`,
+  `ttgdtx_negative_candidates=0`, `pending_external_evidence_lanes=4`.
+- Boundary: this does not change app runtime beyond the DCTC route shell, does
+  not auto-seed real tasks, does not import raw data, does not create accounts,
+  does not send email, does not accept evidence, does not approve UAT, finance
+  reliance, owner GO/NO-GO or production status. Production remains NO-GO.
+
 ## 2026-07-04 - STD-44 Executive Effective Access Read-Only Gate
 
 - Added the executive effective-access read-only gate to

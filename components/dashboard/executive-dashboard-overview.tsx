@@ -901,7 +901,7 @@ const dataConfirmationTaskRows: ExecutiveDataConfirmationTask[] = [
     href: "/finance-desk",
   },
   {
-    code: "DCTC-TS-001",
+    code: "DCTC-TUYEN-SINH-001",
     ownerLane: "Admissions / Tuyen sinh",
     dataObject: "Lead and document source status",
     status: "CHO_XAC_NHAN",
@@ -921,7 +921,7 @@ const dataConfirmationTaskRows: ExecutiveDataConfirmationTask[] = [
     href: "/cthssv",
   },
   {
-    code: "DCTC-DT-001",
+    code: "DCTC-DAO-TAO-001",
     ownerLane: "Dao Tao",
     dataObject: "Class, cohort and program master",
     status: "CHO_XAC_NHAN",
@@ -941,7 +941,7 @@ const dataConfirmationTaskRows: ExecutiveDataConfirmationTask[] = [
     href: "/khoa",
   },
   {
-    code: "DCTC-SC-001",
+    code: "DCTC-SHORT-COURSE-001",
     ownerLane: "Short Course",
     dataObject: "Attendance, payment and source reconciliation",
     status: "CHO_XAC_NHAN",

@@ -28,6 +28,12 @@ function requireTokens(contents, tokens, label, file) {
   }
 }
 
+function requireNoPattern(contents, pattern, label, file) {
+  if (pattern.test(contents)) {
+    failures.push(`${file}: forbidden ${label}`);
+  }
+}
+
 for (const file of [
   docPath,
   logPath,
@@ -68,11 +74,13 @@ requireTokens(
     "Đã khóa",
     "Minimum Data Confirmation Task Center queue",
     "`DCTC-KHTC-001`",
-    "`DCTC-TS-001`",
+    "`DCTC-TUYEN-SINH-001`",
     "`DCTC-CTHSSV-001`",
-    "`DCTC-DT-001`",
+    "`DCTC-DAO-TAO-001`",
     "`DCTC-KHOA-001`",
-    "`DCTC-SC-001`",
+    "`DCTC-SHORT-COURSE-001`",
+    "Canonical task-id rule",
+    "Legacy shorthand IDs are not canonical",
     "Only the responsible external owner may mark",
     "PASS_LOCAL checks may verify tokens and routing only",
     "must not create",
@@ -99,9 +107,13 @@ requireTokens(
     "ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED",
     "check:heu-role-position-operation-test-matrix",
     "Guide writing decision: NO_GO",
-    "missing_visibility=2",
-    "missing_business_scope=2",
+    "missing_visibility=0",
+    "missing_business_scope=0",
+    "department_lane_mismatch=0",
+    "required_positions=15",
     "unassigned_required_positions=11",
+    "ttgdtx_negative_candidates=0",
+    "pending_external_evidence_lanes=4",
     "REAL_OUT_OF_SCOPE_NEGATIVE_01",
     "Data Master / Report View",
     "Accounting / Finance Desk / TTGDTX 9+",
@@ -141,11 +153,11 @@ requireTokens(
     "dataConfirmationStatuses",
     "dataConfirmationTaskRows",
     "DCTC-KHTC-001",
-    "DCTC-TS-001",
+    "DCTC-TUYEN-SINH-001",
     "DCTC-CTHSSV-001",
-    "DCTC-DT-001",
+    "DCTC-DAO-TAO-001",
     "DCTC-KHOA-001",
-    "DCTC-SC-001",
+    "DCTC-SHORT-COURSE-001",
     "CHO_XAC_NHAN",
     "DUNG",
     "CAN_SUA",
@@ -153,6 +165,20 @@ requireTokens(
     "DA_KHOA",
   ],
   "dashboard Task Center surface",
+  dashboardPath,
+);
+
+requireNoPattern(
+  doc,
+  /`DCTC-(TS|DT|SC)-001`/,
+  "legacy shorthand DCTC task id in executive register",
+  docPath,
+);
+
+requireNoPattern(
+  dashboard,
+  /code:\s*"DCTC-(TS|DT|SC)-001"/,
+  "legacy shorthand DCTC task id in executive dashboard",
   dashboardPath,
 );
 
@@ -168,7 +194,11 @@ requireTokens(
     "KHONG_THUOC_TOI",
     "DA_KHOA",
     "DCTC-KHTC-001",
-    "DCTC-SC-001",
+    "DCTC-TUYEN-SINH-001",
+    "DCTC-CTHSSV-001",
+    "DCTC-DAO-TAO-001",
+    "DCTC-KHOA-001",
+    "DCTC-SHORT-COURSE-001",
     "does not create real email, task/ticket, account",
     "production GO",
   ],
@@ -188,12 +218,24 @@ requireTokens(
     "KHONG_THUOC_TOI",
     "DA_KHOA",
     "check-heu-executive-data-confirmation-task-center.mjs",
+    "DCTC Canonical Department Task ID Alignment",
+    "DCTC-TUYEN-SINH-001",
+    "DCTC-DAO-TAO-001",
+    "DCTC-SHORT-COURSE-001",
     "Whole-System Master Control Status Table",
     "MASTER_CONTROL_SYSTEM_STATUS_READY / NO_GO / BLOCKED",
     "WHOLE_SYSTEM_MASTER_CONTROL_STATUS_TABLE",
     "HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md",
     "ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED",
     "check:heu-role-position-operation-test-matrix",
+    "DCTC Role-Aware User-Scope Blocker Alignment",
+    "missing_visibility=0",
+    "missing_business_scope=0",
+    "department_lane_mismatch=0",
+    "required_positions=15",
+    "unassigned_required_positions=11",
+    "ttgdtx_negative_candidates=0",
+    "pending_external_evidence_lanes=4",
     "does not change app runtime",
     "production status",
   ],

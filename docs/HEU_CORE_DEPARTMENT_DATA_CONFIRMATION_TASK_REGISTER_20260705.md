@@ -60,6 +60,86 @@ source route, data domain, DQ check ref, controlled evidence ref, due/batch and
 owner decision ref are present. It records source provenance only; it must not
 copy raw source payloads into Git/Codex/chat.
 
+Owner/assignee pair lock:
+
+`DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`
+
+`OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`
+
+Before DCTC routes approved source metadata into `CHO_XAC_NHAN`, the route must
+name both `department_owner_lane` / `owner_user_id` and
+`assigned_user_label` / `assigned_user_id`. This keeps every waiting task tied
+to a department owner lane and a responsible user; it does not assign real users
+outside owner-approved scope, grant access, seed real tasks, accept evidence,
+accept UAT, approve owner GO/NO-GO or mark production GO.
+
+Scope gate route lock:
+
+`DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`
+
+`SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`
+
+Before DCTC routes approved source metadata into `CHO_XAC_NHAN`, the task must
+carry `scope_gate_ref` / `scope_gate` that points to the approved
+permission/scope gate or pending scope-repair gate. This is a reference-only
+control; it does not grant access, change scope, assign users, seed real tasks,
+accept evidence, accept UAT, approve owner GO/NO-GO or mark production GO.
+
+## 2.1 Report View Source Conflict Route Lock
+
+`DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY`
+
+When `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md` marks a row as
+`NO_GO_SOURCE_CONFLICT`, DCTC must keep a matching owner-confirmation route
+before the shared report can be treated as resolved. This is the reciprocal
+lock for `REPORT_VIEW_SOURCE_CONFLICT_DCTC_ROUTE_READY`: Report View points to
+DCTC, and DCTC records the department lane, status and external proof ref.
+
+| Report source conflict | Required DCTC task route | Required DCTC status until owner action |
+| --- | --- | --- |
+| Finance/TTGDTX totals conflict | `DCTC-KHTC-001` | `CHO_XAC_NHAN` / `PENDING_DEPARTMENT_CONFIRMATION` |
+| Admissions/handover conflict | `DCTC-TUYEN-SINH-001` and/or `DCTC-CTHSSV-001` | `CHO_XAC_NHAN` / `PENDING_DEPARTMENT_CONFIRMATION` |
+| Class delivery conflict | `DCTC-DAO-TAO-001` and `DCTC-KHOA-001` | `CHO_XAC_NHAN` / `PENDING_DEPARTMENT_CONFIRMATION` |
+| Short Course attendance/payment conflict | `DCTC-DAO-TAO-001` and `DCTC-SHORT-COURSE-001` | `CHO_XAC_NHAN` / `PENDING_DEPARTMENT_CONFIRMATION` |
+
+Allowed DCTC conflict outcomes:
+
+- `DUNG` / `CONFIRMED_BY_DEPARTMENT` means the department confirms the source
+  metadata, but report-view reliance still waits for signed owner signoff,
+  controlled evidence refs and UAT/evidence gates outside Git/Codex/chat.
+- `CAN_SUA` / `RETURNED_FOR_REPAIR` means the source conflict remains open and
+  must go through repair; Codex must not overwrite source data.
+- `KHONG_THUOC_TOI` / `BLOCKED_BY_SCOPE` means the route is in the wrong
+  department lane or scope is unclear.
+- `DA_KHOA` / `SIGNED_UAT_READY_EXTERNAL` means only that an external signed
+  route/ref has been recorded; `NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE` remains
+  mandatory.
+
+Required conflict route fields:
+
+- `source_record_label`
+- `source_route`
+- `data_domain`
+- `dq_check_ref`
+- `controlled_evidence_ref`
+- `owner_decision_ref`
+- `audit_trace_ref`
+- `report_view_ref`
+
+Stop rules:
+
+- `NO_DASHBOARD_ONLY_CONFLICT_CLOSURE`
+- `NO_PRIVATE_DEPARTMENT_NUMBER`
+- `NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION`
+- `NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE`
+- `NO_PRODUCTION_GO_FROM_PASS_LOCAL`
+
+Boundary: docs/audit control only. This lock does not create real tasks, seed
+tasks, mutate DCTC rows, query live data, import raw source files, copy raw
+source payloads, accept controlled evidence, execute or accept UAT, approve
+finance action, approve report-view reliance, approve dashboard reliance,
+approve owner GO/NO-GO or mark production GO.
+
 ## 3. Department Confirmation Queue
 
 | Task ID | Department lane | Assigned user label | Source object | Confirmation state | Scope gate | Required external proof |
