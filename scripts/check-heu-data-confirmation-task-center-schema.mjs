@@ -121,6 +121,9 @@ requireTokens(
     "raise exception 'Use task routing to keep CHO_XAC_NHAN; confirmation cannot reset a task'",
     "cleaned_note",
     "cleaned_controlled_evidence_ref",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "p_next_status in ('CAN_SUA', 'KHONG_THUOC_TOI')",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA requires lock note and controlled evidence ref",
     "insert into public.heu_data_confirmation_task_status_history",
     "trg_heu_data_confirmation_tasks_updated_at",
@@ -128,6 +131,7 @@ requireTokens(
     "trg_heu_data_confirmation_task_status_history_audit",
     "create or replace view public.heu_data_confirmation_task_center",
     "can_current_user_confirm",
+    "coalesce(public.can_confirm_data_confirmation_task(",
     "public.can_confirm_data_confirmation_task(",
     "grant select on public.heu_data_confirmation_task_center to authenticated",
     "create or replace view public.heu_data_confirmation_task_status_timeline",
@@ -205,6 +209,8 @@ requireTokens(
     "CHO_XAC_NHAN",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "KHONG_THUOC_TOI",
     "DA_KHOA",
     "DA_KHOA lock requires note and controlled evidence ref",
@@ -236,6 +242,8 @@ requireTokens(
     "owner_user_id",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA lock requires note and controlled evidence ref",
     "does not auto-seed real tasks",
     "import raw data",
@@ -263,6 +271,8 @@ requireTokens(
     "status-timeline scope columns",
     "assigned_user_id",
     "owner_user_id",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA lock requires note and controlled evidence ref",
     "must not auto-seed real tasks",
     "import raw data",
@@ -292,6 +302,8 @@ requireTokens(
     "status timeline scope parity",
     "Step121 DCTC schema contract",
     "PASS_LOCAL_SCHEMA_CONTRACT",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA lock requires note and controlled evidence ref",
     "must not auto-seed real tasks",
     "import raw data",
@@ -324,6 +336,8 @@ requireTokens(
     "assigned_user_id",
     "owner_user_id",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "CAN_SUA and KHONG_THUOC_TOI require confirmation note",
     "DA_KHOA lock requires note and controlled evidence ref",
     "does not auto-seed real tasks",
     "does not import raw data",
@@ -345,6 +359,9 @@ console.log("HEU Data Confirmation Task Center schema check");
 console.log("DCTC_SCHEMA_CONTRACT_READY: PASS_LOCAL_SCHEMA_CONTRACT");
 console.log(
   "task_center_status=CHO_XAC_NHAN|DUNG|CAN_SUA|KHONG_THUOC_TOI|DA_KHOA",
+);
+console.log(
+  "repair_out_of_scope_note_lock=REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
 );
 console.log(
   "Boundary: migration candidate only; no seed task, email, account, UAT/evidence acceptance, owner GO/NO-GO or production GO.",

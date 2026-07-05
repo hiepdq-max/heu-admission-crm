@@ -447,6 +447,13 @@ begin
   cleaned_note = nullif(trim(coalesce(p_note, '')), '');
   cleaned_controlled_evidence_ref = nullif(trim(coalesce(p_controlled_evidence_ref, '')), '');
 
+  -- REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED: owner handoff needs a reason.
+  if p_next_status in ('CAN_SUA', 'KHONG_THUOC_TOI')
+    and cleaned_note is null
+  then
+    raise exception 'CAN_SUA and KHONG_THUOC_TOI require confirmation note';
+  end if;
+
   if p_next_status = 'DA_KHOA'
     and (
       cleaned_note is null
@@ -641,12 +648,12 @@ select
   t.locked_by,
   locker.full_name as locked_by_name,
   t.locked_at,
-  public.can_confirm_data_confirmation_task(
+  coalesce(public.can_confirm_data_confirmation_task(
     t.department_code,
     t.assigned_user_id,
     t.owner_user_id,
     t.admission_segment_id
-  ) as can_current_user_confirm,
+  ), false) as can_current_user_confirm,
   t.record_status,
   t.created_at,
   t.updated_at

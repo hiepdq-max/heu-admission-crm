@@ -26,6 +26,8 @@ const DCTC_CONFIRM_UNAVAILABLE = "DCTC_CONFIRM_UNAVAILABLE";
 const DCTC_ROUTE_ASSIGNEE_OR_OWNER_REQUIRED =
   "assignee_or_owner_required_for_confirmation_task";
 const DCTC_LOCK_NOTE_REQUIRED = "confirmation_note_required_for_locked_status";
+const DCTC_REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED =
+  "confirmation_note_required_for_repair_or_out_of_scope";
 const DCTC_LOCK_EVIDENCE_REQUIRED =
   "controlled_evidence_ref_required_for_locked_status";
 
@@ -127,7 +129,7 @@ export async function confirmDataConfirmationTaskAction(formData: FormData) {
     redirectWithError(
       nextStatus === "DA_KHOA"
         ? DCTC_LOCK_NOTE_REQUIRED
-        : "confirmation_note_required_for_repair_or_out_of_scope",
+        : DCTC_REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED,
     );
   }
 

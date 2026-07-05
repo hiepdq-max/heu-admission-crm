@@ -1,5 +1,31 @@
 # HEU Implementation Log
 
+## 2026-07-05 - Data Confirmation Task Center Repair/Out-of-Scope Note Lock
+
+- Scope: Added `REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED` so `CAN_SUA` and
+  `KHONG_THUOC_TOI` confirmations must carry a confirmation note before the
+  result can be written by `confirm_data_confirmation_task`.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `app/data-confirmation/page.tsx`, `app/data-confirmation/actions.ts`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: The UI already requested notes for repair/out-of-scope outcomes; the
+  SQL RPC now enforces the same rule with
+  `CAN_SUA and KHONG_THUOC_TOI require confirmation note`, while `DA_KHOA`
+  still keeps `DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF`.
+- Validation: `check:heu-data-confirmation-task-center-schema`,
+  `check:heu-data-confirmation-task-center-route`, `audit:heu-sql-object-master-map`,
+  current-state, implementation-log, release-gates, Vietnamese encoding, lint,
+  build and `git diff --check` passed locally before commit.
+- Boundary: PASS_LOCAL DCTC guard only. This does not route real tasks, import
+  raw data, run production SQL, send email, create accounts or tickets, accept
+  evidence, execute or accept UAT, approve owner GO/NO-GO or mark production
+  GO. Production remains NO-GO.
+
 ## 2026-07-05 - Data Confirmation Task Center Submitter Scope Lock
 
 - Scope: Added `CONFIRM_SUBMITTER_SCOPE_LOCK` so DCTC confirmation submit is

@@ -139,10 +139,13 @@ requireTokens(
     "data-heu-dctc-confirm-submitter-scope=\"CONFIRM_SUBMITTER_SCOPE_LOCK\"",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
-    "row.task_center_status === \"CHO_XAC_NHAN\" && row.can_current_user_confirm",
+    "row.task_center_status === \"CHO_XAC_NHAN\"",
+    "Boolean(row.can_current_user_confirm)",
     "data_confirmation.confirm moi submit",
     "task da co ket qua thi khong submit",
-    "data-heu-dctc-confirm-form=\"RPC_CONFIRM_ONLY DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF\"",
+    "data-heu-dctc-confirm-form=\"RPC_CONFIRM_ONLY REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF\"",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
+    "Required for Can sua, Khong thuoc toi or Da khoa",
     "Required when locking to DA_KHOA",
     "due_date_or_batch",
     "owner_decision_ref",
@@ -232,6 +235,7 @@ requireTokens(
     "confirmDataConfirmationTaskAction",
     "allowedConfirmationStatuses",
     "DCTC_LOCK_NOTE_REQUIRED",
+    "DCTC_REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DCTC_LOCK_EVIDENCE_REQUIRED",
     "\"DUNG\"",
     "\"CAN_SUA\"",
@@ -243,6 +247,7 @@ requireTokens(
     "p_note",
     "p_controlled_evidence_ref",
     "confirmation_note_required_for_repair_or_out_of_scope",
+    "DCTC_REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "confirmation_note_required_for_locked_status",
     "controlled_evidence_ref_required_for_locked_status",
     "nextStatus === \"DA_KHOA\"",
@@ -352,6 +357,7 @@ requireTokens(
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
     "does not auto-seed real tasks",
     "production GO",
@@ -383,6 +389,7 @@ requireTokens(
     "CONTROLLED_PILOT_LANE_READY",
     "CONTROLLED_PILOT_DEPARTMENT_ONLY",
     "KHTC, Tuyen sinh, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
     "does not auto-seed real tasks",
     "owner GO/NO-GO or production GO",
@@ -414,6 +421,7 @@ requireTokens(
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA lock requires note and controlled evidence ref",
     "future production reliance",
     "owner GO/NO-GO or production GO",
@@ -447,6 +455,7 @@ requireTokens(
     "RPC_CONFIRM_ONLY",
     "CONFIRM_SUBMITTER_SCOPE_LOCK",
     "CONFIRM_FROM_CHO_XAC_NHAN_ONLY",
+    "REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
     "DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF",
     "DA_KHOA lock requires note and controlled evidence ref",
     "route_data_confirmation_task",
@@ -471,7 +480,10 @@ if (failures.length > 0) {
 console.log("HEU Data Confirmation Task Center route check");
 console.log("DCTC_RUNTIME_ROUTE_READY: PASS_LOCAL_RUNTIME_ROUTE");
 console.log(
-  "route=/data-confirmation; read=heu_data_confirmation_task_center; route=route_data_confirmation_task; pilot_lanes=CONTROLLED_PILOT_LANE_READY; department_lock=CONTROLLED_PILOT_DEPARTMENT_ONLY; update=confirm_data_confirmation_task",
+  "route=/data-confirmation; read=heu_data_confirmation_task_center; route=route_data_confirmation_task; pilot_lanes=CONTROLLED_PILOT_LANE_READY; department_lock=CONTROLLED_PILOT_DEPARTMENT_ONLY; submitter_lock=CONFIRM_SUBMITTER_SCOPE_LOCK; update=confirm_data_confirmation_task",
+);
+console.log(
+  "repair_out_of_scope_note_lock=REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED",
 );
 console.log(
   "Boundary: RLS/RPC only; no auto-seed, raw-data import, direct table update, email, account, ticket, evidence/UAT acceptance, owner GO/NO-GO or production GO.",

@@ -270,7 +270,8 @@ function countDepartmentRows(rows: DataConfirmationTaskRow[], department: string
 
 function canSubmitStatus(row: DataConfirmationTaskRow) {
   return (
-    row.task_center_status === "CHO_XAC_NHAN" && row.can_current_user_confirm
+    row.task_center_status === "CHO_XAC_NHAN" &&
+    Boolean(row.can_current_user_confirm)
   );
 }
 
@@ -727,7 +728,7 @@ function ConfirmationForm({ task }: { task: DataConfirmationTaskRow }) {
     <form
       action={confirmDataConfirmationTaskAction}
       className="grid min-w-0 gap-3 border-t border-zinc-200 bg-zinc-50 p-4 lg:grid-cols-[180px_minmax(220px,1fr)_minmax(220px,1fr)_auto]"
-      data-heu-dctc-confirm-form="RPC_CONFIRM_ONLY DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF"
+      data-heu-dctc-confirm-form="RPC_CONFIRM_ONLY REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF"
       data-heu-dctc-confirm-submitter-scope="CONFIRM_SUBMITTER_SCOPE_LOCK"
       data-heu-dctc-confirm-transition="CONFIRM_FROM_CHO_XAC_NHAN_ONLY"
     >
@@ -787,7 +788,9 @@ function ConfirmationForm({ task }: { task: DataConfirmationTaskRow }) {
         <p className="break-words text-xs text-zinc-500 lg:col-span-4">
           CONFIRM_SUBMITTER_SCOPE_LOCK: chi assigned user, owner user, phong
           phu trach hoac user co quyen data_confirmation.confirm moi submit
-          duoc task `CHO_XAC_NHAN`. CONFIRM_FROM_CHO_XAC_NHAN_ONLY: task da co ket qua thi khong submit lai trong DCTC.
+          duoc task `CHO_XAC_NHAN`. REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED:
+          Can sua/Khong thuoc toi phai co ghi chu. CONFIRM_FROM_CHO_XAC_NHAN_ONLY:
+          task da co ket qua thi khong submit lai trong DCTC.
         </p>
       ) : null}
     </form>

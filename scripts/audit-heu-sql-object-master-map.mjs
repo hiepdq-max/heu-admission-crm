@@ -42,6 +42,7 @@ requireFile("docs/HEU_DATA_MODEL_V1.md");
 requireFile("docs/HEU_DATA_DICTIONARY_V1.md");
 requireFile("docs/modules/TTGDTX_9PLUS_CORE_DATA_DICTIONARY.md");
 requireFile("database/step111_heu_finance_desk.sql");
+requireFile("database/step121_data_confirmation_task_center.sql");
 
 const map = exists(mapPath) ? read(mapPath) : "";
 
@@ -66,6 +67,7 @@ const canonicalMasters = [
   "PAYMENT_MASTER",
   "STAFF_USER_MASTER",
   "ROLE_PERMISSION_MASTER",
+  "DATA_CONFIRMATION_TASK_MASTER",
   "AUDIT_LOG",
 ];
 
@@ -93,6 +95,12 @@ const keyObjects = [
   "role_permissions",
   "permission_registry",
   "audit_logs",
+  "heu_data_confirmation_tasks",
+  "heu_data_confirmation_task_status_history",
+  "heu_data_confirmation_task_center",
+  "heu_data_confirmation_task_status_timeline",
+  "route_data_confirmation_task",
+  "confirm_data_confirmation_task",
   "approval_requests",
   "ttgdtx_accounting_dashboard_summary",
   "heu_finance_desk_summary",
@@ -117,6 +125,27 @@ requireSqlObject("database/step107_ttgdtx_payment_execution_p2_17.sql", "ttgdtx_
 requireSqlObject("database/step108_ttgdtx_accounting_dashboard_p2_18.sql", "ttgdtx_accounting_dashboard_summary");
 requireSqlObject("database/step111_heu_finance_desk.sql", "heu_finance_desk_summary");
 requireSqlObject("database/step50_role_permission_delegation_matrix.sql", "permission_registry");
+requireSqlObject("database/step121_data_confirmation_task_center.sql", "heu_data_confirmation_tasks");
+requireSqlObject(
+  "database/step121_data_confirmation_task_center.sql",
+  "heu_data_confirmation_task_status_history",
+);
+requireSqlObject(
+  "database/step121_data_confirmation_task_center.sql",
+  "heu_data_confirmation_task_center",
+);
+requireSqlObject(
+  "database/step121_data_confirmation_task_center.sql",
+  "heu_data_confirmation_task_status_timeline",
+);
+requireSqlObject(
+  "database/step121_data_confirmation_task_center.sql",
+  "route_data_confirmation_task",
+);
+requireSqlObject(
+  "database/step121_data_confirmation_task_center.sql",
+  "confirm_data_confirmation_task",
+);
 
 requireText(
   map,
@@ -134,6 +163,18 @@ requireText(
   map,
   /P2-18 Accounting dashboard[\s\S]*`DASHBOARD_VIEW_MASTER`, `REPORT_VIEW_MASTER_CONTRACT`[\s\S]*Step111 HEU Finance Desk[\s\S]*`FINANCE_DESK_WORKBENCH`, `REPORT_VIEW_MASTER_CONTRACT`, `ACCEPTANCE_EVIDENCE_MASTER`, `IMPORT_CONTROL_MASTER`/i,
   "P2-18 and Step111 report-view contract targets",
+);
+
+requireText(
+  map,
+  /DATA_CONFIRMATION_TASK_MASTER[\s\S]*heu_data_confirmation_tasks[\s\S]*heu_data_confirmation_task_status_history[\s\S]*heu_data_confirmation_task_center[\s\S]*heu_data_confirmation_task_status_timeline[\s\S]*route_data_confirmation_task[\s\S]*confirm_data_confirmation_task[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*PASS_LOCAL_SCHEMA_CONTRACT[\s\S]*status timeline scope parity[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*must not auto-seed real tasks/i,
+  "DCTC master object PASS_LOCAL schema contract",
+);
+
+requireText(
+  map,
+  /Step121 DCTC schema contract[\s\S]*assigned_user_id[\s\S]*owner_user_id[\s\S]*ASSIGNEE_OR_OWNER_REQUIRED[\s\S]*CONTROLLED_PILOT_DEPARTMENT_ONLY[\s\S]*can_current_user_confirm[\s\S]*CONFIRM_SUBMITTER_SCOPE_LOCK[\s\S]*CONFIRM_FROM_CHO_XAC_NHAN_ONLY[\s\S]*REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED[\s\S]*DA_KHOA lock requires note and controlled evidence ref[\s\S]*`DATA_CONFIRMATION_TASK_MASTER`, `WORKFLOW_REQUEST_MASTER`, `AUDIT_LOG`, `REPORT_VIEW_MASTER_CONTRACT`/i,
+  "Step121 DCTC canonical target mapping",
 );
 
 const packageJson = JSON.parse(read("package.json"));
