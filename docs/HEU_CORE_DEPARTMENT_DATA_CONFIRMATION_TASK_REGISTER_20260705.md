@@ -76,9 +76,7 @@ name both `department_owner_lane` / `owner_user_id` and
 to a department owner lane and a responsible user. The SQL route also rejects
 owner/assigned users that are not active users in the task `department_code`,
 so a KHTC task cannot be assigned into Admissions, CTHSSV, Dao Tao, Khoa or
-Short Course by mistake. This does not assign real users outside owner-approved
-scope, grant access, seed real tasks, accept evidence, accept UAT, approve owner
-GO/NO-GO or mark production GO.
+Short Course by mistake. This does not assign real users outside owner-approved scope, grant access, seed real tasks, accept evidence, accept UAT, approve owner GO/NO-GO or mark production GO.
 
 Scope gate route lock:
 

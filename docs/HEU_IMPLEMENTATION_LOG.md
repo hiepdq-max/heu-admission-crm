@@ -1,5 +1,36 @@
 # HEU Implementation Log
 
+## 2026-07-05 - DCTC Owner Assignee Department Match Lock
+
+- Scope: Tightened the Data Confirmation Task Center owner/assignee pair so a
+  task cannot be routed to `CHO_XAC_NHAN` unless both `owner_user_id` and
+  `assigned_user_id` are active users in the same `department_code` as the
+  task.
+- Verified existing runtime anchors: `database/step121_data_confirmation_task_center.sql`
+  and `app/data-confirmation/page.tsx` already expose the same owner/assignee
+  department-match invariant.
+- Changed: `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-heu-p0-register-pack.mjs`.
+- Result: `dctc_user_matches_department` now enforces
+  `DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY` and
+  `OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT` together with
+  `route_data_confirmation_task` and route RLS insert/update checks. A KHTC
+  task cannot be assigned to an Admissions, CTHSSV, Dao Tao, Khoa or Short
+  Course user by mistake.
+- Boundary: This does not create accounts, grant access, change role/scope,
+  assign real users outside owner-approved scope, seed real tasks, mutate source
+  data, accept evidence, accept UAT, approve owner GO/NO-GO or mark production
+  GO. Production remains NO-GO.
+
 ## 2026-07-05 - Data Confirmation Task Center Repair/Out-of-Scope Note Lock
 
 - Scope: Added `REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED` so `CAN_SUA` and
