@@ -34,6 +34,8 @@
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
     "check:heu-ai-dirty-scope-packaging-ledger": "node scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs",
+    "check:heu-ai-002-static-checker-readiness": "node scripts/check-heu-ai-002-static-checker-readiness.mjs",
+    "dry-run:heu-ai-003-pr-split": "node scripts/dry-run-heu-ai-003-pr-split.mjs",
     "check:heu-executive-dashboard-readiness": "node scripts/check-heu-executive-dashboard-readiness.mjs",
     "check:heu-report-catalog-department-intake": "node scripts/check-heu-report-catalog-department-intake.mjs",
     "check:heu-root-drive-department-confirmation-intake": "node scripts/check-heu-root-drive-department-confirmation-intake.mjs",
