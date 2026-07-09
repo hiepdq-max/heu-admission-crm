@@ -49,6 +49,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run check:heu-permission-scope-readiness` | NO_GO | `.env.local` / service role keys missing, live permission/scope check skipped |
 | `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only` | PASS_LOCAL | Queue package exists and HEU-USER-PILOT-004 closes the app guard static tokens |
 | `npm.cmd run check:heu-user-operation-cutover-readiness` | PASS_LOCAL_CHECKER_WIRED | HEU-USER-PILOT-005 wires the cutover checker; cutover decision remains NO_GO because external owner blockers remain |
+| `npm.cmd run check:heu-user-activation-worksheet-readiness` | PASS_LOCAL_WORKSHEET | HEU-USER-PILOT-006 wires the safe activation worksheet; real activation remains NO_GO because owner/env blockers remain |
 
 ## 4. Exact Blocking Findings
 
@@ -58,6 +59,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | PERMISSION-SCOPE-ENV | Same env blocker prevents live permission/scope read | Same as above |
 | USER-SCOPE-REPAIR-APP-GUARD | Static checker now reports READY after HEU-USER-PILOT-004 | IT_DATA + Audit must review the owner-approval and controlled-evidence guard before pilot cutover |
 | USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` is wired by HEU-USER-PILOT-005 | IT_DATA + Audit must review the cutover checker; owner seats, live env checks, negative proof and owner signoff remain external blockers |
+| USER-ACTIVATION-WORKSHEET | `check:heu-user-activation-worksheet-readiness` is wired by HEU-USER-PILOT-006 | IT_DATA + Audit must review the activation worksheet before any real user is activated |
 
 ## 5. Static Guard Tokens Closed Locally
 
@@ -103,6 +105,12 @@ Completed checker wiring slice:
 HEU-USER-PILOT-005-OPERATION-CUTOVER-READINESS-CHECKER
 ```
 
+Completed activation worksheet slice:
+
+```text
+HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS
+```
+
 Scope:
 
 - `components/settings/user-business-scope-settings.tsx`
@@ -130,6 +138,8 @@ External blocker that cannot be solved in Git:
   real user pilot cutover.
 - Owner seats, TTGDTX negative proof, signed P6-04 UAT, access closure and final
   owner cutover decision remain outside Git/Codex/chat.
+- User activation worksheet is local-control ready only; actual activation still
+  needs secure env, owner approval and controlled evidence outside Git/Codex/chat.
 
 ## 8. Rollback
 
@@ -170,9 +180,12 @@ SOP-RESULT:
 - `NO_GO` for real Day-1 pilot.
 - `CAN_SUA` for IT_DATA + Audit review of the minimal scope-save guard fix.
 - `CAN_SUA` for IT_DATA + Audit review of the operation cutover checker.
+- `CAN_SUA` for IT_DATA + Audit review of the activation worksheet.
 
 SOP-NEXT:
 - Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
   before any real scope save or pilot cutover.
 - Review `HEU-USER-PILOT-005-OPERATION-CUTOVER-READINESS-CHECKER` with IT_DATA +
   Audit before treating user operation cutover as ready.
+- Review `HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS` with IT_DATA +
+  Audit before creating, inviting or activating any pilot user.

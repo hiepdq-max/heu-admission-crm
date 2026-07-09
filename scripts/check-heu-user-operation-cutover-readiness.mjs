@@ -12,10 +12,15 @@ const day1RunbookPath =
   "docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md";
 const precheckLedgerPath =
   "docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md";
+const activationWorksheetPath =
+  "docs/HEU_CONTROL/HEU_USER_PILOT_006_USER_ACTIVATION_WORKSHEET_READINESS_20260709.md";
 const checkerPath = "scripts/check-heu-user-operation-cutover-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-user-operation-cutover-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const activationWorksheetAlias = "check:heu-user-activation-worksheet-readiness";
+const activationWorksheetCommand =
+  "node scripts/check-heu-user-activation-worksheet-readiness.mjs";
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -57,6 +62,7 @@ for (const file of [
   pilot001Path,
   day1RunbookPath,
   precheckLedgerPath,
+  activationWorksheetPath,
   checkerPath,
   packagePath,
 ]) {
@@ -69,6 +75,7 @@ if (failures.length === 0) {
   const pilot001 = read(pilot001Path);
   const day1Runbook = read(day1RunbookPath);
   const precheckLedger = read(precheckLedgerPath);
+  const activationWorksheet = read(activationWorksheetPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -90,6 +97,7 @@ if (failures.length === 0) {
       "NEGATIVE_CONTROL_BROWSER_PROOF_REFERENCE: PENDING_OWNER_UPLOAD",
       "OWNER_CUTOVER_DECISION_REFERENCE: PENDING_OWNER_SIGNOFF",
       "npm.cmd run check:heu-user-operation-cutover-readiness",
+      "npm.cmd run check:heu-user-activation-worksheet-readiness",
       "It is expected to return `NO_GO` until the owner-approved users",
       "approve owner GO/NO-GO or mark production GO",
     ],
@@ -146,17 +154,41 @@ if (failures.length === 0) {
     [
       "HEU-USER-PILOT-003-IDENTITY-SCOPE-PRECHECK-LEDGER",
       "check:heu-user-operation-cutover-readiness",
+      "check:heu-user-activation-worksheet-readiness",
       "PASS_LOCAL_CHECKER_WIRED",
+      "PASS_LOCAL_WORKSHEET",
       "Day-1 real-user pilot | NO_GO",
       "HEU-USER-PILOT-005-OPERATION-CUTOVER-READINESS-CHECKER",
+      "HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS",
       "Production status: NO-GO",
     ],
     "precheck ledger token",
     precheckLedgerPath,
   );
 
+  requireTokens(
+    activationWorksheet,
+    [
+      "HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS",
+      "Status: PASS_LOCAL_WORKSHEET",
+      "Production status: NO-GO",
+      "PILOT-NEG-01",
+      "ACTIVATION-OWNER-06",
+      "NO_GO_OWNER_SIGNOFF",
+      "AI/Codex must not",
+      "Create/invite users.",
+      "Grant role, department, workspace or business scope.",
+    ],
+    "activation worksheet token",
+    activationWorksheetPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (packageJson.scripts?.[activationWorksheetAlias] !== activationWorksheetCommand) {
+    fail(`${packagePath}: missing or mismatched ${activationWorksheetAlias}`);
   }
 
   requireTokens(

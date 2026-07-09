@@ -154,6 +154,7 @@ npm.cmd run check:heu-user-create-readiness
 npm.cmd run check:heu-permission-scope-readiness
 npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only
 npm.cmd run check:heu-user-operation-cutover-readiness
+npm.cmd run check:heu-user-activation-worksheet-readiness
 npm.cmd run audit:heu-user-account-security
 npm.cmd run audit:heu-role-scope-uat-pack
 npm.cmd run audit:ttgdtx-role-scope-access
