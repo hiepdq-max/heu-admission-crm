@@ -4,6 +4,7 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const requiredFiles = {
   route: "app/data-confirmation/page.tsx",
+  departmentTaskInbox: "components/data-confirmation/department-task-inbox.tsx",
   appShell: "components/layout/app-shell.tsx",
   dashboard: "components/dashboard/dashboard-overview.tsx",
   workspaceContext: "lib/heu-workspace-context.ts",
@@ -59,6 +60,10 @@ function forbidPattern(code, content, patterns) {
 }
 
 const route = readRequiredFile("DCTC-FILE-ROUTE", requiredFiles.route);
+const departmentTaskInbox = readRequiredFile(
+  "DCTC-FILE-DEPARTMENT-TASK-INBOX",
+  requiredFiles.departmentTaskInbox,
+);
 const appShell = readRequiredFile("DCTC-FILE-APP-SHELL", requiredFiles.appShell);
 const dashboard = readRequiredFile("DCTC-FILE-DASHBOARD", requiredFiles.dashboard);
 const workspaceContext = readRequiredFile(
@@ -81,6 +86,9 @@ const userPilot = readRequiredFile("DCTC-FILE-USER-PILOT", requiredFiles.userPil
 
 requireTokens("DCTC-ROUTE-SCOPE-FIRST", route, [
   "getHEUWorkspaceContext",
+  "DepartmentTaskInbox",
+  "scopeDecision={heuWorkspace.scopeDecision}",
+  "actionGate={heuWorkspace.actionGate}",
   "includeActionPermissions: true",
   "HEU_DATA_CONFIRMATION_TASK_CENTER",
   "HEU_WORKSPACE_CONTEXT_SCOPE_FIRST",
@@ -107,6 +115,28 @@ forbidPattern("DCTC-ROUTE-NO-DATABASE-QUERY", route, [
 forbidPattern("DCTC-ROUTE-NO-PRODUCTION-ACTION", route, [
   { label: "revalidatePath", pattern: /\brevalidatePath\s*\(/ },
   { label: "redirect after mutation", pattern: /redirect\s*\(\s*["']\/data-confirmation/ },
+  { label: "server action marker", pattern: /["']use server["']/ },
+]);
+
+requireTokens("DCTC-DEPARTMENT-TASK-INBOX-MVP", departmentTaskInbox, [
+  "HEU_DEPARTMENT_TASK_INBOX_MVP",
+  "ROLE_WORKSPACE_SCOPE_FILTERED",
+  "REF_ONLY_NO_RAW_PII_NO_MUTATION",
+  "NO_AI_CALL_NO_AUTOMATION_STEP",
+  "NO_GO_SCOPE",
+  "DRAFT_READY",
+  "READ_ONLY",
+  "withAdmissionSegmentParam",
+  "canManageSystemScope",
+]);
+
+forbidPattern("DCTC-DEPARTMENT-TASK-INBOX-NO-MUTATION", departmentTaskInbox, [
+  { label: "supabase.from", pattern: /supabase\s*\.\s*from\s*\(/ },
+  { label: "insert", pattern: /\.insert\s*\(/ },
+  { label: "update", pattern: /\.update\s*\(/ },
+  { label: "upsert", pattern: /\.upsert\s*\(/ },
+  { label: "delete", pattern: /\.delete\s*\(/ },
+  { label: "fetch call", pattern: /\bfetch\s*\(/ },
   { label: "server action marker", pattern: /["']use server["']/ },
 ]);
 

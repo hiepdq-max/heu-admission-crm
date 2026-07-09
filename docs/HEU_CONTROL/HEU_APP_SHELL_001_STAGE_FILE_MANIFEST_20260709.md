@@ -29,6 +29,7 @@ app/page.tsx
 app/reports/page.tsx
 app/settings/actions.ts
 components/dashboard/dashboard-overview.tsx
+components/data-confirmation/department-task-inbox.tsx
 components/layout/app-shell.tsx
 components/settings/user-business-scope-settings.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_BODY_20260709.md
@@ -36,6 +37,7 @@ docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_HANDOFF_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_MODULAR_MONOLITH_DECISION_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_REVIEW_CHECKLIST_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
+docs/HEU_CONTROL/HEU_DATA_003_DEPARTMENT_TASK_INBOX_MVP_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -48,6 +50,7 @@ lib/workspace.ts
 package.json
 scripts/check-heu-app-shell-draft-pr-readiness.mjs
 scripts/check-heu-data-confirmation-task-center.mjs
+scripts/check-heu-department-task-inbox-mvp-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -97,6 +100,7 @@ git add -- `
   app/reports/page.tsx `
   app/settings/actions.ts `
   components/dashboard/dashboard-overview.tsx `
+  components/data-confirmation/department-task-inbox.tsx `
   components/layout/app-shell.tsx `
   components/settings/user-business-scope-settings.tsx `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_BODY_20260709.md `
@@ -104,6 +108,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_MODULAR_MONOLITH_DECISION_20260709.md `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_REVIEW_CHECKLIST_20260709.md `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md `
+  docs/HEU_CONTROL/HEU_DATA_003_DEPARTMENT_TASK_INBOX_MVP_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -116,6 +121,7 @@ git add -- `
   package.json `
   scripts/check-heu-app-shell-draft-pr-readiness.mjs `
   scripts/check-heu-data-confirmation-task-center.mjs `
+  scripts/check-heu-department-task-inbox-mvp-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -133,7 +139,9 @@ After staging, verify:
 git diff --cached --name-only
 git diff --cached --check
 node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs
+node --check scripts/check-heu-department-task-inbox-mvp-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
+npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness
