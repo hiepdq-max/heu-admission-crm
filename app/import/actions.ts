@@ -7,6 +7,7 @@ import {
   getAllowedProgramMajorOptions,
   normalizedOptionLabel,
 } from "@/lib/admission-segment-program-rules";
+import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 
 export type ImportLeadResult = {
@@ -288,8 +289,19 @@ export async function importLeadsAction(
     };
   }
 
+  const importWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
+    requestedSegmentId: defaultAdmissionSegmentId,
+    includeActionPermissions: true,
+  });
+
+  if (!importWorkspace.actionGate.canImportLeadDraft) {
+    return {
+      error:
+        "Tai khoan chua co quyen leads.import trong workspace dang chon. IT_DATA hoac quan ly tuyen sinh can kiem tra role, permission va scope user truoc khi import.",
+    };
+  }
+
   const [
-    { data: currentRoleCode },
     { data: sources },
     { data: flows },
     { data: segments },
@@ -300,7 +312,6 @@ export async function importLeadsAction(
     { data: segmentScopeRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
-    supabase.rpc("current_user_role_code"),
     supabase
       .from("lead_sources")
       .select("id,source_code,source_name")
@@ -362,6 +373,7 @@ export async function importLeadsAction(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
   const validSegmentIds = new Set((segments ?? []).map((segment) => segment.id));
+  const currentRoleCode = importWorkspace.roleCode;
   const requiresSegmentScope =
     currentRoleCode !== "ADMIN" && currentRoleCode !== "BGH";
 

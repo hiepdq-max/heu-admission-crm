@@ -509,7 +509,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*requestedSegmentId:\s*requestedSegmentParam)(?=[\s\S]*includeActionPermissions:\s*true)(?=[\s\S]*workspace = heuWorkspace\.admissionWorkspace)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*data-heu-import-write-guard="HEU_WORKSPACE_CONTEXT_IMPORT_WRITE_GUARD")(?=[\s\S]*withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(
@@ -540,7 +540,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*requestedSegmentId:\s*requestedSegmentParam)(?=[\s\S]*includeActionPermissions:\s*true)(?=[\s\S]*workspace = heuWorkspace\.admissionWorkspace)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*data-heu-import-write-guard="HEU_WORKSPACE_CONTEXT_IMPORT_WRITE_GUARD")(?=[\s\S]*withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(
@@ -787,7 +787,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*requestedSegmentId:\s*requestedSegmentParam)(?=[\s\S]*includeActionPermissions:\s*true)(?=[\s\S]*workspace = heuWorkspace\.admissionWorkspace)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*data-heu-import-write-guard="HEU_WORKSPACE_CONTEXT_IMPORT_WRITE_GUARD")(?=[\s\S]*withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(
@@ -3894,8 +3894,6 @@ requireText(
 
 requireText(
   "docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md",
-  "docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md",
-  "docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md",
   literalPattern("(?=[\\s\\S]*Status:\\s*DRAFT_CONTROL)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*SC-AP-01)(?=[\\s\\S]*SC-AP-08)(?=[\\s\\S]*SC_ATTENDANCE_PAYMENT_READY \\/ NO_GO \\/ BLOCKED)(?=[\\s\\S]*RV_SHORT_COURSE_ATTENDANCE_PAYMENT)(?=[\\s\\S]*SC-UAT-01)(?=[\\s\\S]*SC-UAT-08)(?=[\\s\\S]*does not approve attendance lock, BHXH decision,\\s+meal\\/allowance payment, HR payment, invoice\\/payment verification, statutory\\s+accounting, period close, UAT acceptance, evidence acceptance, owner GO or\\s+production GO)", "i"),
   "Short Course attendance/payment gap pack boundary",
 );

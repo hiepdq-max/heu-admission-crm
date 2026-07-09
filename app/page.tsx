@@ -17,13 +17,14 @@ import {
   type AdmissionSegmentLeadStatRow,
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
-import { isExecutiveRole } from "@/lib/executive-roles";
+import {
+  getHEUWorkspaceContext,
+  heuWorkspaceSegmentIds,
+} from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
   applyAdmissionSegmentIds,
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -123,12 +124,12 @@ export default async function Home({ searchParams }: HomePageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
-  );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
+  const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
 
   const todayStart = startOfToday().toISOString();
   const tomorrowStart = startOfTomorrow().toISOString();
@@ -145,7 +146,6 @@ export default async function Home({ searchParams }: HomePageProps) {
     documentsCheckedTodayResult,
     urgentLeadsResult,
     userRowsResult,
-    currentRoleResult,
     segmentRowsResult,
     segmentScopeRowsResult,
     segmentLeadRowsResult,
@@ -246,7 +246,6 @@ export default async function Home({ searchParams }: HomePageProps) {
       .limit(5)
       .returns<UrgentLeadRow[]>(),
     supabase.from("users_profile").select("id,full_name"),
-    supabase.rpc("current_user_role_code"),
     supabase
       .from("admission_segments")
       .select(
@@ -291,8 +290,8 @@ export default async function Home({ searchParams }: HomePageProps) {
     ...definition,
     count: pipelineResults[index]?.count ?? 0,
   }));
-  const roleCode = (currentRoleResult.data as string | null) ?? null;
-  const isExecutiveDashboard = isExecutiveRole(roleCode);
+  const roleCode = heuWorkspace.roleCode ?? "UNKNOWN";
+  const isExecutiveDashboard = heuWorkspace.isExecutive;
   const visibleSegmentRowsBase = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
     segmentScopeRowsResult.data ?? [],
@@ -395,7 +394,9 @@ export default async function Home({ searchParams }: HomePageProps) {
       hasExecutivePermission("permission_matrix.manage"),
   };
   const canWriteInWorkspace =
-    Boolean(workspace.activeSegmentId) && !isExecutiveDashboard;
+    Boolean(workspace.activeSegmentId) &&
+    !isExecutiveDashboard &&
+    heuWorkspace.actionGate.canWriteScopedDraft;
   const segmentOverview = (
     <AdmissionSegmentOverview
       segments={segmentOverviewData.segments}

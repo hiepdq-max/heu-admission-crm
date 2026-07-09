@@ -24,6 +24,25 @@ function requireText(contents, pattern, label, file) {
   }
 }
 
+function requireSectionTokens(contents, heading, tokens, label, file) {
+  const marker = `## ${heading}`;
+  const start = contents.indexOf(marker);
+
+  if (start === -1) {
+    fail(`${file}: missing section ${heading}`);
+    return;
+  }
+
+  const next = contents.indexOf("\n## ", start + marker.length);
+  const section = next === -1 ? contents.slice(start) : contents.slice(start, next);
+
+  for (const token of tokens) {
+    if (!section.includes(token)) {
+      fail(`${file}: missing ${label}: ${token}`);
+    }
+  }
+}
+
 for (const file of [
   "AGENTS.md",
   "package.json",
@@ -103,9 +122,55 @@ const systemAiTrendTaskBreakdown = read(
 );
 const releaseGateAudit = read("scripts/audit-ttgdtx-release-gates.mjs");
 
-requireText(
+requireSectionTokens(
   log,
-  /## 2026-07-03 - IT\/Data Fast Local Control Loop[\s\S]*scripts\/check-heu-fast-local-loop\.mjs[\s\S]*scripts\/check-heu-it-data-daily-control\.mjs[\s\S]*HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703\.md[\s\S]*scripts\/audit-heu-current-state-inventory\.mjs[\s\S]*scripts\/audit-heu-implementation-log\.mjs[\s\S]*HEU_FAST_LOOP_WORKTREE[\s\S]*HEU_FAST_LOOP_WORKTREE_AREAS[\s\S]*HEU_FAST_LOOP_AREA_SAMPLE[\s\S]*HEU_FAST_LOOP_NEXT_GUARDS[\s\S]*HEU_FAST_LOOP_WORKTREE_SAMPLE[\s\S]*HEU_FAST_LOOP_WORKTREE_SCOPE[\s\S]*app[\s\S]*components[\s\S]*docs[\s\S]*scripts[\s\S]*database[\s\S]*other[\s\S]*up to three changed paths per area[\s\S]*node --check[\s\S]*npx\.cmd eslint[\s\S]*migration-order[\s\S]*SQL object map[\s\S]*HEU_FAST_LOOP_RUNTIME_PREFLIGHT[\s\S]*active Next dev\/build process[\s\S]*\.next\/lock[\s\S]*DIRTY_WARN_ONLY[\s\S]*-- --security[\s\S]*-- --strict-worktree[\s\S]*HEU_FAST_LOCAL_LOOP_READY:[\s\S]*PASS_LOCAL[\s\S]*stops at the first `NO_GO`[\s\S]*check:heu-fast-local-loop[\s\S]*check:heu-it-data-daily-control[\s\S]*audit:heu-current-state-inventory[\s\S]*audit:heu-implementation-log[\s\S]*--runtime[\s\S]*This is local read-only control-loop packaging only[\s\S]*does not[\s\S]*create accounts[\s\S]*execute UAT[\s\S]*accept evidence[\s\S]*approve finance\s+reliance[\s\S]*owner GO\/NO-GO[\s\S]*production GO/i,
+  "2026-07-03 - IT/Data Fast Local Control Loop",
+  [
+    "scripts/check-heu-fast-local-loop.mjs",
+    "scripts/check-heu-it-data-daily-control.mjs",
+    "HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md",
+    "scripts/audit-heu-current-state-inventory.mjs",
+    "scripts/audit-heu-implementation-log.mjs",
+    "HEU_FAST_LOOP_WORKTREE",
+    "HEU_FAST_LOOP_WORKTREE_AREAS",
+    "HEU_FAST_LOOP_AREA_SAMPLE",
+    "HEU_FAST_LOOP_NEXT_GUARDS",
+    "HEU_FAST_LOOP_WORKTREE_SAMPLE",
+    "HEU_FAST_LOOP_WORKTREE_SCOPE",
+    "app",
+    "components",
+    "docs",
+    "scripts",
+    "database",
+    "other",
+    "up to three changed paths per area",
+    "node --check",
+    "npx.cmd eslint",
+    "migration-order",
+    "SQL object map",
+    "HEU_FAST_LOOP_RUNTIME_PREFLIGHT",
+    "active Next dev/build process",
+    ".next/lock",
+    "DIRTY_WARN_ONLY",
+    "-- --security",
+    "-- --strict-worktree",
+    "HEU_FAST_LOCAL_LOOP_READY:",
+    "PASS_LOCAL",
+    "stops at the first `NO_GO`",
+    "check:heu-fast-local-loop",
+    "check:heu-it-data-daily-control",
+    "audit:heu-current-state-inventory",
+    "audit:heu-implementation-log",
+    "--runtime",
+    "This is local read-only control-loop packaging only",
+    "does not",
+    "create accounts",
+    "execute UAT",
+    "accept evidence",
+    "approve finance reliance",
+    "owner GO/NO-GO",
+    "production GO",
+  ],
   "IT/Data fast local control loop log boundary",
   "docs/HEU_IMPLEMENTATION_LOG.md",
 );

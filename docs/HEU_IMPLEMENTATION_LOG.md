@@ -61,7 +61,7 @@
 
 - Added the executive dashboard report-view reliance strip with
   `data-heu-executive-report-reliance="STD-03_REPORT_RELIANCE_QUICK_STATUS"`.
-- The strip gives BGH/Hiá»‡u trÆ°á»Ÿng quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
+- The strip gives BGH/Hieu truong quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
   `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and
   `RV_AUDIT_RISK_CONTROL`, showing owner lane, decision state, DQ lock and
   blocker before the user opens the underlying module or source map.

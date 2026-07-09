@@ -5,10 +5,12 @@ import {
   AlertTriangle,
   BarChart3,
   CheckCircle2,
+  ClipboardCheck,
   PhoneCall,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { withAdmissionSegmentParam } from "@/lib/workspace";
 
 type KpiItem = {
   label: string;
@@ -39,6 +41,8 @@ type DashboardOverviewProps = {
   pipeline: PipelineItem[];
   urgentLeads: UrgentLead[];
   activities: string[];
+  activeSegmentId: string | null;
+  canWriteInWorkspace: boolean;
   segmentOverview?: ReactNode;
 };
 
@@ -47,8 +51,19 @@ export function DashboardOverview({
   pipeline,
   urgentLeads,
   activities,
+  activeSegmentId,
+  canWriteInWorkspace,
   segmentOverview,
 }: DashboardOverviewProps) {
+  const reportsHref = withAdmissionSegmentParam("/reports", activeSegmentId);
+  const followupsHref = withAdmissionSegmentParam("/followups", activeSegmentId);
+  const taskCenterHref = withAdmissionSegmentParam(
+    "/data-confirmation",
+    activeSegmentId,
+  );
+  const leadHref = (leadId: string) =>
+    withAdmissionSegmentParam(`/leads/${leadId}`, activeSegmentId);
+
   return (
     <>
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -79,12 +94,20 @@ export function DashboardOverview({
                 Tình trạng lead theo các bước chính của quy trình.
               </p>
             </div>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/reports">
-                <BarChart3 className="size-4" />
-                Xem báo cáo
-              </Link>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="outline" size="sm">
+                <Link href={taskCenterHref}>
+                  <ClipboardCheck className="size-4" />
+                  Viec cua toi
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link href={reportsHref}>
+                  <BarChart3 className="size-4" />
+                  Xem báo cáo
+                </Link>
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-3 p-5 md:grid-cols-2">
@@ -141,7 +164,7 @@ export function DashboardOverview({
               </p>
             </div>
             <Button asChild variant="outline" size="sm">
-              <Link href="/followups">
+              <Link href={followupsHref}>
                 <PhoneCall className="size-4" />
                 Danh sách gọi
               </Link>
@@ -171,7 +194,7 @@ export function DashboardOverview({
                     <tr key={lead.id} className="align-top">
                       <td className="px-5 py-4">
                         <Link
-                          href={`/leads/${lead.id}`}
+                          href={leadHref(lead.id)}
                           className="font-medium hover:underline"
                         >
                           {lead.name}
@@ -209,6 +232,11 @@ export function DashboardOverview({
             </p>
           </div>
           <div className="space-y-3 p-5">
+            <div className="rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-600">
+              {canWriteInWorkspace
+                ? "Workspace dang cho phep thao tac ghi da duoc scope."
+                : "Workspace dang o che do doc hoac chua co quyen ghi."}
+            </div>
             {[
               "Data Master trước",
               "Workflow trước",

@@ -68,6 +68,7 @@ type NavigationItem = {
   group: NavigationGroupKey;
   permission?: string;
   permissions?: string[];
+  allowedRoleCodes?: string[];
   adminOnly?: boolean;
 };
 
@@ -76,6 +77,86 @@ const navigationGroups: Array<{ key: NavigationGroupKey; label: string }> = [
   { key: "admission", label: "Nghiệp vụ tuyển sinh" },
   { key: "finance", label: "Tài chính và báo cáo" },
   { key: "control", label: "Kiểm soát hệ thống" },
+];
+
+const HEU_APP_SHELL_ADMISSION_ROLE_CODES = [
+  "TUYEN_SINH",
+  "ADMISSION_HEAD",
+  "TEAM_LEAD",
+  "COUNSELOR",
+];
+const HEU_APP_SHELL_CTHSSV_ROLE_CODES = ["CTHSSV", "CTHSSV_LEAD"];
+const HEU_APP_SHELL_TRAINING_ROLE_CODES = [
+  "DAO_TAO",
+  "KHOA",
+  "KHOA_BO_MON",
+  "NGAN_HAN",
+  "HR",
+];
+const HEU_APP_SHELL_FINANCE_ROLE_CODES = [
+  "KHTC",
+  "ACCOUNTING",
+  "ACCOUNTING_LEAD",
+];
+const HEU_APP_SHELL_CONTROL_ROLE_CODES = [
+  "BGH",
+  "IT_DATA",
+  "AUDIT",
+  "PHAP_CHE",
+];
+const HEU_APP_SHELL_LEAD_READ_PERMISSIONS = [
+  "leads.read_all",
+  "leads.read_team",
+  "leads.read_assigned",
+];
+const HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS = [
+  "leads.write_all",
+  "leads.write_team",
+  "leads.write_assigned",
+];
+const HEU_APP_SHELL_DOCUMENT_PERMISSIONS = [
+  "documents.manage",
+  "documents.manage_team",
+  "documents.read_assigned",
+];
+const HEU_APP_SHELL_REPORT_PERMISSIONS = [
+  "reports.read_all",
+  "reports.read_team",
+  "reports.read_scope",
+  "ttgdtx.report.read",
+  "finance_desk.read",
+];
+const HEU_APP_SHELL_TASK_CENTER_PERMISSIONS = [
+  ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+  ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+  ...HEU_APP_SHELL_DOCUMENT_PERMISSIONS,
+  ...HEU_APP_SHELL_REPORT_PERMISSIONS,
+  "activities.create",
+  "handover.create",
+  "handover.accept_cthssv",
+  "handover.accept_accounting",
+  "audit.read",
+  "master_control.check",
+];
+const HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS = [
+  ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+  ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+  "leads.import",
+  "activities.create",
+  "pipeline.manage",
+  "pipeline.manage_team",
+];
+const HEU_APP_SHELL_CONTROL_REVIEW_PERMISSIONS = [
+  "audit.read",
+  "master_control.read",
+  "master_control.check",
+];
+const HEU_APP_SHELL_ALL_WORK_ROLE_CODES = [
+  ...HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+  ...HEU_APP_SHELL_CTHSSV_ROLE_CODES,
+  ...HEU_APP_SHELL_TRAINING_ROLE_CODES,
+  ...HEU_APP_SHELL_FINANCE_ROLE_CODES,
+  ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
 ];
 
 const navigation: NavigationItem[] = [
@@ -106,6 +187,17 @@ const navigation: NavigationItem[] = [
     icon: Users,
     key: "leads",
     group: "quick",
+    permissions: HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+  },
+  {
+    label: "Viec cua toi",
+    href: "/data-confirmation",
+    icon: ClipboardCheck,
+    key: "data-confirmation",
+    group: "quick",
+    permissions: HEU_APP_SHELL_TASK_CENTER_PERMISSIONS,
+    allowedRoleCodes: HEU_APP_SHELL_ALL_WORK_ROLE_CODES,
   },
   {
     label: "Ngắn hạn ERP",
@@ -129,6 +221,8 @@ const navigation: NavigationItem[] = [
     icon: GraduationCap,
     key: "hou",
     group: "admission",
+    permissions: ["hou.com.read_sensitive", "hou.com.manage"],
+    allowedRoleCodes: [...HEU_APP_SHELL_CONTROL_ROLE_CODES, "KHTC"],
   },
   {
     label: "Khoa/GV",
@@ -136,6 +230,11 @@ const navigation: NavigationItem[] = [
     icon: Users,
     key: "khoa",
     group: "admission",
+    permissions: HEU_APP_SHELL_CONTROL_REVIEW_PERMISSIONS,
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_TRAINING_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+    ],
   },
   {
     label: "CTHSSV",
@@ -144,6 +243,10 @@ const navigation: NavigationItem[] = [
     key: "cthssv",
     group: "admission",
     permission: "handover.accept_cthssv",
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_CTHSSV_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+    ],
   },
   {
     label: "Pipeline",
@@ -151,6 +254,12 @@ const navigation: NavigationItem[] = [
     icon: ListChecks,
     key: "pipeline",
     group: "admission",
+    permissions: [
+      ...HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+      "pipeline.manage",
+      "pipeline.manage_team",
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Hồ sơ nhập học",
@@ -158,6 +267,11 @@ const navigation: NavigationItem[] = [
     icon: ClipboardCheck,
     key: "documents",
     group: "admission",
+    permissions: [
+      ...HEU_APP_SHELL_DOCUMENT_PERMISSIONS,
+      ...HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Lịch tư vấn",
@@ -165,6 +279,12 @@ const navigation: NavigationItem[] = [
     icon: CalendarClock,
     key: "followups",
     group: "admission",
+    permissions: [
+      "activities.create",
+      ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+      ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Đối tác / CTV",
@@ -172,6 +292,8 @@ const navigation: NavigationItem[] = [
     icon: Database,
     key: "partners",
     group: "admission",
+    permission: "partners.manage",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Chiến dịch",
@@ -179,6 +301,8 @@ const navigation: NavigationItem[] = [
     icon: Megaphone,
     key: "campaigns",
     group: "admission",
+    permission: "campaigns.manage",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Import dữ liệu",
@@ -186,6 +310,8 @@ const navigation: NavigationItem[] = [
     icon: FileSpreadsheet,
     key: "import",
     group: "admission",
+    permission: "leads.import",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Finance Desk",
@@ -209,6 +335,12 @@ const navigation: NavigationItem[] = [
     icon: BarChart3,
     key: "reports",
     group: "finance",
+    permissions: HEU_APP_SHELL_REPORT_PERMISSIONS,
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_FINANCE_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+      ...HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    ],
   },
   {
     label: "Master Control",
@@ -240,6 +372,8 @@ const navigation: NavigationItem[] = [
     icon: ShieldCheck,
     key: "audit",
     group: "control",
+    permission: "audit.read",
+    allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT", "PHAP_CHE"],
   },
   {
     label: "AI Assistant",
@@ -247,6 +381,8 @@ const navigation: NavigationItem[] = [
     icon: Bot,
     key: "ai-assistant",
     group: "control",
+    permissions: ["audit.read", "master_control.check"],
+    allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT"],
   },
   {
     label: "Phạm vi user",
@@ -278,6 +414,7 @@ const segmentAwareNavigationKeys = new Set([
   "finance-desk",
   "finance-advance-payment",
   "leads",
+  "data-confirmation",
   "pipeline",
   "documents",
   "followups",
@@ -365,6 +502,12 @@ function buildWorkspaceQuickLinks(
       icon: Users,
       navKey: "leads",
       tone: "primary",
+    },
+    {
+      label: "Viec cua toi",
+      href: withAdmissionSegmentParam("/data-confirmation", segmentId),
+      icon: ClipboardCheck,
+      navKey: "data-confirmation",
     },
     {
       label: "Follow-up",
@@ -466,17 +609,28 @@ export async function AppShell({
   );
   const visibleNavigation = navigation.filter(
     (item) => {
+      if (currentRoleCode === "ADMIN") {
+        return true;
+      }
+
+      if (item.adminOnly) {
+        return false;
+      }
+
       const itemPermissions = [
         ...(item.permission ? [item.permission] : []),
         ...(item.permissions ?? []),
       ];
-
-      return (
-        (!item.adminOnly || currentRoleCode === "ADMIN") &&
-        (itemPermissions.length === 0 ||
-          currentRoleCode === "ADMIN" ||
-          itemPermissions.some((permission) => permissionMap.get(permission)))
+      const itemRoleCodes = item.allowedRoleCodes ?? [];
+      const hasAccessRule = itemPermissions.length > 0 || itemRoleCodes.length > 0;
+      const isRoleAllowed = currentRoleCode
+        ? itemRoleCodes.includes(currentRoleCode)
+        : false;
+      const isPermissionAllowed = itemPermissions.some((permission) =>
+        permissionMap.get(permission),
       );
+
+      return !hasAccessRule || isRoleAllowed || isPermissionAllowed;
     },
   );
   const visibleNavigationKeys = new Set(
@@ -486,7 +640,10 @@ export async function AppShell({
     workspace?.activeSegmentId ?? null,
     workspace?.activeSegment?.segmentCode,
     visibleNavigationKeys,
-    !isExecutive,
+    !isExecutive &&
+      HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS.some((permission) =>
+        permissionMap.get(permission),
+      ),
   );
   const groupedNavigation = navigationGroups
     .map((group) => ({
@@ -515,6 +672,7 @@ export async function AppShell({
             className="space-y-5 px-3 py-4"
             data-heu-sidebar-navigation-groups="P0-13_SIDEBAR_NAV_GROUPS"
             data-heu-sidebar-collapsible-groups="P0-13_COLLAPSIBLE_NAV_GROUPS"
+            data-heu-app-shell-role-scope-menu="HEU_APP_SHELL_ROLE_SCOPE_MENU"
           >
             {groupedNavigation.map((group) => {
               const isOpenByDefault =

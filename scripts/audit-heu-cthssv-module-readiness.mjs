@@ -32,6 +32,7 @@ function requireText(relativePath, pattern, label) {
 
 for (const file of [
   "app/cthssv/page.tsx",
+  "lib/heu-workspace-context.ts",
   "components/layout/app-shell.tsx",
   "database/step38_user_scopes_and_handovers.sql",
   "scripts/check-heu-cthssv-local-completion.mjs",
@@ -62,8 +63,14 @@ requireText(
 
 requireText(
   "app/cthssv/page.tsx",
-  /(?=[\s\S]*\.from\("lead_handovers"\))(?=[\s\S]*leads!inner)(?=[\s\S]*\.in\("handover_type", cthssvHandoverTypes\))(?=[\s\S]*"leads\.admission_segment_id")(?=[\s\S]*handover\.accept_cthssv)(?=[\s\S]*current_user_role_code)(?=[\s\S]*has_permission)/,
-  "lead handover query and permission gate",
+  /(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*includeActionPermissions:\s*true)(?=[\s\S]*heuWorkspace\.actionGate\.canAcceptCthssvHandover)(?=[\s\S]*\.from\("lead_handovers"\))(?=[\s\S]*leads!inner)(?=[\s\S]*\.in\("handover_type", cthssvHandoverTypes\))(?=[\s\S]*"leads\.admission_segment_id")(?=[\s\S]*handover\.accept_cthssv)/,
+  "lead handover query and HEUWorkspaceContext permission gate",
+);
+
+requireText(
+  "lib/heu-workspace-context.ts",
+  /(?=[\s\S]*canAcceptCthssvHandover)(?=[\s\S]*CTHSSV_HANDOVER_PERMISSIONS)(?=[\s\S]*handover\.accept_cthssv)(?=[\s\S]*hasAnyPermission)(?=[\s\S]*includeActionPermissions)/,
+  "HEUWorkspaceContext CTHSSV permission mapping",
 );
 
 requireText(
