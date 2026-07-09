@@ -52,6 +52,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run check:heu-user-activation-worksheet-readiness` | PASS_LOCAL_WORKSHEET | HEU-USER-PILOT-006 wires the safe activation worksheet; real activation remains NO_GO because owner/env blockers remain |
 | `npm.cmd run check:heu-user-pilot-secure-env-handoff-readiness` | PASS_LOCAL_HANDOFF | HEU-USER-PILOT-007 wires the secure env handoff; live env remains NO_GO until IT_DATA confirms local `.env.local` |
 | `npm.cmd run check:heu-user-pilot-live-check-result-ledger-readiness` | PASS_LOCAL_LEDGER | HEU-USER-PILOT-008 wires the status-only live-check result ledger; live checks remain NO_GO until env is ready |
+| `npm.cmd run check:heu-user-pilot-stacked-pr-review-packet-readiness` | PASS_LOCAL_REVIEW_PACKET | HEU-USER-PILOT-009 wires the stacked PR review packet; PR #15 through PR #19 stay Draft until IT_DATA + Audit review |
 
 ## 4. Exact Blocking Findings
 
@@ -64,6 +65,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | USER-ACTIVATION-WORKSHEET | `check:heu-user-activation-worksheet-readiness` is wired by HEU-USER-PILOT-006 | IT_DATA + Audit must review the activation worksheet before any real user is activated |
 | USER-SECURE-ENV-HANDOFF | `check:heu-user-pilot-secure-env-handoff-readiness` is wired by HEU-USER-PILOT-007 | IT_DATA must prepare `.env.local` locally without exposing secret values in Git/Codex/chat |
 | USER-LIVE-CHECK-LEDGER | `check:heu-user-pilot-live-check-result-ledger-readiness` is wired by HEU-USER-PILOT-008 | IT_DATA records only status results after live checks; no secret values or raw profile data |
+| USER-STACKED-PR-REVIEW-PACKET | `check:heu-user-pilot-stacked-pr-review-packet-readiness` is wired by HEU-USER-PILOT-009 | Review PR #15 through PR #19 with IT_DATA + Audit before moving any PR out of Draft or running live user checks |
 
 ## 5. Static Guard Tokens Closed Locally
 
@@ -127,6 +129,12 @@ Completed live-check result ledger slice:
 HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER
 ```
 
+Completed stacked PR review packet slice:
+
+```text
+HEU-USER-PILOT-009-STACKED-PR-REVIEW-PACKET
+```
+
 Scope:
 
 - `components/settings/user-business-scope-settings.tsx`
@@ -160,6 +168,8 @@ External blocker that cannot be solved in Git:
   IT_DATA control and must never be pasted into Git/Codex/chat.
 - Live-check result ledger is status-only; actual env values and raw user details
   remain outside Git/Codex/chat.
+- Stacked PR review packet is review-order control only; it does not move PRs
+  out of Draft, create users, run live checks or approve pilot cutover.
 
 ## 8. Rollback
 
@@ -203,6 +213,7 @@ SOP-RESULT:
 - `CAN_SUA` for IT_DATA + Audit review of the activation worksheet.
 - `CAN_SUA` for IT_DATA + Audit review of the secure env handoff.
 - `CAN_SUA` for IT_DATA + Audit review of the live-check result ledger.
+- `CAN_SUA` for IT_DATA + Audit review of the stacked PR review packet.
 
 SOP-NEXT:
 - Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
@@ -215,3 +226,5 @@ SOP-NEXT:
   running live user-create or permission/scope checks.
 - Review `HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER` with IT_DATA + Audit
   before recording any live check result.
+- Review `HEU-USER-PILOT-009-STACKED-PR-REVIEW-PACKET` with IT_DATA + Audit
+  before moving PR #15 through PR #19 out of Draft or running live user checks.

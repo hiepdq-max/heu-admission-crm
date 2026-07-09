@@ -33,6 +33,7 @@
     "check:heu-user-activation-worksheet-readiness": "node scripts/check-heu-user-activation-worksheet-readiness.mjs",
     "check:heu-user-pilot-secure-env-handoff-readiness": "node scripts/check-heu-user-pilot-secure-env-handoff-readiness.mjs",
     "check:heu-user-pilot-live-check-result-ledger-readiness": "node scripts/check-heu-user-pilot-live-check-result-ledger-readiness.mjs",
+    "check:heu-user-pilot-stacked-pr-review-packet-readiness": "node scripts/check-heu-user-pilot-stacked-pr-review-packet-readiness.mjs",
     "check:heu-business-user-responsibility-register": "node scripts/check-heu-business-user-responsibility-register.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",

@@ -9,7 +9,7 @@ Production status: NO-GO
 
 ## 1. Purpose
 
-Record status-only results for the live user-create and permission/scope checks
+Record status-only live-check results for the live user-create and permission/scope checks
 without exposing `.env.local`, Supabase keys, user names, emails, raw IDs,
 passwords, invite links or evidence contents.
 
