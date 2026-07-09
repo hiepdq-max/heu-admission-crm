@@ -30,7 +30,7 @@ Latest dry-run result used for this selection:
 | Diff name-status entries | 197 |
 | Untracked entries | 90 |
 | Full docs group | 106 |
-| Selected AI control docs subset | 6 |
+| Selected AI control docs subset | 8 |
 
 ## 3. Allowed Files For PR 001
 
@@ -44,17 +44,20 @@ Only these files are allowed in the first PR group:
 | 4 | `docs/HEU_CONTROL/HEU_AI_002_IT_DATA_AUDIT_REVIEW_20260709.md` | IT_DATA + Audit local review before dry-run command |
 | 5 | `docs/HEU_CONTROL/HEU_AI_003_CONTROL_AUDIT_AGENT_DRY_RUN_PR_SPLIT_20260709.md` | Dry-run command contract; docs-only in this PR |
 | 6 | `docs/HEU_CONTROL/HEU_AI_CONTROL_DOCS_PR_001_SCOPE_MANIFEST_20260709.md` | This PR scope manifest |
+| 7 | `docs/HEU_CONTROL/README.md` | Minimal AI-only control index required by HEU-AI-002 checker |
+| 8 | `docs/HEU_CONTROL/PR_SPLIT_REGISTER_20260707.md` | Minimal AI-only PR split register required by HEU-AI-002 checker |
 
 ## 4. Review Only, Not Included Unless Hunk-Split
 
-These shared index files are currently modified, but they are not automatically
-included in PR 001 because they also contain broad control-register rows outside
-the AI docs subset.
+In the dirty source worktree these shared index files contain broader local
+control rows. In this clean PR branch they are created as minimal AI-only index
+files because the base branch did not have `docs/HEU_CONTROL` index files and
+HEU-AI-002 requires them.
 
 | File | Decision |
 |---|---|
-| `docs/HEU_CONTROL/README.md` | Review only; include only if AI-only hunks are extracted safely |
-| `docs/HEU_CONTROL/PR_SPLIT_REGISTER_20260707.md` | Review only; include only if AI-only hunks are extracted safely |
+| `docs/HEU_CONTROL/README.md` | Included as AI-only minimal index in the PR branch |
+| `docs/HEU_CONTROL/PR_SPLIT_REGISTER_20260707.md` | Included as AI-only minimal PR split register in the PR branch |
 
 If hunk extraction is not done, leave both files for a later control-index PR.
 
@@ -110,7 +113,7 @@ No `npm.cmd run lint` or build is required for this docs-only PR group.
 
 Rollback is revert-only:
 
-- Revert the six allowed docs files.
+- Revert the eight allowed docs files.
 - Do not touch runtime app, database, config, scripts, `.codex` or package
   aliases.
 
@@ -125,8 +128,8 @@ SOP-SCOPE:
 SOP-CHECK:
 
 - HEU-AI-003 dry-run was used as the source.
-- Full docs group remains too broad; this manifest narrows the first PR to six
-  AI control docs.
+- Full docs group remains too broad; this manifest narrows the first PR to
+  eight AI control docs/index files.
 
 SOP-PROFESSIONAL:
 
@@ -143,7 +146,7 @@ SOP-LOGIC:
 
 SOP-VERIFY:
 
-- Scoped `git diff --check` for the six allowed docs files.
+- Scoped `git diff --check` for the eight allowed docs/index files.
 
 SOP-RESULT:
 
