@@ -46,6 +46,7 @@ scripts/check-heu-app-shell-draft-pr-readiness.mjs
 scripts/check-heu-data-confirmation-task-center.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
+scripts/check-heu-user-operation-cutover-readiness.mjs
 ```
 
 ## 3. Files Not To Stage
@@ -104,7 +105,8 @@ git add -- `
   scripts/check-heu-app-shell-draft-pr-readiness.mjs `
   scripts/check-heu-data-confirmation-task-center.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
-  scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
+  scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
+  scripts/check-heu-user-operation-cutover-readiness.mjs
 ```
 
 ## 6. Post-Stage Verification
@@ -118,6 +120,7 @@ node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
+npm.cmd run check:heu-user-operation-cutover-readiness
 npm.cmd run check:heu-app-shell-draft-pr-readiness
 ```
 

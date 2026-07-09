@@ -48,7 +48,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run check:heu-user-create-readiness` | NO_GO | `.env.local` / Supabase Auth Admin keys missing, live account check skipped |
 | `npm.cmd run check:heu-permission-scope-readiness` | NO_GO | `.env.local` / service role keys missing, live permission/scope check skipped |
 | `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only` | PASS_LOCAL | Queue package exists and HEU-USER-PILOT-004 closes the app guard static tokens |
-| `check:heu-user-operation-cutover-readiness` | BLOCKED_NOT_WIRED | Package alias is not present in this stacked branch |
+| `npm.cmd run check:heu-user-operation-cutover-readiness` | PASS_LOCAL_CHECKER_WIRED | HEU-USER-PILOT-005 wires the cutover checker; cutover decision remains NO_GO because external owner blockers remain |
 
 ## 4. Exact Blocking Findings
 
@@ -57,7 +57,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | USER-CREATE-ENV | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY` unavailable in this worktree | IT_DATA must provide env only through approved local secure channel; do not paste secrets into Git/Codex/chat |
 | PERMISSION-SCOPE-ENV | Same env blocker prevents live permission/scope read | Same as above |
 | USER-SCOPE-REPAIR-APP-GUARD | Static checker now reports READY after HEU-USER-PILOT-004 | IT_DATA + Audit must review the owner-approval and controlled-evidence guard before pilot cutover |
-| USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` alias missing in stacked branch | Decide whether to port/register the cutover checker in a separate small PR |
+| USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` is wired by HEU-USER-PILOT-005 | IT_DATA + Audit must review the cutover checker; owner seats, live env checks, negative proof and owner signoff remain external blockers |
 
 ## 5. Static Guard Tokens Closed Locally
 
@@ -89,12 +89,18 @@ until IT_DATA + Audit review them and live env checks pass.
 Day-1 pilot is not ready for real users yet because live env checks still remain
 NO_GO and owner/Audit review is still required.
 
-## 7. Completed Local Fix Slice
+## 7. Completed Local Fix Slices
 
 Completed local fix slice:
 
 ```text
 HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX
+```
+
+Completed checker wiring slice:
+
+```text
+HEU-USER-PILOT-005-OPERATION-CUTOVER-READINESS-CHECKER
 ```
 
 Scope:
@@ -120,6 +126,10 @@ External blocker that cannot be solved in Git:
   Auth/permission checks can run.
 - IT_DATA + Audit must review the HEU-USER-PILOT-004 guard before any real user
   pilot cutover.
+- IT_DATA + Audit must review the HEU-USER-PILOT-005 cutover checker before any
+  real user pilot cutover.
+- Owner seats, TTGDTX negative proof, signed P6-04 UAT, access closure and final
+  owner cutover decision remain outside Git/Codex/chat.
 
 ## 8. Rollback
 
@@ -159,7 +169,10 @@ SOP-VERIFY:
 SOP-RESULT:
 - `NO_GO` for real Day-1 pilot.
 - `CAN_SUA` for IT_DATA + Audit review of the minimal scope-save guard fix.
+- `CAN_SUA` for IT_DATA + Audit review of the operation cutover checker.
 
 SOP-NEXT:
 - Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
   before any real scope save or pilot cutover.
+- Review `HEU-USER-PILOT-005-OPERATION-CUTOVER-READINESS-CHECKER` with IT_DATA +
+  Audit before treating user operation cutover as ready.

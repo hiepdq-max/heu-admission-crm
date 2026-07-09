@@ -29,6 +29,7 @@
     "check:heu-tchc-records-archive-system": "node scripts/check-heu-tchc-records-archive-system.mjs",
     "check:heu-position-assignment-owner-queue": "node scripts/check-heu-position-assignment-owner-queue.mjs",
     "check:heu-negative-control-account-queue": "node scripts/check-heu-negative-control-account-queue.mjs",
+    "check:heu-user-operation-cutover-readiness": "node scripts/check-heu-user-operation-cutover-readiness.mjs",
     "check:heu-business-user-responsibility-register": "node scripts/check-heu-business-user-responsibility-register.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
