@@ -43,6 +43,7 @@
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
     "check:heu-ai-dirty-scope-packaging-ledger": "node scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs",
     "check:heu-ai-002-static-checker-readiness": "node scripts/check-heu-ai-002-static-checker-readiness.mjs",
+    "check:heu-ai-cost-002-static-checker-readiness": "node scripts/check-heu-ai-cost-002-static-checker-readiness.mjs",
     "dry-run:heu-ai-003-pr-split": "node scripts/dry-run-heu-ai-003-pr-split.mjs",
     "check:heu-executive-dashboard-readiness": "node scripts/check-heu-executive-dashboard-readiness.mjs",
     "check:heu-report-catalog-department-intake": "node scripts/check-heu-report-catalog-department-intake.mjs",
