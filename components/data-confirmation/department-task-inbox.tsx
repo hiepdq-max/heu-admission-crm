@@ -16,6 +16,13 @@ import type {
   HEUWorkspaceScopeDecision,
 } from "@/lib/heu-workspace-context";
 import {
+  getMockTaskCenterTasksForLanes,
+  TASK_CENTER_MOCK_DATA_ONLY,
+  TASK_CENTER_MOCK_READONLY_LIST,
+  TASK_CENTER_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_NO_TASK_MUTATION,
+} from "@/lib/task-center-mock-read-model";
+import {
   getTaskCenterFallbackLane,
   getVisibleTaskCenterLanes,
   resolveTaskCenterLaneStatus,
@@ -58,6 +65,7 @@ export function DepartmentTaskInbox({
   const visibleLanes = getVisibleTaskCenterLanes(roleCode, actionGate);
   const inboxLanes =
     visibleLanes.length > 0 ? visibleLanes : [getTaskCenterFallbackLane(roleCode)];
+  const mockTasks = getMockTaskCenterTasksForLanes(inboxLanes);
 
   return (
     <section
@@ -154,6 +162,89 @@ export function DepartmentTaskInbox({
             </article>
           );
         })}
+      </div>
+
+      <div
+        className="border-t border-zinc-200 p-5"
+        data-heu-task-center-mock-readonly-list={TASK_CENTER_MOCK_READONLY_LIST}
+        data-heu-task-center-mock-boundary={TASK_CENTER_MOCK_DATA_ONLY}
+        data-heu-task-center-mock-mutation={TASK_CENTER_NO_TASK_MUTATION}
+        data-heu-task-center-mock-cost-guard={TASK_CENTER_NO_AI_OR_AUTOMATION}
+      >
+        <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase text-zinc-500">
+              HEU-Data-006 - Mock read-only list
+            </p>
+            <h3 className="mt-1 text-sm font-semibold text-zinc-950">
+              Task mau theo lane dang hien
+            </h3>
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-zinc-600">
+              Danh sach mau chi de UAT UI/scope; khong phai task that. Du
+              lieu nay khong doc database, khong goi AI, khong tao automation
+              va khong co nut sua/duyet.
+            </p>
+          </div>
+          <span className="inline-flex w-fit rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-700">
+            {TASK_CENTER_MOCK_DATA_ONLY}
+          </span>
+        </div>
+
+        <div className="overflow-hidden rounded-lg border border-zinc-200">
+          <div className="grid grid-cols-[minmax(9rem,1fr)_minmax(13rem,2fr)_minmax(8rem,1fr)_minmax(10rem,1.4fr)_minmax(8rem,1fr)] gap-0 bg-zinc-100 px-3 py-2 text-xs font-medium uppercase text-zinc-500 max-lg:hidden">
+            <div>Status</div>
+            <div>Task</div>
+            <div>Phong</div>
+            <div>Ref</div>
+            <div>Owner/Due</div>
+          </div>
+          <div className="divide-y divide-zinc-200 bg-white">
+            {mockTasks.map((task) => (
+              <article
+                key={task.taskId}
+                className="grid gap-3 px-3 py-3 text-sm lg:grid-cols-[minmax(9rem,1fr)_minmax(13rem,2fr)_minmax(8rem,1fr)_minmax(10rem,1.4fr)_minmax(8rem,1fr)]"
+                data-heu-task-center-mock-task-id={task.taskId}
+                data-heu-task-center-mock-lane={task.laneId}
+              >
+                <div>
+                  <span className="inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-700">
+                    {task.status}
+                  </span>
+                  <div className="mt-1 text-xs text-zinc-500">
+                    {task.priority}
+                  </div>
+                </div>
+                <div>
+                  <div className="font-medium text-zinc-950">{task.title}</div>
+                  <div className="mt-1 text-xs leading-5 text-zinc-500">
+                    {task.safeSummary}
+                  </div>
+                </div>
+                <div className="text-zinc-700">
+                  {task.departmentCode}
+                  <div className="mt-1 text-xs text-zinc-500">
+                    {task.sourceModule}
+                  </div>
+                </div>
+                <div className="font-mono text-xs text-zinc-600">
+                  <div>{task.sourceRefType}</div>
+                  <div className="mt-1 break-all">{task.sourceRefId}</div>
+                  {task.controlledEvidenceId ? (
+                    <div className="mt-1 text-zinc-500">
+                      {task.controlledEvidenceId}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="text-zinc-700">
+                  {task.ownerHint}
+                  <div className="mt-1 text-xs text-zinc-500">
+                    {task.dueLabel}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="border-t border-zinc-200 bg-zinc-50 p-5">

@@ -169,5 +169,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - Review this read-model interface with IT_DATA + Audit.
-- Next safe slice is either a commented SQL draft or a mock read-only task list,
-  still no migration and no production mutation.
+- Next safe slice is HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST: a mock read-only task list, still no migration and no production mutation.
+- Required next checker alias:
+  `check:heu-task-center-mock-readonly-list-readiness`.

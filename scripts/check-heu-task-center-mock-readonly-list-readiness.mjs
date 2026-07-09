@@ -4,28 +4,22 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const failures = [];
 
+const mockLibPath = "lib/task-center-mock-read-model.ts";
 const contractTsPath = "lib/task-center-contract.ts";
 const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const docPath =
-  "docs/HEU_CONTROL/HEU_DATA_005_TASK_CENTER_READ_MODEL_INTERFACE_20260710.md";
-const dataContractPath =
-  "docs/HEU_CONTROL/HEU_DATA_004_TASK_CENTER_DATA_CONTRACT_20260710.md";
-const mockDocPath =
   "docs/HEU_CONTROL/HEU_DATA_006_TASK_CENTER_MOCK_READONLY_LIST_20260710.md";
+const readModelDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_005_TASK_CENTER_READ_MODEL_INTERFACE_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
-const dataContractCheckerPath =
-  "scripts/check-heu-task-center-data-contract-readiness.mjs";
-const mockLibPath = "lib/task-center-mock-read-model.ts";
-const mockCheckerPath =
-  "scripts/check-heu-task-center-mock-readonly-list-readiness.mjs";
-const checkerPath =
+const readModelCheckerPath =
   "scripts/check-heu-task-center-read-model-interface-readiness.mjs";
+const checkerPath =
+  "scripts/check-heu-task-center-mock-readonly-list-readiness.mjs";
 const packagePath = "package.json";
-const checkerAlias = "check:heu-task-center-read-model-interface-readiness";
+const checkerAlias = "check:heu-task-center-mock-readonly-list-readiness";
 const checkerCommand = `node ${checkerPath}`;
-const mockCheckerAlias = "check:heu-task-center-mock-readonly-list-readiness";
-const mockCheckerCommand = `node ${mockCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -62,15 +56,13 @@ function forbidPatterns(contents, patterns, label, file) {
 }
 
 for (const file of [
+  mockLibPath,
   contractTsPath,
   componentPath,
   docPath,
-  dataContractPath,
-  mockDocPath,
+  readModelDocPath,
   manifestPath,
-  dataContractCheckerPath,
-  mockLibPath,
-  mockCheckerPath,
+  readModelCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -78,169 +70,139 @@ for (const file of [
 }
 
 if (failures.length === 0) {
+  const mockLib = read(mockLibPath);
   const contractTs = read(contractTsPath);
   const component = read(componentPath);
   const doc = read(docPath);
-  const dataContract = read(dataContractPath);
-  const mockDoc = read(mockDocPath);
-  const mockLib = read(mockLibPath);
-  const mockChecker = read(mockCheckerPath);
+  const readModelDoc = read(readModelDocPath);
   const manifest = read(manifestPath);
-  const dataContractChecker = read(dataContractCheckerPath);
+  const readModelChecker = read(readModelCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
   requireTokens(
-    contractTs,
+    mockLib,
     [
-      "TASK_CENTER_READ_MODEL_INTERFACE_CONTRACT_ONLY",
-      "NO_TASK_TABLE_CREATED",
+      "TASK_CENTER_MOCK_READONLY_LIST",
+      "MOCK_DATA_ONLY_NO_DATABASE_READ",
       "NO_TASK_MUTATION_ROUTE_CREATED",
       "NO_AI_CALL_NO_AUTOMATION_STEP",
-      "TASK_CENTER_STATUSES",
-      "TASK_CENTER_STATUS_TRANSITIONS",
-      "TASK_CENTER_DEPARTMENT_CODES",
+      "TaskCenterMockTask",
+      "getMockTaskCenterTasksForLanes",
       "TASK_CENTER_SOURCE_REF_ALLOWLIST",
-      "TASK_CENTER_REQUIRED_COLUMNS",
-      "TASK_CENTER_ROLE_GROUPS",
-      "TASK_CENTER_DEPARTMENT_LANES",
-      "TaskCenterActionGateSnapshot",
-      "getVisibleTaskCenterLanes",
-      "getTaskCenterFallbackLane",
-      "resolveTaskCenterLaneStatus",
-      "DRAFT",
-      "CHO_XAC_NHAN",
-      "DUNG",
-      "CAN_SUA",
-      "KHONG_THUOC_TOI",
-      "DA_KHOA",
-      "DA_HUY",
-      "admission_segment_id",
-      "controlled_evidence_id",
-      "metadata_ref",
-      "hou_student_ref",
-      "workspace_ref",
+      "TASK_CENTER_STATUSES",
+      "admission",
+      "cthssv",
+      "training",
+      "finance",
+      "hou",
+      "control",
+      "general",
+      "lead_demo_ref_001",
+      "student_demo_ref_001",
+      "receivable_demo_ref_001",
+      "hou_student_demo_ref_001",
+      "workspace_demo_ref_001",
+      "role_demo_ref_001",
     ],
-    "TypeScript read-model contract token",
+    "mock read-model token",
+    mockLibPath,
+  );
+
+  requireTokens(
+    contractTs,
+    [
+      "TASK_CENTER_SOURCE_REF_ALLOWLIST",
+      "TASK_CENTER_STATUSES",
+      "TaskCenterVisibleLane",
+      "getVisibleTaskCenterLanes",
+      "resolveTaskCenterLaneStatus",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
+    ],
+    "contract dependency token",
     contractTsPath,
   );
 
   requireTokens(
     component,
     [
-      "@/lib/task-center-contract",
-      "getVisibleTaskCenterLanes",
-      "getTaskCenterFallbackLane",
-      "resolveTaskCenterLaneStatus",
-      "TaskCenterVisibleLane",
-      "HEU_TASK_CENTER_READ_MODEL_INTERFACE",
-      "HEU_DEPARTMENT_TASK_INBOX_MVP",
+      "@/lib/task-center-mock-read-model",
+      "getMockTaskCenterTasksForLanes",
+      "TASK_CENTER_MOCK_READONLY_LIST",
+      "TASK_CENTER_MOCK_DATA_ONLY",
+      "TASK_CENTER_NO_TASK_MUTATION",
+      "TASK_CENTER_NO_AI_OR_AUTOMATION",
+      "data-heu-task-center-mock-readonly-list",
+      "data-heu-task-center-mock-boundary",
+      "data-heu-task-center-mock-mutation",
+      "data-heu-task-center-mock-cost-guard",
+      "mockTasks.map",
+      "Danh sach mau chi de UAT UI/scope; khong phai task that",
     ],
-    "component read-model wiring token",
+    "component mock-list wiring token",
     componentPath,
   );
 
   requireTokens(
     doc,
     [
-      "HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE",
-      "Status: PASS_LOCAL_READ_MODEL_INTERFACE",
+      "HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST",
+      "Status: PASS_LOCAL_MOCK_READONLY_LIST",
       "Production status: NO-GO",
-      "TASK_CENTER_READ_MODEL_INTERFACE_CONTRACT_ONLY",
-      "NO_TASK_TABLE_CREATED",
-      "NO_TASK_MUTATION_ROUTE_CREATED",
-      "NO_AI_CALL_NO_AUTOMATION_STEP",
-      "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER",
-      "NO_GO` for Task Center database",
-      "HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST",
-      "mock read-only task list",
-      "check:heu-task-center-mock-readonly-list-readiness",
-    ],
-    "read-model doc token",
-    docPath,
-  );
-
-  requireTokens(
-    dataContract,
-    [
-      "HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE",
-      "TypeScript read model interface",
-      "NO_GO` for Task Center database",
-    ],
-    "data contract read-model link",
-    dataContractPath,
-  );
-
-  requireTokens(
-    mockDoc,
-    [
-      "HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST",
       "TASK_CENTER_MOCK_READONLY_LIST",
       "MOCK_DATA_ONLY_NO_DATABASE_READ",
       "NO_TASK_MUTATION_ROUTE_CREATED",
       "NO_AI_CALL_NO_AUTOMATION_STEP",
       "TASK_CENTER_DATABASE_READY: NO_GO",
+      "CAN_SUA_IT_DATA_AUDIT_OWNER",
+      "no AI call",
+      "no automation step",
     ],
-    "next mock-list doc token",
-    mockDocPath,
+    "mock-list doc token",
+    docPath,
   );
 
   requireTokens(
-    mockLib,
+    readModelDoc,
     [
-      "TASK_CENTER_MOCK_READONLY_LIST",
-      "TaskCenterMockTask",
-      "getMockTaskCenterTasksForLanes",
-      "TASK_CENTER_SOURCE_REF_ALLOWLIST",
-      "TASK_CENTER_STATUSES",
+      "HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST",
+      "mock read-only task list",
+      "still no migration and no production mutation",
     ],
-    "next mock-list lib token",
-    mockLibPath,
-  );
-
-  requireTokens(
-    mockChecker,
-    [
-      "HEU_TASK_CENTER_MOCK_READONLY_LIST_READY: PASS_LOCAL",
-      "TASK_CENTER_DATABASE_READY: NO_GO_MOCK_ONLY",
-      "NO_RUNTIME_MUTATION: task center mock readonly list checker only",
-    ],
-    "next mock-list checker token",
-    mockCheckerPath,
+    "read-model doc next-slice token",
+    readModelDocPath,
   );
 
   requireTokens(
     manifest,
     [
-      contractTsPath,
       mockLibPath,
       docPath,
-      mockDocPath,
       checkerPath,
-      mockCheckerPath,
-      "check:heu-task-center-read-model-interface-readiness",
       "check:heu-task-center-mock-readonly-list-readiness",
+      "node --check scripts/check-heu-task-center-mock-readonly-list-readiness.mjs",
+      "npm.cmd run check:heu-task-center-mock-readonly-list-readiness",
     ],
-    "manifest read-model token",
+    "manifest mock-list token",
     manifestPath,
   );
 
   requireTokens(
-    dataContractChecker,
+    readModelChecker,
     [
-      "HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE",
-      "check:heu-task-center-read-model-interface-readiness",
+      "HEU-DATA-006-TASK-CENTER-MOCK-READONLY-LIST",
+      "check:heu-task-center-mock-readonly-list-readiness",
+      mockLibPath,
+      docPath,
+      checkerPath,
     ],
-    "data contract checker read-model token",
-    dataContractCheckerPath,
+    "read-model checker mock-list token",
+    readModelCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
-  }
-
-  if (packageJson.scripts?.[mockCheckerAlias] !== mockCheckerCommand) {
-    fail(`${packagePath}: missing or mismatched ${mockCheckerAlias}`);
   }
 
   requireTokens(
@@ -248,16 +210,16 @@ if (failures.length === 0) {
     [
       "existsSync",
       "readFileSync",
-      "HEU_TASK_CENTER_READ_MODEL_INTERFACE_READY: PASS_LOCAL",
-      "TASK_CENTER_DATABASE_READY: NO_GO_INTERFACE_ONLY",
-      "NO_RUNTIME_MUTATION: task center read-model interface checker only; no database table, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
+      "HEU_TASK_CENTER_MOCK_READONLY_LIST_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_MOCK_ONLY",
+      "NO_RUNTIME_MUTATION: task center mock readonly list checker only; no database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
   );
 
   forbidPatterns(
-    `${contractTs}\n${component}\n${doc}`,
+    `${mockLib}\n${component}\n${doc}`,
     [
       { label: "Supabase client import", pattern: /@\/lib\/supabase/ },
       { label: "createClient", pattern: /\bcreateClient\s*\(/ },
@@ -282,9 +244,17 @@ if (failures.length === 0) {
         label: "JWT-like token",
         pattern: /eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}/,
       },
+      {
+        label: "email-like raw PII",
+        pattern: /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,
+      },
+      {
+        label: "phone-like raw PII",
+        pattern: /\b0\d{9,10}\b/,
+      },
     ],
-    "runtime data, SQL, secret or mutation API",
-    "task-center read-model interface scope",
+    "runtime data, SQL, secret, PII or mutation API",
+    "task-center mock readonly list scope",
   );
 
   forbidPatterns(
@@ -307,16 +277,16 @@ if (failures.length === 0) {
 }
 
 if (failures.length > 0) {
-  console.error("HEU Task Center read-model interface readiness check failed:");
+  console.error("HEU Task Center mock readonly list readiness check failed:");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("HEU Task Center read-model interface readiness check");
-console.log("HEU_TASK_CENTER_READ_MODEL_INTERFACE_READY: PASS_LOCAL");
-console.log("TASK_CENTER_DATABASE_READY: NO_GO_INTERFACE_ONLY");
+console.log("HEU Task Center mock readonly list readiness check");
+console.log("HEU_TASK_CENTER_MOCK_READONLY_LIST_READY: PASS_LOCAL");
+console.log("TASK_CENTER_DATABASE_READY: NO_GO_MOCK_ONLY");
 console.log(
-  "NO_RUNTIME_MUTATION: task center read-model interface checker only; no database table, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
+  "NO_RUNTIME_MUTATION: task center mock readonly list checker only; no database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
 );
