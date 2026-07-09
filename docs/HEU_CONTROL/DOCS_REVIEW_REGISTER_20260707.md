@@ -5,7 +5,7 @@ Repository: heu-admission-crm
 Branch: hardening/ttgdtx-9plus-pilot
 HEAD at review start: 246c206
 Last refreshed: 2026-07-09
-HEAD at refresh: 663a420
+Source workspace HEAD before refresh commit: 663a420
 Status: DRAFT_CONTROL
 
 ## 1. Purpose
@@ -25,12 +25,14 @@ Source command: `git status --porcelain=v1 -uall -- docs`
 |---|---:|
 | Modified | 48 |
 | Added | 14 |
-| Untracked | 37 |
-| Total docs entries | 99 |
+| Untracked | 36 |
+| Total docs entries | 98 |
 
 Refresh boundary:
 
-- The counts above reflect the current `docs` dirty status at refresh time.
+- The counts above reflect the current `docs` dirty status after this register
+  is committed. The pre-commit count was 99 because this register itself was
+  still untracked.
 - The module summary, detailed classification, and queue below remain the
   2026-07-07 baseline routing map.
 - Treat this register as a review-routing artifact, not a complete refreshed
@@ -168,7 +170,7 @@ Refresh boundary:
 
 SOP-SCOPE: `docs` review classification only.
 
-SOP-CHECK: Current status count refreshed to 99 docs entries. The 2026-07-07 baseline classification remains below for routing; row-by-row reclassification of all 99 current docs entries is a separate follow-up slice.
+SOP-CHECK: Current status count refreshed to 98 docs entries after this register is committed. The 2026-07-07 baseline classification remains below for routing; row-by-row reclassification of all 98 current docs entries is a separate follow-up slice.
 
 SOP-PROFESSIONAL: Module owners required as listed in the detailed table.
 
