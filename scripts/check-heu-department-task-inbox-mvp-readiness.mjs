@@ -10,6 +10,8 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_003_DEPARTMENT_TASK_INBOX_MVP_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
+const taskCenterDataContractPath =
+  "docs/HEU_CONTROL/HEU_DATA_004_TASK_CENTER_DATA_CONTRACT_20260710.md";
 const dctcCheckerPath = "scripts/check-heu-data-confirmation-task-center.mjs";
 const checkerPath = "scripts/check-heu-department-task-inbox-mvp-readiness.mjs";
 const packagePath = "package.json";
@@ -54,6 +56,7 @@ for (const file of [
   routePath,
   componentPath,
   docPath,
+  taskCenterDataContractPath,
   manifestPath,
   dctcCheckerPath,
   checkerPath,
@@ -66,6 +69,7 @@ if (failures.length === 0) {
   const route = read(routePath);
   const component = read(componentPath);
   const doc = read(docPath);
+  const taskCenterDataContract = read(taskCenterDataContractPath);
   const manifest = read(manifestPath);
   const dctcChecker = read(dctcCheckerPath);
   const checkerScript = read(checkerPath);
@@ -134,6 +138,8 @@ if (failures.length === 0) {
       "ROLE_WORKSPACE_SCOPE_FILTERED",
       "REF_ONLY_NO_RAW_PII_NO_MUTATION",
       "NO_AI_CALL_NO_AUTOMATION_STEP",
+      "HEU-DATA-004-TASK-CENTER-DATA-CONTRACT",
+      "Task Center data contract before any task mutation",
       "Cost Guard",
       "CAN_SUA_IT_DATA_AUDIT",
       "NO_GO` for production Task Center",
@@ -143,11 +149,25 @@ if (failures.length === 0) {
   );
 
   requireTokens(
+    taskCenterDataContract,
+    [
+      "HEU-DATA-004-TASK-CENTER-DATA-CONTRACT",
+      "Status: PASS_LOCAL_DATA_CONTRACT",
+      "NO_EXECUTABLE_MIGRATION_CREATED",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+    ],
+    "task-center data contract dependency token",
+    taskCenterDataContractPath,
+  );
+
+  requireTokens(
     manifest,
     [
       componentPath,
       docPath,
+      taskCenterDataContractPath,
       checkerPath,
+      "check:heu-task-center-data-contract-readiness",
       "check:heu-department-task-inbox-mvp-readiness",
     ],
     "manifest token",

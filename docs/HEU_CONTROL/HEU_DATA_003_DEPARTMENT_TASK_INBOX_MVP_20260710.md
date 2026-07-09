@@ -48,6 +48,15 @@ scripts/check-heu-data-confirmation-task-center.mjs
 scripts/check-heu-department-task-inbox-mvp-readiness.mjs
 ```
 
+Next contract slice:
+
+```text
+HEU-DATA-004-TASK-CENTER-DATA-CONTRACT
+```
+
+Task Center data contract before any task mutation is mandatory for the next
+slice.
+
 Files not in scope:
 
 ```text
@@ -101,6 +110,7 @@ It is a low-cost local UI/control slice only.
 
 ```powershell
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
+npm.cmd run check:heu-task-center-data-contract-readiness
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-app-shell-draft-pr-readiness
 npm.cmd run lint
@@ -153,4 +163,5 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit review the inbox lane map.
-- Then design the real Task Center data contract before any task mutation.
+- Then review the `HEU-DATA-004-TASK-CENTER-DATA-CONTRACT` before any task
+  mutation, SQL draft, migration or production Task Center implementation.

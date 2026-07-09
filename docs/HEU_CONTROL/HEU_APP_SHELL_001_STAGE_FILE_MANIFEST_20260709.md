@@ -38,6 +38,7 @@ docs/HEU_CONTROL/HEU_APP_SHELL_001_MODULAR_MONOLITH_DECISION_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_REVIEW_CHECKLIST_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
 docs/HEU_CONTROL/HEU_DATA_003_DEPARTMENT_TASK_INBOX_MVP_20260710.md
+docs/HEU_CONTROL/HEU_DATA_004_TASK_CENTER_DATA_CONTRACT_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -51,6 +52,7 @@ package.json
 scripts/check-heu-app-shell-draft-pr-readiness.mjs
 scripts/check-heu-data-confirmation-task-center.mjs
 scripts/check-heu-department-task-inbox-mvp-readiness.mjs
+scripts/check-heu-task-center-data-contract-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -109,6 +111,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_REVIEW_CHECKLIST_20260709.md `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md `
   docs/HEU_CONTROL/HEU_DATA_003_DEPARTMENT_TASK_INBOX_MVP_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_004_TASK_CENTER_DATA_CONTRACT_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -122,6 +125,7 @@ git add -- `
   scripts/check-heu-app-shell-draft-pr-readiness.mjs `
   scripts/check-heu-data-confirmation-task-center.mjs `
   scripts/check-heu-department-task-inbox-mvp-readiness.mjs `
+  scripts/check-heu-task-center-data-contract-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -140,8 +144,10 @@ git diff --cached --name-only
 git diff --cached --check
 node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs
 node --check scripts/check-heu-department-task-inbox-mvp-readiness.mjs
+node --check scripts/check-heu-task-center-data-contract-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
+npm.cmd run check:heu-task-center-data-contract-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness
