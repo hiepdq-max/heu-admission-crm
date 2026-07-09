@@ -36,12 +36,14 @@ docs/HEU_CONTROL/HEU_APP_SHELL_001_REVIEW_CHECKLIST_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
+docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
 lib/heu-workspace-context.ts
 lib/workspace.ts
 package.json
 scripts/check-heu-app-shell-draft-pr-readiness.mjs
 scripts/check-heu-data-confirmation-task-center.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
+scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 ```
 
 ## 3. Files Not To Stage
@@ -91,12 +93,14 @@ git add -- `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
+  docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
   lib/heu-workspace-context.ts `
   lib/workspace.ts `
   package.json `
   scripts/check-heu-app-shell-draft-pr-readiness.mjs `
   scripts/check-heu-data-confirmation-task-center.mjs `
-  scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
+  scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
+  scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 ```
 
 ## 6. Post-Stage Verification
@@ -109,6 +113,7 @@ git diff --cached --check
 node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
+npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-app-shell-draft-pr-readiness
 ```
 

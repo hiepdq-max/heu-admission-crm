@@ -35,6 +35,7 @@
     "check:heu-data-confirmation-task-center": "node scripts/check-heu-data-confirmation-task-center.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
+    "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
     "check:heu-ai-dirty-scope-packaging-ledger": "node scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs",
     "check:heu-executive-dashboard-readiness": "node scripts/check-heu-executive-dashboard-readiness.mjs",
