@@ -16,7 +16,6 @@ import {
   LayoutDashboard,
   ListChecks,
   Megaphone,
-  KeyRound,
   Plus,
   Route,
   Search,
@@ -69,6 +68,7 @@ type NavigationItem = {
   group: NavigationGroupKey;
   permission?: string;
   permissions?: string[];
+  allowedRoleCodes?: string[];
   adminOnly?: boolean;
 };
 
@@ -77,6 +77,86 @@ const navigationGroups: Array<{ key: NavigationGroupKey; label: string }> = [
   { key: "admission", label: "Nghiệp vụ tuyển sinh" },
   { key: "finance", label: "Tài chính và báo cáo" },
   { key: "control", label: "Kiểm soát hệ thống" },
+];
+
+const HEU_APP_SHELL_ADMISSION_ROLE_CODES = [
+  "TUYEN_SINH",
+  "ADMISSION_HEAD",
+  "TEAM_LEAD",
+  "COUNSELOR",
+];
+const HEU_APP_SHELL_CTHSSV_ROLE_CODES = ["CTHSSV", "CTHSSV_LEAD"];
+const HEU_APP_SHELL_TRAINING_ROLE_CODES = [
+  "DAO_TAO",
+  "KHOA",
+  "KHOA_BO_MON",
+  "NGAN_HAN",
+  "HR",
+];
+const HEU_APP_SHELL_FINANCE_ROLE_CODES = [
+  "KHTC",
+  "ACCOUNTING",
+  "ACCOUNTING_LEAD",
+];
+const HEU_APP_SHELL_CONTROL_ROLE_CODES = [
+  "BGH",
+  "IT_DATA",
+  "AUDIT",
+  "PHAP_CHE",
+];
+const HEU_APP_SHELL_LEAD_READ_PERMISSIONS = [
+  "leads.read_all",
+  "leads.read_team",
+  "leads.read_assigned",
+];
+const HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS = [
+  "leads.write_all",
+  "leads.write_team",
+  "leads.write_assigned",
+];
+const HEU_APP_SHELL_DOCUMENT_PERMISSIONS = [
+  "documents.manage",
+  "documents.manage_team",
+  "documents.read_assigned",
+];
+const HEU_APP_SHELL_REPORT_PERMISSIONS = [
+  "reports.read_all",
+  "reports.read_team",
+  "reports.read_scope",
+  "ttgdtx.report.read",
+  "finance_desk.read",
+];
+const HEU_APP_SHELL_TASK_CENTER_PERMISSIONS = [
+  ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+  ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+  ...HEU_APP_SHELL_DOCUMENT_PERMISSIONS,
+  ...HEU_APP_SHELL_REPORT_PERMISSIONS,
+  "activities.create",
+  "handover.create",
+  "handover.accept_cthssv",
+  "handover.accept_accounting",
+  "audit.read",
+  "master_control.check",
+];
+const HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS = [
+  ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+  ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+  "leads.import",
+  "activities.create",
+  "pipeline.manage",
+  "pipeline.manage_team",
+];
+const HEU_APP_SHELL_CONTROL_REVIEW_PERMISSIONS = [
+  "audit.read",
+  "master_control.read",
+  "master_control.check",
+];
+const HEU_APP_SHELL_ALL_WORK_ROLE_CODES = [
+  ...HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+  ...HEU_APP_SHELL_CTHSSV_ROLE_CODES,
+  ...HEU_APP_SHELL_TRAINING_ROLE_CODES,
+  ...HEU_APP_SHELL_FINANCE_ROLE_CODES,
+  ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
 ];
 
 const navigation: NavigationItem[] = [
@@ -107,6 +187,17 @@ const navigation: NavigationItem[] = [
     icon: Users,
     key: "leads",
     group: "quick",
+    permissions: HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+  },
+  {
+    label: "Viec cua toi",
+    href: "/data-confirmation",
+    icon: ClipboardCheck,
+    key: "data-confirmation",
+    group: "quick",
+    permissions: HEU_APP_SHELL_TASK_CENTER_PERMISSIONS,
+    allowedRoleCodes: HEU_APP_SHELL_ALL_WORK_ROLE_CODES,
   },
   {
     label: "Ngắn hạn ERP",
@@ -130,6 +221,8 @@ const navigation: NavigationItem[] = [
     icon: GraduationCap,
     key: "hou",
     group: "admission",
+    permissions: ["hou.com.read_sensitive", "hou.com.manage"],
+    allowedRoleCodes: [...HEU_APP_SHELL_CONTROL_ROLE_CODES, "KHTC"],
   },
   {
     label: "Khoa/GV",
@@ -137,6 +230,11 @@ const navigation: NavigationItem[] = [
     icon: Users,
     key: "khoa",
     group: "admission",
+    permissions: HEU_APP_SHELL_CONTROL_REVIEW_PERMISSIONS,
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_TRAINING_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+    ],
   },
   {
     label: "CTHSSV",
@@ -145,6 +243,10 @@ const navigation: NavigationItem[] = [
     key: "cthssv",
     group: "admission",
     permission: "handover.accept_cthssv",
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_CTHSSV_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+    ],
   },
   {
     label: "Pipeline",
@@ -152,6 +254,12 @@ const navigation: NavigationItem[] = [
     icon: ListChecks,
     key: "pipeline",
     group: "admission",
+    permissions: [
+      ...HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+      "pipeline.manage",
+      "pipeline.manage_team",
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Hồ sơ nhập học",
@@ -159,6 +267,11 @@ const navigation: NavigationItem[] = [
     icon: ClipboardCheck,
     key: "documents",
     group: "admission",
+    permissions: [
+      ...HEU_APP_SHELL_DOCUMENT_PERMISSIONS,
+      ...HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Lịch tư vấn",
@@ -166,6 +279,12 @@ const navigation: NavigationItem[] = [
     icon: CalendarClock,
     key: "followups",
     group: "admission",
+    permissions: [
+      "activities.create",
+      ...HEU_APP_SHELL_LEAD_READ_PERMISSIONS,
+      ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
+    ],
+    allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
   },
   {
     label: "Đối tác / CTV",
@@ -173,6 +292,8 @@ const navigation: NavigationItem[] = [
     icon: Database,
     key: "partners",
     group: "admission",
+    permission: "partners.manage",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Chiến dịch",
@@ -180,6 +301,8 @@ const navigation: NavigationItem[] = [
     icon: Megaphone,
     key: "campaigns",
     group: "admission",
+    permission: "campaigns.manage",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Import dữ liệu",
@@ -187,6 +310,8 @@ const navigation: NavigationItem[] = [
     icon: FileSpreadsheet,
     key: "import",
     group: "admission",
+    permission: "leads.import",
+    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
   },
   {
     label: "Finance Desk",
@@ -210,6 +335,12 @@ const navigation: NavigationItem[] = [
     icon: BarChart3,
     key: "reports",
     group: "finance",
+    permissions: HEU_APP_SHELL_REPORT_PERMISSIONS,
+    allowedRoleCodes: [
+      ...HEU_APP_SHELL_FINANCE_ROLE_CODES,
+      ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
+      ...HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    ],
   },
   {
     label: "Master Control",
@@ -218,14 +349,6 @@ const navigation: NavigationItem[] = [
     key: "master-control",
     group: "control",
     permission: "master_control.read",
-  },
-  {
-    label: "Data confirmation",
-    href: "/data-confirmation",
-    icon: ClipboardCheck,
-    key: "data-confirmation",
-    group: "control",
-    permission: "data_confirmation.read",
   },
   {
     label: "TCHC Van thu luu tru",
@@ -249,6 +372,8 @@ const navigation: NavigationItem[] = [
     icon: ShieldCheck,
     key: "audit",
     group: "control",
+    permission: "audit.read",
+    allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT", "PHAP_CHE"],
   },
   {
     label: "AI Assistant",
@@ -256,6 +381,8 @@ const navigation: NavigationItem[] = [
     icon: Bot,
     key: "ai-assistant",
     group: "control",
+    permissions: ["audit.read", "master_control.check"],
+    allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT"],
   },
   {
     label: "Phạm vi user",
@@ -287,6 +414,7 @@ const segmentAwareNavigationKeys = new Set([
   "finance-desk",
   "finance-advance-payment",
   "leads",
+  "data-confirmation",
   "pipeline",
   "documents",
   "followups",
@@ -351,65 +479,6 @@ function workspaceHubLink(
   };
 }
 
-function buildExecutiveFocusQuickLinks(
-  segmentId: string | null,
-): WorkspaceQuickLink[] {
-  const focusHref = (mode: string) =>
-    withAdmissionSegmentParam(mode === "all" ? "/" : `/?focus=${mode}`, segmentId);
-
-  return [
-    {
-      label: "Tổng quan",
-      href: focusHref("all"),
-      icon: LayoutDashboard,
-      navKey: "dashboard",
-      tone: "primary",
-    },
-    {
-      label: "Báo cáo",
-      href: focusHref("reports"),
-      icon: BarChart3,
-      navKey: "dashboard",
-    },
-    {
-      label: "Tài chính",
-      href: focusHref("finance"),
-      icon: WalletCards,
-      navKey: "dashboard",
-    },
-    {
-      label: "Bằng chứng",
-      href: focusHref("evidence"),
-      icon: ClipboardCheck,
-      navKey: "dashboard",
-    },
-    {
-      label: "Phân quyền",
-      href: focusHref("roles"),
-      icon: Settings,
-      navKey: "dashboard",
-    },
-    {
-      label: "Pháp chế",
-      href: focusHref("legal"),
-      icon: Gavel,
-      navKey: "dashboard",
-    },
-    {
-      label: "M01-M12",
-      href: focusHref("modules"),
-      icon: LayoutDashboard,
-      navKey: "dashboard",
-    },
-    {
-      label: "Blocker",
-      href: focusHref("blockers"),
-      icon: ShieldCheck,
-      navKey: "dashboard",
-    },
-  ];
-}
-
 function buildWorkspaceQuickLinks(
   segmentId: string | null,
   segmentCode: string | null | undefined,
@@ -433,6 +502,12 @@ function buildWorkspaceQuickLinks(
       icon: Users,
       navKey: "leads",
       tone: "primary",
+    },
+    {
+      label: "Viec cua toi",
+      href: withAdmissionSegmentParam("/data-confirmation", segmentId),
+      icon: ClipboardCheck,
+      navKey: "data-confirmation",
     },
     {
       label: "Follow-up",
@@ -534,32 +609,41 @@ export async function AppShell({
   );
   const visibleNavigation = navigation.filter(
     (item) => {
+      if (currentRoleCode === "ADMIN") {
+        return true;
+      }
+
+      if (item.adminOnly) {
+        return false;
+      }
+
       const itemPermissions = [
         ...(item.permission ? [item.permission] : []),
         ...(item.permissions ?? []),
       ];
-
-      return (
-        (!item.adminOnly || currentRoleCode === "ADMIN") &&
-        (itemPermissions.length === 0 ||
-          currentRoleCode === "ADMIN" ||
-          itemPermissions.some((permission) => permissionMap.get(permission)))
+      const itemRoleCodes = item.allowedRoleCodes ?? [];
+      const hasAccessRule = itemPermissions.length > 0 || itemRoleCodes.length > 0;
+      const isRoleAllowed = currentRoleCode
+        ? itemRoleCodes.includes(currentRoleCode)
+        : false;
+      const isPermissionAllowed = itemPermissions.some((permission) =>
+        permissionMap.get(permission),
       );
+
+      return !hasAccessRule || isRoleAllowed || isPermissionAllowed;
     },
   );
   const visibleNavigationKeys = new Set(
     visibleNavigation.map((item) => item.key),
   );
-  const executiveFocusQuickLinks = isExecutive
-    ? buildExecutiveFocusQuickLinks(workspace?.activeSegmentId ?? null).filter(
-        (link) => !link.navKey || visibleNavigationKeys.has(link.navKey),
-      )
-    : [];
   const workspaceQuickLinks = buildWorkspaceQuickLinks(
     workspace?.activeSegmentId ?? null,
     workspace?.activeSegment?.segmentCode,
     visibleNavigationKeys,
-    !isExecutive,
+    !isExecutive &&
+      HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS.some((permission) =>
+        permissionMap.get(permission),
+      ),
   );
   const groupedNavigation = navigationGroups
     .map((group) => ({
@@ -588,6 +672,7 @@ export async function AppShell({
             className="space-y-5 px-3 py-4"
             data-heu-sidebar-navigation-groups="P0-13_SIDEBAR_NAV_GROUPS"
             data-heu-sidebar-collapsible-groups="P0-13_COLLAPSIBLE_NAV_GROUPS"
+            data-heu-app-shell-role-scope-menu="HEU_APP_SHELL_ROLE_SCOPE_MENU"
           >
             {groupedNavigation.map((group) => {
               const isOpenByDefault =
@@ -685,19 +770,7 @@ export async function AppShell({
               ) : null}
               {actions}
               {userEmail ? (
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <Button
-                    asChild
-                    variant="outline"
-                    data-heu-self-service-password-change="P0-17_SELF_SERVICE_PASSWORD_CHANGE"
-                    data-heu-self-service-password-boundary="AUTHENTICATED_SESSION_ONLY NO_ADMIN_RESET NO_SCOPE_CHANGE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
-                  >
-                    <Link href="/auth/update-password">
-                      <KeyRound className="size-4" />
-                      Doi mat khau
-                    </Link>
-                  </Button>
-                  <form action={logoutAction} className="flex items-center gap-2">
+                <form action={logoutAction} className="flex items-center gap-2">
                   <span className="hidden max-w-48 truncate text-sm text-zinc-500 sm:inline">
                     {userEmail}
                   </span>
@@ -705,8 +778,7 @@ export async function AppShell({
                     <LogOut className="size-4" />
                     Đăng xuất
                   </Button>
-                  </form>
-                </div>
+                </form>
               ) : (
                 <Button asChild variant="outline">
                   <Link href="/login">Đăng nhập</Link>
@@ -742,91 +814,14 @@ export async function AppShell({
                     returnTo={workspaceReturnTo}
                   />
                 </div>
-                {executiveFocusQuickLinks.length > 0 ? (
-                  <div
-                    className="mt-3 min-w-0 overflow-x-auto pb-1"
-                    data-heu-quick-lane-labels="STD-21_QUICK_LANE_LABELS"
-                    data-heu-quick-lane-labels-boundary="COMPACT_LABELS NO_LONG_COPY NO_STATE_MUTATION NO_APPROVAL_ACTION NO_ACCESS_GRANT NO_PERMISSION_EXPANSION NO_UAT_ACCEPTANCE NO_EVIDENCE_ACCEPTANCE NO_FINANCE_ACTION NO_OWNER_GO NO_PRODUCTION_GO"
-                    data-heu-quick-lane-labels-overflow-guard="STD-21_NO_OVERFLOW"
-                    data-heu-executive-focus-lane-separation="STD-20_EXECUTIVE_FOCUS_LANE_SEPARATION"
-                    data-heu-executive-focus-lane-separation-boundary="EXECUTIVE_ONLY SEPARATE_FROM_WORKSPACE READ_ONLY_ROUTE_HINT FOCUS_QUERY_PARAM NO_ACCESS_GRANT NO_PERMISSION_EXPANSION NO_STATE_MUTATION NO_APPROVAL_ACTION NO_UAT_ACCEPTANCE NO_EVIDENCE_ACCEPTANCE NO_FINANCE_ACTION NO_OWNER_GO NO_PRODUCTION_GO"
-                    data-heu-executive-focus-lane-separation-overflow-guard="STD-20_NO_OVERFLOW"
-                    data-heu-executive-global-focus-shortcuts="STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS"
-                    data-heu-executive-global-focus-shortcuts-boundary="EXECUTIVE_ONLY READ_ONLY_ROUTE_HINT FOCUS_QUERY_PARAM NO_ACCESS_GRANT NO_PERMISSION_EXPANSION NO_STATE_MUTATION NO_APPROVAL_ACTION NO_UAT_ACCEPTANCE NO_EVIDENCE_ACCEPTANCE NO_FINANCE_ACTION NO_OWNER_GO NO_PRODUCTION_GO"
-                    data-heu-executive-global-focus-shortcuts-overflow-guard="STD-19_NO_OVERFLOW"
-                    data-heu-executive-focus-compact-labels="STD-31_EXECUTIVE_GLOBAL_FOCUS_COMPACT_LABELS"
-                    data-heu-executive-focus-compact-labels-boundary="PASS_LOCAL_GLOBAL_FOCUS_COMPACT_LABELS EXECUTIVE_ONLY COMPACT_LABELS READ_ONLY_ROUTE_HINT FOCUS_QUERY_PARAM NO_LONG_COPY NO_ACCESS_GRANT NO_PERMISSION_EXPANSION NO_STATE_MUTATION NO_APPROVAL_ACTION NO_UAT_ACCEPTANCE NO_EVIDENCE_ACCEPTANCE NO_FINANCE_ACTION NO_OWNER_GO NO_PRODUCTION_GO"
-                    data-heu-executive-focus-compact-labels-overflow-guard="STD-31_NO_OVERFLOW"
-                    data-heu-executive-role-scope-focus-shortcut="STD-23_EXECUTIVE_ROLE_SCOPE_FOCUS_SHORTCUT"
-                    data-heu-executive-role-scope-focus-boundary="PASS_LOCAL_EXECUTIVE_ROLE_SCOPE EXECUTIVE_ONLY READ_ONLY_ROUTE_HINT FOCUS_QUERY_PARAM NO_ACCESS_GRANT NO_PERMISSION_EXPANSION NO_UAT_ACCEPTANCE NO_FINANCE_ACTION NO_OWNER_GO NO_PRODUCTION_GO"
-                  >
-                    <div className="mb-2 flex min-w-0 items-center justify-between gap-2 px-1">
-                      <span className="flex min-w-0 items-center gap-2 text-xs font-semibold uppercase text-zinc-500">
-                        <LayoutDashboard className="size-3.5 shrink-0" />
-                        <span className="truncate">BGH focus</span>
-                      </span>
-                      <span className="shrink-0 rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800">
-                        Read-only
-                      </span>
-                    </div>
-                    <div className="flex min-w-max gap-2 pr-1">
-                      {executiveFocusQuickLinks.map((link) => {
-                        const Icon = link.icon;
-                        const isPrimary = link.tone === "primary";
-
-                        return (
-                          <Link
-                            key={`${link.label}-${link.href}`}
-                            href={link.href}
-                            aria-label={`Mo nhanh BGH focus: ${link.label}`}
-                            title={`Mo nhanh BGH focus: ${link.label}`}
-                            className={`group flex h-10 min-w-36 max-w-44 items-center justify-between gap-2 overflow-hidden rounded-md border px-3 text-sm font-medium transition ${
-                              isPrimary
-                                ? "border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800"
-                                : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 hover:text-zinc-950"
-                            }`}
-                          >
-                            <span className="flex min-w-0 items-center gap-2 overflow-hidden">
-                              <Icon
-                                className={`size-4 shrink-0 ${
-                                  isPrimary ? "text-white" : "text-zinc-500"
-                                }`}
-                              />
-                              <span className="min-w-0 truncate">
-                                {link.label}
-                              </span>
-                            </span>
-                            <ArrowRight
-                              className={`size-4 shrink-0 transition ${
-                                isPrimary
-                                  ? "text-white/70 group-hover:text-white"
-                                  : "text-zinc-400 group-hover:text-zinc-900"
-                              }`}
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : null}
                 {workspaceQuickLinks.length > 0 ? (
                   <div
                     className="mt-3 min-w-0 overflow-x-auto pb-1"
-                    data-heu-workspace-quick-lane-label="STD-21_WORKSPACE_QUICK_LANE_LABEL"
                     data-heu-workspace-quick-links="P0-13_WORKSPACE_QUICK_LINKS"
                     data-heu-workspace-quick-open="P0-13_WORKSPACE_QUICK_OPEN_DAILY"
                     data-heu-workspace-quick-links-overflow-guard="P0-13_WORKSPACE_QUICK_LINKS_NO_OVERFLOW"
                     data-heu-workspace-anchor-nav="workspace leads create followups documents pipeline import hub reports"
                   >
-                    <div className="mb-2 flex min-w-0 items-center justify-between gap-2 px-1">
-                      <span className="flex min-w-0 items-center gap-2 text-xs font-semibold uppercase text-zinc-500">
-                        <Route className="size-3.5 shrink-0" />
-                        <span className="truncate">Workspace</span>
-                      </span>
-                      <span className="shrink-0 rounded-md border border-zinc-200 bg-white px-2 py-0.5 text-[11px] font-medium text-zinc-600">
-                        P0-13
-                      </span>
-                    </div>
                     <div className="flex min-w-max gap-2 pr-1">
                       {workspaceQuickLinks.map((link) => {
                         const Icon = link.icon;
