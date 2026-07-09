@@ -50,6 +50,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only` | PASS_LOCAL | Queue package exists and HEU-USER-PILOT-004 closes the app guard static tokens |
 | `npm.cmd run check:heu-user-operation-cutover-readiness` | PASS_LOCAL_CHECKER_WIRED | HEU-USER-PILOT-005 wires the cutover checker; cutover decision remains NO_GO because external owner blockers remain |
 | `npm.cmd run check:heu-user-activation-worksheet-readiness` | PASS_LOCAL_WORKSHEET | HEU-USER-PILOT-006 wires the safe activation worksheet; real activation remains NO_GO because owner/env blockers remain |
+| `npm.cmd run check:heu-user-pilot-secure-env-handoff-readiness` | PASS_LOCAL_HANDOFF | HEU-USER-PILOT-007 wires the secure env handoff; live env remains NO_GO until IT_DATA confirms local `.env.local` |
 
 ## 4. Exact Blocking Findings
 
@@ -60,6 +61,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | USER-SCOPE-REPAIR-APP-GUARD | Static checker now reports READY after HEU-USER-PILOT-004 | IT_DATA + Audit must review the owner-approval and controlled-evidence guard before pilot cutover |
 | USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` is wired by HEU-USER-PILOT-005 | IT_DATA + Audit must review the cutover checker; owner seats, live env checks, negative proof and owner signoff remain external blockers |
 | USER-ACTIVATION-WORKSHEET | `check:heu-user-activation-worksheet-readiness` is wired by HEU-USER-PILOT-006 | IT_DATA + Audit must review the activation worksheet before any real user is activated |
+| USER-SECURE-ENV-HANDOFF | `check:heu-user-pilot-secure-env-handoff-readiness` is wired by HEU-USER-PILOT-007 | IT_DATA must prepare `.env.local` locally without exposing secret values in Git/Codex/chat |
 
 ## 5. Static Guard Tokens Closed Locally
 
@@ -111,6 +113,12 @@ Completed activation worksheet slice:
 HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS
 ```
 
+Completed secure env handoff slice:
+
+```text
+HEU-USER-PILOT-007-SECURE-ENV-HANDOFF
+```
+
 Scope:
 
 - `components/settings/user-business-scope-settings.tsx`
@@ -140,6 +148,8 @@ External blocker that cannot be solved in Git:
   owner cutover decision remain outside Git/Codex/chat.
 - User activation worksheet is local-control ready only; actual activation still
   needs secure env, owner approval and controlled evidence outside Git/Codex/chat.
+- Secure env handoff is local-control ready only; actual env values remain under
+  IT_DATA control and must never be pasted into Git/Codex/chat.
 
 ## 8. Rollback
 
@@ -181,6 +191,7 @@ SOP-RESULT:
 - `CAN_SUA` for IT_DATA + Audit review of the minimal scope-save guard fix.
 - `CAN_SUA` for IT_DATA + Audit review of the operation cutover checker.
 - `CAN_SUA` for IT_DATA + Audit review of the activation worksheet.
+- `CAN_SUA` for IT_DATA + Audit review of the secure env handoff.
 
 SOP-NEXT:
 - Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
@@ -189,3 +200,5 @@ SOP-NEXT:
   Audit before treating user operation cutover as ready.
 - Review `HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS` with IT_DATA +
   Audit before creating, inviting or activating any pilot user.
+- Review `HEU-USER-PILOT-007-SECURE-ENV-HANDOFF` with IT_DATA + Audit before
+  running live user-create or permission/scope checks.

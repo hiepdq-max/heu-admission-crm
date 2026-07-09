@@ -12,6 +12,8 @@ const day1RunbookPath =
   "docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md";
 const precheckLedgerPath =
   "docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md";
+const secureEnvHandoffPath =
+  "docs/HEU_CONTROL/HEU_USER_PILOT_007_SECURE_ENV_HANDOFF_20260709.md";
 const cutoverGatePath = "docs/HEU_USER_PERMISSION_OPERATION_CUTOVER_GATE_20260703.md";
 const cutoverCheckerPath = "scripts/check-heu-user-operation-cutover-readiness.mjs";
 const checkerPath = "scripts/check-heu-user-activation-worksheet-readiness.mjs";
@@ -58,6 +60,7 @@ for (const file of [
   pilot001Path,
   day1RunbookPath,
   precheckLedgerPath,
+  secureEnvHandoffPath,
   cutoverGatePath,
   cutoverCheckerPath,
   checkerPath,
@@ -71,6 +74,7 @@ if (failures.length === 0) {
   const pilot001 = read(pilot001Path);
   const day1Runbook = read(day1RunbookPath);
   const precheckLedger = read(precheckLedgerPath);
+  const secureEnvHandoff = read(secureEnvHandoffPath);
   const cutoverGate = read(cutoverGatePath);
   const cutoverChecker = read(cutoverCheckerPath);
   const checkerScript = read(checkerPath);
@@ -151,12 +155,31 @@ if (failures.length === 0) {
     [
       "HEU-USER-PILOT-003-IDENTITY-SCOPE-PRECHECK-LEDGER",
       "HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS",
+      "HEU-USER-PILOT-007-SECURE-ENV-HANDOFF",
       "check:heu-user-activation-worksheet-readiness",
+      "check:heu-user-pilot-secure-env-handoff-readiness",
       "PASS_LOCAL_WORKSHEET",
+      "PASS_LOCAL_HANDOFF",
       "Day-1 real-user pilot | NO_GO",
     ],
     "precheck ledger token",
     precheckLedgerPath,
+  );
+
+  requireTokens(
+    secureEnvHandoff,
+    [
+      "HEU-USER-PILOT-007-SECURE-ENV-HANDOFF",
+      "Status: PASS_LOCAL_HANDOFF",
+      "Production status: NO-GO",
+      "NO_GO USER-CREATE-ENV",
+      "NO_GO PERMISSION-SCOPE-ENV",
+      "Do not write the values in this document.",
+      "Ask the user to paste secrets.",
+      "Read, print, summarize or store secret values.",
+    ],
+    "secure env handoff dependency token",
+    secureEnvHandoffPath,
   );
 
   requireTokens(
