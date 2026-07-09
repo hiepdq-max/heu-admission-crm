@@ -62,9 +62,9 @@ Latest local evidence for this handoff:
 | `npm.cmd run check:heu-data-confirmation-task-center` | PASS_LOCAL | Verifies route markers, status contract, AppShell menu link, dashboard link, workspace gates and no route-level DB mutation |
 | `npm.cmd run check:heu-app-shell-draft-pr-readiness` | PASS_LOCAL | Aggregates required files, exact stage manifest match, scope path guard, secret scan, handoff tokens, diff check and DCTC gate; broad fast-loop security is skipped by default |
 | `git diff --cached --check` | PASS | No whitespace errors in staged diff |
-| `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime` | NO_GO | Isolated worktree dependency/module resolution is not clean; rerun in dependency-complete checkout or CI before Ready |
-| `npm.cmd run lint` | NO_GO | Same isolated worktree dependency/module-resolution blocker |
-| `npm.cmd run build -- --webpack` | NO_GO | Same isolated worktree dependency/module-resolution blocker |
+| `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime` | PASS_LOCAL | Runtime lint and Webpack build passed after using a local ignored `node_modules` junction to the main app root dependency cache |
+| `npm.cmd run lint` | PASS | Exit 0 with 1 warning in unrelated script: `scripts/dry-run-heu-ai-003-pr-split.mjs` |
+| `npm.cmd run build -- --webpack` | PASS | Webpack build passed with build-only dummy public Supabase env values; route manifest includes `/data-confirmation` |
 | `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --broad-security` | NO_GO expected until docs/audit alignment is a separate scope | Broad security currently pulls current-state audits outside this PR's 21-file scope |
 | Diff secret/PII scan | PASS_LOCAL | No secret, raw PII, password, token, bank data or voucher payload found |
 | Diff DB/config scope scan | PASS_LOCAL | No changed SQL, migration, Supabase database folder, `.env`, production config, Docker/Vercel/YAML deployment file found |
@@ -72,10 +72,10 @@ Latest local evidence for this handoff:
 Runtime blocker detail:
 
 ```text
-The reported runtime dependency names are already declared in package.json and
-package-lock.json. No npm install, npm ci, migration or deploy was run. This PR
-must stay Draft until IT_DATA or CI reruns runtime lint/build in a dependency
-complete environment.
+Runtime evidence used a local ignored `node_modules` junction in the isolated
+replacement worktree. No npm install, npm ci, migration or deploy was run. This
+PR can remain Draft for IT_DATA/Audit review; broad current-state docs and audit
+alignment are intentionally left for a separate PR.
 ```
 
 ## 5. Review Owners
@@ -95,7 +95,7 @@ complete environment.
 | Scope context is reused too broadly | Adoption is limited to selected routes and checked via focused gate/audits |
 | Dashboard links lose selected workspace | Dashboard and AppShell use `withAdmissionSegmentParam` |
 | Finance/readiness gets over-claimed | Docs state Production NO-GO and no finance action/owner GO |
-| Runtime proof is misread | Handoff records current runtime NO_GO and requires rerun before Ready |
+| Runtime proof is misread | Handoff records local junction method and recommends IT_DATA/CI rerun before Ready |
 | Secret/PII or production config is accidentally included | Diff scan found no secret/raw PII payload and no database/config/deploy files in the slice |
 
 ## 7. Rollback
@@ -130,7 +130,7 @@ BGH/Owner only for architecture direction, not production approval.
 
 ## 9. Status
 
-Technical slice status: `CAN_SUA`.
+Technical slice status: `DAT_TAM_THOI`.
 
 System status: `CAN_SUA`.
 
@@ -139,7 +139,7 @@ Production status: `NO-GO`.
 Next allowed step:
 
 ```text
-Create Draft PR after explicit user approval, then keep it Draft until
-IT_DATA/Audit review and runtime lint/build are rerun in a dependency-complete
-environment.
+Create Draft PR after explicit user approval. Keep Draft PR for IT_DATA/Audit
+review. Do not move Ready until reviewers accept the runtime evidence or rerun
+it in CI/normal checkout.
 ```

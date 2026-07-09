@@ -115,6 +115,8 @@ function listChangedFiles() {
   const tracked = runGit(["diff", "--name-only"]);
   const staged = runGit(["diff", "--cached", "--name-only"]);
   const untracked = runGit(["ls-files", "-o", "--exclude-standard"]);
+  const baseRef = process.env.HEU_APP_SHELL_BASE_REF ?? "origin/codex/heu/base-cc3985a";
+  const verifyBase = runGit(["rev-parse", "--verify", "--quiet", baseRef]);
 
   if (tracked.status !== 0 || staged.status !== 0 || untracked.status !== 0) {
     addStatus(
@@ -131,13 +133,32 @@ function listChangedFiles() {
     ...untracked.stdout.split(/\r?\n/),
   ].filter(Boolean);
 
+  if (verifyBase.status === 0) {
+    const branchDiff = runGit(["diff", "--name-only", `${baseRef}..HEAD`]);
+
+    if (branchDiff.status !== 0) {
+      addStatus(
+        "APP-SHELL-DRAFT-GIT-LIST",
+        "NO_GO",
+        `Could not list branch diff against ${baseRef}.`,
+      );
+      return [];
+    }
+
+    const branchFiles = branchDiff.stdout.split(/\r?\n/).filter(Boolean);
+
+    if (branchFiles.length > 0 || worktreeFiles.length > 0) {
+      activeDiffArgs = worktreeFiles.length > 0
+        ? ["diff", "--cached", "--unified=0"]
+        : ["diff", "--unified=0", `${baseRef}..HEAD`];
+      return Array.from(new Set([...branchFiles, ...worktreeFiles]));
+    }
+  }
+
   if (worktreeFiles.length > 0) {
     activeDiffArgs = ["diff", "--cached", "--unified=0"];
     return Array.from(new Set(worktreeFiles));
   }
-
-  const baseRef = process.env.HEU_APP_SHELL_BASE_REF ?? "origin/codex/heu/base-cc3985a";
-  const verifyBase = runGit(["rev-parse", "--verify", "--quiet", baseRef]);
 
   if (verifyBase.status !== 0) {
     addStatus(

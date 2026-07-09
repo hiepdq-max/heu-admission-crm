@@ -95,11 +95,11 @@ Scope note:
   gates va no-broad-fallback.
 - CTHSSV route doi sang dedicated action gate, can Audit xac nhan khong mo rong
   quyen ngoai `handover.accept_cthssv`, ADMIN/BGH.
-- Runtime lint/build hien chua sach trong isolated replacement worktree.
-  `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime` dang NO_GO
-  vi dependency/module resolution trong worktree rieng. `package.json` va
-  `package-lock.json` da khai bao cac dependency bi bao thieu. Khong chay
-  `npm install` hoac `npm ci` cho PR nay.
+- Runtime lint/build da PASS_LOCAL sau khi tao local ignored `node_modules`
+  junction trong isolated replacement worktree. Khong chay `npm install` hoac
+  `npm ci` cho PR nay.
+- Broad security gate van `NO_GO` khi chay `--broad-security` vi keo audit
+  current-state docs ngoai scope 21 file cua PR nay.
 
 Khong co:
 
@@ -119,24 +119,25 @@ Da chay va PASS:
 node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-app-shell-draft-pr-readiness
-git diff --cached --check
-```
-
-Da chay va NO_GO do moi truong isolated worktree:
-
-```powershell
 npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime
 npm.cmd run lint
 npm.cmd run build -- --webpack
+git diff --cached --check
+```
+
+Da chay va NO_GO do broad docs/audit ngoai scope:
+
+```powershell
+npm.cmd run check:heu-app-shell-draft-pr-readiness -- --broad-security
 ```
 
 Runtime note:
 
 ```text
-Runtime check is blocked by dependency/module resolution in the isolated
-replacement worktree, not by SQL, migration, secret, PII, finance or deploy
-scope. Before moving this PR out of Draft, IT_DATA must rerun runtime lint/build
-in a dependency-complete checkout or CI environment.
+Runtime check used a local ignored node_modules junction to the main app root
+dependency cache. No install, ci, migration or deploy was run. Before moving
+this PR out of Draft, IT_DATA should rerun runtime lint/build in a normal
+checkout or CI environment.
 ```
 
 ## 7. Rollback
@@ -162,10 +163,14 @@ write production data.
 - `docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md`
 - `npm.cmd run check:heu-data-confirmation-task-center`: PASS_LOCAL
 - `npm.cmd run check:heu-app-shell-draft-pr-readiness`: PASS_LOCAL
+- `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime`: PASS_LOCAL
 - `node --check scripts/check-heu-app-shell-draft-pr-readiness.mjs`: PASS
+- `npm.cmd run lint`: PASS with 1 warning in unrelated script
+- `npm.cmd run build -- --webpack`: PASS; route manifest includes
+  `/data-confirmation`
 - `git diff --cached --check`: PASS
-- `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --runtime`: NO_GO in
-  isolated worktree; dependency environment needs IT_DATA rerun before Ready
+- `npm.cmd run check:heu-app-shell-draft-pr-readiness -- --broad-security`:
+  NO_GO; current-state docs/audit alignment is outside this 21-file PR scope
 - Diff secret/PII scan: PASS_LOCAL
 - Diff DB/config scope scan: PASS_LOCAL
 
