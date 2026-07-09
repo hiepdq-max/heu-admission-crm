@@ -291,5 +291,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE review this contract.
-- If accepted, next slice is a commented SQL draft or TypeScript read model
-  interface, still no migration.
+- Review `HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE`, the TypeScript read
+  model interface that turns this contract into shared UI constants without
+  table creation or task mutation.
+- TypeScript read model interface is the approved next local-only interface
+  slice before any SQL or mutation route.
+- If accepted, next slice can be a commented SQL draft or mock read-only task
+  list, still no migration.

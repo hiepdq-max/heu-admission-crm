@@ -6,6 +6,7 @@ const requiredFiles = {
   route: "app/data-confirmation/page.tsx",
   departmentTaskInbox: "components/data-confirmation/department-task-inbox.tsx",
   appShell: "components/layout/app-shell.tsx",
+  taskCenterReadModel: "lib/task-center-contract.ts",
   dashboard: "components/dashboard/dashboard-overview.tsx",
   workspaceContext: "lib/heu-workspace-context.ts",
   appShellDecision:
@@ -65,6 +66,10 @@ const departmentTaskInbox = readRequiredFile(
   requiredFiles.departmentTaskInbox,
 );
 const appShell = readRequiredFile("DCTC-FILE-APP-SHELL", requiredFiles.appShell);
+const taskCenterReadModel = readRequiredFile(
+  "DCTC-FILE-TASK-CENTER-READ-MODEL",
+  requiredFiles.taskCenterReadModel,
+);
 const dashboard = readRequiredFile("DCTC-FILE-DASHBOARD", requiredFiles.dashboard);
 const workspaceContext = readRequiredFile(
   "DCTC-FILE-WORKSPACE-CONTEXT",
@@ -127,7 +132,8 @@ requireTokens("DCTC-DEPARTMENT-TASK-INBOX-MVP", departmentTaskInbox, [
   "DRAFT_READY",
   "READ_ONLY",
   "withAdmissionSegmentParam",
-  "canManageSystemScope",
+  "HEU_TASK_CENTER_READ_MODEL_INTERFACE",
+  "getVisibleTaskCenterLanes",
 ]);
 
 forbidPattern("DCTC-DEPARTMENT-TASK-INBOX-NO-MUTATION", departmentTaskInbox, [
@@ -138,6 +144,18 @@ forbidPattern("DCTC-DEPARTMENT-TASK-INBOX-NO-MUTATION", departmentTaskInbox, [
   { label: "delete", pattern: /\.delete\s*\(/ },
   { label: "fetch call", pattern: /\bfetch\s*\(/ },
   { label: "server action marker", pattern: /["']use server["']/ },
+]);
+
+requireTokens("DCTC-TASK-CENTER-READ-MODEL", taskCenterReadModel, [
+  "TASK_CENTER_READ_MODEL_INTERFACE_CONTRACT_ONLY",
+  "TASK_CENTER_ROLE_GROUPS",
+  "TASK_CENTER_DEPARTMENT_LANES",
+  "TASK_CENTER_SOURCE_REF_ALLOWLIST",
+  "NO_MATCHING_SCOPE",
+  "canManageSystemScope",
+  "canReadScopedData",
+  "getVisibleTaskCenterLanes",
+  "resolveTaskCenterLaneStatus",
 ]);
 
 requireTokens("DCTC-APP-SHELL-MENU", appShell, [

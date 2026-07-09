@@ -12,9 +12,12 @@ const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const inboxCheckerPath =
   "scripts/check-heu-department-task-inbox-mvp-readiness.mjs";
+const readModelContractPath = "lib/task-center-contract.ts";
 const checkerPath = "scripts/check-heu-task-center-data-contract-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-data-contract-readiness";
+const readModelCheckerAlias =
+  "check:heu-task-center-read-model-interface-readiness";
 const checkerCommand = `node ${checkerPath}`;
 
 function absolute(relativePath) {
@@ -56,6 +59,7 @@ for (const file of [
   inboxDocPath,
   manifestPath,
   inboxCheckerPath,
+  readModelContractPath,
   checkerPath,
   packagePath,
 ]) {
@@ -67,6 +71,7 @@ if (failures.length === 0) {
   const inboxDoc = read(inboxDocPath);
   const manifest = read(manifestPath);
   const inboxChecker = read(inboxCheckerPath);
+  const readModelContract = read(readModelContractPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -183,8 +188,35 @@ if (failures.length === 0) {
     inboxCheckerPath,
   );
 
+  requireTokens(
+    readModelContract,
+    [
+      "HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE",
+      "TASK_CENTER_READ_MODEL_INTERFACE_CONTRACT_ONLY",
+      "TASK_CENTER_STATUSES",
+      "TASK_CENTER_SOURCE_REF_ALLOWLIST",
+      "getVisibleTaskCenterLanes",
+    ],
+    "read-model TypeScript contract token",
+    readModelContractPath,
+  );
+
+  requireTokens(
+    contract,
+    [
+      "HEU-DATA-005-TASK-CENTER-READ-MODEL-INTERFACE",
+      "TypeScript read model interface",
+    ],
+    "data contract read-model link token",
+    contractPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (!packageJson.scripts?.[readModelCheckerAlias]) {
+    fail(`${packagePath}: missing ${readModelCheckerAlias}`);
   }
 
   requireTokens(
@@ -193,6 +225,7 @@ if (failures.length === 0) {
       "existsSync",
       "readFileSync",
       "HEU_TASK_CENTER_DATA_CONTRACT_READY: PASS_LOCAL",
+      "check:heu-task-center-read-model-interface-readiness",
       "TASK_CENTER_DATABASE_READY: NO_GO_CONTRACT_ONLY",
       "NO_RUNTIME_CHANGE: task center data contract checker only; no table creation, SQL migration, task mutation, AI call, paid automation, deploy, finance action or production GO",
     ],

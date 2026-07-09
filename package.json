@@ -40,6 +40,7 @@
     "check:heu-data-confirmation-task-center": "node scripts/check-heu-data-confirmation-task-center.mjs",
     "check:heu-department-task-inbox-mvp-readiness": "node scripts/check-heu-department-task-inbox-mvp-readiness.mjs",
     "check:heu-task-center-data-contract-readiness": "node scripts/check-heu-task-center-data-contract-readiness.mjs",
+    "check:heu-task-center-read-model-interface-readiness": "node scripts/check-heu-task-center-read-model-interface-readiness.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

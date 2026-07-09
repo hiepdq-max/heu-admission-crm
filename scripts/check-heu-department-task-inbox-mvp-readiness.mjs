@@ -12,6 +12,7 @@ const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const taskCenterDataContractPath =
   "docs/HEU_CONTROL/HEU_DATA_004_TASK_CENTER_DATA_CONTRACT_20260710.md";
+const taskCenterReadModelPath = "lib/task-center-contract.ts";
 const dctcCheckerPath = "scripts/check-heu-data-confirmation-task-center.mjs";
 const checkerPath = "scripts/check-heu-department-task-inbox-mvp-readiness.mjs";
 const packagePath = "package.json";
@@ -57,6 +58,7 @@ for (const file of [
   componentPath,
   docPath,
   taskCenterDataContractPath,
+  taskCenterReadModelPath,
   manifestPath,
   dctcCheckerPath,
   checkerPath,
@@ -70,6 +72,7 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const doc = read(docPath);
   const taskCenterDataContract = read(taskCenterDataContractPath);
+  const taskCenterReadModel = read(taskCenterReadModelPath);
   const manifest = read(manifestPath);
   const dctcChecker = read(dctcCheckerPath);
   const checkerScript = read(checkerPath);
@@ -95,18 +98,13 @@ if (failures.length === 0) {
       "ROLE_WORKSPACE_SCOPE_FILTERED",
       "REF_ONLY_NO_RAW_PII_NO_MUTATION",
       "NO_AI_CALL_NO_AUTOMATION_STEP",
-      "NO_MATCHING_SCOPE",
       "NO_GO_SCOPE",
       "DRAFT_READY",
       "READ_ONLY",
-      "admissionRoles",
-      "cthssvRoles",
-      "trainingRoles",
-      "financeRoles",
-      "controlRoles",
+      "HEU_TASK_CENTER_READ_MODEL_INTERFACE",
       "withAdmissionSegmentParam",
-      "canManageSystemScope",
-      "canReadScopedData",
+      "getVisibleTaskCenterLanes",
+      "resolveTaskCenterLaneStatus",
       "Khong dung inbox nay de phe duyet",
     ],
     "component token",
@@ -161,12 +159,31 @@ if (failures.length === 0) {
   );
 
   requireTokens(
+    taskCenterReadModel,
+    [
+      "TASK_CENTER_READ_MODEL_INTERFACE_CONTRACT_ONLY",
+      "TASK_CENTER_ROLE_GROUPS",
+      "TASK_CENTER_DEPARTMENT_LANES",
+      "TASK_CENTER_SOURCE_REF_ALLOWLIST",
+      "NO_MATCHING_SCOPE",
+      "canManageSystemScope",
+      "canReadScopedData",
+      "getVisibleTaskCenterLanes",
+      "resolveTaskCenterLaneStatus",
+    ],
+    "task-center read-model dependency token",
+    taskCenterReadModelPath,
+  );
+
+  requireTokens(
     manifest,
     [
       componentPath,
       docPath,
       taskCenterDataContractPath,
+      taskCenterReadModelPath,
       checkerPath,
+      "check:heu-task-center-read-model-interface-readiness",
       "check:heu-task-center-data-contract-readiness",
       "check:heu-department-task-inbox-mvp-readiness",
     ],
