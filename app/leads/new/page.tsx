@@ -10,10 +10,10 @@ import {
   getAdmissionLeadFormFieldConfigs,
 } from "@/lib/admission-dynamic-fields";
 import { getAllowedProgramMajorOptions } from "@/lib/admission-segment-program-rules";
+import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -65,11 +65,11 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   }
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentParam = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
-    requestedSegmentParam,
-  );
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
+    requestedSegmentId: requestedSegmentParam,
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
   const workspaceReturnTo = withAdmissionSegmentParam(
     "/leads/new",
     workspace.activeSegmentId,
@@ -117,8 +117,44 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     );
   }
 
+  if (!heuWorkspace.actionGate.canWriteScopedDraft) {
+    return (
+      <AppShell
+        active="leads"
+        title="Tao lead tuyen sinh"
+        description="P0-14 chan thao tac ghi khi tai khoan chua co quyen tao lead trong workspace dang chon."
+        workspaceSegmentId={workspace.activeSegmentId}
+        workspaceReturnTo={workspaceReturnTo}
+      >
+        <section
+          className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800"
+          data-heu-lead-create-write-guard="HEU_WORKSPACE_CONTEXT_LEAD_CREATE_WRITE_GUARD"
+        >
+          <div className="flex items-start gap-3">
+            <Route className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                Tai khoan chua co quyen tao lead trong workspace nay
+              </h2>
+              <p className="mt-1">
+                He thong da xac dinh duoc workspace, nhung action gate chua cho
+                phep ghi du lieu. IT_DATA hoac quan ly tuyen sinh can kiem tra
+                role, quyen <strong>leads.write_*</strong> va scope user truoc
+                khi tao lead.
+              </p>
+              <Button asChild className="mt-4">
+                <Link href={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}>
+                  Quay lai danh sach lead
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </AppShell>
+    );
+  }
+
   const [
-    { data: currentRoleCode },
     { data: sourceRows },
     { data: flowRows },
     { data: campaignRows },
@@ -131,7 +167,6 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
     { data: partnerScopeRows },
     fieldConfigResult,
   ] = await Promise.all([
-      supabase.rpc("current_user_role_code"),
       supabase
         .from("lead_sources")
         .select("id,source_name")
@@ -187,6 +222,7 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
+  const currentRoleCode = heuWorkspace.roleCode;
   const canUseGlobalScope =
     currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
   const partnerOptions = filterRowsByScope(

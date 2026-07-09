@@ -6,12 +6,14 @@ import { LeadLifecycleGuard } from "@/components/leads/lead-lifecycle-guard";
 import { LeadList } from "@/components/leads/lead-list";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import {
+  getHEUWorkspaceContext,
+  heuWorkspaceSegmentIds,
+} from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
   applyAdmissionSegmentIds,
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -75,12 +77,12 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
   const requestedQuickFilter = firstParam(resolvedSearchParams.quick);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
-  );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
+  const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
 
   const leadsQuery = applyAdmissionSegmentIds(
     supabase
@@ -125,7 +127,13 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     workspace.activeSegmentId,
   );
   const importHref = withAdmissionSegmentParam("/import", workspace.activeSegmentId);
-  const canWriteInWorkspace = Boolean(workspace.activeSegmentId);
+  const canWriteInWorkspace =
+    Boolean(workspace.activeSegmentId) &&
+    heuWorkspace.actionGate.canWriteScopedDraft;
+  const canImportInWorkspace =
+    Boolean(workspace.activeSegmentId) &&
+    heuWorkspace.actionGate.canImportLeadDraft;
+  const canUseLeadWriteTools = canWriteInWorkspace || canImportInWorkspace;
 
   return (
     <AppShell
@@ -146,14 +154,21 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
               Tải lại
             </Link>
           </Button>
+          {canImportInWorkspace ? (
+            <Button asChild variant="outline">
+              <Link href={importHref}>
+                <Upload className="size-4" />
+                Import CSV
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="outline" disabled>
+              <Upload className="size-4" />
+              Import CSV
+            </Button>
+          )}
           {canWriteInWorkspace ? (
             <>
-              <Button asChild variant="outline">
-                <Link href={importHref}>
-                  <Upload className="size-4" />
-                  Import CSV
-                </Link>
-              </Button>
               <Button asChild>
                 <Link href={createLeadHref}>
                   <Plus className="size-4" />
@@ -163,10 +178,6 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
             </>
           ) : (
             <>
-              <Button variant="outline" disabled>
-                <Upload className="size-4" />
-                Import CSV
-              </Button>
               <Button disabled>
                 <Plus className="size-4" />
                 Tạo lead
@@ -176,7 +187,7 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
         </>
       }
     >
-      {!canWriteInWorkspace ? (
+      {!canUseLeadWriteTools ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800">
           <h2 className="font-semibold">P0-14 đang chặn thao tác ghi</h2>
           <p className="mt-1">

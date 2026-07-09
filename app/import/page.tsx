@@ -5,10 +5,10 @@ import { Route, Users } from "lucide-react";
 import { LeadImportForm } from "@/components/import/lead-import-form";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -60,11 +60,11 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
   }
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentParam = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
-    requestedSegmentParam,
-  );
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
+    requestedSegmentId: requestedSegmentParam,
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
   const workspaceReturnTo = withAdmissionSegmentParam(
     "/import",
     workspace.activeSegmentId,
@@ -116,15 +116,53 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
     );
   }
 
+  if (!heuWorkspace.actionGate.canImportLeadDraft) {
+    return (
+      <AppShell
+        active="import"
+        title="Import du lieu"
+        description="HEUWorkspaceContext chan import khi tai khoan chua co quyen leads.import trong workspace dang chon."
+        workspaceSegmentId={workspace.activeSegmentId}
+        workspaceReturnTo={workspaceReturnTo}
+        actions={
+          <Button asChild variant="outline">
+            <Link href={withAdmissionSegmentParam("/leads", workspace.activeSegmentId)}>
+              <Users className="size-4" />
+              Xem lead
+            </Link>
+          </Button>
+        }
+      >
+        <section
+          className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-800"
+          data-heu-import-write-guard="HEU_WORKSPACE_CONTEXT_IMPORT_WRITE_GUARD"
+        >
+          <div className="flex items-start gap-3">
+            <Route className="mt-0.5 size-5 shrink-0" />
+            <div>
+              <h2 className="font-semibold">
+                Tai khoan chua co quyen import lead trong workspace nay
+              </h2>
+              <p className="mt-1">
+                He thong da xac dinh duoc workspace, nhung import action gate
+                chua cho phep ghi du lieu. IT_DATA hoac quan ly tuyen sinh can
+                kiem tra quyen <strong>leads.import</strong> va scope user
+                truoc khi import.
+              </p>
+            </div>
+          </div>
+        </section>
+      </AppShell>
+    );
+  }
+
   const [
-    { data: currentRoleCode },
     { data: sourceRows },
     { data: flowRows },
     { data: campaignRows },
     { data: partnerRows },
     { data: partnerScopeRows },
   ] = await Promise.all([
-      supabase.rpc("current_user_role_code"),
       supabase
         .from("lead_sources")
         .select("id,source_name")
@@ -155,6 +193,7 @@ export default async function ImportPage({ searchParams }: ImportPageProps) {
   const allowedPartnerIds = new Set(
     (partnerScopeRows ?? []).map((scope) => scope.partner_id),
   );
+  const currentRoleCode = heuWorkspace.roleCode;
   const canUseGlobalScope =
     currentRoleCode === "ADMIN" || currentRoleCode === "BGH";
   const segmentOptions = workspace.activeSegment
