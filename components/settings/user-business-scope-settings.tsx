@@ -629,6 +629,45 @@ export function UserBusinessScopeSettings({
                       </div>
                     </div>
 
+                    <div className="mt-4 grid gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,24rem)]">
+                      <label className="flex items-start gap-2">
+                        <input
+                          type="checkbox"
+                          name="scope_owner_approved"
+                          value="yes"
+                          required
+                          data-heu-scope-owner-approval-ack="P0-17_SCOPE_OWNER_APPROVAL_ACK"
+                          className="mt-1 size-4"
+                        />
+                        <span>
+                          <span className="block font-semibold">
+                            Owner-approved secure channel confirmed
+                          </span>
+                          <span className="mt-1 block text-xs leading-5 text-amber-800">
+                            Xac nhan owner da duyet scope ngoai Git/Codex/chat;
+                            checkbox nay khong thay the chu ky duyet.
+                          </span>
+                        </span>
+                      </label>
+
+                      <label className="text-xs font-semibold uppercase text-amber-900">
+                        Controlled evidence ID
+                        <input
+                          type="text"
+                          name="scope_controlled_evidence_id"
+                          required
+                          pattern="[A-Za-z0-9][A-Za-z0-9._:-]{5,95}"
+                          placeholder="CE-SCOPE-20260703-001"
+                          data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"
+                          className="mt-2 h-10 w-full rounded-md border border-amber-300 bg-white px-3 text-sm font-normal text-zinc-950 outline-none transition focus:border-amber-500 focus:ring-3 focus:ring-amber-200"
+                        />
+                        <span className="mt-1 block text-xs font-normal normal-case leading-5 text-amber-800">
+                          Use a safe redacted reference only. Khong nhap email,
+                          so dien thoai, CCCD, token, mat khau hoac du lieu tho.
+                        </span>
+                      </label>
+                    </div>
+
                     <div className="mt-4 rounded-md border border-zinc-200 bg-zinc-50 p-3">
                       <label
                         htmlFor={`lead-visibility-${selectedUser.id}`}

@@ -47,7 +47,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run audit:ttgdtx-role-scope-access` | PASS | TTGDTX role-scope access audit passed for checked pages |
 | `npm.cmd run check:heu-user-create-readiness` | NO_GO | `.env.local` / Supabase Auth Admin keys missing, live account check skipped |
 | `npm.cmd run check:heu-permission-scope-readiness` | NO_GO | `.env.local` / service role keys missing, live permission/scope check skipped |
-| `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only` | NO_GO_WITH_READY_STATIC_ONLY | Queue package exists, but app guard static tokens are incomplete |
+| `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only` | PASS_LOCAL | Queue package exists and HEU-USER-PILOT-004 closes the app guard static tokens |
 | `check:heu-user-operation-cutover-readiness` | BLOCKED_NOT_WIRED | Package alias is not present in this stacked branch |
 
 ## 4. Exact Blocking Findings
@@ -56,22 +56,22 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 |---|---|---|
 | USER-CREATE-ENV | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY` unavailable in this worktree | IT_DATA must provide env only through approved local secure channel; do not paste secrets into Git/Codex/chat |
 | PERMISSION-SCOPE-ENV | Same env blocker prevents live permission/scope read | Same as above |
-| USER-SCOPE-REPAIR-APP-GUARD | Static checker reports `Scope baseline repair queue static guards missing: 4` | Add/review the missing owner-approval and controlled-evidence guards before pilot cutover |
+| USER-SCOPE-REPAIR-APP-GUARD | Static checker now reports READY after HEU-USER-PILOT-004 | IT_DATA + Audit must review the owner-approval and controlled-evidence guard before pilot cutover |
 | USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` alias missing in stacked branch | Decide whether to port/register the cutover checker in a separate small PR |
 
-## 5. Missing Static Guard Tokens
+## 5. Static Guard Tokens Closed Locally
 
-The static scope baseline checker identified these missing guard groups:
+HEU-USER-PILOT-004 closes these static guard groups in local review:
 
 | Missing guard | Expected surface |
 |---|---|
-| `ui-owner-approval-ack-ok` | `components/settings/user-business-scope-settings.tsx` must require owner approval acknowledgement |
-| `ui-controlled-evidence-id-ok` | `components/settings/user-business-scope-settings.tsx` must require controlled evidence ID |
-| `server-owner-approval-guard-ok` | `app/settings/actions.ts` must reject scope updates without owner approval acknowledgement |
-| `server-controlled-evidence-id-guard-ok` | `app/settings/actions.ts` must normalize/require controlled evidence ID before scope save |
+| `ui-owner-approval-ack-ok` | `components/settings/user-business-scope-settings.tsx` requires owner approval acknowledgement |
+| `ui-controlled-evidence-id-ok` | `components/settings/user-business-scope-settings.tsx` requires controlled evidence ID |
+| `server-owner-approval-guard-ok` | `app/settings/actions.ts` rejects scope updates without owner approval acknowledgement |
+| `server-controlled-evidence-id-guard-ok` | `app/settings/actions.ts` normalizes/requires controlled evidence ID before scope save |
 
-These are runtime/scope guard blockers. Do not mark Day-1 pilot ready until they
-are present and the static checker reports READY.
+These are local runtime/scope guard closures only. Do not mark Day-1 pilot ready
+until IT_DATA + Audit review them and live env checks pass.
 
 ## 6. Current Day-1 Verdict
 
@@ -83,14 +83,15 @@ are present and the static checker reports READY.
 | Role-scope UAT package | PASS_LOCAL packaging only |
 | Live Auth/account readiness | NO_GO |
 | Live permission/scope readiness | NO_GO |
-| Scope baseline static app guard | NO_GO |
+| Scope baseline static app guard | PASS_LOCAL |
 | Day-1 real-user pilot | NO_GO |
 
-Day-1 pilot is not ready for real users yet.
+Day-1 pilot is not ready for real users yet because live env checks still remain
+NO_GO and owner/Audit review is still required.
 
-## 7. Safe Next Slice
+## 7. Completed Local Fix Slice
 
-Recommended next slice:
+Completed local fix slice:
 
 ```text
 HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX
@@ -117,6 +118,8 @@ External blocker that cannot be solved in Git:
 
 - IT_DATA must supply `.env.local` through secure local channel before live
   Auth/permission checks can run.
+- IT_DATA + Audit must review the HEU-USER-PILOT-004 guard before any real user
+  pilot cutover.
 
 ## 8. Rollback
 
@@ -146,7 +149,8 @@ SOP-LEGAL:
 - No restricted data is copied into Git/Codex/chat.
 
 SOP-LOGIC:
-- Day-1 remains blocked until live env checks and static scope-save guards pass.
+- Day-1 remains blocked until live env checks pass and IT_DATA + Audit accept
+  the static scope-save guard.
 
 SOP-VERIFY:
 - Required local check:
@@ -154,8 +158,8 @@ SOP-VERIFY:
 
 SOP-RESULT:
 - `NO_GO` for real Day-1 pilot.
-- `CAN_SUA` for the next minimal scope-save guard fix.
+- `CAN_SUA` for IT_DATA + Audit review of the minimal scope-save guard fix.
 
 SOP-NEXT:
-- Implement or review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` only
-  after IT_DATA + Audit accept this precheck ledger.
+- Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
+  before any real scope save or pilot cutover.

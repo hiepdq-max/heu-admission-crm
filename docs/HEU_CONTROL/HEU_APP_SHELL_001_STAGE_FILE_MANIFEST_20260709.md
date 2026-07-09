@@ -27,8 +27,10 @@ app/leads/new/page.tsx
 app/leads/page.tsx
 app/page.tsx
 app/reports/page.tsx
+app/settings/actions.ts
 components/dashboard/dashboard-overview.tsx
 components/layout/app-shell.tsx
+components/settings/user-business-scope-settings.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_BODY_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_HANDOFF_20260709.md
 docs/HEU_CONTROL/HEU_APP_SHELL_001_MODULAR_MONOLITH_DECISION_20260709.md
@@ -84,8 +86,10 @@ git add -- `
   app/leads/page.tsx `
   app/page.tsx `
   app/reports/page.tsx `
+  app/settings/actions.ts `
   components/dashboard/dashboard-overview.tsx `
   components/layout/app-shell.tsx `
+  components/settings/user-business-scope-settings.tsx `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_BODY_20260709.md `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_DRAFT_PR_HANDOFF_20260709.md `
   docs/HEU_CONTROL/HEU_APP_SHELL_001_MODULAR_MONOLITH_DECISION_20260709.md `

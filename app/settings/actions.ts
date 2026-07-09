@@ -13,6 +13,18 @@ function textValue(formData: FormData, key: string) {
   return value.length > 0 ? value : null;
 }
 
+function normalizeControlledEvidenceId(value: string | null) {
+  const normalized = value?.trim() ?? "";
+
+  if (!normalized) {
+    return null;
+  }
+
+  return /^[A-Za-z0-9][A-Za-z0-9._:-]{5,95}$/.test(normalized)
+    ? normalized
+    : null;
+}
+
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
 const createUserPermission = "users.create";
 const userManagePermission = "users.manage";
@@ -765,6 +777,14 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
     requestedReturnTo === "/settings/scopes" ? "/settings/scopes" : "/settings";
   const targetUserId = textValue(formData, "user_id");
   const leadVisibility = String(formData.get("lead_visibility") ?? "OWN");
+  const scopeOwnerApproved = formData.get("scope_owner_approved") === "yes";
+  const rawControlledEvidenceId = textValue(
+    formData,
+    "scope_controlled_evidence_id",
+  );
+  const controlledEvidenceId = normalizeControlledEvidenceId(
+    rawControlledEvidenceId,
+  );
 
   if (!targetUserId) {
     redirect(`${returnPath}?error=missing_user`);
@@ -795,6 +815,18 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
     redirect(`${returnPath}?error=lead_visibility_all_admin_only`);
   }
 
+  if (!scopeOwnerApproved) {
+    redirect(`${returnPath}?error=scope_owner_approval_required`);
+  }
+
+  if (!rawControlledEvidenceId) {
+    redirect(`${returnPath}?error=scope_controlled_evidence_id_required`);
+  }
+
+  if (!controlledEvidenceId) {
+    redirect(`${returnPath}?error=scope_controlled_evidence_id_invalid`);
+  }
+
   const segmentIds = Array.from(
     new Set(
       formData
@@ -811,7 +843,7 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
         .filter(Boolean),
     ),
   );
-  const scopeUpdateNote = `[${new Date().toISOString()}] Updated from settings scope form by ${user.id}.`;
+  const scopeUpdateNote = `[${new Date().toISOString()}] Updated from settings scope form by ${user.id}; owner-approved scope channel confirmed; controlled_evidence_id=${controlledEvidenceId}.`;
 
   const { error: segmentArchiveError } = await supabase
     .from("user_admission_segment_scopes")
@@ -890,6 +922,7 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
         user_id: targetUserId,
         lead_visibility: leadVisibility,
         assigned_by: user.id,
+        note: scopeUpdateNote,
         status: "ACTIVE",
       },
       { onConflict: "user_id" },
