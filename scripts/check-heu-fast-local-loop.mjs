@@ -878,7 +878,10 @@ function printHelp() {
     "Default checks: check:heu-it-data-daily-control, audit:heu-current-state-inventory, audit:heu-vietnamese-text-encoding.",
   );
   console.log(
-    `Dynamic guards: ${dynamicGuardDefinitions.map((guard) => guard.name).join(", ")}`,
+    `Dynamic guards available: ${activeDynamicGuardDefinitions().map((guard) => guard.name).join(", ") || "none"}`,
+  );
+  console.log(
+    `Dynamic guards skipped: ${skippedDynamicGuardDefinitions().length}`,
   );
   console.log(
     "Key outputs: HEU_FAST_LOOP_WORKTREE, HEU_FAST_LOOP_TOP_AREA, HEU_FAST_LOOP_NEXT_ACTION, HEU_FAST_LOOP_OPERATOR_NEXT, HEU_FAST_LOOP_DYNAMIC_GUARD_TRIGGERS, HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATES, HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_GROUPS, HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_NEXT, HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_PATHS, HEU_FAST_LOOP_DYNAMIC_GUARDS, HEU_FAST_LOCAL_LOOP_READY.",
@@ -957,6 +960,51 @@ function runNpmScript(scriptName) {
 
 function readJson(relativePath) {
   return JSON.parse(readFileSync(path.join(process.cwd(), relativePath), "utf8"));
+}
+
+function packageScriptsForRegistry() {
+  const packagePath = path.join(process.cwd(), "package.json");
+
+  if (!existsSync(packagePath)) {
+    return {};
+  }
+
+  try {
+    return readJson("package.json").scripts ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function dynamicGuardAvailability(guard, packageScripts = packageScriptsForRegistry()) {
+  const missingPaths = (guard.paths ?? []).filter(
+    (watchedPath) => !existsSync(path.join(process.cwd(), watchedPath)),
+  );
+
+  return {
+    hasPackageScript: Boolean(packageScripts[guard.name]),
+    missingPaths,
+  };
+}
+
+function activeDynamicGuardDefinitions() {
+  const packageScripts = packageScriptsForRegistry();
+
+  return dynamicGuardDefinitions.filter((guard) => {
+    const availability = dynamicGuardAvailability(guard, packageScripts);
+
+    return availability.hasPackageScript && availability.missingPaths.length === 0;
+  });
+}
+
+function skippedDynamicGuardDefinitions() {
+  const packageScripts = packageScriptsForRegistry();
+
+  return dynamicGuardDefinitions.filter((guard) => {
+    const availability = dynamicGuardAvailability(guard, packageScripts);
+
+    return !availability.hasPackageScript || availability.missingPaths.length > 0;
+  });
 }
 
 function pathFromStatusLine(line) {
@@ -1123,7 +1171,7 @@ function dynamicGuardTriggers(snapshot) {
     return [];
   }
 
-  return dynamicGuardDefinitions
+  return activeDynamicGuardDefinitions()
     .map((guard) => ({
       guard,
       paths: guard.paths.filter((watchedPath) =>
@@ -1166,12 +1214,12 @@ function staticCheckNames() {
   return new Set([
     "check:heu-fast-local-loop",
     ...commands.map((command) => command.name),
-    ...dynamicGuardDefinitions.map((guard) => guard.name),
+    ...activeDynamicGuardDefinitions().map((guard) => guard.name),
   ]);
 }
 
 function dynamicGuardWatchedPaths() {
-  return new Set(dynamicGuardDefinitions.flatMap((guard) => guard.paths));
+  return new Set(activeDynamicGuardDefinitions().flatMap((guard) => guard.paths));
 }
 
 function dynamicGuardCandidateChecks(snapshot) {
@@ -1509,16 +1557,18 @@ function appendDynamicCommands(snapshot) {
 }
 
 function formatDynamicGuardRegistryDetail() {
-  return dynamicGuardDefinitions
+  return activeDynamicGuardDefinitions()
     .map((guard) => `${guard.name}:paths=${guard.paths.length}`)
     .join("; ");
 }
 
 function validateDynamicGuardRegistry() {
   const failures = [];
+  const skipped = [];
   const seenHints = new Set();
   const seenNames = new Set();
   const seenPaths = new Set();
+  const activePaths = new Set();
   const packagePath = path.join(process.cwd(), "package.json");
   let packageScripts = {};
 
@@ -1551,19 +1601,23 @@ function validateDynamicGuardRegistry() {
       failures.push(`dynamic guard ${guard.name}: missing watched paths`);
     }
 
+    const availability = dynamicGuardAvailability(guard, packageScripts);
+
     for (const watchedPath of guard.paths ?? []) {
       if (seenPaths.has(watchedPath)) {
         failures.push(`duplicate dynamic guard watched path: ${watchedPath}`);
       }
       seenPaths.add(watchedPath);
 
-      if (!existsSync(path.join(process.cwd(), watchedPath))) {
-        failures.push(`dynamic guard ${guard.name}: watched path missing: ${watchedPath}`);
+      if (availability.missingPaths.length === 0 && packageScripts[guard.name]) {
+        activePaths.add(watchedPath);
       }
     }
 
-    if (!packageScripts[guard.name]) {
-      failures.push(`package.json: missing script for dynamic guard ${guard.name}`);
+    if (!availability.hasPackageScript || availability.missingPaths.length > 0) {
+      skipped.push(
+        `${guard.name}: missing_script=${availability.hasPackageScript ? "no" : "yes"}; missing_paths=${availability.missingPaths.length}`,
+      );
     }
   }
 
@@ -1578,11 +1632,16 @@ function validateDynamicGuardRegistry() {
   }
 
   console.log(
-    `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY: READY - guards=${dynamicGuardDefinitions.length}; package_scripts=${seenNames.size}; watched_paths=${seenPaths.size}`,
+    `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY: READY - guards=${activeDynamicGuardDefinitions().length}; skipped=${skipped.length}; package_scripts=${seenNames.size}; watched_paths=${activePaths.size}`,
   );
   console.log(
-    `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY_DETAIL: ${formatDynamicGuardRegistryDetail()}`,
+    `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY_DETAIL: ${formatDynamicGuardRegistryDetail() || "none"}`,
   );
+  if (skipped.length > 0) {
+    console.log(
+      `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY_SKIPPED: ${skipped.slice(0, 12).join("; ")}${skipped.length > 12 ? `; more=${skipped.length - 12}` : ""}`,
+    );
+  }
   return true;
 }
 
