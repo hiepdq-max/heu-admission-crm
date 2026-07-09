@@ -16,6 +16,7 @@ Current local blockers:
 
 - `check:heu-user-create-readiness` returns `NO_GO USER-CREATE-ENV`.
 - `check:heu-permission-scope-readiness` returns `NO_GO PERMISSION-SCOPE-ENV`.
+- `LIVE_USER_ENV_READY=NO_GO_UNTIL_IT_DATA_LOCAL_CONFIRM`.
 
 This handoff does not provide or store secrets. It tells IT_DATA how to prepare
 the local environment without pasting secrets into Git, Codex, chat, screenshots
@@ -159,3 +160,6 @@ SOP-NEXT:
 - IT_DATA reviews this handoff.
 - Then IT_DATA runs `check:heu-user-create-readiness` and
   `check:heu-permission-scope-readiness` from approved local secure env.
+- Record only status results in
+  `docs/HEU_CONTROL/HEU_USER_PILOT_008_LIVE_CHECK_RESULT_LEDGER_20260710.md`
+  using `npm.cmd run check:heu-user-pilot-live-check-result-ledger-readiness`.

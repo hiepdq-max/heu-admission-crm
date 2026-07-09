@@ -51,6 +51,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | `npm.cmd run check:heu-user-operation-cutover-readiness` | PASS_LOCAL_CHECKER_WIRED | HEU-USER-PILOT-005 wires the cutover checker; cutover decision remains NO_GO because external owner blockers remain |
 | `npm.cmd run check:heu-user-activation-worksheet-readiness` | PASS_LOCAL_WORKSHEET | HEU-USER-PILOT-006 wires the safe activation worksheet; real activation remains NO_GO because owner/env blockers remain |
 | `npm.cmd run check:heu-user-pilot-secure-env-handoff-readiness` | PASS_LOCAL_HANDOFF | HEU-USER-PILOT-007 wires the secure env handoff; live env remains NO_GO until IT_DATA confirms local `.env.local` |
+| `npm.cmd run check:heu-user-pilot-live-check-result-ledger-readiness` | PASS_LOCAL_LEDGER | HEU-USER-PILOT-008 wires the status-only live-check result ledger; live checks remain NO_GO until env is ready |
 
 ## 4. Exact Blocking Findings
 
@@ -62,6 +63,7 @@ accept evidence, approve owner GO/NO-GO or mark production GO.
 | USER-OPERATION-CUTOVER | `check:heu-user-operation-cutover-readiness` is wired by HEU-USER-PILOT-005 | IT_DATA + Audit must review the cutover checker; owner seats, live env checks, negative proof and owner signoff remain external blockers |
 | USER-ACTIVATION-WORKSHEET | `check:heu-user-activation-worksheet-readiness` is wired by HEU-USER-PILOT-006 | IT_DATA + Audit must review the activation worksheet before any real user is activated |
 | USER-SECURE-ENV-HANDOFF | `check:heu-user-pilot-secure-env-handoff-readiness` is wired by HEU-USER-PILOT-007 | IT_DATA must prepare `.env.local` locally without exposing secret values in Git/Codex/chat |
+| USER-LIVE-CHECK-LEDGER | `check:heu-user-pilot-live-check-result-ledger-readiness` is wired by HEU-USER-PILOT-008 | IT_DATA records only status results after live checks; no secret values or raw profile data |
 
 ## 5. Static Guard Tokens Closed Locally
 
@@ -119,6 +121,12 @@ Completed secure env handoff slice:
 HEU-USER-PILOT-007-SECURE-ENV-HANDOFF
 ```
 
+Completed live-check result ledger slice:
+
+```text
+HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER
+```
+
 Scope:
 
 - `components/settings/user-business-scope-settings.tsx`
@@ -150,6 +158,8 @@ External blocker that cannot be solved in Git:
   needs secure env, owner approval and controlled evidence outside Git/Codex/chat.
 - Secure env handoff is local-control ready only; actual env values remain under
   IT_DATA control and must never be pasted into Git/Codex/chat.
+- Live-check result ledger is status-only; actual env values and raw user details
+  remain outside Git/Codex/chat.
 
 ## 8. Rollback
 
@@ -192,6 +202,7 @@ SOP-RESULT:
 - `CAN_SUA` for IT_DATA + Audit review of the operation cutover checker.
 - `CAN_SUA` for IT_DATA + Audit review of the activation worksheet.
 - `CAN_SUA` for IT_DATA + Audit review of the secure env handoff.
+- `CAN_SUA` for IT_DATA + Audit review of the live-check result ledger.
 
 SOP-NEXT:
 - Review `HEU-USER-PILOT-004-SCOPE-SAVE-GUARD-MINIMAL-FIX` with IT_DATA + Audit
@@ -202,3 +213,5 @@ SOP-NEXT:
   Audit before creating, inviting or activating any pilot user.
 - Review `HEU-USER-PILOT-007-SECURE-ENV-HANDOFF` with IT_DATA + Audit before
   running live user-create or permission/scope checks.
+- Review `HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER` with IT_DATA + Audit
+  before recording any live check result.

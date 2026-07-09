@@ -4,16 +4,16 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const failures = [];
 
-const handoffPath = "docs/HEU_CONTROL/HEU_USER_PILOT_007_SECURE_ENV_HANDOFF_20260709.md";
-const precheckLedgerPath =
-  "docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md";
+const ledgerPath =
+  "docs/HEU_CONTROL/HEU_USER_PILOT_008_LIVE_CHECK_RESULT_LEDGER_20260710.md";
+const secureEnvHandoffPath =
+  "docs/HEU_CONTROL/HEU_USER_PILOT_007_SECURE_ENV_HANDOFF_20260709.md";
 const activationWorksheetPath =
   "docs/HEU_CONTROL/HEU_USER_PILOT_006_USER_ACTIVATION_WORKSHEET_READINESS_20260709.md";
-const liveCheckLedgerPath =
-  "docs/HEU_CONTROL/HEU_USER_PILOT_008_LIVE_CHECK_RESULT_LEDGER_20260710.md";
-const checkerPath = "scripts/check-heu-user-pilot-secure-env-handoff-readiness.mjs";
+const checkerPath =
+  "scripts/check-heu-user-pilot-live-check-result-ledger-readiness.mjs";
 const packagePath = "package.json";
-const checkerAlias = "check:heu-user-pilot-secure-env-handoff-readiness";
+const checkerAlias = "check:heu-user-pilot-live-check-result-ledger-readiness";
 const checkerCommand = `node ${checkerPath}`;
 
 function absolute(relativePath) {
@@ -51,10 +51,9 @@ function forbidPatterns(contents, patterns, label, file) {
 }
 
 for (const file of [
-  handoffPath,
-  precheckLedgerPath,
+  ledgerPath,
+  secureEnvHandoffPath,
   activationWorksheetPath,
-  liveCheckLedgerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -62,50 +61,47 @@ for (const file of [
 }
 
 if (failures.length === 0) {
-  const handoff = read(handoffPath);
-  const precheckLedger = read(precheckLedgerPath);
+  const ledger = read(ledgerPath);
+  const secureEnvHandoff = read(secureEnvHandoffPath);
   const activationWorksheet = read(activationWorksheetPath);
-  const liveCheckLedger = read(liveCheckLedgerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
   requireTokens(
-    handoff,
+    ledger,
     [
-      "HEU-USER-PILOT-007-SECURE-ENV-HANDOFF",
-      "Status: PASS_LOCAL_HANDOFF",
+      "HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER",
+      "Status: PASS_LOCAL_LEDGER",
       "Production status: NO-GO",
-      "Current local blockers:",
-      "NO_GO USER-CREATE-ENV",
-      "NO_GO PERMISSION-SCOPE-ENV",
-      "This handoff does not provide or store secrets.",
-      "NEXT_PUBLIC_SUPABASE_URL",
-      "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
-      "SUPABASE_SERVICE_ROLE_KEY",
-      "Do not write the values in this document.",
-      "git check-ignore .env.local",
-      "npm.cmd run check:heu-user-create-readiness",
-      "npm.cmd run check:heu-permission-scope-readiness",
-      "HEU_USER_PILOT_008_LIVE_CHECK_RESULT_LEDGER_20260710.md",
-      "check:heu-user-pilot-live-check-result-ledger-readiness",
-      "ENV-HANDOFF-01",
-      "ENV-HANDOFF-05",
-      "NO_GO_UNTIL_LOCAL_CONFIRM",
-      "NO_GO_UNTIL_RERUN",
+      "env_local_exists=False",
+      "USER-CREATE-ENV=NO_GO",
+      "PERMISSION-SCOPE-ENV=NO_GO",
+      "LIVE_USER_ENV_READY=NO_GO_UNTIL_IT_DATA_LOCAL_CONFIRM",
+      "NO_GO_ENV_NOT_READY",
+      "PASS_LOCAL_NO_SECRET_VALUE_RECORDED",
+      "Allowed evidence in this ledger:",
+      "Forbidden evidence in this ledger:",
+      "Env value or `KEY=value` assignment.",
+      "LIVE-CHECK-01",
+      "LIVE-CHECK-05",
+      "NO_GO_OWNER_REVIEW_PENDING",
+      "check:heu-user-create-readiness",
+      "check:heu-permission-scope-readiness",
+      "check:heu-user-activation-worksheet-readiness",
+      "check:heu-user-operation-cutover-readiness",
       "AI/Codex must not",
-      "Ask the user to paste secrets.",
-      "Read, print, summarize or store secret values.",
+      "Read, print, summarize or store `.env.local`.",
       "Grant role, department, workspace or business scope.",
       "SOP-RESULT",
-      "`NO_GO` for live user activation",
+      "`NO_GO` for real user activation",
       "CAN_SUA",
     ],
-    "secure env handoff token",
-    handoffPath,
+    "live-check result ledger token",
+    ledgerPath,
   );
 
   forbidPatterns(
-    handoff,
+    ledger,
     [
       {
         label: "actual Supabase URL assignment",
@@ -125,22 +121,20 @@ if (failures.length === 0) {
       },
     ],
     "secret material",
-    handoffPath,
+    ledgerPath,
   );
 
   requireTokens(
-    precheckLedger,
+    secureEnvHandoff,
     [
-      "HEU-USER-PILOT-003-IDENTITY-SCOPE-PRECHECK-LEDGER",
-      "check:heu-user-create-readiness",
-      "check:heu-permission-scope-readiness",
-      "USER-CREATE-ENV",
-      "PERMISSION-SCOPE-ENV",
-      "HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER",
-      "Day-1 real-user pilot | NO_GO",
+      "HEU-USER-PILOT-007-SECURE-ENV-HANDOFF",
+      "Status: PASS_LOCAL_HANDOFF",
+      "LIVE_USER_ENV_READY=NO_GO_UNTIL_IT_DATA_LOCAL_CONFIRM",
+      "Do not write the values in this document.",
+      "AI/Codex must not",
     ],
-    "precheck dependency token",
-    precheckLedgerPath,
+    "secure env handoff dependency token",
+    secureEnvHandoffPath,
   );
 
   requireTokens(
@@ -148,26 +142,10 @@ if (failures.length === 0) {
     [
       "HEU-USER-PILOT-006-USER-ACTIVATION-WORKSHEET-READINESS",
       "NO_GO_EXTERNAL_ENV",
-      "No database rollback is required",
       "NO_GO` for real user activation",
     ],
     "activation worksheet dependency token",
     activationWorksheetPath,
-  );
-
-  requireTokens(
-    liveCheckLedger,
-    [
-      "HEU-USER-PILOT-008-LIVE-CHECK-RESULT-LEDGER",
-      "Status: PASS_LOCAL_LEDGER",
-      "Production status: NO-GO",
-      "USER-CREATE-ENV=NO_GO",
-      "PERMISSION-SCOPE-ENV=NO_GO",
-      "NO_GO_ENV_NOT_READY",
-      "Forbidden evidence in this ledger:",
-    ],
-    "live-check result ledger dependency token",
-    liveCheckLedgerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
@@ -179,9 +157,9 @@ if (failures.length === 0) {
     [
       "existsSync",
       "readFileSync",
-      "HEU_USER_PILOT_SECURE_ENV_HANDOFF_READY: PASS_LOCAL",
-      "LIVE_USER_ENV_READY: NO_GO_UNTIL_IT_DATA_LOCAL_CONFIRM",
-      "NO_RUNTIME_CHANGE: secure env handoff checker only; no secret readout, account creation, scope grant, password handling, migration, deploy, paid automation, finance action or production GO",
+      "HEU_USER_PILOT_LIVE_CHECK_RESULT_LEDGER_READY: PASS_LOCAL",
+      "LIVE_USER_CHECKS_READY: NO_GO_ENV_NOT_READY",
+      "NO_RUNTIME_CHANGE: live-check result ledger checker only; no secret readout, account creation, scope grant, password handling, migration, deploy, paid automation, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
@@ -207,16 +185,16 @@ if (failures.length === 0) {
 }
 
 if (failures.length > 0) {
-  console.error("HEU user pilot secure env handoff readiness check failed:");
+  console.error("HEU user pilot live-check result ledger readiness check failed:");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("HEU user pilot secure env handoff readiness check");
-console.log("HEU_USER_PILOT_SECURE_ENV_HANDOFF_READY: PASS_LOCAL");
-console.log("LIVE_USER_ENV_READY: NO_GO_UNTIL_IT_DATA_LOCAL_CONFIRM");
+console.log("HEU user pilot live-check result ledger readiness check");
+console.log("HEU_USER_PILOT_LIVE_CHECK_RESULT_LEDGER_READY: PASS_LOCAL");
+console.log("LIVE_USER_CHECKS_READY: NO_GO_ENV_NOT_READY");
 console.log(
-  "NO_RUNTIME_CHANGE: secure env handoff checker only; no secret readout, account creation, scope grant, password handling, migration, deploy, paid automation, finance action or production GO",
+  "NO_RUNTIME_CHANGE: live-check result ledger checker only; no secret readout, account creation, scope grant, password handling, migration, deploy, paid automation, finance action or production GO",
 );
