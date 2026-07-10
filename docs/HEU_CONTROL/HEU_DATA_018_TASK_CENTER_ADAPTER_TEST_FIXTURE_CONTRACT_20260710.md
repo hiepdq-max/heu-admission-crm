@@ -230,4 +230,7 @@ SOP-RESULT:
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this fixture
   contract.
-- If accepted, next safe slice is Task Center adapter disabled runtime seam verification, still no DB read and no migration.
+- If accepted, next safe slice is `HEU-DATA-019-TASK-CENTER-DISABLED-RUNTIME-SEAM-VERIFICATION`,
+  a Task Center adapter disabled runtime seam verification, still no DB read and no migration.
+- Required next checker:
+  `check:heu-task-center-disabled-runtime-seam-verification-readiness`.

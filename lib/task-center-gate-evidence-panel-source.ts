@@ -119,6 +119,24 @@ export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA =
   "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA";
 export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_ONLY =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_ONLY";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_READONLY =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_READONLY";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_DRAFT_ONLY =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_DRAFT_ONLY";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_READ =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_READ";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_CLIENT =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_CLIENT";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_TASK_MUTATION =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_TASK_MUTATION";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_REAL_DATA =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_REAL_DATA";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -192,6 +210,14 @@ export type TaskCenterAdapterTestFixtureContractItem = {
   workspaceLane: string;
   expectedResult: string;
   requiredBeforeDbRead: string;
+  forbiddenInThisSlice: string;
+};
+
+export type TaskCenterDisabledRuntimeSeamVerificationItem = {
+  code: string;
+  seamState: "DISABLED_RUNTIME_SEAM";
+  verifiedRuntimeSeam: string;
+  requiredBeforeEnablement: string;
   forbiddenInThisSlice: string;
 };
 
@@ -270,6 +296,18 @@ export type TaskCenterGateEvidencePanelSource = {
     noRealData: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA;
     noAiOrAutomation: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterAdapterTestFixtureContractItem[];
+  };
+  disabledRuntimeSeamVerification: {
+    mode: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_ONLY;
+    readonly: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_READONLY;
+    draftOnly: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_DRAFT_ONLY;
+    noDatabaseRead: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_REAL_DATA;
+    noEnvEnablement: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT;
+    noAiOrAutomation: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterDisabledRuntimeSeamVerificationItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -595,6 +633,49 @@ const adapterTestFixtureContractItems: readonly TaskCenterAdapterTestFixtureCont
     },
   ];
 
+const disabledRuntimeSeamVerificationItems: readonly TaskCenterDisabledRuntimeSeamVerificationItem[] =
+  [
+    {
+      code: "RUNTIME_SEAM_ADAPTER_DISABLED_DEFAULT",
+      seamState: "DISABLED_RUNTIME_SEAM",
+      verifiedRuntimeSeam:
+        "createTaskCenterReadonlyAdapterSkeleton returns DISABLED_BY_DEFAULT.",
+      requiredBeforeEnablement: "FEATURE_FLAG_REQUIRED_AND_OWNER_GATES",
+      forbiddenInThisSlice: "NO_DATABASE_CLIENT_CREATED",
+    },
+    {
+      code: "RUNTIME_SEAM_FALLBACK_SOURCE_ACTIVE",
+      seamState: "DISABLED_RUNTIME_SEAM",
+      verifiedRuntimeSeam:
+        "createTaskCenterUiFallbackSource returns MOCK_READONLY_FALLBACK_ACTIVE.",
+      requiredBeforeEnablement: "MOCK_FALLBACK_CONFIRMED",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "RUNTIME_SEAM_EMPTY_ADAPTER_ROWS",
+      seamState: "DISABLED_RUNTIME_SEAM",
+      verifiedRuntimeSeam:
+        "adapterRows remains readonly empty array until DB read approval.",
+      requiredBeforeEnablement: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      forbiddenInThisSlice: "NO_REAL_USER_DATA",
+    },
+    {
+      code: "RUNTIME_SEAM_NO_ENV_ENABLEMENT",
+      seamState: "DISABLED_RUNTIME_SEAM",
+      verifiedRuntimeSeam: "No env or feature flag enables adapter in this slice.",
+      requiredBeforeEnablement: "IT_DATA_RUNTIME_FLAG_SIGNOFF",
+      forbiddenInThisSlice: "NO_ENV_ENABLEMENT",
+    },
+    {
+      code: "RUNTIME_SEAM_PRODUCTION_NO_GO",
+      seamState: "DISABLED_RUNTIME_SEAM",
+      verifiedRuntimeSeam:
+        "Production remains NO-GO while seam verification is local only.",
+      requiredBeforeEnablement: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -676,6 +757,18 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noRealData: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA,
       noAiOrAutomation: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION,
       items: adapterTestFixtureContractItems,
+    },
+    disabledRuntimeSeamVerification: {
+      mode: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_ONLY,
+      readonly: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_READONLY,
+      draftOnly: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_DRAFT_ONLY,
+      noDatabaseRead: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_REAL_DATA,
+      noEnvEnablement: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT,
+      noAiOrAutomation: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION,
+      items: disabledRuntimeSeamVerificationItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

@@ -8,18 +8,26 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_018_TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_20260710.md";
+const disabledRuntimeSeamVerificationDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_019_TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_20260710.md";
 const dbReadAdapterImplementationPlanDocPath =
   "docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const dbReadAdapterImplementationPlanCheckerPath =
   "scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs";
+const disabledRuntimeSeamVerificationCheckerPath =
+  "scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-test-fixture-contract-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const disabledRuntimeSeamVerificationCheckerAlias =
+  "check:heu-task-center-disabled-runtime-seam-verification-readiness";
+const disabledRuntimeSeamVerificationCheckerCommand =
+  `node ${disabledRuntimeSeamVerificationCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,9 +67,11 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  disabledRuntimeSeamVerificationDocPath,
   dbReadAdapterImplementationPlanDocPath,
   manifestPath,
   dbReadAdapterImplementationPlanCheckerPath,
+  disabledRuntimeSeamVerificationCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,6 +82,9 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const disabledRuntimeSeamVerificationDoc = read(
+    disabledRuntimeSeamVerificationDocPath,
+  );
   const dbReadAdapterImplementationPlanDoc = read(
     dbReadAdapterImplementationPlanDocPath,
   );
@@ -182,10 +195,29 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center adapter disabled runtime seam verification",
+      "HEU-DATA-019-TASK-CENTER-DISABLED-RUNTIME-SEAM-VERIFICATION",
+      "check:heu-task-center-disabled-runtime-seam-verification-readiness",
       "still no DB read and no migration",
     ],
     "adapter test fixture contract doc token",
     docPath,
+  );
+
+  requireTokens(
+    disabledRuntimeSeamVerificationDoc,
+    [
+      "HEU-DATA-019-TASK-CENTER-DISABLED-RUNTIME-SEAM-VERIFICATION",
+      "PASS_LOCAL_DISABLED_RUNTIME_SEAM_VERIFICATION",
+      "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_DATABASE_READ",
+      "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT",
+      "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_REAL_DATA",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "RUNTIME_SEAM_ADAPTER_DISABLED_DEFAULT",
+      "RUNTIME_SEAM_FALLBACK_SOURCE_ACTIVE",
+      "still no DB read and no migration",
+    ],
+    "disabled runtime seam verification doc token",
+    disabledRuntimeSeamVerificationDocPath,
   );
 
   requireTokens(
@@ -206,12 +238,17 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      disabledRuntimeSeamVerificationDocPath,
       dbReadAdapterImplementationPlanDocPath,
       checkerPath,
+      disabledRuntimeSeamVerificationCheckerPath,
       dbReadAdapterImplementationPlanCheckerPath,
       "check:heu-task-center-adapter-test-fixture-contract-readiness",
+      "check:heu-task-center-disabled-runtime-seam-verification-readiness",
       "node --check scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs",
+      "node --check scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs",
       "npm.cmd run check:heu-task-center-adapter-test-fixture-contract-readiness",
+      "npm.cmd run check:heu-task-center-disabled-runtime-seam-verification-readiness",
     ],
     "manifest adapter test fixture contract token",
     manifestPath,
@@ -231,6 +268,15 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[disabledRuntimeSeamVerificationCheckerAlias] !==
+    disabledRuntimeSeamVerificationCheckerCommand
+  ) {
+    fail(
+      `${packagePath}: missing or mismatched ${disabledRuntimeSeamVerificationCheckerAlias}`,
+    );
   }
 
   requireTokens(
