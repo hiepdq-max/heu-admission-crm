@@ -11,10 +11,14 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_025_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_20260710.md";
 const readinessReviewDocPath =
   "docs/HEU_CONTROL/HEU_DATA_024_TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_20260710.md";
+const readonlyTestHarnessDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_026_TASK_CENTER_ADAPTER_DRY_RUN_READONLY_TEST_HARNESS_DESIGN_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const readinessReviewCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs";
+const readonlyTestHarnessCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs";
 const packagePath = "package.json";
@@ -62,8 +66,10 @@ for (const file of [
   enablementGatePath,
   docPath,
   readinessReviewDocPath,
+  readonlyTestHarnessDocPath,
   manifestPath,
   readinessReviewCheckerPath,
+  readonlyTestHarnessCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -76,8 +82,10 @@ if (failures.length === 0) {
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
   const readinessReviewDoc = read(readinessReviewDocPath);
+  const readonlyTestHarnessDoc = read(readonlyTestHarnessDocPath);
   const manifest = read(manifestPath);
   const readinessReviewChecker = read(readinessReviewCheckerPath);
+  const readonlyTestHarnessChecker = read(readonlyTestHarnessCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -205,6 +213,8 @@ if (failures.length === 0) {
       "NEG_ACCESS_RESTRICTED_DATA_ALLOWLIST",
       "NEG_ACCESS_GLOBAL_CONFIRM_BYPASS",
       "HEU-DATA-026-TASK-CENTER-ADAPTER-DRY-RUN-READONLY-TEST-HARNESS-DESIGN",
+      "READONLY_TEST_HARNESS_READY: PASS_LOCAL_DESIGN_ONLY",
+      "check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
       "check:heu-task-center-adapter-dry-run-static-negative-access-packet",
     ],
     "static negative-access packet doc token",
@@ -231,14 +241,31 @@ if (failures.length === 0) {
       enablementGatePath,
       docPath,
       readinessReviewDocPath,
+      readonlyTestHarnessDocPath,
       checkerPath,
       readinessReviewCheckerPath,
+      readonlyTestHarnessCheckerPath,
       "check:heu-task-center-adapter-dry-run-static-negative-access-packet",
+      "check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
       "node --check scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-static-negative-access-packet",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
     ],
     "manifest static negative-access packet token",
     manifestPath,
+  );
+
+  requireTokens(
+    readonlyTestHarnessDoc,
+    [
+      "HEU-DATA-026-TASK-CENTER-ADAPTER-DRY-RUN-READONLY-TEST-HARNESS-DESIGN",
+      "READONLY_TEST_HARNESS_READY: PASS_LOCAL_DESIGN_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_TEST_HARNESS_DESIGN_ONLY",
+      "HEU-DATA-027-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-CONTRACT",
+    ],
+    "readonly test-harness design next-slice doc token",
+    readonlyTestHarnessDocPath,
   );
 
   requireTokens(
@@ -251,6 +278,18 @@ if (failures.length === 0) {
     ],
     "readiness review checker next-slice token",
     readinessReviewCheckerPath,
+  );
+
+  requireTokens(
+    readonlyTestHarnessChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_READONLY_TEST_HARNESS_DESIGN_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_TEST_HARNESS_DESIGN_ONLY",
+      docPath,
+      checkerPath,
+    ],
+    "readonly test-harness design checker reverse-link token",
+    readonlyTestHarnessCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {

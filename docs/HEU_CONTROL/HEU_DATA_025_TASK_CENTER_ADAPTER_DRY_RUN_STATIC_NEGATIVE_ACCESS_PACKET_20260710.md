@@ -238,6 +238,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-026-TASK-CENTER-ADAPTER-DRY-RUN-READONLY-TEST-HARNESS-DESIGN`.
+- Required next local command:
+  `npm.cmd run check:heu-task-center-adapter-dry-run-readonly-test-harness-design`.
+- Expected next runtime status:
+  `READONLY_TEST_HARNESS_READY: PASS_LOCAL_DESIGN_ONLY`.
 - Still docs/checker/read-only first. Do not implement DB adapter until owner
   evidence exists.
 
