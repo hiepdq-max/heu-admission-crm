@@ -9,12 +9,16 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_028_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_20260710.md";
+const runnerStaticCheckDesignDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_029_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_20260710.md";
 const syntheticFixtureContractDocPath =
   "docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const syntheticFixtureContractCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs";
+const runnerStaticCheckDesignCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs";
 const packagePath = "package.json";
@@ -61,9 +65,11 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  runnerStaticCheckDesignDocPath,
   syntheticFixtureContractDocPath,
   manifestPath,
   syntheticFixtureContractCheckerPath,
+  runnerStaticCheckDesignCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,10 +81,14 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const runnerStaticCheckDesignDoc = read(runnerStaticCheckDesignDocPath);
   const syntheticFixtureContractDoc = read(syntheticFixtureContractDocPath);
   const manifest = read(manifestPath);
   const syntheticFixtureContractChecker = read(
     syntheticFixtureContractCheckerPath,
+  );
+  const runnerStaticCheckDesignChecker = read(
+    runnerStaticCheckDesignCheckerPath,
   );
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
@@ -217,9 +227,24 @@ if (failures.length === 0) {
       "RUNNER_PLAN_REPORT_PASS_NO_GO_ONLY",
       "HEU-DATA-029-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-STATIC-CHECK-DESIGN",
       "check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
+      "check:heu-task-center-adapter-dry-run-runner-static-check-design",
+      "RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL_DESIGN_ONLY",
     ],
     "synthetic fixture runner plan doc token",
     docPath,
+  );
+
+  requireTokens(
+    runnerStaticCheckDesignDoc,
+    [
+      "HEU-DATA-029-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-STATIC-CHECK-DESIGN",
+      "RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL_DESIGN_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_STATIC_CHECK_DESIGN_ONLY",
+      "HEU-DATA-030-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-CANDIDATE-READINESS",
+      "check:heu-task-center-adapter-dry-run-runner-static-check-design",
+    ],
+    "runner static-check design next-slice token",
+    runnerStaticCheckDesignDocPath,
   );
 
   requireTokens(
@@ -240,12 +265,17 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      runnerStaticCheckDesignDocPath,
       syntheticFixtureContractDocPath,
       checkerPath,
+      runnerStaticCheckDesignCheckerPath,
       syntheticFixtureContractCheckerPath,
       "check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
+      "check:heu-task-center-adapter-dry-run-runner-static-check-design",
       "node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design",
     ],
     "manifest synthetic fixture runner plan token",
     manifestPath,
@@ -261,6 +291,18 @@ if (failures.length === 0) {
     ],
     "synthetic fixture contract checker next-slice token",
     syntheticFixtureContractCheckerPath,
+  );
+
+  requireTokens(
+    runnerStaticCheckDesignChecker,
+    [
+      "HEU-DATA-029-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-STATIC-CHECK-DESIGN",
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL",
+      docPath,
+      checkerPath,
+    ],
+    "runner static-check design checker reverse-link token",
+    runnerStaticCheckDesignCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {

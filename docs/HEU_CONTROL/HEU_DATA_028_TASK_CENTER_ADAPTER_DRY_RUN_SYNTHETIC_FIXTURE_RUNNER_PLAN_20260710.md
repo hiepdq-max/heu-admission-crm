@@ -103,13 +103,16 @@ Required commands:
 
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan
+npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design
 npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-contract
 ```
 
 Expected outputs:
 - `HEU_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_READY: PASS_LOCAL`
 - `TASK_CENTER_DATABASE_READY: NO_GO_SYNTHETIC_FIXTURE_RUNNER_PLAN_ONLY`
+- `RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL_DESIGN_ONLY`
 
 ## 9. Risk
 
@@ -166,6 +169,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-029-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-STATIC-CHECK-DESIGN`.
+- Required next command:
+  `npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design`.
+- Expected next runtime:
+  `RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL_DESIGN_ONLY`.
 - Still docs/checker/read-only first. Do not implement DB adapter until owner
   evidence, fixture contract, runner plan and static-check design exist.
 
