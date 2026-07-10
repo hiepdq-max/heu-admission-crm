@@ -75,6 +75,20 @@ export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION =
   "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION";
 export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_ONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_ONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_READONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_READONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_DRAFT_ONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_DRAFT_ONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_APPROVAL =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_APPROVAL";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_DATABASE_READ =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_DATABASE_READ";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION";
+export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -121,6 +135,19 @@ export type TaskCenterOwnerSignoffRoutingItem = {
   blocksDbReadUntil: string;
 };
 
+export type TaskCenterReadonlyAdapterDecisionLedgerItem = {
+  code: string;
+  ownerLane:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  decision: "HOLD_NO_GO";
+  decisionReason: string;
+  requiredBeforeDbRead: string;
+};
+
 export type TaskCenterGateEvidencePanelSource = {
   mode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY;
   panelMode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY;
@@ -165,6 +192,16 @@ export type TaskCenterGateEvidencePanelSource = {
     noTaskMutation: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION;
     noAiOrAutomation: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterOwnerSignoffRoutingItem[];
+  };
+  readonlyAdapterDecisionLedger: {
+    mode: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_ONLY;
+    readonly: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_READONLY;
+    draftOnly: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_DATABASE_READ;
+    noTaskMutation: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION;
+    noAiOrAutomation: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterReadonlyAdapterDecisionLedgerItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -367,6 +404,45 @@ const ownerSignoffRoutingItems: readonly TaskCenterOwnerSignoffRoutingItem[] = [
   },
 ];
 
+const readonlyAdapterDecisionLedgerItems: readonly TaskCenterReadonlyAdapterDecisionLedgerItem[] =
+  [
+    {
+      code: "ADAPTER_LEDGER_SCOPE_FILTER_HOLD",
+      ownerLane: "IT_DATA",
+      decision: "HOLD_NO_GO",
+      decisionReason: "Scope-first filter signoff is still required.",
+      requiredBeforeDbRead: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+    },
+    {
+      code: "ADAPTER_LEDGER_NEGATIVE_ACCESS_HOLD",
+      ownerLane: "AUDIT",
+      decision: "HOLD_NO_GO",
+      decisionReason: "Negative-access evidence is still required.",
+      requiredBeforeDbRead: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+    },
+    {
+      code: "ADAPTER_LEDGER_RESTRICTED_DATA_HOLD",
+      ownerLane: "PHAP_CHE",
+      decision: "HOLD_NO_GO",
+      decisionReason: "Restricted-data boundary signoff is still required.",
+      requiredBeforeDbRead: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+    },
+    {
+      code: "ADAPTER_LEDGER_DEPARTMENT_LABEL_HOLD",
+      ownerLane: "DEPARTMENT_OWNER",
+      decision: "HOLD_NO_GO",
+      decisionReason: "Department task label acceptance is still required.",
+      requiredBeforeDbRead: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+    },
+    {
+      code: "ADAPTER_LEDGER_BGH_PRODUCTION_HOLD",
+      ownerLane: "BGH",
+      decision: "HOLD_NO_GO",
+      decisionReason: "BGH production NO-GO acknowledgement is still required.",
+      requiredBeforeDbRead: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -417,6 +493,16 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noTaskMutation: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION,
       noAiOrAutomation: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION,
       items: ownerSignoffRoutingItems,
+    },
+    readonlyAdapterDecisionLedger: {
+      mode: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_ONLY,
+      readonly: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_READONLY,
+      draftOnly: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_DRAFT_ONLY,
+      noApproval: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_DATABASE_READ,
+      noTaskMutation: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION,
+      noAiOrAutomation: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION,
+      items: readonlyAdapterDecisionLedgerItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

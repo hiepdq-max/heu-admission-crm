@@ -10,15 +10,23 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_015_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_20260710.md";
 const pilotReviewDocPath =
   "docs/HEU_CONTROL/HEU_DATA_014_TASK_CENTER_PILOT_REVIEW_PACKET_20260710.md";
+const readonlyAdapterDecisionDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_016_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const pilotReviewCheckerPath =
   "scripts/check-heu-task-center-pilot-review-packet-readiness.mjs";
+const readonlyAdapterDecisionCheckerPath =
+  "scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-owner-signoff-routing-map-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const readonlyAdapterDecisionCheckerAlias =
+  "check:heu-task-center-readonly-adapter-decision-ledger-readiness";
+const readonlyAdapterDecisionCheckerCommand =
+  `node ${readonlyAdapterDecisionCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,8 +67,10 @@ for (const file of [
   panelSourcePath,
   docPath,
   pilotReviewDocPath,
+  readonlyAdapterDecisionDocPath,
   manifestPath,
   pilotReviewCheckerPath,
+  readonlyAdapterDecisionCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,8 +82,12 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
   const pilotReviewDoc = read(pilotReviewDocPath);
+  const readonlyAdapterDecisionDoc = read(readonlyAdapterDecisionDocPath);
   const manifest = read(manifestPath);
   const pilotReviewChecker = read(pilotReviewCheckerPath);
+  const readonlyAdapterDecisionChecker = read(
+    readonlyAdapterDecisionCheckerPath,
+  );
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -165,10 +179,28 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center read-only adapter decision ledger",
+      "HEU-DATA-016-TASK-CENTER-READONLY-ADAPTER-DECISION-LEDGER",
+      "check:heu-task-center-readonly-adapter-decision-ledger-readiness",
       "still no DB read and no migration",
     ],
     "owner signoff routing doc token",
     docPath,
+  );
+
+  requireTokens(
+    readonlyAdapterDecisionDoc,
+    [
+      "HEU-DATA-016-TASK-CENTER-READONLY-ADAPTER-DECISION-LEDGER",
+      "PASS_LOCAL_READONLY_ADAPTER_DECISION_LEDGER",
+      "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_DATABASE_READ",
+      "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION",
+      "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "Task Center DB-read adapter implementation plan",
+      "still no DB read and no migration",
+    ],
+    "readonly adapter decision ledger next-slice doc token",
+    readonlyAdapterDecisionDocPath,
   );
 
   requireTokens(
@@ -189,10 +221,15 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      readonlyAdapterDecisionDocPath,
       checkerPath,
+      readonlyAdapterDecisionCheckerPath,
       "check:heu-task-center-owner-signoff-routing-map-readiness",
+      "check:heu-task-center-readonly-adapter-decision-ledger-readiness",
       "node --check scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs",
+      "node --check scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs",
       "npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness",
+      "npm.cmd run check:heu-task-center-readonly-adapter-decision-ledger-readiness",
     ],
     "manifest owner signoff routing token",
     manifestPath,
@@ -210,8 +247,29 @@ if (failures.length === 0) {
     pilotReviewCheckerPath,
   );
 
+  requireTokens(
+    readonlyAdapterDecisionChecker,
+    [
+      "HEU_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_READONLY_ADAPTER_DECISION_LEDGER_ONLY",
+      docPath,
+      readonlyAdapterDecisionDocPath,
+    ],
+    "readonly adapter decision ledger checker token",
+    readonlyAdapterDecisionCheckerPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[readonlyAdapterDecisionCheckerAlias] !==
+    readonlyAdapterDecisionCheckerCommand
+  ) {
+    fail(
+      `${packagePath}: missing or mismatched ${readonlyAdapterDecisionCheckerAlias}`,
+    );
   }
 
   requireTokens(
