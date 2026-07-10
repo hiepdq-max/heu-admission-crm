@@ -4,28 +4,22 @@ import path from "node:path";
 const repoRoot = process.cwd();
 const failures = [];
 
-const gatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
-const fallbackSourcePath = "lib/task-center-ui-fallback-source.ts";
+const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
+const gatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
-  "docs/HEU_CONTROL/HEU_DATA_010_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_20260710.md";
-const fallbackDocPath =
-  "docs/HEU_CONTROL/HEU_DATA_009_TASK_CENTER_UI_FALLBACK_WIRING_20260710.md";
-const panelDocPath =
   "docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md";
+const gateDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_010_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
-const fallbackCheckerPath =
-  "scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs";
-const panelCheckerPath =
-  "scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs";
-const checkerPath =
+const gateCheckerPath =
   "scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs";
+const checkerPath =
+  "scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs";
 const packagePath = "package.json";
-const checkerAlias = "check:heu-task-center-adapter-enablement-gate-readiness";
+const checkerAlias = "check:heu-task-center-gate-evidence-panel-readiness";
 const checkerCommand = `node ${checkerPath}`;
-const panelCheckerAlias = "check:heu-task-center-gate-evidence-panel-readiness";
-const panelCheckerCommand = `node ${panelCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -62,15 +56,13 @@ function forbidPatterns(contents, patterns, label, file) {
 }
 
 for (const file of [
-  gatePath,
-  fallbackSourcePath,
+  componentPath,
   panelSourcePath,
+  gatePath,
   docPath,
-  fallbackDocPath,
-  panelDocPath,
+  gateDocPath,
   manifestPath,
-  fallbackCheckerPath,
-  panelCheckerPath,
+  gateCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -78,17 +70,69 @@ for (const file of [
 }
 
 if (failures.length === 0) {
-  const gate = read(gatePath);
-  const fallbackSource = read(fallbackSourcePath);
+  const component = read(componentPath);
   const panelSource = read(panelSourcePath);
+  const gate = read(gatePath);
   const doc = read(docPath);
-  const fallbackDoc = read(fallbackDocPath);
-  const panelDoc = read(panelDocPath);
+  const gateDoc = read(gateDocPath);
   const manifest = read(manifestPath);
-  const fallbackChecker = read(fallbackCheckerPath);
-  const panelChecker = read(panelCheckerPath);
+  const gateChecker = read(gateCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
+
+  requireTokens(
+    panelSource,
+    [
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO",
+      "TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY",
+      "TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED",
+      "TASK_CENTER_ADAPTER_ENABLEMENT_DEFAULT_NO_GO",
+      "NO_DATABASE_CLIENT_CREATED",
+      "NO_DATABASE_READ_EXECUTED",
+      "NO_SQL_MIGRATION_CREATED",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
+      "TaskCenterGateEvidenceOwnerRow",
+      "TaskCenterGateEvidencePanelSource",
+      "createTaskCenterGateEvidencePanelSource",
+      "createTaskCenterReadonlyAdapterEnablementGate",
+      "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      "decision: gate.ownerReview[row.lane]",
+    ],
+    "panel source token",
+    panelSourcePath,
+  );
+
+  requireTokens(
+    component,
+    [
+      "@/lib/task-center-gate-evidence-panel-source",
+      "createTaskCenterGateEvidencePanelSource",
+      "gateEvidence.ownerRows.map",
+      "gateEvidence.requiredProof.map",
+      "data-heu-task-center-gate-evidence-panel",
+      "data-heu-task-center-gate-evidence-readonly",
+      "data-heu-task-center-gate-evidence-database",
+      "data-heu-task-center-gate-evidence-no-database-client",
+      "data-heu-task-center-gate-evidence-no-database-read",
+      "data-heu-task-center-gate-evidence-no-sql-migration",
+      "data-heu-task-center-gate-evidence-no-task-mutation",
+      "data-heu-task-center-gate-evidence-cost-guard",
+      "data-heu-task-center-gate-owner-lane",
+      "data-heu-task-center-gate-owner-decision",
+      "data-heu-task-center-gate-required-proof",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO",
+      "Required proof before DB read",
+    ],
+    "component evidence panel token",
+    componentPath,
+  );
 
   requireTokens(
     gate,
@@ -96,58 +140,33 @@ if (failures.length === 0) {
       "TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY",
       "OWNER_REVIEW_REQUIRED_BEFORE_DB_READ",
       "ADAPTER_ENABLEMENT_DEFAULT_NO_GO",
-      "DISABLED_BY_DEFAULT",
-      "FEATURE_FLAG_REQUIRED",
-      "NO_DATABASE_CLIENT_CREATED",
-      "NO_DATABASE_READ_EXECUTED",
-      "NO_SQL_MIGRATION_CREATED",
-      "NO_TASK_MUTATION_ROUTE_CREATED",
-      "NO_AI_CALL_NO_AUTOMATION_STEP",
-      "TaskCenterEnablementOwnerLane",
-      "TaskCenterEnablementDecision",
-      "TaskCenterReadonlyAdapterEnablementGate",
-      "createTaskCenterReadonlyAdapterEnablementGate",
       "IT_DATA: \"NO_GO\"",
       "AUDIT: \"NO_GO\"",
       "PHAP_CHE: \"NO_GO\"",
       "DEPARTMENT_OWNER: \"NO_GO\"",
       "BGH: \"NO_GO\"",
-      "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
-      "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
-      "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
-      "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
-      "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
-      "BACKUP_ROLLBACK_UAT_EVIDENCE_BEFORE_DB_READ",
+      "NO_DATABASE_CLIENT_CREATED",
+      "NO_DATABASE_READ_EXECUTED",
+      "NO_SQL_MIGRATION_CREATED",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
     ],
     "enablement gate token",
     gatePath,
   );
 
   requireTokens(
-    fallbackSource,
-    [
-      "TASK_CENTER_UI_FALLBACK_WIRING_ONLY",
-      "MOCK_READONLY_FALLBACK_ACTIVE",
-      "DISABLED_ADAPTER_OUTPUT_ONLY",
-      "NO_DATABASE_CLIENT_CREATED",
-      "NO_DATABASE_READ_EXECUTED",
-      "createTaskCenterUiFallbackSource",
-    ],
-    "fallback source token",
-    fallbackSourcePath,
-  );
-
-  requireTokens(
     doc,
     [
-      "HEU-DATA-010-TASK-CENTER-ADAPTER-ENABLEMENT-GATE",
-      "Status: PASS_LOCAL_ADAPTER_ENABLEMENT_GATE",
+      "HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL",
+      "Status: PASS_LOCAL_GATE_EVIDENCE_PANEL",
       "Production status: NO-GO",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY",
+      "TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO",
       "TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY",
       "OWNER_REVIEW_REQUIRED_BEFORE_DB_READ",
       "ADAPTER_ENABLEMENT_DEFAULT_NO_GO",
-      "DISABLED_BY_DEFAULT",
-      "FEATURE_FLAG_REQUIRED",
       "NO_DATABASE_CLIENT_CREATED",
       "NO_DATABASE_READ_EXECUTED",
       "NO_SQL_MIGRATION_CREATED",
@@ -157,106 +176,54 @@ if (failures.length === 0) {
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "no AI call",
       "no automation step",
-      "user-facing read-only evidence panel",
-      "HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL",
-      "still no DB read and no migration",
-      "check:heu-task-center-gate-evidence-panel-readiness",
+      "real-user UAT copy",
     ],
-    "enablement gate doc token",
+    "gate evidence panel doc token",
     docPath,
   );
 
   requireTokens(
-    panelSource,
-    [
-      "TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY",
-      "TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO",
-      "createTaskCenterGateEvidencePanelSource",
-      "decision: gate.ownerReview[row.lane]",
-      "NO_DATABASE_CLIENT_CREATED",
-      "NO_DATABASE_READ_EXECUTED",
-      "NO_SQL_MIGRATION_CREATED",
-      "NO_TASK_MUTATION_ROUTE_CREATED",
-      "NO_AI_CALL_NO_AUTOMATION_STEP",
-    ],
-    "gate evidence panel source token",
-    panelSourcePath,
-  );
-
-  requireTokens(
-    panelDoc,
+    gateDoc,
     [
       "HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL",
-      "PASS_LOCAL_GATE_EVIDENCE_PANEL",
-      "TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO",
-      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "user-facing read-only evidence panel",
+      "still no DB read and no migration",
+      "check:heu-task-center-gate-evidence-panel-readiness",
     ],
-    "gate evidence panel doc token",
-    panelDocPath,
-  );
-
-  requireTokens(
-    fallbackDoc,
-    [
-      "HEU-DATA-010-TASK-CENTER-ADAPTER-ENABLEMENT-GATE",
-      "owner-review checklist",
-      "still no migration and no DB read until gates close",
-      "check:heu-task-center-adapter-enablement-gate-readiness",
-    ],
-    "fallback doc next-slice token",
-    fallbackDocPath,
+    "gate doc next-slice token",
+    gateDocPath,
   );
 
   requireTokens(
     manifest,
     [
-      gatePath,
+      componentPath,
+      panelSourcePath,
       docPath,
       checkerPath,
-      panelSourcePath,
-      panelDocPath,
-      panelCheckerPath,
-      "check:heu-task-center-adapter-enablement-gate-readiness",
       "check:heu-task-center-gate-evidence-panel-readiness",
-      "node --check scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs",
       "node --check scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs",
-      "npm.cmd run check:heu-task-center-adapter-enablement-gate-readiness",
       "npm.cmd run check:heu-task-center-gate-evidence-panel-readiness",
     ],
-    "manifest enablement gate token",
+    "manifest evidence panel token",
     manifestPath,
   );
 
   requireTokens(
-    fallbackChecker,
+    gateChecker,
     [
-      "HEU-DATA-010-TASK-CENTER-ADAPTER-ENABLEMENT-GATE",
-      "check:heu-task-center-adapter-enablement-gate-readiness",
-      gatePath,
+      "HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL",
+      "check:heu-task-center-gate-evidence-panel-readiness",
+      panelSourcePath,
       docPath,
       checkerPath,
     ],
-    "fallback checker enablement token",
-    fallbackCheckerPath,
-  );
-
-  requireTokens(
-    panelChecker,
-    [
-      "HEU_TASK_CENTER_GATE_EVIDENCE_PANEL_READY: PASS_LOCAL",
-      "TASK_CENTER_DATABASE_READY: NO_GO_GATE_EVIDENCE_PANEL_ONLY",
-      "NO_RUNTIME_MUTATION: task center gate evidence panel checker only",
-    ],
-    "gate evidence panel checker token",
-    panelCheckerPath,
+    "gate checker evidence panel token",
+    gateCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
-  }
-
-  if (packageJson.scripts?.[panelCheckerAlias] !== panelCheckerCommand) {
-    fail(`${packagePath}: missing or mismatched ${panelCheckerAlias}`);
   }
 
   requireTokens(
@@ -264,16 +231,16 @@ if (failures.length === 0) {
     [
       "existsSync",
       "readFileSync",
-      "HEU_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_READY: PASS_LOCAL",
-      "TASK_CENTER_DATABASE_READY: NO_GO_ENABLEMENT_GATE_ONLY",
-      "NO_RUNTIME_MUTATION: task center adapter enablement gate checker only; no database client, database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
+      "HEU_TASK_CENTER_GATE_EVIDENCE_PANEL_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_GATE_EVIDENCE_PANEL_ONLY",
+      "NO_RUNTIME_MUTATION: task center gate evidence panel checker only; no database client, database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
   );
 
   forbidPatterns(
-    `${gate}\n${doc}`,
+    `${panelSource}\n${component}\n${doc}`,
     [
       { label: "Supabase client import", pattern: /@\/lib\/supabase/ },
       { label: "createClient", pattern: /\bcreateClient\s*\(/ },
@@ -304,7 +271,7 @@ if (failures.length === 0) {
       },
     ],
     "runtime DB, SQL, secret, approval or mutation API",
-    "task-center adapter enablement gate scope",
+    "task-center gate evidence panel scope",
   );
 
   forbidPatterns(
@@ -327,16 +294,16 @@ if (failures.length === 0) {
 }
 
 if (failures.length > 0) {
-  console.error("HEU Task Center adapter enablement gate readiness check failed:");
+  console.error("HEU Task Center gate evidence panel readiness check failed:");
   for (const failure of failures) {
     console.error(`- ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("HEU Task Center adapter enablement gate readiness check");
-console.log("HEU_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_READY: PASS_LOCAL");
-console.log("TASK_CENTER_DATABASE_READY: NO_GO_ENABLEMENT_GATE_ONLY");
+console.log("HEU Task Center gate evidence panel readiness check");
+console.log("HEU_TASK_CENTER_GATE_EVIDENCE_PANEL_READY: PASS_LOCAL");
+console.log("TASK_CENTER_DATABASE_READY: NO_GO_GATE_EVIDENCE_PANEL_ONLY");
 console.log(
-  "NO_RUNTIME_MUTATION: task center adapter enablement gate checker only; no database client, database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
+  "NO_RUNTIME_MUTATION: task center gate evidence panel checker only; no database client, database read, table creation, SQL migration, task write, AI call, paid automation, deploy, finance action or production GO",
 );

@@ -1,30 +1,31 @@
-# HEU Data 010 Task Center Adapter Enablement Gate
+# HEU Data 011 Task Center Gate Evidence Panel
 
-Task ID: HEU-DATA-010-TASK-CENTER-ADAPTER-ENABLEMENT-GATE
+Task ID: HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL
 Date: 2026-07-10
 Repository: heu-admission-crm
-Branch: codex/heu/task-center-adapter-enablement-gate
-Base branch: codex/heu/task-center-ui-fallback-wiring
-Status: PASS_LOCAL_ADAPTER_ENABLEMENT_GATE
+Branch: codex/heu/task-center-gate-evidence-panel
+Base branch: codex/heu/task-center-adapter-enablement-gate
+Status: PASS_LOCAL_GATE_EVIDENCE_PANEL
 Production status: NO-GO
 Review state: CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH
 
 ## 1. Purpose
 
-This slice adds an owner-review enablement gate for any future real Task Center
-read-only database adapter.
+This slice adds a user-facing read-only evidence panel inside the Data
+Confirmation Task Center area.
 
-It does not enable the adapter. It only defines the approvals and evidence
-required before a later PR may introduce a DB read path.
+The panel shows the adapter enablement gate status before any real Task Center
+DB read is allowed.
 
 Required boundary:
 
 ```text
+TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY
+TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY
+TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO
 TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY
 OWNER_REVIEW_REQUIRED_BEFORE_DB_READ
 ADAPTER_ENABLEMENT_DEFAULT_NO_GO
-DISABLED_BY_DEFAULT
-FEATURE_FLAG_REQUIRED
 NO_DATABASE_CLIENT_CREATED
 NO_DATABASE_READ_EXECUTED
 NO_SQL_MIGRATION_CREATED
@@ -34,13 +35,26 @@ NO_AI_CALL_NO_AUTOMATION_STEP
 
 ## 2. Runtime Value
 
-The gate contract is:
+The panel source is:
 
 ```text
-lib/task-center-readonly-adapter-enablement-gate.ts
+lib/task-center-gate-evidence-panel-source.ts
 ```
 
-It produces a typed object where every owner lane starts as `NO_GO`:
+The user-facing UI is:
+
+```text
+components/data-confirmation/department-task-inbox.tsx
+```
+
+It displays:
+
+- database status: `TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO`,
+- gate mode: `TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY`,
+- owner lanes and current decisions,
+- required proof before a future PR may introduce a real DB read.
+
+Every owner lane remains `NO_GO` in this PR:
 
 ```text
 IT_DATA
@@ -50,23 +64,19 @@ DEPARTMENT_OWNER
 BGH
 ```
 
-This prevents accidental adapter activation without documented signoff.
-
 ## 3. Scope
 
 Files in scope:
 
 ```text
+components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
-docs/HEU_CONTROL/HEU_DATA_009_TASK_CENTER_UI_FALLBACK_WIRING_20260710.md
 docs/HEU_CONTROL/HEU_DATA_010_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_20260710.md
 docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md
-lib/task-center-readonly-adapter-enablement-gate.ts
 lib/task-center-gate-evidence-panel-source.ts
 package.json
 scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs
 scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs
-scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs
 ```
 
 Files not in scope:
@@ -81,14 +91,14 @@ middleware.*
 
 ## 4. Required Proof Before Any Real DB Read
 
-| Proof code | Owner | Meaning |
+| Proof code | Owner | Current state |
 |---|---|---|
-| `IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF` | IT_DATA | Scope filters and feature flag reviewed |
-| `AUDIT_NEGATIVE_ACCESS_EVIDENCE` | Audit | Negative-access proof exists |
-| `PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF` | PHAP_CHE | No restricted raw data exposed |
-| `DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE` | Department owner | Task labels and lanes accepted |
-| `BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT` | BGH | BGH acknowledges production remains NO-GO |
-| `BACKUP_ROLLBACK_UAT_EVIDENCE_BEFORE_DB_READ` | IT_DATA + Audit | UAT, backup and rollback evidence exist |
+| `IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF` | IT_DATA | `NO_GO` |
+| `AUDIT_NEGATIVE_ACCESS_EVIDENCE` | Audit | `NO_GO` |
+| `PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF` | PHAP_CHE | `NO_GO` |
+| `DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE` | Department owner | `NO_GO` |
+| `BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT` | BGH | `NO_GO` |
+| `BACKUP_ROLLBACK_UAT_EVIDENCE_BEFORE_DB_READ` | IT_DATA + Audit | `NO_GO` |
 
 ## 5. No-Go Conditions
 
@@ -112,10 +122,10 @@ This slice is still NO-GO for:
 
 AI/Codex may:
 
-- review the gate contract,
-- find missing evidence codes,
-- draft review comments,
-- check PR scope.
+- review whether the panel truthfully displays gate status,
+- check that every owner lane stays `NO_GO`,
+- detect accidental DB/AI/automation enablement,
+- draft review comments.
 
 AI/Codex must not:
 
@@ -131,7 +141,8 @@ This slice introduces no AI call and no automation step by default.
 ## 7. Required Local Commands
 
 ```powershell
-node --check scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs
+node --check scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs
+npm.cmd run check:heu-task-center-gate-evidence-panel-readiness
 npm.cmd run check:heu-task-center-adapter-enablement-gate-readiness
 npm.cmd run check:heu-task-center-ui-fallback-wiring-readiness
 npm.cmd run check:heu-task-center-readonly-adapter-skeleton-readiness
@@ -164,7 +175,7 @@ These values are intentionally not approved in this PR.
 
 ## 9. Rollback
 
-Rollback by reverting the PR that adds this enablement gate.
+Rollback by reverting the PR that adds this evidence panel.
 
 No database rollback is required because this slice does not create schema,
 task rows, Auth changes, scope grants, AI calls, paid automation or production
@@ -173,12 +184,12 @@ config.
 ## 10. SOP Slice Result Record
 
 SOP-SCOPE:
-- `HEU-DATA-010` adds an owner-review enablement gate for future adapter work.
-- Scope is TypeScript gate + docs + checker only.
+- `HEU-DATA-011` adds a read-only UI evidence panel for Task Center gate status.
+- Scope is UI panel + TypeScript source + docs + checker only.
 
 SOP-CHECK:
 - Required local command:
-  `npm.cmd run check:heu-task-center-adapter-enablement-gate-readiness`.
+  `npm.cmd run check:heu-task-center-gate-evidence-panel-readiness`.
 
 SOP-PROFESSIONAL:
 - IT_DATA owns adapter activation and scope-first filter signoff.
@@ -190,23 +201,23 @@ SOP-LEGAL:
 - HOU remains separated and no COM conclusion is produced.
 
 SOP-LOGIC:
-- Enablement gate can be `PASS_LOCAL` while database and production remain
+- Evidence panel can be `PASS_LOCAL` while database and production remain
   `NO_GO`.
-- Every owner lane defaults to `NO_GO`.
+- The UI displays gate status; it does not collect approvals.
 
 SOP-VERIFY:
-- Checker must verify gate tokens, owner lane defaults, required proof codes,
-  package alias, no Supabase runtime, no database read, no fetch, no mutation
-  APIs, no SQL migration, no AI call and no secret assignment.
+- Checker must verify panel source tokens, component data attributes, owner
+  lane defaults, required proof codes, package alias, no Supabase runtime, no
+  database read, no fetch, no mutation APIs, no SQL migration, no AI call and
+  no secret assignment.
 
 SOP-RESULT:
-- `PASS_LOCAL` for Task Center adapter enablement gate.
+- `PASS_LOCAL` for Task Center gate evidence panel.
 - `CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH` for formal review.
 - `NO_GO` for Task Center database, mutation routes, AI automation and
   production.
 
 SOP-NEXT:
-- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this gate.
-- If accepted, next safe slice is HEU-DATA-011-TASK-CENTER-GATE-EVIDENCE-PANEL: a user-facing read-only evidence panel that displays gate status, still no DB read and no migration.
-- Required next checker alias:
-  `check:heu-task-center-gate-evidence-panel-readiness`.
+- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this visible gate.
+- If accepted, next safe slice is real-user UAT copy for the Task Center panel,
+  still using mock/fallback data and no DB read.

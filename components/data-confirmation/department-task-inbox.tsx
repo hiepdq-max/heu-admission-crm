@@ -30,6 +30,17 @@ import {
   TASK_CENTER_UI_FALLBACK_WIRING_ONLY,
 } from "@/lib/task-center-ui-fallback-source";
 import {
+  createTaskCenterGateEvidencePanelSource,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_NO_DATABASE_CLIENT,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_NO_DATABASE_READ,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_NO_SQL_MIGRATION,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY,
+  TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY,
+} from "@/lib/task-center-gate-evidence-panel-source";
+import {
   getTaskCenterFallbackLane,
   getVisibleTaskCenterLanes,
   resolveTaskCenterLaneStatus,
@@ -73,6 +84,7 @@ export function DepartmentTaskInbox({
   const inboxLanes =
     visibleLanes.length > 0 ? visibleLanes : [getTaskCenterFallbackLane(roleCode)];
   const taskFallback = createTaskCenterUiFallbackSource(inboxLanes, actionGate);
+  const gateEvidence = createTaskCenterGateEvidencePanelSource();
   const mockTasks = taskFallback.displayTasks;
 
   return (
@@ -170,6 +182,83 @@ export function DepartmentTaskInbox({
             </article>
           );
         })}
+      </div>
+
+      <div
+        className="border-t border-zinc-200 p-5"
+        data-heu-task-center-gate-evidence-panel={TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY}
+        data-heu-task-center-gate-evidence-readonly={TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY}
+        data-heu-task-center-gate-evidence-database={TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO}
+        data-heu-task-center-gate-evidence-no-database-client={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_DATABASE_CLIENT}
+        data-heu-task-center-gate-evidence-no-database-read={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_DATABASE_READ}
+        data-heu-task-center-gate-evidence-no-sql-migration={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_SQL_MIGRATION}
+        data-heu-task-center-gate-evidence-no-task-mutation={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION}
+        data-heu-task-center-gate-evidence-cost-guard={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_AI_OR_AUTOMATION}
+      >
+        <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase text-zinc-500">
+              HEU-Data-011 - Gate evidence panel
+            </p>
+            <h3 className="mt-1 text-sm font-semibold text-zinc-950">
+              Trang thai gate truoc khi bat adapter read-only
+            </h3>
+            <p className="mt-1 max-w-3xl text-sm leading-6 text-zinc-600">
+              Panel nay chi hien trang thai gate da khoa. No khong tao DB
+              client, khong doc database, khong tao migration, khong sua task,
+              khong goi AI va khong kich hoat automation.
+            </p>
+          </div>
+          <div className="flex flex-col gap-1 text-xs">
+            <span className="inline-flex w-fit rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 font-medium text-amber-700">
+              {gateEvidence.databaseStatus}
+            </span>
+            <span className="text-zinc-500">
+              Gate: {gateEvidence.gateMode}
+            </span>
+          </div>
+        </div>
+
+        <div className="grid gap-3 lg:grid-cols-5">
+          {gateEvidence.ownerRows.map((row) => (
+            <article
+              key={row.lane}
+              className="rounded-lg border border-zinc-200 bg-zinc-50 p-3"
+              data-heu-task-center-gate-owner-lane={row.lane}
+              data-heu-task-center-gate-owner-decision={row.decision}
+              data-heu-task-center-gate-required-proof={row.requiredProof}
+            >
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                {row.lane}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                {row.decision}
+              </div>
+              <div className="mt-2 text-xs leading-5 text-zinc-600">
+                {row.label}
+              </div>
+              <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                {row.requiredProof}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3 text-xs leading-5 text-zinc-600">
+          <div className="font-medium uppercase text-zinc-500">
+            Required proof before DB read
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {gateEvidence.requiredProof.map((proof) => (
+              <span
+                key={proof}
+                className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-1 font-mono"
+              >
+                {proof}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div
