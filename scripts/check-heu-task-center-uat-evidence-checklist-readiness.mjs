@@ -10,15 +10,22 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md";
 const uatCopyDocPath =
   "docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md";
+const pilotReviewDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_014_TASK_CENTER_PILOT_REVIEW_PACKET_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const uatCopyCheckerPath =
   "scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs";
+const pilotReviewCheckerPath =
+  "scripts/check-heu-task-center-pilot-review-packet-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-uat-evidence-checklist-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const pilotReviewCheckerAlias =
+  "check:heu-task-center-pilot-review-packet-readiness";
+const pilotReviewCheckerCommand = `node ${pilotReviewCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,8 +66,10 @@ for (const file of [
   panelSourcePath,
   docPath,
   uatCopyDocPath,
+  pilotReviewDocPath,
   manifestPath,
   uatCopyCheckerPath,
+  pilotReviewCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,8 +81,10 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
   const uatCopyDoc = read(uatCopyDocPath);
+  const pilotReviewDoc = read(pilotReviewDocPath);
   const manifest = read(manifestPath);
   const uatCopyChecker = read(uatCopyCheckerPath);
+  const pilotReviewChecker = read(pilotReviewCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -150,9 +161,27 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "real-user pilot review packet",
+      "HEU-DATA-014-TASK-CENTER-PILOT-REVIEW-PACKET",
+      "check:heu-task-center-pilot-review-packet-readiness",
     ],
     "UAT evidence checklist doc token",
     docPath,
+  );
+
+  requireTokens(
+    pilotReviewDoc,
+    [
+      "HEU-DATA-014-TASK-CENTER-PILOT-REVIEW-PACKET",
+      "PASS_LOCAL_PILOT_REVIEW_PACKET",
+      "TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD",
+      "TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE",
+      "TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "Task Center owner signoff routing map",
+      "still no DB read and no migration",
+    ],
+    "pilot review packet next-slice doc token",
+    pilotReviewDocPath,
   );
 
   requireTokens(
@@ -173,10 +202,15 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      pilotReviewDocPath,
       checkerPath,
+      pilotReviewCheckerPath,
       "check:heu-task-center-uat-evidence-checklist-readiness",
+      "check:heu-task-center-pilot-review-packet-readiness",
       "node --check scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs",
+      "node --check scripts/check-heu-task-center-pilot-review-packet-readiness.mjs",
       "npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness",
+      "npm.cmd run check:heu-task-center-pilot-review-packet-readiness",
     ],
     "manifest UAT evidence checklist token",
     manifestPath,
@@ -194,8 +228,27 @@ if (failures.length === 0) {
     uatCopyCheckerPath,
   );
 
+  requireTokens(
+    pilotReviewChecker,
+    [
+      "HEU_TASK_CENTER_PILOT_REVIEW_PACKET_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_PILOT_REVIEW_PACKET_ONLY",
+      docPath,
+      pilotReviewDocPath,
+    ],
+    "pilot review checker token",
+    pilotReviewCheckerPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[pilotReviewCheckerAlias] !==
+    pilotReviewCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${pilotReviewCheckerAlias}`);
   }
 
   requireTokens(

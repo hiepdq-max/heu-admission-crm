@@ -1,31 +1,34 @@
-# HEU Data 013 Task Center UAT Evidence Checklist
+# HEU Data 014 Task Center Pilot Review Packet
 
-Task ID: HEU-DATA-013-TASK-CENTER-UAT-EVIDENCE-CHECKLIST
+Task ID: HEU-DATA-014-TASK-CENTER-PILOT-REVIEW-PACKET
 Date: 2026-07-10
 Repository: heu-admission-crm
-Branch: codex/heu/task-center-uat-evidence-checklist
-Base branch: codex/heu/task-center-real-user-uat-copy
-Status: PASS_LOCAL_UAT_EVIDENCE_CHECKLIST
+Branch: codex/heu/task-center-pilot-review-packet
+Base branch: codex/heu/task-center-uat-evidence-checklist
+Status: PASS_LOCAL_PILOT_REVIEW_PACKET
 Production status: NO-GO
 Review state: CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH
 
 ## 1. Purpose
 
-This slice adds a read-only UAT evidence checklist to the Task Center gate
+This slice adds a read-only pilot review packet to the Task Center gate
 evidence panel.
 
-The checklist tells real users and reviewers what evidence to capture outside
-the system during controlled UAT. It does not upload files, write storage,
-read database rows, or ask for restricted raw data.
+The packet tells IT_DATA, Audit, PHAP_CHE, Department owners and BGH what must
+be checked before any future DB read is considered. It does not upload files,
+write storage, read database rows, approve owner lanes, or collect restricted
+raw data.
 
 Required boundary:
 
 ```text
-TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY
-TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY
-TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD
-TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE
-TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII
+TASK_CENTER_PILOT_REVIEW_PACKET_ONLY
+TASK_CENTER_PILOT_REVIEW_PACKET_READONLY
+TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY
+TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL
+TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD
+TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE
+TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII
 TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO
 NO_DATABASE_CLIENT_CREATED
 NO_DATABASE_READ_EXECUTED
@@ -36,7 +39,7 @@ NO_AI_CALL_NO_AUTOMATION_STEP
 
 ## 2. Runtime Value
 
-The checklist source is:
+The packet source is:
 
 ```text
 lib/task-center-gate-evidence-panel-source.ts
@@ -48,16 +51,16 @@ The user-facing UI is:
 components/data-confirmation/department-task-inbox.tsx
 ```
 
-It displays evidence items:
+It displays pilot review items:
 
-- `UAT_EVIDENCE_SCOPE_VISIBLE`.
-- `UAT_EVIDENCE_GATE_NO_GO_VISIBLE`.
-- `UAT_EVIDENCE_ALLOWED_BLOCKED_COPY`.
-- `UAT_EVIDENCE_RESTRICTED_DATA_BOUNDARY`.
-- `UAT_EVIDENCE_PRODUCTION_NO_GO`.
+- `PILOT_REVIEW_SCOPE_MATCH`.
+- `PILOT_REVIEW_GATE_NO_GO`.
+- `PILOT_REVIEW_RESTRICTED_DATA`.
+- `PILOT_REVIEW_OWNER_LANGUAGE`.
+- `PILOT_REVIEW_PRODUCTION_BOUNDARY`.
 
-The evidence is captured outside Git/Codex/chat and must be redacted before any
-review packet is shared.
+The review packet is a checklist only. Real evidence stays outside
+Git/Codex/chat and must be redacted before being shared with reviewers.
 
 ## 3. Scope
 
@@ -66,12 +69,10 @@ Files in scope:
 ```text
 components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
-docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md
 docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md
 docs/HEU_CONTROL/HEU_DATA_014_TASK_CENTER_PILOT_REVIEW_PACKET_20260710.md
 lib/task-center-gate-evidence-panel-source.ts
 package.json
-scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs
 scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 scripts/check-heu-task-center-pilot-review-packet-readiness.mjs
 ```
@@ -86,15 +87,15 @@ next.config.*
 middleware.*
 ```
 
-## 4. Checklist Rules
+## 4. Pilot Review Rules
 
-| Code | Reviewer | Evidence expected |
+| Code | Required reviewer | Pass condition |
 |---|---|---|
-| `UAT_EVIDENCE_SCOPE_VISIBLE` | IT_DATA | Screenshot with role, scope, lane and timestamp |
-| `UAT_EVIDENCE_GATE_NO_GO_VISIBLE` | AUDIT | Screenshot showing database NO-GO and owner lanes NO-GO |
-| `UAT_EVIDENCE_ALLOWED_BLOCKED_COPY` | DEPARTMENT_OWNER | Note that user understands allowed/blocked actions |
-| `UAT_EVIDENCE_RESTRICTED_DATA_BOUNDARY` | PHAP_CHE | Note that no raw PII or payment data is requested |
-| `UAT_EVIDENCE_PRODUCTION_NO_GO` | BGH | Note that production remains NO-GO |
+| `PILOT_REVIEW_SCOPE_MATCH` | IT_DATA | Evidence shows role, scope, lane and timestamp without raw PII |
+| `PILOT_REVIEW_GATE_NO_GO` | AUDIT | Evidence shows database NO-GO and no approval action |
+| `PILOT_REVIEW_RESTRICTED_DATA` | PHAP_CHE | Evidence is redacted and has no CCCD, phone, payment or raw student data |
+| `PILOT_REVIEW_OWNER_LANGUAGE` | DEPARTMENT_OWNER | User can explain allowed, blocked and report-to copy |
+| `PILOT_REVIEW_PRODUCTION_BOUNDARY` | BGH | Review packet states production remains NO-GO |
 
 ## 5. No-Go Conditions
 
@@ -120,8 +121,8 @@ This slice is still NO-GO for:
 
 AI/Codex may:
 
-- review whether checklist wording is clear,
-- check that the checklist does not imply upload or approval,
+- review whether pilot review wording is clear,
+- check that the packet does not imply upload, approval or production GO,
 - detect accidental DB/AI/automation enablement,
 - draft review comments.
 
@@ -141,10 +142,10 @@ This slice introduces no AI call and no automation step by default.
 ## 7. Required Local Commands
 
 ```powershell
-node --check scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 node --check scripts/check-heu-task-center-pilot-review-packet-readiness.mjs
-npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness
+node --check scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 npm.cmd run check:heu-task-center-pilot-review-packet-readiness
+npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness
 npm.cmd run check:heu-task-center-real-user-uat-copy-readiness
 npm.cmd run check:heu-task-center-gate-evidence-panel-readiness
 npm.cmd run check:heu-task-center-adapter-enablement-gate-readiness
@@ -169,15 +170,15 @@ Before using this with real users:
 
 | Owner lane | Must confirm |
 |---|---|
-| IT_DATA | checklist evidence can prove scope visibility without raw data |
-| AUDIT | evidence wording supports PASS/NO-GO review |
-| PHAP_CHE | screenshots/notes must be redacted before sharing |
-| DEPARTMENT_OWNER | checklist wording is usable by each department |
+| IT_DATA | pilot packet proves scope/lane without raw data |
+| AUDIT | packet supports PASS/NO-GO review and keeps gate NO-GO |
+| PHAP_CHE | evidence is redacted and no restricted raw data is requested |
+| DEPARTMENT_OWNER | wording is usable by each department |
 | BGH | production remains NO-GO |
 
 ## 9. Rollback
 
-Rollback by reverting the PR that adds this checklist.
+Rollback by reverting the PR that adds this pilot review packet.
 
 No database rollback is required because this slice does not create schema,
 task rows, Auth changes, scope grants, uploads, storage writes, AI calls, paid
@@ -186,17 +187,17 @@ automation or production config.
 ## 10. SOP Slice Result Record
 
 SOP-SCOPE:
-- `HEU-DATA-013` adds read-only UAT evidence checklist copy to the Task Center
+- `HEU-DATA-014` adds read-only pilot review packet copy to the Task Center
   panel.
-- Scope is UI checklist + TypeScript source + docs + checker only.
+- Scope is UI packet + TypeScript source + docs + checker only.
 
 SOP-CHECK:
 - Required local command:
-  `npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness`.
+  `npm.cmd run check:heu-task-center-pilot-review-packet-readiness`.
 
 SOP-PROFESSIONAL:
-- IT_DATA owns scope evidence wording.
-- Audit owns PASS/NO-GO evidence sufficiency.
+- IT_DATA owns scope/lane evidence wording.
+- Audit owns PASS/NO-GO packet sufficiency.
 - Department owners own final usability language.
 
 SOP-LEGAL:
@@ -204,25 +205,22 @@ SOP-LEGAL:
 - HOU remains separated and no COM conclusion is produced.
 
 SOP-LOGIC:
-- UAT evidence checklist can be `PASS_LOCAL` while database and production
-  remain `NO_GO`.
-- The UI guides evidence capture; it does not collect, upload or approve.
+- Pilot review packet can be `PASS_LOCAL` while database and production remain
+  `NO_GO`.
+- The UI guides review; it does not collect, upload, approve or store.
 
 SOP-VERIFY:
-- Checker must verify checklist tokens, component data attributes, reviewer
-  lanes, no-upload/no-storage/no-raw-PII boundaries, package alias, no Supabase
-  runtime, no database read, no fetch, no mutation APIs, no SQL migration, no
-  AI call and no secret assignment.
+- Checker must verify packet tokens, component data attributes, reviewer lanes,
+  no-upload/no-storage/no-raw-PII boundaries, package alias, no Supabase runtime,
+  no database read, no fetch, no mutation APIs, no SQL migration, no AI call and
+  no secret assignment.
 
 SOP-RESULT:
-- `PASS_LOCAL` for Task Center UAT evidence checklist.
+- `PASS_LOCAL` for Task Center pilot review packet.
 - `CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH` for formal review.
 - `NO_GO` for Task Center database, mutation routes, AI automation and
   production.
 
 SOP-NEXT:
-- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this checklist.
-- If accepted, next safe slice is `HEU-DATA-014-TASK-CENTER-PILOT-REVIEW-PACKET`,
-  a real-user pilot review packet, still no DB read and no migration.
-- Required next checker:
-  `check:heu-task-center-pilot-review-packet-readiness`.
+- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this pilot packet.
+- If accepted, next safe slice is Task Center owner signoff routing map, still no DB read and no migration.

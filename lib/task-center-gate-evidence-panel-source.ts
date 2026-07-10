@@ -47,6 +47,20 @@ export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE =
   "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE";
 export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII =
   "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_ONLY =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_ONLY";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_READONLY =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_READONLY";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE";
+export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII =
+  "TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -66,6 +80,18 @@ export type TaskCenterUatEvidenceChecklistItem = {
   title: string;
   expectedEvidence: string;
   reviewer: "IT_DATA" | "AUDIT" | "PHAP_CHE" | "DEPARTMENT_OWNER" | "BGH";
+};
+
+export type TaskCenterPilotReviewPacketItem = {
+  code: string;
+  title: string;
+  requiredReviewer:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  passCondition: string;
 };
 
 export type TaskCenterGateEvidencePanelSource = {
@@ -92,6 +118,16 @@ export type TaskCenterGateEvidencePanelSource = {
     noStorageWrite: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE;
     noRawPii: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII;
     items: readonly TaskCenterUatEvidenceChecklistItem[];
+  };
+  pilotReviewPacket: {
+    mode: typeof TASK_CENTER_PILOT_REVIEW_PACKET_ONLY;
+    readonly: typeof TASK_CENTER_PILOT_REVIEW_PACKET_READONLY;
+    draftOnly: typeof TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL;
+    noUpload: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD;
+    noStorageWrite: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE;
+    noRawPii: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII;
+    items: readonly TaskCenterPilotReviewPacketItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -219,6 +255,43 @@ const uatEvidenceChecklistItems: readonly TaskCenterUatEvidenceChecklistItem[] =
   },
 ];
 
+const pilotReviewPacketItems: readonly TaskCenterPilotReviewPacketItem[] = [
+  {
+    code: "PILOT_REVIEW_SCOPE_MATCH",
+    title: "Scope va lane hien dung",
+    requiredReviewer: "IT_DATA",
+    passCondition:
+      "Evidence shows role, scope, lane and timestamp without raw PII.",
+  },
+  {
+    code: "PILOT_REVIEW_GATE_NO_GO",
+    title: "Gate van NO-GO",
+    requiredReviewer: "AUDIT",
+    passCondition:
+      "Evidence shows database NO-GO and no approval action.",
+  },
+  {
+    code: "PILOT_REVIEW_RESTRICTED_DATA",
+    title: "Khong lo du lieu han che",
+    requiredReviewer: "PHAP_CHE",
+    passCondition:
+      "Evidence is redacted and does not include CCCD, phone, payment or raw student data.",
+  },
+  {
+    code: "PILOT_REVIEW_OWNER_LANGUAGE",
+    title: "Owner hieu copy UAT",
+    requiredReviewer: "DEPARTMENT_OWNER",
+    passCondition:
+      "User can explain allowed, blocked and report-to copy.",
+  },
+  {
+    code: "PILOT_REVIEW_PRODUCTION_BOUNDARY",
+    title: "Production remains NO-GO",
+    requiredReviewer: "BGH",
+    passCondition: "Review packet states production remains NO-GO.",
+  },
+];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -249,6 +322,16 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noStorageWrite: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE,
       noRawPii: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII,
       items: uatEvidenceChecklistItems,
+    },
+    pilotReviewPacket: {
+      mode: TASK_CENTER_PILOT_REVIEW_PACKET_ONLY,
+      readonly: TASK_CENTER_PILOT_REVIEW_PACKET_READONLY,
+      draftOnly: TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY,
+      noApproval: TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL,
+      noUpload: TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD,
+      noStorageWrite: TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE,
+      noRawPii: TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII,
+      items: pilotReviewPacketItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,
