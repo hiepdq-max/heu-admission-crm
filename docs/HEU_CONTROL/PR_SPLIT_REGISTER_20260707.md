@@ -29,6 +29,8 @@ combine docs, SQL, runtime actions, scripts, config, and local Codex files.
 | 12 | HEU-DAO-TAO-KHOA-012-REVIEW-M07-M08-CONTROL-PACK | Dao Tao, Short Course, Khoa/Giang vien docs/scripts/UI | Subset | Medium-high | DAO_TAO + Khoa/Giang vien + IT_DATA + Audit | Yes | Rollback by revert PR; external evidence stays outside Git |
 | 13 | HEU-REPORTS-DASHBOARD-013-REVIEW-READONLY-SURFACES | reports, dashboard, executive panels | Subset | Medium-high | BGH + IT_DATA + Audit + module owners | Yes | Rollback by revert PR; no dashboard reliance without owner signoff |
 | 14 | HEU-FINANCE-HDDT-014-REVIEW-CONTROLLED-EVIDENCE-INTAKE | finance-desk evidence intake docs/component/app route | Subset | High | KHTC + Audit + IT_DATA + PHAP_CHE | Yes | Controlled evidence refs only; no raw evidence in Git |
+| 15 | HEU-BUILD-001-MASTER-ROADMAP-AND-USER-PILOT-PLAN / HEU-BUILD-002-ROADMAP-STATIC-CHECKER | `docs/HEU_CONTROL` + `scripts` + `package.json` | one roadmap doc + one read-only checker script + one package alias | Low-medium | BGH + IT_DATA + Audit + PHAP_CHE | Yes | Rollback by revert PR; No runtime, DB, migration, AI call, automation or production GO |
+| 16 | HEU-PERF-003R-WORKSPACE-CONTEXT-RUNTIME-READINESS-CHECK | `lib/heu-workspace-context.ts`, `app/reports/page.tsx`, `components/dashboard/dashboard-overview.tsx`, control docs, checker and `package.json` | one wrapper + one route pilot + one checker + one prop-type compatibility fix | Medium-high | IT_DATA + Audit + Architecture + Security/Privacy | Yes | Rollback by revert PR; no database backup because no schema/migration/data write |
 
 ## 3. Processing Order
 
@@ -40,6 +42,8 @@ combine docs, SQL, runtime actions, scripts, config, and local Codex files.
 6. Review app routes and server actions by module, starting with TTGDTX finance/payment and settings/scope.
 7. Review components after the matching docs/scripts/app routes are understood.
 8. Run focused checks with `npm.cmd` only after the relevant PR scope is isolated.
+9. Apply HEU-BUILD-001/002 before runtime expansion so the one-app modular monolith strategy, shared database scope boundary, real-user pilot order, AI draft/check/suggest limit, low-cost automation rule and production NO-GO remain explicit.
+10. Apply HEU-PERF-003R only as a `/reports` pilot. It must not fan out to home, settings, finance writes, database migration, AI runtime, paid automation or production GO.
 
 ## 4. PR Guardrails
 

@@ -306,7 +306,33 @@ npm.cmd run build
 
 Do not run the future code verification bundle for this docs-only runtime plan.
 
-## 15. Decision
+## 15. 2026-07-10 Runtime Review Addendum
+
+Task ID: HEU-PERF-003R-WORKSPACE-CONTEXT-RUNTIME-READINESS-CHECK
+
+Current runtime evidence in this clean slice:
+
+| Artifact | Observed state | Review result |
+|---|---|---|
+| `lib/heu-workspace-context.ts` | Exists as a wrapper around `lib/workspace.ts` | CAN_SUA, review as isolated PR |
+| `app/reports/page.tsx` | Uses `getHEUWorkspaceContext`, `allowedActions.read`, `BLOCKED`, `NO_SCOPE`, and `applyHEUSegmentScope` before reading lead rows | PASS_LOCAL_CHECKER_GUARDED |
+
+Local checker:
+
+```powershell
+node --check scripts/check-heu-workspace-context-runtime-readiness.mjs
+npm.cmd run check:heu-workspace-context-runtime-readiness
+```
+
+Expected local result:
+
+- `HEU_WORKSPACE_CONTEXT_RUNTIME_READY: PASS_LOCAL`
+- `NO_SCOPE_OVERFLOW: context checker only; no database migration, no broad fallback, no write mutation, no AI runtime, no production GO`
+
+This addendum does not approve production. It only records that the wrapper and
+the `/reports` pilot can be reviewed as a narrow runtime slice.
+
+## 16. Decision
 
 | Item | Result |
 |---|---|
@@ -314,10 +340,10 @@ Do not run the future code verification bundle for this docs-only runtime plan.
 | Local docs/control artifact | DAT_TAM_THOI after docs verification |
 | Executive direction | CHO_BGH_DUYET remains required |
 | Database/migration | Not changed |
-| Runtime code | Not changed |
+| Runtime code | Narrow `/reports` pilot is present in this PR |
 | Production | NO-GO |
 
-## 16. SOP Slice Result Record
+## 17. SOP Slice Result Record
 
 SOP-SCOPE:
 - `HEU-PERF-003` creates one runtime-plan document for a shared

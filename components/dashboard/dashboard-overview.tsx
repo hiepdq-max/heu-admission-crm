@@ -39,6 +39,8 @@ type DashboardOverviewProps = {
   pipeline: PipelineItem[];
   urgentLeads: UrgentLead[];
   activities: string[];
+  activeSegmentId?: string | null;
+  canWriteInWorkspace?: boolean;
   segmentOverview?: ReactNode;
 };
 
