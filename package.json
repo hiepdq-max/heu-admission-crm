@@ -72,6 +72,7 @@
     "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot": "node scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs",
     "check:heu-task-center-adapter-dry-run-review-decision-packet": "node scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs",
     "check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck": "node scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs",
+    "check:heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review": "node scripts/check-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

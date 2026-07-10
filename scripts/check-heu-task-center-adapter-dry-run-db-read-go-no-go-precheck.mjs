@@ -8,6 +8,8 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_035_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_20260710.md";
+const nextDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_036_TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_20260710.md";
 const priorDocPath =
   "docs/HEU_CONTROL/HEU_DATA_034_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_20260710.md";
 const manifestPath =
@@ -16,12 +18,17 @@ const priorCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs";
+const nextCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review.mjs";
 const runnerScriptPath =
   "scripts/dry-run-heu-task-center-adapter-local-runner.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck";
 const checkerCommand = `node ${checkerPath}`;
+const nextCheckerAlias =
+  "check:heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review";
+const nextCheckerCommand = `node ${nextCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,10 +68,12 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  nextDocPath,
   priorDocPath,
   manifestPath,
   priorCheckerPath,
   checkerPath,
+  nextCheckerPath,
   runnerScriptPath,
   packagePath,
 ]) {
@@ -75,10 +84,12 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const nextDoc = read(nextDocPath);
   const priorDoc = read(priorDocPath);
   const manifest = read(manifestPath);
   const priorChecker = read(priorCheckerPath);
   const checkerScript = read(checkerPath);
+  const nextChecker = read(nextCheckerPath);
   const runnerScript = read(runnerScriptPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -185,10 +196,27 @@ if (failures.length === 0) {
       ...precheckRows,
       ...precheckEvidenceTokens,
       checkerAlias,
+      nextCheckerAlias,
       "HEU-DATA-036-TASK-CENTER-ADAPTER-DRY-RUN-OWNER-SIGNOFF-EVIDENCE-MATRIX-REVIEW",
+      "OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READY: PASS_LOCAL_MATRIX_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY",
     ],
     "DB read GO/NO-GO precheck doc token",
     docPath,
+  );
+
+  requireTokens(
+    nextDoc,
+    [
+      "HEU-DATA-036-TASK-CENTER-ADAPTER-DRY-RUN-OWNER-SIGNOFF-EVIDENCE-MATRIX-REVIEW",
+      "Status: PASS_LOCAL_MATRIX_ONLY",
+      "OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READY: PASS_LOCAL_MATRIX_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY",
+      "SIGNOFF_EVIDENCE_REVIEW_REQUIRED_NO_GO",
+      "CONTROLLED_EVIDENCE_OUTSIDE_GIT_OR_CHAT",
+    ],
+    "next owner signoff evidence matrix review doc token",
+    nextDocPath,
   );
 
   requireTokens(
@@ -207,9 +235,13 @@ if (failures.length === 0) {
     manifest,
     [
       docPath,
+      nextDocPath,
       checkerPath,
+      nextCheckerPath,
       "node --check scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review",
     ],
     "manifest DB read GO/NO-GO precheck token",
     manifestPath,
@@ -243,6 +275,10 @@ if (failures.length === 0) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
   }
 
+  if (packageJson.scripts?.[nextCheckerAlias] !== nextCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${nextCheckerAlias}`);
+  }
+
   requireTokens(
     checkerScript,
     [
@@ -254,6 +290,17 @@ if (failures.length === 0) {
     ],
     "checker-script read-only token",
     checkerPath,
+  );
+
+  requireTokens(
+    nextChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY",
+      "SIGNOFF_EVIDENCE_REVIEW_REQUIRED_NO_GO",
+    ],
+    "next checker read-only token",
+    nextCheckerPath,
   );
 
   const precheckRowMatches =

@@ -209,6 +209,17 @@ import {
   TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_NO_TASK_MUTATION,
   TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_ONLY,
   TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_READONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_DRAFT_ONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_APPROVAL,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_DATABASE_CLIENT,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_DATABASE_READ,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_ENV_ENABLEMENT,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_FILE_WRITE,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_REAL_DATA,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_TASK_MUTATION,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL,
@@ -319,6 +330,14 @@ const dbReadGoNoGoPrecheckCodes = [
   "DB_READ_GO_NO_GO_PRECHECK_PHAP_CHE_RESTRICTED_DATA",
   "DB_READ_GO_NO_GO_PRECHECK_DEPARTMENT_OWNER_TASK_BOUNDARY",
   "DB_READ_GO_NO_GO_PRECHECK_BGH_PRODUCTION_NO_GO",
+] as const;
+
+const ownerSignoffEvidenceMatrixReviewCodes = [
+  "OWNER_SIGNOFF_EVIDENCE_MATRIX_IT_DATA_SCOPE_FIRST",
+  "OWNER_SIGNOFF_EVIDENCE_MATRIX_AUDIT_NEGATIVE_ACCESS",
+  "OWNER_SIGNOFF_EVIDENCE_MATRIX_PHAP_CHE_RESTRICTED_DATA",
+  "OWNER_SIGNOFF_EVIDENCE_MATRIX_DEPARTMENT_OWNER_TASK_BOUNDARY",
+  "OWNER_SIGNOFF_EVIDENCE_MATRIX_BGH_PRODUCTION_NO_GO",
 ] as const;
 
 export function DepartmentTaskInbox({
@@ -658,6 +677,17 @@ export function DepartmentTaskInbox({
         data-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck-no-task-mutation={TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_NO_TASK_MUTATION}
         data-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck-no-real-data={TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_NO_REAL_DATA}
         data-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck-no-ai-or-automation={TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-readonly={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READONLY}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-draft-only={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_DRAFT_ONLY}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-approval={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_APPROVAL}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-database-read={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_DATABASE_READ}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-database-client={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_DATABASE_CLIENT}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-env-enablement={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_ENV_ENABLEMENT}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-file-write={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_FILE_WRITE}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-task-mutation={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_TASK_MUTATION}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-real-data={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_REAL_DATA}
+        data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-no-ai-or-automation={TASK_CENTER_ADAPTER_DRY_RUN_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_NO_AI_OR_AUTOMATION}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -2292,6 +2322,91 @@ export function DepartmentTaskInbox({
                   </div>
                   <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
                     {item.blockedAction}
+                  </div>
+                  <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
+                    {item.stopRule}
+                  </div>
+                </article>
+              ),
+            )}
+          </div>
+        </div>
+
+        <div
+          className="mt-4 rounded-lg border border-zinc-200 bg-white p-3"
+          data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-codes={ownerSignoffEvidenceMatrixReviewCodes.join(
+            "|",
+          )}
+        >
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-036 - Owner signoff evidence matrix review
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Matrix review-only cho bang chung signoff
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Matrix nay chi liet ke bang chung can review truoc khi xet bat
+                ky owner signoff nao. Moi dong van la
+                `SIGNOFF_EVIDENCE_REVIEW_REQUIRED_NO_GO`, khong owner approval,
+                khong tao DB client, khong doc DB, khong ghi file, khong sua
+                task, khong dung du lieu that, khong goi AI va khong automation
+                step.
+              </p>
+            </div>
+            <div className="flex flex-col gap-1 text-xs">
+              <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-medium text-zinc-700">
+                {gateEvidence.adapterDryRunOwnerSignoffEvidenceMatrixReview.mode}
+              </span>
+              <span className="inline-flex w-fit rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700">
+                {gateEvidence.adapterDryRunOwnerSignoffEvidenceMatrixReview.result}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.adapterDryRunOwnerSignoffEvidenceMatrixReview.items.map(
+              (item) => (
+                <article
+                  key={item.code}
+                  className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-item={
+                    item.code
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-owner-lane={
+                    item.ownerLane
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-reviewer={
+                    item.reviewer
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-signoff-state={
+                    item.signoffState
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-evidence-artifact={
+                    item.evidenceArtifact
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-evidence-storage-rule={
+                    item.evidenceStorageRule
+                  }
+                  data-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review-stop-rule={
+                    item.stopRule
+                  }
+                >
+                  <div className="font-mono text-[11px] text-zinc-500">
+                    {item.code}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-zinc-950">
+                    {item.ownerLane}
+                  </div>
+                  <div className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-700">
+                    {item.signoffState}
+                  </div>
+                  <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                    {item.evidenceArtifact}
+                  </div>
+                  <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                    {item.evidenceStorageRule}
                   </div>
                   <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
                     {item.stopRule}

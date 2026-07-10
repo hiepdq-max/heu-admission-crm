@@ -75,7 +75,9 @@ Out of scope:
 
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck
+npm.cmd run check:heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review
 npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet
 ```
 
@@ -84,6 +86,8 @@ Expected output:
 - `HEU_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_READY: PASS_LOCAL`
 - `TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY`
 - `NO_RUNTIME_MUTATION: task center adapter dry-run DB read GO/NO-GO precheck checker only; no owner approval, database client, database read, env enablement, file output write, table creation, SQL migration, task write, file upload, storage write, real-data fixture, AI call, paid automation, deploy, finance action or production GO`
+- `OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_READY: PASS_LOCAL_MATRIX_ONLY`
+- `TASK_CENTER_DATABASE_READY: NO_GO_OWNER_SIGNOFF_EVIDENCE_MATRIX_REVIEW_ONLY`
 
 ## 6. Acceptance
 
@@ -95,7 +99,9 @@ This slice may be considered local-only ready when:
 3. Every row remains `NO_GO_REQUIRES_OWNER_DECISION`.
 4. The checker confirms this remains source/UI/checker-only.
 5. The prior HEU-DATA-034 checker links to this HEU-DATA-035 slice.
-6. Database status remains
+6. The next HEU-DATA-036 matrix remains
+   `SIGNOFF_EVIDENCE_REVIEW_REQUIRED_NO_GO` and checker-only.
+7. Database status remains
    `TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY`.
 
 ## 7. Risk
@@ -132,6 +138,8 @@ SOP-CHECK:
   `check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck`.
 - Previous checker required:
   `check:heu-task-center-adapter-dry-run-review-decision-packet`.
+- Next matrix checker required:
+  `check:heu-task-center-adapter-dry-run-owner-signoff-evidence-matrix-review`.
 
 SOP-PROFESSIONAL:
 - IT_DATA owns scope-first DB read precheck evidence.
