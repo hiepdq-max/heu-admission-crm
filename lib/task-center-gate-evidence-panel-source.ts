@@ -89,6 +89,20 @@ export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION =
   "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION";
 export const TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_ONLY =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_ONLY";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_READONLY =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_READONLY";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_DRAFT_ONLY =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_DRAFT_ONLY";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_READ =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_READ";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION";
+export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -148,6 +162,14 @@ export type TaskCenterReadonlyAdapterDecisionLedgerItem = {
   requiredBeforeDbRead: string;
 };
 
+export type TaskCenterDbReadAdapterImplementationPlanItem = {
+  code: string;
+  phase: "PLAN_ONLY";
+  implementationStep: string;
+  requiredGateBeforeExecution: string;
+  forbiddenInThisSlice: string;
+};
+
 export type TaskCenterGateEvidencePanelSource = {
   mode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY;
   panelMode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY;
@@ -202,6 +224,16 @@ export type TaskCenterGateEvidencePanelSource = {
     noTaskMutation: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION;
     noAiOrAutomation: typeof TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterReadonlyAdapterDecisionLedgerItem[];
+  };
+  dbReadAdapterImplementationPlan: {
+    mode: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_ONLY;
+    readonly: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_READONLY;
+    draftOnly: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_DRAFT_ONLY;
+    noDatabaseRead: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION;
+    noAiOrAutomation: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterDbReadAdapterImplementationPlanItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -443,6 +475,46 @@ const readonlyAdapterDecisionLedgerItems: readonly TaskCenterReadonlyAdapterDeci
     },
   ];
 
+const dbReadAdapterImplementationPlanItems: readonly TaskCenterDbReadAdapterImplementationPlanItem[] =
+  [
+    {
+      code: "DB_READ_PLAN_SCOPE_FILTER_CONTRACT",
+      phase: "PLAN_ONLY",
+      implementationStep: "Define workspace/role/lane filter contract.",
+      requiredGateBeforeExecution: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      forbiddenInThisSlice: "NO_DATABASE_CLIENT_CREATED",
+    },
+    {
+      code: "DB_READ_PLAN_NEGATIVE_ACCESS_TEST",
+      phase: "PLAN_ONLY",
+      implementationStep: "Define negative-access test cases before adapter read.",
+      requiredGateBeforeExecution: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "DB_READ_PLAN_RESTRICTED_FIELD_ALLOWLIST",
+      phase: "PLAN_ONLY",
+      implementationStep: "Define metadata-only field allowlist for Task Center.",
+      requiredGateBeforeExecution:
+        "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "DB_READ_PLAN_DEPARTMENT_LABEL_MAP",
+      phase: "PLAN_ONLY",
+      implementationStep: "Define department label mapping for task display.",
+      requiredGateBeforeExecution: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "DB_READ_PLAN_PRODUCTION_BOUNDARY",
+      phase: "PLAN_ONLY",
+      implementationStep: "Keep production boundary explicit after adapter plan.",
+      requiredGateBeforeExecution: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -503,6 +575,16 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noTaskMutation: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_TASK_MUTATION,
       noAiOrAutomation: TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_NO_AI_OR_AUTOMATION,
       items: readonlyAdapterDecisionLedgerItems,
+    },
+    dbReadAdapterImplementationPlan: {
+      mode: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_ONLY,
+      readonly: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_READONLY,
+      draftOnly: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_DRAFT_ONLY,
+      noDatabaseRead: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION,
+      noAiOrAutomation: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION,
+      items: dbReadAdapterImplementationPlanItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

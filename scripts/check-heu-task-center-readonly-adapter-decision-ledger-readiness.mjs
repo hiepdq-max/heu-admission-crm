@@ -8,18 +8,26 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_016_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_20260710.md";
+const dbReadAdapterImplementationPlanDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md";
 const ownerSignoffDocPath =
   "docs/HEU_CONTROL/HEU_DATA_015_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const ownerSignoffCheckerPath =
   "scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs";
+const dbReadAdapterImplementationPlanCheckerPath =
+  "scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-readonly-adapter-decision-ledger-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const dbReadAdapterImplementationPlanCheckerAlias =
+  "check:heu-task-center-db-read-adapter-implementation-plan-readiness";
+const dbReadAdapterImplementationPlanCheckerCommand =
+  `node ${dbReadAdapterImplementationPlanCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,9 +67,11 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  dbReadAdapterImplementationPlanDocPath,
   ownerSignoffDocPath,
   manifestPath,
   ownerSignoffCheckerPath,
+  dbReadAdapterImplementationPlanCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,6 +82,9 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const dbReadAdapterImplementationPlanDoc = read(
+    dbReadAdapterImplementationPlanDocPath,
+  );
   const ownerSignoffDoc = read(ownerSignoffDocPath);
   const manifest = read(manifestPath);
   const ownerSignoffChecker = read(ownerSignoffCheckerPath);
@@ -162,10 +175,29 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center DB-read adapter implementation plan",
+      "HEU-DATA-017-TASK-CENTER-DB-READ-ADAPTER-IMPLEMENTATION-PLAN",
+      "check:heu-task-center-db-read-adapter-implementation-plan-readiness",
       "still no DB read and no migration",
     ],
     "readonly adapter decision ledger doc token",
     docPath,
+  );
+
+  requireTokens(
+    dbReadAdapterImplementationPlanDoc,
+    [
+      "HEU-DATA-017-TASK-CENTER-DB-READ-ADAPTER-IMPLEMENTATION-PLAN",
+      "PASS_LOCAL_DB_READ_ADAPTER_IMPLEMENTATION_PLAN",
+      "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_READ",
+      "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT",
+      "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION",
+      "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "Task Center adapter test fixture contract",
+      "still no DB read and no migration",
+    ],
+    "db-read adapter implementation plan doc token",
+    dbReadAdapterImplementationPlanDocPath,
   );
 
   requireTokens(
@@ -186,10 +218,15 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      dbReadAdapterImplementationPlanDocPath,
       checkerPath,
+      dbReadAdapterImplementationPlanCheckerPath,
       "check:heu-task-center-readonly-adapter-decision-ledger-readiness",
+      "check:heu-task-center-db-read-adapter-implementation-plan-readiness",
       "node --check scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs",
+      "node --check scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs",
       "npm.cmd run check:heu-task-center-readonly-adapter-decision-ledger-readiness",
+      "npm.cmd run check:heu-task-center-db-read-adapter-implementation-plan-readiness",
     ],
     "manifest readonly adapter decision ledger token",
     manifestPath,
@@ -209,6 +246,15 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[dbReadAdapterImplementationPlanCheckerAlias] !==
+    dbReadAdapterImplementationPlanCheckerCommand
+  ) {
+    fail(
+      `${packagePath}: missing or mismatched ${dbReadAdapterImplementationPlanCheckerAlias}`,
+    );
   }
 
   requireTokens(

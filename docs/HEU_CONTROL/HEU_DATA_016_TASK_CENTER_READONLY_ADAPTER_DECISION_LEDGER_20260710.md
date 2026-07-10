@@ -71,10 +71,12 @@ components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
 docs/HEU_CONTROL/HEU_DATA_015_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_20260710.md
 docs/HEU_CONTROL/HEU_DATA_016_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_20260710.md
+docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md
 lib/task-center-gate-evidence-panel-source.ts
 package.json
 scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs
 scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs
+scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs
 ```
 
 Files not in scope:
@@ -142,8 +144,10 @@ This slice introduces no AI call and no automation step by default.
 ```powershell
 node --check scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs
 node --check scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs
+node --check scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs
 npm.cmd run check:heu-task-center-readonly-adapter-decision-ledger-readiness
 npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness
+npm.cmd run check:heu-task-center-db-read-adapter-implementation-plan-readiness
 npm.cmd run check:heu-task-center-pilot-review-packet-readiness
 npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness
 npm.cmd run check:heu-task-center-real-user-uat-copy-readiness
@@ -224,4 +228,7 @@ SOP-RESULT:
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this decision
   ledger.
-- If accepted, next safe slice is Task Center DB-read adapter implementation plan, still no DB read and no migration.
+- If accepted, next safe slice is `HEU-DATA-017-TASK-CENTER-DB-READ-ADAPTER-IMPLEMENTATION-PLAN`,
+  a Task Center DB-read adapter implementation plan, still no DB read and no migration.
+- Required next checker:
+  `check:heu-task-center-db-read-adapter-implementation-plan-readiness`.
