@@ -106,13 +106,18 @@ Required commands:
 
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs
+node --check scripts/dry-run-heu-task-center-adapter-local-runner.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness
+npm.cmd run dry-run:heu-task-center-adapter-local-runner
+npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design
 ```
 
 Expected outputs:
 - `HEU_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_CANDIDATE_READINESS_READY: PASS_LOCAL`
 - `TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_CANDIDATE_READINESS_ONLY`
+- `LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL_SCRIPT_ONLY`
 
 ## 9. Risk
 
@@ -171,6 +176,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-031-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-SCRIPT-DRAFT`.
+- Required next command:
+  `npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft`.
+- Expected next runtime:
+  `LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL_SCRIPT_ONLY`.
 - Next slice may create deterministic local runner script only if it remains
   local, synthetic, no DB client, no env enablement, no task mutation, no real
   data, no AI call and no production GO.

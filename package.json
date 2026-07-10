@@ -66,6 +66,8 @@
     "check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan": "node scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs",
     "check:heu-task-center-adapter-dry-run-runner-static-check-design": "node scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs",
     "check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness": "node scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs",
+    "dry-run:heu-task-center-adapter-local-runner": "node scripts/dry-run-heu-task-center-adapter-local-runner.mjs",
+    "check:heu-task-center-adapter-dry-run-local-runner-script-draft": "node scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

@@ -9,6 +9,8 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_030_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_CANDIDATE_READINESS_20260710.md";
+const localRunnerScriptDraftDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_031_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_20260710.md";
 const staticCheckDesignDocPath =
   "docs/HEU_CONTROL/HEU_DATA_029_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_20260710.md";
 const runnerPlanDocPath =
@@ -17,6 +19,10 @@ const syntheticFixtureContractDocPath =
   "docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
+const localRunnerScriptPath =
+  "scripts/dry-run-heu-task-center-adapter-local-runner.mjs";
+const localRunnerScriptDraftCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs";
 const staticCheckDesignCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs";
 const runnerPlanCheckerPath =
@@ -82,10 +88,13 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  localRunnerScriptDraftDocPath,
   staticCheckDesignDocPath,
   runnerPlanDocPath,
   syntheticFixtureContractDocPath,
   manifestPath,
+  localRunnerScriptPath,
+  localRunnerScriptDraftCheckerPath,
   staticCheckDesignCheckerPath,
   runnerPlanCheckerPath,
   syntheticFixtureContractCheckerPath,
@@ -104,10 +113,13 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const localRunnerScriptDraftDoc = read(localRunnerScriptDraftDocPath);
   const staticCheckDesignDoc = read(staticCheckDesignDocPath);
   const runnerPlanDoc = read(runnerPlanDocPath);
   const syntheticFixtureContractDoc = read(syntheticFixtureContractDocPath);
   const manifest = read(manifestPath);
+  const localRunnerScript = read(localRunnerScriptPath);
+  const localRunnerScriptDraftChecker = read(localRunnerScriptDraftCheckerPath);
   const staticCheckDesignChecker = read(staticCheckDesignCheckerPath);
   const runnerPlanChecker = read(runnerPlanCheckerPath);
   const syntheticFixtureContractChecker = read(
@@ -240,9 +252,26 @@ if (failures.length === 0) {
       "LOCAL_RUNNER_CANDIDATE_PRODUCTION_SIGNAL_ABSENT",
       "HEU-DATA-031-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-SCRIPT-DRAFT",
       "check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness",
+      "dry-run:heu-task-center-adapter-local-runner",
+      "check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+      "LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL_SCRIPT_ONLY",
     ],
     "local runner candidate readiness doc token",
     docPath,
+  );
+
+  requireTokens(
+    localRunnerScriptDraftDoc,
+    [
+      "HEU-DATA-031-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-SCRIPT-DRAFT",
+      "LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL_SCRIPT_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      "HEU-DATA-032-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-OUTPUT-LEDGER",
+      "dry-run:heu-task-center-adapter-local-runner",
+      "check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+    ],
+    "local runner script draft next-slice token",
+    localRunnerScriptDraftDocPath,
   );
 
   requireTokens(
@@ -283,19 +312,53 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      localRunnerScriptDraftDocPath,
       staticCheckDesignDocPath,
       runnerPlanDocPath,
       syntheticFixtureContractDocPath,
+      localRunnerScriptPath,
+      localRunnerScriptDraftCheckerPath,
       checkerPath,
       staticCheckDesignCheckerPath,
       runnerPlanCheckerPath,
       syntheticFixtureContractCheckerPath,
       "check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness",
+      "dry-run:heu-task-center-adapter-local-runner",
+      "check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+      "node --check scripts/dry-run-heu-task-center-adapter-local-runner.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs",
       "node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs",
+      "npm.cmd run dry-run:heu-task-center-adapter-local-runner",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft",
       "npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness",
     ],
     "manifest local runner candidate readiness token",
     manifestPath,
+  );
+
+  requireTokens(
+    localRunnerScript,
+    [
+      "TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      "LOCAL_RUNNER_REPORT_ONLY: PASS_LOCAL_SYNTHETIC_IN_MEMORY",
+    ],
+    "local runner script token",
+    localRunnerScriptPath,
+  );
+
+  requireTokens(
+    localRunnerScriptDraftChecker,
+    [
+      "HEU-DATA-031-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-SCRIPT-DRAFT",
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL",
+      docPath,
+      checkerPath,
+      localRunnerScriptPath,
+    ],
+    "local runner script draft checker reverse-link token",
+    localRunnerScriptDraftCheckerPath,
   );
 
   requireTokens(
