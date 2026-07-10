@@ -11,10 +11,14 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_026_TASK_CENTER_ADAPTER_DRY_RUN_READONLY_TEST_HARNESS_DESIGN_20260710.md";
 const staticNegativePacketDocPath =
   "docs/HEU_CONTROL/HEU_DATA_025_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_20260710.md";
+const syntheticFixtureContractDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const staticNegativePacketCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs";
+const syntheticFixtureContractCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs";
 const packagePath = "package.json";
@@ -62,8 +66,10 @@ for (const file of [
   enablementGatePath,
   docPath,
   staticNegativePacketDocPath,
+  syntheticFixtureContractDocPath,
   manifestPath,
   staticNegativePacketCheckerPath,
+  syntheticFixtureContractCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -76,8 +82,12 @@ if (failures.length === 0) {
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
   const staticNegativePacketDoc = read(staticNegativePacketDocPath);
+  const syntheticFixtureContractDoc = read(syntheticFixtureContractDocPath);
   const manifest = read(manifestPath);
   const staticNegativePacketChecker = read(staticNegativePacketCheckerPath);
+  const syntheticFixtureContractChecker = read(
+    syntheticFixtureContractCheckerPath,
+  );
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -211,6 +221,8 @@ if (failures.length === 0) {
       "HARNESS_DESIGN_DEPARTMENT_LANE_EXPECTATIONS",
       "HARNESS_DESIGN_PRODUCTION_NO_GO",
       "HEU-DATA-027-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-CONTRACT",
+      "SYNTHETIC_FIXTURE_CONTRACT_READY: PASS_LOCAL_CONTRACT_ONLY",
+      "check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
       "check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
     ],
     "readonly test-harness design doc token",
@@ -236,14 +248,31 @@ if (failures.length === 0) {
       enablementGatePath,
       docPath,
       staticNegativePacketDocPath,
+      syntheticFixtureContractDocPath,
       checkerPath,
       staticNegativePacketCheckerPath,
+      syntheticFixtureContractCheckerPath,
       "check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
+      "check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
       "node --check scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-readonly-test-harness-design",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
     ],
     "manifest readonly test-harness design token",
     manifestPath,
+  );
+
+  requireTokens(
+    syntheticFixtureContractDoc,
+    [
+      "HEU-DATA-027-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-CONTRACT",
+      "SYNTHETIC_FIXTURE_CONTRACT_READY: PASS_LOCAL_CONTRACT_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_SYNTHETIC_FIXTURE_CONTRACT_ONLY",
+      "HEU-DATA-028-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-RUNNER-PLAN",
+    ],
+    "synthetic fixture contract next-slice doc token",
+    syntheticFixtureContractDocPath,
   );
 
   requireTokens(
@@ -256,6 +285,18 @@ if (failures.length === 0) {
     ],
     "static negative-access packet checker next-slice token",
     staticNegativePacketCheckerPath,
+  );
+
+  requireTokens(
+    syntheticFixtureContractChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_SYNTHETIC_FIXTURE_CONTRACT_ONLY",
+      docPath,
+      checkerPath,
+    ],
+    "synthetic fixture contract checker reverse-link token",
+    syntheticFixtureContractCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
