@@ -6,14 +6,13 @@ import { DataMasterReportViewBridgePanel } from "@/components/reports/data-maste
 import { ReportViewSourceMapPanel } from "@/components/reports/report-view-source-map-panel";
 import { ReportsOverview } from "@/components/reports/reports-overview";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
-  applyAdmissionSegmentIds,
-  firstParam,
-  getAdmissionWorkspaceContext,
-  withAdmissionSegmentParam,
-} from "@/lib/workspace";
+  applyHEUSegmentScope,
+  getHEUWorkspaceContext,
+  type HEUWorkspaceContext,
+} from "@/lib/heu-workspace-context";
+import { createClient } from "@/lib/supabase/server";
+import { firstParam, withAdmissionSegmentParam } from "@/lib/workspace";
 
 type LeadReportRow = {
   id: string;
@@ -25,6 +24,11 @@ type LeadReportRow = {
   interested_major: string | null;
   next_followup_at: string | null;
   created_at: string;
+};
+
+type UserReportRow = {
+  id: string;
+  full_name: string | null;
 };
 
 type ReportsPageProps = {
@@ -60,6 +64,9 @@ const lostReasonLabels: Record<string, string> = {
   DUPLICATE: "Trùng dữ liệu",
   OTHER: "Khác",
 };
+
+const REPORTS_LEAD_QUERY_LIMIT = 500;
+const REPORTS_LOOKUP_QUERY_LIMIT = 200;
 
 function toLookupMap<T extends Record<string, unknown>>(
   rows: T[] | null,
@@ -115,6 +122,50 @@ function startOfToday() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
+function renderReportsGuardState(params: {
+  context: HEUWorkspaceContext;
+  title: string;
+  description: string;
+  message: string;
+}) {
+  const { context, title, description, message } = params;
+  const workspace = context.admissionWorkspace;
+
+  return (
+    <AppShell
+      active="reports"
+      title={title}
+      description={description}
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/reports",
+        workspace.activeSegmentId,
+      )}
+      actions={
+        <Button asChild variant="outline">
+          <a
+            href={withAdmissionSegmentParam(
+              "/reports",
+              workspace.activeSegmentId,
+            )}
+          >
+            <RefreshCcw className="size-4" />
+            Tai lai
+          </a>
+        </Button>
+      }
+    >
+      <section className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
+        <p className="font-semibold">Route reports dang duoc khoa an toan.</p>
+        <p className="mt-2">{message}</p>
+        <p className="mt-2 text-xs text-amber-800">
+          scopeDecision={context.scopeDecision} | scopeSource={context.scopeSource}
+        </p>
+      </section>
+    </AppShell>
+  );
+}
+
 export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const supabase = await createClient();
   const {
@@ -127,37 +178,82 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
+  const workspaceContext = await getHEUWorkspaceContext(
     supabase,
     user.id,
     requestedSegmentId,
   );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+  const workspace = workspaceContext.admissionWorkspace;
+
+  if (!workspaceContext.allowedActions.read) {
+    return renderReportsGuardState({
+      context: workspaceContext,
+      title: "Bao cao tuyen sinh",
+      description: "Read gate cho reports chua san sang.",
+      message:
+        "User hien chua co `allowedActions.read` cho route nay, nen khong doc business rows.",
+    });
+  }
+
+  if (workspaceContext.scopeDecision === "BLOCKED") {
+    return renderReportsGuardState({
+      context: workspaceContext,
+      title: "Bao cao tuyen sinh",
+      description: "Context HEU chua du can thiet de mo reports.",
+      message:
+        "Khong the chot actor/profile/role an toan cho route reports, nen pilot dung truoc business query.",
+    });
+  }
+
+  if (workspaceContext.scopeDecision === "NO_SCOPE") {
+    return renderReportsGuardState({
+      context: workspaceContext,
+      title: "Bao cao tuyen sinh",
+      description: "User chua co workspace/scope hop le cho reports.",
+      message:
+        "User nay chua co segment scope hoac workspace dang hoat dong, nen route khong fallback sang broad query.",
+    });
+  }
 
   const [
     { data: leads },
     { data: sourceRows },
     { data: flowRows },
-    { data: userRows },
   ] = await Promise.all([
-    applyAdmissionSegmentIds(
+    applyHEUSegmentScope(
       supabase
         .from("leads")
         .select(
           "id,status,source_id,flow_id,assigned_to,lost_reason,interested_major,next_followup_at,created_at",
         )
         .eq("is_deleted", false),
-      segmentFilterIds,
+      workspaceContext,
     )
       .order("created_at", { ascending: false })
-      .limit(5000)
+      .limit(REPORTS_LEAD_QUERY_LIMIT)
       .returns<LeadReportRow[]>(),
-    supabase.from("lead_sources").select("id,source_name"),
-    supabase.from("admission_flows").select("id,flow_name"),
-    supabase.from("users_profile").select("id,full_name"),
+    supabase
+      .from("lead_sources")
+      .select("id,source_name")
+      .limit(REPORTS_LOOKUP_QUERY_LIMIT),
+    supabase
+      .from("admission_flows")
+      .select("id,flow_name")
+      .limit(REPORTS_LOOKUP_QUERY_LIMIT),
   ]);
 
   const leadRows = leads ?? [];
+  const counselorIds = Array.from(
+    new Set(leadRows.map((lead) => lead.assigned_to).filter(Boolean)),
+  ) as string[];
+  const userRows: UserReportRow[] =
+    counselorIds.length > 0
+      ? ((await supabase
+          .from("users_profile")
+          .select("id,full_name")
+          .in("id", counselorIds)
+          .returns<UserReportRow[]>()).data ?? [])
+      : [];
   const total = leadRows.length;
   const enrolled = leadRows.filter((lead) => lead.status === "ENROLLED").length;
   const lost = leadRows.filter((lead) => lead.status === "LOST").length;
@@ -217,10 +313,6 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
     (key) => (key === "UNKNOWN_MAJOR" ? "Chưa rõ ngành" : key),
     total,
   );
-
-  const counselorIds = Array.from(
-    new Set(leadRows.map((lead) => lead.assigned_to).filter(Boolean)),
-  ) as string[];
 
   const counselorRows = counselorIds
     .map((id) => {
