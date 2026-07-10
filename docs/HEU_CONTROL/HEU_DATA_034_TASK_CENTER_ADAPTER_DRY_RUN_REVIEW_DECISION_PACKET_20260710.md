@@ -76,7 +76,9 @@ Out of scope:
 
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet
+npm.cmd run check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck
 npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot
 ```
 
@@ -85,6 +87,8 @@ Expected output:
 - `HEU_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READY: PASS_LOCAL`
 - `TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY`
 - `NO_RUNTIME_MUTATION: task center adapter dry-run review decision packet checker only; no owner approval, database client, database read, env enablement, file output write, table creation, SQL migration, task write, file upload, storage write, real-data fixture, AI call, paid automation, deploy, finance action or production GO`
+- `DB_READ_GO_NO_GO_PRECHECK_READY: PASS_LOCAL_PRECHECK_ONLY`
+- `TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY`
 
 ## 6. Acceptance
 
@@ -96,7 +100,9 @@ This slice may be considered local-only ready when:
 3. Every row remains `REVIEW_REQUIRED_NO_GO`.
 4. The checker confirms this remains source/UI/checker-only.
 5. The prior HEU-DATA-033 checker links to this HEU-DATA-034 slice.
-6. Database status remains
+6. The next HEU-DATA-035 precheck remains
+   `NO_GO_REQUIRES_OWNER_DECISION` and checker-only.
+7. Database status remains
    `TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY`.
 
 ## 7. Risk
@@ -133,6 +139,8 @@ SOP-CHECK:
   `check:heu-task-center-adapter-dry-run-review-decision-packet`.
 - Previous checker required:
   `check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot`.
+- Next precheck checker required:
+  `check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck`.
 
 SOP-PROFESSIONAL:
 - IT_DATA owns scope-first review.

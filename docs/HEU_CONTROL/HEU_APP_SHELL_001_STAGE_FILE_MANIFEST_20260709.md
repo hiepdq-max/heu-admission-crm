@@ -69,6 +69,7 @@ docs/HEU_CONTROL/HEU_DATA_031_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DR
 docs/HEU_CONTROL/HEU_DATA_032_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_20260710.md
 docs/HEU_CONTROL/HEU_DATA_033_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_20260710.md
 docs/HEU_CONTROL/HEU_DATA_034_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_20260710.md
+docs/HEU_CONTROL/HEU_DATA_035_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -121,6 +122,7 @@ scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs
 scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs
 scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs
 scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs
+scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -210,6 +212,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_DATA_032_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_033_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_034_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_035_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -262,6 +265,7 @@ git add -- `
   scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs `
   scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs `
   scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs `
+  scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -312,6 +316,7 @@ node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-script-d
 node --check scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-task-center-data-contract-readiness
@@ -346,6 +351,7 @@ npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger
 npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot
 npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet
+npm.cmd run check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness

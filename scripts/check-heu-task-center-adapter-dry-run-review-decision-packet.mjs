@@ -8,6 +8,8 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_034_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_20260710.md";
+const nextDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_035_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_20260710.md";
 const priorDocPath =
   "docs/HEU_CONTROL/HEU_DATA_033_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_20260710.md";
 const manifestPath =
@@ -16,12 +18,17 @@ const priorCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs";
+const nextCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs";
 const runnerScriptPath =
   "scripts/dry-run-heu-task-center-adapter-local-runner.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-review-decision-packet";
 const checkerCommand = `node ${checkerPath}`;
+const nextCheckerAlias =
+  "check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck";
+const nextCheckerCommand = `node ${nextCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,10 +68,12 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  nextDocPath,
   priorDocPath,
   manifestPath,
   priorCheckerPath,
   checkerPath,
+  nextCheckerPath,
   runnerScriptPath,
   packagePath,
 ]) {
@@ -75,10 +84,12 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const nextDoc = read(nextDocPath);
   const priorDoc = read(priorDocPath);
   const manifest = read(manifestPath);
   const priorChecker = read(priorCheckerPath);
   const checkerScript = read(checkerPath);
+  const nextChecker = read(nextCheckerPath);
   const runnerScript = read(runnerScriptPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -171,10 +182,26 @@ if (failures.length === 0) {
       ...packetRows,
       "REVIEW_REQUIRED_NO_GO",
       "check:heu-task-center-adapter-dry-run-review-decision-packet",
+      "check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck",
       "HEU-DATA-035-TASK-CENTER-ADAPTER-DRY-RUN-DB-READ-GO-NO-GO-PRECHECK",
+      "DB_READ_GO_NO_GO_PRECHECK_READY: PASS_LOCAL_PRECHECK_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY",
     ],
     "review decision packet doc token",
     docPath,
+  );
+
+  requireTokens(
+    nextDoc,
+    [
+      "HEU-DATA-035-TASK-CENTER-ADAPTER-DRY-RUN-DB-READ-GO-NO-GO-PRECHECK",
+      "Status: PASS_LOCAL_PRECHECK_ONLY",
+      "DB_READ_GO_NO_GO_PRECHECK_READY: PASS_LOCAL_PRECHECK_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY",
+      "NO_GO_REQUIRES_OWNER_DECISION",
+    ],
+    "next DB read GO/NO-GO precheck doc token",
+    nextDocPath,
   );
 
   requireTokens(
@@ -193,9 +220,13 @@ if (failures.length === 0) {
     manifest,
     [
       docPath,
+      nextDocPath,
       checkerPath,
+      nextCheckerPath,
       "node --check scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-db-read-go-no-go-precheck.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-db-read-go-no-go-precheck",
     ],
     "manifest review decision packet token",
     manifestPath,
@@ -229,6 +260,10 @@ if (failures.length === 0) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
   }
 
+  if (packageJson.scripts?.[nextCheckerAlias] !== nextCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${nextCheckerAlias}`);
+  }
+
   requireTokens(
     checkerScript,
     [
@@ -240,6 +275,17 @@ if (failures.length === 0) {
     ],
     "checker-script read-only token",
     checkerPath,
+  );
+
+  requireTokens(
+    nextChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_DB_READ_GO_NO_GO_PRECHECK_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_DB_READ_GO_NO_GO_PRECHECK_ONLY",
+      "NO_GO_REQUIRES_OWNER_DECISION",
+    ],
+    "next checker read-only token",
+    nextCheckerPath,
   );
 
   const decisionRowMatches = panelSource.match(/code:\s*"REVIEW_DECISION_PACKET_[A-Z_]+"/g) ?? [];
