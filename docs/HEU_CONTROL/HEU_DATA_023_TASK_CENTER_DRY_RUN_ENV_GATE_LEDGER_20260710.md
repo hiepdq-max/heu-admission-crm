@@ -245,6 +245,8 @@ SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this dry-run env
   gate ledger.
 - If accepted, next safe slice is `HEU-DATA-024-TASK-CENTER-ADAPTER-DRY-RUN-READINESS-REVIEW`,
-  still no DB read and no migration.
+  an adapter dry-run readiness review that remains
+  `DRY_RUN_ADAPTER_READY: NO_GO_REVIEW_ONLY`, still no DB read and no
+  migration.
 - Required next checker:
   `check:heu-task-center-adapter-dry-run-readiness-review`.

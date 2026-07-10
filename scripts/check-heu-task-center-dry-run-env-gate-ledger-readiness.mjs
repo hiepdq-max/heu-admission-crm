@@ -17,6 +17,10 @@ const dryRunSwitchContractCheckerPath =
   "scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs";
+const adapterDryRunReadinessReviewDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_024_TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_20260710.md";
+const adapterDryRunReadinessReviewCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-dry-run-env-gate-ledger-readiness";
 const checkerCommand = `node ${checkerPath}`;
@@ -64,6 +68,8 @@ for (const file of [
   manifestPath,
   dryRunSwitchContractCheckerPath,
   checkerPath,
+  adapterDryRunReadinessReviewDocPath,
+  adapterDryRunReadinessReviewCheckerPath,
   packagePath,
 ]) {
   requireFile(file);
@@ -78,6 +84,10 @@ if (failures.length === 0) {
   const manifest = read(manifestPath);
   const dryRunSwitchContractChecker = read(dryRunSwitchContractCheckerPath);
   const checkerScript = read(checkerPath);
+  const adapterDryRunReadinessReviewDoc = read(adapterDryRunReadinessReviewDocPath);
+  const adapterDryRunReadinessReviewChecker = read(
+    adapterDryRunReadinessReviewCheckerPath,
+  );
   const packageJson = JSON.parse(read(packagePath));
 
   requireTokens(
@@ -210,6 +220,8 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "HEU-DATA-024-TASK-CENTER-ADAPTER-DRY-RUN-READINESS-REVIEW",
+      "adapter dry-run readiness review",
+      "DRY_RUN_ADAPTER_READY: NO_GO_REVIEW_ONLY",
       "check:heu-task-center-adapter-dry-run-readiness-review",
     ],
     "dry-run env gate ledger doc token",
@@ -238,10 +250,15 @@ if (failures.length === 0) {
       docPath,
       dryRunSwitchContractDocPath,
       checkerPath,
+      adapterDryRunReadinessReviewDocPath,
+      adapterDryRunReadinessReviewCheckerPath,
       dryRunSwitchContractCheckerPath,
       "check:heu-task-center-dry-run-env-gate-ledger-readiness",
+      "check:heu-task-center-adapter-dry-run-readiness-review",
       "node --check scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs",
       "npm.cmd run check:heu-task-center-dry-run-env-gate-ledger-readiness",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-readiness-review",
     ],
     "manifest dry-run env gate ledger token",
     manifestPath,
@@ -257,6 +274,30 @@ if (failures.length === 0) {
     ],
     "dry-run switch checker next-slice token",
     dryRunSwitchContractCheckerPath,
+  );
+
+  requireTokens(
+    adapterDryRunReadinessReviewDoc,
+    [
+      "HEU-DATA-024-TASK-CENTER-ADAPTER-DRY-RUN-READINESS-REVIEW",
+      "DRY_RUN_ADAPTER_READY: NO_GO_REVIEW_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_DRY_RUN_READINESS_REVIEW_ONLY",
+      "TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_ONLY",
+      "check:heu-task-center-adapter-dry-run-readiness-review",
+    ],
+    "adapter dry-run readiness review doc token",
+    adapterDryRunReadinessReviewDocPath,
+  );
+
+  requireTokens(
+    adapterDryRunReadinessReviewChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_DRY_RUN_READINESS_REVIEW_ONLY",
+      adapterDryRunReadinessReviewDocPath,
+    ],
+    "adapter dry-run readiness review checker token",
+    adapterDryRunReadinessReviewCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
