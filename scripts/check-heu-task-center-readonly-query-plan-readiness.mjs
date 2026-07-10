@@ -8,17 +8,25 @@ const queryContractPath = "lib/task-center-readonly-query-contract.ts";
 const taskContractPath = "lib/task-center-contract.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_007_TASK_CENTER_READONLY_QUERY_PLAN_20260710.md";
+const adapterDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_008_TASK_CENTER_READONLY_ADAPTER_SKELETON_20260710.md";
 const mockDocPath =
   "docs/HEU_CONTROL/HEU_DATA_006_TASK_CENTER_MOCK_READONLY_LIST_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const mockCheckerPath =
   "scripts/check-heu-task-center-mock-readonly-list-readiness.mjs";
+const adapterPath = "lib/task-center-readonly-adapter-skeleton.ts";
+const adapterCheckerPath =
+  "scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-readonly-query-plan-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-readonly-query-plan-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const adapterCheckerAlias =
+  "check:heu-task-center-readonly-adapter-skeleton-readiness";
+const adapterCheckerCommand = `node ${adapterCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -58,9 +66,12 @@ for (const file of [
   queryContractPath,
   taskContractPath,
   docPath,
+  adapterDocPath,
   mockDocPath,
   manifestPath,
   mockCheckerPath,
+  adapterPath,
+  adapterCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -71,9 +82,12 @@ if (failures.length === 0) {
   const queryContract = read(queryContractPath);
   const taskContract = read(taskContractPath);
   const doc = read(docPath);
+  const adapterDoc = read(adapterDocPath);
   const mockDoc = read(mockDocPath);
   const manifest = read(manifestPath);
   const mockChecker = read(mockCheckerPath);
+  const adapter = read(adapterPath);
+  const adapterChecker = read(adapterCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -139,7 +153,10 @@ if (failures.length === 0) {
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER",
       "no AI call",
       "no automation step",
+      "HEU-DATA-008-TASK-CENTER-READONLY-ADAPTER-SKELETON",
       "feature-flagged read-only adapter skeleton",
+      "still disabled by default and still no migration until gates close",
+      "check:heu-task-center-readonly-adapter-skeleton-readiness",
     ],
     "query-plan doc token",
     docPath,
@@ -157,14 +174,63 @@ if (failures.length === 0) {
   );
 
   requireTokens(
+    adapterDoc,
+    [
+      "HEU-DATA-008-TASK-CENTER-READONLY-ADAPTER-SKELETON",
+      "TASK_CENTER_READONLY_ADAPTER_SKELETON_ONLY",
+      "DISABLED_BY_DEFAULT",
+      "FEATURE_FLAG_REQUIRED",
+      "NO_DATABASE_CLIENT_CREATED",
+      "NO_DATABASE_READ_EXECUTED",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
+    ],
+    "next adapter skeleton doc token",
+    adapterDocPath,
+  );
+
+  requireTokens(
+    adapter,
+    [
+      "TASK_CENTER_READONLY_ADAPTER_SKELETON_ONLY",
+      "DISABLED_BY_DEFAULT",
+      "FEATURE_FLAG_REQUIRED",
+      "NO_DATABASE_CLIENT_CREATED",
+      "NO_DATABASE_READ_EXECUTED",
+      "createTaskCenterReadonlyAdapterSkeleton",
+      "createTaskCenterReadonlyQueryPlan",
+      "rows: []",
+    ],
+    "next adapter skeleton token",
+    adapterPath,
+  );
+
+  requireTokens(
+    adapterChecker,
+    [
+      "HEU_TASK_CENTER_READONLY_ADAPTER_SKELETON_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_ADAPTER_DISABLED",
+      "NO_RUNTIME_MUTATION: task center readonly adapter skeleton checker only",
+    ],
+    "next adapter checker token",
+    adapterCheckerPath,
+  );
+
+  requireTokens(
     manifest,
     [
       queryContractPath,
+      adapterPath,
       docPath,
+      adapterDocPath,
       checkerPath,
+      adapterCheckerPath,
       "check:heu-task-center-readonly-query-plan-readiness",
+      "check:heu-task-center-readonly-adapter-skeleton-readiness",
       "node --check scripts/check-heu-task-center-readonly-query-plan-readiness.mjs",
+      "node --check scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs",
       "npm.cmd run check:heu-task-center-readonly-query-plan-readiness",
+      "npm.cmd run check:heu-task-center-readonly-adapter-skeleton-readiness",
     ],
     "manifest query-plan token",
     manifestPath,
@@ -185,6 +251,10 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (packageJson.scripts?.[adapterCheckerAlias] !== adapterCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${adapterCheckerAlias}`);
   }
 
   requireTokens(

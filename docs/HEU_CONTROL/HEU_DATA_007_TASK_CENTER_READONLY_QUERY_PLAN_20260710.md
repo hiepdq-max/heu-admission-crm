@@ -206,5 +206,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit review this plan.
-- If accepted, next safe slice is a feature-flagged read-only adapter skeleton,
-  still disabled by default and still no migration until gates close.
+- If accepted, next safe slice is HEU-DATA-008-TASK-CENTER-READONLY-ADAPTER-SKELETON: a feature-flagged read-only adapter skeleton, still disabled by default and still no migration until gates close.
+- Required next checker alias:
+  `check:heu-task-center-readonly-adapter-skeleton-readiness`.
