@@ -10,18 +10,26 @@ const adapterSkeletonPath = "lib/task-center-readonly-adapter-skeleton.ts";
 const uiFallbackSourcePath = "lib/task-center-ui-fallback-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_019_TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_20260710.md";
+const ownerGateEvidenceMatrixDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_020_TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_20260710.md";
 const adapterTestFixtureContractDocPath =
   "docs/HEU_CONTROL/HEU_DATA_018_TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const adapterTestFixtureContractCheckerPath =
   "scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs";
+const ownerGateEvidenceMatrixCheckerPath =
+  "scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-disabled-runtime-seam-verification-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const ownerGateEvidenceMatrixCheckerAlias =
+  "check:heu-task-center-owner-gate-evidence-matrix-readiness";
+const ownerGateEvidenceMatrixCheckerCommand =
+  `node ${ownerGateEvidenceMatrixCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -63,9 +71,11 @@ for (const file of [
   adapterSkeletonPath,
   uiFallbackSourcePath,
   docPath,
+  ownerGateEvidenceMatrixDocPath,
   adapterTestFixtureContractDocPath,
   manifestPath,
   adapterTestFixtureContractCheckerPath,
+  ownerGateEvidenceMatrixCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -78,6 +88,7 @@ if (failures.length === 0) {
   const adapterSkeleton = read(adapterSkeletonPath);
   const uiFallbackSource = read(uiFallbackSourcePath);
   const doc = read(docPath);
+  const ownerGateEvidenceMatrixDoc = read(ownerGateEvidenceMatrixDocPath);
   const adapterTestFixtureContractDoc = read(adapterTestFixtureContractDocPath);
   const manifest = read(manifestPath);
   const adapterTestFixtureContractChecker = read(
@@ -218,10 +229,29 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center read-only adapter owner gate evidence matrix",
+      "HEU-DATA-020-TASK-CENTER-OWNER-GATE-EVIDENCE-MATRIX",
+      "check:heu-task-center-owner-gate-evidence-matrix-readiness",
       "still no DB read and no migration",
     ],
     "disabled runtime seam verification doc token",
     docPath,
+  );
+
+  requireTokens(
+    ownerGateEvidenceMatrixDoc,
+    [
+      "HEU-DATA-020-TASK-CENTER-OWNER-GATE-EVIDENCE-MATRIX",
+      "PASS_LOCAL_OWNER_GATE_EVIDENCE_MATRIX",
+      "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_READ",
+      "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL",
+      "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "OWNER_GATE_EVIDENCE_IT_DATA_SCOPE",
+      "OWNER_GATE_EVIDENCE_AUDIT_NEGATIVE_ACCESS",
+      "still no DB read and no migration",
+    ],
+    "owner gate evidence matrix doc token",
+    ownerGateEvidenceMatrixDocPath,
   );
 
   requireTokens(
@@ -244,12 +274,17 @@ if (failures.length === 0) {
       adapterSkeletonPath,
       uiFallbackSourcePath,
       docPath,
+      ownerGateEvidenceMatrixDocPath,
       adapterTestFixtureContractDocPath,
       checkerPath,
+      ownerGateEvidenceMatrixCheckerPath,
       adapterTestFixtureContractCheckerPath,
       "check:heu-task-center-disabled-runtime-seam-verification-readiness",
+      "check:heu-task-center-owner-gate-evidence-matrix-readiness",
       "node --check scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs",
+      "node --check scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs",
       "npm.cmd run check:heu-task-center-disabled-runtime-seam-verification-readiness",
+      "npm.cmd run check:heu-task-center-owner-gate-evidence-matrix-readiness",
     ],
     "manifest disabled runtime seam verification token",
     manifestPath,
@@ -269,6 +304,15 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[ownerGateEvidenceMatrixCheckerAlias] !==
+    ownerGateEvidenceMatrixCheckerCommand
+  ) {
+    fail(
+      `${packagePath}: missing or mismatched ${ownerGateEvidenceMatrixCheckerAlias}`,
+    );
   }
 
   requireTokens(

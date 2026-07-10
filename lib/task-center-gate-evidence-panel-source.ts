@@ -137,6 +137,24 @@ export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT =
   "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT";
 export const TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_ONLY =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_ONLY";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_READONLY =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_READONLY";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_READ =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_READ";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_CLIENT =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_CLIENT";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_TASK_MUTATION =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_TASK_MUTATION";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA";
+export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -218,6 +236,21 @@ export type TaskCenterDisabledRuntimeSeamVerificationItem = {
   seamState: "DISABLED_RUNTIME_SEAM";
   verifiedRuntimeSeam: string;
   requiredBeforeEnablement: string;
+  forbiddenInThisSlice: string;
+};
+
+export type TaskCenterOwnerGateEvidenceMatrixItem = {
+  code: string;
+  ownerLane:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  evidenceState: "OWNER_EVIDENCE_REQUIRED";
+  requiredEvidenceCode: string;
+  passCondition: string;
+  blocksDbReadUntil: string;
   forbiddenInThisSlice: string;
 };
 
@@ -308,6 +341,18 @@ export type TaskCenterGateEvidencePanelSource = {
     noEnvEnablement: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT;
     noAiOrAutomation: typeof TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterDisabledRuntimeSeamVerificationItem[];
+  };
+  ownerGateEvidenceMatrix: {
+    mode: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_ONLY;
+    readonly: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_READONLY;
+    draftOnly: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA;
+    noAiOrAutomation: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterOwnerGateEvidenceMatrixItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -676,6 +721,55 @@ const disabledRuntimeSeamVerificationItems: readonly TaskCenterDisabledRuntimeSe
     },
   ];
 
+const ownerGateEvidenceMatrixItems: readonly TaskCenterOwnerGateEvidenceMatrixItem[] =
+  [
+    {
+      code: "OWNER_GATE_EVIDENCE_IT_DATA_SCOPE",
+      ownerLane: "IT_DATA",
+      evidenceState: "OWNER_EVIDENCE_REQUIRED",
+      requiredEvidenceCode: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      passCondition: "Workspace, role and lane filter contract is signed off.",
+      blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_IT_DATA_SCOPE_EVIDENCE",
+      forbiddenInThisSlice: "NO_DATABASE_CLIENT_CREATED",
+    },
+    {
+      code: "OWNER_GATE_EVIDENCE_AUDIT_NEGATIVE_ACCESS",
+      ownerLane: "AUDIT",
+      evidenceState: "OWNER_EVIDENCE_REQUIRED",
+      requiredEvidenceCode: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      passCondition: "Negative-access evidence proves other lanes are blocked.",
+      blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "OWNER_GATE_EVIDENCE_PHAP_CHE_RESTRICTED_DATA",
+      ownerLane: "PHAP_CHE",
+      evidenceState: "OWNER_EVIDENCE_REQUIRED",
+      requiredEvidenceCode: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      passCondition: "Restricted-field allowlist excludes raw PII and payment data.",
+      blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_PHAP_CHE_EVIDENCE",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "OWNER_GATE_EVIDENCE_DEPARTMENT_LABEL_ACCEPTANCE",
+      ownerLane: "DEPARTMENT_OWNER",
+      evidenceState: "OWNER_EVIDENCE_REQUIRED",
+      requiredEvidenceCode: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      passCondition: "Department owner confirms task labels match real work.",
+      blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_DEPARTMENT_OWNER_EVIDENCE",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "OWNER_GATE_EVIDENCE_BGH_NO_GO_ACK",
+      ownerLane: "BGH",
+      evidenceState: "OWNER_EVIDENCE_REQUIRED",
+      requiredEvidenceCode: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      passCondition: "BGH acknowledges production remains NO-GO.",
+      blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_BGH_NO_GO_EVIDENCE",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -769,6 +863,18 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noEnvEnablement: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_ENV_ENABLEMENT,
       noAiOrAutomation: TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_NO_AI_OR_AUTOMATION,
       items: disabledRuntimeSeamVerificationItems,
+    },
+    ownerGateEvidenceMatrix: {
+      mode: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_ONLY,
+      readonly: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_READONLY,
+      draftOnly: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY,
+      noApproval: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA,
+      noAiOrAutomation: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION,
+      items: ownerGateEvidenceMatrixItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

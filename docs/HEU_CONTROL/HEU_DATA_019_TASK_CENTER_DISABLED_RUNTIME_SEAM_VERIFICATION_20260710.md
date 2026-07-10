@@ -235,4 +235,7 @@ SOP-RESULT:
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this disabled
   runtime seam verification.
-- If accepted, next safe slice is Task Center read-only adapter owner gate evidence matrix, still no DB read and no migration.
+- If accepted, next safe slice is `HEU-DATA-020-TASK-CENTER-OWNER-GATE-EVIDENCE-MATRIX`,
+  a Task Center read-only adapter owner gate evidence matrix, still no DB read and no migration.
+- Required next checker:
+  `check:heu-task-center-owner-gate-evidence-matrix-readiness`.

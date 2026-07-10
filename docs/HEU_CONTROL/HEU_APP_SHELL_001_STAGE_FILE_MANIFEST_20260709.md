@@ -54,6 +54,7 @@ docs/HEU_CONTROL/HEU_DATA_016_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_20260
 docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md
 docs/HEU_CONTROL/HEU_DATA_018_TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_20260710.md
 docs/HEU_CONTROL/HEU_DATA_019_TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_20260710.md
+docs/HEU_CONTROL/HEU_DATA_020_TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -90,6 +91,7 @@ scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs
 scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs
 scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs
 scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs
+scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -164,6 +166,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_018_TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_019_TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_020_TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -200,6 +203,7 @@ git add -- `
   scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs `
   scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs `
   scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs `
+  scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -234,6 +238,7 @@ node --check scripts/check-heu-task-center-readonly-adapter-decision-ledger-read
 node --check scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs
 node --check scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs
 node --check scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs
+node --check scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-task-center-data-contract-readiness
@@ -252,6 +257,7 @@ npm.cmd run check:heu-task-center-readonly-adapter-decision-ledger-readiness
 npm.cmd run check:heu-task-center-db-read-adapter-implementation-plan-readiness
 npm.cmd run check:heu-task-center-adapter-test-fixture-contract-readiness
 npm.cmd run check:heu-task-center-disabled-runtime-seam-verification-readiness
+npm.cmd run check:heu-task-center-owner-gate-evidence-matrix-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness
