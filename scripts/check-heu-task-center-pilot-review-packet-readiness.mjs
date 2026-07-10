@@ -10,15 +10,22 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_014_TASK_CENTER_PILOT_REVIEW_PACKET_20260710.md";
 const uatEvidenceDocPath =
   "docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md";
+const ownerSignoffDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_015_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const uatEvidenceCheckerPath =
   "scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs";
+const ownerSignoffCheckerPath =
+  "scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-pilot-review-packet-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-pilot-review-packet-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const ownerSignoffCheckerAlias =
+  "check:heu-task-center-owner-signoff-routing-map-readiness";
+const ownerSignoffCheckerCommand = `node ${ownerSignoffCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,8 +66,10 @@ for (const file of [
   panelSourcePath,
   docPath,
   uatEvidenceDocPath,
+  ownerSignoffDocPath,
   manifestPath,
   uatEvidenceCheckerPath,
+  ownerSignoffCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,8 +81,10 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
   const uatEvidenceDoc = read(uatEvidenceDocPath);
+  const ownerSignoffDoc = read(ownerSignoffDocPath);
   const manifest = read(manifestPath);
   const uatEvidenceChecker = read(uatEvidenceCheckerPath);
+  const ownerSignoffChecker = read(ownerSignoffCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -160,10 +171,28 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center owner signoff routing map",
+      "HEU-DATA-015-TASK-CENTER-OWNER-SIGNOFF-ROUTING-MAP",
+      "check:heu-task-center-owner-signoff-routing-map-readiness",
       "still no DB read and no migration",
     ],
     "pilot review packet doc token",
     docPath,
+  );
+
+  requireTokens(
+    ownerSignoffDoc,
+    [
+      "HEU-DATA-015-TASK-CENTER-OWNER-SIGNOFF-ROUTING-MAP",
+      "PASS_LOCAL_OWNER_SIGNOFF_ROUTING_MAP",
+      "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ",
+      "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION",
+      "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "Task Center read-only adapter decision ledger",
+      "still no DB read and no migration",
+    ],
+    "owner signoff routing next-slice doc token",
+    ownerSignoffDocPath,
   );
 
   requireTokens(
@@ -184,10 +213,15 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      ownerSignoffDocPath,
       checkerPath,
+      ownerSignoffCheckerPath,
       "check:heu-task-center-pilot-review-packet-readiness",
+      "check:heu-task-center-owner-signoff-routing-map-readiness",
       "node --check scripts/check-heu-task-center-pilot-review-packet-readiness.mjs",
+      "node --check scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs",
       "npm.cmd run check:heu-task-center-pilot-review-packet-readiness",
+      "npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness",
     ],
     "manifest pilot review packet token",
     manifestPath,
@@ -205,8 +239,27 @@ if (failures.length === 0) {
     uatEvidenceCheckerPath,
   );
 
+  requireTokens(
+    ownerSignoffChecker,
+    [
+      "HEU_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OWNER_SIGNOFF_ROUTING_MAP_ONLY",
+      docPath,
+      ownerSignoffDocPath,
+    ],
+    "owner signoff routing checker token",
+    ownerSignoffCheckerPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[ownerSignoffCheckerAlias] !==
+    ownerSignoffCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${ownerSignoffCheckerAlias}`);
   }
 
   requireTokens(

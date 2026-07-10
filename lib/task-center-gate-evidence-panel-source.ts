@@ -61,6 +61,20 @@ export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE =
   "TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE";
 export const TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII =
   "TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION";
+export const TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -92,6 +106,19 @@ export type TaskCenterPilotReviewPacketItem = {
     | "DEPARTMENT_OWNER"
     | "BGH";
   passCondition: string;
+};
+
+export type TaskCenterOwnerSignoffRoutingItem = {
+  code: string;
+  ownerLane:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  reviewQuestion: string;
+  requiredEvidenceCode: string;
+  blocksDbReadUntil: string;
 };
 
 export type TaskCenterGateEvidencePanelSource = {
@@ -128,6 +155,16 @@ export type TaskCenterGateEvidencePanelSource = {
     noStorageWrite: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE;
     noRawPii: typeof TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII;
     items: readonly TaskCenterPilotReviewPacketItem[];
+  };
+  ownerSignoffRoutingMap: {
+    mode: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY;
+    readonly: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY;
+    draftOnly: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ;
+    noTaskMutation: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION;
+    noAiOrAutomation: typeof TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterOwnerSignoffRoutingItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -292,6 +329,44 @@ const pilotReviewPacketItems: readonly TaskCenterPilotReviewPacketItem[] = [
   },
 ];
 
+const ownerSignoffRoutingItems: readonly TaskCenterOwnerSignoffRoutingItem[] = [
+  {
+    code: "OWNER_SIGNOFF_IT_DATA_SCOPE",
+    ownerLane: "IT_DATA",
+    reviewQuestion: "Workspace, role and lane filter are scope-first.",
+    requiredEvidenceCode: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+    blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_IT_DATA_SIGNOFF",
+  },
+  {
+    code: "OWNER_SIGNOFF_AUDIT_NEGATIVE_ACCESS",
+    ownerLane: "AUDIT",
+    reviewQuestion: "Negative-access evidence proves other lanes are blocked.",
+    requiredEvidenceCode: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+    blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_AUDIT_SIGNOFF",
+  },
+  {
+    code: "OWNER_SIGNOFF_PHAP_CHE_REDACTION",
+    ownerLane: "PHAP_CHE",
+    reviewQuestion: "Restricted-data boundary is clear and evidence is redacted.",
+    requiredEvidenceCode: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+    blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_PHAP_CHE_SIGNOFF",
+  },
+  {
+    code: "OWNER_SIGNOFF_DEPARTMENT_LABELS",
+    ownerLane: "DEPARTMENT_OWNER",
+    reviewQuestion: "Department task labels match real user language.",
+    requiredEvidenceCode: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+    blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_DEPARTMENT_OWNER_SIGNOFF",
+  },
+  {
+    code: "OWNER_SIGNOFF_BGH_NO_GO_ACK",
+    ownerLane: "BGH",
+    reviewQuestion: "BGH acknowledges production remains NO-GO.",
+    requiredEvidenceCode: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+    blocksDbReadUntil: "DB_READ_BLOCKED_UNTIL_BGH_ACKNOWLEDGEMENT",
+  },
+];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -332,6 +407,16 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noStorageWrite: TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE,
       noRawPii: TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII,
       items: pilotReviewPacketItems,
+    },
+    ownerSignoffRoutingMap: {
+      mode: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY,
+      readonly: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY,
+      draftOnly: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY,
+      noApproval: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ,
+      noTaskMutation: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION,
+      noAiOrAutomation: TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION,
+      items: ownerSignoffRoutingItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

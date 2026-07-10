@@ -39,6 +39,13 @@ import {
   TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION,
   TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY,
   TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY,
+  TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY,
   TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY,
   TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL,
   TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII,
@@ -226,6 +233,13 @@ export function DepartmentTaskInbox({
         data-heu-task-center-pilot-review-packet-no-upload={TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD}
         data-heu-task-center-pilot-review-packet-no-storage-write={TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE}
         data-heu-task-center-pilot-review-packet-no-raw-pii={TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII}
+        data-heu-task-center-owner-signoff-routing-map={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY}
+        data-heu-task-center-owner-signoff-routing-map-readonly={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY}
+        data-heu-task-center-owner-signoff-routing-map-draft-only={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY}
+        data-heu-task-center-owner-signoff-routing-map-no-approval={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL}
+        data-heu-task-center-owner-signoff-routing-map-no-database-read={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ}
+        data-heu-task-center-owner-signoff-routing-map-no-task-mutation={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION}
+        data-heu-task-center-owner-signoff-routing-map-no-ai-or-automation={TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -443,6 +457,60 @@ export function DepartmentTaskInbox({
                 </div>
                 <div className="mt-2 inline-flex rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-600">
                   Reviewer: {item.requiredReviewer}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-015 - Owner signoff routing map
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Ban do tuyen owner truoc khi mo DB read
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Map nay chi chi ra owner nao can xem dieu kien nao. Khong co
+                nut phe duyet, khong doc database, khong sua task, khong goi
+                AI va khong kich hoat automation.
+              </p>
+            </div>
+            <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-700">
+              {gateEvidence.ownerSignoffRoutingMap.mode}
+            </span>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.ownerSignoffRoutingMap.items.map((item) => (
+              <article
+                key={item.code}
+                className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                data-heu-task-center-owner-signoff-item={item.code}
+                data-heu-task-center-owner-signoff-lane={item.ownerLane}
+                data-heu-task-center-owner-signoff-evidence={
+                  item.requiredEvidenceCode
+                }
+                data-heu-task-center-owner-signoff-db-blocker={
+                  item.blocksDbReadUntil
+                }
+              >
+                <div className="font-mono text-[11px] text-zinc-500">
+                  {item.code}
+                </div>
+                <div className="mt-1 text-sm font-semibold text-zinc-950">
+                  {item.ownerLane}
+                </div>
+                <div className="mt-2 text-xs leading-5 text-zinc-600">
+                  {item.reviewQuestion}
+                </div>
+                <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                  {item.requiredEvidenceCode}
+                </div>
+                <div className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-700">
+                  {item.blocksDbReadUntil}
                 </div>
               </article>
             ))}

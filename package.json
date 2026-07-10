@@ -50,6 +50,7 @@
     "check:heu-task-center-real-user-uat-copy-readiness": "node scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs",
     "check:heu-task-center-uat-evidence-checklist-readiness": "node scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs",
     "check:heu-task-center-pilot-review-packet-readiness": "node scripts/check-heu-task-center-pilot-review-packet-readiness.mjs",
+    "check:heu-task-center-owner-signoff-routing-map-readiness": "node scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

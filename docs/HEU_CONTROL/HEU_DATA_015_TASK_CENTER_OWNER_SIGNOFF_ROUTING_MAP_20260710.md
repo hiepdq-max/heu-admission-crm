@@ -1,34 +1,33 @@
-# HEU Data 014 Task Center Pilot Review Packet
+# HEU Data 015 Task Center Owner Signoff Routing Map
 
-Task ID: HEU-DATA-014-TASK-CENTER-PILOT-REVIEW-PACKET
+Task ID: HEU-DATA-015-TASK-CENTER-OWNER-SIGNOFF-ROUTING-MAP
 Date: 2026-07-10
 Repository: heu-admission-crm
-Branch: codex/heu/task-center-pilot-review-packet
-Base branch: codex/heu/task-center-uat-evidence-checklist
-Status: PASS_LOCAL_PILOT_REVIEW_PACKET
+Branch: codex/heu/task-center-owner-signoff-routing-map
+Base branch: codex/heu/task-center-pilot-review-packet
+Status: PASS_LOCAL_OWNER_SIGNOFF_ROUTING_MAP
 Production status: NO-GO
 Review state: CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH
 
 ## 1. Purpose
 
-This slice adds a read-only pilot review packet to the Task Center gate
+This slice adds a read-only owner signoff routing map to the Task Center gate
 evidence panel.
 
-The packet tells IT_DATA, Audit, PHAP_CHE, Department owners and BGH what must
-be checked before any future DB read is considered. It does not upload files,
-write storage, read database rows, approve owner lanes, or collect restricted
-raw data.
+The map tells the team which owner lane must review each blocker before any
+future DB read is considered. It does not approve, upload, write storage, read
+database rows, mutate task rows, run AI, or trigger automation.
 
 Required boundary:
 
 ```text
-TASK_CENTER_PILOT_REVIEW_PACKET_ONLY
-TASK_CENTER_PILOT_REVIEW_PACKET_READONLY
-TASK_CENTER_PILOT_REVIEW_PACKET_DRAFT_ONLY
-TASK_CENTER_PILOT_REVIEW_PACKET_NO_APPROVAL
-TASK_CENTER_PILOT_REVIEW_PACKET_NO_UPLOAD
-TASK_CENTER_PILOT_REVIEW_PACKET_NO_STORAGE_WRITE
-TASK_CENTER_PILOT_REVIEW_PACKET_NO_RAW_PII
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_ONLY
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_READONLY
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_DRAFT_ONLY
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_APPROVAL
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_DATABASE_READ
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_TASK_MUTATION
+TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_NO_AI_OR_AUTOMATION
 TASK_CENTER_GATE_EVIDENCE_PANEL_DATABASE_NO_GO
 NO_DATABASE_CLIENT_CREATED
 NO_DATABASE_READ_EXECUTED
@@ -39,7 +38,7 @@ NO_AI_CALL_NO_AUTOMATION_STEP
 
 ## 2. Runtime Value
 
-The packet source is:
+The routing map source is:
 
 ```text
 lib/task-center-gate-evidence-panel-source.ts
@@ -51,16 +50,16 @@ The user-facing UI is:
 components/data-confirmation/department-task-inbox.tsx
 ```
 
-It displays pilot review items:
+It displays owner signoff routes:
 
-- `PILOT_REVIEW_SCOPE_MATCH`.
-- `PILOT_REVIEW_GATE_NO_GO`.
-- `PILOT_REVIEW_RESTRICTED_DATA`.
-- `PILOT_REVIEW_OWNER_LANGUAGE`.
-- `PILOT_REVIEW_PRODUCTION_BOUNDARY`.
+- `OWNER_SIGNOFF_IT_DATA_SCOPE`.
+- `OWNER_SIGNOFF_AUDIT_NEGATIVE_ACCESS`.
+- `OWNER_SIGNOFF_PHAP_CHE_REDACTION`.
+- `OWNER_SIGNOFF_DEPARTMENT_LABELS`.
+- `OWNER_SIGNOFF_BGH_NO_GO_ACK`.
 
-The review packet is a checklist only. Real evidence stays outside
-Git/Codex/chat and must be redacted before being shared with reviewers.
+This is a routing map only. Real evidence and signoff decisions stay outside
+Git/Codex/chat and must be redacted before being shared.
 
 ## 3. Scope
 
@@ -69,12 +68,10 @@ Files in scope:
 ```text
 components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
-docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md
 docs/HEU_CONTROL/HEU_DATA_014_TASK_CENTER_PILOT_REVIEW_PACKET_20260710.md
 docs/HEU_CONTROL/HEU_DATA_015_TASK_CENTER_OWNER_SIGNOFF_ROUTING_MAP_20260710.md
 lib/task-center-gate-evidence-panel-source.ts
 package.json
-scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 scripts/check-heu-task-center-pilot-review-packet-readiness.mjs
 scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs
 ```
@@ -89,15 +86,15 @@ next.config.*
 middleware.*
 ```
 
-## 4. Pilot Review Rules
+## 4. Owner Routing Rules
 
-| Code | Required reviewer | Pass condition |
-|---|---|---|
-| `PILOT_REVIEW_SCOPE_MATCH` | IT_DATA | Evidence shows role, scope, lane and timestamp without raw PII |
-| `PILOT_REVIEW_GATE_NO_GO` | AUDIT | Evidence shows database NO-GO and no approval action |
-| `PILOT_REVIEW_RESTRICTED_DATA` | PHAP_CHE | Evidence is redacted and has no CCCD, phone, payment or raw student data |
-| `PILOT_REVIEW_OWNER_LANGUAGE` | DEPARTMENT_OWNER | User can explain allowed, blocked and report-to copy |
-| `PILOT_REVIEW_PRODUCTION_BOUNDARY` | BGH | Review packet states production remains NO-GO |
+| Code | Owner lane | Required evidence | DB-read blocker |
+|---|---|---|---|
+| `OWNER_SIGNOFF_IT_DATA_SCOPE` | IT_DATA | `IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF` | `DB_READ_BLOCKED_UNTIL_IT_DATA_SIGNOFF` |
+| `OWNER_SIGNOFF_AUDIT_NEGATIVE_ACCESS` | AUDIT | `AUDIT_NEGATIVE_ACCESS_EVIDENCE` | `DB_READ_BLOCKED_UNTIL_AUDIT_SIGNOFF` |
+| `OWNER_SIGNOFF_PHAP_CHE_REDACTION` | PHAP_CHE | `PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF` | `DB_READ_BLOCKED_UNTIL_PHAP_CHE_SIGNOFF` |
+| `OWNER_SIGNOFF_DEPARTMENT_LABELS` | DEPARTMENT_OWNER | `DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE` | `DB_READ_BLOCKED_UNTIL_DEPARTMENT_OWNER_SIGNOFF` |
+| `OWNER_SIGNOFF_BGH_NO_GO_ACK` | BGH | `BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT` | `DB_READ_BLOCKED_UNTIL_BGH_ACKNOWLEDGEMENT` |
 
 ## 5. No-Go Conditions
 
@@ -123,8 +120,8 @@ This slice is still NO-GO for:
 
 AI/Codex may:
 
-- review whether pilot review wording is clear,
-- check that the packet does not imply upload, approval or production GO,
+- review whether owner routing wording is clear,
+- check that every owner lane has a DB-read blocker,
 - detect accidental DB/AI/automation enablement,
 - draft review comments.
 
@@ -144,12 +141,11 @@ This slice introduces no AI call and no automation step by default.
 ## 7. Required Local Commands
 
 ```powershell
-node --check scripts/check-heu-task-center-pilot-review-packet-readiness.mjs
-node --check scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 node --check scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs
+node --check scripts/check-heu-task-center-pilot-review-packet-readiness.mjs
+npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness
 npm.cmd run check:heu-task-center-pilot-review-packet-readiness
 npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness
-npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness
 npm.cmd run check:heu-task-center-real-user-uat-copy-readiness
 npm.cmd run check:heu-task-center-gate-evidence-panel-readiness
 npm.cmd run check:heu-task-center-adapter-enablement-gate-readiness
@@ -174,15 +170,15 @@ Before using this with real users:
 
 | Owner lane | Must confirm |
 |---|---|
-| IT_DATA | pilot packet proves scope/lane without raw data |
-| AUDIT | packet supports PASS/NO-GO review and keeps gate NO-GO |
-| PHAP_CHE | evidence is redacted and no restricted raw data is requested |
-| DEPARTMENT_OWNER | wording is usable by each department |
+| IT_DATA | DB-read stays blocked until scope-first filter signoff |
+| AUDIT | DB-read stays blocked until negative-access evidence is reviewed |
+| PHAP_CHE | DB-read stays blocked until restricted-data boundary is reviewed |
+| DEPARTMENT_OWNER | DB-read stays blocked until department labels are accepted |
 | BGH | production remains NO-GO |
 
 ## 9. Rollback
 
-Rollback by reverting the PR that adds this pilot review packet.
+Rollback by reverting the PR that adds this owner signoff routing map.
 
 No database rollback is required because this slice does not create schema,
 task rows, Auth changes, scope grants, uploads, storage writes, AI calls, paid
@@ -191,43 +187,42 @@ automation or production config.
 ## 10. SOP Slice Result Record
 
 SOP-SCOPE:
-- `HEU-DATA-014` adds read-only pilot review packet copy to the Task Center
-  panel.
-- Scope is UI packet + TypeScript source + docs + checker only.
+- `HEU-DATA-015` adds read-only owner signoff routing map copy to the Task
+  Center panel.
+- Scope is UI map + TypeScript source + docs + checker only.
 
 SOP-CHECK:
 - Required local command:
-  `npm.cmd run check:heu-task-center-pilot-review-packet-readiness`.
+  `npm.cmd run check:heu-task-center-owner-signoff-routing-map-readiness`.
 
 SOP-PROFESSIONAL:
-- IT_DATA owns scope/lane evidence wording.
-- Audit owns PASS/NO-GO packet sufficiency.
+- IT_DATA owns scope-first routing.
+- Audit owns negative-access routing.
 - Department owners own final usability language.
 
 SOP-LEGAL:
-- PHAP_CHE must confirm no restricted raw data is requested.
+- PHAP_CHE owns restricted-data boundary routing.
 - HOU remains separated and no COM conclusion is produced.
 
 SOP-LOGIC:
-- Pilot review packet can be `PASS_LOCAL` while database and production remain
+- Owner routing map can be `PASS_LOCAL` while database and production remain
   `NO_GO`.
-- The UI guides review; it does not collect, upload, approve or store.
+- The UI routes review responsibility; it does not collect, upload, approve or
+  store.
 
 SOP-VERIFY:
-- Checker must verify packet tokens, component data attributes, reviewer lanes,
-  no-upload/no-storage/no-raw-PII boundaries, package alias, no Supabase runtime,
-  no database read, no fetch, no mutation APIs, no SQL migration, no AI call and
+- Checker must verify owner routing tokens, component data attributes, owner
+  lanes, DB-read blocker tokens, package alias, no Supabase runtime, no
+  database read, no fetch, no mutation APIs, no SQL migration, no AI call and
   no secret assignment.
 
 SOP-RESULT:
-- `PASS_LOCAL` for Task Center pilot review packet.
+- `PASS_LOCAL` for Task Center owner signoff routing map.
 - `CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH` for formal review.
 - `NO_GO` for Task Center database, mutation routes, AI automation and
   production.
 
 SOP-NEXT:
-- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this pilot packet.
-- If accepted, next safe slice is `HEU-DATA-015-TASK-CENTER-OWNER-SIGNOFF-ROUTING-MAP`,
-  a Task Center owner signoff routing map, still no DB read and no migration.
-- Required next checker:
-  `check:heu-task-center-owner-signoff-routing-map-readiness`.
+- IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this owner routing
+  map.
+- If accepted, next safe slice is Task Center read-only adapter decision ledger, still no DB read and no migration.
