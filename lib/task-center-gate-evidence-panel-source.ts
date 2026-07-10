@@ -103,6 +103,22 @@ export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION =
   "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION";
 export const TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA";
+export const TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -170,6 +186,15 @@ export type TaskCenterDbReadAdapterImplementationPlanItem = {
   forbiddenInThisSlice: string;
 };
 
+export type TaskCenterAdapterTestFixtureContractItem = {
+  code: string;
+  fixtureMode: "SYNTHETIC_CONTRACT";
+  workspaceLane: string;
+  expectedResult: string;
+  requiredBeforeDbRead: string;
+  forbiddenInThisSlice: string;
+};
+
 export type TaskCenterGateEvidencePanelSource = {
   mode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY;
   panelMode: typeof TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY;
@@ -234,6 +259,17 @@ export type TaskCenterGateEvidencePanelSource = {
     noTaskMutation: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION;
     noAiOrAutomation: typeof TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterDbReadAdapterImplementationPlanItem[];
+  };
+  adapterTestFixtureContract: {
+    mode: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY;
+    readonly: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY;
+    draftOnly: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY;
+    noDatabaseRead: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA;
+    noAiOrAutomation: typeof TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterAdapterTestFixtureContractItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -515,6 +551,50 @@ const dbReadAdapterImplementationPlanItems: readonly TaskCenterDbReadAdapterImpl
     },
   ];
 
+const adapterTestFixtureContractItems: readonly TaskCenterAdapterTestFixtureContractItem[] =
+  [
+    {
+      code: "FIXTURE_CONTRACT_SCOPE_INCLUDED",
+      fixtureMode: "SYNTHETIC_CONTRACT",
+      workspaceLane: "ADMISSION_SYNTHETIC_LANE",
+      expectedResult: "Only matching department task metadata is visible.",
+      requiredBeforeDbRead: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      forbiddenInThisSlice: "NO_REAL_USER_DATA",
+    },
+    {
+      code: "FIXTURE_CONTRACT_SCOPE_EXCLUDED",
+      fixtureMode: "SYNTHETIC_CONTRACT",
+      workspaceLane: "CTHSSV_NEGATIVE_ACCESS_LANE",
+      expectedResult: "Non-matching lane returns no task metadata.",
+      requiredBeforeDbRead: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "FIXTURE_CONTRACT_RESTRICTED_FIELD_MASK",
+      fixtureMode: "SYNTHETIC_CONTRACT",
+      workspaceLane: "PHAP_CHE_METADATA_ONLY_LANE",
+      expectedResult: "Fixture excludes CCCD, phone, payment and raw PII fields.",
+      requiredBeforeDbRead: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "FIXTURE_CONTRACT_STATUS_READONLY",
+      fixtureMode: "SYNTHETIC_CONTRACT",
+      workspaceLane: "READONLY_TASK_STATUS_LANE",
+      expectedResult: "Reading fixture cannot change task status or audit rows.",
+      requiredBeforeDbRead: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "FIXTURE_CONTRACT_OWNER_GATE_NO_GO",
+      fixtureMode: "SYNTHETIC_CONTRACT",
+      workspaceLane: "BGH_PRODUCTION_NO_GO_LANE",
+      expectedResult: "Fixture keeps production gate NO-GO until formal approval.",
+      requiredBeforeDbRead: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -585,6 +665,17 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noTaskMutation: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION,
       noAiOrAutomation: TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION,
       items: dbReadAdapterImplementationPlanItems,
+    },
+    adapterTestFixtureContract: {
+      mode: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY,
+      readonly: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY,
+      draftOnly: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY,
+      noDatabaseRead: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA,
+      noAiOrAutomation: TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION,
+      items: adapterTestFixtureContractItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

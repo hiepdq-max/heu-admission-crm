@@ -53,6 +53,7 @@
     "check:heu-task-center-owner-signoff-routing-map-readiness": "node scripts/check-heu-task-center-owner-signoff-routing-map-readiness.mjs",
     "check:heu-task-center-readonly-adapter-decision-ledger-readiness": "node scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs",
     "check:heu-task-center-db-read-adapter-implementation-plan-readiness": "node scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs",
+    "check:heu-task-center-adapter-test-fixture-contract-readiness": "node scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

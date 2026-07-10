@@ -39,6 +39,14 @@ import {
   TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION,
   TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY,
   TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY,
+  TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY,
   TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_DRAFT_ONLY,
   TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION,
   TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT,
@@ -268,6 +276,14 @@ export function DepartmentTaskInbox({
         data-heu-task-center-db-read-adapter-implementation-plan-no-database-client={TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_DATABASE_CLIENT}
         data-heu-task-center-db-read-adapter-implementation-plan-no-task-mutation={TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_TASK_MUTATION}
         data-heu-task-center-db-read-adapter-implementation-plan-no-ai-or-automation={TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-adapter-test-fixture-contract={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_ONLY}
+        data-heu-task-center-adapter-test-fixture-contract-readonly={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_READONLY}
+        data-heu-task-center-adapter-test-fixture-contract-draft-only={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_DRAFT_ONLY}
+        data-heu-task-center-adapter-test-fixture-contract-no-database-read={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ}
+        data-heu-task-center-adapter-test-fixture-contract-no-database-client={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_CLIENT}
+        data-heu-task-center-adapter-test-fixture-contract-no-task-mutation={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION}
+        data-heu-task-center-adapter-test-fixture-contract-no-real-data={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA}
+        data-heu-task-center-adapter-test-fixture-contract-no-ai-or-automation={TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -646,6 +662,65 @@ export function DepartmentTaskInbox({
                 </div>
                 <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
                   {item.requiredGateBeforeExecution}
+                </div>
+                <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
+                  {item.forbiddenInThisSlice}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-018 - Adapter test fixture contract
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Hop dong fixture synthetic truoc khi mo DB read
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Fixture nay chi dinh nghia du lieu synthetic de test scope am,
+                field allowlist va readonly status. Slice hien tai van khong
+                tao database client, khong doc database, khong dung du lieu
+                that, khong sua task, khong goi AI va khong deploy.
+              </p>
+            </div>
+            <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-700">
+              {gateEvidence.adapterTestFixtureContract.mode}
+            </span>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.adapterTestFixtureContract.items.map((item) => (
+              <article
+                key={item.code}
+                className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                data-heu-task-center-adapter-test-fixture-item={item.code}
+                data-heu-task-center-adapter-test-fixture-mode={item.fixtureMode}
+                data-heu-task-center-adapter-test-fixture-lane={item.workspaceLane}
+                data-heu-task-center-adapter-test-fixture-required={
+                  item.requiredBeforeDbRead
+                }
+                data-heu-task-center-adapter-test-fixture-forbidden={
+                  item.forbiddenInThisSlice
+                }
+              >
+                <div className="font-mono text-[11px] text-zinc-500">
+                  {item.code}
+                </div>
+                <div className="mt-1 text-sm font-semibold text-zinc-950">
+                  {item.fixtureMode}
+                </div>
+                <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                  {item.workspaceLane}
+                </div>
+                <div className="mt-2 text-xs leading-5 text-zinc-600">
+                  {item.expectedResult}
+                </div>
+                <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                  {item.requiredBeforeDbRead}
                 </div>
                 <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
                   {item.forbiddenInThisSlice}

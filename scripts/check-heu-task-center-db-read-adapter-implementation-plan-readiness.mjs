@@ -8,18 +8,26 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_017_TASK_CENTER_DB_READ_ADAPTER_IMPLEMENTATION_PLAN_20260710.md";
+const adapterTestFixtureContractDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_018_TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_20260710.md";
 const readonlyAdapterDecisionDocPath =
   "docs/HEU_CONTROL/HEU_DATA_016_TASK_CENTER_READONLY_ADAPTER_DECISION_LEDGER_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const readonlyAdapterDecisionCheckerPath =
   "scripts/check-heu-task-center-readonly-adapter-decision-ledger-readiness.mjs";
+const adapterTestFixtureContractCheckerPath =
+  "scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-db-read-adapter-implementation-plan-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const adapterTestFixtureContractCheckerAlias =
+  "check:heu-task-center-adapter-test-fixture-contract-readiness";
+const adapterTestFixtureContractCheckerCommand =
+  `node ${adapterTestFixtureContractCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,9 +67,11 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  adapterTestFixtureContractDocPath,
   readonlyAdapterDecisionDocPath,
   manifestPath,
   readonlyAdapterDecisionCheckerPath,
+  adapterTestFixtureContractCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,6 +82,7 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const adapterTestFixtureContractDoc = read(adapterTestFixtureContractDocPath);
   const readonlyAdapterDecisionDoc = read(readonlyAdapterDecisionDocPath);
   const manifest = read(manifestPath);
   const readonlyAdapterDecisionChecker = read(
@@ -169,10 +180,30 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "Task Center adapter test fixture contract",
+      "HEU-DATA-018-TASK-CENTER-ADAPTER-TEST-FIXTURE-CONTRACT",
+      "check:heu-task-center-adapter-test-fixture-contract-readiness",
       "still no DB read and no migration",
     ],
     "db-read adapter implementation plan doc token",
     docPath,
+  );
+
+  requireTokens(
+    adapterTestFixtureContractDoc,
+    [
+      "HEU-DATA-018-TASK-CENTER-ADAPTER-TEST-FIXTURE-CONTRACT",
+      "PASS_LOCAL_ADAPTER_TEST_FIXTURE_CONTRACT",
+      "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_DATABASE_READ",
+      "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_REAL_DATA",
+      "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_TASK_MUTATION",
+      "TASK_CENTER_ADAPTER_TEST_FIXTURE_CONTRACT_NO_AI_OR_AUTOMATION",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "FIXTURE_CONTRACT_SCOPE_INCLUDED",
+      "FIXTURE_CONTRACT_SCOPE_EXCLUDED",
+      "still no DB read and no migration",
+    ],
+    "adapter test fixture contract doc token",
+    adapterTestFixtureContractDocPath,
   );
 
   requireTokens(
@@ -193,12 +224,17 @@ if (failures.length === 0) {
       componentPath,
       panelSourcePath,
       docPath,
+      adapterTestFixtureContractDocPath,
       readonlyAdapterDecisionDocPath,
       checkerPath,
+      adapterTestFixtureContractCheckerPath,
       readonlyAdapterDecisionCheckerPath,
       "check:heu-task-center-db-read-adapter-implementation-plan-readiness",
+      "check:heu-task-center-adapter-test-fixture-contract-readiness",
       "node --check scripts/check-heu-task-center-db-read-adapter-implementation-plan-readiness.mjs",
+      "node --check scripts/check-heu-task-center-adapter-test-fixture-contract-readiness.mjs",
       "npm.cmd run check:heu-task-center-db-read-adapter-implementation-plan-readiness",
+      "npm.cmd run check:heu-task-center-adapter-test-fixture-contract-readiness",
     ],
     "manifest db-read adapter implementation plan token",
     manifestPath,
@@ -218,6 +254,15 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[adapterTestFixtureContractCheckerAlias] !==
+    adapterTestFixtureContractCheckerCommand
+  ) {
+    fail(
+      `${packagePath}: missing or mismatched ${adapterTestFixtureContractCheckerAlias}`,
+    );
   }
 
   requireTokens(
