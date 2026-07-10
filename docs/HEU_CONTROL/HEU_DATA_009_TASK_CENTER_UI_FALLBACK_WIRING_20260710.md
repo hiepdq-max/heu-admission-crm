@@ -197,5 +197,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE review this UI fallback wiring.
-- If accepted, next safe slice is owner-review checklist for enabling a real
-  read-only adapter, still no migration and no DB read until gates close.
+- If accepted, next safe slice is HEU-DATA-010-TASK-CENTER-ADAPTER-ENABLEMENT-GATE: owner-review checklist for enabling a real read-only adapter, still no migration and no DB read until gates close.
+- Required next checker alias:
+  `check:heu-task-center-adapter-enablement-gate-readiness`.
