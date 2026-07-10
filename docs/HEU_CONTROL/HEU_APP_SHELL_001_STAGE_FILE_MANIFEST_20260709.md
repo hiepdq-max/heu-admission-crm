@@ -43,6 +43,7 @@ docs/HEU_CONTROL/HEU_DATA_005_TASK_CENTER_READ_MODEL_INTERFACE_20260710.md
 docs/HEU_CONTROL/HEU_DATA_006_TASK_CENTER_MOCK_READONLY_LIST_20260710.md
 docs/HEU_CONTROL/HEU_DATA_007_TASK_CENTER_READONLY_QUERY_PLAN_20260710.md
 docs/HEU_CONTROL/HEU_DATA_008_TASK_CENTER_READONLY_ADAPTER_SKELETON_20260710.md
+docs/HEU_CONTROL/HEU_DATA_009_TASK_CENTER_UI_FALLBACK_WIRING_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -55,6 +56,7 @@ lib/task-center-contract.ts
 lib/task-center-mock-read-model.ts
 lib/task-center-readonly-adapter-skeleton.ts
 lib/task-center-readonly-query-contract.ts
+lib/task-center-ui-fallback-source.ts
 lib/workspace.ts
 package.json
 scripts/check-heu-app-shell-draft-pr-readiness.mjs
@@ -65,6 +67,7 @@ scripts/check-heu-task-center-read-model-interface-readiness.mjs
 scripts/check-heu-task-center-mock-readonly-list-readiness.mjs
 scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs
 scripts/check-heu-task-center-readonly-query-plan-readiness.mjs
+scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -128,6 +131,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_DATA_006_TASK_CENTER_MOCK_READONLY_LIST_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_007_TASK_CENTER_READONLY_QUERY_PLAN_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_008_TASK_CENTER_READONLY_ADAPTER_SKELETON_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_009_TASK_CENTER_UI_FALLBACK_WIRING_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -140,6 +144,7 @@ git add -- `
   lib/task-center-mock-read-model.ts `
   lib/task-center-readonly-adapter-skeleton.ts `
   lib/task-center-readonly-query-contract.ts `
+  lib/task-center-ui-fallback-source.ts `
   lib/workspace.ts `
   package.json `
   scripts/check-heu-app-shell-draft-pr-readiness.mjs `
@@ -150,6 +155,7 @@ git add -- `
   scripts/check-heu-task-center-mock-readonly-list-readiness.mjs `
   scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs `
   scripts/check-heu-task-center-readonly-query-plan-readiness.mjs `
+  scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -173,6 +179,7 @@ node --check scripts/check-heu-task-center-read-model-interface-readiness.mjs
 node --check scripts/check-heu-task-center-mock-readonly-list-readiness.mjs
 node --check scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs
 node --check scripts/check-heu-task-center-readonly-query-plan-readiness.mjs
+node --check scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-task-center-data-contract-readiness
@@ -180,6 +187,7 @@ npm.cmd run check:heu-task-center-read-model-interface-readiness
 npm.cmd run check:heu-task-center-mock-readonly-list-readiness
 npm.cmd run check:heu-task-center-readonly-adapter-skeleton-readiness
 npm.cmd run check:heu-task-center-readonly-query-plan-readiness
+npm.cmd run check:heu-task-center-ui-fallback-wiring-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness

@@ -8,18 +8,26 @@ const adapterPath = "lib/task-center-readonly-adapter-skeleton.ts";
 const queryContractPath = "lib/task-center-readonly-query-contract.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_008_TASK_CENTER_READONLY_ADAPTER_SKELETON_20260710.md";
+const fallbackDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_009_TASK_CENTER_UI_FALLBACK_WIRING_20260710.md";
 const queryPlanDocPath =
   "docs/HEU_CONTROL/HEU_DATA_007_TASK_CENTER_READONLY_QUERY_PLAN_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const queryPlanCheckerPath =
   "scripts/check-heu-task-center-readonly-query-plan-readiness.mjs";
+const fallbackSourcePath = "lib/task-center-ui-fallback-source.ts";
+const fallbackCheckerPath =
+  "scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-readonly-adapter-skeleton-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const fallbackCheckerAlias =
+  "check:heu-task-center-ui-fallback-wiring-readiness";
+const fallbackCheckerCommand = `node ${fallbackCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,9 +67,12 @@ for (const file of [
   adapterPath,
   queryContractPath,
   docPath,
+  fallbackDocPath,
   queryPlanDocPath,
   manifestPath,
   queryPlanCheckerPath,
+  fallbackSourcePath,
+  fallbackCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,9 +83,12 @@ if (failures.length === 0) {
   const adapter = read(adapterPath);
   const queryContract = read(queryContractPath);
   const doc = read(docPath);
+  const fallbackDoc = read(fallbackDocPath);
   const queryPlanDoc = read(queryPlanDocPath);
   const manifest = read(manifestPath);
   const queryPlanChecker = read(queryPlanCheckerPath);
+  const fallbackSource = read(fallbackSourcePath);
+  const fallbackChecker = read(fallbackCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -133,7 +147,10 @@ if (failures.length === 0) {
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER",
       "no AI call",
       "no automation step",
+      "HEU-DATA-009-TASK-CENTER-UI-FALLBACK-WIRING",
       "UI fallback wiring",
+      "without enabling DB reads",
+      "check:heu-task-center-ui-fallback-wiring-readiness",
     ],
     "adapter skeleton doc token",
     docPath,
@@ -151,14 +168,62 @@ if (failures.length === 0) {
   );
 
   requireTokens(
+    fallbackDoc,
+    [
+      "HEU-DATA-009-TASK-CENTER-UI-FALLBACK-WIRING",
+      "TASK_CENTER_UI_FALLBACK_WIRING_ONLY",
+      "MOCK_READONLY_FALLBACK_ACTIVE",
+      "DISABLED_ADAPTER_OUTPUT_ONLY",
+      "NO_DATABASE_CLIENT_CREATED",
+      "NO_DATABASE_READ_EXECUTED",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
+    ],
+    "next fallback wiring doc token",
+    fallbackDocPath,
+  );
+
+  requireTokens(
+    fallbackSource,
+    [
+      "TASK_CENTER_UI_FALLBACK_WIRING_ONLY",
+      "MOCK_READONLY_FALLBACK_ACTIVE",
+      "DISABLED_ADAPTER_OUTPUT_ONLY",
+      "createTaskCenterUiFallbackSource",
+      "createTaskCenterReadonlyAdapterSkeleton",
+      "getMockTaskCenterTasksForLanes",
+      "adapterRows: adapter.rows",
+    ],
+    "next fallback source token",
+    fallbackSourcePath,
+  );
+
+  requireTokens(
+    fallbackChecker,
+    [
+      "HEU_TASK_CENTER_UI_FALLBACK_WIRING_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_UI_FALLBACK_ONLY",
+      "NO_RUNTIME_MUTATION: task center UI fallback wiring checker only",
+    ],
+    "next fallback checker token",
+    fallbackCheckerPath,
+  );
+
+  requireTokens(
     manifest,
     [
       adapterPath,
+      fallbackSourcePath,
       docPath,
+      fallbackDocPath,
       checkerPath,
+      fallbackCheckerPath,
       "check:heu-task-center-readonly-adapter-skeleton-readiness",
+      "check:heu-task-center-ui-fallback-wiring-readiness",
       "node --check scripts/check-heu-task-center-readonly-adapter-skeleton-readiness.mjs",
+      "node --check scripts/check-heu-task-center-ui-fallback-wiring-readiness.mjs",
       "npm.cmd run check:heu-task-center-readonly-adapter-skeleton-readiness",
+      "npm.cmd run check:heu-task-center-ui-fallback-wiring-readiness",
     ],
     "manifest adapter skeleton token",
     manifestPath,
@@ -179,6 +244,10 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (packageJson.scripts?.[fallbackCheckerAlias] !== fallbackCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${fallbackCheckerAlias}`);
   }
 
   requireTokens(

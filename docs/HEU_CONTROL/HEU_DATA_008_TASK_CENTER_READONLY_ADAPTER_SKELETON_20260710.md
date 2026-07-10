@@ -196,5 +196,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE review this skeleton.
-- If accepted, next safe slice is UI fallback wiring that can choose mock data
-  or disabled adapter output without enabling DB reads.
+- If accepted, next safe slice is HEU-DATA-009-TASK-CENTER-UI-FALLBACK-WIRING: UI fallback wiring that can choose mock data or disabled adapter output without enabling DB reads.
+- Required next checker alias:
+  `check:heu-task-center-ui-fallback-wiring-readiness`.

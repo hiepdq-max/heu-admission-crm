@@ -16,12 +16,19 @@ import type {
   HEUWorkspaceScopeDecision,
 } from "@/lib/heu-workspace-context";
 import {
-  getMockTaskCenterTasksForLanes,
   TASK_CENTER_MOCK_DATA_ONLY,
   TASK_CENTER_MOCK_READONLY_LIST,
   TASK_CENTER_NO_AI_OR_AUTOMATION,
   TASK_CENTER_NO_TASK_MUTATION,
 } from "@/lib/task-center-mock-read-model";
+import {
+  createTaskCenterUiFallbackSource,
+  TASK_CENTER_DISABLED_ADAPTER_OUTPUT_ONLY,
+  TASK_CENTER_MOCK_READONLY_FALLBACK_ACTIVE,
+  TASK_CENTER_UI_FALLBACK_NO_DATABASE_CLIENT,
+  TASK_CENTER_UI_FALLBACK_NO_DATABASE_READ,
+  TASK_CENTER_UI_FALLBACK_WIRING_ONLY,
+} from "@/lib/task-center-ui-fallback-source";
 import {
   getTaskCenterFallbackLane,
   getVisibleTaskCenterLanes,
@@ -65,7 +72,8 @@ export function DepartmentTaskInbox({
   const visibleLanes = getVisibleTaskCenterLanes(roleCode, actionGate);
   const inboxLanes =
     visibleLanes.length > 0 ? visibleLanes : [getTaskCenterFallbackLane(roleCode)];
-  const mockTasks = getMockTaskCenterTasksForLanes(inboxLanes);
+  const taskFallback = createTaskCenterUiFallbackSource(inboxLanes, actionGate);
+  const mockTasks = taskFallback.displayTasks;
 
   return (
     <section
@@ -170,24 +178,35 @@ export function DepartmentTaskInbox({
         data-heu-task-center-mock-boundary={TASK_CENTER_MOCK_DATA_ONLY}
         data-heu-task-center-mock-mutation={TASK_CENTER_NO_TASK_MUTATION}
         data-heu-task-center-mock-cost-guard={TASK_CENTER_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-ui-fallback-wiring={TASK_CENTER_UI_FALLBACK_WIRING_ONLY}
+        data-heu-task-center-ui-fallback-source={TASK_CENTER_MOCK_READONLY_FALLBACK_ACTIVE}
+        data-heu-task-center-disabled-adapter-output={TASK_CENTER_DISABLED_ADAPTER_OUTPUT_ONLY}
+        data-heu-task-center-ui-fallback-no-database-client={TASK_CENTER_UI_FALLBACK_NO_DATABASE_CLIENT}
+        data-heu-task-center-ui-fallback-no-database-read={TASK_CENTER_UI_FALLBACK_NO_DATABASE_READ}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="text-xs font-medium uppercase text-zinc-500">
-              HEU-Data-006 - Mock read-only list
+              HEU-Data-009 - UI fallback wiring
             </p>
             <h3 className="mt-1 text-sm font-semibold text-zinc-950">
               Task mau theo lane dang hien
             </h3>
             <p className="mt-1 max-w-3xl text-sm leading-6 text-zinc-600">
-              Danh sach mau chi de UAT UI/scope; khong phai task that. Du
-              lieu nay khong doc database, khong goi AI, khong tao automation
-              va khong co nut sua/duyet.
+              Danh sach mau chi de UAT UI/scope; khong phai task that. UI
+              dang di qua fallback source: adapter skeleton bi khoa mac dinh,
+              nen hien mock data va khong doc database, khong goi AI, khong
+              tao automation va khong co nut sua/duyet.
             </p>
           </div>
-          <span className="inline-flex w-fit rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-700">
-            {TASK_CENTER_MOCK_DATA_ONLY}
-          </span>
+          <div className="flex flex-col gap-1 text-xs">
+            <span className="inline-flex w-fit rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 font-medium text-sky-700">
+              {taskFallback.dataSource}
+            </span>
+            <span className="text-zinc-500">
+              Adapter: {taskFallback.adapterStatus}
+            </span>
+          </div>
         </div>
 
         <div className="overflow-hidden rounded-lg border border-zinc-200">

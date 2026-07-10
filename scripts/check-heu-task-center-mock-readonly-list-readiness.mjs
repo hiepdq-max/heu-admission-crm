@@ -142,7 +142,9 @@ if (failures.length === 0) {
     component,
     [
       "@/lib/task-center-mock-read-model",
-      "getMockTaskCenterTasksForLanes",
+      "@/lib/task-center-ui-fallback-source",
+      "createTaskCenterUiFallbackSource",
+      "taskFallback.displayTasks",
       "TASK_CENTER_MOCK_READONLY_LIST",
       "TASK_CENTER_MOCK_DATA_ONLY",
       "TASK_CENTER_NO_TASK_MUTATION",
