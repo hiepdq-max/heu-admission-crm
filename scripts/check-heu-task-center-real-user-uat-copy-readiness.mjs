@@ -10,15 +10,22 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md";
 const gatePanelDocPath =
   "docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md";
+const evidenceChecklistDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const gatePanelCheckerPath =
   "scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs";
+const evidenceChecklistCheckerPath =
+  "scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-real-user-uat-copy-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const evidenceChecklistCheckerAlias =
+  "check:heu-task-center-uat-evidence-checklist-readiness";
+const evidenceChecklistCheckerCommand = `node ${evidenceChecklistCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -59,8 +66,10 @@ for (const file of [
   panelSourcePath,
   docPath,
   gatePanelDocPath,
+  evidenceChecklistDocPath,
   manifestPath,
   gatePanelCheckerPath,
+  evidenceChecklistCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -72,8 +81,10 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
   const gatePanelDoc = read(gatePanelDocPath);
+  const evidenceChecklistDoc = read(evidenceChecklistDocPath);
   const manifest = read(manifestPath);
   const gatePanelChecker = read(gatePanelCheckerPath);
+  const evidenceChecklistChecker = read(evidenceChecklistCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -99,6 +110,11 @@ if (failures.length === 0) {
       "UAT_REPORT_OWNER",
       "mock/fallback",
       "database dang NO_GO",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII",
+      "UAT_EVIDENCE_SCOPE_VISIBLE",
     ],
     "real-user UAT source token",
     panelSourcePath,
@@ -157,9 +173,25 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "real-user UAT checklist evidence capture",
+      "HEU-DATA-013-TASK-CENTER-UAT-EVIDENCE-CHECKLIST",
+      "check:heu-task-center-uat-evidence-checklist-readiness",
     ],
     "real-user UAT doc token",
     docPath,
+  );
+
+  requireTokens(
+    evidenceChecklistDoc,
+    [
+      "HEU-DATA-013-TASK-CENTER-UAT-EVIDENCE-CHECKLIST",
+      "PASS_LOCAL_UAT_EVIDENCE_CHECKLIST",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE",
+      "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+    ],
+    "UAT evidence checklist doc token",
+    evidenceChecklistDocPath,
   );
 
   requireTokens(
@@ -181,9 +213,14 @@ if (failures.length === 0) {
       panelSourcePath,
       docPath,
       checkerPath,
+      evidenceChecklistDocPath,
+      evidenceChecklistCheckerPath,
       "check:heu-task-center-real-user-uat-copy-readiness",
+      "check:heu-task-center-uat-evidence-checklist-readiness",
       "node --check scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs",
+      "node --check scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs",
       "npm.cmd run check:heu-task-center-real-user-uat-copy-readiness",
+      "npm.cmd run check:heu-task-center-uat-evidence-checklist-readiness",
     ],
     "manifest real-user UAT token",
     manifestPath,
@@ -201,8 +238,26 @@ if (failures.length === 0) {
     gatePanelCheckerPath,
   );
 
+  requireTokens(
+    evidenceChecklistChecker,
+    [
+      "HEU_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_UAT_EVIDENCE_CHECKLIST_ONLY",
+      "NO_RUNTIME_MUTATION: task center UAT evidence checklist checker only",
+    ],
+    "UAT evidence checklist checker token",
+    evidenceChecklistCheckerPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[evidenceChecklistCheckerAlias] !==
+    evidenceChecklistCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${evidenceChecklistCheckerAlias}`);
   }
 
   requireTokens(

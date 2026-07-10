@@ -37,6 +37,16 @@ export const TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL =
   "TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL";
 export const TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY =
   "TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY";
+export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY =
+  "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY";
+export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY =
+  "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY";
+export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD =
+  "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD";
+export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE =
+  "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE";
+export const TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII =
+  "TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -49,6 +59,13 @@ export type TaskCenterRealUserUatCopyItem = {
   code: string;
   title: string;
   detail: string;
+};
+
+export type TaskCenterUatEvidenceChecklistItem = {
+  code: string;
+  title: string;
+  expectedEvidence: string;
+  reviewer: "IT_DATA" | "AUDIT" | "PHAP_CHE" | "DEPARTMENT_OWNER" | "BGH";
 };
 
 export type TaskCenterGateEvidencePanelSource = {
@@ -67,6 +84,14 @@ export type TaskCenterGateEvidencePanelSource = {
     allowed: readonly TaskCenterRealUserUatCopyItem[];
     blocked: readonly TaskCenterRealUserUatCopyItem[];
     reportTo: readonly TaskCenterRealUserUatCopyItem[];
+  };
+  uatEvidenceChecklist: {
+    mode: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY;
+    readonly: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY;
+    noUpload: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD;
+    noStorageWrite: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE;
+    noRawPii: typeof TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII;
+    items: readonly TaskCenterUatEvidenceChecklistItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -161,6 +186,39 @@ const reportToUatCopy: readonly TaskCenterRealUserUatCopyItem[] = [
   },
 ];
 
+const uatEvidenceChecklistItems: readonly TaskCenterUatEvidenceChecklistItem[] = [
+  {
+    code: "UAT_EVIDENCE_SCOPE_VISIBLE",
+    title: "Chup man hinh lane/scope dang thay",
+    expectedEvidence: "Anh chup che PII, chi giu role, scope, lane va timestamp.",
+    reviewer: "IT_DATA",
+  },
+  {
+    code: "UAT_EVIDENCE_GATE_NO_GO_VISIBLE",
+    title: "Chup trang thai gate NO_GO",
+    expectedEvidence: "Anh chup panel co database NO_GO va owner lanes NO_GO.",
+    reviewer: "AUDIT",
+  },
+  {
+    code: "UAT_EVIDENCE_ALLOWED_BLOCKED_COPY",
+    title: "Xac nhan copy duoc lam/khong duoc lam",
+    expectedEvidence: "Ghi nhan user hieu khong phe duyet, khong nhap du lieu that.",
+    reviewer: "DEPARTMENT_OWNER",
+  },
+  {
+    code: "UAT_EVIDENCE_RESTRICTED_DATA_BOUNDARY",
+    title: "Xac nhan khong yeu cau du lieu nhay cam",
+    expectedEvidence: "PHAP_CHE xem copy khong yeu cau CCCD, dien thoai, thanh toan.",
+    reviewer: "PHAP_CHE",
+  },
+  {
+    code: "UAT_EVIDENCE_PRODUCTION_NO_GO",
+    title: "Xac nhan production van NO-GO",
+    expectedEvidence: "BGH/Audit ghi nhan panel chi phuc vu UAT, khong mo production.",
+    reviewer: "BGH",
+  },
+];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -183,6 +241,14 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       allowed: allowedUatCopy,
       blocked: blockedUatCopy,
       reportTo: reportToUatCopy,
+    },
+    uatEvidenceChecklist: {
+      mode: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY,
+      readonly: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY,
+      noUpload: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD,
+      noStorageWrite: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE,
+      noRawPii: TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII,
+      items: uatEvidenceChecklistItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

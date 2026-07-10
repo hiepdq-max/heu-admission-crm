@@ -43,6 +43,11 @@ import {
   TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY,
   TASK_CENTER_REAL_USER_UAT_COPY_ONLY,
   TASK_CENTER_REAL_USER_UAT_COPY_READONLY,
+  TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII,
+  TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE,
+  TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD,
+  TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY,
+  TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY,
 } from "@/lib/task-center-gate-evidence-panel-source";
 import {
   getTaskCenterFallbackLane,
@@ -202,6 +207,11 @@ export function DepartmentTaskInbox({
         data-heu-task-center-real-user-uat-copy-readonly={TASK_CENTER_REAL_USER_UAT_COPY_READONLY}
         data-heu-task-center-real-user-uat-copy-no-approval={TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL}
         data-heu-task-center-real-user-uat-copy-no-data-entry={TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY}
+        data-heu-task-center-uat-evidence-checklist={TASK_CENTER_UAT_EVIDENCE_CHECKLIST_ONLY}
+        data-heu-task-center-uat-evidence-checklist-readonly={TASK_CENTER_UAT_EVIDENCE_CHECKLIST_READONLY}
+        data-heu-task-center-uat-evidence-checklist-no-upload={TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_UPLOAD}
+        data-heu-task-center-uat-evidence-checklist-no-storage-write={TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_STORAGE_WRITE}
+        data-heu-task-center-uat-evidence-checklist-no-raw-pii={TASK_CENTER_UAT_EVIDENCE_CHECKLIST_NO_RAW_PII}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -330,6 +340,51 @@ export function DepartmentTaskInbox({
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-013 - UAT evidence checklist
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Checklist bang chung UAT can chup ben ngoai he thong
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Checklist nay chi huong dan loai bang chung can thu. Khong co
+                upload file, khong ghi storage, khong doc database va khong
+                yeu cau du lieu nhay cam.
+              </p>
+            </div>
+            <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-700">
+              {gateEvidence.uatEvidenceChecklist.mode}
+            </span>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.uatEvidenceChecklist.items.map((item) => (
+              <article
+                key={item.code}
+                className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                data-heu-task-center-uat-evidence-item={item.code}
+                data-heu-task-center-uat-evidence-reviewer={item.reviewer}
+              >
+                <div className="font-mono text-[11px] text-zinc-500">
+                  {item.code}
+                </div>
+                <div className="mt-1 text-sm font-semibold text-zinc-950">
+                  {item.title}
+                </div>
+                <div className="mt-2 text-xs leading-5 text-zinc-600">
+                  {item.expectedEvidence}
+                </div>
+                <div className="mt-2 inline-flex rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-600">
+                  Reviewer: {item.reviewer}
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </div>

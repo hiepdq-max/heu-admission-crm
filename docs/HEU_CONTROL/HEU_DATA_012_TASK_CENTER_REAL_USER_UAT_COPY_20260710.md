@@ -62,10 +62,12 @@ components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
 docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md
 docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md
+docs/HEU_CONTROL/HEU_DATA_013_TASK_CENTER_UAT_EVIDENCE_CHECKLIST_20260710.md
 lib/task-center-gate-evidence-panel-source.ts
 package.json
 scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs
 scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs
+scripts/check-heu-task-center-uat-evidence-checklist-readiness.mjs
 ```
 
 Files not in scope:
@@ -223,5 +225,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this UAT copy.
-- If accepted, next safe slice is real-user UAT checklist evidence capture,
-  still no DB read and no migration.
+- If accepted, next safe slice is HEU-DATA-013-TASK-CENTER-UAT-EVIDENCE-CHECKLIST: real-user UAT checklist evidence capture, still no DB read and no migration.
+- Required next checker alias:
+  `check:heu-task-center-uat-evidence-checklist-readiness`.
