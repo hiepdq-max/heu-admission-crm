@@ -175,6 +175,26 @@ export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT =
   "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT";
 export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -285,6 +305,20 @@ export type TaskCenterAdapterPreflightChecklistItem = {
     | "BGH";
   requiredBeforeAdapterRead: string;
   passCondition: string;
+  forbiddenInThisSlice: string;
+};
+
+export type TaskCenterReadonlyAdapterDryRunSwitchContractItem = {
+  code: string;
+  switchState: "DRY_RUN_SWITCH_CONTRACT";
+  contractOwner:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  requiredBeforeSwitch: string;
+  dryRunBehavior: string;
   forbiddenInThisSlice: string;
 };
 
@@ -400,6 +434,19 @@ export type TaskCenterGateEvidencePanelSource = {
     noEnvEnablement: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT;
     noAiOrAutomation: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterAdapterPreflightChecklistItem[];
+  };
+  readonlyAdapterDryRunSwitchContract: {
+    mode: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY;
+    readonly: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY;
+    draftOnly: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA;
+    noEnvEnablement: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT;
+    noAiOrAutomation: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterReadonlyAdapterDryRunSwitchContractItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -866,6 +913,55 @@ const adapterPreflightChecklistItems: readonly TaskCenterAdapterPreflightCheckli
     },
   ];
 
+const readonlyAdapterDryRunSwitchContractItems: readonly TaskCenterReadonlyAdapterDryRunSwitchContractItem[] =
+  [
+    {
+      code: "DRY_RUN_SWITCH_SCOPE_FILTER_ONLY",
+      switchState: "DRY_RUN_SWITCH_CONTRACT",
+      contractOwner: "IT_DATA",
+      requiredBeforeSwitch: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      dryRunBehavior:
+        "Switch contract may point only to scope-first adapter path and must default OFF.",
+      forbiddenInThisSlice: "NO_ENV_ENABLEMENT",
+    },
+    {
+      code: "DRY_RUN_SWITCH_NEGATIVE_ACCESS_GUARD",
+      switchState: "DRY_RUN_SWITCH_CONTRACT",
+      contractOwner: "AUDIT",
+      requiredBeforeSwitch: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      dryRunBehavior:
+        "Dry-run switch must require negative-access fixture evidence before any DB read.",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "DRY_RUN_SWITCH_FIELD_ALLOWLIST_GUARD",
+      switchState: "DRY_RUN_SWITCH_CONTRACT",
+      contractOwner: "PHAP_CHE",
+      requiredBeforeSwitch: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      dryRunBehavior:
+        "Dry-run switch must expose metadata allowlist only; raw PII/payment fields stay blocked.",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "DRY_RUN_SWITCH_READONLY_STATUS",
+      switchState: "DRY_RUN_SWITCH_CONTRACT",
+      contractOwner: "DEPARTMENT_OWNER",
+      requiredBeforeSwitch: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      dryRunBehavior:
+        "Dry-run switch cannot create, update, approve or change task status.",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "DRY_RUN_SWITCH_PRODUCTION_NO_GO",
+      switchState: "DRY_RUN_SWITCH_CONTRACT",
+      contractOwner: "BGH",
+      requiredBeforeSwitch: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      dryRunBehavior:
+        "Dry-run switch remains local/UAT-only and cannot imply production readiness.",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -984,6 +1080,19 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noEnvEnablement: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT,
       noAiOrAutomation: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION,
       items: adapterPreflightChecklistItems,
+    },
+    readonlyAdapterDryRunSwitchContract: {
+      mode: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY,
+      readonly: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY,
+      draftOnly: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY,
+      noApproval: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA,
+      noEnvEnablement: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT,
+      noAiOrAutomation: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION,
+      items: readonlyAdapterDryRunSwitchContractItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

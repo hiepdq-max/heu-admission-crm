@@ -66,6 +66,16 @@ import {
   TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION,
   TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY,
   TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY,
+  TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL,
@@ -340,6 +350,16 @@ export function DepartmentTaskInbox({
         data-heu-task-center-adapter-preflight-checklist-no-real-data={TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA}
         data-heu-task-center-adapter-preflight-checklist-no-env-enablement={TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT}
         data-heu-task-center-adapter-preflight-checklist-no-ai-or-automation={TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-readonly={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-draft-only={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-approval={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-database-read={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-database-client={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-task-mutation={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-real-data={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-env-enablement={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT}
+        data-heu-task-center-readonly-adapter-dry-run-switch-contract-no-ai-or-automation={TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -968,6 +988,71 @@ export function DepartmentTaskInbox({
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-022 - Read-only adapter dry-run switch contract
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Hop dong switch dry-run mac dinh OFF
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Contract nay chi mo ta dieu kien de thiet ke switch dry-run
+                trong tuong lai. Switch van default OFF, khong bat env, khong
+                tao DB client, khong doc DB, khong sua task, khong dung du
+                lieu that, khong goi AI va khong deploy.
+              </p>
+            </div>
+            <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-700">
+              {gateEvidence.readonlyAdapterDryRunSwitchContract.mode}
+            </span>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.readonlyAdapterDryRunSwitchContract.items.map(
+              (item) => (
+                <article
+                  key={item.code}
+                  className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                  data-heu-task-center-dry-run-switch-contract-item={item.code}
+                  data-heu-task-center-dry-run-switch-contract-owner={
+                    item.contractOwner
+                  }
+                  data-heu-task-center-dry-run-switch-contract-state={
+                    item.switchState
+                  }
+                  data-heu-task-center-dry-run-switch-contract-required={
+                    item.requiredBeforeSwitch
+                  }
+                  data-heu-task-center-dry-run-switch-contract-forbidden={
+                    item.forbiddenInThisSlice
+                  }
+                >
+                  <div className="font-mono text-[11px] text-zinc-500">
+                    {item.code}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-zinc-950">
+                    {item.contractOwner}
+                  </div>
+                  <div className="mt-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-700">
+                    {item.switchState}
+                  </div>
+                  <div className="mt-2 text-xs leading-5 text-zinc-600">
+                    {item.dryRunBehavior}
+                  </div>
+                  <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                    {item.requiredBeforeSwitch}
+                  </div>
+                  <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
+                    {item.forbiddenInThisSlice}
+                  </div>
+                </article>
+              ),
+            )}
           </div>
         </div>
       </div>

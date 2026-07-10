@@ -9,18 +9,26 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_021_TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_20260710.md";
+const dryRunSwitchContractDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_022_TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_20260710.md";
 const ownerGateEvidenceMatrixDocPath =
   "docs/HEU_CONTROL/HEU_DATA_020_TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const ownerGateEvidenceMatrixCheckerPath =
   "scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs";
+const dryRunSwitchContractCheckerPath =
+  "scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-preflight-checklist-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const dryRunSwitchContractCheckerAlias =
+  "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness";
+const dryRunSwitchContractCheckerCommand =
+  `node ${dryRunSwitchContractCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,9 +69,11 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  dryRunSwitchContractDocPath,
   ownerGateEvidenceMatrixDocPath,
   manifestPath,
   ownerGateEvidenceMatrixCheckerPath,
+  dryRunSwitchContractCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,6 +85,7 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const dryRunSwitchContractDoc = read(dryRunSwitchContractDocPath);
   const ownerGateEvidenceMatrixDoc = read(ownerGateEvidenceMatrixDocPath);
   const manifest = read(manifestPath);
   const ownerGateEvidenceMatrixChecker = read(ownerGateEvidenceMatrixCheckerPath);
@@ -209,10 +220,43 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "HEU-DATA-022-TASK-CENTER-READONLY-ADAPTER-DRY-RUN-SWITCH-CONTRACT",
+      "DRY_RUN_SWITCH_DEFAULT_OFF",
       "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
     ],
     "adapter preflight checklist doc token",
     docPath,
+  );
+
+  requireTokens(
+    dryRunSwitchContractDoc,
+    [
+      "HEU-DATA-022-TASK-CENTER-READONLY-ADAPTER-DRY-RUN-SWITCH-CONTRACT",
+      "Status: PASS_LOCAL_DRY_RUN_SWITCH_CONTRACT",
+      "Production status: NO-GO",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_ONLY",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_READONLY",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_DRAFT_ONLY",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_APPROVAL",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_READ",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_DATABASE_CLIENT",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_TASK_MUTATION",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_REAL_DATA",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT",
+      "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION",
+      "DRY_RUN_SWITCH_CONTRACT",
+      "DRY_RUN_SWITCH_DEFAULT_OFF",
+      "DRY_RUN_SWITCH_SCOPE_FILTER_ONLY",
+      "DRY_RUN_SWITCH_NEGATIVE_ACCESS_GUARD",
+      "DRY_RUN_SWITCH_FIELD_ALLOWLIST_GUARD",
+      "DRY_RUN_SWITCH_READONLY_STATUS",
+      "DRY_RUN_SWITCH_PRODUCTION_NO_GO",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
+      "HEU-DATA-023-TASK-CENTER-DRY-RUN-ENV-GATE-LEDGER",
+      "check:heu-task-center-dry-run-env-gate-ledger-readiness",
+    ],
+    "dry-run switch contract doc token",
+    dryRunSwitchContractDocPath,
   );
 
   requireTokens(
@@ -234,12 +278,17 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      dryRunSwitchContractDocPath,
       ownerGateEvidenceMatrixDocPath,
       checkerPath,
+      dryRunSwitchContractCheckerPath,
       ownerGateEvidenceMatrixCheckerPath,
       "check:heu-task-center-adapter-preflight-checklist-readiness",
+      "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
       "node --check scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs",
+      "node --check scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs",
       "npm.cmd run check:heu-task-center-adapter-preflight-checklist-readiness",
+      "npm.cmd run check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
     ],
     "manifest adapter preflight checklist token",
     manifestPath,
@@ -259,6 +308,13 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[dryRunSwitchContractCheckerAlias] !==
+    dryRunSwitchContractCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${dryRunSwitchContractCheckerAlias}`);
   }
 
   requireTokens(

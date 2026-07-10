@@ -238,6 +238,7 @@ SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this adapter
   preflight checklist.
 - If accepted, next safe slice is `HEU-DATA-022-TASK-CENTER-READONLY-ADAPTER-DRY-RUN-SWITCH-CONTRACT`,
+  a readonly adapter dry-run switch contract with `DRY_RUN_SWITCH_DEFAULT_OFF`,
   still no DB read and no migration.
 - Required next checker:
   `check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness`.
