@@ -236,4 +236,7 @@ SOP-RESULT:
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this owner gate
   evidence matrix.
-- If accepted, next safe slice is Task Center adapter preflight checklist, still no DB read and no migration.
+- If accepted, next safe slice is `HEU-DATA-021-TASK-CENTER-ADAPTER-PREFLIGHT-CHECKLIST`,
+  a Task Center adapter preflight checklist, still no DB read and no migration.
+- Required next checker:
+  `check:heu-task-center-adapter-preflight-checklist-readiness`.

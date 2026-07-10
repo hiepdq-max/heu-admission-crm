@@ -155,6 +155,26 @@ export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA =
   "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA";
 export const TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_DRAFT_ONLY =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_DRAFT_ONLY";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_APPROVAL =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_APPROVAL";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_READ =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_READ";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_CLIENT =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_CLIENT";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -251,6 +271,20 @@ export type TaskCenterOwnerGateEvidenceMatrixItem = {
   requiredEvidenceCode: string;
   passCondition: string;
   blocksDbReadUntil: string;
+  forbiddenInThisSlice: string;
+};
+
+export type TaskCenterAdapterPreflightChecklistItem = {
+  code: string;
+  preflightState: "PREFLIGHT_REQUIRED";
+  checklistOwner:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  requiredBeforeAdapterRead: string;
+  passCondition: string;
   forbiddenInThisSlice: string;
 };
 
@@ -353,6 +387,19 @@ export type TaskCenterGateEvidencePanelSource = {
     noRealData: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA;
     noAiOrAutomation: typeof TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterOwnerGateEvidenceMatrixItem[];
+  };
+  adapterPreflightChecklist: {
+    mode: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY;
+    readonly: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY;
+    draftOnly: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA;
+    noEnvEnablement: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT;
+    noAiOrAutomation: typeof TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterAdapterPreflightChecklistItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -770,6 +817,55 @@ const ownerGateEvidenceMatrixItems: readonly TaskCenterOwnerGateEvidenceMatrixIt
     },
   ];
 
+const adapterPreflightChecklistItems: readonly TaskCenterAdapterPreflightChecklistItem[] =
+  [
+    {
+      code: "PREFLIGHT_SCOPE_FILTER_SIGNOFF",
+      preflightState: "PREFLIGHT_REQUIRED",
+      checklistOwner: "IT_DATA",
+      requiredBeforeAdapterRead: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      passCondition:
+        "Scope-first filter contract is signed off and mapped to workspace/role/lane.",
+      forbiddenInThisSlice: "NO_DATABASE_CLIENT_CREATED",
+    },
+    {
+      code: "PREFLIGHT_NEGATIVE_ACCESS_EVIDENCE",
+      preflightState: "PREFLIGHT_REQUIRED",
+      checklistOwner: "AUDIT",
+      requiredBeforeAdapterRead: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      passCondition:
+        "Negative-access evidence covers excluded lanes and no broad fallback.",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "PREFLIGHT_RESTRICTED_FIELD_ALLOWLIST",
+      preflightState: "PREFLIGHT_REQUIRED",
+      checklistOwner: "PHAP_CHE",
+      requiredBeforeAdapterRead:
+        "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      passCondition:
+        "Metadata allowlist excludes CCCD, phone, payment and raw PII.",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "PREFLIGHT_OWNER_LABEL_ACCEPTANCE",
+      preflightState: "PREFLIGHT_REQUIRED",
+      checklistOwner: "DEPARTMENT_OWNER",
+      requiredBeforeAdapterRead: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      passCondition: "Department owner accepts task labels and readonly copy.",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "PREFLIGHT_BGH_NO_GO_ACK",
+      preflightState: "PREFLIGHT_REQUIRED",
+      checklistOwner: "BGH",
+      requiredBeforeAdapterRead: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      passCondition:
+        "BGH acknowledges adapter remains pre-production and NO-GO.",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -875,6 +971,19 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noRealData: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_REAL_DATA,
       noAiOrAutomation: TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION,
       items: ownerGateEvidenceMatrixItems,
+    },
+    adapterPreflightChecklist: {
+      mode: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY,
+      readonly: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY,
+      draftOnly: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_DRAFT_ONLY,
+      noApproval: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA,
+      noEnvEnablement: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT,
+      noAiOrAutomation: TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION,
+      items: adapterPreflightChecklistItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

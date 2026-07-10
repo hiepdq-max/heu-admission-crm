@@ -9,18 +9,26 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_020_TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_20260710.md";
+const adapterPreflightChecklistDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_021_TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_20260710.md";
 const disabledRuntimeSeamVerificationDocPath =
   "docs/HEU_CONTROL/HEU_DATA_019_TASK_CENTER_DISABLED_RUNTIME_SEAM_VERIFICATION_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const disabledRuntimeSeamVerificationCheckerPath =
   "scripts/check-heu-task-center-disabled-runtime-seam-verification-readiness.mjs";
+const adapterPreflightChecklistCheckerPath =
+  "scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-owner-gate-evidence-matrix-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const adapterPreflightChecklistCheckerAlias =
+  "check:heu-task-center-adapter-preflight-checklist-readiness";
+const adapterPreflightChecklistCheckerCommand =
+  `node ${adapterPreflightChecklistCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,9 +69,11 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  adapterPreflightChecklistDocPath,
   disabledRuntimeSeamVerificationDocPath,
   manifestPath,
   disabledRuntimeSeamVerificationCheckerPath,
+  adapterPreflightChecklistCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,6 +85,7 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const adapterPreflightChecklistDoc = read(adapterPreflightChecklistDocPath);
   const disabledRuntimeSeamVerificationDoc = read(
     disabledRuntimeSeamVerificationDocPath,
   );
@@ -207,11 +218,44 @@ if (failures.length === 0) {
       "OWNER_GATE_EVIDENCE_BGH_NO_GO_ACK",
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
+      "HEU-DATA-021-TASK-CENTER-ADAPTER-PREFLIGHT-CHECKLIST",
       "Task Center adapter preflight checklist",
       "still no DB read and no migration",
+      "check:heu-task-center-adapter-preflight-checklist-readiness",
     ],
     "owner gate evidence matrix doc token",
     docPath,
+  );
+
+  requireTokens(
+    adapterPreflightChecklistDoc,
+    [
+      "HEU-DATA-021-TASK-CENTER-ADAPTER-PREFLIGHT-CHECKLIST",
+      "Status: PASS_LOCAL_ADAPTER_PREFLIGHT_CHECKLIST",
+      "Production status: NO-GO",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_ONLY",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_READONLY",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_DRAFT_ONLY",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_APPROVAL",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_READ",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_DATABASE_CLIENT",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_TASK_MUTATION",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_REAL_DATA",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_ENV_ENABLEMENT",
+      "TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_NO_AI_OR_AUTOMATION",
+      "PREFLIGHT_REQUIRED",
+      "PREFLIGHT_SCOPE_FILTER_SIGNOFF",
+      "PREFLIGHT_NEGATIVE_ACCESS_EVIDENCE",
+      "PREFLIGHT_RESTRICTED_FIELD_ALLOWLIST",
+      "PREFLIGHT_OWNER_LABEL_ACCEPTANCE",
+      "PREFLIGHT_BGH_NO_GO_ACK",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
+      "HEU-DATA-022-TASK-CENTER-READONLY-ADAPTER-DRY-RUN-SWITCH-CONTRACT",
+      "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
+    ],
+    "adapter preflight checklist doc token",
+    adapterPreflightChecklistDocPath,
   );
 
   requireTokens(
@@ -233,12 +277,17 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      adapterPreflightChecklistDocPath,
       disabledRuntimeSeamVerificationDocPath,
       checkerPath,
+      adapterPreflightChecklistCheckerPath,
       disabledRuntimeSeamVerificationCheckerPath,
       "check:heu-task-center-owner-gate-evidence-matrix-readiness",
+      "check:heu-task-center-adapter-preflight-checklist-readiness",
       "node --check scripts/check-heu-task-center-owner-gate-evidence-matrix-readiness.mjs",
+      "node --check scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs",
       "npm.cmd run check:heu-task-center-owner-gate-evidence-matrix-readiness",
+      "npm.cmd run check:heu-task-center-adapter-preflight-checklist-readiness",
     ],
     "manifest owner gate evidence matrix token",
     manifestPath,
@@ -258,6 +307,13 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[adapterPreflightChecklistCheckerAlias] !==
+    adapterPreflightChecklistCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${adapterPreflightChecklistCheckerAlias}`);
   }
 
   requireTokens(
