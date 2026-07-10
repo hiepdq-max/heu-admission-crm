@@ -11,15 +11,22 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md";
 const gateDocPath =
   "docs/HEU_CONTROL/HEU_DATA_010_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_20260710.md";
+const uatCopyDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const gateCheckerPath =
   "scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs";
+const uatCopyCheckerPath =
+  "scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-gate-evidence-panel-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const uatCopyCheckerAlias =
+  "check:heu-task-center-real-user-uat-copy-readiness";
+const uatCopyCheckerCommand = `node ${uatCopyCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,8 +68,10 @@ for (const file of [
   gatePath,
   docPath,
   gateDocPath,
+  uatCopyDocPath,
   manifestPath,
   gateCheckerPath,
+  uatCopyCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,8 +84,10 @@ if (failures.length === 0) {
   const gate = read(gatePath);
   const doc = read(docPath);
   const gateDoc = read(gateDocPath);
+  const uatCopyDoc = read(uatCopyDocPath);
   const manifest = read(manifestPath);
   const gateChecker = read(gateCheckerPath);
+  const uatCopyChecker = read(uatCopyCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -104,6 +115,13 @@ if (failures.length === 0) {
       "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
       "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
       "decision: gate.ownerReview[row.lane]",
+      "TASK_CENTER_REAL_USER_UAT_COPY_ONLY",
+      "TASK_CENTER_REAL_USER_UAT_COPY_READONLY",
+      "TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL",
+      "TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY",
+      "UAT_CAN_VIEW_SCOPE",
+      "UAT_BLOCK_APPROVAL",
+      "UAT_REPORT_IT_DATA",
     ],
     "panel source token",
     panelSourcePath,
@@ -177,9 +195,25 @@ if (failures.length === 0) {
       "no AI call",
       "no automation step",
       "real-user UAT copy",
+      "HEU-DATA-012-TASK-CENTER-REAL-USER-UAT-COPY",
+      "still using mock/fallback data and no DB read",
+      "check:heu-task-center-real-user-uat-copy-readiness",
     ],
     "gate evidence panel doc token",
     docPath,
+  );
+
+  requireTokens(
+    uatCopyDoc,
+    [
+      "HEU-DATA-012-TASK-CENTER-REAL-USER-UAT-COPY",
+      "PASS_LOCAL_REAL_USER_UAT_COPY",
+      "TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL",
+      "TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+    ],
+    "real-user UAT copy doc token",
+    uatCopyDocPath,
   );
 
   requireTokens(
@@ -201,9 +235,14 @@ if (failures.length === 0) {
       panelSourcePath,
       docPath,
       checkerPath,
+      uatCopyDocPath,
+      uatCopyCheckerPath,
       "check:heu-task-center-gate-evidence-panel-readiness",
+      "check:heu-task-center-real-user-uat-copy-readiness",
       "node --check scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs",
+      "node --check scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs",
       "npm.cmd run check:heu-task-center-gate-evidence-panel-readiness",
+      "npm.cmd run check:heu-task-center-real-user-uat-copy-readiness",
     ],
     "manifest evidence panel token",
     manifestPath,
@@ -222,8 +261,23 @@ if (failures.length === 0) {
     gateCheckerPath,
   );
 
+  requireTokens(
+    uatCopyChecker,
+    [
+      "HEU_TASK_CENTER_REAL_USER_UAT_COPY_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_REAL_USER_UAT_COPY_ONLY",
+      "NO_RUNTIME_MUTATION: task center real-user UAT copy checker only",
+    ],
+    "real-user UAT copy checker token",
+    uatCopyCheckerPath,
+  );
+
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (packageJson.scripts?.[uatCopyCheckerAlias] !== uatCopyCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${uatCopyCheckerAlias}`);
   }
 
   requireTokens(

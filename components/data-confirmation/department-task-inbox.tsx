@@ -39,6 +39,10 @@ import {
   TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION,
   TASK_CENTER_GATE_EVIDENCE_PANEL_ONLY,
   TASK_CENTER_GATE_EVIDENCE_PANEL_READONLY,
+  TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL,
+  TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY,
+  TASK_CENTER_REAL_USER_UAT_COPY_ONLY,
+  TASK_CENTER_REAL_USER_UAT_COPY_READONLY,
 } from "@/lib/task-center-gate-evidence-panel-source";
 import {
   getTaskCenterFallbackLane,
@@ -194,6 +198,10 @@ export function DepartmentTaskInbox({
         data-heu-task-center-gate-evidence-no-sql-migration={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_SQL_MIGRATION}
         data-heu-task-center-gate-evidence-no-task-mutation={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_TASK_MUTATION}
         data-heu-task-center-gate-evidence-cost-guard={TASK_CENTER_GATE_EVIDENCE_PANEL_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-real-user-uat-copy={TASK_CENTER_REAL_USER_UAT_COPY_ONLY}
+        data-heu-task-center-real-user-uat-copy-readonly={TASK_CENTER_REAL_USER_UAT_COPY_READONLY}
+        data-heu-task-center-real-user-uat-copy-no-approval={TASK_CENTER_REAL_USER_UAT_COPY_NO_APPROVAL}
+        data-heu-task-center-real-user-uat-copy-no-data-entry={TASK_CENTER_REAL_USER_UAT_COPY_NO_DATA_ENTRY}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -257,6 +265,71 @@ export function DepartmentTaskInbox({
                 {proof}
               </span>
             ))}
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+            <div className="text-xs font-medium uppercase text-emerald-700">
+              User UAT duoc lam
+            </div>
+            <div className="mt-3 space-y-3">
+              {gateEvidence.uatCopy.allowed.map((item) => (
+                <div
+                  key={item.code}
+                  data-heu-task-center-real-user-uat-allowed={item.code}
+                >
+                  <div className="text-sm font-semibold text-emerald-950">
+                    {item.title}
+                  </div>
+                  <div className="mt-1 text-xs leading-5 text-emerald-800">
+                    {item.detail}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-rose-200 bg-rose-50 p-3">
+            <div className="text-xs font-medium uppercase text-rose-700">
+              User UAT khong duoc lam
+            </div>
+            <div className="mt-3 space-y-3">
+              {gateEvidence.uatCopy.blocked.map((item) => (
+                <div
+                  key={item.code}
+                  data-heu-task-center-real-user-uat-blocked={item.code}
+                >
+                  <div className="text-sm font-semibold text-rose-950">
+                    {item.title}
+                  </div>
+                  <div className="mt-1 text-xs leading-5 text-rose-800">
+                    {item.detail}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-sky-200 bg-sky-50 p-3">
+            <div className="text-xs font-medium uppercase text-sky-700">
+              User UAT bao cho ai
+            </div>
+            <div className="mt-3 space-y-3">
+              {gateEvidence.uatCopy.reportTo.map((item) => (
+                <div
+                  key={item.code}
+                  data-heu-task-center-real-user-uat-report-to={item.code}
+                >
+                  <div className="text-sm font-semibold text-sky-950">
+                    {item.title}
+                  </div>
+                  <div className="mt-1 text-xs leading-5 text-sky-800">
+                    {item.detail}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

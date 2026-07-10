@@ -73,10 +73,12 @@ components/data-confirmation/department-task-inbox.tsx
 docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md
 docs/HEU_CONTROL/HEU_DATA_010_TASK_CENTER_ADAPTER_ENABLEMENT_GATE_20260710.md
 docs/HEU_CONTROL/HEU_DATA_011_TASK_CENTER_GATE_EVIDENCE_PANEL_20260710.md
+docs/HEU_CONTROL/HEU_DATA_012_TASK_CENTER_REAL_USER_UAT_COPY_20260710.md
 lib/task-center-gate-evidence-panel-source.ts
 package.json
 scripts/check-heu-task-center-adapter-enablement-gate-readiness.mjs
 scripts/check-heu-task-center-gate-evidence-panel-readiness.mjs
+scripts/check-heu-task-center-real-user-uat-copy-readiness.mjs
 ```
 
 Files not in scope:
@@ -219,5 +221,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - IT_DATA + Audit + PHAP_CHE + Department owner + BGH review this visible gate.
-- If accepted, next safe slice is real-user UAT copy for the Task Center panel,
-  still using mock/fallback data and no DB read.
+- If accepted, next safe slice is HEU-DATA-012-TASK-CENTER-REAL-USER-UAT-COPY: real-user UAT copy for the Task Center panel, still using mock/fallback data and no DB read.
+- Required next checker alias:
+  `check:heu-task-center-real-user-uat-copy-readiness`.
