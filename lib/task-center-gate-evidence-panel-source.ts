@@ -417,6 +417,28 @@ export const TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_NO_REAL_D
   "TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_NO_REAL_DATA";
 export const TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_DRAFT_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_DRAFT_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_APPROVAL =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_APPROVAL";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_READ =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_READ";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_CLIENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_CLIENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_FILE_WRITE =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_FILE_WRITE";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_TASK_MUTATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_TASK_MUTATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_REAL_DATA =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_REAL_DATA";
+export const TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -693,6 +715,20 @@ export type TaskCenterAdapterDryRunOutputLedgerStaticSnapshotItem = {
   snapshotField: string;
   expectedValue: string;
   sourceLedgerRow: string;
+  stopRule: string;
+};
+
+export type TaskCenterAdapterDryRunReviewDecisionPacketItem = {
+  code: string;
+  reviewer:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  decisionState: "REVIEW_REQUIRED_NO_GO";
+  reviewQuestion: string;
+  requiredBeforeDbRead: string;
   stopRule: string;
 };
 
@@ -985,6 +1021,22 @@ export type TaskCenterGateEvidencePanelSource = {
     result: "OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL_SNAPSHOT_ONLY";
     databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY";
     items: readonly TaskCenterAdapterDryRunOutputLedgerStaticSnapshotItem[];
+  };
+  adapterDryRunReviewDecisionPacket: {
+    mode: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_ONLY;
+    readonly: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READONLY;
+    draftOnly: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_CLIENT;
+    noEnvEnablement: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_ENV_ENABLEMENT;
+    noFileWrite: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_FILE_WRITE;
+    noTaskMutation: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_REAL_DATA;
+    noAiOrAutomation: typeof TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_AI_OR_AUTOMATION;
+    result: "REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY";
+    databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY";
+    items: readonly TaskCenterAdapterDryRunReviewDecisionPacketItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -1993,6 +2045,50 @@ const adapterDryRunOutputLedgerStaticSnapshotItems: readonly TaskCenterAdapterDr
     },
   ];
 
+const adapterDryRunReviewDecisionPacketItems: readonly TaskCenterAdapterDryRunReviewDecisionPacketItem[] =
+  [
+    {
+      code: "REVIEW_DECISION_PACKET_IT_DATA_SCOPE_FIRST",
+      reviewer: "IT_DATA",
+      decisionState: "REVIEW_REQUIRED_NO_GO",
+      reviewQuestion: "Does the static snapshot preserve scope-first boundaries?",
+      requiredBeforeDbRead: "IT_DATA_SCOPE_FIRST_FILTER_SIGNOFF",
+      stopRule: "NO_DATABASE_READ_BEFORE_IT_DATA_SIGNOFF",
+    },
+    {
+      code: "REVIEW_DECISION_PACKET_AUDIT_NEGATIVE_ACCESS",
+      reviewer: "AUDIT",
+      decisionState: "REVIEW_REQUIRED_NO_GO",
+      reviewQuestion: "Do the runner output and static snapshot preserve negative-access evidence?",
+      requiredBeforeDbRead: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      stopRule: "STATIC_SNAPSHOT_CHECKER_ONLY",
+    },
+    {
+      code: "REVIEW_DECISION_PACKET_PHAP_CHE_RESTRICTED_DATA",
+      reviewer: "PHAP_CHE",
+      decisionState: "REVIEW_REQUIRED_NO_GO",
+      reviewQuestion: "Does the packet keep raw PII and payment data out of the dry-run surface?",
+      requiredBeforeDbRead: "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      stopRule: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "REVIEW_DECISION_PACKET_DEPARTMENT_OWNER_TASK_BOUNDARY",
+      reviewer: "DEPARTMENT_OWNER",
+      decisionState: "REVIEW_REQUIRED_NO_GO",
+      reviewQuestion: "Does department mismatch remain blocked without task mutation?",
+      requiredBeforeDbRead: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      stopRule: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "REVIEW_DECISION_PACKET_BGH_PRODUCTION_NO_GO",
+      reviewer: "BGH",
+      decisionState: "REVIEW_REQUIRED_NO_GO",
+      reviewQuestion: "Does BGH keep production NO-GO before UAT evidence and owner approval?",
+      requiredBeforeDbRead: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      stopRule: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -2377,6 +2473,28 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       databaseReady:
         "TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY",
       items: adapterDryRunOutputLedgerStaticSnapshotItems,
+    },
+    adapterDryRunReviewDecisionPacket: {
+      mode: TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_ONLY,
+      readonly: TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READONLY,
+      draftOnly: TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_DRAFT_ONLY,
+      noApproval: TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_APPROVAL,
+      noDatabaseRead:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_READ,
+      noDatabaseClient:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_DATABASE_CLIENT,
+      noEnvEnablement:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_ENV_ENABLEMENT,
+      noFileWrite:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_FILE_WRITE,
+      noTaskMutation:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_REAL_DATA,
+      noAiOrAutomation:
+        TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_NO_AI_OR_AUTOMATION,
+      result: "REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY",
+      databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY",
+      items: adapterDryRunReviewDecisionPacketItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

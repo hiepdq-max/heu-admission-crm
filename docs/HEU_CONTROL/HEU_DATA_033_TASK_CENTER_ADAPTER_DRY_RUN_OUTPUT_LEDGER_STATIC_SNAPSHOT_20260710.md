@@ -73,6 +73,7 @@ Out of scope:
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot
+npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger
 ```
 
@@ -151,6 +152,11 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-034-TASK-CENTER-ADAPTER-DRY-RUN-REVIEW-DECISION-PACKET`.
+  Expected checker:
+  `check:heu-task-center-adapter-dry-run-review-decision-packet`.
+  Expected result:
+  `REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY` and
+  `TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY`.
   Only consider a review decision packet after IT_DATA + Audit approve that
   033 remains source/UI/checker-only and does not write files, database rows,
   tasks, evidence or workflow state.

@@ -8,6 +8,8 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_033_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_20260710.md";
+const reviewDecisionDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_034_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_20260710.md";
 const priorDocPath =
   "docs/HEU_CONTROL/HEU_DATA_032_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_20260710.md";
 const manifestPath =
@@ -18,10 +20,15 @@ const priorCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs";
+const reviewDecisionCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot";
 const checkerCommand = `node ${checkerPath}`;
+const reviewDecisionCheckerAlias =
+  "check:heu-task-center-adapter-dry-run-review-decision-packet";
+const reviewDecisionCheckerCommand = `node ${reviewDecisionCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,11 +68,13 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  reviewDecisionDocPath,
   priorDocPath,
   manifestPath,
   runnerScriptPath,
   priorCheckerPath,
   checkerPath,
+  reviewDecisionCheckerPath,
   packagePath,
 ]) {
   requireFile(file);
@@ -75,11 +84,13 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const reviewDecisionDoc = read(reviewDecisionDocPath);
   const priorDoc = read(priorDocPath);
   const manifest = read(manifestPath);
   const runnerScript = read(runnerScriptPath);
   const priorChecker = read(priorCheckerPath);
   const checkerScript = read(checkerPath);
+  const reviewDecisionChecker = read(reviewDecisionCheckerPath);
   const packageJson = JSON.parse(read(packagePath));
 
   const boundaryTokens = [
@@ -167,9 +178,26 @@ if (failures.length === 0) {
       ...snapshotRows,
       "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
       "HEU-DATA-034-TASK-CENTER-ADAPTER-DRY-RUN-REVIEW-DECISION-PACKET",
+      "check:heu-task-center-adapter-dry-run-review-decision-packet",
+      "REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY",
     ],
     "output ledger static snapshot doc token",
     docPath,
+  );
+
+  requireTokens(
+    reviewDecisionDoc,
+    [
+      "HEU-DATA-034-TASK-CENTER-ADAPTER-DRY-RUN-REVIEW-DECISION-PACKET",
+      "Status: PASS_LOCAL_DECISION_PACKET_ONLY",
+      "Runtime status: REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY",
+      "Database status: TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY",
+      "check:heu-task-center-adapter-dry-run-review-decision-packet",
+      "REVIEW_REQUIRED_NO_GO",
+    ],
+    "review decision packet doc token",
+    reviewDecisionDocPath,
   );
 
   requireTokens(
@@ -202,9 +230,13 @@ if (failures.length === 0) {
     manifest,
     [
       docPath,
+      reviewDecisionDocPath,
       checkerPath,
+      reviewDecisionCheckerPath,
       "node --check scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-review-decision-packet.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-review-decision-packet",
     ],
     "manifest output ledger static snapshot token",
     manifestPath,
@@ -225,6 +257,10 @@ if (failures.length === 0) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
   }
 
+  if (packageJson.scripts?.[reviewDecisionCheckerAlias] !== reviewDecisionCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${reviewDecisionCheckerAlias}`);
+  }
+
   requireTokens(
     checkerScript,
     [
@@ -232,10 +268,24 @@ if (failures.length === 0) {
       "readFileSync",
       "HEU_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL",
       "TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY",
+      "HEU-DATA-034-TASK-CENTER-ADAPTER-DRY-RUN-REVIEW-DECISION-PACKET",
+      "check:heu-task-center-adapter-dry-run-review-decision-packet",
+      "REVIEW_DECISION_PACKET_READY: PASS_LOCAL_DECISION_PACKET_ONLY",
       "NO_RUNTIME_MUTATION: task center adapter dry-run output ledger static snapshot checker only; no owner approval, database client, database read, env enablement, file output write, table creation, SQL migration, task write, file upload, storage write, real-data fixture, AI call, paid automation, deploy, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
+  );
+
+  requireTokens(
+    reviewDecisionChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_REVIEW_DECISION_PACKET_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_REVIEW_DECISION_PACKET_ONLY",
+      "NO_RUNTIME_MUTATION: task center adapter dry-run review decision packet checker only",
+    ],
+    "review decision packet checker token",
+    reviewDecisionCheckerPath,
   );
 
   const runtimeScopeText = [panelSource, component, runnerScript].join("\n");
