@@ -9,6 +9,8 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_031_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_20260710.md";
+const outputLedgerDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_032_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_20260710.md";
 const readinessDocPath =
   "docs/HEU_CONTROL/HEU_DATA_030_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_CANDIDATE_READINESS_20260710.md";
 const staticCheckDesignDocPath =
@@ -21,12 +23,17 @@ const readinessCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs";
+const outputLedgerCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs";
 const packagePath = "package.json";
 const runnerAlias = "dry-run:heu-task-center-adapter-local-runner";
 const runnerCommand = `node ${runnerScriptPath}`;
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-local-runner-script-draft";
 const checkerCommand = `node ${checkerPath}`;
+const outputLedgerCheckerAlias =
+  "check:heu-task-center-adapter-dry-run-runner-output-ledger";
+const outputLedgerCheckerCommand = `node ${outputLedgerCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -67,12 +74,14 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  outputLedgerDocPath,
   readinessDocPath,
   staticCheckDesignDocPath,
   manifestPath,
   runnerScriptPath,
   readinessCheckerPath,
   checkerPath,
+  outputLedgerCheckerPath,
   packagePath,
 ]) {
   requireFile(file);
@@ -83,11 +92,13 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const outputLedgerDoc = read(outputLedgerDocPath);
   const readinessDoc = read(readinessDocPath);
   const staticCheckDesignDoc = read(staticCheckDesignDocPath);
   const manifest = read(manifestPath);
   const runnerScript = read(runnerScriptPath);
   const readinessChecker = read(readinessCheckerPath);
+  const outputLedgerChecker = read(outputLedgerCheckerPath);
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -203,9 +214,25 @@ if (failures.length === 0) {
       "HEU-DATA-032-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-OUTPUT-LEDGER",
       "dry-run:heu-task-center-adapter-local-runner",
       "check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+      "check:heu-task-center-adapter-dry-run-runner-output-ledger",
+      "RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY",
     ],
     "local runner script draft doc token",
     docPath,
+  );
+
+  requireTokens(
+    outputLedgerDoc,
+    [
+      "HEU-DATA-032-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-OUTPUT-LEDGER",
+      "Status: PASS_LOCAL_LEDGER_ONLY",
+      "Runtime status: RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY",
+      "Database status: TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY",
+      "check:heu-task-center-adapter-dry-run-runner-output-ledger",
+    ],
+    "runner output ledger doc token",
+    outputLedgerDocPath,
   );
 
   requireTokens(
@@ -265,17 +292,22 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      outputLedgerDocPath,
       readinessDocPath,
       staticCheckDesignDocPath,
       runnerScriptPath,
       checkerPath,
+      outputLedgerCheckerPath,
       readinessCheckerPath,
       "dry-run:heu-task-center-adapter-local-runner",
       "check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+      "check:heu-task-center-adapter-dry-run-runner-output-ledger",
       "node --check scripts/dry-run-heu-task-center-adapter-local-runner.mjs",
       "node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs",
       "npm.cmd run dry-run:heu-task-center-adapter-local-runner",
       "npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger",
     ],
     "manifest local runner script draft token",
     manifestPath,
@@ -302,6 +334,10 @@ if (failures.length === 0) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
   }
 
+  if (packageJson.scripts?.[outputLedgerCheckerAlias] !== outputLedgerCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${outputLedgerCheckerAlias}`);
+  }
+
   requireTokens(
     checkerScript,
     [
@@ -309,10 +345,24 @@ if (failures.length === 0) {
       "readFileSync",
       "HEU_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL",
       "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      "HEU-DATA-032-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-OUTPUT-LEDGER",
+      "check:heu-task-center-adapter-dry-run-runner-output-ledger",
+      "RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY",
       "NO_RUNTIME_MUTATION: task center adapter dry-run local runner script draft checker only; no owner approval, database client, database read, env enablement, runtime fixture file, table creation, SQL migration, task write, file upload, storage write, real-data fixture, AI call, paid automation, deploy, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
+  );
+
+  requireTokens(
+    outputLedgerChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY",
+      "NO_RUNTIME_MUTATION: task center adapter dry-run runner output ledger checker only",
+    ],
+    "runner output ledger checker token",
+    outputLedgerCheckerPath,
   );
 
   const runtimeScopeText = [

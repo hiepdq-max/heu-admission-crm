@@ -107,6 +107,7 @@ node scripts/dry-run-heu-task-center-adapter-local-runner.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs
 npm.cmd run dry-run:heu-task-center-adapter-local-runner
 npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-script-draft
+npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger
 ```
 
 Expected outputs:
@@ -175,6 +176,8 @@ SOP-NEXT:
 - Next slice should define how to capture runner output as local evidence
   without writing database rows, uploading files, calling AI or enabling paid
   automation.
+- Expected 032 result: `RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY`
+  and `TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY`.
 
 ## 12. Final Boundary
 

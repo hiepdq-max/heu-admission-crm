@@ -375,6 +375,26 @@ export const TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_NO_REAL_DATA 
   "TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_NO_REAL_DATA";
 export const TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_DRAFT_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_DRAFT_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_APPROVAL =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_APPROVAL";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_READ =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_READ";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_CLIENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_CLIENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_TASK_MUTATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_TASK_MUTATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_REAL_DATA =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_REAL_DATA";
+export const TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -623,6 +643,20 @@ export type TaskCenterAdapterDryRunLocalRunnerScriptDraftItem = {
   runnerAssertion: string;
   syntheticInput: string;
   expectedReport: string;
+  stopRule: string;
+};
+
+export type TaskCenterAdapterDryRunRunnerOutputLedgerItem = {
+  code: string;
+  reviewer:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  ledgerField: string;
+  expectedToken: string;
+  sourceReport: string;
   stopRule: string;
 };
 
@@ -884,6 +918,21 @@ export type TaskCenterGateEvidencePanelSource = {
     result: "LOCAL_RUNNER_SCRIPT_DRAFT_READY: PASS_LOCAL_SCRIPT_ONLY";
     databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY";
     items: readonly TaskCenterAdapterDryRunLocalRunnerScriptDraftItem[];
+  };
+  adapterDryRunRunnerOutputLedger: {
+    mode: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_ONLY;
+    readonly: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READONLY;
+    draftOnly: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_CLIENT;
+    noEnvEnablement: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_ENV_ENABLEMENT;
+    noTaskMutation: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_REAL_DATA;
+    noAiOrAutomation: typeof TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_AI_OR_AUTOMATION;
+    result: "RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY";
+    databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY";
+    items: readonly TaskCenterAdapterDryRunRunnerOutputLedgerItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -1803,6 +1852,51 @@ const adapterDryRunLocalRunnerScriptDraftItems: readonly TaskCenterAdapterDryRun
     },
   ];
 
+const adapterDryRunRunnerOutputLedgerItems: readonly TaskCenterAdapterDryRunRunnerOutputLedgerItem[] =
+  [
+    {
+      code: "RUNNER_OUTPUT_LEDGER_BOUNDARY_CAPTURE",
+      reviewer: "IT_DATA",
+      ledgerField: "boundary.mode",
+      expectedToken:
+        "TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      sourceReport: "LOCAL_RUNNER_REPORT_ONLY",
+      stopRule: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "RUNNER_OUTPUT_LEDGER_CASE_COUNT",
+      reviewer: "AUDIT",
+      ledgerField: "results.length",
+      expectedToken: "FIVE_SYNTHETIC_CASES_REPORTED",
+      sourceReport: "LOCAL_RUNNER_CASE_PASS_SCOPE_MATCH",
+      stopRule: "NO_BROAD_FALLBACK_ALLOWED",
+    },
+    {
+      code: "RUNNER_OUTPUT_LEDGER_RESTRICTED_DATA_ABSENT",
+      reviewer: "PHAP_CHE",
+      ledgerField: "results.restrictedData",
+      expectedToken: "LOCAL_RUNNER_CASE_PASS_RESTRICTED_FIELDS_ABSENT",
+      sourceReport: "NO_RAW_PII_NO_PAYMENT_DATA",
+      stopRule: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "RUNNER_OUTPUT_LEDGER_DEPARTMENT_MISMATCH_BLOCKED",
+      reviewer: "DEPARTMENT_OWNER",
+      ledgerField: "results.departmentMismatch",
+      expectedToken: "LOCAL_RUNNER_CASE_PASS_DEPARTMENT_MISMATCH_BLOCKED",
+      sourceReport: "NO_TASK_MUTATION_ROUTE_CREATED",
+      stopRule: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "RUNNER_OUTPUT_LEDGER_PRODUCTION_NO_GO",
+      reviewer: "BGH",
+      ledgerField: "productionDecision",
+      expectedToken: "LOCAL_RUNNER_CASE_PASS_PRODUCTION_NO_GO",
+      sourceReport: "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
+      stopRule: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -2140,6 +2234,26 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       databaseReady:
         "TASK_CENTER_DATABASE_READY: NO_GO_LOCAL_RUNNER_SCRIPT_DRAFT_ONLY",
       items: adapterDryRunLocalRunnerScriptDraftItems,
+    },
+    adapterDryRunRunnerOutputLedger: {
+      mode: TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_ONLY,
+      readonly: TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READONLY,
+      draftOnly: TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_DRAFT_ONLY,
+      noApproval: TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_APPROVAL,
+      noDatabaseRead:
+        TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_READ,
+      noDatabaseClient:
+        TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_DATABASE_CLIENT,
+      noEnvEnablement:
+        TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_ENV_ENABLEMENT,
+      noTaskMutation:
+        TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_REAL_DATA,
+      noAiOrAutomation:
+        TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_NO_AI_OR_AUTOMATION,
+      result: "RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL_LEDGER_ONLY",
+      databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY",
+      items: adapterDryRunRunnerOutputLedgerItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,
