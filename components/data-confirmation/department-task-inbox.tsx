@@ -96,6 +96,16 @@ import {
   TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_TASK_MUTATION,
   TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_ONLY,
   TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_READONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY,
+  TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_DRAFT_ONLY,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_AI_OR_AUTOMATION,
   TASK_CENTER_OWNER_GATE_EVIDENCE_MATRIX_NO_APPROVAL,
@@ -400,6 +410,16 @@ export function DepartmentTaskInbox({
         data-heu-task-center-adapter-dry-run-readiness-review-no-task-mutation={TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_TASK_MUTATION}
         data-heu-task-center-adapter-dry-run-readiness-review-no-real-data={TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_REAL_DATA}
         data-heu-task-center-adapter-dry-run-readiness-review-no-ai-or-automation={TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_AI_OR_AUTOMATION}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-readonly={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-draft-only={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-approval={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-database-read={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-database-client={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-env-enablement={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-task-mutation={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-real-data={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA}
+        data-heu-task-center-adapter-dry-run-static-negative-access-packet-no-ai-or-automation={TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION}
       >
         <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -1221,6 +1241,76 @@ export function DepartmentTaskInbox({
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="text-xs font-medium uppercase text-zinc-500">
+                HEU-Data-025 - Static negative-access packet
+              </div>
+              <div className="mt-1 text-sm font-semibold text-zinc-950">
+                Cac case chan truy cap truoc dry-run adapter
+              </div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-600">
+                Packet nay chi mo ta case negative-access can co bang chung
+                truoc khi cho phep dry-run adapter. Van khong bat env, khong
+                tao DB client, khong doc DB, khong sua task, khong dung du
+                lieu that, khong goi AI va khong automation step.
+              </p>
+            </div>
+            <div className="flex flex-col gap-1 text-xs">
+              <span className="inline-flex w-fit rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 font-medium text-zinc-700">
+                {gateEvidence.adapterDryRunStaticNegativeAccessPacket.mode}
+              </span>
+              <span className="inline-flex w-fit rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700">
+                {gateEvidence.adapterDryRunStaticNegativeAccessPacket.result}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-3 grid gap-2 lg:grid-cols-5">
+            {gateEvidence.adapterDryRunStaticNegativeAccessPacket.items.map(
+              (item) => (
+                <article
+                  key={item.code}
+                  className="rounded-md border border-zinc-200 bg-zinc-50 p-3"
+                  data-heu-task-center-adapter-dry-run-static-negative-access-packet-item={item.code}
+                  data-heu-task-center-adapter-dry-run-static-negative-access-packet-reviewer={
+                    item.reviewer
+                  }
+                  data-heu-task-center-adapter-dry-run-static-negative-access-packet-required={
+                    item.requiredEvidenceCode
+                  }
+                  data-heu-task-center-adapter-dry-run-static-negative-access-packet-expected={
+                    item.expectedResult
+                  }
+                  data-heu-task-center-adapter-dry-run-static-negative-access-packet-stop-rule={
+                    item.stopRule
+                  }
+                >
+                  <div className="font-mono text-[11px] text-zinc-500">
+                    {item.code}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-zinc-950">
+                    {item.reviewer}
+                  </div>
+                  <div className="mt-2 text-xs leading-5 text-zinc-600">
+                    {item.negativeScenario}
+                  </div>
+                  <div className="mt-2 break-all font-mono text-[11px] text-zinc-500">
+                    {item.requiredEvidenceCode}
+                  </div>
+                  <div className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-700">
+                    {item.expectedResult}
+                  </div>
+                  <div className="mt-2 rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-medium text-rose-700">
+                    {item.stopRule}
+                  </div>
+                </article>
+              ),
+            )}
           </div>
         </div>
       </div>

@@ -59,6 +59,7 @@ docs/HEU_CONTROL/HEU_DATA_021_TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_20260710.m
 docs/HEU_CONTROL/HEU_DATA_022_TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_20260710.md
 docs/HEU_CONTROL/HEU_DATA_023_TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_20260710.md
 docs/HEU_CONTROL/HEU_DATA_024_TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_20260710.md
+docs/HEU_CONTROL/HEU_DATA_025_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -100,6 +101,7 @@ scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs
 scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs
 scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs
 scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs
+scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -179,6 +181,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_DATA_022_TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_023_TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_024_TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_025_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -220,6 +223,7 @@ git add -- `
   scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs `
   scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs `
   scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs `
+  scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -259,6 +263,7 @@ node --check scripts/check-heu-task-center-adapter-preflight-checklist-readiness
 node --check scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs
 node --check scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-task-center-data-contract-readiness
@@ -282,6 +287,7 @@ npm.cmd run check:heu-task-center-adapter-preflight-checklist-readiness
 npm.cmd run check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness
 npm.cmd run check:heu-task-center-dry-run-env-gate-ledger-readiness
 npm.cmd run check:heu-task-center-adapter-dry-run-readiness-review
+npm.cmd run check:heu-task-center-adapter-dry-run-static-negative-access-packet
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness

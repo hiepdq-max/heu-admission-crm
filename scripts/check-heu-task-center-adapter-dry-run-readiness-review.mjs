@@ -17,6 +17,10 @@ const envGateLedgerCheckerPath =
   "scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs";
+const staticNegativeAccessPacketDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_025_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_20260710.md";
+const staticNegativeAccessPacketCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-readiness-review";
@@ -65,6 +69,8 @@ for (const file of [
   manifestPath,
   envGateLedgerCheckerPath,
   checkerPath,
+  staticNegativeAccessPacketDocPath,
+  staticNegativeAccessPacketCheckerPath,
   packagePath,
 ]) {
   requireFile(file);
@@ -79,6 +85,10 @@ if (failures.length === 0) {
   const manifest = read(manifestPath);
   const envGateLedgerChecker = read(envGateLedgerCheckerPath);
   const checkerScript = read(checkerPath);
+  const staticNegativeAccessPacketDoc = read(staticNegativeAccessPacketDocPath);
+  const staticNegativeAccessPacketChecker = read(
+    staticNegativeAccessPacketCheckerPath,
+  );
   const packageJson = JSON.parse(read(packagePath));
 
   requireTokens(
@@ -204,6 +214,9 @@ if (failures.length === 0) {
       "DRY_RUN_READINESS_PRODUCTION_NO_GO",
       "BLOCKED_REQUIRES_OWNER_SIGNOFF",
       "HEU-DATA-025-TASK-CENTER-ADAPTER-DRY-RUN-STATIC-NEGATIVE-ACCESS-PACKET",
+      "static negative-access packet",
+      "NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL_PACKET_ONLY",
+      "check:heu-task-center-adapter-dry-run-static-negative-access-packet",
       "check:heu-task-center-adapter-dry-run-readiness-review",
     ],
     "adapter dry-run readiness doc token",
@@ -229,12 +242,17 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      staticNegativeAccessPacketDocPath,
       envGateLedgerDocPath,
       checkerPath,
+      staticNegativeAccessPacketCheckerPath,
       envGateLedgerCheckerPath,
       "check:heu-task-center-adapter-dry-run-readiness-review",
+      "check:heu-task-center-adapter-dry-run-static-negative-access-packet",
       "node --check scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-readiness-review",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-static-negative-access-packet",
     ],
     "manifest adapter dry-run readiness token",
     manifestPath,
@@ -250,6 +268,30 @@ if (failures.length === 0) {
     ],
     "env gate ledger checker next-slice token",
     envGateLedgerCheckerPath,
+  );
+
+  requireTokens(
+    staticNegativeAccessPacketDoc,
+    [
+      "HEU-DATA-025-TASK-CENTER-ADAPTER-DRY-RUN-STATIC-NEGATIVE-ACCESS-PACKET",
+      "NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL_PACKET_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_STATIC_NEGATIVE_ACCESS_PACKET_ONLY",
+      "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY",
+      "check:heu-task-center-adapter-dry-run-static-negative-access-packet",
+    ],
+    "static negative-access packet doc token",
+    staticNegativeAccessPacketDocPath,
+  );
+
+  requireTokens(
+    staticNegativeAccessPacketChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_STATIC_NEGATIVE_ACCESS_PACKET_ONLY",
+      staticNegativeAccessPacketDocPath,
+    ],
+    "static negative-access packet checker token",
+    staticNegativeAccessPacketCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {

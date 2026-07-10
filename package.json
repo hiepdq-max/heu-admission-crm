@@ -60,6 +60,7 @@
     "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness": "node scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs",
     "check:heu-task-center-dry-run-env-gate-ledger-readiness": "node scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs",
     "check:heu-task-center-adapter-dry-run-readiness-review": "node scripts/check-heu-task-center-adapter-dry-run-readiness-review.mjs",
+    "check:heu-task-center-adapter-dry-run-static-negative-access-packet": "node scripts/check-heu-task-center-adapter-dry-run-static-negative-access-packet.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-user-pilot-identity-scope-day1-readiness": "node scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs",
     "check:heu-user-pilot-identity-scope-precheck-ledger-readiness": "node scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs",

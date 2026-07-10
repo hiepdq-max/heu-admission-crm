@@ -235,6 +235,26 @@ export const TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_REAL_DATA =
   "TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_REAL_DATA";
 export const TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_ADAPTER_DRY_RUN_READINESS_REVIEW_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA";
+export const TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -386,6 +406,20 @@ export type TaskCenterAdapterDryRunReadinessReviewItem = {
     | "DEPARTMENT_OWNER"
     | "BGH";
   requiredEvidenceCode: string;
+  stopRule: string;
+};
+
+export type TaskCenterAdapterDryRunStaticNegativeAccessPacketItem = {
+  code: string;
+  reviewer:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  negativeScenario: string;
+  requiredEvidenceCode: string;
+  expectedResult: string;
   stopRule: string;
 };
 
@@ -542,6 +576,21 @@ export type TaskCenterGateEvidencePanelSource = {
     readiness: "DRY_RUN_ADAPTER_READY: NO_GO_REVIEW_ONLY";
     databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_DRY_RUN_READINESS_REVIEW_ONLY";
     items: readonly TaskCenterAdapterDryRunReadinessReviewItem[];
+  };
+  adapterDryRunStaticNegativeAccessPacket: {
+    mode: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY;
+    readonly: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY;
+    draftOnly: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT;
+    noEnvEnablement: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT;
+    noTaskMutation: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA;
+    noAiOrAutomation: typeof TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION;
+    result: "NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL_PACKET_ONLY";
+    databaseReady: "TASK_CENTER_DATABASE_READY: NO_GO_STATIC_NEGATIVE_ACCESS_PACKET_ONLY";
+    items: readonly TaskCenterAdapterDryRunStaticNegativeAccessPacketItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -1146,6 +1195,55 @@ const adapterDryRunReadinessReviewItems: readonly TaskCenterAdapterDryRunReadine
     },
   ];
 
+const adapterDryRunStaticNegativeAccessPacketItems: readonly TaskCenterAdapterDryRunStaticNegativeAccessPacketItem[] =
+  [
+    {
+      code: "NEG_ACCESS_NO_WORKSPACE_SCOPE",
+      reviewer: "IT_DATA",
+      negativeScenario:
+        "User has no matching workspace or business-scope lane for the task.",
+      requiredEvidenceCode: "IT_DATA_WORKSPACE_SCOPE_DENIAL_PROOF",
+      expectedResult: "BLOCKED_NO_VISIBLE_ROWS",
+      stopRule: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "NEG_ACCESS_WRONG_DEPARTMENT",
+      reviewer: "DEPARTMENT_OWNER",
+      negativeScenario:
+        "User belongs to a different department than the task department code.",
+      requiredEvidenceCode: "DEPARTMENT_OWNER_WRONG_DEPARTMENT_DENIAL_PROOF",
+      expectedResult: "BLOCKED_DEPARTMENT_SCOPE_MISMATCH",
+      stopRule: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "NEG_ACCESS_NO_READ_PERMISSION",
+      reviewer: "IT_DATA",
+      negativeScenario:
+        "User lacks data_confirmation.read before any queue or timeline lane.",
+      requiredEvidenceCode: "IT_DATA_PERMISSION_DENIAL_PROOF",
+      expectedResult: "BLOCKED_DATA_CONFIRMATION_READ_REQUIRED",
+      stopRule: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "NEG_ACCESS_RESTRICTED_DATA_ALLOWLIST",
+      reviewer: "PHAP_CHE",
+      negativeScenario:
+        "Restricted raw PII, payment or bank fields are requested by mistake.",
+      requiredEvidenceCode: "PHAP_CHE_RESTRICTED_DATA_ALLOWLIST_PROOF",
+      expectedResult: "BLOCKED_NO_RAW_PII_NO_PAYMENT_DATA",
+      stopRule: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "NEG_ACCESS_GLOBAL_CONFIRM_BYPASS",
+      reviewer: "AUDIT",
+      negativeScenario:
+        "Global route/manage permission is incorrectly treated as task confirmation authority.",
+      requiredEvidenceCode: "AUDIT_GLOBAL_BYPASS_DENIAL_PROOF",
+      expectedResult: "BLOCKED_NO_GLOBAL_CONFIRM_PERMISSION_BYPASS",
+      stopRule: "NO_BROAD_ACCESS_PROOF_MISSING",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -1310,6 +1408,31 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       databaseReady:
         "TASK_CENTER_DATABASE_READY: NO_GO_DRY_RUN_READINESS_REVIEW_ONLY",
       items: adapterDryRunReadinessReviewItems,
+    },
+    adapterDryRunStaticNegativeAccessPacket: {
+      mode: TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_ONLY,
+      readonly:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_READONLY,
+      draftOnly:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_DRAFT_ONLY,
+      noApproval:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_APPROVAL,
+      noDatabaseRead:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_READ,
+      noDatabaseClient:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_DATABASE_CLIENT,
+      noEnvEnablement:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_ENV_ENABLEMENT,
+      noTaskMutation:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_TASK_MUTATION,
+      noRealData:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_REAL_DATA,
+      noAiOrAutomation:
+        TASK_CENTER_ADAPTER_DRY_RUN_STATIC_NEGATIVE_ACCESS_PACKET_NO_AI_OR_AUTOMATION,
+      result: "NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL_PACKET_ONLY",
+      databaseReady:
+        "TASK_CENTER_DATABASE_READY: NO_GO_STATIC_NEGATIVE_ACCESS_PACKET_ONLY",
+      items: adapterDryRunStaticNegativeAccessPacketItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,

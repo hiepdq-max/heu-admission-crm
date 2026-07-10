@@ -238,6 +238,11 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-025-TASK-CENTER-ADAPTER-DRY-RUN-STATIC-NEGATIVE-ACCESS-PACKET`.
+- This is a static negative-access packet with
+  `NEGATIVE_ACCESS_PACKET_READY: PASS_LOCAL_PACKET_ONLY`, not live DB negative
+  testing.
+- Required next checker:
+  `check:heu-task-center-adapter-dry-run-static-negative-access-packet`.
 - Still docs/checker/read-only first. Do not implement DB adapter until owner
   evidence exists.
 
