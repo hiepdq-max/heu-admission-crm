@@ -195,5 +195,6 @@ SOP-RESULT:
 
 SOP-NEXT:
 - Review mock list with IT_DATA + Audit + 1 department owner.
-- If accepted, next safe slice is read-only DB query design or route-level
-  feature flag plan, still no mutation and no migration until gates close.
+- If accepted, next safe slice is HEU-DATA-007-TASK-CENTER-READONLY-QUERY-PLAN: read-only DB query design, still no mutation and no migration until gates close.
+- Required next checker alias:
+  `check:heu-task-center-readonly-query-plan-readiness`.

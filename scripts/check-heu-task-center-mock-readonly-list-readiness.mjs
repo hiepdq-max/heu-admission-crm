@@ -11,15 +11,23 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_006_TASK_CENTER_MOCK_READONLY_LIST_20260710.md";
 const readModelDocPath =
   "docs/HEU_CONTROL/HEU_DATA_005_TASK_CENTER_READ_MODEL_INTERFACE_20260710.md";
+const queryPlanDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_007_TASK_CENTER_READONLY_QUERY_PLAN_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const readModelCheckerPath =
   "scripts/check-heu-task-center-read-model-interface-readiness.mjs";
+const queryContractPath = "lib/task-center-readonly-query-contract.ts";
+const queryPlanCheckerPath =
+  "scripts/check-heu-task-center-readonly-query-plan-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-mock-readonly-list-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias = "check:heu-task-center-mock-readonly-list-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const queryPlanCheckerAlias =
+  "check:heu-task-center-readonly-query-plan-readiness";
+const queryPlanCheckerCommand = `node ${queryPlanCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,8 +69,11 @@ for (const file of [
   componentPath,
   docPath,
   readModelDocPath,
+  queryPlanDocPath,
   manifestPath,
   readModelCheckerPath,
+  queryContractPath,
+  queryPlanCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,6 +86,9 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const doc = read(docPath);
   const readModelDoc = read(readModelDocPath);
+  const queryPlanDoc = read(queryPlanDocPath);
+  const queryContract = read(queryContractPath);
+  const queryPlanChecker = read(queryPlanCheckerPath);
   const manifest = read(manifestPath);
   const readModelChecker = read(readModelCheckerPath);
   const checkerScript = read(checkerPath);
@@ -158,6 +172,10 @@ if (failures.length === 0) {
       "CAN_SUA_IT_DATA_AUDIT_OWNER",
       "no AI call",
       "no automation step",
+      "HEU-DATA-007-TASK-CENTER-READONLY-QUERY-PLAN",
+      "read-only DB query design",
+      "still no mutation and no migration until gates close",
+      "check:heu-task-center-readonly-query-plan-readiness",
     ],
     "mock-list doc token",
     docPath,
@@ -175,14 +193,59 @@ if (failures.length === 0) {
   );
 
   requireTokens(
+    queryPlanDoc,
+    [
+      "HEU-DATA-007-TASK-CENTER-READONLY-QUERY-PLAN",
+      "TASK_CENTER_READONLY_QUERY_PLAN_ONLY",
+      "SCOPE_FIRST_QUERY_REQUIRED",
+      "TASK_CENTER_DATABASE_READY_NO_GO_QUERY_PLAN_ONLY",
+      "NO_BROAD_FALLBACK",
+      "NO_TASK_MUTATION_ROUTE_CREATED",
+      "NO_AI_CALL_NO_AUTOMATION_STEP",
+    ],
+    "next query-plan doc token",
+    queryPlanDocPath,
+  );
+
+  requireTokens(
+    queryContract,
+    [
+      "TASK_CENTER_READONLY_QUERY_PLAN_ONLY",
+      "TASK_CENTER_READONLY_SCOPE_FILTERS",
+      "TASK_CENTER_READONLY_SELECT_COLUMNS",
+      "createTaskCenterReadonlyQueryPlan",
+      "NO_BROAD_FALLBACK",
+    ],
+    "next query-plan contract token",
+    queryContractPath,
+  );
+
+  requireTokens(
+    queryPlanChecker,
+    [
+      "HEU_TASK_CENTER_READONLY_QUERY_PLAN_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_QUERY_PLAN_ONLY",
+      "NO_RUNTIME_MUTATION: task center readonly query plan checker only",
+    ],
+    "next query-plan checker token",
+    queryPlanCheckerPath,
+  );
+
+  requireTokens(
     manifest,
     [
       mockLibPath,
+      queryContractPath,
       docPath,
+      queryPlanDocPath,
       checkerPath,
+      queryPlanCheckerPath,
       "check:heu-task-center-mock-readonly-list-readiness",
+      "check:heu-task-center-readonly-query-plan-readiness",
       "node --check scripts/check-heu-task-center-mock-readonly-list-readiness.mjs",
+      "node --check scripts/check-heu-task-center-readonly-query-plan-readiness.mjs",
       "npm.cmd run check:heu-task-center-mock-readonly-list-readiness",
+      "npm.cmd run check:heu-task-center-readonly-query-plan-readiness",
     ],
     "manifest mock-list token",
     manifestPath,
@@ -203,6 +266,10 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (packageJson.scripts?.[queryPlanCheckerAlias] !== queryPlanCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${queryPlanCheckerAlias}`);
   }
 
   requireTokens(
