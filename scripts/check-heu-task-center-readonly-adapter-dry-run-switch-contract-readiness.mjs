@@ -9,18 +9,26 @@ const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const enablementGatePath = "lib/task-center-readonly-adapter-enablement-gate.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_022_TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_20260710.md";
+const dryRunEnvGateLedgerDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_023_TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_20260710.md";
 const adapterPreflightChecklistDocPath =
   "docs/HEU_CONTROL/HEU_DATA_021_TASK_CENTER_ADAPTER_PREFLIGHT_CHECKLIST_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const adapterPreflightChecklistCheckerPath =
   "scripts/check-heu-task-center-adapter-preflight-checklist-readiness.mjs";
+const dryRunEnvGateLedgerCheckerPath =
+  "scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness";
 const checkerCommand = `node ${checkerPath}`;
+const dryRunEnvGateLedgerCheckerAlias =
+  "check:heu-task-center-dry-run-env-gate-ledger-readiness";
+const dryRunEnvGateLedgerCheckerCommand =
+  `node ${dryRunEnvGateLedgerCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,9 +69,11 @@ for (const file of [
   panelSourcePath,
   enablementGatePath,
   docPath,
+  dryRunEnvGateLedgerDocPath,
   adapterPreflightChecklistDocPath,
   manifestPath,
   adapterPreflightChecklistCheckerPath,
+  dryRunEnvGateLedgerCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -75,6 +85,7 @@ if (failures.length === 0) {
   const panelSource = read(panelSourcePath);
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
+  const dryRunEnvGateLedgerDoc = read(dryRunEnvGateLedgerDocPath);
   const adapterPreflightChecklistDoc = read(adapterPreflightChecklistDocPath);
   const manifest = read(manifestPath);
   const adapterPreflightChecklistChecker = read(
@@ -212,10 +223,43 @@ if (failures.length === 0) {
       "TASK_CENTER_DATABASE_READY: NO_GO",
       "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
       "HEU-DATA-023-TASK-CENTER-DRY-RUN-ENV-GATE-LEDGER",
+      "DRY_RUN_ENV_GATE_DISABLED_BY_DEFAULT",
       "check:heu-task-center-dry-run-env-gate-ledger-readiness",
     ],
     "dry-run switch contract doc token",
     docPath,
+  );
+
+  requireTokens(
+    dryRunEnvGateLedgerDoc,
+    [
+      "HEU-DATA-023-TASK-CENTER-DRY-RUN-ENV-GATE-LEDGER",
+      "Status: PASS_LOCAL_DRY_RUN_ENV_GATE_LEDGER",
+      "Production status: NO-GO",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_ONLY",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_READONLY",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_DRAFT_ONLY",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_APPROVAL",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_READ",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_CLIENT",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_TASK_MUTATION",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_REAL_DATA",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_ENV_ENABLEMENT",
+      "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_AI_OR_AUTOMATION",
+      "ENV_GATE_RECORDED_DISABLED",
+      "DRY_RUN_ENV_GATE_DISABLED_BY_DEFAULT",
+      "ENV_GATE_LEDGER_FLAG_NAME_RESERVED",
+      "ENV_GATE_LEDGER_NEGATIVE_ACCESS_LOCK",
+      "ENV_GATE_LEDGER_RESTRICTED_DATA_BOUNDARY",
+      "ENV_GATE_LEDGER_READONLY_TASK_COPY",
+      "ENV_GATE_LEDGER_PRODUCTION_NO_GO",
+      "TASK_CENTER_DATABASE_READY: NO_GO",
+      "CAN_SUA_IT_DATA_AUDIT_PHAP_CHE_OWNER_BGH",
+      "HEU-DATA-024-TASK-CENTER-ADAPTER-DRY-RUN-READINESS-REVIEW",
+      "check:heu-task-center-adapter-dry-run-readiness-review",
+    ],
+    "dry-run env gate ledger doc token",
+    dryRunEnvGateLedgerDocPath,
   );
 
   requireTokens(
@@ -238,12 +282,17 @@ if (failures.length === 0) {
       panelSourcePath,
       enablementGatePath,
       docPath,
+      dryRunEnvGateLedgerDocPath,
       adapterPreflightChecklistDocPath,
       checkerPath,
+      dryRunEnvGateLedgerCheckerPath,
       adapterPreflightChecklistCheckerPath,
       "check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
+      "check:heu-task-center-dry-run-env-gate-ledger-readiness",
       "node --check scripts/check-heu-task-center-readonly-adapter-dry-run-switch-contract-readiness.mjs",
+      "node --check scripts/check-heu-task-center-dry-run-env-gate-ledger-readiness.mjs",
       "npm.cmd run check:heu-task-center-readonly-adapter-dry-run-switch-contract-readiness",
+      "npm.cmd run check:heu-task-center-dry-run-env-gate-ledger-readiness",
     ],
     "manifest dry-run switch contract token",
     manifestPath,
@@ -263,6 +312,13 @@ if (failures.length === 0) {
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
+  }
+
+  if (
+    packageJson.scripts?.[dryRunEnvGateLedgerCheckerAlias] !==
+    dryRunEnvGateLedgerCheckerCommand
+  ) {
+    fail(`${packagePath}: missing or mismatched ${dryRunEnvGateLedgerCheckerAlias}`);
   }
 
   requireTokens(

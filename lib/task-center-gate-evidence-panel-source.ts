@@ -195,6 +195,26 @@ export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEM
   "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT";
 export const TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION =
   "TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_ONLY =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_ONLY";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_READONLY =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_READONLY";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_DRAFT_ONLY =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_DRAFT_ONLY";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_APPROVAL =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_APPROVAL";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_READ =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_READ";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_CLIENT =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_CLIENT";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_TASK_MUTATION =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_TASK_MUTATION";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_REAL_DATA =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_REAL_DATA";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_ENV_ENABLEMENT =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_ENV_ENABLEMENT";
+export const TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_AI_OR_AUTOMATION =
+  "TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_AI_OR_AUTOMATION";
 
 export type TaskCenterGateEvidenceOwnerRow = {
   lane: TaskCenterEnablementOwnerLane;
@@ -319,6 +339,20 @@ export type TaskCenterReadonlyAdapterDryRunSwitchContractItem = {
     | "BGH";
   requiredBeforeSwitch: string;
   dryRunBehavior: string;
+  forbiddenInThisSlice: string;
+};
+
+export type TaskCenterDryRunEnvGateLedgerItem = {
+  code: string;
+  gateState: "ENV_GATE_RECORDED_DISABLED";
+  gateOwner:
+    | "IT_DATA"
+    | "AUDIT"
+    | "PHAP_CHE"
+    | "DEPARTMENT_OWNER"
+    | "BGH";
+  requiredBeforeEnvEnablement: string;
+  disabledDefaultEvidence: string;
   forbiddenInThisSlice: string;
 };
 
@@ -447,6 +481,19 @@ export type TaskCenterGateEvidencePanelSource = {
     noEnvEnablement: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT;
     noAiOrAutomation: typeof TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION;
     items: readonly TaskCenterReadonlyAdapterDryRunSwitchContractItem[];
+  };
+  dryRunEnvGateLedger: {
+    mode: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_ONLY;
+    readonly: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_READONLY;
+    draftOnly: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_DRAFT_ONLY;
+    noApproval: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_APPROVAL;
+    noDatabaseRead: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_READ;
+    noDatabaseClient: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_CLIENT;
+    noTaskMutation: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_TASK_MUTATION;
+    noRealData: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_REAL_DATA;
+    noEnvEnablement: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_ENV_ENABLEMENT;
+    noAiOrAutomation: typeof TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_AI_OR_AUTOMATION;
+    items: readonly TaskCenterDryRunEnvGateLedgerItem[];
   };
   boundary: {
     ownerReviewRequired: typeof TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED;
@@ -962,6 +1009,56 @@ const readonlyAdapterDryRunSwitchContractItems: readonly TaskCenterReadonlyAdapt
     },
   ];
 
+const dryRunEnvGateLedgerItems: readonly TaskCenterDryRunEnvGateLedgerItem[] =
+  [
+    {
+      code: "ENV_GATE_LEDGER_FLAG_NAME_RESERVED",
+      gateState: "ENV_GATE_RECORDED_DISABLED",
+      gateOwner: "IT_DATA",
+      requiredBeforeEnvEnablement: "IT_DATA_RUNTIME_FLAG_SIGNOFF",
+      disabledDefaultEvidence:
+        "Dry-run env gate name is reserved only; no env value is assigned.",
+      forbiddenInThisSlice: "NO_ENV_ENABLEMENT",
+    },
+    {
+      code: "ENV_GATE_LEDGER_NEGATIVE_ACCESS_LOCK",
+      gateState: "ENV_GATE_RECORDED_DISABLED",
+      gateOwner: "AUDIT",
+      requiredBeforeEnvEnablement: "AUDIT_NEGATIVE_ACCESS_EVIDENCE",
+      disabledDefaultEvidence:
+        "Env gate cannot open until negative-access proof is reviewed.",
+      forbiddenInThisSlice: "NO_DATABASE_READ_EXECUTED",
+    },
+    {
+      code: "ENV_GATE_LEDGER_RESTRICTED_DATA_BOUNDARY",
+      gateState: "ENV_GATE_RECORDED_DISABLED",
+      gateOwner: "PHAP_CHE",
+      requiredBeforeEnvEnablement:
+        "PHAP_CHE_RESTRICTED_DATA_BOUNDARY_SIGNOFF",
+      disabledDefaultEvidence:
+        "Env-gated adapter remains metadata allowlist only.",
+      forbiddenInThisSlice: "NO_RAW_PII_NO_PAYMENT_DATA",
+    },
+    {
+      code: "ENV_GATE_LEDGER_READONLY_TASK_COPY",
+      gateState: "ENV_GATE_RECORDED_DISABLED",
+      gateOwner: "DEPARTMENT_OWNER",
+      requiredBeforeEnvEnablement: "DEPARTMENT_OWNER_TASK_LABEL_ACCEPTANCE",
+      disabledDefaultEvidence:
+        "Department copy must stay read-only before dry-run env gate.",
+      forbiddenInThisSlice: "NO_TASK_MUTATION_ROUTE_CREATED",
+    },
+    {
+      code: "ENV_GATE_LEDGER_PRODUCTION_NO_GO",
+      gateState: "ENV_GATE_RECORDED_DISABLED",
+      gateOwner: "BGH",
+      requiredBeforeEnvEnablement: "BGH_PRODUCTION_NO_GO_ACKNOWLEDGEMENT",
+      disabledDefaultEvidence:
+        "Env gate cannot mean production readiness or deployment approval.",
+      forbiddenInThisSlice: "NO_PRODUCTION_GO_NO_DEPLOY",
+    },
+  ];
+
 export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidencePanelSource {
   const gate = createTaskCenterReadonlyAdapterEnablementGate();
 
@@ -1093,6 +1190,19 @@ export function createTaskCenterGateEvidencePanelSource(): TaskCenterGateEvidenc
       noEnvEnablement: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_ENV_ENABLEMENT,
       noAiOrAutomation: TASK_CENTER_READONLY_ADAPTER_DRY_RUN_SWITCH_CONTRACT_NO_AI_OR_AUTOMATION,
       items: readonlyAdapterDryRunSwitchContractItems,
+    },
+    dryRunEnvGateLedger: {
+      mode: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_ONLY,
+      readonly: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_READONLY,
+      draftOnly: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_DRAFT_ONLY,
+      noApproval: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_APPROVAL,
+      noDatabaseRead: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_READ,
+      noDatabaseClient: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_DATABASE_CLIENT,
+      noTaskMutation: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_TASK_MUTATION,
+      noRealData: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_REAL_DATA,
+      noEnvEnablement: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_ENV_ENABLEMENT,
+      noAiOrAutomation: TASK_CENTER_DRY_RUN_ENV_GATE_LEDGER_NO_AI_OR_AUTOMATION,
+      items: dryRunEnvGateLedgerItems,
     },
     boundary: {
       ownerReviewRequired: TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED,
