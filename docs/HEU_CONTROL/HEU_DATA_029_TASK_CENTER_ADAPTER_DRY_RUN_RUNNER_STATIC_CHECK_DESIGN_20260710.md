@@ -105,13 +105,16 @@ Required commands:
 
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design
+npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness
 npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan
 ```
 
 Expected outputs:
 - `HEU_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_READY: PASS_LOCAL`
 - `TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_STATIC_CHECK_DESIGN_ONLY`
+- `LOCAL_RUNNER_CANDIDATE_READINESS_READY: PASS_LOCAL_READINESS_ONLY`
 
 ## 9. Risk
 
@@ -168,6 +171,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-030-TASK-CENTER-ADAPTER-DRY-RUN-LOCAL-RUNNER-CANDIDATE-READINESS`.
+- Required next command:
+  `npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness`.
+- Expected next runtime:
+  `LOCAL_RUNNER_CANDIDATE_READINESS_READY: PASS_LOCAL_READINESS_ONLY`.
 - Still docs/checker/read-only first. Do not implement executable runner or DB
   adapter until owner evidence, fixture contract, runner plan and static-check
   design exist.

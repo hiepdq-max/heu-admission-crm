@@ -64,6 +64,7 @@ docs/HEU_CONTROL/HEU_DATA_026_TASK_CENTER_ADAPTER_DRY_RUN_READONLY_TEST_HARNESS_
 docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md
 docs/HEU_CONTROL/HEU_DATA_028_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_20260710.md
 docs/HEU_CONTROL/HEU_DATA_029_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_20260710.md
+docs/HEU_CONTROL/HEU_DATA_030_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_CANDIDATE_READINESS_20260710.md
 docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md
 docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md
@@ -110,6 +111,7 @@ scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs
 scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs
 scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs
 scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs
+scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs
 scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs
 scripts/check-heu-user-operation-cutover-readiness.mjs
@@ -194,6 +196,7 @@ git add -- `
   docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_028_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_20260710.md `
   docs/HEU_CONTROL/HEU_DATA_029_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_STATIC_CHECK_DESIGN_20260710.md `
+  docs/HEU_CONTROL/HEU_DATA_030_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_CANDIDATE_READINESS_20260710.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_001_REAL_USER_UAT_REGISTER_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_002_IDENTITY_SCOPE_DAY1_RUNBOOK_20260709.md `
   docs/HEU_CONTROL/HEU_USER_PILOT_003_IDENTITY_SCOPE_PRECHECK_LEDGER_20260709.md `
@@ -240,6 +243,7 @@ git add -- `
   scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs `
   scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs `
   scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs `
+  scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-day1-readiness.mjs `
   scripts/check-heu-user-pilot-identity-scope-precheck-ledger-readiness.mjs `
   scripts/check-heu-user-operation-cutover-readiness.mjs `
@@ -284,6 +288,7 @@ node --check scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness
 node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs
 node --check scripts/check-heu-task-center-adapter-dry-run-runner-static-check-design.mjs
+node --check scripts/check-heu-task-center-adapter-dry-run-local-runner-candidate-readiness.mjs
 npm.cmd run check:heu-data-confirmation-task-center
 npm.cmd run check:heu-department-task-inbox-mvp-readiness
 npm.cmd run check:heu-task-center-data-contract-readiness
@@ -312,6 +317,7 @@ npm.cmd run check:heu-task-center-adapter-dry-run-readonly-test-harness-design
 npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-contract
 npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-static-check-design
+npm.cmd run check:heu-task-center-adapter-dry-run-local-runner-candidate-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-day1-readiness
 npm.cmd run check:heu-user-pilot-identity-scope-precheck-ledger-readiness
 npm.cmd run check:heu-user-operation-cutover-readiness
