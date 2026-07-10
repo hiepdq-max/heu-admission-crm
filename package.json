@@ -9,6 +9,7 @@
     "lint": "eslint",
     "check:heu-build-master-roadmap-readiness": "node scripts/check-heu-build-master-roadmap-readiness.mjs",
     "check:heu-workspace-context-runtime-readiness": "node scripts/check-heu-workspace-context-runtime-readiness.mjs",
+    "check:heu-search-workspace-context-scope-first-readiness": "node scripts/check-heu-search-workspace-context-scope-first-readiness.mjs",
     "check:heu-user-create-readiness": "node scripts/check-heu-user-create-readiness.mjs",
     "check:heu-permission-scope-readiness": "node scripts/check-heu-permission-scope-readiness.mjs",
     "check:heu-accounting-module-breakdown": "node scripts/check-heu-accounting-module-breakdown.mjs",

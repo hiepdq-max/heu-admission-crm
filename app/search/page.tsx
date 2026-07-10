@@ -11,17 +11,17 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import {
+  getHEUWorkspaceContext,
+  type HEUWorkspaceContext,
+} from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
   matchesTtgdtxProcessQuery,
   TTGDTX_PROCESS_LABELS,
   TTGDTX_PROCESS_SEARCH_SUGGESTIONS,
 } from "@/lib/ttgdtx-process-labels";
-import {
-  firstParam,
-  getAdmissionWorkspaceContext,
-  withAdmissionSegmentParam,
-} from "@/lib/workspace";
+import { firstParam, withAdmissionSegmentParam } from "@/lib/workspace";
 
 type SearchPageProps = {
   searchParams?: Promise<{
@@ -75,6 +75,8 @@ const typeTones: Record<string, string> = {
   SHORT_CLASS: "border-lime-200 bg-lime-50 text-lime-700",
   EXCEPTION: "border-orange-200 bg-orange-50 text-orange-700",
 };
+
+const SEARCH_REMOTE_QUERY_LIMIT = 50;
 
 function isFunctionMissing(message: string) {
   return (
@@ -200,6 +202,45 @@ function SearchForm({
         kết quả, có thể bạn chưa được phân quyền hoặc từ khóa chưa khớp.
       </p>
     </form>
+  );
+}
+
+function renderSearchGuardState(params: {
+  context: HEUWorkspaceContext;
+  query: string;
+  title: string;
+  description: string;
+  message: string;
+}) {
+  const { context, query, title, description, message } = params;
+  const workspace = context.admissionWorkspace;
+
+  return (
+    <AppShell
+      active="search"
+      title={title}
+      description={description}
+      workspaceSegmentId={workspace.activeSegmentId}
+      workspaceReturnTo={withAdmissionSegmentParam(
+        "/search",
+        workspace.activeSegmentId,
+      )}
+    >
+      <SearchForm query={query} segmentId={workspace.activeSegmentId} />
+
+      <section className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
+        <div className="flex items-start gap-3">
+          <ShieldAlert className="mt-0.5 size-5 shrink-0" />
+          <div>
+            <h2 className="font-semibold">Search dang duoc khoa theo scope.</h2>
+            <p className="mt-1">{message}</p>
+            <p className="mt-2 text-xs text-amber-800">
+              scopeDecision={context.scopeDecision} | scopeSource={context.scopeSource}
+            </p>
+          </div>
+        </div>
+      </section>
+    </AppShell>
   );
 }
 
@@ -422,11 +463,61 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
   const query = (firstParam(resolvedSearchParams.q) ?? "").trim();
   const effectiveQuery = normalizeSearchInput(query);
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
+  const workspaceContext = await getHEUWorkspaceContext(
     supabase,
     user.id,
     requestedSegmentId,
   );
+  const workspace = workspaceContext.admissionWorkspace;
+  const { data: searchReadAllowed } = await supabase.rpc("has_permission", {
+    permission_name: "heu_os.search.read",
+  });
+  const canReadSearch =
+    workspaceContext.allowedActions.read || Boolean(searchReadAllowed);
+
+  if (!canReadSearch) {
+    return renderSearchGuardState({
+      context: workspaceContext,
+      query,
+      title: "Tim kiem HEU OS",
+      description: "Read gate cho search chua san sang.",
+      message:
+        "User hien chua co quyen doc search metadata, nen route khong goi search_heu_os.",
+    });
+  }
+
+  if (workspaceContext.scopeDecision === "BLOCKED") {
+    return renderSearchGuardState({
+      context: workspaceContext,
+      query,
+      title: "Tim kiem HEU OS",
+      description: "Context HEU chua du can thiet de mo search.",
+      message:
+        "Khong the chot actor/profile/role an toan cho route search, nen route dung truoc search RPC.",
+    });
+  }
+
+  if (workspaceContext.scopeDecision === "NO_SCOPE") {
+    return renderSearchGuardState({
+      context: workspaceContext,
+      query,
+      title: "Tim kiem HEU OS",
+      description: "User chua co workspace/scope hop le cho search.",
+      message:
+        "User nay chua co segment scope hoac workspace dang hoat dong, nen route khong fallback sang broad search.",
+    });
+  }
+
+  if (!workspaceContext.canSeeAllSegments && !workspace.activeSegmentId) {
+    return renderSearchGuardState({
+      context: workspaceContext,
+      query,
+      title: "Tim kiem HEU OS",
+      description: "Search can active workspace de chay an toan.",
+      message:
+        "Search pilot yeu cau active segment neu user khong co all-segment read-only scope.",
+    });
+  }
 
   let results: SearchResultRow[] = [];
   let loadError: string | null = null;
@@ -436,36 +527,28 @@ export default async function HeuOsSearchPage({ searchParams }: SearchPageProps)
 
     const { data, error } = await supabase.rpc("search_heu_os", {
       p_query: effectiveQuery,
-      p_limit: 50,
+      p_limit: SEARCH_REMOTE_QUERY_LIMIT,
       p_segment_id: workspace.activeSegmentId,
     });
 
     if (error) {
       if (isScopedSearchMissing(error.message)) {
-        const fallback = await supabase.rpc("search_heu_os", {
-          p_query: effectiveQuery,
-          p_limit: 50,
-        });
-
-        if (fallback.error) {
-          loadError = processResults.length > 0 ? null : fallback.error.message;
-        } else {
-          const fallbackRows = Array.isArray(fallback.data)
-            ? (fallback.data as SearchResultRow[])
-            : [];
-
-          results = fallbackRows.filter(
-            (row) =>
-              !workspace.activeSegmentId ||
-              !row.segment_id ||
-              row.segment_id === workspace.activeSegmentId,
-          );
-        }
+        loadError =
+          processResults.length > 0
+            ? null
+            : "Scoped search RPC chua san sang; broad fallback da bi khoa de tranh tran scope.";
       } else {
         loadError = error.message;
       }
     } else {
-      results = Array.isArray(data) ? (data as SearchResultRow[]) : [];
+      const remoteRows = Array.isArray(data) ? (data as SearchResultRow[]) : [];
+
+      results = remoteRows.filter(
+        (row) =>
+          workspaceContext.canSeeAllSegments ||
+          !row.segment_id ||
+          row.segment_id === workspace.activeSegmentId,
+      );
     }
 
     if (processResults.length > 0) {
