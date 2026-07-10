@@ -11,10 +11,14 @@ const docPath =
   "docs/HEU_CONTROL/HEU_DATA_027_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_CONTRACT_20260710.md";
 const readonlyTestHarnessDocPath =
   "docs/HEU_CONTROL/HEU_DATA_026_TASK_CENTER_ADAPTER_DRY_RUN_READONLY_TEST_HARNESS_DESIGN_20260710.md";
+const syntheticFixtureRunnerPlanDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_028_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_20260710.md";
 const manifestPath =
   "docs/HEU_CONTROL/HEU_APP_SHELL_001_STAGE_FILE_MANIFEST_20260709.md";
 const readonlyTestHarnessCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-readonly-test-harness-design.mjs";
+const syntheticFixtureRunnerPlanCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs";
 const packagePath = "package.json";
@@ -62,8 +66,10 @@ for (const file of [
   enablementGatePath,
   docPath,
   readonlyTestHarnessDocPath,
+  syntheticFixtureRunnerPlanDocPath,
   manifestPath,
   readonlyTestHarnessCheckerPath,
+  syntheticFixtureRunnerPlanCheckerPath,
   checkerPath,
   packagePath,
 ]) {
@@ -76,8 +82,12 @@ if (failures.length === 0) {
   const enablementGate = read(enablementGatePath);
   const doc = read(docPath);
   const readonlyTestHarnessDoc = read(readonlyTestHarnessDocPath);
+  const syntheticFixtureRunnerPlanDoc = read(syntheticFixtureRunnerPlanDocPath);
   const manifest = read(manifestPath);
   const readonlyTestHarnessChecker = read(readonlyTestHarnessCheckerPath);
+  const syntheticFixtureRunnerPlanChecker = read(
+    syntheticFixtureRunnerPlanCheckerPath,
+  );
   const checkerScript = read(checkerPath);
   const packageJson = JSON.parse(read(packagePath));
 
@@ -213,6 +223,8 @@ if (failures.length === 0) {
       "SYN_FIXTURE_DEPARTMENT_MISMATCH",
       "SYN_FIXTURE_BGH_READONLY_OVERVIEW",
       "HEU-DATA-028-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-RUNNER-PLAN",
+      "SYNTHETIC_FIXTURE_RUNNER_PLAN_READY: PASS_LOCAL_PLAN_ONLY",
+      "check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
       "check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
     ],
     "synthetic fixture contract doc token",
@@ -238,14 +250,31 @@ if (failures.length === 0) {
       enablementGatePath,
       docPath,
       readonlyTestHarnessDocPath,
+      syntheticFixtureRunnerPlanDocPath,
       checkerPath,
       readonlyTestHarnessCheckerPath,
+      syntheticFixtureRunnerPlanCheckerPath,
       "check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
+      "check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
       "node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-contract.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-contract",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan",
     ],
     "manifest synthetic fixture contract token",
     manifestPath,
+  );
+
+  requireTokens(
+    syntheticFixtureRunnerPlanDoc,
+    [
+      "HEU-DATA-028-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-RUNNER-PLAN",
+      "SYNTHETIC_FIXTURE_RUNNER_PLAN_READY: PASS_LOCAL_PLAN_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_SYNTHETIC_FIXTURE_RUNNER_PLAN_ONLY",
+      "HEU-DATA-029-TASK-CENTER-ADAPTER-DRY-RUN-RUNNER-STATIC-CHECK-DESIGN",
+    ],
+    "synthetic fixture runner plan next-slice doc token",
+    syntheticFixtureRunnerPlanDocPath,
   );
 
   requireTokens(
@@ -258,6 +287,18 @@ if (failures.length === 0) {
     ],
     "readonly test-harness checker next-slice token",
     readonlyTestHarnessCheckerPath,
+  );
+
+  requireTokens(
+    syntheticFixtureRunnerPlanChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_SYNTHETIC_FIXTURE_RUNNER_PLAN_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_SYNTHETIC_FIXTURE_RUNNER_PLAN_ONLY",
+      docPath,
+      checkerPath,
+    ],
+    "synthetic fixture runner plan checker reverse-link token",
+    syntheticFixtureRunnerPlanCheckerPath,
   );
 
   if (packageJson.scripts?.[checkerAlias] !== checkerCommand) {

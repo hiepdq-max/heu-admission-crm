@@ -163,6 +163,10 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-028-TASK-CENTER-ADAPTER-DRY-RUN-SYNTHETIC-FIXTURE-RUNNER-PLAN`.
+- Required next local command:
+  `npm.cmd run check:heu-task-center-adapter-dry-run-synthetic-fixture-runner-plan`.
+- Expected next runtime status:
+  `SYNTHETIC_FIXTURE_RUNNER_PLAN_READY: PASS_LOCAL_PLAN_ONLY`.
 - Still docs/checker/read-only first. Do not implement DB adapter until owner
   evidence, fixture contract and runner plan exist.
 
