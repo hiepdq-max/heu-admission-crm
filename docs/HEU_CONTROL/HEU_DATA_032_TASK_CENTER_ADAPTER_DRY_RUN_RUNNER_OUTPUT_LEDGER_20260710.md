@@ -73,6 +73,7 @@ Out of scope:
 ```powershell
 node --check scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs
 npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger
+npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot
 npm.cmd run dry-run:heu-task-center-adapter-local-runner
 ```
 
@@ -146,6 +147,11 @@ SOP-RESULT:
 
 SOP-NEXT:
 - `HEU-DATA-033-TASK-CENTER-ADAPTER-DRY-RUN-OUTPUT-LEDGER-STATIC-SNAPSHOT`.
+  Expected checker:
+  `check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot`.
+  Expected result:
+  `OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL_SNAPSHOT_ONLY` and
+  `TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY`.
   Only consider a static snapshot after IT_DATA + Audit approve that 032 stays
   report-only and does not write files, database rows, tasks, evidence or
   workflow state.

@@ -8,6 +8,8 @@ const componentPath = "components/data-confirmation/department-task-inbox.tsx";
 const panelSourcePath = "lib/task-center-gate-evidence-panel-source.ts";
 const docPath =
   "docs/HEU_CONTROL/HEU_DATA_032_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_20260710.md";
+const staticSnapshotDocPath =
+  "docs/HEU_CONTROL/HEU_DATA_033_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_20260710.md";
 const priorDocPath =
   "docs/HEU_CONTROL/HEU_DATA_031_TASK_CENTER_ADAPTER_DRY_RUN_LOCAL_RUNNER_SCRIPT_DRAFT_20260710.md";
 const manifestPath =
@@ -18,10 +20,15 @@ const priorCheckerPath =
   "scripts/check-heu-task-center-adapter-dry-run-local-runner-script-draft.mjs";
 const checkerPath =
   "scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs";
+const staticSnapshotCheckerPath =
+  "scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs";
 const packagePath = "package.json";
 const checkerAlias =
   "check:heu-task-center-adapter-dry-run-runner-output-ledger";
 const checkerCommand = `node ${checkerPath}`;
+const staticSnapshotCheckerAlias =
+  "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot";
+const staticSnapshotCheckerCommand = `node ${staticSnapshotCheckerPath}`;
 
 function absolute(relativePath) {
   return path.join(repoRoot, relativePath);
@@ -61,11 +68,13 @@ for (const file of [
   componentPath,
   panelSourcePath,
   docPath,
+  staticSnapshotDocPath,
   priorDocPath,
   manifestPath,
   runnerScriptPath,
   priorCheckerPath,
   checkerPath,
+  staticSnapshotCheckerPath,
   packagePath,
 ]) {
   requireFile(file);
@@ -75,11 +84,13 @@ if (failures.length === 0) {
   const component = read(componentPath);
   const panelSource = read(panelSourcePath);
   const doc = read(docPath);
+  const staticSnapshotDoc = read(staticSnapshotDocPath);
   const priorDoc = read(priorDocPath);
   const manifest = read(manifestPath);
   const runnerScript = read(runnerScriptPath);
   const priorChecker = read(priorCheckerPath);
   const checkerScript = read(checkerPath);
+  const staticSnapshotChecker = read(staticSnapshotCheckerPath);
   const packageJson = JSON.parse(read(packagePath));
 
   const boundaryTokens = [
@@ -166,9 +177,25 @@ if (failures.length === 0) {
       ...ledgerRows,
       "check:heu-task-center-adapter-dry-run-runner-output-ledger",
       "HEU-DATA-033-TASK-CENTER-ADAPTER-DRY-RUN-OUTPUT-LEDGER-STATIC-SNAPSHOT",
+      "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
+      "OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL_SNAPSHOT_ONLY",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY",
     ],
     "runner output ledger doc token",
     docPath,
+  );
+
+  requireTokens(
+    staticSnapshotDoc,
+    [
+      "HEU-DATA-033-TASK-CENTER-ADAPTER-DRY-RUN-OUTPUT-LEDGER-STATIC-SNAPSHOT",
+      "Status: PASS_LOCAL_SNAPSHOT_ONLY",
+      "Runtime status: OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL_SNAPSHOT_ONLY",
+      "Database status: TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY",
+      "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
+    ],
+    "output ledger static snapshot doc token",
+    staticSnapshotDocPath,
   );
 
   requireTokens(
@@ -202,9 +229,13 @@ if (failures.length === 0) {
     manifest,
     [
       docPath,
+      staticSnapshotDocPath,
       checkerPath,
+      staticSnapshotCheckerPath,
       "node --check scripts/check-heu-task-center-adapter-dry-run-runner-output-ledger.mjs",
+      "node --check scripts/check-heu-task-center-adapter-dry-run-output-ledger-static-snapshot.mjs",
       "npm.cmd run check:heu-task-center-adapter-dry-run-runner-output-ledger",
+      "npm.cmd run check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
     ],
     "manifest runner output ledger token",
     manifestPath,
@@ -225,6 +256,10 @@ if (failures.length === 0) {
     fail(`${packagePath}: missing or mismatched ${checkerAlias}`);
   }
 
+  if (packageJson.scripts?.[staticSnapshotCheckerAlias] !== staticSnapshotCheckerCommand) {
+    fail(`${packagePath}: missing or mismatched ${staticSnapshotCheckerAlias}`);
+  }
+
   requireTokens(
     checkerScript,
     [
@@ -232,10 +267,24 @@ if (failures.length === 0) {
       "readFileSync",
       "HEU_TASK_CENTER_ADAPTER_DRY_RUN_RUNNER_OUTPUT_LEDGER_READY: PASS_LOCAL",
       "TASK_CENTER_DATABASE_READY: NO_GO_RUNNER_OUTPUT_LEDGER_ONLY",
+      "HEU-DATA-033-TASK-CENTER-ADAPTER-DRY-RUN-OUTPUT-LEDGER-STATIC-SNAPSHOT",
+      "check:heu-task-center-adapter-dry-run-output-ledger-static-snapshot",
+      "OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL_SNAPSHOT_ONLY",
       "NO_RUNTIME_MUTATION: task center adapter dry-run runner output ledger checker only; no owner approval, database client, database read, env enablement, file output write, table creation, SQL migration, task write, file upload, storage write, real-data fixture, AI call, paid automation, deploy, finance action or production GO",
     ],
     "checker-script read-only token",
     checkerPath,
+  );
+
+  requireTokens(
+    staticSnapshotChecker,
+    [
+      "HEU_TASK_CENTER_ADAPTER_DRY_RUN_OUTPUT_LEDGER_STATIC_SNAPSHOT_READY: PASS_LOCAL",
+      "TASK_CENTER_DATABASE_READY: NO_GO_OUTPUT_LEDGER_STATIC_SNAPSHOT_ONLY",
+      "NO_RUNTIME_MUTATION: task center adapter dry-run output ledger static snapshot checker only",
+    ],
+    "output ledger static snapshot checker token",
+    staticSnapshotCheckerPath,
   );
 
   const runtimeScopeText = [
