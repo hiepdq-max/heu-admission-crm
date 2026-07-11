@@ -86,6 +86,22 @@ assert.equal(
   }).ok,
   false,
 );
+assert.equal(
+  contract.validatePositionSmartScope({
+    ...operationalScope,
+    departmentCode: "hou:department_01",
+    workspaceScope: ["hou:workspace_01"],
+  }).ok,
+  true,
+);
+assert.equal(
+  contract.validatePositionSmartScope({
+    ...operationalScope,
+    departmentCode: "hou:department_01",
+    workspaceScope: ["hou:workspace_01", "heu:workspace_01"],
+  }).ok,
+  false,
+);
 
 const safeInput = {
   scope: operationalScope,
@@ -102,11 +118,15 @@ assert.throws(
 for (const restrictedKey of [
   "email",
   "phone_number",
+  "mobile_number",
+  "telephone_number",
   "cccd_hash",
   "identity_code",
+  "pii_flag",
   "home_address",
   "bank_account",
   "password",
+  "credential_type",
   "otp_code",
   "access_token",
   "client_secret",
@@ -114,6 +134,11 @@ for (const restrictedKey of [
   "raw_student",
   "raw_payment",
   "raw_evidence",
+  "emailAddress",
+  "bankAccount",
+  "cccdHash",
+  "accessToken",
+  "rawStudent",
 ]) {
   assert.throws(
     () =>

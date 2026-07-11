@@ -53,12 +53,16 @@ const POSITION_SMART_LANES = ["BGH_READ_ONLY", "OPERATIONAL"] as const;
 const RESTRICTED_METADATA_KEY_PARTS = [
   "email",
   "phone",
+  "mobile",
+  "telephone",
   "cccd",
   "identity",
+  "pii",
   "address",
   "bank",
   "account",
   "password",
+  "credential",
   "otp",
   "token",
   "secret",
@@ -82,12 +86,18 @@ function hasUniqueNonEmptyValues(values: readonly string[]): boolean {
 }
 
 function isHouScope(value: string): boolean {
-  return value === HOU_SCOPE_PREFIX || value.startsWith(`${HOU_SCOPE_PREFIX}:`);
+  const normalized = value.trim().toUpperCase();
+  return (
+    normalized === HOU_SCOPE_PREFIX ||
+    normalized.startsWith(`${HOU_SCOPE_PREFIX}:`)
+  );
 }
 
 function isAllowedMetadataKey(key: string): boolean {
   const normalizedParts = key
     .trim()
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
     .toLowerCase()
     .split(/[^a-z0-9]+/)
     .filter(Boolean);
