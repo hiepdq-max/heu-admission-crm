@@ -119,6 +119,7 @@ if (failures.length === 0) {
       "controlled_evidence_id",
       "metadata_ref",
       "hou_student_ref",
+      "hou_com_ref",
       "workspace_ref",
     ],
     "TypeScript read-model contract token",
@@ -270,6 +271,7 @@ if (failures.length === 0) {
       { label: "server action marker", pattern: /["']use server["']/ },
       { label: "SQL create table statement", pattern: /\bcreate\s+table\b/i },
       { label: "SQL alter table statement", pattern: /\balter\s+table\b/i },
+      { label: "ambiguous HOU COM ref", pattern: /hou_contract_ref,\s*com_ref/ },
       {
         label: "actual Supabase URL assignment",
         pattern: /NEXT_PUBLIC_SUPABASE_URL\s*=\s*\S+/,
