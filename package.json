@@ -32,6 +32,7 @@
     "check:heu-business-user-responsibility-register": "node scripts/check-heu-business-user-responsibility-register.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
+    "check:heu-role-based-home-ux": "node scripts/check-heu-role-based-home-ux.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
     "check:heu-ai-dirty-scope-packaging-ledger": "node scripts/check-heu-ai-dirty-scope-packaging-ledger.mjs",
     "check:heu-executive-dashboard-readiness": "node scripts/check-heu-executive-dashboard-readiness.mjs",

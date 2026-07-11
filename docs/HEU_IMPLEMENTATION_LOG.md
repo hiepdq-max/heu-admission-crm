@@ -1,5 +1,29 @@
 # HEU Implementation Log
 
+## 2026-07-11 - HEU-UX-001 Role-Based Home
+
+- Owner lane: process owners for Tuyển sinh, CTHSSV and Đào tạo review the
+  department wording; BGH/Admin review the read-only Master Control boundary;
+  IT_DATA/Audit review role/workspace visibility and mock-only data handling.
+- Replaced the database-backed `/` landing implementation in this isolated
+  prototype with a role/workspace home driven only by mock metadata for five
+  local QA personas: Tuyển sinh, CTHSSV, Đào tạo, BGH and Admin.
+- Department personas show only `Việc của tôi`, `Dữ liệu chờ xác nhận` and
+  `Báo cáo phòng`; technical role/workspace codes are rendered only for the
+  BGH/Admin control personas.
+- BGH/Admin keep a disabled `Master Control` card marked `READ_ONLY`; the home
+  page has no approval, mutation, database, Supabase, Auth, finance, HOU, AI or
+  automation action.
+- Browser evidence is stored at
+  `docs/evidence/HEU-UX-001/role-home-bgh-desktop.png` and
+  `docs/evidence/HEU-UX-001/role-home-admission-mobile.png` using synthetic
+  local metadata only.
+- Rollback: revert the HEU-UX-001 commit to restore the previous `/` page;
+  there is no database, migration, Supabase configuration or production data
+  rollback.
+- Status: `DAT_TAM_THOI` for local UX review only after focused guard, lint and
+  build. Stage D - internal controlled test only. Production remains NO-GO.
+
 ## 2026-07-03 - HEU Standard System Blueprint
 
 - Added `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` as the controlled
