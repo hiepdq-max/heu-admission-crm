@@ -23,6 +23,7 @@ Required boundary:
 TASK_CENTER_READONLY_ADAPTER_ENABLEMENT_GATE_ONLY
 OWNER_REVIEW_REQUIRED_BEFORE_DB_READ
 ADAPTER_ENABLEMENT_DEFAULT_NO_GO
+DATABASE_READ_BLOCKED
 DISABLED_BY_DEFAULT
 FEATURE_FLAG_REQUIRED
 NO_DATABASE_CLIENT_CREATED
@@ -40,7 +41,15 @@ The gate contract is:
 lib/task-center-readonly-adapter-enablement-gate.ts
 ```
 
-It produces a typed object where every owner lane starts as `NO_GO`:
+It produces a fail-closed typed object with:
+
+```text
+decision: NO_GO
+canEnableDatabaseRead: false
+databaseReadState: DATABASE_READ_BLOCKED
+```
+
+Every owner lane also starts as `NO_GO`:
 
 ```text
 IT_DATA
@@ -50,7 +59,9 @@ DEPARTMENT_OWNER
 BGH
 ```
 
-This prevents accidental adapter activation without documented signoff.
+This prevents accidental adapter activation without documented signoff. A
+future implementation must introduce a separate reviewed decision contract;
+this slice cannot be mutated into a database-read approval.
 
 ## 3. Scope
 

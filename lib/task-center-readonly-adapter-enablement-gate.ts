@@ -15,6 +15,8 @@ export const TASK_CENTER_ADAPTER_ENABLEMENT_OWNER_REVIEW_REQUIRED =
   "OWNER_REVIEW_REQUIRED_BEFORE_DB_READ";
 export const TASK_CENTER_ADAPTER_ENABLEMENT_DEFAULT_NO_GO =
   "ADAPTER_ENABLEMENT_DEFAULT_NO_GO";
+export const TASK_CENTER_ADAPTER_DATABASE_READ_BLOCKED =
+  "DATABASE_READ_BLOCKED";
 export const TASK_CENTER_ADAPTER_ENABLEMENT_NO_DATABASE_CLIENT =
   "NO_DATABASE_CLIENT_CREATED";
 export const TASK_CENTER_ADAPTER_ENABLEMENT_NO_DATABASE_READ =
@@ -43,6 +45,9 @@ export type TaskCenterReadonlyAdapterEnablementGate = {
   adapterMode: typeof TASK_CENTER_READONLY_ADAPTER_SKELETON_ONLY;
   adapterStatus: typeof TASK_CENTER_READONLY_ADAPTER_DISABLED_BY_DEFAULT;
   defaultDecision: typeof TASK_CENTER_ADAPTER_ENABLEMENT_DEFAULT_NO_GO;
+  decision: "NO_GO";
+  canEnableDatabaseRead: false;
+  databaseReadState: typeof TASK_CENTER_ADAPTER_DATABASE_READ_BLOCKED;
   featureFlag: typeof TASK_CENTER_READONLY_ADAPTER_FEATURE_FLAG_REQUIRED;
   ownerReview: Record<TaskCenterEnablementOwnerLane, TaskCenterEnablementDecision>;
   requiredProof: readonly string[];
@@ -62,6 +67,9 @@ export function createTaskCenterReadonlyAdapterEnablementGate(): TaskCenterReado
     adapterMode: TASK_CENTER_READONLY_ADAPTER_SKELETON_ONLY,
     adapterStatus: TASK_CENTER_READONLY_ADAPTER_DISABLED_BY_DEFAULT,
     defaultDecision: TASK_CENTER_ADAPTER_ENABLEMENT_DEFAULT_NO_GO,
+    decision: "NO_GO",
+    canEnableDatabaseRead: false,
+    databaseReadState: TASK_CENTER_ADAPTER_DATABASE_READ_BLOCKED,
     featureFlag: TASK_CENTER_READONLY_ADAPTER_FEATURE_FLAG_REQUIRED,
     ownerReview: {
       IT_DATA: "NO_GO",
