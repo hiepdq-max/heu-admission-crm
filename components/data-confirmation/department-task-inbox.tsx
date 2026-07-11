@@ -201,10 +201,10 @@ export function DepartmentTaskInbox({
           </div>
           <div className="flex flex-col gap-1 text-xs">
             <span className="inline-flex w-fit rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 font-medium text-sky-700">
-              {taskFallback.dataSource}
+              Dữ liệu mẫu an toàn
             </span>
             <span className="text-zinc-500">
-              Adapter: {taskFallback.adapterStatus}
+              Trạng thái: Chưa kết nối dữ liệu thật
             </span>
           </div>
         </div>
