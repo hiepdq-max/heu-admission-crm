@@ -232,7 +232,7 @@ export const TASK_CENTER_DEPARTMENT_LANES = [
       ...TASK_CENTER_ROLE_GROUPS.finance,
     ],
     requiredGate: "canReviewScopedDraft",
-    refs: "hou_student_ref, hou_contract_ref, com_ref",
+    refs: "hou_student_ref, hou_contract_ref, hou_com_ref",
     nextAction: "Chi doi soat ref HOU; khong gop voi trung cap HEU.",
     blockedAction: "Chua tinh COM/HOU neu thieu hop dong va doi soat.",
   },
