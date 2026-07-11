@@ -7,7 +7,6 @@ import {
   ClipboardCheck,
   FileClock,
   LayoutDashboard,
-  Menu,
   ShieldCheck,
 } from "lucide-react";
 
@@ -62,11 +61,22 @@ export function RoleBasedHome({ profile }: RoleBasedHomeProps) {
         <section className="min-w-0 flex-1" id="top">
           <header className="sticky top-0 z-20 flex items-center justify-between border-b border-blue-100 bg-white/95 px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
             <div className="flex min-w-0 items-center gap-3">
-              <button className="grid size-9 place-items-center rounded-lg border border-blue-200 text-blue-800 lg:hidden" aria-label="Mở điều hướng"><Menu className="size-4" /></button>
+              <span className="grid size-9 place-items-center rounded-lg bg-blue-700 text-xs font-bold text-white lg:hidden">HEU</span>
               <div className="min-w-0"><p className="truncate text-sm font-semibold">{profile.workspaceLabel}</p><p className="truncate text-xs text-slate-500">{profile.roleLabel}</p></div>
             </div>
             <div className="flex items-center gap-2"><span className="grid size-9 place-items-center rounded-lg border border-blue-200 text-blue-800"><Bell className="size-4" /></span><span className="grid size-8 place-items-center rounded-full bg-blue-700 text-xs font-semibold text-white">{profile.isControlRole ? "QT" : "NV"}</span></div>
           </header>
+
+          <nav className="flex gap-2 overflow-x-auto border-b border-blue-100 bg-white px-4 py-3 lg:hidden" aria-label="Điều hướng nhanh mobile">
+            {profile.lanes.map((lane, index) => {
+              const Icon = laneIcons[index];
+              return (
+                <Link key={lane.title} href={`#${laneAnchors[index]}`} className="flex h-10 shrink-0 items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-800">
+                  <Icon className="size-4" /> {lane.title}
+                </Link>
+              );
+            })}
+          </nav>
 
           <div className="space-y-6 p-4 sm:p-6 lg:p-8">
             <section className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-100 sm:p-7">

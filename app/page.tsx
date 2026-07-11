@@ -117,7 +117,12 @@ function formatDue(value: string) {
 
 export default async function Home({ searchParams }: HomePageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
-  const mockProfile = getMockHomeProfile(firstParam(resolvedSearchParams.role));
+  const isLocalMockEnabled =
+    process.env.NODE_ENV !== "production" &&
+    process.env.HEU_ENABLE_ROLE_HOME_MOCK === "true";
+  const mockProfile = isLocalMockEnabled
+    ? getMockHomeProfile(firstParam(resolvedSearchParams.role))
+    : null;
 
   if (mockProfile) {
     return <RoleBasedHome profile={mockProfile} />;
