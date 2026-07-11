@@ -193,6 +193,7 @@ async function upsertUserProfileForAuthUser(
     roleId: string;
     departmentId: string | null;
     managerId: string | null;
+    status?: "ACTIVE" | "INACTIVE";
   },
 ) {
   return adminClient.from("users_profile").upsert(
@@ -204,7 +205,7 @@ async function upsertUserProfileForAuthUser(
       role_id: input.roleId,
       department_id: input.departmentId,
       manager_id: input.managerId,
-      status: "ACTIVE",
+      status: input.status ?? "ACTIVE",
     },
     { onConflict: "id" },
   );
@@ -260,13 +261,15 @@ async function loadProfileForEmail(
 ) {
   return supabase
     .from("users_profile")
-    .select("id,email,full_name,role_id,roles(code)")
+    .select("id,email,full_name,role_id,department_id,status,roles(code)")
     .eq("email", email)
     .maybeSingle<{
       id: string;
       email: string;
       full_name: string;
       role_id: string | null;
+      department_id: string | null;
+      status: string;
       roles: { code: string } | null;
     }>();
 }
@@ -319,6 +322,10 @@ export async function setUserTemporaryPasswordAction(formData: FormData) {
 
   if (!profile) {
     redirect(`${returnPath}?error=missing_password_user`);
+  }
+
+  if (profile.status !== "ACTIVE" || !profile.department_id) {
+    redirect(`${returnPath}?error=user_activation_not_ready`);
   }
 
   const targetRoleCode = profile.roles?.code ?? "";
@@ -392,6 +399,10 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
 
   if (!profile) {
     redirect(`${returnPath}?error=missing_password_user`);
+  }
+
+  if (profile.status !== "ACTIVE" || !profile.department_id) {
+    redirect(`${returnPath}?error=user_activation_not_ready`);
   }
 
   const targetRoleCode = profile.roles?.code ?? "";
@@ -498,7 +509,6 @@ export async function createUserAccountAction(formData: FormData) {
   const email = textValue(formData, "email")?.toLowerCase();
   const fullName = textValue(formData, "full_name");
   const phone = textValue(formData, "phone");
-  const password = textValue(formData, "password");
   const roleId = textValue(formData, "role_id");
   const departmentId = textValue(formData, "department_id");
   const managerId = textValue(formData, "manager_id");
@@ -520,7 +530,7 @@ export async function createUserAccountAction(formData: FormData) {
     redirect(`${returnPath}?error=not_allowed_create_user`);
   }
 
-  if (!email || !fullName || !password || !roleId) {
+  if (!email || !fullName || !roleId) {
     redirect(`${returnPath}?error=missing_new_user_data`);
   }
 
@@ -541,12 +551,8 @@ export async function createUserAccountAction(formData: FormData) {
     redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
   }
 
-  if (password.length < 8) {
-    redirect(`${returnPath}?error=weak_password`);
-  }
-
-  if (isUnsafeTemporaryPassword(password, email, fullName)) {
-    redirect(`${returnPath}?error=unsafe_temporary_password`);
+  if (!privilegedUserRoleCodes.has(targetRole.code) && !departmentId) {
+    redirect(`${returnPath}?error=missing_new_user_department`);
   }
 
   let adminClient: AdminClient;
@@ -560,7 +566,6 @@ export async function createUserAccountAction(formData: FormData) {
   const { data: createdUser, error: createError } =
     await adminClient.auth.admin.createUser({
       email,
-      password,
       email_confirm: true,
       user_metadata: {
         full_name: fullName,
@@ -604,6 +609,7 @@ export async function createUserAccountAction(formData: FormData) {
       roleId,
       departmentId,
       managerId,
+      status: createdAuthUser ? "INACTIVE" : "ACTIVE",
     },
   );
 

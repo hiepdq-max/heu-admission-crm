@@ -204,19 +204,19 @@ const implementationLog = read(logPath);
 requireAllText(
   form,
   [
-    'id="password"',
-    'type="password"',
-    'autoComplete="new-password"',
-    "minLength={8}",
-    'aria-describedby="temporary-password-help"',
-    'id="temporary-password-help"',
-    "Codex/chat",
-    "email",
-    "service role key",
-    "Không hiển thị key",
-    "không ghi log mật khẩu tạm",
+    'data-heu-user-create-deferred-activation="NO_TEMP_PASSWORD_NO_EMAIL"',
+    "App không thu mật khẩu tạm",
+    "không gửi email lúc tạo",
+    "Không sao chép link, OTP",
   ],
-  "temporary password field safety guidance",
+  "deferred user provisioning guidance",
+  formPath,
+);
+
+forbidText(
+  form,
+  ['id="password"', 'name="password"', 'type="password"'],
+  "new-user temporary password field",
   formPath,
 );
 
@@ -261,6 +261,10 @@ requireAllText(
     "permission_name: createUserPermission",
     "not_allowed_create_user",
     "not_allowed_create_privileged_user",
+    "adminClient.auth.admin.createUser",
+    "email_confirm: true",
+    'status: createdAuthUser ? "INACTIVE" : "ACTIVE"',
+    "missing_new_user_department",
     '.from("users_profile")',
     "adminClient.auth.admin.deleteUser",
     "Auth cleanup failed",

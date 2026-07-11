@@ -48,7 +48,11 @@ type CurrentProfileRow = {
 
 const errorMessages: Record<string, string> = {
   missing_new_user_data:
-    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+    "Thieu email, ho ten hoac role cua user moi.",
+  missing_new_user_department:
+    "User nghiep vu phai co phong ban truoc khi provision.",
+  user_activation_not_ready:
+    "User phai ACTIVE va co phong ban truoc khi gui email dat mat khau.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
@@ -265,7 +269,7 @@ export default async function ScopeSettingsPage({
     : params?.updated
       ? "Đã cập nhật phân công phòng ban/nhiệm vụ."
       : params?.user_created
-        ? "Đã tạo tài khoản user mới."
+        ? "Đã tạo Auth user không mật khẩu và profile INACTIVE. Chưa gửi email."
         : params?.profile_linked
           ? "Đã liên kết Auth user vào CRM."
           : params?.position_assigned

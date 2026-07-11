@@ -115,7 +115,11 @@ type SettingsPageProps = {
 
 const errorMessages: Record<string, string> = {
   missing_new_user_data:
-    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+    "Thieu email, ho ten hoac role cua user moi.",
+  missing_new_user_department:
+    "User nghiep vu phai co phong ban truoc khi provision.",
+  user_activation_not_ready:
+    "User phai ACTIVE va co phong ban truoc khi gui email dat mat khau.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
@@ -687,7 +691,7 @@ export default async function SettingsPage({
       <div className="space-y-6">
         {params?.user_created ? (
           <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
-            Đã tạo tài khoản user mới.
+            Đã tạo Auth user không mật khẩu và profile INACTIVE. Chưa gửi email.
           </section>
         ) : null}
         {params?.profile_linked ? (
