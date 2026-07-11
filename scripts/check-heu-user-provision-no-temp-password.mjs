@@ -60,7 +60,8 @@ requireTokens(createAction, "deferred user provisioning action", [
   "adminClient.auth.admin.deleteUser",
   "createdAuthUser",
   "linkedExistingAuthUser",
-  'status: createdAuthUser ? "INACTIVE" : "ACTIVE"',
+  'existingProfile?.status !== "ACTIVE"',
+  "status: resolvedProfileStatus",
   "missing_new_user_department",
 ]);
 

@@ -681,6 +681,24 @@ export async function createUserAccountAction(formData: FormData) {
     }
   }
 
+  const { data: existingProfile, error: existingProfileError } =
+    await adminClient
+      .from("users_profile")
+      .select("status")
+      .eq("id", authUserId)
+      .maybeSingle<{ status: string }>();
+
+  if (existingProfileError) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(existingProfileError.message)}`,
+    );
+  }
+
+  const resolvedProfileStatus =
+    createdAuthUser || existingProfile?.status !== "ACTIVE"
+      ? "INACTIVE"
+      : "ACTIVE";
+
   const { error: profileError } = await upsertUserProfileForAuthUser(
     adminClient,
     {
@@ -691,7 +709,7 @@ export async function createUserAccountAction(formData: FormData) {
       roleId,
       departmentId,
       managerId,
-      status: createdAuthUser ? "INACTIVE" : "ACTIVE",
+      status: resolvedProfileStatus,
     },
   );
 
