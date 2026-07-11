@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   ListChecks,
   Megaphone,
+  KeyRound,
   Plus,
   Route,
   Search,
@@ -69,6 +70,7 @@ type NavigationItem = {
   permission?: string;
   permissions?: string[];
   allowedRoleCodes?: string[];
+  accessMode?: "ANY" | "ALL";
   adminOnly?: boolean;
 };
 
@@ -189,6 +191,7 @@ const navigation: NavigationItem[] = [
     group: "quick",
     permissions: HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
     allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    accessMode: "ALL",
   },
   {
     label: "Viec cua toi",
@@ -223,6 +226,7 @@ const navigation: NavigationItem[] = [
     group: "admission",
     permissions: ["hou.com.read_sensitive", "hou.com.manage"],
     allowedRoleCodes: [...HEU_APP_SHELL_CONTROL_ROLE_CODES, "KHTC"],
+    accessMode: "ALL",
   },
   {
     label: "Khoa/GV",
@@ -247,6 +251,7 @@ const navigation: NavigationItem[] = [
       ...HEU_APP_SHELL_CTHSSV_ROLE_CODES,
       ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
     ],
+    accessMode: "ALL",
   },
   {
     label: "Pipeline",
@@ -260,6 +265,7 @@ const navigation: NavigationItem[] = [
       "pipeline.manage_team",
     ],
     allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    accessMode: "ALL",
   },
   {
     label: "Hồ sơ nhập học",
@@ -272,6 +278,7 @@ const navigation: NavigationItem[] = [
       ...HEU_APP_SHELL_ADMISSION_NAV_PERMISSIONS,
     ],
     allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    accessMode: "ALL",
   },
   {
     label: "Lịch tư vấn",
@@ -285,6 +292,7 @@ const navigation: NavigationItem[] = [
       ...HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS,
     ],
     allowedRoleCodes: HEU_APP_SHELL_ADMISSION_ROLE_CODES,
+    accessMode: "ALL",
   },
   {
     label: "Đối tác / CTV",
@@ -294,6 +302,7 @@ const navigation: NavigationItem[] = [
     group: "admission",
     permission: "partners.manage",
     allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    accessMode: "ALL",
   },
   {
     label: "Chiến dịch",
@@ -303,6 +312,7 @@ const navigation: NavigationItem[] = [
     group: "admission",
     permission: "campaigns.manage",
     allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    accessMode: "ALL",
   },
   {
     label: "Import dữ liệu",
@@ -312,6 +322,7 @@ const navigation: NavigationItem[] = [
     group: "admission",
     permission: "leads.import",
     allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    accessMode: "ALL",
   },
   {
     label: "Finance Desk",
@@ -341,6 +352,7 @@ const navigation: NavigationItem[] = [
       ...HEU_APP_SHELL_CONTROL_ROLE_CODES,
       ...HEU_APP_SHELL_ADMISSION_ROLE_CODES,
     ],
+    accessMode: "ALL",
   },
   {
     label: "Master Control",
@@ -374,6 +386,7 @@ const navigation: NavigationItem[] = [
     group: "control",
     permission: "audit.read",
     allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT", "PHAP_CHE"],
+    accessMode: "ALL",
   },
   {
     label: "AI Assistant",
@@ -383,6 +396,7 @@ const navigation: NavigationItem[] = [
     group: "control",
     permissions: ["audit.read", "master_control.check"],
     allowedRoleCodes: ["BGH", "IT_DATA", "AUDIT"],
+    accessMode: "ALL",
   },
   {
     label: "Phạm vi user",
@@ -622,15 +636,28 @@ export async function AppShell({
         ...(item.permissions ?? []),
       ];
       const itemRoleCodes = item.allowedRoleCodes ?? [];
-      const hasAccessRule = itemPermissions.length > 0 || itemRoleCodes.length > 0;
-      const isRoleAllowed = currentRoleCode
-        ? itemRoleCodes.includes(currentRoleCode)
-        : false;
-      const isPermissionAllowed = itemPermissions.some((permission) =>
-        permissionMap.get(permission),
-      );
+      const hasPermissionRule = itemPermissions.length > 0;
+      const hasRoleRule = itemRoleCodes.length > 0;
+      const hasAccessRule = hasPermissionRule || hasRoleRule;
+      const isRoleAllowed =
+        !hasRoleRule ||
+        Boolean(currentRoleCode && itemRoleCodes.includes(currentRoleCode));
+      const isPermissionAllowed =
+        !hasPermissionRule ||
+        itemPermissions.some((permission) => permissionMap.get(permission));
 
-      return !hasAccessRule || isRoleAllowed || isPermissionAllowed;
+      if (item.accessMode === "ALL") {
+        return isRoleAllowed && isPermissionAllowed;
+      }
+
+      if (!hasAccessRule) {
+        return true;
+      }
+
+      return (
+        (hasRoleRule && isRoleAllowed) ||
+        (hasPermissionRule && isPermissionAllowed)
+      );
     },
   );
   const visibleNavigationKeys = new Set(
@@ -770,15 +797,28 @@ export async function AppShell({
               ) : null}
               {actions}
               {userEmail ? (
-                <form action={logoutAction} className="flex items-center gap-2">
-                  <span className="hidden max-w-48 truncate text-sm text-zinc-500 sm:inline">
-                    {userEmail}
-                  </span>
-                  <Button type="submit" variant="outline">
-                    <LogOut className="size-4" />
-                    Đăng xuất
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    data-heu-self-service-password-change="P0-17_SELF_SERVICE_PASSWORD_CHANGE"
+                    data-heu-self-service-password-boundary="AUTHENTICATED_SESSION_ONLY NO_ADMIN_RESET NO_SCOPE_CHANGE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"
+                  >
+                    <Link href="/auth/update-password">
+                      <KeyRound className="size-4" />
+                      Đổi mật khẩu
+                    </Link>
                   </Button>
-                </form>
+                  <form action={logoutAction} className="flex items-center gap-2">
+                    <span className="hidden max-w-48 truncate text-sm text-zinc-500 sm:inline">
+                      {userEmail}
+                    </span>
+                    <Button type="submit" variant="outline">
+                      <LogOut className="size-4" />
+                      Đăng xuất
+                    </Button>
+                  </form>
+                </div>
               ) : (
                 <Button asChild variant="outline">
                   <Link href="/login">Đăng nhập</Link>
