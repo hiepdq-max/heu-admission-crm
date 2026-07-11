@@ -120,6 +120,12 @@ const errorMessages: Record<string, string> = {
     "User nghiep vu phai co phong ban truoc khi provision.",
   user_activation_not_ready:
     "User phai ACTIVE va co phong ban truoc khi gui email dat mat khau.",
+  user_position_requires_active_profile:
+    "Hãy lưu scope, sau đó chuyển profile ACTIVE trước khi gắn vị trí. User vẫn chưa có credential ở bước này.",
+  user_already_has_active_position:
+    "Một tài khoản chỉ được giữ một vị trí ACTIVE. Người kiêm nhiệm phải dùng tài khoản vận hành riêng cho từng vị trí.",
+  user_position_not_ready:
+    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi đặt hoặc gửi email mật khẩu.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",

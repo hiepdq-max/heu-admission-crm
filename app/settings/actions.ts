@@ -274,6 +274,21 @@ async function loadProfileForEmail(
     }>();
 }
 
+async function profileHasActivePosition(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+) {
+  const { data, error } = await supabase
+    .from("heu_position_assignments")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("status", "ACTIVE")
+    .eq("assignment_status", "ACTIVE_ASSIGNED")
+    .limit(1);
+
+  return !error && Boolean(data?.length);
+}
+
 export async function assignHeuPositionByEmailAction(formData: FormData) {
   const returnPath = settingsReturnPath(textValue(formData, "return_to"));
   const positionCode = normalizeMasterCode(textValue(formData, "position_code"));
@@ -283,6 +298,65 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
 
   if (!positionCode || !email) {
     redirect(`${returnPath}?error=missing_position_assignment_data`);
+  }
+
+  const [
+    { data: targetProfile, error: targetProfileError },
+    targetPositionResult,
+  ] = await Promise.all([
+      loadProfileForEmail(supabase, email),
+      supabase
+        .from("heu_org_positions")
+        .select("id")
+        .eq("position_code", positionCode)
+        .eq("status", "ACTIVE")
+        .maybeSingle<{ id: string }>(),
+    ]);
+
+  if (targetProfileError) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(targetProfileError.message)}`,
+    );
+  }
+
+  if (!targetProfile) {
+    redirect(`${returnPath}?error=missing_password_user`);
+  }
+
+  if (targetProfile.status !== "ACTIVE") {
+    redirect(`${returnPath}?error=user_position_requires_active_profile`);
+  }
+
+  if (targetPositionResult.error) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(targetPositionResult.error.message)}`,
+    );
+  }
+
+  if (targetPositionResult.data) {
+    const { data: existingAssignments, error: existingAssignmentError } =
+      await supabase
+        .from("heu_position_assignments")
+        .select("position_id")
+        .eq("user_id", targetProfile.id)
+        .eq("status", "ACTIVE")
+        .limit(1)
+        .returns<Array<{ position_id: string }>>();
+
+    if (existingAssignmentError) {
+      redirect(
+        `${returnPath}?error=${encodeURIComponent(existingAssignmentError.message)}`,
+      );
+    }
+
+    const existingPositionId = existingAssignments?.[0]?.position_id;
+
+    if (
+      existingPositionId &&
+      existingPositionId !== targetPositionResult.data.id
+    ) {
+      redirect(`${returnPath}?error=user_already_has_active_position`);
+    }
   }
 
   const { error } = await supabase.rpc("assign_heu_position_by_email", {
@@ -326,6 +400,10 @@ export async function setUserTemporaryPasswordAction(formData: FormData) {
 
   if (profile.status !== "ACTIVE" || !profile.department_id) {
     redirect(`${returnPath}?error=user_activation_not_ready`);
+  }
+
+  if (!(await profileHasActivePosition(supabase, profile.id))) {
+    redirect(`${returnPath}?error=user_position_not_ready`);
   }
 
   const targetRoleCode = profile.roles?.code ?? "";
@@ -403,6 +481,10 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
 
   if (profile.status !== "ACTIVE" || !profile.department_id) {
     redirect(`${returnPath}?error=user_activation_not_ready`);
+  }
+
+  if (!(await profileHasActivePosition(supabase, profile.id))) {
+    redirect(`${returnPath}?error=user_position_not_ready`);
   }
 
   const targetRoleCode = profile.roles?.code ?? "";
