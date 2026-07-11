@@ -7,6 +7,7 @@ import {
   ExecutiveDashboardOverview,
   type ExecutiveDashboardPermissions,
 } from "@/components/dashboard/executive-dashboard-overview";
+import { RoleBasedHome } from "@/components/dashboard/role-based-home";
 import { AppShell } from "@/components/layout/app-shell";
 import { AdmissionSegmentOverview } from "@/components/segments/admission-segment-overview";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ import {
   getHEUWorkspaceContext,
   heuWorkspaceSegmentIds,
 } from "@/lib/heu-workspace-context";
+import { getMockHomeProfile } from "@/lib/role-based-home-mock";
 import { createClient } from "@/lib/supabase/server";
 import {
   applyAdmissionSegmentIds,
@@ -50,6 +52,7 @@ type UrgentLeadRow = {
 
 type HomePageProps = {
   searchParams?: Promise<{
+    role?: string | string[];
     segment?: string | string[];
   }>;
 };
@@ -113,6 +116,18 @@ function formatDue(value: string) {
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const isLocalMockEnabled =
+    process.env.NODE_ENV !== "production" &&
+    process.env.HEU_ENABLE_ROLE_HOME_MOCK === "true";
+  const mockProfile = isLocalMockEnabled
+    ? getMockHomeProfile(firstParam(resolvedSearchParams.role))
+    : null;
+
+  if (mockProfile) {
+    return <RoleBasedHome profile={mockProfile} />;
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -122,7 +137,6 @@ export default async function Home({ searchParams }: HomePageProps) {
     redirect("/login");
   }
 
-  const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
   const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
