@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 import { Loader2, LogIn } from "lucide-react";
 
 import { loginAction, type LoginState } from "@/app/login/actions";
@@ -60,6 +61,15 @@ export function LoginForm() {
         )}
         Đăng nhập
       </Button>
+      <div className="text-center text-sm">
+        <Link
+          href="/auth/forgot-password"
+          className="font-medium text-zinc-600 underline-offset-4 hover:text-zinc-950 hover:underline"
+          data-heu-self-service-password-reset-entry="P0-17_SELF_SERVICE_PASSWORD_RESET_ENTRY"
+        >
+          Quên mật khẩu?
+        </Link>
+      </div>
     </form>
   );
 }

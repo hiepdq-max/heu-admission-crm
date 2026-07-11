@@ -39,19 +39,24 @@ function settingsReturnPath(value: string | null): SettingsReturnPath {
   return value === "/settings/scopes" ? "/settings/scopes" : "/settings";
 }
 
+function browserSafePasswordRecoveryHost(host: string) {
+  return host.replace(/^(?:0\.0\.0\.0|\[::\])(?=:\d+$|$)/, "localhost");
+}
+
 async function requestOrigin() {
   const requestHeaders = await headers();
   const forwardedHost = requestHeaders.get("x-forwarded-host");
   const host = forwardedHost ?? requestHeaders.get("host");
 
   if (host) {
+    const safeHost = browserSafePasswordRecoveryHost(host);
     const protocol =
       requestHeaders.get("x-forwarded-proto") ??
-      (host.startsWith("localhost") || host.startsWith("127.0.0.1")
+      (safeHost.startsWith("localhost") || safeHost.startsWith("127.0.0.1")
         ? "http"
         : "https");
 
-    return `${protocol}://${host}`;
+    return `${protocol}://${safeHost}`;
   }
 
   const configuredSiteUrl =
