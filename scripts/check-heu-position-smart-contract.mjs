@@ -4,8 +4,17 @@ import { fileURLToPath } from "node:url";
 
 const contractUrl = new URL("../lib/position-smart-contract.ts", import.meta.url);
 const source = await readFile(fileURLToPath(contractUrl), "utf8");
+const contract = await import(contractUrl.href);
 
-for (const token of ["DRAFT", "CHECK", "SUGGEST", "BGH_READ_ONLY", "OPERATIONAL", "ZERO_COST_LOCAL_FIRST", "PROPOSAL_ONLY"]) {
+for (const token of [
+  "DRAFT",
+  "CHECK",
+  "SUGGEST",
+  "BGH_READ_ONLY",
+  "OPERATIONAL",
+  "ZERO_COST_LOCAL_FIRST",
+  "PROPOSAL_ONLY",
+]) {
   assert.match(source, new RegExp(`\\b${token}\\b`), `missing required contract token: ${token}`);
 }
 
@@ -13,13 +22,28 @@ for (const forbidden of ["APPROVE", "WRITE", "SEND", "PAY", "DELETE", "MIGRATION
   assert.match(source, new RegExp(`\\b${forbidden}\\b`), `missing explicit forbidden capability: ${forbidden}`);
 }
 
-for (const requiredField of ["accountScopeKey", "positionCode", "departmentCode", "workspaceScope", "metadataKeys", "requestId"]) {
-  assert.match(source, new RegExp(`\\b${requiredField}\\b`), `missing required scoped metadata field: ${requiredField}`);
+for (const requiredField of [
+  "accountScopeKey",
+  "positionCode",
+  "departmentCode",
+  "workspaceScope",
+  "metadataKeys",
+  "requestId",
+]) {
+  assert.match(
+    source,
+    new RegExp(`\\b${requiredField}\\b`),
+    `missing required scoped metadata field: ${requiredField}`,
+  );
 }
 
 assert.match(source, /POSITION_SMART_FAIL_CLOSED/);
 assert.match(source, /HOU_SCOPE_MUST_BE_SEPARATED/);
 assert.match(source, /scopesAreIndependent/);
+assert.match(source, /INVALID_OUTPUT_MODE/);
+assert.match(source, /INVALID_POSITION_LANE/);
+assert.match(source, /RESTRICTED_METADATA_KEY_PARTS/);
+assert.match(source, /RESTRICTED_METADATA_KEY/);
 
 for (const prohibitedRuntime of [
   /\bfetch\s*\(/,
@@ -30,10 +54,78 @@ for (const prohibitedRuntime of [
   /\b(localStorage|sessionStorage)\b/,
   /\b(writeFile|appendFile|createWriteStream)\b/,
   /\b(setInterval|setTimeout)\s*\(/,
+  /\b(approve|write|send|pay|delete|migrate|deploy)\s*\(/i,
 ]) {
   assert.doesNotMatch(source, prohibitedRuntime, `prohibited runtime or storage capability: ${prohibitedRuntime}`);
 }
 
-assert.doesNotMatch(source, /@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, "real email-like identifier must not be hardcoded");
+assert.doesNotMatch(
+  source,
+  /@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/,
+  "real email-like identifier must not be hardcoded",
+);
 
-console.log("PASS: HEU position Smart contract is scoped, proposal-only, local-first, and fail-closed.");
+const operationalScope = {
+  accountScopeKey: "ACCOUNT_SCOPE_01",
+  positionCode: "POSITION_01",
+  departmentCode: "HEU:DEPARTMENT_01",
+  workspaceScope: ["HEU:WORKSPACE_01"],
+  lane: "OPERATIONAL",
+};
+
+assert.equal(contract.validatePositionSmartScope(operationalScope).ok, true);
+assert.equal(
+  contract.validatePositionSmartScope({ ...operationalScope, lane: "UNKNOWN" }).ok,
+  false,
+);
+assert.equal(
+  contract.validatePositionSmartScope({
+    ...operationalScope,
+    departmentCode: "HOU:DEPARTMENT_01",
+    workspaceScope: ["HOU:WORKSPACE_01", "HEU:WORKSPACE_01"],
+  }).ok,
+  false,
+);
+
+const safeInput = {
+  scope: operationalScope,
+  requestId: "REQUEST_01",
+  requestedMode: "DRAFT",
+  metadataKeys: ["record_status", "record_count"],
+};
+assert.equal(contract.createPositionSmartProposalLog(safeInput).outcome, "PROPOSAL_ONLY");
+assert.throws(
+  () => contract.createPositionSmartProposalLog({ ...safeInput, requestedMode: "APPROVE" }),
+  /INVALID_OUTPUT_MODE/,
+);
+
+for (const restrictedKey of [
+  "email",
+  "phone_number",
+  "cccd_hash",
+  "identity_code",
+  "home_address",
+  "bank_account",
+  "password",
+  "otp_code",
+  "access_token",
+  "client_secret",
+  "raw_lead",
+  "raw_student",
+  "raw_payment",
+  "raw_evidence",
+]) {
+  assert.throws(
+    () =>
+      contract.createPositionSmartProposalLog({
+        ...safeInput,
+        metadataKeys: [restrictedKey],
+      }),
+    /RESTRICTED_METADATA_KEY/,
+  );
+}
+
+console.log(
+  "PASS: HEU position Smart contract runtime guards, restricted metadata denylist, " +
+    "proposal-only behavior, and local-first boundaries are fail-closed.",
+);

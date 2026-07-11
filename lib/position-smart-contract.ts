@@ -49,6 +49,24 @@ export type PositionSmartValidation =
   | Readonly<{ ok: false; reason: string }>;
 
 const HOU_SCOPE_PREFIX = "HOU";
+const POSITION_SMART_LANES = ["BGH_READ_ONLY", "OPERATIONAL"] as const;
+const RESTRICTED_METADATA_KEY_PARTS = [
+  "email",
+  "phone",
+  "cccd",
+  "identity",
+  "address",
+  "bank",
+  "account",
+  "password",
+  "otp",
+  "token",
+  "secret",
+  "lead",
+  "student",
+  "payment",
+  "evidence",
+] as const;
 
 function hasValue(value: string): boolean {
   return value.trim().length > 0;
@@ -56,18 +74,50 @@ function hasValue(value: string): boolean {
 
 function hasUniqueNonEmptyValues(values: readonly string[]): boolean {
   const normalized = values.map((value) => value.trim());
-  return normalized.length > 0 && normalized.every(hasValue) && new Set(normalized).size === normalized.length;
+  return (
+    normalized.length > 0 &&
+    normalized.every(hasValue) &&
+    new Set(normalized).size === normalized.length
+  );
+}
+
+function isHouScope(value: string): boolean {
+  return value === HOU_SCOPE_PREFIX || value.startsWith(`${HOU_SCOPE_PREFIX}:`);
+}
+
+function isAllowedMetadataKey(key: string): boolean {
+  const normalizedParts = key
+    .trim()
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
+
+  return !normalizedParts.some((part) =>
+    RESTRICTED_METADATA_KEY_PARTS.includes(
+      part as (typeof RESTRICTED_METADATA_KEY_PARTS)[number],
+    ),
+  );
 }
 
 export function validatePositionSmartScope(scope: PositionSmartScope): PositionSmartValidation {
   if (!hasValue(scope.accountScopeKey)) return { ok: false, reason: "MISSING_ACCOUNT_SCOPE_KEY" };
   if (!hasValue(scope.positionCode)) return { ok: false, reason: "MISSING_POSITION_CODE" };
   if (!hasValue(scope.departmentCode)) return { ok: false, reason: "MISSING_DEPARTMENT_CODE" };
-  if (!hasUniqueNonEmptyValues(scope.workspaceScope)) return { ok: false, reason: "MISSING_OR_INVALID_WORKSPACE_SCOPE" };
+  if (!hasUniqueNonEmptyValues(scope.workspaceScope)) {
+    return { ok: false, reason: "MISSING_OR_INVALID_WORKSPACE_SCOPE" };
+  }
+  if (!POSITION_SMART_LANES.includes(scope.lane)) {
+    return { ok: false, reason: "INVALID_POSITION_LANE" };
+  }
 
-  const hasHouWorkspace = scope.workspaceScope.some((item) => item === HOU_SCOPE_PREFIX || item.startsWith(`${HOU_SCOPE_PREFIX}:`));
-  const isHouDepartment = scope.departmentCode === HOU_SCOPE_PREFIX || scope.departmentCode.startsWith(`${HOU_SCOPE_PREFIX}:`);
-  if (hasHouWorkspace !== isHouDepartment) return { ok: false, reason: "HOU_SCOPE_MUST_BE_SEPARATED" };
+  const normalizedWorkspaceScope = scope.workspaceScope.map((item) => item.trim());
+  const houWorkspaceCount = normalizedWorkspaceScope.filter(isHouScope).length;
+  const isHouDepartment = isHouScope(scope.departmentCode.trim());
+  const hasMixedHouWorkspace =
+    houWorkspaceCount > 0 && houWorkspaceCount < normalizedWorkspaceScope.length;
+  if (hasMixedHouWorkspace || (houWorkspaceCount > 0) !== isHouDepartment) {
+    return { ok: false, reason: "HOU_SCOPE_MUST_BE_SEPARATED" };
+  }
 
   return {
     ok: true,
@@ -75,7 +125,7 @@ export function validatePositionSmartScope(scope: PositionSmartScope): PositionS
       accountScopeKey: scope.accountScopeKey.trim(),
       positionCode: scope.positionCode.trim(),
       departmentCode: scope.departmentCode.trim(),
-      workspaceScope: Object.freeze(scope.workspaceScope.map((item) => item.trim())),
+      workspaceScope: Object.freeze(normalizedWorkspaceScope),
       lane: scope.lane,
     }),
   };
@@ -85,7 +135,15 @@ export function createPositionSmartProposalLog(input: PositionSmartMetadataInput
   const validation = validatePositionSmartScope(input.scope);
   if (!validation.ok) throw new Error(`POSITION_SMART_FAIL_CLOSED:${validation.reason}`);
   if (!hasValue(input.requestId)) throw new Error("POSITION_SMART_FAIL_CLOSED:MISSING_REQUEST_ID");
-  if (!hasUniqueNonEmptyValues(input.metadataKeys)) throw new Error("POSITION_SMART_FAIL_CLOSED:MISSING_OR_INVALID_METADATA_KEYS");
+  if (!POSITION_SMART_OUTPUT_MODES.includes(input.requestedMode)) {
+    throw new Error("POSITION_SMART_FAIL_CLOSED:INVALID_OUTPUT_MODE");
+  }
+  if (!hasUniqueNonEmptyValues(input.metadataKeys)) {
+    throw new Error("POSITION_SMART_FAIL_CLOSED:MISSING_OR_INVALID_METADATA_KEYS");
+  }
+  if (!input.metadataKeys.every(isAllowedMetadataKey)) {
+    throw new Error("POSITION_SMART_FAIL_CLOSED:RESTRICTED_METADATA_KEY");
+  }
 
   return Object.freeze({
     contractVersion: POSITION_SMART_CONTRACT_VERSION,
@@ -112,6 +170,8 @@ export function scopesAreIndependent(left: PositionSmartScope, right: PositionSm
     leftValidation.scope.positionCode === rightValidation.scope.positionCode &&
     leftValidation.scope.departmentCode === rightValidation.scope.departmentCode &&
     leftValidation.scope.workspaceScope.length === rightValidation.scope.workspaceScope.length &&
-    leftValidation.scope.workspaceScope.every((item, index) => item === rightValidation.scope.workspaceScope[index])
+    leftValidation.scope.workspaceScope.every(
+      (item, index) => item === rightValidation.scope.workspaceScope[index],
+    )
   );
 }
