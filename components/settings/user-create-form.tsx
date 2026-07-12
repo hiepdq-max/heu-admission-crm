@@ -257,6 +257,7 @@ export function UserCreateForm({
           <div
             className="rounded-md border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900"
             data-heu-user-create-deferred-activation="NO_TEMP_PASSWORD_NO_EMAIL"
+            data-heu-auth-activation-lock="BANNED_UNTIL_POSITION_AND_EMAIL"
           >
             <p className="font-semibold">Provision trước, kích hoạt sau</p>
             <p className="mt-1 text-xs leading-5 text-sky-800">
