@@ -185,6 +185,15 @@ export function UserAuthProfileLinkForm({
       <form action={linkAuthUserProfileAction} className="space-y-4 p-5">
         <input type="hidden" name="return_to" value={returnPath} />
 
+        <div
+          className="rounded-md border border-rose-200 bg-rose-50 p-3 text-sm leading-6 text-rose-900"
+          data-heu-manual-auth-link-status="NO_GO"
+        >
+          Luồng link Auth thủ công đang bị khóa vì RPC legacy tự chuyển profile
+          sang ACTIVE. Không nhập dữ liệu hoặc gửi form này; IT_DATA/Audit phải
+          xử lý bằng luồng provision INACTIVE và gán vị trí có kiểm soát.
+        </div>
+
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           <div className="space-y-2">
             <label htmlFor="link-email" className="text-sm font-medium text-zinc-700">
@@ -356,7 +365,11 @@ export function UserAuthProfileLinkForm({
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit">
+          <Button
+            type="button"
+            disabled
+            data-heu-manual-auth-link="BLOCKED_LEGACY_ACTIVE_PROFILE_RPC"
+          >
             <Link2 className="size-4" />
             Liên kết vào CRM
           </Button>
