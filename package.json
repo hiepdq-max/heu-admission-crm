@@ -17,6 +17,8 @@
     "check:heu-admission-pilot-lifecycle-live-readiness": "node scripts/check-heu-admission-pilot-lifecycle-live-readiness.mjs",
     "check:heu-admission-pilot-lifecycle-live-readiness-static": "node scripts/check-heu-admission-pilot-lifecycle-live-readiness-static.mjs",
     "check:heu-lead-handover-document-gate": "node scripts/check-heu-lead-handover-document-gate.mjs",
+    "check:heu-lead-handover-live-preflight": "node scripts/check-heu-lead-handover-live-preflight.mjs",
+    "check:heu-lead-handover-live-preflight-static": "node scripts/check-heu-lead-handover-live-preflight-static.mjs",
     "check:heu-admission-pilot-actor-repair-queue": "node scripts/check-heu-admission-pilot-actor-repair-queue.mjs",
     "check:heu-admission-actor-repair-controlled-apply": "node scripts/check-heu-admission-actor-repair-controlled-apply.mjs",
     "apply:heu-pilot-accounting-readonly-scope": "node scripts/apply-heu-pilot-accounting-readonly-scope.mjs",
