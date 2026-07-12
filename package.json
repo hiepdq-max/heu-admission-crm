@@ -15,6 +15,8 @@
     "check:heu-admission-pilot-lifecycle-uat": "node scripts/check-heu-admission-pilot-lifecycle-uat.mjs",
     "check:heu-admission-pilot-actor-repair-queue": "node scripts/check-heu-admission-pilot-actor-repair-queue.mjs",
     "check:heu-admission-actor-repair-controlled-apply": "node scripts/check-heu-admission-actor-repair-controlled-apply.mjs",
+    "apply:heu-pilot-accounting-readonly-scope": "node scripts/apply-heu-pilot-accounting-readonly-scope.mjs",
+    "check:heu-pilot-accounting-readonly-scope": "node scripts/check-heu-pilot-accounting-readonly-scope.mjs",
     "check:heu-hou-scope-readiness": "node scripts/check-heu-hou-scope-readiness.mjs",
     "check:heu-short-course-scope-readiness": "node scripts/check-heu-short-course-scope-readiness.mjs",
     "check:heu-short-course-role-negative-access": "node scripts/check-heu-short-course-role-negative-access.mjs",
