@@ -4,7 +4,10 @@ import crypto from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 const repoRoot = process.cwd();
-const envPath = path.join(repoRoot, ".env.local");
+const envPath = path.resolve(
+  repoRoot,
+  process.env.HEU_ENV_FILE || ".env.local",
+);
 const requiredEnvKeys = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
