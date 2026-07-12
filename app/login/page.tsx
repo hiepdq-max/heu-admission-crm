@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/auth/login-form";
+import { isHeuDemoRoleLoginEnabled } from "@/lib/demo-role-directory";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function LoginPage() {
@@ -12,6 +14,8 @@ export default async function LoginPage() {
   if (user) {
     redirect("/");
   }
+
+  const demoEnabled = isHeuDemoRoleLoginEnabled();
 
   return (
     <main className="min-h-screen bg-zinc-100 px-4 py-10 text-zinc-950">
@@ -42,6 +46,20 @@ export default async function LoginPage() {
               </p>
             </div>
             <LoginForm />
+            {demoEnabled ? (
+              <div className="mt-5 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm">
+                <p className="font-semibold text-blue-950">Cần kiểm tra giao diện nhanh?</p>
+                <p className="mt-1 text-xs leading-5 text-blue-900/75">
+                  Demo nội bộ chỉ dùng dữ liệu giả lập, không cần mật khẩu và không đăng nhập vào hệ thống thật.
+                </p>
+                <Link
+                  href="/demo"
+                  className="mt-3 inline-flex font-semibold text-blue-700 underline-offset-4 hover:underline"
+                >
+                  Mở 7 vai trò demo read-only
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>

@@ -37,6 +37,7 @@
     "check:heu-business-user-responsibility-register": "node scripts/check-heu-business-user-responsibility-register.mjs",
     "check:heu-it-data-daily-control": "node scripts/check-heu-it-data-daily-control.mjs",
     "check:heu-fast-local-loop": "node scripts/check-heu-fast-local-loop.mjs",
+    "check:heu-demo-role-login": "node scripts/check-heu-demo-role-login.mjs",
     "check:heu-data-confirmation-task-center": "node scripts/check-heu-data-confirmation-task-center.mjs",
     "check:heu-task-center-runtime-consolidation": "node scripts/check-heu-task-center-runtime-consolidation.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
