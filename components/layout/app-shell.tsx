@@ -84,8 +84,10 @@ const navigationGroups: Array<{ key: NavigationGroupKey; label: string }> = [
 const HEU_APP_SHELL_ADMISSION_ROLE_CODES = [
   "TUYEN_SINH",
   "ADMISSION_HEAD",
+  "PILOT_ADMISSION_HEAD",
   "TEAM_LEAD",
   "COUNSELOR",
+  "PILOT_COUNSELOR",
 ];
 const HEU_APP_SHELL_CTHSSV_ROLE_CODES = ["CTHSSV", "CTHSSV_LEAD"];
 const HEU_APP_SHELL_TRAINING_ROLE_CODES = [
@@ -99,6 +101,8 @@ const HEU_APP_SHELL_FINANCE_ROLE_CODES = [
   "KHTC",
   "ACCOUNTING",
   "ACCOUNTING_LEAD",
+  "PILOT_ACCOUNTING_LEAD_READONLY",
+  "PILOT_ACCOUNTING_READONLY",
 ];
 const HEU_APP_SHELL_CONTROL_ROLE_CODES = [
   "BGH",
@@ -301,7 +305,12 @@ const navigation: NavigationItem[] = [
     key: "partners",
     group: "admission",
     permission: "partners.manage",
-    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    allowedRoleCodes: [
+      "ADMISSION_HEAD",
+      "PILOT_ADMISSION_HEAD",
+      "TEAM_LEAD",
+      "IT_DATA",
+    ],
     accessMode: "ALL",
   },
   {
@@ -311,7 +320,12 @@ const navigation: NavigationItem[] = [
     key: "campaigns",
     group: "admission",
     permission: "campaigns.manage",
-    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    allowedRoleCodes: [
+      "ADMISSION_HEAD",
+      "PILOT_ADMISSION_HEAD",
+      "TEAM_LEAD",
+      "IT_DATA",
+    ],
     accessMode: "ALL",
   },
   {
@@ -321,7 +335,12 @@ const navigation: NavigationItem[] = [
     key: "import",
     group: "admission",
     permission: "leads.import",
-    allowedRoleCodes: ["ADMISSION_HEAD", "TEAM_LEAD", "IT_DATA"],
+    allowedRoleCodes: [
+      "ADMISSION_HEAD",
+      "PILOT_ADMISSION_HEAD",
+      "TEAM_LEAD",
+      "IT_DATA",
+    ],
     accessMode: "ALL",
   },
   {
