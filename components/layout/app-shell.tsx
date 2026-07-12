@@ -457,7 +457,7 @@ function workspaceHref(key: string, href: string, activeSegmentId: string | null
 function workspaceHubLink(
   segmentCode: string,
   segmentId: string,
-): WorkspaceQuickLink {
+): WorkspaceQuickLink | null {
   if (segmentCode === "UNIVERSITY_TRANSFER_HOU") {
     return {
       label: "Hub HOU",
@@ -485,12 +485,7 @@ function workspaceHubLink(
     };
   }
 
-  return {
-    label: "Báo cáo",
-    href: withAdmissionSegmentParam("/reports", segmentId),
-    icon: BarChart3,
-    navKey: "reports",
-  };
+  return null;
 }
 
 function buildWorkspaceQuickLinks(
@@ -560,7 +555,10 @@ function buildWorkspaceQuickLinks(
   }
 
   if (segmentCode) {
-    links.push(workspaceHubLink(segmentCode, segmentId));
+    const hubLink = workspaceHubLink(segmentCode, segmentId);
+    if (hubLink) {
+      links.push(hubLink);
+    }
   }
 
   links.push({
@@ -684,7 +682,7 @@ export async function AppShell({
   return (
     <main className="min-h-screen bg-zinc-100 text-zinc-950">
       <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
-        <aside className="border-r border-zinc-200 bg-white">
+        <aside className="border-r border-zinc-200 bg-white lg:sticky lg:top-0 lg:h-screen lg:self-start lg:overflow-y-auto">
           <div className="flex h-16 items-center gap-3 border-b border-zinc-200 px-5">
             <div className="flex size-10 items-center justify-center rounded-lg bg-zinc-950 text-sm font-semibold text-white">
               HEU
