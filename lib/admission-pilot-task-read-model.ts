@@ -34,6 +34,7 @@ export type AdmissionPilotTaskLiveSummary = {
   documentCandidateCount: number;
   documentBlockedCount: number;
   handoverReadyCount: number;
+  firstBlockedLeadId: string | null;
 };
 
 type ReadOptions = {
@@ -62,6 +63,7 @@ function emptyResult(
     documentCandidateCount: 0,
     documentBlockedCount: 0,
     handoverReadyCount: 0,
+    firstBlockedLeadId: null,
   };
 }
 
@@ -138,21 +140,28 @@ export async function readAdmissionPilotTaskLiveSummary(
   const documentCandidates = leads.filter((lead) =>
     handoverStatuses.has(lead.status),
   );
-  const handoverReadyCount = documentCandidates.filter((lead) => {
-    const normalizedProgram = lead.interested_program?.trim().toUpperCase();
-    if (!normalizedProgram) return false;
-    const requiredIds = checklists
-      .filter((checklist) => {
-        const appliesToProgram = checklist.applies_to_program
-          ?.trim()
-          .toUpperCase();
-        return !appliesToProgram || appliesToProgram === normalizedProgram;
+  const handoverReadyLeadIds = new Set(
+    documentCandidates
+      .filter((lead) => {
+        const normalizedProgram = lead.interested_program?.trim().toUpperCase();
+        if (!normalizedProgram) return false;
+        const requiredIds = checklists
+          .filter((checklist) => {
+            const appliesToProgram = checklist.applies_to_program
+              ?.trim()
+              .toUpperCase();
+            return !appliesToProgram || appliesToProgram === normalizedProgram;
+          })
+          .map((checklist) => checklist.id);
+        if (requiredIds.length === 0) return false;
+        const checkedIds = checkedByLead.get(lead.id) ?? new Set<string>();
+        return requiredIds.every((id) => checkedIds.has(id));
       })
-      .map((checklist) => checklist.id);
-    if (requiredIds.length === 0) return false;
-    const checkedIds = checkedByLead.get(lead.id) ?? new Set<string>();
-    return requiredIds.every((id) => checkedIds.has(id));
-  }).length;
+      .map((lead) => lead.id),
+  );
+  const blockedDocumentCandidates = documentCandidates.filter(
+    (lead) => !handoverReadyLeadIds.has(lead.id),
+  );
 
   return {
     mode: ADMISSION_PILOT_TASK_LIVE_SUMMARY,
@@ -162,7 +171,8 @@ export async function readAdmissionPilotTaskLiveSummary(
     totalLeadCount: leads.length,
     missingActorCount: leads.filter((lead) => !lead.assigned_to).length,
     documentCandidateCount: documentCandidates.length,
-    documentBlockedCount: documentCandidates.length - handoverReadyCount,
-    handoverReadyCount,
+    documentBlockedCount: blockedDocumentCandidates.length,
+    handoverReadyCount: handoverReadyLeadIds.size,
+    firstBlockedLeadId: blockedDocumentCandidates[0]?.id ?? null,
   };
 }

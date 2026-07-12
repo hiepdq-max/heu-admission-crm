@@ -18,6 +18,8 @@ const modelTokens = [
   "document.checked_by",
   "document.checked_at",
   "No active admission segment; broad fallback is forbidden.",
+  "firstBlockedLeadId",
+  "blockedDocumentCandidates[0]?.id ?? null",
 ];
 for (const token of modelTokens) {
   if (!model.includes(token)) failures.push(`model missing token: ${token}`);
@@ -30,6 +32,15 @@ if (!page.includes('scopeDecision !== "NO_MATCHING_SCOPE"')) {
 }
 if (!panel.includes("ACTIVE_SEGMENT_RLS_METADATA_ONLY")) {
   failures.push("metadata-only scope marker is missing");
+}
+if (!panel.includes("#documents")) {
+  failures.push("direct blocked packet route must target the document anchor");
+}
+if (!panel.includes("Mở thẳng checklist cần kiểm tra")) {
+  failures.push("owner direct-action label is missing");
+}
+if (!panel.includes("Owner chỉ chuyển giấy tờ sang CHECKED")) {
+  failures.push("owner evidence boundary is missing");
 }
 if (/\b(student_name|student_phone|parent_name|parent_phone)\b/.test(panel)) {
   failures.push("panel must not render raw PII fields");
