@@ -53,6 +53,8 @@
     "check:heu-task-center-live-readonly-adapter": "node scripts/check-heu-task-center-live-readonly-adapter.mjs",
     "check:heu-task-center-live-readonly-ui": "node scripts/check-heu-task-center-live-readonly-ui.mjs",
     "check:heu-task-center-step121-migration-gate": "node scripts/check-heu-task-center-step121-migration-gate.mjs",
+    "check:heu-task-center-step121-restore-preflight": "node scripts/check-heu-task-center-step121-restore-preflight.mjs",
+    "check:heu-task-center-step121-restore-preflight-static": "node scripts/check-heu-task-center-step121-restore-preflight-static.mjs",
     "check:heu-task-center-runtime-consolidation": "node scripts/check-heu-task-center-runtime-consolidation.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
