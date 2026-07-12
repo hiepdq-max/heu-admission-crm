@@ -6,6 +6,7 @@ const routes = [
   "app/short-course/page.tsx",
   "app/ttgdtx/payment-requests/pay/page.tsx",
 ];
+const home = readFileSync("app/page.tsx", "utf8");
 const pilotRoles = [
   "PILOT_ADMISSION_HEAD",
   "PILOT_COUNSELOR",
@@ -29,5 +30,14 @@ for (const route of routes) {
   }
 }
 
+if (
+  !boundary.includes("PILOT_ACCOUNTING_HOME_ROLES") ||
+  !boundary.includes('"/ttgdtx/accounting-dashboard"') ||
+  !home.includes("pilotHomeRoute(heuWorkspace.roleCode)") ||
+  !home.includes("redirect(pilotHome)")
+) {
+  throw new Error("HEU_PILOT_ROUTE_BOUNDARY: accounting home route missing");
+}
+
 console.log("HEU_PILOT_ROUTE_BOUNDARY: PASS_LOCAL");
-console.log("guarded_routes=3 pilot_roles=4 database_write=0 production=NO_GO");
+console.log("guarded_routes=3 pilot_roles=4 accounting_home=P2_18_READ_ONLY database_write=0 production=NO_GO");

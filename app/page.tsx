@@ -24,6 +24,7 @@ import {
 } from "@/lib/heu-workspace-context";
 import { getMockHomeProfile } from "@/lib/role-based-home-mock";
 import { createClient } from "@/lib/supabase/server";
+import { pilotHomeRoute } from "@/lib/pilot-route-boundary";
 import {
   applyAdmissionSegmentIds,
   firstParam,
@@ -142,6 +143,10 @@ export default async function Home({ searchParams }: HomePageProps) {
     requestedSegmentId,
     includeActionPermissions: true,
   });
+  const pilotHome = pilotHomeRoute(heuWorkspace.roleCode);
+  if (pilotHome) {
+    redirect(pilotHome);
+  }
   const workspace = heuWorkspace.admissionWorkspace;
   const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
 
