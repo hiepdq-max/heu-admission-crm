@@ -161,6 +161,31 @@ function currentStateP0RegisterSopLoopMatches(contents) {
   ].every((token) => contents.includes(token));
 }
 
+function currentDeferredUserProvisioningMatches(relativePath, contents) {
+  const requiredTokensByPath = {
+    "components/settings/user-create-form.tsx": [
+      'data-heu-user-create-deferred-activation="NO_TEMP_PASSWORD_NO_EMAIL"',
+      'data-heu-auth-activation-lock="BANNED_UNTIL_POSITION_AND_EMAIL"',
+      "createUserAccountAction",
+    ],
+    "app/settings/actions.ts": [
+      "createUserAccountAction",
+      "ban_duration: pendingActivationBanDuration",
+      'status: "INACTIVE"',
+      "recoveryRedirectUrl",
+      "password_email_sent=1",
+    ],
+    "app/settings/page.tsx": [
+      "user_activation_not_ready",
+      "user_position_not_ready",
+      "auth_user_activation_lock_failed",
+      "missing_service_role_key",
+    ],
+  };
+  const requiredTokens = requiredTokensByPath[relativePath];
+  return requiredTokens?.every((token) => contents.includes(token)) ?? false;
+}
+
 function requireText(relativePath, pattern, label) {
   if (!exists(relativePath)) {
     return;
@@ -171,10 +196,18 @@ function requireText(relativePath, pattern, label) {
     const hasAllowedCurrentStateSopLoopUpdate =
       label === "HEU current-state inventory Stage D NO-GO snapshot" &&
       currentStateP0RegisterSopLoopMatches(contents);
+    const hasAllowedDeferredProvisioningUpdate =
+      [
+        "user account temporary password UI guard",
+        "user account temporary password server guard",
+        "user account temporary password error message",
+      ].includes(label) &&
+      currentDeferredUserProvisioningMatches(relativePath, contents);
 
     if (
       !literalPatternMatches(contents, pattern) &&
-      !hasAllowedCurrentStateSopLoopUpdate
+      !hasAllowedCurrentStateSopLoopUpdate &&
+      !hasAllowedDeferredProvisioningUpdate
     ) {
       fail(`${relativePath}: missing ${label}`);
     }
@@ -509,7 +542,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(
@@ -540,7 +573,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(
@@ -787,7 +820,7 @@ requireText(
 );
 requireText(
   "app/import/page.tsx",
-  /(?=[\s\S]*firstParam)(?=[\s\S]*getAdmissionWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
+  /(?=[\s\S]*firstParam)(?=[\s\S]*getHEUWorkspaceContext)(?=[\s\S]*workspaceReturnTo = withAdmissionSegmentParam\([\s\S]*"\/import"[\s\S]*workspace\.activeSegmentId)(?=[\s\S]*data-heu-import-no-workspace-guard="P0-14_IMPORT_NO_WORKSPACE_GUARD")(?=[\s\S]*href=\{withAdmissionSegmentParam\([\s\S]*"\/leads"[\s\S]*workspace\.activeSegmentId)/,
   "P0-14 import page workspace guard",
 );
 requireText(

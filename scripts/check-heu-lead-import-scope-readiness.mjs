@@ -4,7 +4,10 @@ import crypto from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 const repoRoot = process.cwd();
-const envPath = path.join(repoRoot, ".env.local");
+const envPath = path.resolve(
+  repoRoot,
+  process.env.HEU_ENV_FILE || ".env.local",
+);
 const requiredEnvKeys = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
@@ -145,8 +148,7 @@ if (missingKeys.length === 0) {
         .eq("is_deleted", false),
       adminClient
         .from("users_profile")
-        .select("id,status,role_id,roles(code)")
-        .eq("status", "ACTIVE"),
+        .select("id,status,role_id,roles(code)"),
       adminClient
         .from("user_admission_segment_scopes")
         .select("user_id,segment_id,status")
@@ -199,7 +201,15 @@ if (missingKeys.length === 0) {
       segments &&
       partners
     ) {
-      const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+      const allProfileById = new Map(
+        profiles.map((profile) => [profile.id, profile]),
+      );
+      const activeProfiles = profiles.filter(
+        (profile) => profile.status === "ACTIVE",
+      );
+      const profileById = new Map(
+        activeProfiles.map((profile) => [profile.id, profile]),
+      );
       const segmentStatusById = new Map(
         segments.map((segment) => [segment.id, segment.status]),
       );
@@ -229,10 +239,22 @@ if (missingKeys.length === 0) {
         return !partner || partner.status !== "ACTIVE" || partner.is_deleted;
       });
       const missingAssignedProfiles = leads.filter(
-        (lead) => lead.assigned_to && !profileById.has(lead.assigned_to),
+        (lead) => lead.assigned_to && !allProfileById.has(lead.assigned_to),
       );
       const missingCreatedProfiles = leads.filter(
-        (lead) => lead.created_by && !profileById.has(lead.created_by),
+        (lead) => lead.created_by && !allProfileById.has(lead.created_by),
+      );
+      const inactiveAssignedProfiles = leads.filter(
+        (lead) =>
+          lead.assigned_to &&
+          allProfileById.has(lead.assigned_to) &&
+          !profileById.has(lead.assigned_to),
+      );
+      const inactiveCreatedProfiles = leads.filter(
+        (lead) =>
+          lead.created_by &&
+          allProfileById.has(lead.created_by) &&
+          !profileById.has(lead.created_by),
       );
       const assignedSegmentMismatch = leads.filter((lead) =>
         userSegmentMismatch(
@@ -307,12 +329,23 @@ if (missingKeys.length === 0) {
 
       addStatus(
         "LEAD-IMPORT-SCOPE-ACTOR-LINK",
-        missingAssignedProfiles.length === 0 && missingCreatedProfiles.length === 0
+        missingAssignedProfiles.length === 0 &&
+          missingCreatedProfiles.length === 0 &&
+          inactiveAssignedProfiles.length === 0 &&
+          inactiveCreatedProfiles.length === 0
           ? "READY"
           : "NO_GO",
-        missingAssignedProfiles.length === 0 && missingCreatedProfiles.length === 0
+        missingAssignedProfiles.length === 0 &&
+          missingCreatedProfiles.length === 0 &&
+          inactiveAssignedProfiles.length === 0 &&
+          inactiveCreatedProfiles.length === 0
           ? "Assigned/created user references are either empty or active CRM profiles."
-          : `Leads with missing assigned profile: ${missingAssignedProfiles.length}; missing created_by profile: ${missingCreatedProfiles.length}.`,
+          : [
+              `missing_assigned_profile=${missingAssignedProfiles.length}`,
+              `missing_created_by_profile=${missingCreatedProfiles.length}`,
+              `inactive_assigned_profile=${inactiveAssignedProfiles.length}`,
+              `inactive_created_by_profile=${inactiveCreatedProfiles.length}`,
+            ].join("; "),
       );
 
       addStatus(
@@ -361,7 +394,7 @@ if (missingKeys.length === 0) {
         [
           `active_leads=${leads.length}`,
           `missing_segment=${missingSegmentLeads.length}`,
-          `active_profiles=${profiles.length}`,
+          `active_profiles=${activeProfiles.length}`,
           `active_segment_scope_rows=${segmentScopes.length}`,
           `active_partner_scope_rows=${partnerScopes.length}`,
         ].join("; "),
