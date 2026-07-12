@@ -250,6 +250,7 @@ values
   ('CTHSSV_05', 'CTHSSV 05', 'PHONG_CTHSSV', 'CTHSSV', 'CTHSSV', 'CTHSSV_HEAD', 305, false, 'DRAFT', null),
 
   ('KE_TOAN_TRUONG', 'Ke toan truong', 'PHONG_KHTC', 'ACCOUNTING', 'ACCOUNTING_LEAD', 'PHT_TAI_CHINH', 400, true, 'DRAFT', null),
+  ('KE_TOAN_DEPUTY', 'Pho phong ke toan', 'PHONG_KHTC', 'ACCOUNTING', 'ACCOUNTING_LEAD', 'KE_TOAN_TRUONG', 400, true, 'DRAFT', 'Pilot manager position. Read/check only; no posting, payment or debt-clear authority.'),
   ('KE_TOAN_01', 'Ke toan 01', 'PHONG_KHTC', 'ACCOUNTING', 'ACCOUNTING', 'KE_TOAN_TRUONG', 401, false, 'DRAFT', null),
   ('KE_TOAN_02', 'Ke toan 02', 'PHONG_KHTC', 'ACCOUNTING', 'ACCOUNTING', 'KE_TOAN_TRUONG', 402, false, 'DRAFT', null),
   ('KE_TOAN_03', 'Ke toan 03', 'PHONG_KHTC', 'ACCOUNTING', 'ACCOUNTING', 'KE_TOAN_TRUONG', 403, false, 'DRAFT', null),
@@ -266,6 +267,7 @@ values
   ('AUDIT_02', 'Audit 02', 'AUDIT', 'AUDIT', 'AUDIT', 'AUDIT_HEAD', 602, false, 'DRAFT', null),
   ('AUDIT_03', 'Audit 03', 'AUDIT', 'AUDIT', 'AUDIT', 'AUDIT_HEAD', 603, false, 'DRAFT', null),
 
+  ('HEU_SYSTEM_ADMIN', 'Quan tri he thong HEU', 'IT_DATA', 'IT_DATA', 'IT_DATA_HEAD', 'HT', 695, true, 'DRAFT', 'Control-plane administrator. No default ADMIN role and no broad business workspace.'),
   ('IT_DATA_HEAD', 'Truong bo phan IT/Data', 'IT_DATA', 'IT_DATA', 'IT_DATA_HEAD', 'HT', 700, true, 'DRAFT', null),
   ('IT_DATA_01', 'IT/Data 01', 'IT_DATA', 'IT_DATA', 'IT_DATA', 'IT_DATA_HEAD', 701, false, 'DRAFT', null),
   ('IT_DATA_02', 'IT/Data 02', 'IT_DATA', 'IT_DATA', 'IT_DATA', 'IT_DATA_HEAD', 702, false, 'DRAFT', null),

@@ -27,6 +27,7 @@
     "check:heu-user-pilot-scope-save-guard": "node scripts/check-heu-user-pilot-scope-save-guard.mjs",
     "check:heu-auth-recovery-activation-position-gate": "node scripts/check-heu-auth-recovery-activation-position-gate.mjs",
     "check:heu-position-smart-contract": "node scripts/check-heu-position-smart-contract.mjs",
+    "check:heu-pilot-position-master-gap": "node scripts/check-heu-pilot-position-master-gap.mjs",
     "check:heu-settings-permission-matrix-readiness": "node scripts/check-heu-settings-permission-matrix-readiness.mjs",
     "check:heu-effective-position-permission-dry-run": "node scripts/check-heu-effective-position-permission-dry-run.mjs",
     "check:heu-tchc-position-report-foundation": "node scripts/check-heu-tchc-position-report-foundation.mjs",
