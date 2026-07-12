@@ -29,6 +29,10 @@ for (const token of [
   "u.status = 'INACTIVE'",
   "a.assignment_status = 'ACTIVE_ASSIGNED'",
   "Auth BANNED",
+  "HEU_PILOT_ROLE_LEAST_PRIVILEGE_STAGED",
+  "_heu_pilot_profile_role_before",
+  "old_value",
+  "new_value",
 ]) {
   if (!sql.includes(token)) failures.push(`missing control token: ${token}`);
 }

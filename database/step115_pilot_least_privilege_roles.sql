@@ -128,6 +128,29 @@ set default_role_code = m.role_code,
 from _heu_pilot_position_roles m
 where p.position_code = m.position_code;
 
+create temporary table _heu_pilot_profile_role_before (
+  user_id uuid primary key,
+  position_code text not null,
+  old_role_code text,
+  new_role_code text not null
+) on commit drop;
+
+insert into _heu_pilot_profile_role_before (
+  user_id,
+  position_code,
+  old_role_code,
+  new_role_code
+)
+select u.id, p.position_code, old_role.code, m.role_code
+from public.users_profile u
+join public.heu_position_assignments a on a.user_id = u.id
+join public.heu_org_positions p on p.id = a.position_id
+join _heu_pilot_position_roles m on m.position_code = p.position_code
+left join public.roles old_role on old_role.id = u.role_id
+where a.status = 'ACTIVE'
+  and a.assignment_status = 'ACTIVE_ASSIGNED'
+  and u.status = 'INACTIVE';
+
 update public.users_profile u
 set role_id = r.id, updated_at = now()
 from public.heu_position_assignments a
@@ -138,6 +161,45 @@ where a.user_id = u.id
   and a.status = 'ACTIVE'
   and a.assignment_status = 'ACTIVE_ASSIGNED'
   and u.status = 'INACTIVE';
+
+insert into public.audit_logs (
+  user_id,
+  action,
+  entity_type,
+  entity_id,
+  old_value,
+  new_value,
+  note
+)
+select
+  actor.user_id,
+  'HEU_PILOT_ROLE_LEAST_PRIVILEGE_STAGED',
+  'users_profile',
+  before.user_id,
+  jsonb_build_object('role_code', before.old_role_code),
+  jsonb_build_object(
+    'role_code', before.new_role_code,
+    'position_code', before.position_code,
+    'profile_status', 'INACTIVE',
+    'auth_banned', true
+  ),
+  'HEU-PILOT-ROLE-001'
+from _heu_pilot_profile_role_before before
+cross join lateral (
+  select a.user_id
+  from public.heu_position_assignments a
+  join public.heu_org_positions p on p.id = a.position_id
+  where p.position_code = 'HEU_SYSTEM_ADMIN'
+    and a.status = 'ACTIVE'
+    and a.assignment_status = 'ACTIVE_ASSIGNED'
+  limit 1
+) actor
+where not exists (
+  select 1 from public.audit_logs existing
+  where existing.action = 'HEU_PILOT_ROLE_LEAST_PRIVILEGE_STAGED'
+    and existing.entity_id = before.user_id
+    and existing.note = 'HEU-PILOT-ROLE-001'
+);
 
 insert into public.heu_position_permission_matrix (
   position_id, permission, permission_source, status
