@@ -19,6 +19,7 @@ import { TtgdtxPayoutDuplicateGuard } from "@/components/ttgdtx/ttgdtx-payout-du
 import { TtgdtxPayoutExecutionReadinessChecklist } from "@/components/ttgdtx/ttgdtx-payout-execution-readiness-checklist";
 import { TtgdtxPayoutUatEvidenceChecklist } from "@/components/ttgdtx/ttgdtx-payout-uat-evidence-checklist";
 import { Button } from "@/components/ui/button";
+import { isPilotBlockedFromNonCoreRoute } from "@/lib/pilot-route-boundary";
 import { createClient } from "@/lib/supabase/server";
 import {
   formatVndAmount as money,
@@ -277,6 +278,9 @@ export default async function PaymentExecutionPage({
   ]);
 
   const roleCode = (roleResult.data as string | null) ?? null;
+  if (isPilotBlockedFromNonCoreRoute(roleCode)) {
+    redirect("/");
+  }
   const segment = segmentResult.data ?? null;
   const scopes = scopeResult.data ?? [];
   const canManage = canOpenTtgdtxPaymentExecution(

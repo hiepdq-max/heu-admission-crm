@@ -24,6 +24,7 @@ import {
   type HouPaymentCandidateRow,
 } from "@/components/hou/hou-payment-batches";
 import { Button } from "@/components/ui/button";
+import { isPilotBlockedFromNonCoreRoute } from "@/lib/pilot-route-boundary";
 import { createClient } from "@/lib/supabase/server";
 import {
   admissionWorkspaceSegmentIds,
@@ -982,6 +983,11 @@ export default async function HouControlPage({
 
   if (!user) {
     redirect("/login");
+  }
+
+  const { data: pilotRoleCode } = await supabase.rpc("current_user_role_code");
+  if (isPilotBlockedFromNonCoreRoute(pilotRoleCode as string | null)) {
+    redirect("/");
   }
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
