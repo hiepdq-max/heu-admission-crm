@@ -331,21 +331,26 @@ if (missingKeys.length === 0) {
         "LEAD-IMPORT-SCOPE-ACTOR-LINK",
         missingAssignedProfiles.length === 0 &&
           missingCreatedProfiles.length === 0 &&
-          inactiveAssignedProfiles.length === 0 &&
-          inactiveCreatedProfiles.length === 0
+          inactiveAssignedProfiles.length === 0
           ? "READY"
           : "NO_GO",
         missingAssignedProfiles.length === 0 &&
           missingCreatedProfiles.length === 0 &&
-          inactiveAssignedProfiles.length === 0 &&
-          inactiveCreatedProfiles.length === 0
-          ? "Assigned/created user references are either empty or active CRM profiles."
+          inactiveAssignedProfiles.length === 0
+          ? "Assigned users are active CRM profiles and historical creator references still exist."
           : [
               `missing_assigned_profile=${missingAssignedProfiles.length}`,
               `missing_created_by_profile=${missingCreatedProfiles.length}`,
               `inactive_assigned_profile=${inactiveAssignedProfiles.length}`,
-              `inactive_created_by_profile=${inactiveCreatedProfiles.length}`,
             ].join("; "),
+      );
+
+      addStatus(
+        "LEAD-IMPORT-SCOPE-CREATOR-HISTORY",
+        missingCreatedProfiles.length === 0 ? "READY" : "NO_GO",
+        missingCreatedProfiles.length === 0
+          ? `Historical creator profiles remain traceable; inactive_creator_rows=${inactiveCreatedProfiles.length}.`
+          : `Historical creator references without a profile: ${missingCreatedProfiles.length}.`,
       );
 
       addStatus(
