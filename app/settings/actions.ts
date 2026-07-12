@@ -34,6 +34,7 @@ const createUserPermission = "users.create";
 const userManagePermission = "users.manage";
 const positionMatrixManagePermission = "permission_matrix.manage";
 const privilegedUserRoleCodes = new Set(["ADMIN", "BGH"]);
+const pendingActivationBanDuration = "876000h";
 const unsafeTemporaryPasswords = new Set([
   "12345678",
   "123456789",
@@ -213,7 +214,7 @@ async function upsertUserProfileForAuthUser(
 
 async function requirePositionMatrixManage(returnPath: SettingsReturnPath) {
   const supabase = await createClient();
-  await requireSettingsAuthenticatedUser(supabase);
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const [{ data: currentRoleCode }, { data: canManagePositionMatrix }] =
     await Promise.all([
@@ -227,12 +228,12 @@ async function requirePositionMatrixManage(returnPath: SettingsReturnPath) {
     redirect(`${returnPath}?error=not_allowed_position_assignment`);
   }
 
-  return { supabase };
+  return { supabase, user };
 }
 
 async function requireUserCredentialManage(returnPath: SettingsReturnPath) {
   const supabase = await createClient();
-  await requireSettingsAuthenticatedUser(supabase);
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const [
     { data: currentRoleCode },
@@ -252,7 +253,7 @@ async function requireUserCredentialManage(returnPath: SettingsReturnPath) {
     redirect(`${returnPath}?error=not_allowed_create_user`);
   }
 
-  return { supabase, currentRoleCode };
+  return { supabase, currentRoleCode, user };
 }
 
 async function loadProfileForEmail(
@@ -289,12 +290,32 @@ async function profileHasActivePosition(
   return !error && Boolean(data?.length);
 }
 
+async function writeControlledUserAudit(
+  adminClient: AdminClient,
+  input: {
+    actorUserId: string;
+    targetUserId: string;
+    action: string;
+    newValue: Record<string, string | boolean | null>;
+  },
+) {
+  return adminClient.from("audit_logs").insert({
+    user_id: input.actorUserId,
+    action: input.action,
+    entity_type: "users_profile",
+    entity_id: input.targetUserId,
+    old_value: null,
+    new_value: input.newValue,
+    note: "HEU_USER_ACTIVATION_CONTROL",
+  });
+}
+
 export async function assignHeuPositionByEmailAction(formData: FormData) {
   const returnPath = settingsReturnPath(textValue(formData, "return_to"));
   const positionCode = normalizeMasterCode(textValue(formData, "position_code"));
   const email = textValue(formData, "email")?.toLowerCase();
   const note = textValue(formData, "assignment_note");
-  const { supabase } = await requirePositionMatrixManage(returnPath);
+  const { supabase, user } = await requirePositionMatrixManage(returnPath);
 
   if (!positionCode || !email) {
     redirect(`${returnPath}?error=missing_position_assignment_data`);
@@ -323,39 +344,67 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
     redirect(`${returnPath}?error=missing_password_user`);
   }
 
-  if (targetProfile.status !== "ACTIVE") {
-    redirect(`${returnPath}?error=user_position_requires_active_profile`);
-  }
-
   if (targetPositionResult.error) {
     redirect(
       `${returnPath}?error=${encodeURIComponent(targetPositionResult.error.message)}`,
     );
   }
 
-  if (targetPositionResult.data) {
-    const { data: existingAssignments, error: existingAssignmentError } =
-      await supabase
-        .from("heu_position_assignments")
-        .select("position_id")
-        .eq("user_id", targetProfile.id)
-        .eq("status", "ACTIVE")
-        .limit(1)
-        .returns<Array<{ position_id: string }>>();
+  const { data: existingAssignments, error: existingAssignmentError } =
+    await supabase
+      .from("heu_position_assignments")
+      .select("position_id")
+      .eq("user_id", targetProfile.id)
+      .eq("status", "ACTIVE")
+      .limit(1)
+      .returns<Array<{ position_id: string }>>();
 
-    if (existingAssignmentError) {
-      redirect(
-        `${returnPath}?error=${encodeURIComponent(existingAssignmentError.message)}`,
-      );
+  if (existingAssignmentError) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(existingAssignmentError.message)}`,
+    );
+  }
+
+  const existingPositionId = existingAssignments?.[0]?.position_id;
+
+  if (
+    existingPositionId &&
+    existingPositionId !== targetPositionResult.data?.id
+  ) {
+    redirect(`${returnPath}?error=user_already_has_active_position`);
+  }
+
+  if (targetProfile.status === "ACTIVE" && !existingPositionId) {
+    redirect(`${returnPath}?error=active_user_without_position_requires_review`);
+  }
+
+  const needsControlledActivation = targetProfile.status === "INACTIVE";
+  let adminClient: AdminClient | null = null;
+
+  if (needsControlledActivation) {
+    try {
+      adminClient = createAdminClient();
+    } catch {
+      redirect(`${returnPath}?error=missing_service_role_key`);
     }
 
-    const existingPositionId = existingAssignments?.[0]?.position_id;
+    const { error: banError } = await adminClient.auth.admin.updateUserById(
+      targetProfile.id,
+      { ban_duration: pendingActivationBanDuration },
+    );
 
-    if (
-      existingPositionId &&
-      existingPositionId !== targetPositionResult.data.id
-    ) {
-      redirect(`${returnPath}?error=user_already_has_active_position`);
+    if (banError) {
+      redirect(`${returnPath}?error=auth_user_activation_lock_failed`);
+    }
+
+    const { error: activateProfileError } = await adminClient
+      .from("users_profile")
+      .update({ status: "ACTIVE" })
+      .eq("id", targetProfile.id)
+      .eq("status", "INACTIVE");
+
+    if (activateProfileError) {
+      redirect(`${returnPath}?error=profile_activation_failed`);
     }
   }
 
@@ -366,7 +415,32 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
   });
 
   if (error) {
+    if (needsControlledActivation && adminClient) {
+      await adminClient
+        .from("users_profile")
+        .update({ status: "INACTIVE" })
+        .eq("id", targetProfile.id);
+    }
+
     redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  if (needsControlledActivation && adminClient) {
+    const { error: auditError } = await writeControlledUserAudit(adminClient, {
+      actorUserId: user.id,
+      targetUserId: targetProfile.id,
+      action: "HEU_USER_POSITION_ACTIVATED",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        assignment_status: "ACTIVE_ASSIGNED",
+        position_code: positionCode,
+      },
+    });
+
+    if (auditError) {
+      redirect(`${returnPath}?error=activation_audit_log_failed`);
+    }
   }
 
   revalidatePath("/settings");
@@ -459,7 +533,7 @@ export async function setUserTemporaryPasswordAction(formData: FormData) {
 export async function sendUserPasswordResetEmailAction(formData: FormData) {
   const returnPath = settingsReturnPath(textValue(formData, "return_to"));
   const email = textValue(formData, "email")?.toLowerCase();
-  const { supabase, currentRoleCode } =
+  const { supabase, currentRoleCode, user } =
     await requireUserCredentialManage(returnPath);
 
   if (!email) {
@@ -496,12 +570,84 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
     redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
   }
 
+  let adminClient: AdminClient;
+
+  try {
+    adminClient = createAdminClient();
+  } catch {
+    redirect(`${returnPath}?error=missing_service_role_key`);
+  }
+
+  const { error: auditIntentError } = await writeControlledUserAudit(
+    adminClient,
+    {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_INTENT",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "PENDING",
+      },
+    },
+  );
+
+  if (auditIntentError) {
+    redirect(`${returnPath}?error=activation_audit_log_failed`);
+  }
+
+  const { error: unbanError } = await adminClient.auth.admin.updateUserById(
+    profile.id,
+    { ban_duration: "none" },
+  );
+
+  if (unbanError) {
+    redirect(`${returnPath}?error=auth_user_activation_unlock_failed`);
+  }
+
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: await passwordRecoveryRedirectUrl(),
   });
 
   if (error) {
+    await adminClient.auth.admin.updateUserById(profile.id, {
+      ban_duration: pendingActivationBanDuration,
+    });
+    await writeControlledUserAudit(adminClient, {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_FAILED",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "FAILED",
+      },
+    });
     redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  const { error: auditSentError } = await writeControlledUserAudit(
+    adminClient,
+    {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_SENT",
+      newValue: {
+        auth_banned: false,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "REQUEST_ACCEPTED",
+      },
+    },
+  );
+
+  if (auditSentError) {
+    await adminClient.auth.admin.updateUserById(profile.id, {
+      ban_duration: pendingActivationBanDuration,
+    });
+    redirect(`${returnPath}?error=activation_audit_log_failed`);
   }
 
   revalidatePath("/settings");
@@ -560,6 +706,23 @@ export async function updateUserProfileAction(formData: FormData) {
 
   if (targetUserId === user.id && (status !== "ACTIVE" || nextRole?.code !== "ADMIN")) {
     redirect(`${returnPath}?error=cannot_lock_self`);
+  }
+
+  const { data: targetProfileState, error: targetProfileStateError } =
+    await supabase
+      .from("users_profile")
+      .select("status")
+      .eq("id", targetUserId)
+      .maybeSingle<{ status: string }>();
+
+  if (targetProfileStateError) {
+    redirect(
+      `${returnPath}?error=${encodeURIComponent(targetProfileStateError.message)}`,
+    );
+  }
+
+  if (targetProfileState?.status !== "ACTIVE" && status === "ACTIVE") {
+    redirect(`${returnPath}?error=activation_requires_position_assignment`);
   }
 
   const { error } = await supabase
@@ -649,29 +812,18 @@ export async function createUserAccountAction(formData: FormData) {
     await adminClient.auth.admin.createUser({
       email,
       email_confirm: true,
+      ban_duration: pendingActivationBanDuration,
       user_metadata: {
         full_name: fullName,
       },
     });
 
-  let authUserId = createdUser.user?.id ?? null;
-  let createdAuthUser = Boolean(authUserId);
-  let linkedExistingAuthUser = false;
+  const authUserId = createdUser.user?.id ?? null;
+  const createdAuthUser = Boolean(authUserId);
 
   if (createError || !authUserId) {
     if (createError && isExistingAuthUserError(createError.message)) {
-      try {
-        authUserId = await findAuthUserIdByEmail(adminClient, email);
-      } catch {
-        redirect(`${returnPath}?error=auth_user_lookup_failed`);
-      }
-
-      if (!authUserId) {
-        redirect(`${returnPath}?error=auth_user_exists_but_not_found`);
-      }
-
-      createdAuthUser = false;
-      linkedExistingAuthUser = true;
+      redirect(`${returnPath}?error=auth_user_requires_controlled_link`);
     } else {
       redirect(
         `${returnPath}?error=${encodeURIComponent(
@@ -691,7 +843,7 @@ export async function createUserAccountAction(formData: FormData) {
       roleId,
       departmentId,
       managerId,
-      status: createdAuthUser ? "INACTIVE" : "ACTIVE",
+      status: "INACTIVE",
     },
   );
 
@@ -713,11 +865,7 @@ export async function createUserAccountAction(formData: FormData) {
 
   revalidatePath("/settings");
   revalidatePath("/settings/scopes");
-  redirect(
-    linkedExistingAuthUser
-      ? `${returnPath}?profile_linked=1&auth_user_existing=1`
-      : `${returnPath}?user_created=1`,
-  );
+  redirect(`${returnPath}?user_created=1`);
 }
 
 export async function linkAuthUserProfileAction(formData: FormData) {
@@ -740,6 +888,10 @@ export async function linkAuthUserProfileAction(formData: FormData) {
 
   if (currentRoleCode !== "ADMIN") {
     redirect(`${returnPath}?error=not_admin`);
+  }
+
+  if (currentRoleCode === "ADMIN") {
+    redirect(`${returnPath}?error=manual_auth_link_disabled`);
   }
 
   if (!email || !fullName || !roleId) {
