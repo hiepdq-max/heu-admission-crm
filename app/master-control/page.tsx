@@ -46,6 +46,7 @@ import {
   ModuleReadinessOverview,
   type HeuOsModuleReadinessRow,
 } from "@/components/master-control/module-readiness-overview";
+import { ModuleArchitectureDirectory } from "@/components/master-control/module-architecture-directory";
 import {
   ProcessOwnershipMatrix,
   type ProcessOwnershipRow,
@@ -544,24 +545,32 @@ export default async function MasterControlPage({
           loadError={navigationRowsError?.message ?? navigationSummaryError?.message}
         />
         <div className="space-y-5">
-          <ModuleReadinessOverview
+          <ModuleArchitectureDirectory
             rows={moduleReadiness ?? []}
             loadError={moduleReadinessError?.message}
           />
-          <HeuOsMapOverview
-            modules={heuOsModules ?? []}
-            workflows={heuOsWorkflows ?? []}
-            approvals={heuOsApprovals ?? []}
-            masterData={heuOsMasterData ?? []}
-            risks={heuOsRisks ?? []}
-            loadError={
-              heuOsModulesError?.message ??
-              heuOsWorkflowsError?.message ??
-              heuOsApprovalsError?.message ??
-              heuOsMasterDataError?.message ??
-              heuOsRisksError?.message
-            }
-          />
+          <div className="min-w-0 overflow-x-auto">
+            <ModuleReadinessOverview
+              rows={moduleReadiness ?? []}
+              loadError={moduleReadinessError?.message}
+            />
+          </div>
+          <div className="min-w-0 overflow-x-auto">
+            <HeuOsMapOverview
+              modules={heuOsModules ?? []}
+              workflows={heuOsWorkflows ?? []}
+              approvals={heuOsApprovals ?? []}
+              masterData={heuOsMasterData ?? []}
+              risks={heuOsRisks ?? []}
+              loadError={
+                heuOsModulesError?.message ??
+                heuOsWorkflowsError?.message ??
+                heuOsApprovalsError?.message ??
+                heuOsMasterDataError?.message ??
+                heuOsRisksError?.message
+              }
+            />
+          </div>
         </div>
         <ApprovalGateEnforcement
           rows={approvalGateRows ?? []}
