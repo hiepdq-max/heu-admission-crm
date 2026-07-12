@@ -46,6 +46,7 @@
     "check:heu-data-confirmation-task-center": "node scripts/check-heu-data-confirmation-task-center.mjs",
     "check:heu-data-confirmation-task-center-schema": "node scripts/check-heu-data-confirmation-task-center-schema.mjs",
     "check:heu-data-confirmation-task-center-route": "node scripts/check-heu-data-confirmation-task-center-route.mjs",
+    "check:heu-task-center-live-schema-readiness": "node scripts/check-heu-task-center-live-schema-readiness.mjs",
     "check:heu-task-center-runtime-consolidation": "node scripts/check-heu-task-center-runtime-consolidation.mjs",
     "check:heu-app-shell-draft-pr-readiness": "node scripts/check-heu-app-shell-draft-pr-readiness.mjs",
     "check:heu-ai-build-collision-triage": "node scripts/check-heu-ai-build-collision-triage.mjs",
