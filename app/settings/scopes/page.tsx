@@ -11,6 +11,7 @@ import {
   type UserSegmentScopeRow,
 } from "@/components/settings/user-business-scope-settings";
 import { UserCreateForm } from "@/components/settings/user-create-form";
+import { DepartmentUserDirectory } from "@/components/settings/department-user-directory";
 import { UserAuthProfileLinkForm } from "@/components/settings/user-auth-profile-link-form";
 import { UserAccessWorkflowGuide } from "@/components/settings/user-access-workflow-guide";
 import { RealUserOnboardingPanel } from "@/components/settings/real-user-onboarding-panel";
@@ -320,6 +321,13 @@ export default async function ScopeSettingsPage({
         </div>
       ) : null}
 
+      <DepartmentUserDirectory
+        users={visibleUsers}
+        roles={roles ?? []}
+        departments={departments ?? []}
+        positions={positionMatrixRows ?? []}
+      />
+
       {canCreateUsers ? (
         <>
           <UserAccessWorkflowGuide />
@@ -375,7 +383,7 @@ export default async function ScopeSettingsPage({
       ) : null}
 
       {canUseScopePanels ? (
-        <>
+        <div id="user-scope-management" className="space-y-6 scroll-mt-6">
           <UserScopeEnforcementPanel
             rows={visibleScopeEnforcementRows}
             summary={currentRoleCode === "ADMIN" ? scopeEnforcementSummary : null}
@@ -414,7 +422,7 @@ export default async function ScopeSettingsPage({
               userLeadVisibilityScopesError?.message
             }
           />
-        </>
+        </div>
       ) : null}
     </AppShell>
   );
