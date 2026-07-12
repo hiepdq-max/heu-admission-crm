@@ -46,6 +46,8 @@ async function writeAudit(client, payload) {
 
 async function restoreRows(client, snapshot, action) {
   let restored = 0;
+  let updateFailed = false;
+  let auditFailed = false;
   for (const row of snapshot.rows) {
     const { data, error } = await client
       .from("leads")
@@ -54,7 +56,11 @@ async function restoreRows(client, snapshot, action) {
       .eq("assigned_to", snapshot.target_user_id)
       .select("id")
       .maybeSingle();
-    if (error || !data) return { restored, ok: false };
+    if (error || !data) {
+      updateFailed = true;
+      continue;
+    }
+    restored += 1;
     const audited = await writeAudit(client, {
       user_id: operatorUserId,
       action,
@@ -64,10 +70,12 @@ async function restoreRows(client, snapshot, action) {
       new_value: { assigned_to: row.previous_assigned_to },
       note: evidenceId,
     });
-    if (!audited) return { restored, ok: false };
-    restored += 1;
+    if (!audited) auditFailed = true;
   }
-  return { restored, ok: true };
+  return {
+    restored,
+    ok: !updateFailed && !auditFailed && restored === snapshot.rows.length,
+  };
 }
 
 if (process.exitCode !== 1) {
