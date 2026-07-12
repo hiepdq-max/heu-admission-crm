@@ -280,6 +280,10 @@ export function isTaskCenterLaneVisible(
   roleCode: string | null,
   actionGate: TaskCenterActionGateSnapshot,
 ) {
+  if (lane.id === "hou" && roleCode?.startsWith("PILOT_")) {
+    return false;
+  }
+
   if (isTaskCenterControlRole(roleCode)) {
     return lane.id === "control" || lane.id === "hou" || lane.id === "finance";
   }
@@ -289,6 +293,23 @@ export function isTaskCenterLaneVisible(
   }
 
   return lane.id === "control" && actionGate.canManageSystemScope;
+}
+
+export function taskCenterLaneHref(
+  lane: TaskCenterVisibleLane,
+  roleCode: string | null,
+) {
+  if (
+    lane.id === "finance" &&
+    [
+      "PILOT_ACCOUNTING_LEAD_READONLY",
+      "PILOT_ACCOUNTING_READONLY",
+    ].includes(roleCode ?? "")
+  ) {
+    return "/ttgdtx/accounting-dashboard";
+  }
+
+  return lane.href;
 }
 
 export function getVisibleTaskCenterLanes(
