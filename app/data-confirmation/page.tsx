@@ -9,11 +9,13 @@ import {
 } from "lucide-react";
 
 import { DepartmentTaskInbox } from "@/components/data-confirmation/department-task-inbox";
+import { TaskCenterLiveReadonlyList } from "@/components/data-confirmation/task-center-live-readonly-list";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import { getVisibleTaskCenterLanes } from "@/lib/task-center-contract";
+import { readTaskCenterLiveReadonly } from "@/lib/task-center-live-readonly-adapter";
 import { firstParam, withAdmissionSegmentParam } from "@/lib/workspace";
 
 type DataConfirmationPageProps = {
@@ -117,6 +119,15 @@ export default async function DataConfirmationPage({
     !heuWorkspace.actionGate.canReadScopedData &&
     visibleTaskCenterLanes.length > 0;
   const canReviewScopedDraft = heuWorkspace.actionGate.canReviewScopedDraft;
+  const liveTaskCenter = await readTaskCenterLiveReadonly(supabase, {
+    enabled:
+      process.env.HEU_ENABLE_TASK_CENTER_LIVE_READONLY === "true" &&
+      heuWorkspace.actionGate.canReadScopedData,
+    departmentCodes: visibleTaskCenterLanes.map(
+      (lane) => lane.departmentCode,
+    ),
+    admissionSegmentId: workspace.activeSegmentId,
+  });
 
   return (
     <AppShell
@@ -214,6 +225,8 @@ export default async function DataConfirmationPage({
               visibleSegmentCount={heuWorkspace.visibleSegmentIds.length}
               actionGate={heuWorkspace.actionGate}
             />
+
+            <TaskCenterLiveReadonlyList result={liveTaskCenter} />
 
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
               {confirmationStatuses.map((status) => (
