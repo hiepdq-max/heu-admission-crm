@@ -89,6 +89,41 @@ assert.equal(
 assert.equal(
   contract.validatePositionSmartScope({
     ...operationalScope,
+    workspaceScope: ["HEU:WORKSPACE_01", "heu:workspace_01"],
+  }).ok,
+  false,
+);
+
+assert.equal(
+  contract.scopesAreIndependent(operationalScope, {
+    ...operationalScope,
+    positionCode: "POSITION_02",
+  }),
+  false,
+);
+assert.equal(
+  contract.scopesAreIndependent(
+    {
+      ...operationalScope,
+      workspaceScope: ["HEU:WORKSPACE_A", "HEU:WORKSPACE_B"],
+    },
+    {
+      ...operationalScope,
+      workspaceScope: ["HEU:WORKSPACE_B", "HEU:WORKSPACE_A"],
+    },
+  ),
+  false,
+);
+assert.equal(
+  contract.scopesAreIndependent(operationalScope, {
+    ...operationalScope,
+    accountScopeKey: "ACCOUNT_SCOPE_02",
+  }),
+  true,
+);
+assert.equal(
+  contract.validatePositionSmartScope({
+    ...operationalScope,
     departmentCode: "hou:department_01",
     workspaceScope: ["hou:workspace_01"],
   }).ok,

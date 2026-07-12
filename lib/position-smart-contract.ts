@@ -76,6 +76,10 @@ function hasValue(value: string): boolean {
   return value.trim().length > 0;
 }
 
+function normalizeScopeCode(value: string): string {
+  return value.trim().toUpperCase();
+}
+
 function hasUniqueNonEmptyValues(values: readonly string[]): boolean {
   const normalized = values.map((value) => value.trim());
   return (
@@ -113,16 +117,19 @@ export function validatePositionSmartScope(scope: PositionSmartScope): PositionS
   if (!hasValue(scope.accountScopeKey)) return { ok: false, reason: "MISSING_ACCOUNT_SCOPE_KEY" };
   if (!hasValue(scope.positionCode)) return { ok: false, reason: "MISSING_POSITION_CODE" };
   if (!hasValue(scope.departmentCode)) return { ok: false, reason: "MISSING_DEPARTMENT_CODE" };
-  if (!hasUniqueNonEmptyValues(scope.workspaceScope)) {
+
+  const normalizedWorkspaceScope = scope.workspaceScope
+    .map(normalizeScopeCode)
+    .sort();
+  if (!hasUniqueNonEmptyValues(normalizedWorkspaceScope)) {
     return { ok: false, reason: "MISSING_OR_INVALID_WORKSPACE_SCOPE" };
   }
   if (!POSITION_SMART_LANES.includes(scope.lane)) {
     return { ok: false, reason: "INVALID_POSITION_LANE" };
   }
 
-  const normalizedWorkspaceScope = scope.workspaceScope.map((item) => item.trim());
   const houWorkspaceCount = normalizedWorkspaceScope.filter(isHouScope).length;
-  const isHouDepartment = isHouScope(scope.departmentCode.trim());
+  const isHouDepartment = isHouScope(normalizeScopeCode(scope.departmentCode));
   const hasMixedHouWorkspace =
     houWorkspaceCount > 0 && houWorkspaceCount < normalizedWorkspaceScope.length;
   if (hasMixedHouWorkspace || (houWorkspaceCount > 0) !== isHouDepartment) {
@@ -132,9 +139,9 @@ export function validatePositionSmartScope(scope: PositionSmartScope): PositionS
   return {
     ok: true,
     scope: Object.freeze({
-      accountScopeKey: scope.accountScopeKey.trim(),
-      positionCode: scope.positionCode.trim(),
-      departmentCode: scope.departmentCode.trim(),
+      accountScopeKey: normalizeScopeCode(scope.accountScopeKey),
+      positionCode: normalizeScopeCode(scope.positionCode),
+      departmentCode: normalizeScopeCode(scope.departmentCode),
       workspaceScope: Object.freeze(normalizedWorkspaceScope),
       lane: scope.lane,
     }),
@@ -175,13 +182,8 @@ export function scopesAreIndependent(left: PositionSmartScope, right: PositionSm
   const rightValidation = validatePositionSmartScope(right);
   if (!leftValidation.ok || !rightValidation.ok) return false;
 
-  return !(
-    leftValidation.scope.accountScopeKey === rightValidation.scope.accountScopeKey &&
-    leftValidation.scope.positionCode === rightValidation.scope.positionCode &&
-    leftValidation.scope.departmentCode === rightValidation.scope.departmentCode &&
-    leftValidation.scope.workspaceScope.length === rightValidation.scope.workspaceScope.length &&
-    leftValidation.scope.workspaceScope.every(
-      (item, index) => item === rightValidation.scope.workspaceScope[index],
-    )
+  return (
+    leftValidation.scope.accountScopeKey !==
+    rightValidation.scope.accountScopeKey
   );
 }
