@@ -140,6 +140,287 @@ function formatOwnerActionPacket(missingLeadVisibility, missingBusinessScope, ro
   ].join("; ");
 }
 
+function formatScopeRepairOwnerPacketLock(
+  missingLeadVisibility,
+  missingBusinessScope,
+  roleById,
+) {
+  const profilesById = new Map();
+
+  for (const profile of missingLeadVisibility) {
+    profilesById.set(profile.id, profile);
+  }
+
+  for (const profile of missingBusinessScope) {
+    profilesById.set(profile.id, profile);
+  }
+
+  const profiles = Array.from(profilesById.values()).sort((left, right) => {
+    const leftRole = roleById.get(left.role_id)?.code ?? "NO_ROLE";
+    const rightRole = roleById.get(right.role_id)?.code ?? "NO_ROLE";
+
+    return leftRole.localeCompare(rightRole) || left.id.localeCompare(right.id);
+  });
+  const roleCodes = Array.from(
+    new Set(profiles.map((profile) => roleById.get(profile.role_id)?.code ?? "NO_ROLE")),
+  );
+
+  return [
+    "scope_repair_owner_packet_lock=ACCT-00_SCOPE_REPAIR_OWNER_PACKET_LOCK",
+    `profile_count=${profiles.length}`,
+    `decision_count=${missingLeadVisibility.length + missingBusinessScope.length}`,
+    `role_codes=${roleCodes.length > 0 ? roleCodes.join(",") : "none"}`,
+    "required_inputs=safe_owner_repair_labels_generated,owner_action_packet_generated,role_codes_recorded,decision_count_recorded,secure_owner_lookup_channel_recorded,controlled_evidence_id_recorded",
+    "required_dependency_record=safe_label,role_code,owner_label_mapped,owner_lane_confirmed,secure_owner_lookup_channel_recorded,controlled_evidence_id_recorded",
+    "blocked_if=safe_owner_repair_labels_missing,owner_action_packet_missing,role_codes_missing,decision_count_mismatch,owner_label_unmapped,secure_owner_lookup_channel_missing,controlled_evidence_id_missing,raw_profile_id_present",
+    "next_allowed_step=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX",
+    "no_raw_profile_id=true",
+    "no_email_or_phone=true",
+    "no_password_or_invite_link=true",
+    "no_service_role_key_in_evidence=true",
+    "no_auto_scope_change=true",
+    "no_evidence_acceptance=true",
+    "no_uat_pass_inference=true",
+    "no_finance_reliance_inference=true",
+    "no_owner_go_inference=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopeRepairOwnerDecisionMatrix(
+  missingLeadVisibility,
+  missingBusinessScope,
+  roleById,
+) {
+  const profilesById = new Map();
+
+  for (const profile of missingLeadVisibility) {
+    profilesById.set(profile.id, profile);
+  }
+
+  for (const profile of missingBusinessScope) {
+    profilesById.set(profile.id, profile);
+  }
+
+  const profiles = Array.from(profilesById.values()).sort((left, right) => {
+    const leftRole = roleById.get(left.role_id)?.code ?? "NO_ROLE";
+    const rightRole = roleById.get(right.role_id)?.code ?? "NO_ROLE";
+
+    return leftRole.localeCompare(rightRole) || left.id.localeCompare(right.id);
+  });
+  const roleCodes = Array.from(
+    new Set(profiles.map((profile) => roleById.get(profile.role_id)?.code ?? "NO_ROLE")),
+  );
+
+  return [
+    "scope_repair_owner_decision_matrix=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX",
+    `profile_count=${profiles.length}`,
+    `decision_count=${missingLeadVisibility.length + missingBusinessScope.length}`,
+    `role_codes=${roleCodes.length > 0 ? roleCodes.join(",") : "none"}`,
+    `missing_visibility_labels=${formatOwnerRepairLabels(
+      missingLeadVisibility,
+      "missing_lead_visibility",
+      roleById,
+    )}`,
+    `missing_business_scope_labels=${formatOwnerRepairLabels(
+      missingBusinessScope,
+      "missing_business_scope",
+      roleById,
+    )}`,
+    "required_owner_record=owner_label_mapped,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded",
+    "required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id",
+    "blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing",
+    "next_allowed_step=ACCT-00_SCOPE_BASELINE_OWNER_DECISION",
+    "no_raw_profile_id=true",
+    "no_email_or_phone=true",
+    "no_password_or_invite_link=true",
+    "no_service_role_key_in_evidence=true",
+    "no_auto_scope_change=true",
+    "no_evidence_acceptance=true",
+    "no_uat_pass_inference=true",
+    "no_finance_reliance_inference=true",
+    "no_owner_go_inference=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopeBaselineDecisionChecklist({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  return [
+    "scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    "required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,post_repair_snapshot_recorded",
+    "no_all_visibility_for_non_admin=true",
+    "no_password_or_invite_link=true",
+    "no_auto_scope_change=true",
+  ].join("; ");
+}
+
+function formatScopeRepairExecutionPacket({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  return [
+    "scope_repair_execution_packet=ACCT-00_SCOPE_REPAIR_EXECUTION",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    "required_inputs=owner_lane_confirmed,lead_visibility_choice_recorded,business_scope_choice_recorded,secure_admin_channel_recorded",
+    "required_execution_record=pre_repair_snapshot_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_verified,post_repair_snapshot_recorded,controlled_evidence_id_recorded",
+    "no_all_visibility_for_non_admin=true",
+    "no_password_or_invite_link=true",
+    "no_raw_profile_id=true",
+    "no_service_role_key_in_evidence=true",
+    "no_auto_scope_change=true",
+    "no_auto_uat_approval=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopeRepairDecisionDependencyLock({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  return [
+    "scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    "required_inputs=scope_baseline_decision_checklist_closed,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded",
+    "required_dependency_record=approved_visibility_choice_recorded,approved_business_scope_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded",
+    "blocked_if=scope_baseline_decision_checklist_closed=no,owner_lane_confirmed=no,lead_visibility_choice_recorded=no,business_scope_choice_recorded=no,secure_admin_channel_recorded=no",
+    "next_allowed_step=ACCT-00_SCOPE_REPAIR_EXECUTION",
+    "no_all_visibility_for_non_admin=true",
+    "no_password_or_invite_link=true",
+    "no_raw_profile_id=true",
+    "no_service_role_key_in_evidence=true",
+    "no_auto_scope_change=true",
+    "no_evidence_acceptance=true",
+    "no_uat_pass_inference=true",
+    "no_finance_reliance_inference=true",
+    "no_owner_go_inference=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopePostRepairRerunProofPacket({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  const scopeBaselineClosed =
+    missingLeadVisibility.length === 0 &&
+    missingBusinessScope.length === 0 &&
+    broadLeadVisibility.length === 0 &&
+    workspaceMismatch.length === 0;
+
+  return [
+    "scope_post_repair_rerun_proof_packet=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    `scope_baseline_closed=${scopeBaselineClosed ? "yes" : "no"}`,
+    "required_inputs=scope_repair_execution_closed,post_repair_snapshot_recorded,controlled_evidence_id_recorded,owner_lane_confirmed",
+    "required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun",
+    "required_result_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,ttgdtx_negative_candidates_recomputed,finance_payment_scope_ready_recorded,role_scope_pack_passed,controlled_evidence_id_recorded",
+    "blocked_if=scope_baseline_closed=no,post_repair_snapshot_recorded=no,controlled_evidence_id_recorded=no,negative_control_queue_re_run_recorded=no",
+    "next_allowed_step=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION",
+    "no_raw_profile_id=true",
+    "no_service_role_key_in_evidence=true",
+    "no_password_or_invite_link=true",
+    "no_auto_scope_change=true",
+    "no_auto_account_create=true",
+    "no_evidence_acceptance=true",
+    "no_uat_pass_inference=true",
+    "no_finance_reliance_inference=true",
+    "no_owner_go_inference=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopePostRepairVerificationPacket({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  const scopeBaselineClosed =
+    missingLeadVisibility.length === 0 &&
+    missingBusinessScope.length === 0 &&
+    broadLeadVisibility.length === 0 &&
+    workspaceMismatch.length === 0;
+
+  return [
+    "scope_post_repair_verification_packet=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    `scope_baseline_closed=${scopeBaselineClosed ? "yes" : "no"}`,
+    "required_inputs=scope_repair_execution_closed,post_repair_snapshot_recorded,controlled_evidence_id_recorded",
+    "required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,workspace_preference_inside_scope_confirmed,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded",
+    "next_allowed_step=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF",
+    "no_raw_profile_id=true",
+    "no_service_role_key_in_evidence=true",
+    "no_password_or_invite_link=true",
+    "no_auto_scope_change=true",
+    "no_auto_acceptance=true",
+    "no_auto_uat_approval=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
+function formatScopeExternalClosureHandoffPacket({
+  missingLeadVisibility,
+  missingBusinessScope,
+  broadLeadVisibility,
+  workspaceMismatch,
+}) {
+  const scopeBaselineClosed =
+    missingLeadVisibility.length === 0 &&
+    missingBusinessScope.length === 0 &&
+    broadLeadVisibility.length === 0 &&
+    workspaceMismatch.length === 0;
+
+  return [
+    "scope_external_closure_handoff_packet=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF",
+    `missing_visibility=${missingLeadVisibility.length}`,
+    `missing_business_scope=${missingBusinessScope.length}`,
+    `non_admin_all_visibility=${broadLeadVisibility.length}`,
+    `workspace_mismatch=${workspaceMismatch.length}`,
+    `scope_baseline_closed=${scopeBaselineClosed ? "yes" : "no"}`,
+    "required_inputs=scope_baseline_decision_checklist_closed,scope_repair_execution_closed,scope_post_repair_rerun_proof_closed,scope_post_repair_verification_closed,controlled_evidence_id_recorded,owner_lane_confirmed",
+    "required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,lead_visibility_choice_recorded,business_scope_choice_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_inside_scope_confirmed,post_repair_snapshot_recorded,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded",
+    "blocked_if=scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0,controlled_evidence_id_recorded=no",
+    "next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY",
+    "no_raw_profile_id=true",
+    "no_service_role_key_in_evidence=true",
+    "no_password_or_invite_link=true",
+    "no_auto_scope_change=true",
+    "no_auto_account_create=true",
+    "no_evidence_acceptance=true",
+    "no_uat_pass_inference=true",
+    "no_finance_reliance_inference=true",
+    "no_owner_go_inference=true",
+    "no_auto_production_go=true",
+  ].join("; ");
+}
+
 async function fetchAllRows(adminClient, table, select, buildQuery = (query) => query) {
   const rows = [];
   const pageSize = 1000;
@@ -187,6 +468,10 @@ function checkStaticGuards() {
     const repairQueue = read(repairQueuePath);
     const auditSource = read("scripts/audit-heu-user-account-security.mjs");
     const cutoverPanel = read("components/settings/user-operation-cutover-panel.tsx");
+    const businessScope = read(
+      "components/settings/user-business-scope-settings.tsx",
+    );
+    const actions = read("app/settings/actions.ts");
 
     const requiredTokens = [
       packageJson.scripts?.["check:heu-user-scope-baseline-repair-queue"] ===
@@ -212,11 +497,129 @@ function checkStaticGuards() {
       repairQueue.includes("safe_owner_repair_labels")
         ? "owner-labels-ok"
         : null,
+      repairQueue.includes("ACCT-00-SCOPE-REPAIR-OWNER-PACKET-LOCK") &&
+      repairQueue.includes(
+        "scope_repair_owner_packet_lock=ACCT-00_SCOPE_REPAIR_OWNER_PACKET_LOCK",
+      ) &&
+      repairQueue.includes(
+        "required_inputs=safe_owner_repair_labels_generated,owner_action_packet_generated,role_codes_recorded,decision_count_recorded,secure_owner_lookup_channel_recorded,controlled_evidence_id_recorded",
+      ) &&
+      repairQueue.includes(
+        "blocked_if=safe_owner_repair_labels_missing,owner_action_packet_missing,role_codes_missing,decision_count_mismatch,owner_label_unmapped,secure_owner_lookup_channel_missing,controlled_evidence_id_missing,raw_profile_id_present",
+      ) &&
+      repairQueue.includes("next_allowed_step=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX")
+        ? "scope-repair-owner-packet-lock-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX") &&
+      repairQueue.includes(
+        "scope_repair_owner_decision_matrix=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX",
+      ) &&
+      repairQueue.includes(
+        "required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id",
+      ) &&
+      repairQueue.includes(
+        "blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing",
+      )
+        ? "scope-repair-owner-decision-matrix-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST") &&
+      repairQueue.includes(
+        "scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION",
+      ) &&
+      repairQueue.includes("no_auto_scope_change=true")
+        ? "scope-decision-checklist-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK") &&
+      repairQueue.includes(
+        "scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY",
+      ) &&
+      repairQueue.includes(
+        "blocked_if=scope_baseline_decision_checklist_closed=no,owner_lane_confirmed=no,lead_visibility_choice_recorded=no,business_scope_choice_recorded=no,secure_admin_channel_recorded=no",
+      )
+        ? "scope-repair-decision-dependency-lock-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET") &&
+      repairQueue.includes(
+        "scope_repair_execution_packet=ACCT-00_SCOPE_REPAIR_EXECUTION",
+      ) &&
+      repairQueue.includes("no_service_role_key_in_evidence=true")
+        ? "scope-repair-execution-packet-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET") &&
+      repairQueue.includes(
+        "scope_post_repair_rerun_proof_packet=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF",
+      ) &&
+      repairQueue.includes(
+        "required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun",
+      ) &&
+      repairQueue.includes("next_allowed_step=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION")
+        ? "scope-post-repair-rerun-proof-packet-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-POST-REPAIR-VERIFICATION-PACKET") &&
+      repairQueue.includes(
+        "scope_post_repair_verification_packet=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION",
+      ) &&
+      repairQueue.includes("next_allowed_step=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF") &&
+      repairQueue.includes("no_auto_acceptance=true")
+        ? "scope-post-repair-verification-packet-ok"
+        : null,
+      repairQueue.includes("ACCT-00-SCOPE-EXTERNAL-CLOSURE-HANDOFF-PACKET") &&
+      repairQueue.includes(
+        "scope_external_closure_handoff_packet=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF",
+      ) &&
+      repairQueue.includes(
+        "required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,lead_visibility_choice_recorded,business_scope_choice_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_inside_scope_confirmed,post_repair_snapshot_recorded,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded",
+      ) &&
+      repairQueue.includes("next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY")
+        ? "scope-external-closure-handoff-packet-ok"
+        : null,
       auditSource.includes("check-heu-user-scope-baseline-repair-queue.mjs")
         ? "audit-hook-ok"
         : null,
       cutoverPanel.includes("HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md")
         ? "ui-link-ok"
+        : null,
+      businessScope.includes(
+        'data-heu-scope-owner-approval-ack="P0-17_SCOPE_OWNER_APPROVAL_ACK"',
+      ) &&
+      businessScope.includes('name="scope_owner_approved"') &&
+      businessScope.includes('value="yes"') &&
+      businessScope.includes("Owner-approved secure channel confirmed")
+        ? "ui-owner-approval-ack-ok"
+        : null,
+      businessScope.includes(
+        'data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"',
+      ) &&
+      businessScope.includes('name="scope_controlled_evidence_id"') &&
+      businessScope.includes("CE-SCOPE-20260703-001") &&
+      businessScope.includes("Use a safe redacted reference only")
+        ? "ui-controlled-evidence-id-ok"
+        : null,
+      actions.includes("scope_owner_approved") &&
+      actions.includes("scope_owner_approval_required") &&
+      actions.includes("owner-approved scope channel confirmed")
+        ? "server-owner-approval-guard-ok"
+        : null,
+      actions.includes("normalizeControlledEvidenceId") &&
+      actions.includes("scope_controlled_evidence_id") &&
+      actions.includes("scope_controlled_evidence_id_required") &&
+      actions.includes("scope_controlled_evidence_id_invalid") &&
+      actions.includes("controlled_evidence_id=") &&
+      actions.includes("lead_visibility: leadVisibility") &&
+      actions.includes("note: scopeUpdateNote")
+        ? "server-controlled-evidence-id-guard-ok"
+        : null,
+      repairQueue.includes("In-App Scope Save Guard") &&
+      repairQueue.includes("P0-17_SCOPE_OWNER_APPROVAL_ACK") &&
+      repairQueue.includes("scope_owner_approved=yes") &&
+      repairQueue.includes("scope_owner_approval_required") &&
+      repairQueue.includes("P0-17_SCOPE_CONTROLLED_EVIDENCE_ID") &&
+      repairQueue.includes("scope_controlled_evidence_id") &&
+      repairQueue.includes("scope_controlled_evidence_id_required") &&
+      repairQueue.includes("scope_controlled_evidence_id_invalid") &&
+      repairQueue.includes("controlled_evidence_id=<safe token>") &&
+      repairQueue.includes("lead_visibility_note_with_controlled_evidence")
+        ? "owner-approval-doc-ok"
         : null,
     ];
     const missingCount = requiredTokens.filter((token) => !token).length;
@@ -439,6 +842,92 @@ if (staticOnly) {
           missingBusinessScope,
           roleById,
         ),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-REPAIR-OWNER-PACKET-LOCK",
+        "READY",
+        formatScopeRepairOwnerPacketLock(
+          missingLeadVisibility,
+          missingBusinessScope,
+          roleById,
+        ),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX",
+        "READY",
+        formatScopeRepairOwnerDecisionMatrix(
+          missingLeadVisibility,
+          missingBusinessScope,
+          roleById,
+        ),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST",
+        "READY",
+        formatScopeBaselineDecisionChecklist({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK",
+        "READY",
+        formatScopeRepairDecisionDependencyLock({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET",
+        "READY",
+        formatScopeRepairExecutionPacket({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET",
+        "READY",
+        formatScopePostRepairRerunProofPacket({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-POST-REPAIR-VERIFICATION-PACKET",
+        "READY",
+        formatScopePostRepairVerificationPacket({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
+      );
+
+      addStatus(
+        "ACCT-00-SCOPE-EXTERNAL-CLOSURE-HANDOFF-PACKET",
+        "READY",
+        formatScopeExternalClosureHandoffPacket({
+          missingLeadVisibility,
+          missingBusinessScope,
+          broadLeadVisibility,
+          workspaceMismatch,
+        }),
       );
 
       addStatus(

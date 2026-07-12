@@ -60,6 +60,10 @@ type SegmentScopeRow = {
   segment_id: string;
 };
 
+type AdmissionWorkspaceContextOptions = {
+  currentRoleCode?: string | null;
+};
+
 function optionLabel(row: {
   program_group: string | null;
   segment_name: string;
@@ -127,11 +131,15 @@ export async function getAdmissionWorkspaceContext(
   supabase: SupabaseServerClient,
   userId: string,
   requestedSegmentId?: string | null,
+  options: AdmissionWorkspaceContextOptions = {},
 ): Promise<AdmissionWorkspaceContext> {
   const cookieStore = await cookies();
   const cookieSegmentId =
     cookieStore.get(ACTIVE_ADMISSION_SEGMENT_COOKIE)?.value ?? null;
-  const { data: currentRoleCode } = await supabase.rpc("current_user_role_code");
+  const currentRoleCode =
+    "currentRoleCode" in options
+      ? options.currentRoleCode
+      : (await supabase.rpc("current_user_role_code")).data;
   const canSeeAllSegments = isExecutiveRole(currentRoleCode);
 
   const { data: workspaceRows, error: workspaceError } = await supabase

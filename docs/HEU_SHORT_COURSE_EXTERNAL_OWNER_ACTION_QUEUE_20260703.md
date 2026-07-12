@@ -6,6 +6,7 @@ Production/UAT status: NO-GO until signed attendance/payment UAT,
 BHXH/chinh sach signoff, meal/allowance boundary signoff,
 invoice/payment verification signoff, report-view owner signoff,
 role/negative-access UAT, controlled evidence refs, UAT result ledger rows and
+signed evidence intake rows and
 final owner GO/NO-GO are completed outside Git/Codex/chat.
 
 ## Purpose
@@ -38,6 +39,7 @@ NO-GO:
   required.
 - Signed role/negative-access UAT is still required.
 - Signed UAT result ledger rows are still required.
+- Signed evidence intake rows are still required.
 - Final owner GO/NO-GO must be recorded outside Git/Codex/chat.
 
 PASS_LOCAL checks may continue, but no owner should treat the Short Course
@@ -54,7 +56,7 @@ reliance decision, payment approval or production approval.
 | SC-OWNER-ACTION-04 | KHTC + Audit | Execute signed invoice/payment verification, voucher, reversal and period-lock review for SC-PAY-EVID-01 through SC-PAY-EVID-06, SC-REV-04, SC-UAT-05 and SC-SIGN-04 | SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED is signed with voucher/reversal/period-lock proof | Invoice/payment is verified, posted, reversed or period-closed without controlled evidence |
 | SC-OWNER-ACTION-05 | BGH + IT_DATA + Audit | Execute signed report-view source reconciliation for RV_SHORT_COURSE_ATTENDANCE_PAYMENT, SC-RV-EVID-01 through SC-RV-EVID-06, SC-REV-05, SC-UAT-06 and SC-SIGN-05 | SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED is signed with source-map, DQ and owner reliance result | Dashboard/report view is used for management or finance reliance before signed owner decision |
 | SC-OWNER-ACTION-06 | IT_DATA + Audit + relevant owner lanes | Execute signed role/negative-access UAT for SC-ROLE-EVID-01 through SC-ROLE-EVID-06, SC-REV-06, SC-UAT-07 and SC-SIGN-06 | SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED is signed with denial proof and scope proof | Out-of-scope user can see private attendance, policy, payment, payroll, voucher or teacher data |
-| SC-OWNER-ACTION-07 | Audit + all owner lanes | Complete SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08 with reviewer, signer lane, controlled evidence ID and result | SC_UAT_RESULT_READY / NO_GO / BLOCKED is recorded outside Git/Codex/chat | PASS_LOCAL, Codex or AI output is treated as executed UAT or evidence acceptance |
+| SC-OWNER-ACTION-07 | Audit + all owner lanes | Complete SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08 and `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` with SC-UAT-EVID-01 through SC-UAT-EVID-08, reviewer, signer lane, controlled evidence ID and result | SC_UAT_RESULT_READY / NO_GO / BLOCKED and SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED are recorded outside Git/Codex/chat | PASS_LOCAL, Codex or AI output is treated as executed UAT or evidence acceptance |
 | SC-OWNER-ACTION-08 | BGH + Dao Tao + CTHSSV + HR + KHTC + Phap Che + IT_DATA + Audit | Record final owner GO/NO-GO after SC-SIGN-01 through SC-SIGN-06, UAT ledger rows, role proof, report-view signoff and blockers are resolved | SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED plus SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED are recorded outside Git/Codex/chat | Final owner GO/NO-GO is missing, unsigned, ownerless or inferred from local checks |
 
 ## Required Re-Run Sequence
@@ -63,6 +65,7 @@ Run only after the owner actions above are completed outside Codex/chat:
 
 ```powershell
 npm.cmd run check:heu-short-course-external-owner-action-queue
+npm.cmd run check:heu-short-course-signed-uat-evidence-intake
 npm.cmd run check:heu-training-module-completion-breakdown
 npm.cmd run check:heu-short-course-role-negative-access
 npm.cmd run audit:heu-short-course-attendance-payment-gap-pack
@@ -75,7 +78,11 @@ Expected state before signed Short Course reliance:
 
 - SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08 have owner result,
   signer/date, controlled evidence ID and blocker state.
+- SC-UAT-EVID-01 through SC-UAT-EVID-08 have signed evidence references,
+  storage class, owner lane, redaction reviewer and blocker state.
 - `SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED` is recorded outside
+  Git/Codex/chat.
+- `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED` is recorded outside
   Git/Codex/chat.
 - No raw PII, CCCD, phone, email, bank data, vouchers, payroll files, teacher
   payment files, passwords, OTPs, reset links, invite links, service-role keys,
@@ -95,6 +102,7 @@ Keep Short Course at NO-GO for real operation if any of these is true:
 - Signed role/negative-access UAT is missing.
 - Controlled evidence refs are missing, raw, uncontrolled or ownerless.
 - UAT result ledger rows are incomplete, unsigned, NO_GO or BLOCKED.
+- Signed evidence intake rows are incomplete, unsigned, NO_GO or BLOCKED.
 - Final owner GO/NO-GO is missing, unsigned or stored only in Git/Codex/chat.
 
 This queue is intentionally stricter than local packaging. It protects Short

@@ -62,9 +62,7 @@ cross join lateral (
     ('reports.read_all'),
     ('audit.read'),
     ('master_control.read'),
-    ('master_control.approve'),
     ('workflow_request.read'),
-    ('workflow_request.approve'),
     ('permission_matrix.read')
 ) as p(permission)
 where r.code = 'HIEU_TRUONG'
@@ -78,9 +76,7 @@ cross join lateral (
     ('reports.read_all'),
     ('audit.read'),
     ('master_control.read'),
-    ('master_control.check'),
     ('workflow_request.read'),
-    ('workflow_request.approve'),
     ('permission_matrix.read')
 ) as p(permission)
 where r.code = 'PHO_HIEU_TRUONG'
@@ -361,6 +357,7 @@ select
 from public.heu_org_positions p
 join public.roles r on r.code = p.default_role_code
 join public.role_permissions rp on rp.role_id = r.id
+  and coalesce(rp.status, 'ACTIVE') = 'ACTIVE'
 on conflict (position_id, permission) do update set
   permission_source = excluded.permission_source,
   status = 'ACTIVE',

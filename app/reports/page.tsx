@@ -6,12 +6,14 @@ import { DataMasterReportViewBridgePanel } from "@/components/reports/data-maste
 import { ReportViewSourceMapPanel } from "@/components/reports/report-view-source-map-panel";
 import { ReportsOverview } from "@/components/reports/reports-overview";
 import { Button } from "@/components/ui/button";
+import {
+  getHEUWorkspaceContext,
+  heuWorkspaceSegmentIds,
+} from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
   applyAdmissionSegmentIds,
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -127,12 +129,11 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
-  );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
+  const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
 
   const [
     { data: leads },

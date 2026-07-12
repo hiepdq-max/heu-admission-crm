@@ -35,7 +35,6 @@ type ScopePageProps = {
     profile_linked?: string;
     auth_user_existing?: string;
     position_assigned?: string;
-    password_updated?: string;
     password_email_sent?: string;
     error?: string;
   }>;
@@ -47,16 +46,39 @@ type CurrentProfileRow = {
 };
 
 const errorMessages: Record<string, string> = {
+  activation_audit_log_failed:
+    "Khong ghi duoc audit log activation. Auth user tiep tuc bi khoa va luong kich hoat dung lai.",
+  activation_requires_position_assignment:
+    "Khong kich hoat user truc tiep. Hay gan vi tri de app kich hoat profile trong luong co kiem soat.",
+  active_user_without_position_requires_review:
+    "Profile ACTIVE nhung chua co vi tri. Dung thao tac va de IT_DATA/Audit kiem tra truoc khi gan.",
+  auth_user_activation_lock_failed:
+    "Khong khoa duoc Auth user truoc khi gan vi tri. User van bi chan kich hoat.",
+  auth_user_activation_unlock_failed:
+    "Khong mo khoa duoc Auth user. Email kich hoat chua duoc gui.",
+  auth_user_requires_controlled_link:
+    "Auth user da ton tai. Khong duoc ghi de profile; can IT_DATA/Audit xu ly theo luong link co kiem soat.",
+  manual_auth_link_disabled:
+    "Da khoa luong link Auth legacy vi RPC cu tu dat profile ACTIVE.",
+  profile_activation_failed:
+    "Khong kich hoat duoc profile trong luong gan vi tri; Auth user van bi khoa.",
   missing_new_user_data:
-    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+    "Thieu email, ho ten hoac role cua user moi.",
+  missing_new_user_department:
+    "User nghiep vu phai co phong ban truoc khi provision.",
+  user_activation_not_ready:
+    "User phai ACTIVE va co phong ban truoc khi gui email dat mat khau.",
+  user_position_requires_active_profile:
+    "Hãy lưu scope, sau đó chuyển profile ACTIVE trước khi gắn vị trí. User vẫn chưa có credential ở bước này.",
+  user_already_has_active_position:
+    "Một tài khoản chỉ được giữ một vị trí ACTIVE. Người kiêm nhiệm phải dùng tài khoản vận hành riêng cho từng vị trí.",
+  user_position_not_ready:
+    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi gửi email recovery.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
   missing_role: "Thiếu role cần gán cho user mới.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
-  weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
-  unsafe_temporary_password:
-    "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   auth_user_lookup_failed:
@@ -74,7 +96,7 @@ const errorMessages: Record<string, string> = {
   not_allowed_position_assignment:
     "Bạn chưa có quyền permission_matrix.manage để gán vị trí chuẩn.",
   missing_password_reset_data:
-    "Thiếu email hoặc mật khẩu tạm cần xử lý.",
+    "Thiếu email cần gửi recovery.",
   missing_password_user:
     "Email này chưa có profile trong CRM. Hãy tạo/link Auth user vào users_profile trước.",
   invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
@@ -265,16 +287,14 @@ export default async function ScopeSettingsPage({
     : params?.updated
       ? "Đã cập nhật phân công phòng ban/nhiệm vụ."
       : params?.user_created
-        ? "Đã tạo tài khoản user mới."
+        ? "Đã tạo Auth user không mật khẩu và profile INACTIVE. Chưa gửi email."
         : params?.profile_linked
           ? "Đã liên kết Auth user vào CRM."
           : params?.position_assigned
             ? "Đã gán user vào vị trí chuẩn."
-            : params?.password_updated
-              ? "Đã đặt mật khẩu tạm mới cho user."
-              : params?.password_email_sent
-                ? "Đã gửi email đặt lại mật khẩu qua Supabase Auth."
-                : undefined;
+            : params?.password_email_sent
+              ? "Đã gửi email đặt lại mật khẩu qua Supabase Auth."
+              : undefined;
 
   return (
     <AppShell
@@ -349,7 +369,6 @@ export default async function ScopeSettingsPage({
           }))}
           canManageAssignments={canManagePositionMatrix}
           canManagePasswords={canManagePasswords}
-          hasServiceRoleKey={hasServiceRoleKey}
           returnPath="/settings/scopes"
           loadError={positionMatrixRowsError?.message}
         />

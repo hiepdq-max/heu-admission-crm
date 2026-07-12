@@ -7,6 +7,7 @@ import {
   ExecutiveDashboardOverview,
   type ExecutiveDashboardPermissions,
 } from "@/components/dashboard/executive-dashboard-overview";
+import { RoleBasedHome } from "@/components/dashboard/role-based-home";
 import { AppShell } from "@/components/layout/app-shell";
 import { AdmissionSegmentOverview } from "@/components/segments/admission-segment-overview";
 import { Button } from "@/components/ui/button";
@@ -17,13 +18,15 @@ import {
   type AdmissionSegmentLeadStatRow,
   type AdmissionSegmentScopeRow,
 } from "@/lib/admission-segments";
-import { isExecutiveRole } from "@/lib/executive-roles";
+import {
+  getHEUWorkspaceContext,
+  heuWorkspaceSegmentIds,
+} from "@/lib/heu-workspace-context";
+import { getMockHomeProfile } from "@/lib/role-based-home-mock";
 import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
   applyAdmissionSegmentIds,
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -49,6 +52,7 @@ type UrgentLeadRow = {
 
 type HomePageProps = {
   searchParams?: Promise<{
+    role?: string | string[];
     segment?: string | string[];
   }>;
 };
@@ -112,6 +116,18 @@ function formatDue(value: string) {
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const isLocalMockEnabled =
+    process.env.NODE_ENV !== "production" &&
+    process.env.HEU_ENABLE_ROLE_HOME_MOCK === "true";
+  const mockProfile = isLocalMockEnabled
+    ? getMockHomeProfile(firstParam(resolvedSearchParams.role))
+    : null;
+
+  if (mockProfile) {
+    return <RoleBasedHome profile={mockProfile} />;
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -121,14 +137,13 @@ export default async function Home({ searchParams }: HomePageProps) {
     redirect("/login");
   }
 
-  const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
-  );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
+  const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
 
   const todayStart = startOfToday().toISOString();
   const tomorrowStart = startOfTomorrow().toISOString();
@@ -145,7 +160,6 @@ export default async function Home({ searchParams }: HomePageProps) {
     documentsCheckedTodayResult,
     urgentLeadsResult,
     userRowsResult,
-    currentRoleResult,
     segmentRowsResult,
     segmentScopeRowsResult,
     segmentLeadRowsResult,
@@ -246,7 +260,6 @@ export default async function Home({ searchParams }: HomePageProps) {
       .limit(5)
       .returns<UrgentLeadRow[]>(),
     supabase.from("users_profile").select("id,full_name"),
-    supabase.rpc("current_user_role_code"),
     supabase
       .from("admission_segments")
       .select(
@@ -291,8 +304,8 @@ export default async function Home({ searchParams }: HomePageProps) {
     ...definition,
     count: pipelineResults[index]?.count ?? 0,
   }));
-  const roleCode = (currentRoleResult.data as string | null) ?? null;
-  const isExecutiveDashboard = isExecutiveRole(roleCode);
+  const roleCode = heuWorkspace.roleCode ?? "UNKNOWN";
+  const isExecutiveDashboard = heuWorkspace.isExecutive;
   const visibleSegmentRowsBase = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
     segmentScopeRowsResult.data ?? [],
@@ -395,7 +408,9 @@ export default async function Home({ searchParams }: HomePageProps) {
       hasExecutivePermission("permission_matrix.manage"),
   };
   const canWriteInWorkspace =
-    Boolean(workspace.activeSegmentId) && !isExecutiveDashboard;
+    Boolean(workspace.activeSegmentId) &&
+    !isExecutiveDashboard &&
+    heuWorkspace.actionGate.canWriteScopedDraft;
   const segmentOverview = (
     <AdmissionSegmentOverview
       segments={segmentOverviewData.segments}

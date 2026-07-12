@@ -1,335 +1,3933 @@
 # HEU Implementation Log
 
-## 2026-07-03 - HEU Standard System Blueprint
+## 2026-07-05 - DCTC Scope-Bound Confirmer Lock
 
-- Added `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` as the controlled
-  system-wide blueprint for architecture, business operation, professional
-  ownership, legal/SOP control, data/report standards, executive dashboard
-  design and next implementation priorities.
-- The blueprint consolidates the current inventory, backlog, module readiness
-  gap matrix, framework review, real-data/professional/legal confirmation
-  register, Legal/SOP/Governance matrix, executive-role classification,
-  navigation shell and workspace-scope logic into one DRAFT_CONTROL design.
-- The next safe implementation slice is `STD-01`: add a read-only
-  `Dashboard Hieu truong/BGH` landing surface for `HIEU_TRUONG`,
-  `PHO_HIEU_TRUONG`, `BGH` and `ADMIN` instead of showing only the admissions
-  dashboard.
-- This is controlled design only. It does not approve production, UAT,
-  evidence acceptance, legal position, official SOP issuance, finance reliance,
-  access grant, migration, bank instruction, owner GO/NO-GO or production GO.
+- Scope: Tightened the DCTC submitter authority so final task confirmation must
+  remain inside the task lane, not a global route/manage or broad confirm
+  bypass.
+- Result: `can_confirm_data_confirmation_task` now records
+  `DCTC_SCOPE_BOUND_CONFIRMER_LOCK_READY` and
+  `NO_GLOBAL_CONFIRM_PERMISSION_BYPASS`: a waiting `CHO_XAC_NHAN` row can be
+  submitted only by `assigned_user_id`, `owner_user_id`, or a same-department /
+  same-workspace lane with `data_confirmation.confirm`. The `/data-confirmation`
+  form exposes the same boundary through `CONFIRM_SUBMITTER_SCOPE_LOCK`,
+  `can_current_user_confirm` and `RPC_CONFIRM_ONLY`.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `app/data-confirmation/page.tsx`,
+  `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this log.
+- Boundary: PASS_LOCAL scope-bound confirmer lock only. This does not grant
+  access, change scope, assign users, seed real tasks, mutate source data,
+  accept evidence, accept UAT, approve owner GO/NO-GO or mark production GO.
+  Production remains NO-GO.
 
-## 2026-07-03 - STD-01 Executive Dashboard Quick Access
+## 2026-07-05 - DCTC RPC-Only Mutation Lock
 
-- Added `lib/executive-roles.ts` so `ADMIN`, `BGH`, `HIEU_TRUONG` and
-  `PHO_HIEU_TRUONG` share one executive/BGH-equivalent classification.
-- Updated `lib/workspace.ts` and `app/page.tsx` so executive users can see the
-  all-segment read-only overview and land on `Dashboard Hieu truong/BGH`
-  instead of the admissions-only dashboard.
-- Added `components/dashboard/executive-dashboard-overview.tsx` with
-  `data-heu-executive-dashboard="STD-01_EXECUTIVE_DASHBOARD"` and
-  `data-heu-executive-quick-access="STD-01_EXECUTIVE_QUICK_ACCESS"` for
-  read-only module health, production blockers, report quick access,
-  permission-gated Master Control/Finance/Scope links and admissions signals.
-- Updated `components/layout/app-shell.tsx` so executive roles keep workspace
-  read quick links but do not receive the `Tao lead` workspace quick action.
-- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-01`
-  as `PASS_LOCAL_UI` and route the next safe slice to `STD-02`.
-- This is local read-only dashboard and quick-access hardening only. It does
-  not create leads, create accounts, grant access, approve report-view
-  reliance, execute UAT, accept evidence, approve finance action, approve legal
-  position, approve owner GO/NO-GO or mark production GO.
+- Scope: Locked Data Confirmation Task Center task creation and status
+  mutation to the approved RPC paths only.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`, `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and this
+  implementation log.
+- Result: `DCTC_RPC_ONLY_MUTATION_LOCK_READY`, `NO_DIRECT_TABLE_UPDATE` and
+  `NO_DIRECT_STATUS_HISTORY_INSERT` keep authenticated users on select-only
+  task/history access while `route_data_confirmation_task` and
+  `confirm_data_confirmation_task` remain the controlled write paths.
+- Boundary: This does not grant access, change scope, seed real tasks, run
+  production SQL, create email/task/account records, accept evidence, accept
+  UAT, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - STD-02 Executive Dashboard Readiness Guard
+## 2026-07-05 - DCTC Owner Assignee Department Match Lock
 
-- Added `scripts/check-heu-executive-dashboard-readiness.mjs` and
-  `check:heu-executive-dashboard-readiness` in `package.json`.
-- The checker verifies the shared executive-role helper, `HIEU_TRUONG` and
-  `PHO_HIEU_TRUONG` classification, workspace all-segment read scope,
-  `Dashboard Hieu truong/BGH` routing on `/`, executive no-create quick action
-  boundary, read-only dashboard anchors, permission-gated quick links,
-  production NO-GO wording, report-view reliance stop conditions, blueprint
-  propagation and this implementation-log boundary.
-- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-02`
-  as `PASS_LOCAL_GUARD` and route the next safe slice to `STD-03`.
-- The checker prints `EXECUTIVE_DASHBOARD_READY / NO_GO / BLOCKED:
-  PASS_LOCAL_UI` only for local UI/control readiness. It does not create
-  accounts, grant access, execute UAT, accept evidence, approve report-view
-  reliance, approve finance action, approve owner GO/NO-GO or mark production
-  GO.
+- Scope: Tightened the Data Confirmation Task Center owner/assignee pair so a
+  task cannot be routed to `CHO_XAC_NHAN` unless both `owner_user_id` and
+  `assigned_user_id` are active users in the same `department_code` as the
+  task.
+- Verified existing runtime anchors: `database/step121_data_confirmation_task_center.sql`
+  and `app/data-confirmation/page.tsx` already expose the same owner/assignee
+  department-match invariant.
+- Changed: `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-heu-p0-register-pack.mjs`.
+- Result: `dctc_user_matches_department` now enforces
+  `DCTC_OWNER_ASSIGNEE_DEPARTMENT_MATCH_READY` and
+  `OWNER_ASSIGNEE_MUST_MATCH_TASK_DEPARTMENT` together with
+  `route_data_confirmation_task` and route RLS insert/update checks. A KHTC
+  task cannot be assigned to an Admissions, CTHSSV, Dao Tao, Khoa or Short
+  Course user by mistake.
+- Boundary: This does not create accounts, grant access, change role/scope,
+  assign real users outside owner-approved scope, seed real tasks, mutate source
+  data, accept evidence, accept UAT, approve owner GO/NO-GO or mark production
+  GO. Production remains NO-GO.
 
-## 2026-07-03 - STD-03 Executive Report Reliance Quick Status
+## 2026-07-05 - Data Confirmation Task Center Repair/Out-of-Scope Note Lock
 
-- Added the executive dashboard report-view reliance strip with
-  `data-heu-executive-report-reliance="STD-03_REPORT_RELIANCE_QUICK_STATUS"`.
-- The strip gives BGH/Hiá»‡u trÆ°á»Ÿng quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
-  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and
-  `RV_AUDIT_RISK_CONTROL`, showing owner lane, decision state, DQ lock and
-  blocker before the user opens the underlying module or source map.
-- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
-  guard verifies `OWNER_SIGNOFF_PENDING`, `DQ-DM-05`,
-  `NO_DASHBOARD_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO`, the four
-  report-view codes and the blueprint/log propagation.
-- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-03` is
-  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-04`.
-- This is local read-only report-reliance visibility only. It does not approve
-  report-view reliance, approve dashboard reliance, execute UAT, accept
+- Scope: Added `REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED` so `CAN_SUA` and
+  `KHONG_THUOC_TOI` confirmations must carry a confirmation note before the
+  result can be written by `confirm_data_confirmation_task`.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `app/data-confirmation/page.tsx`, `app/data-confirmation/actions.ts`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: The UI already requested notes for repair/out-of-scope outcomes; the
+  SQL RPC now enforces the same rule with
+  `CAN_SUA and KHONG_THUOC_TOI require confirmation note`, while `DA_KHOA`
+  still keeps `DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF`.
+- Validation: `check:heu-data-confirmation-task-center-schema`,
+  `check:heu-data-confirmation-task-center-route`, `audit:heu-sql-object-master-map`,
+  current-state, implementation-log, release-gates, Vietnamese encoding, lint,
+  build and `git diff --check` passed locally before commit.
+- Boundary: PASS_LOCAL DCTC guard only. This does not route real tasks, import
+  raw data, run production SQL, send email, create accounts or tickets, accept
+  evidence, execute or accept UAT, approve owner GO/NO-GO or mark production
+  GO. Production remains NO-GO.
+
+## 2026-07-05 - Data Confirmation Task Center Submitter Scope Lock
+
+- Scope: Added `CONFIRM_SUBMITTER_SCOPE_LOCK` so DCTC confirmation submit is
+  visibly limited to the same assigned-user, owner-user, department-confirm or
+  approved confirmation permission lanes enforced by
+  `can_confirm_data_confirmation_task`.
+- Changed: `database/step121_data_confirmation_task_center.sql`,
+  `app/data-confirmation/page.tsx`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/audit-heu-implementation-log.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: The RLS view `heu_data_confirmation_task_center` now exposes
+  `can_current_user_confirm`; `/data-confirmation` selects that field and only
+  enables the confirmation form when the row is still `CHO_XAC_NHAN` and the
+  current user can confirm it. The RPC remains the source of truth and still
+  raises `Not allowed to confirm this data-confirmation task` for invalid
+  submitters.
+- Boundary: PASS_LOCAL runtime/schema guard only. This does not route real
+  tasks, import raw data, run production SQL, send email, create accounts,
+  accept evidence, execute or accept UAT, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-05 - CTHSSV M06 Local Completion Dynamic Guard
+
+- Scope: Registered `check:heu-cthssv-local-completion` as a focused dynamic
+  guard for `scripts/check-heu-cthssv-local-completion.mjs` so M06 aggregate
+  checker metadata reruns before broader CTHSSV handoff.
+- Current fast-loop registry now reports
+  `guards=63; package_scripts=63; watched_paths=125`; the guard watches
+  `scripts/check-heu-cthssv-local-completion.mjs` only.
+- Control: The guard keeps `CTHSSV_LOCAL_COMPLETION_READY: PASS_LOCAL` and
+  `CTHSSV_REAL_OPERATION_READY: NO_GO` explicit for the M06 local completion
+  package.
+- Boundary: This is read-only M06 local completion only. It does not execute
+  UAT, accept evidence, approve enrollment, approve handover reliance, approve
+  report-view reliance, approve dashboard reliance, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+- Validation: `npm.cmd run check:heu-cthssv-local-completion` passed 9/9 local
+  checks with signed owner UAT, role/negative-access UAT, controlled evidence,
+  handover reliance, aggregate alignment, external execution, report/dashboard
+  reliance, external owner action and owner approval blockers preserved outside
+  Git/Codex/chat.
+
+## 2026-07-05 - Data Confirmation Task Center Controlled Pilot Department Lock
+
+- Scope: Locked DCTC route/task department ownership to the six controlled
+  pilot departments from the executive decision: KHTC, Tuyen sinh, CTHSSV,
+  Dao Tao, Khoa/Giang vien and Short Course.
+- Changed: `app/data-confirmation/page.tsx`,
+  `app/data-confirmation/actions.ts`,
+  `database/step121_data_confirmation_task_center.sql`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `scripts/audit-heu-implementation-log.mjs`,
+  `scripts/audit-heu-sql-object-master-map.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: `CONTROLLED_PILOT_DEPARTMENT_ONLY` now keeps
+  `allowedDepartments`, `allowedRouteDepartments`, the Step121 SQL department
+  constraint and `route_data_confirmation_task` validation aligned to those
+  six departments only. IT/Data, Audit and BGH remain control, evidence and
+  owner-decision lanes outside DCTC task ownership.
+- Validation: `node --check` for touched DCTC/audit scripts passed;
+  `npm.cmd run check:heu-data-confirmation-task-center-schema` passed;
+  `npm.cmd run check:heu-data-confirmation-task-center-route` passed;
+  `npm.cmd run audit:heu-implementation-log` passed;
+  `npm.cmd run audit:heu-sql-object-master-map` passed; focused `eslint`
+  passed; `npm.cmd run audit:heu-current-state-inventory` passed;
+  `npm.cmd run audit:heu-vietnamese-text-encoding` passed; `git diff --check`
+  reported only LF-to-CRLF warnings.
+- Runtime: `npm.cmd run check:heu-fast-local-loop -- --runtime` stopped at
+  preflight `NO_GO` because active Next processes for this repo are running
+  (`next dev -p 3000`, `next-server` and a `.next/dev/build` worker). Stop the
+  active localhost Next processes before build verification.
+- Boundary: PASS_LOCAL controls only. This does not auto-seed real tasks,
+  import raw data, run production SQL, send email, create accounts/tickets,
+  accept evidence, execute or accept UAT, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-05 - Admissions M05 Local Completion Dynamic Guard
+
+- Scope: Registered `check:heu-admissions-local-completion` as a focused
+  dynamic guard for `scripts/check-heu-admissions-local-completion.mjs` so M05
+  aggregate checker metadata reruns before broader admissions handoff.
+- Current fast-loop registry now reports
+  `guards=62; package_scripts=62; watched_paths=124`; the guard watches
+  `scripts/check-heu-admissions-local-completion.mjs` only.
+- Control: The guard keeps `ADMISSIONS_LOCAL_COMPLETION_READY: PASS_LOCAL` and
+  `ADMISSIONS_REAL_OPERATION_READY: NO_GO` explicit for the M05 local completion
+  package.
+- Boundary: This is read-only M05 local completion only. It does not run lead
+  import, mutate lead data, upload documents, execute UAT, accept handover,
+  accept evidence, approve report-view reliance, approve dashboard reliance,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+- Validation: `npm.cmd run check:heu-admissions-local-completion` passed 15/15
+  local checks with the signed UAT, controlled handover/evidence, finance/legal
+  reliance and owner approval blockers preserved outside Git/Codex/chat.
+
+## 2026-07-05 - Dao Tao Local Readiness Dynamic Guard
+
+- Scope: Registered `check:heu-dao-tao-local-readiness` as a focused dynamic
+  guard for `scripts/check-heu-dao-tao-local-readiness.mjs` so Dao Tao P9/P10
+  aggregate checker metadata reruns before final review or broader handoff.
+- Current fast-loop registry now reports
+  `guards=61; package_scripts=61; watched_paths=123`; the guard watches
+  `scripts/check-heu-dao-tao-local-readiness.mjs` only.
+- Control: The guard keeps `PASS_LOCAL_AGGREGATOR`,
+  `DAO_TAO_LOCAL_READY / NO_GO / BLOCKED`, `SC_REAL_OPERATION_READY: NO_GO`
+  and `KHOA_REAL_OPERATION_READY: NO_GO` explicit for the M07/M08 local
+  package.
+- Boundary: This is local Dao Tao aggregation only. It does not execute UAT,
+  accept evidence, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO.
+- Validation: `npm.cmd run check:heu-dao-tao-local-readiness` passed with the
+  external signed UAT/evidence/owner blockers preserved.
+
+## 2026-07-05 - Data Confirmation Task Center Route Lock Propagation
+
+- Scope: Propagated the DCTC runtime-route token
+  `ASSIGNEE_OR_OWNER_REQUIRED` into the control docs for
+  `check:heu-data-confirmation-task-center-route`.
+- Result: `/data-confirmation` still routes only controlled metadata through
+  `RPC_ROUTE_TO_CHO_XAC_NHAN` after either `owner_user_id` or
+  `assigned_user_id` is present; this is a PASS_LOCAL docs propagation fix only.
+- Boundary: No real task creation, account creation, evidence acceptance, UAT
+  acceptance, owner GO/NO-GO or production GO.
+
+## 2026-07-05 - Role Position Operation Test Matrix Dynamic Guard
+
+- Scope: Registered `check:heu-role-position-operation-test-matrix` as a
+  focused dynamic guard for
+  `scripts/check-heu-role-position-operation-test-matrix.mjs` so permission
+  operation checker changes rerun before broader user-guide or cutover work.
+- Current fast-loop registry now reports
+  `guards=60; package_scripts=60; watched_paths=122`; the guard watches
+  `scripts/check-heu-role-position-operation-test-matrix.mjs` only.
+- Control: The guard keeps `ROLE_POSITION_OPERATION_TEST_MATRIX: PASS_LOCAL`
+  while `GUIDE_WRITING_READY: NO_GO` remains explicit because
+  `missing_visibility=2`, `missing_business_scope=2`,
+  `required_positions=15`, `unassigned_required_positions=11`,
+  `ttgdtx_negative_candidates=0` and
+  `pending_external_evidence_lanes=4` still block final guides and cutover.
+- Boundary: This is read-only role/position operation control only. It does
+  not create accounts, link Auth, assign real users, change scope, run browser
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+- Validation: `npm.cmd run check:heu-role-position-operation-test-matrix`
+  passed with the guide-writing `NO_GO` blocker preserved.
+
+## 2026-07-05 - Legal SOP Authority Dynamic Guard
+
+- Scope: Registered `check:heu-legal-sop-authority-readiness` as a focused
+  dynamic guard for `scripts/check-heu-legal-sop-authority-readiness.mjs` so
+  STD-14 Legal/SOP authority checker changes rerun before broader handoff.
+- Current fast-loop registry now reports
+  `guards=59; package_scripts=59; watched_paths=121`; the guard watches
+  `scripts/check-heu-legal-sop-authority-readiness.mjs` only.
+- Control: The guard keeps
+  `HEU_LEGAL_SOP_AUTHORITY_READY / NO_GO / BLOCKED: PASS_LOCAL_LEGAL_SOP_GUARD`
+  with `PASS_LOCAL_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`,
+  `EXECUTIVE_FOUR_PHASE_LEGAL_SOP_GOVERNANCE_GATE`, `Ai duoc ky?`,
+  `Ai duoc duyet?` and `Bang chung nao hop le?`.
+- Matrix alignment: The Legal/SOP governance matrix now names the authority
+  columns directly as `Ai duoc ky? / Ai duoc duyet?` and
+  `Bang chung nao hop le?` while keeping the four-phase production stop rule.
+- Boundary: This is read-only Legal/SOP authority visibility only. It does not
+  provide legal advice, issue official SOP, grant access, execute finance,
+  accept UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+- Validation: `npm.cmd run check:heu-legal-sop-authority-readiness` passed
+  after the matrix exact-token alignment.
+
+## 2026-07-05 - Data Confirmation Task Center Runtime Route
+
+- Scope: Advanced the Data Confirmation Task Center from schema/read-only
+  register work into a controlled runtime route. The new `/data-confirmation`
+  surface reads only the RLS view `heu_data_confirmation_task_center` and the
+  read-only RLS status timeline view
+  `heu_data_confirmation_task_status_timeline`, routes approved metadata into
+  `CHO_XAC_NHAN` through RPC `route_data_confirmation_task` with
+  `RPC_ROUTE_TO_CHO_XAC_NHAN`, and submits existing visible rows only through
+  RPC `confirm_data_confirmation_task`.
+  Route metadata now requires `due_date_or_batch`, `owner_decision_ref` and
+  `ASSIGNEE_OR_OWNER_REQUIRED` so each waiting confirmation task carries a
+  due/batch marker, owner-decision reference and assigned/owner lane before it
+  can be routed. `CONTROLLED_PILOT_DEPARTMENT_ONLY` locks the route and SQL
+  department validation to the six controlled pilot departments; IT/Data,
+  Audit and BGH stay control/GO lanes outside DCTC task ownership. The route
+  also exposes controlled department pilot lanes for KHTC, Tuyen sinh, CTHSSV,
+  Dao Tao, Khoa/Giang vien and Short Course, plus
+  `STATUS_HISTORY_TIMELINE_READY` audit metadata under `RLS_TIMELINE_VIEW_ONLY`
+  and `STATUS_HISTORY_SCOPE_PARITY` so timeline history follows
+  `ASSIGNED_TO_ME` / `OWNED_BY_ME`.
+- Changed: `app/data-confirmation/page.tsx`,
+  `app/data-confirmation/actions.ts`,
+  `components/layout/app-shell.tsx`,
+  `database/step121_data_confirmation_task_center.sql`,
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`,
+  `package.json`, `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: `PASS_LOCAL_RUNTIME_ROUTE`; the route records `RLS_VIEW_ONLY`,
+  `RPC_ROUTE_TO_CHO_XAC_NHAN`, `RPC_CONFIRM_ONLY`, the RPCs
+  `route_data_confirmation_task` and `confirm_data_confirmation_task`, the five
+  `task_center_status` values `CHO_XAC_NHAN`, `DUNG`, `CAN_SUA`,
+  `KHONG_THUOC_TOI` and `DA_KHOA`, required `due_date_or_batch` and
+  `owner_decision_ref` metadata, `ASSIGNEE_OR_OWNER_REQUIRED`,
+  `CONTROLLED_PILOT_DEPARTMENT_ONLY`,
+  `DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF`,
+  `DA_KHOA lock requires note and controlled evidence ref`, a
+  `data_confirmation.read` AppShell navigation entry for the task center,
+  `DCTC_READ_PERMISSION_REQUIRED` with
+  `NO_QUEUE_QUERY_WITHOUT_DATA_CONFIRMATION_READ` before queue/timeline reads
+  when read permission is missing, `ASSIGNED_TO_ME` and `OWNED_BY_ME` user queue
+  scope filters through `assigned_user_id` and `owner_user_id`, timeline scope
+  parity through `STATUS_HISTORY_SCOPE_PARITY`,
+  `STATUS_HISTORY_TIMELINE_READY` for
+  read-only `heu_data_confirmation_task_status_timeline` with
+  `RLS_TIMELINE_VIEW_ONLY`, a schema/access-gate pending state for deployments
+  where Step121 is not yet applied, `CONFIRM_FROM_CHO_XAC_NHAN_ONLY` so
+  existing result rows cannot be submitted again, and a no-visible-task state when RLS
+  returns an empty queue. It also records
+  `CONTROLLED_PILOT_LANE_READY` and `CONTROLLED_PILOT_DEPARTMENT_ONLY` for the controlled department pilot lanes
+  without creating or seeding real tasks.
+  The guard command is
+  `npm.cmd run check:heu-data-confirmation-task-center-route`.
+- Boundary: The route does not auto-seed real tasks, import raw data,
+  direct-update DCTC tables, run production SQL, send email, create accounts or
+  tickets, accept evidence, execute or accept UAT, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO. Production remains NO-GO.
+
+## 2026-07-05 - Core Department Data Confirmation Task Register Dynamic Guard
+
+- Scope: Registered
+  `check:heu-core-department-data-confirmation-task-register` as a focused
+  fast-local-loop dynamic guard for the core department data confirmation task
+  register checker after confirming the checker is local/static and currently
+  reports `CORE_DEPARTMENT_DATA_CONFIRMATION_READY: PASS_LOCAL_TASK_REGISTER`
+  with `REAL_DATA_CONFIRMATION_READY: NO_GO`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=57; package_scripts=57; watched_paths=119`; the guard watches
+  `scripts/check-heu-core-department-data-confirmation-task-register.mjs` only.
+  It does not watch shared
+  `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `docs/HEU_EXECUTIVE_OPERATING_DECISION_DATA_REPORTING_PHASE_REGISTER_20260705.md`,
+  `docs/HEU_ROOT_DRIVE_DEPARTMENT_CONFIRMATION_INTAKE_20260703.md`,
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`, `package.json`
+  or `HEU_IMPLEMENTATION_LOG.md`, so broad department/register edits do not
+  over-trigger the focused metadata checker.
+- Verification target:
+  `node --check scripts/check-heu-core-department-data-confirmation-task-register.mjs`;
+  `npm.cmd run check:heu-core-department-data-confirmation-task-register`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is fast-loop registration and read-only metadata control only.
+  It does not create accounts, change scope, mutate the database, create real
+  tasks or send email, accept evidence, execute or accept UAT, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Executive STD-45 Data Confirmation Task Center Dynamic Guard
+
+- Scope: Registered `check:heu-executive-data-confirmation-task-center` as a
+  focused fast-local-loop dynamic guard for the Executive STD-45 Data
+  Confirmation Task Center checker after confirming the checker is local/static
+  and currently reports
+  `EXECUTIVE_DATA_REPORTING_PHASE_READY: PASS_LOCAL_DECISION_REGISTER`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=58; package_scripts=58; watched_paths=120`; the guard watches
+  `scripts/check-heu-executive-data-confirmation-task-center.mjs` only.
+  It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `docs/HEU_EXECUTIVE_OPERATING_DECISION_DATA_REPORTING_PHASE_REGISTER_20260705.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so dashboard/register/log edits do not
+  over-trigger the focused STD-45 metadata checker.
+- Verification target:
+  `node --check scripts/check-heu-executive-data-confirmation-task-center.mjs`;
+  `npm.cmd run check:heu-executive-data-confirmation-task-center`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is fast-loop registration and read-only executive metadata
+  control only. It does not create real task/email/account, create Drive files,
+  mutate the database, accept evidence, execute or accept UAT, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-05 - P0-17 User Create Readiness Dynamic Guard
+
+- Scope: Registered `check:heu-user-create-readiness` as a focused
+  fast-local-loop dynamic guard for P0-17 user-create checker metadata after
+  confirming the live/read-only readiness gate is currently `READY` for local
+  env presence, Supabase Auth Admin reachability, ADMIN role lookup,
+  `users.create` seed state and the `USER-CREATE-OWNER-BATCH-PACKET`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=54; package_scripts=54; watched_paths=108`; the guard watches
+  `scripts/check-heu-user-create-readiness.mjs` only. It does not watch shared
+  `components/settings/user-create-form.tsx`,
+  `components/settings/user-auth-profile-link-form.tsx`,
+  `docs/HEU_USER_CREATE_SERVER_KEY_TEMPLATE_20260702.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so Settings UI/template edits do not over-trigger
+  the live user-create readiness guard.
+- Verification target:
+  `node --check scripts/check-heu-user-create-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-user-create-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is read-only readiness routing only. It does not create
+  accounts, set or handle passwords, send invite/reset links, send email, grant
+  scope, assign positions, approve UAT, accept evidence, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Auth Password Self-Service Dynamic Guard
+
+- Scope: Registered `check:heu-auth-password-self-service-readiness` as a
+  focused fast-local-loop dynamic guard for P0-17 password reset/change
+  surfaces after confirming the checker is local/static and currently reports
+  `SELF_SERVICE_PASSWORD_READY: PASS_LOCAL`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=56; package_scripts=56; watched_paths=118`; the guard watches
+  `components/auth/login-form.tsx`, `app/auth/forgot-password/page.tsx`,
+  `app/auth/forgot-password/forgot-password-form.tsx`,
+  `app/auth/update-password/page.tsx`,
+  `app/auth/update-password/update-password-form.tsx`,
+  `app/auth/callback/route.ts`,
+  `docs/HEU_AUTH_PASSWORD_RESET_HANDOFF_20260703.md`,
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `scripts/check-heu-auth-password-self-service-readiness.mjs`.
+  It does not watch shared `components/layout/app-shell.tsx`, `package.json`
+  or `HEU_IMPLEMENTATION_LOG.md`; AppShell remains under the existing focus
+  lane guard so the dynamic registry keeps unique watched paths.
+- Verification target:
+  `node --check scripts/check-heu-auth-password-self-service-readiness.mjs`;
+  `npm.cmd run check:heu-auth-password-self-service-readiness`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is fast-loop registration only. It does not collect or log
+  passwords, store raw reset links, create accounts, change scope, send email
+  from Codex, execute UAT, accept evidence, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-05 - Training Module Completion Breakdown Dynamic Guard
+
+- Scope: Registered `check:heu-training-module-completion-breakdown` as a
+  focused fast-local-loop dynamic guard for M07/P9 training module completion
+  checker metadata after confirming the checker is local/static and currently
+  passes with TRN-00 through TRN-11 local-only gates.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=55; package_scripts=55; watched_paths=109`; the guard watches
+  `scripts/check-heu-training-module-completion-breakdown.mjs` only. It does
+  not watch shared
+  `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_SHORT_COURSE_LOCAL_COMPLETION_GATE_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_DAO_TAO_FINAL_LOCAL_REVIEW_DOSSIER_20260705.md`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared Dao Tao / Short
+  Course documentation and UI edits do not over-trigger the module-breakdown
+  guard.
+- Verification target:
+  `node --check scripts/check-heu-training-module-completion-breakdown.mjs`;
+  `npm.cmd run check:heu-training-module-completion-breakdown`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is fast-loop registration only. It does not approve class
+  operation, attendance lock, BHXH/chinh sach decision, payment, evidence
+  acceptance, UAT acceptance, owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Khoa Owner Closure Ledger Dynamic Guard
+
+- Scope: Registered `check:heu-khoa-giang-vien-owner-closure-ledger` as a
+  focused fast-local-loop dynamic guard for P10-09 owner-closure checker
+  metadata after confirming the checker is local/static and already
+  `PASS_LOCAL_OWNER_CLOSURE_LEDGER`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=52; package_scripts=52; watched_paths=106`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-owner-closure-ledger.mjs` only. It does
+  not watch shared
+  `docs/HEU_KHOA_GIANG_VIEN_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_LOCAL_COMPLETION_GATE_20260704.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared P10 Khoa documentation and UI edits
+  do not over-trigger the owner-closure guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-owner-closure-ledger`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching completion, approve teaching payment,
+  approve payroll, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Short Course Owner Closure Ledger Dynamic Guard
+
+- Scope: Registered `check:heu-short-course-owner-closure-ledger` as a focused
+  fast-local-loop dynamic guard for P9-12 owner-closure checker metadata after
+  confirming the checker is local/static and already
+  `PASS_LOCAL_OWNER_CLOSURE_LEDGER`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=53; package_scripts=53; watched_paths=107`; the guard watches
+  `scripts/check-heu-short-course-owner-closure-ledger.mjs` only. It does not
+  watch shared `docs/HEU_SHORT_COURSE_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_SHORT_COURSE_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_SHORT_COURSE_LOCAL_COMPLETION_GATE_20260704.md`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared P9 Short Course
+  documentation and UI edits do not over-trigger the owner-closure guard.
+- Verification target:
+  `node --check scripts/check-heu-short-course-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-short-course-owner-closure-ledger`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve attendance lock, approve BHXH/chinh sach,
+  approve payment, approve report-view reliance, approve dashboard reliance,
+  approve role UAT, approve access closure, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-05 - Admissions Owner Closure Ledger Dynamic Guard
+
+- Scope: Registered `check:heu-admissions-owner-closure-ledger` as a focused
+  fast-local-loop dynamic guard for M05 owner-closure checker metadata after
+  confirming the checker is local/static and already
+  `PASS_LOCAL_OWNER_CLOSURE_LEDGER`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=51; package_scripts=51; watched_paths=105`; the guard watches
+  `scripts/check-heu-admissions-owner-closure-ledger.mjs` only. It does not
+  watch shared `docs/HEU_ADMISSIONS_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_ADMISSIONS_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_ADMISSIONS_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `components/reports/reports-overview.tsx`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared M05 admissions documentation and
+  reporting edits do not over-trigger the owner-closure guard.
+- Verification target:
+  `node --check scripts/check-heu-admissions-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-admissions-owner-closure-ledger`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not import
+  leads, mutate lead data, upload documents, execute UAT, accept handover,
+  accept evidence, approve report-view reliance, approve dashboard reliance,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Dao Tao Final Review Dossier Dynamic Guard
+
+- Scope: Registered `check:heu-dao-tao-final-local-review-dossier` as a
+  focused fast-local-loop dynamic guard for P11-01 final-review checker
+  metadata after confirming the checker is local/static and already
+  `PASS_LOCAL_FINAL_REVIEW_DOSSIER`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=49; package_scripts=49; watched_paths=101`; the guard watches
+  `scripts/check-heu-dao-tao-final-local-review-dossier.mjs` only. It does
+  not watch shared `docs/HEU_DAO_TAO_FINAL_LOCAL_REVIEW_DOSSIER_20260705.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared Dao Tao/Khoa/Short
+  Course documentation edits do not over-trigger the P11-01 guard.
+- Verification target:
+  `node --check scripts/check-heu-dao-tao-final-local-review-dossier.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-dao-tao-final-local-review-dossier`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not
+  execute UAT, accept evidence, approve report-view reliance, approve dashboard
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Khoa External Execution Handoff Dynamic Guard
+
+- Scope: Registered `check:heu-khoa-giang-vien-external-execution-handoff`
+  as a focused fast-local-loop dynamic guard for P10-14 external-execution
+  checker metadata after confirming the checker is local/static and already
+  `PASS_LOCAL_EXTERNAL_EXECUTION_HANDOFF`.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=48; package_scripts=48; watched_paths=100`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-external-execution-handoff.mjs` only. It
+  does not watch shared
+  `docs/HEU_KHOA_GIANG_VIEN_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260705.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared Khoa/Dao Tao
+  documentation edits do not over-trigger the P10-14 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-external-execution-handoff.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-external-execution-handoff`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not send
+  real email, create real tasks/tickets, assign real accounts, execute UAT,
+  accept evidence, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching completion, approve teaching payment, approve
+  payroll, approve report-view reliance, approve dashboard reliance, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Data Confirmation Task Center Schema Contract
+
+- Scope: Advanced the Data Confirmation Task Center from read-only routing
+  metadata to a migration-candidate schema contract for department/user
+  confirmation tasks.
+- Changed:
+  `database/step121_data_confirmation_task_center.sql`,
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`,
+  `package.json`, `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_SQL_OBJECT_MASTER_MAP_20260627.md` and this implementation log.
+- Result: `database/step121_data_confirmation_task_center.sql` defines
+  `PASS_LOCAL_SCHEMA_CONTRACT` coverage for `heu_data_confirmation_tasks`,
+  `heu_data_confirmation_task_status_history`,
+  `heu_data_confirmation_task_center`,
+  `heu_data_confirmation_task_status_timeline`, status-timeline scope columns
+  `assigned_user_id` and `owner_user_id`, the five `task_center_status`
+  values `CHO_XAC_NHAN`, `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI` and `DA_KHOA`,
+  RLS helpers, audit-log triggers, required route metadata `due_date_or_batch`
+  and `owner_decision_ref`, `ASSIGNEE_OR_OWNER_REQUIRED`,
+  `CONTROLLED_PILOT_DEPARTMENT_ONLY`, `CONFIRM_FROM_CHO_XAC_NHAN_ONLY`,
+  `DA_KHOA lock requires note and controlled evidence ref`, RPC
+  `route_data_confirmation_task` and RPC
+  `confirm_data_confirmation_task`. The focused guard is
+  `check-heu-data-confirmation-task-center-schema.mjs` and the command is
+  `npm.cmd run check:heu-data-confirmation-task-center-schema`.
+- Boundary: PASS_LOCAL_SCHEMA_CONTRACT only. The SQL is a migration candidate;
+  it does not auto-seed real tasks, does not import raw data, does not run
+  production SQL, does not send email, does not create accounts or tickets,
+  does not accept evidence, does not execute or accept UAT, does not approve
+  finance reliance, does not approve owner GO/NO-GO and does not mark
+  production GO. Production remains NO-GO.
+
+## 2026-07-05 - Master Control Whole-System Status Table
+
+- Scope: Added a Whole-System Master Control Status Table to the executive
+  operating decision register so the first management task can see every main
+  lane as PASS_LOCAL, NO-GO or still blocked before deeper module work.
+- Changed:
+  `docs/HEU_EXECUTIVE_OPERATING_DECISION_DATA_REPORTING_PHASE_REGISTER_20260705.md`,
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-data-confirmation-task-center.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: The register now records `WHOLE_SYSTEM_MASTER_CONTROL_STATUS_TABLE`,
+  `MASTER_CONTROL_SYSTEM_STATUS_READY / NO_GO / BLOCKED`, the PASS_LOCAL status
+  table and the main lanes: User/permission operation, Data Master / Report
+  View, Data Confirmation Task Center, Accounting / Finance Desk / TTGDTX 9+,
+  Admissions / Tuyen sinh, CTHSSV, Dao Tao / Khoa / Short Course, Legal SOP
+  Governance, UAT / Evidence / Production Gate, HEU AI Agent and Guidance docs
+  for departments/users. The User/permission operation lane now links
+  `HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md`,
+  `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`,
+  `check:heu-role-position-operation-test-matrix`,
+  `Guide writing decision: NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `unassigned_required_positions=11` and
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01` so role, department, position, route and
+  blocked-action status are visible before guide writing or real-user widening.
+  The final gate stays NO-GO until signed UAT, controlled evidence,
+  backup/restore and owner GO/NO-GO.
+- Boundary: PASS_LOCAL_DECISION_REGISTER only. This does not change app
+  runtime, does not create real tasks, does not grant access, does not approve
+  UAT, does not accept evidence, does not approve finance action, does not
+  approve owner GO/NO-GO and does not mark production GO.
+
+## 2026-07-05 - Dao Tao Final Local Review Dossier
+
+- Scope: Added the Dao Tao final local review dossier so M07 Short Course,
+  M08 Khoa/Giang vien, report-view source routing, owner closure rows and owner
+  evidence handoff proof close as one local review package before any external
+  owner evidence can be treated as real-operation proof.
+- Changed:
+  `docs/HEU_DAO_TAO_FINAL_LOCAL_REVIEW_DOSSIER_20260705.md`,
+  `scripts/check-heu-dao-tao-final-local-review-dossier.mjs`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`, `package.json` and this
+  implementation log.
+- Result: DAO-FINAL-01 through DAO-FINAL-08 are recorded under
+  `DAO_TAO_FINAL_LOCAL_REVIEW_READY / NO_GO / BLOCKED` with
+  `SC_REAL_OPERATION_READY: NO_GO`, `KHOA_REAL_OPERATION_READY: NO_GO`,
+  `DAO-LOCAL-16`, `npm.cmd run check:heu-dao-tao-final-local-review-dossier`
+  and `check:heu-dao-tao-final-local-review-dossier`; the existing
+  `HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `check-heu-dao-tao-local-readiness.mjs`, `DAO_TAO_LOCAL_READY / NO_GO / BLOCKED`,
+  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and `RV_KHOA_GIANG_VIEN_DELIVERY`
+  remain the local aggregation path. The dossier also records
+  `EXECUTIVE_DAO_TAO_FOUR_PHASE_ALIGNMENT`, DAO-EXEC-PHASE-01 through
+  DAO-EXEC-PHASE-04, `CORE_LOCK_READY / NO_GO / BLOCKED`,
+  `DEPARTMENT_TRIAL_READY / NO_GO / BLOCKED`,
+  `REAL_DATA_CONFIRMATION_READY / NO_GO / BLOCKED`,
+  `PRODUCTION_GATE_READY / NO_GO / BLOCKED`, `DCTC-DT-001`, `DCTC-KHOA-001`
+  and `DCTC-SC-001`, plus the core task-register rows `DCTC-DAO-TAO-001`,
+  `DCTC-KHOA-001` and `DCTC-SHORT-COURSE-001` for class, subject, teacher,
+  attendance and payment confirmation routing.
+- Boundary: PASS_LOCAL_FINAL_REVIEW_DOSSIER only. It does not execute UAT,
+  accept evidence, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO; production remains NO-GO.
+
+## 2026-07-05 - P10-14 Khoa Giang Vien External Execution Handoff
+
+- Scope: Added the Khoa/Giang vien external execution handoff so P10-14
+  routes the remaining real-operation actions after P10-13 owner evidence
+  handoff proof without sending real work or approving the module.
+- Changed:
+  `docs/HEU_KHOA_GIANG_VIEN_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260705.md`,
+  `scripts/check-heu-khoa-giang-vien-external-execution-handoff.mjs`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `scripts/check-heu-khoa-giang-vien-local-completion.mjs`,
+  `docs/HEU_KHOA_GIANG_VIEN_LOCAL_COMPLETION_GATE_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and this implementation
+  log.
+- Result: `HEU_KHOA_GIANG_VIEN_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260705.md`
+  records KHOA-EXEC-01 through KHOA-EXEC-08 under
+  `KHOA_EXTERNAL_EXECUTION_READY / NO_GO / BLOCKED`, links
+  `data-heu-khoa-external-execution-handoff="P10-14_EXTERNAL_EXECUTION_HANDOFF"`
+  and `check:heu-khoa-giang-vien-external-execution-handoff`, and keeps
+  KHOA-HANDOFF-PROOF-01 through KHOA-HANDOFF-PROOF-08,
+  `KHOA_OWNER_EVIDENCE_HANDOFF_READY / NO_GO / BLOCKED`,
+  `RV_KHOA_GIANG_VIEN_DELIVERY`, `DQ-RV-09` and `RV-EVID-07` as upstream
+  proof dependencies. The Dao Tao aggregator adds `DAO-LOCAL-17`,
+  P10-14 Khoa/Giang vien external execution handoff and
+  `npm.cmd run check:heu-khoa-giang-vien-external-execution-handoff`.
+- Boundary: PASS_LOCAL_EXTERNAL_EXECUTION_HANDOFF only. It does not send real
+  email, create real tasks/tickets, assign real accounts, execute UAT, accept
+  evidence, approve teacher profile reliance, approve class delivery reliance,
+  approve teaching payment, approve payroll, approve report-view reliance,
+  approve dashboard reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Executive Operating Decision Data Reporting Phase Register
+
+- Scope: Added the executive operating decision register that splits the HEU
+  rollout into four controlled phases: core lock, controlled department trial,
+  real-data confirmation tasks and UAT/evidence/production gate.
+- Changed:
+  `docs/HEU_EXECUTIVE_OPERATING_DECISION_DATA_REPORTING_PHASE_REGISTER_20260705.md`,
+  `scripts/check-heu-executive-data-confirmation-task-center.mjs`,
+  `package.json`,
+  `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: The register records `EXECUTIVE_DATA_REPORTING_PHASE_READY / NO_GO / BLOCKED`,
+  `SINGLE_SOURCE_DATA_REPORT_CHAIN`, `NO_DEPARTMENT_PRIVATE_NUMBER`,
+  `WAITING_OWNER_CONFIRMATION`, `NO_GO_SOURCE_CONFLICT` and the shared
+  `Data Master -> Data Quality Check -> Report View Source Map -> Owner Signoff -> UAT Evidence -> Dashboard Reliance`
+  chain so KHTC, Admissions, CTHSSV, Dao Tao, Khoa/Giang vien and Short Course
+  cannot treat private or unconfirmed numbers as the official report number.
+  The Data Confirmation Task Center now locks `task_center_status` to
+  `CHO_XAC_NHAN`, `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI` and `DA_KHOA` with
+  Vietnamese labels Chờ xác nhận, Đúng, Cần sửa, Không thuộc tôi and Đã khóa;
+  `npm.cmd run check:heu-executive-data-confirmation-task-center` guards that
+  taxonomy, the `STD-45_DATA_CONFIRMATION_TASK_CENTER` executive dashboard
+  panel and the six metadata-only owner-lane queue rows.
+- Boundary: PASS_LOCAL_DECISION_REGISTER only. It does not change app runtime,
+  database schema, Supabase access, finance workflow, role permission, evidence
+  storage, UAT status, report-view reliance, dashboard reliance, owner
+  GO/NO-GO or production status; it does not create real email, task/ticket,
+  user account, Drive file, database mutation or Supabase auth user. Production
+  remains NO-GO.
+
+## 2026-07-04 - ACCT-00 Scope First Owner Action Lock
+
+- Scope: Added an ACCT-00 first-owner-action lock so the live scope-baseline
+  queue identifies `USER-SCOPE-REPAIR-01` as the first unclosed owner action
+  before business-scope repair, negative-control account work, signed UAT or
+  finance reliance.
+- Changed: `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: The ACCT-00 scope baseline queue now emits
+  `ACCT-00-SCOPE-FIRST-OWNER-ACTION-LOCK` with
+  `scope_first_owner_action_lock=ACCT-00_SCOPE_FIRST_OWNER_ACTION`,
+  `current_first_unclosed=USER-SCOPE-REPAIR-01`,
+  `current_first_owner_action=record_lead_visibility_choice_for_safe_labels`
+  and `next_allowed_step=USER-SCOPE-REPAIR-02`.
+- Boundary: PASS_LOCAL owner-routing only. It does not change lead visibility,
+  grant business scope, create or link accounts, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Local Next Build Worker Cap
+
+- Scope: Capped local Next build page-data workers so Windows PASS_LOCAL build
+  does not crash silently during `Collecting page data`.
+- Changed: `next.config.ts`,
+  `docs/HEU_AI_BUILD_COLLISION_TRIAGE_20260703.md` and this implementation
+  log.
+- Result: The default Next 16 local config selected `experimental.cpus=19`.
+  `npm.cmd run build` exited `-1` after compile/typecheck at page-data
+  collection. After setting `experimental.cpus: 2`, `npm.cmd run build`
+  completed successfully with `Collecting page data using 2 workers` and
+  `Generating static pages using 2 workers (56/56)`.
+- Boundary: PASS_LOCAL_CONTROL build determinism only. It does not approve
+  production, UAT, finance reliance, evidence acceptance, owner GO/NO-GO,
+  deployment, migration or production GO.
+
+## 2026-07-04 - ACCT Open Blocker Dependency Order Lock
+
+- Scope: Added an aggregate dependency-order lock to the accounting open
+  blocker queue so owner action stays sequenced as
+  `ACCT-00_SCOPE_BASELINE > ACCT-00_NEGATIVE_CONTROL > ACCT-11_RISK_CLOSURE > ACCT-12_OWNER_CLOSURE`.
+- Changed: `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: The queue now carries
+  `ACCT-OPEN-BLOCKER-DEPENDENCY-ORDER-LOCK` with
+  `open_blocker_dependency_order_lock=ACCT_OPEN_BLOCKER_DEPENDENCY_ORDER`,
+  `current_first_unclosed=ACCT-00_SCOPE_BASELINE`,
+  required sequential closure fields and a blocker rule for
+  `earlier_blocker_unclosed`.
+- Boundary: PASS_LOCAL owner-routing only. It does not repair scope, create or
+  link accounts, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT Local Readiness Child Timeout Guard
+
+- Scope: Added a per-child command timeout guard to
+  `check:heu-accounting-local-readiness` so the accounting readiness summary
+  fails closed when any downstream audit/check hangs or loses output.
+- Changed: `scripts/check-heu-accounting-local-readiness.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: The runner now prints `ACCT_LOCAL_COMMAND_TIMEOUT_MS` with
+  `HEU_ACCOUNTING_CHECK_TIMEOUT_MS`, records `ACCT_LOCAL_COMMAND_TIMEOUT` when
+  a child exceeds the per-check timeout, and includes `timed_out_checks`,
+  `per_check_timeout_ms` and `no_auto_skip=true` in
+  `ACCT_LOCAL_BLOCKER_PLAN`.
+- Boundary: PASS_LOCAL readiness reporting only. A timeout is counted as
+  `NO_GO`; the runner does not skip failed checks, accept evidence, approve
+  UAT, approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-00 Scope Evidence Intake Checklist
+
+- Scope: Added an ACCT-00 scope evidence intake checklist so owner-side scope
+  repair cannot move from the baseline decision checklist into execution unless
+  safe labels, approved visibility/scope choices, pre/post snapshots,
+  workspace preference and controlled evidence ID are recorded.
+- Changed: `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: ACCT-00 now emits
+  `ACCT-00-SCOPE-EVIDENCE-INTAKE-CHECKLIST` with
+  `scope_evidence_intake_checklist=ACCT-00_SCOPE_EVIDENCE_INTAKE`,
+  required input/evidence-record tokens, blocker tokens and
+  `next_allowed_step=ACCT-00_SCOPE_REPAIR_EXECUTION`.
+- Boundary: PASS_LOCAL evidence-intake routing only. It does not change scope,
+  create accounts, run browser UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-00 Negative Post-Closure Rerun Manifest
+
+- Scope: Added an ACCT-00 negative-control post-closure rerun manifest so the
+  ACCT-00-to-ACCT-12 handoff cannot be treated as locally rerun unless the
+  scope baseline, negative-control account, owner-action queue, finance scope,
+  role-scope pack, user-account security, open-blocker queue and accounting
+  readiness summary are recorded after owner-side closure.
+- Changed: `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-local-readiness.mjs` and this implementation
+  log.
+- Result: ACCT-00 now emits
+  `ACCT-00-NEGATIVE-POST-CLOSURE-RERUN-COMMAND-MANIFEST` with
+  `negative_post_closure_rerun_command_manifest=ACCT-00_NEGATIVE_POST_CLOSURE_RERUN_COMMANDS`,
+  required rerun commands, command-result records and blockers before
+  `ACCT-12_NEGATIVE_CONTROL_PROOF_DEPENDENCY`.
+- Boundary: PASS_LOCAL owner-routing only. It does not change scope, create
+  accounts, run browser UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P9-13 Short Course Local Completion Gate
+
+- Scope: Added the Short Course local completion gate so P9-01 through P9-12
+  can be rerun as one PASS_LOCAL package without converting local evidence refs
+  or owner-closure rows into real-operation approval.
+- Changed: `docs/HEU_SHORT_COURSE_LOCAL_COMPLETION_GATE_20260704.md`,
+  `scripts/check-heu-short-course-local-completion.mjs`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  `docs/HEU_SHORT_COURSE_ATTENDANCE_PAYMENT_GAP_PACK_20260628_V01_DRAFT.md`,
+  `docs/HEU_SHORT_COURSE_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`, report-view source map,
+  current-state inventory, system backlog, module readiness gap matrix,
+  production checklist and `package.json`.
+- Result: P9-13 now records SC-LOCAL-01 through SC-LOCAL-10,
+  `SC_LOCAL_COMPLETION_READY / NO_GO / BLOCKED`,
+  `SC_REAL_OPERATION_READY: NO_GO`,
+  `data-heu-short-course-local-completion-gate="P9-13_LOCAL_COMPLETION_GATE"`
+  and `check:heu-short-course-local-completion`; the runner includes the
+  Short Course training/external-owner/role/signed-intake/final-closure,
+  owner-closure, Dao Tao, current-state, implementation-log and release-gate
+  checks.
+- Boundary: PASS_LOCAL_COMPLETION_GATE only. It does not execute UAT, accept
+  evidence, approve attendance lock, approve BHXH/chinh sach, approve
+  meal/allowance, approve HR payment, approve teacher payment, verify
+  invoice/payment, approve report-view reliance, approve dashboard reliance,
+  approve role UAT, approve access closure, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - P10-11 Khoa Giang Vien System Reporting Handoff
+
+- Scope: Added the Khoa/Giang vien system/reporting handoff index so
+  `RV_KHOA_GIANG_VIEN_DELIVERY`, `DQ-RV-09` and `RV-EVID-07` are connected
+  from `/khoa` through a local reporting control without creating report-view
+  or dashboard reliance.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_SYSTEM_REPORTING_HANDOFF_INDEX_20260704.md`,
+  `scripts/check-heu-khoa-giang-vien-system-reporting-handoff.mjs`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`,
+  current-state inventory, system backlog, module readiness gap matrix,
+  production checklist and `package.json`.
+- Result: P10-11 now records KHOA-RPT-01 through KHOA-RPT-08,
+  `KHOA_REPORTING_HANDOFF_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-reporting-handoff="P10-11_SYSTEM_REPORTING_HANDOFF"` and
+  `check:heu-khoa-giang-vien-system-reporting-handoff` as the local
+  system/reporting handoff guard for Khoa/Giang vien.
+- Boundary: PASS_LOCAL_REPORTING_HANDOFF_INDEX only. It does not execute UAT,
+  accept evidence, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching completion, approve teaching payment, approve
+  payroll, approve report-view reliance, approve dashboard reliance, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary token: does not execute UAT, accept evidence; approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P10-12 Khoa Giang Vien Reports Status Panel
+
+- Scope: Added the Khoa/Giang vien reports status panel so `/reports` can
+  display the M08 report-view blocker state without becoming a report-view or
+  dashboard reliance surface.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_REPORTS_STATUS_PANEL_20260704.md`,
+  `scripts/check-heu-khoa-giang-vien-reports-status-panel.mjs`,
+  `components/reports/reports-overview.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_SYSTEM_REPORTING_HANDOFF_INDEX_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`,
+  current-state inventory, system backlog, module readiness gap matrix,
+  production checklist and `package.json`.
+- Result: P10-12 now records KHOA-RPT-PANEL-01 through
+  KHOA-RPT-PANEL-08,
+  `KHOA_REPORT_STATUS_PANEL_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-report-status-panel="P10-12_KHOA_REPORT_STATUS_PANEL"` and
+  `check:heu-khoa-giang-vien-reports-status-panel` as the local `/reports`
+  status guard for `RV_KHOA_GIANG_VIEN_DELIVERY`.
+- Boundary: PASS_LOCAL_REPORT_STATUS_PANEL only. It does not execute UAT,
+  accept evidence, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching completion, approve teaching payment, approve
+  payroll, approve report-view reliance, approve dashboard reliance, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary token: does not execute UAT, accept evidence; approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P10-13 Khoa Giang Vien Owner Evidence Handoff Proof
+
+- Scope: Added the Khoa/Giang vien owner evidence handoff proof packet so M08
+  owner-side proof, signer lane, controlled evidence ref, rerun command and
+  blocker state are routed outside Git/Codex/chat before any real-operation
+  reliance.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md`,
+  `scripts/check-heu-khoa-giang-vien-owner-evidence-handoff-proof.mjs`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_LOCAL_COMPLETION_GATE_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`, current-state
+  inventory, system backlog, module readiness gap matrix, production checklist
+  and this implementation log.
+- Result: P10-13 records KHOA-HANDOFF-PROOF-01 through
+  KHOA-HANDOFF-PROOF-08,
+  `KHOA_OWNER_EVIDENCE_HANDOFF_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-owner-evidence-handoff-proof="P10-13_OWNER_EVIDENCE_HANDOFF_PROOF"`
+  and `check:heu-khoa-giang-vien-owner-evidence-handoff-proof` as the local
+  owner evidence handoff proof guard for Khoa/Giang vien.
+- Boundary: PASS_LOCAL_OWNER_EVIDENCE_HANDOFF_PROOF only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching completion, approve teaching payment,
+  approve payroll, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-12 Owner Next Summary
+
+- Scope: Added a compact ACCT-12 owner-next line so the owner/UAT closure
+  blocker shows the immediate owner action without treating local guard success
+  as signed UAT, evidence acceptance, finance reliance, access closure, owner
+  GO/NO-GO or production GO.
+- Changed: `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: ACCT-12 now emits `ACCT-12-OWNER-NEXT` with
+  `owner_next=ACCT-12_OWNER_NEXT`, owner records, rerun commands and stop
+  conditions for pending route evidence, pending owner acceptance, controlled
+  evidence IDs and final owner GO/NO-GO.
+- Boundary: PASS_LOCAL owner-routing only. It does not execute UAT, accept
+  evidence, approve finance reliance, create accounts, grant scope, close
+  access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-11 Risk Owner Next Summary
+
+- Scope: Added a compact ACCT-11 owner-next line so the risk closure blocker
+  shows the immediate owner action without treating local guard success as
+  evidence acceptance or risk closure.
+- Changed: `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: ACCT-11 now emits `ACCT-11-RISK-OWNER-NEXT` with
+  `owner_next=ACCT-11_RISK_OWNER_NEXT`,
+  owner records, rerun commands and stop conditions for pending external
+  evidence, owner quorum and controlled evidence IDs.
+- Boundary: PASS_LOCAL owner-routing only. It does not accept evidence,
+  execute backup/restore, execute migration, approve rollback, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P10-10 Khoa Giang Vien Local Completion Gate
+
+- Scope: Added the Khoa/Giang vien local completion gate so P10-01 through
+  P10-09 can be rerun as one PASS_LOCAL package without converting local
+  evidence refs or owner-closure rows into real-operation approval.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_LOCAL_COMPLETION_GATE_20260704.md`,
+  `scripts/check-heu-khoa-giang-vien-local-completion.mjs`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`, report-view source map,
+  current-state inventory, system backlog, module readiness gap matrix,
+  production checklist and `package.json`.
+- Result: P10-10 now records KHOA-LOCAL-01 through KHOA-LOCAL-10,
+  `KHOA_LOCAL_COMPLETION_READY / NO_GO / BLOCKED`,
+  `KHOA_REAL_OPERATION_READY: NO_GO`,
+  `data-heu-khoa-local-completion-gate="P10-10_LOCAL_COMPLETION_GATE"` and
+  `check:heu-khoa-giang-vien-local-completion`; the runner includes the Khoa
+  foundation/source/signoff/privacy/negative-access/evidence/signed-intake,
+  final-closure, owner-closure, system/reporting handoff, reports status panel,
+  Dao Tao, current-state and implementation-log checks, plus release-gate script
+  link verification for the separate `audit:ttgdtx-release-gates` system gate.
+- Boundary: PASS_LOCAL_COMPLETION_GATE only. It does not execute UAT, accept
+  evidence, approve teacher profile reliance, approve class delivery reliance,
+  approve teaching completion, approve teaching payment, approve payroll,
+  approve report-view reliance, approve dashboard reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P9-12 Short Course Owner Closure Ledger
+
+- Scope: Added a Short Course owner closure ledger so P9 final closure cannot
+  be treated as signed owner approval without SC-CLOSURE-01 through
+  SC-CLOSURE-08, controlled evidence refs, signer lanes, signed dates, blocker
+  states and final owner quorum proof outside Git/Codex/chat.
+- Changed: `docs/HEU_SHORT_COURSE_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `scripts/check-heu-short-course-owner-closure-ledger.mjs`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  Short Course control docs, Dao Tao aggregator docs, report-view source map,
+  current-state, backlog, gap matrix, production checklist and this
+  implementation log.
+- Result: P9-12 now carries
+  `SC_OWNER_CLOSURE_READY / NO_GO / BLOCKED`,
+  SC-CLOSURE-01 through SC-CLOSURE-08 and
+  `check:heu-short-course-owner-closure-ledger`.
+- Boundary: PASS_LOCAL_OWNER_CLOSURE_LEDGER only. It does not execute UAT,
+  accept evidence, approve attendance lock, approve BHXH/chinh sach, approve
+  meal/allowance, approve HR payment, approve teacher payment, verify
+  invoice/payment, approve report-view reliance, approve dashboard reliance,
+  approve role UAT, approve access closure, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - P9-11 Short Course Final Module Closure Gate
+
+- Scope: Added a Short Course final module closure gate so P9 signed UAT
+  evidence intake cannot be treated as final owner approval without
+  SC-CLOSE-01 through SC-CLOSE-08, SC-OWNER-ACTION-01 through
+  SC-OWNER-ACTION-08 and final owner quorum blockers outside Git/Codex/chat.
+- Changed: `docs/HEU_SHORT_COURSE_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `scripts/check-heu-short-course-final-closure-gate.mjs`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  Short Course control docs, Dao Tao aggregator docs, report-view source map,
+  current-state, backlog, gap matrix, production checklist and this
+  implementation log.
+- Result: P9-11 now carries
+  `SC_FINAL_CLOSURE_READY / NO_GO / BLOCKED`,
+  SC-CLOSE-01 through SC-CLOSE-08,
+  `SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED`,
+  SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08 and
+  `check:heu-short-course-final-closure-gate`.
+- Boundary: PASS_LOCAL_CLOSURE_GATE only. It does not execute UAT, accept
+  evidence, approve attendance lock, approve BHXH/chinh sach, approve
+  meal/allowance, approve HR payment, approve teacher payment, verify
+  invoice/payment, approve report-view reliance, approve dashboard reliance,
+  approve role UAT, approve access closure, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - ACCT-00 Owner Next Summary Lines
+
+- Scope: Added compact machine-readable owner-next lines for the two active
+  ACCT-00 blockers so operators can see the immediate scope-baseline and
+  negative-control next action without reading the full guard log.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  the accounting checker scripts and this implementation log.
+- Result: The ACCT-00 guards now emit `ACCT-00-SCOPE-OWNER-NEXT` with
+  `owner_next=ACCT-00_SCOPE_OWNER_NEXT` and
+  `ACCT-00-NEGATIVE-OWNER-NEXT` with
+  `owner_next=ACCT-00_NEGATIVE_OWNER_NEXT`, including owner records, rerun
+  commands and blocker predicates.
+- Boundary: This is PASS_LOCAL owner-handoff packaging only. It does not
+  change scope, create or link accounts, execute browser UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT Local Blocker Plan Summary
+
+- Scope: Added a machine-readable `ACCT_LOCAL_BLOCKER_PLAN` line to the
+  accounting local-readiness aggregator so owner/operator handoff can follow
+  the ordered ACCT-00 scope baseline, ACCT-00 negative-control, ACCT-11 risk
+  closure and ACCT-12 owner closure path without guessing from raw logs.
+- Changed: `scripts/check-heu-accounting-local-readiness.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: The local readiness output now records
+  `ACCT_LOCAL_BLOCKER_PLAN`,
+  `order=ACCT-00_SCOPE_BASELINE>ACCT-00_NEGATIVE_CONTROL>ACCT-11_RISK_CLOSURE>ACCT-12_OWNER_CLOSURE`,
+  `required_owner_records=scope_baseline_closed,negative_control_proof_ready,risk_closure_ready,owner_closure_ready` and
+  `rerun_manifests=ACCT-00_POST_REPAIR_RERUN_COMMANDS,ACCT-00_NEGATIVE_POST_CLOSURE_RERUN_COMMANDS,ACCT-11_RISK_POST_CLOSURE_RERUN_COMMANDS,ACCT-12_OWNER_POST_CLOSURE_RERUN_COMMANDS`.
+- Boundary: This is PASS_LOCAL summary/control packaging only. It does not
+  change scope, create accounts, execute UAT, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-12 Owner Post-Closure Rerun Command Manifest
+
+- Scope: Added an accounting-only ACCT-12 rerun command manifest so signed
+  owner closure cannot feed final accounting readiness without recorded
+  owner-ledger, signed-UAT, owner-signoff, production-readiness, release-gate,
+  open-blocker and accounting-summary reruns.
+- Changed: `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and this
+  implementation log.
+- Result: ACCT-12 now carries
+  `ACCT-12-OWNER-POST-CLOSURE-RERUN-COMMAND-MANIFEST`,
+  `owner_post_closure_rerun_command_manifest=ACCT-12_OWNER_POST_CLOSURE_RERUN_COMMANDS`,
+  the exact rerun set for owner closure, signed UAT routes, owner signoff,
+  production readiness, release gates, open-blocker queue and accounting
+  summary, plus
+  `required_command_result_record=owner_closure_ready_recorded,signed_uat_routes_passed,owner_signoff_pack_passed,production_readiness_guard_passed,release_gates_passed,open_blocker_queue_rerun_recorded,acct_local_summary_recorded`.
+- Boundary: This is PASS_LOCAL control packaging only. It does not execute UAT,
+  accept evidence, approve finance reliance, close access, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-11 Risk Post-Closure Rerun Command Manifest
+
+- Scope: Added an accounting-only ACCT-11 rerun command manifest so signed
+  risk closure cannot feed ACCT-12 finance reliance without recorded local
+  audit, risk-ledger, open-blocker and accounting-summary reruns.
+- Changed: `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and this
+  implementation log.
+- Result: ACCT-11 now carries
+  `ACCT-11-RISK-POST-CLOSURE-RERUN-COMMAND-MANIFEST`,
+  `risk_post_closure_rerun_command_manifest=ACCT-11_RISK_POST_CLOSURE_RERUN_COMMANDS`,
+  the exact rerun set for audit log, audit trail, hard-delete boundary,
+  backup/restore dry-run pack, migration-order guard, risk ledger,
+  open-blocker queue and accounting summary, plus
+  `required_command_result_record`.
+- Boundary: PASS_LOCAL handoff hardening only. It does not inspect raw backup
+  or database exports, accept evidence, execute migration, approve finance
+  reliance, approve UAT, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-00 Post-Repair Rerun Command Manifest
+
+- Scope: Added an accounting-only ACCT-00 rerun command manifest so owner-side
+  scope repair cannot be handed to negative-control or UAT review without a
+  recorded local rerun set.
+- Changed: `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and this
+  implementation log.
+- Result: ACCT-00 now carries
+  `ACCT-00-POST-REPAIR-RERUN-COMMAND-MANIFEST`,
+  `post_repair_rerun_command_manifest=ACCT-00_POST_REPAIR_RERUN_COMMANDS`,
+  the exact local rerun commands for scope baseline, negative-control,
+  finance/payment scope, role-scope UAT pack, user-account security and
+  accounting summary, plus `required_command_result_record`.
+- Boundary: PASS_LOCAL handoff hardening only. It does not change scope, create
+  accounts, execute browser UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P10-09 Khoa Giang Vien Owner Closure Ledger
+
+- Scope: Added the Khoa/Giang vien owner closure ledger so M08 final closure
+  cannot be treated as owner approval without KHOA-CLOSURE-01 through
+  KHOA-CLOSURE-08, controlled evidence refs, signer lanes, signed dates,
+  blocker states and final owner quorum proof outside Git/Codex/chat.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `scripts/check-heu-khoa-giang-vien-owner-closure-ledger.mjs`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_OWNER_SIGNOFF_MANIFEST_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_EVIDENCE_TRACE_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`, report-view source map,
+  current-state inventory, backlog, gap matrix, production checklist and
+  `package.json`.
+- Result: P10-09 now records KHOA-CLOSURE-01 through KHOA-CLOSURE-08,
+  `KHOA_OWNER_CLOSURE_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-owner-closure-ledger="P10-09_OWNER_CLOSURE_LEDGER"` and
+  `check:heu-khoa-giang-vien-owner-closure-ledger`; M08 remains NO-GO until
+  signed Khoa/Giang vien owner UAT, teacher profile privacy approval,
+  role/negative-access proof, controlled evidence/source reconciliation,
+  signed UAT evidence intake, signed final module closure, report-view
+  signoff, payment/payroll boundary proof and final owner quorum evidence are
+  complete outside Git/Codex/chat.
+- Boundary: PASS_LOCAL owner-closure packaging only. It does not execute UAT,
+  accept evidence, approve teacher profile reliance, approve class delivery
+  reliance, approve teaching payment, approve payroll, approve report-view
+  reliance, approve dashboard reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - P10-08 Khoa Giang Vien Final Module Closure Gate
+
+- Scope: Added the local final module closure gate for M08 Khoa/Giang vien so
+  final owner-action blockers can be reviewed without accepting evidence or
+  approving M08 locally.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `scripts/check-heu-khoa-giang-vien-final-closure-gate.mjs`, `package.json`,
+  Khoa control docs, Dao Tao aggregator, report-view source map,
+  current-state inventory, system backlog, module readiness gap matrix and
+  production checklist.
+- Result: P10-08 now records KHOA-CLOSE-01 through KHOA-CLOSE-08,
+  KHOA-OWNER-ACTION-01 through KHOA-OWNER-ACTION-08,
+  `KHOA_FINAL_CLOSURE_READY / NO_GO / BLOCKED`,
+  `KHOA_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-final-closure-gate="P10-08_FINAL_MODULE_CLOSURE_GATE"` and
+  `npm.cmd run check:heu-khoa-giang-vien-final-closure-gate`.
+- Boundary: PASS_LOCAL_CLOSURE_GATE only. It does not execute UAT, accept
+  evidence, approve teacher profile reliance, approve class delivery reliance,
+  approve teaching completion, approve teaching payment, approve payroll,
+  approve report-view reliance, approve dashboard reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P10-07 Khoa Giang Vien Signed UAT Evidence Intake
+
+- Scope: Added the local signed UAT evidence intake route for M08 Khoa/Giang
+  vien so external signed evidence refs can be routed without accepting
+  evidence in Git/Codex/chat.
+- Changed: `docs/HEU_KHOA_GIANG_VIEN_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `scripts/check-heu-khoa-giang-vien-signed-uat-evidence-intake.mjs`,
+  `package.json`, Khoa control docs, report-view source map, current-state
+  inventory, system backlog, module readiness gap matrix and production
+  checklist.
+- Result: P10-07 now records KHOA-UAT-EVID-01 through KHOA-UAT-EVID-08,
+  `KHOA_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`,
+  `data-heu-khoa-signed-uat-evidence-intake="P10-07_SIGNED_UAT_EVIDENCE_INTAKE"`
+  and `npm.cmd run check:heu-khoa-giang-vien-signed-uat-evidence-intake`.
+- Boundary: PASS_LOCAL_EVIDENCE_INTAKE only. It does not execute UAT, accept
+  evidence, approve teacher profile reliance, approve class delivery reliance,
+  approve teaching payment, approve payroll, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - Dao Tao Local Readiness Aggregator
+
+- Scope: Added a local aggregator for the Dao Tao module surface so M07 Short
+  Course, M08 Khoa/Giang vien, system-build routing and report-view source
+  coordination can be checked through one guard.
+- Changed: `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `scripts/check-heu-dao-tao-local-readiness.mjs`, `package.json`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and this
+  implementation log.
+- Result: `DAO_TAO_LOCAL_READY / NO_GO / BLOCKED` now verifies the existing
+  Short Course TRN/owner-action chain, P9-10 Short Course signed UAT evidence
+  intake with `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`,
+  SC-UAT-EVID-01 through SC-UAT-EVID-08,
+  `check:heu-short-course-signed-uat-evidence-intake`, Khoa/Giang vien
+  foundation/source/privacy/negative-access/evidence chain, P10-07 signed UAT
+  evidence intake with `KHOA_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`,
+  KHOA-UAT-EVID-01 through KHOA-UAT-EVID-08, P10-08 final closure gate with
+  `KHOA_FINAL_CLOSURE_READY / NO_GO / BLOCKED`, KHOA-CLOSE-01 through
+  KHOA-CLOSE-08, P10-09 owner closure ledger with
+  `KHOA_OWNER_CLOSURE_READY / NO_GO / BLOCKED`, KHOA-CLOSURE-01 through
+  KHOA-CLOSURE-08, P10-10 local completion gate with
+  `KHOA_LOCAL_COMPLETION_READY / NO_GO / BLOCKED`,
+  `KHOA_REAL_OPERATION_READY: NO_GO`, KHOA-LOCAL-01 through KHOA-LOCAL-10,
+  `KHOA_REPORTING_HANDOFF_READY / NO_GO / BLOCKED`, KHOA-RPT-01 through
+  KHOA-RPT-08, `KHOA_REPORT_STATUS_PANEL_READY / NO_GO / BLOCKED`,
+  KHOA-RPT-PANEL-01 through KHOA-RPT-PANEL-08,
+  KHOA-HANDOFF-PROOF-01 through KHOA-HANDOFF-PROOF-08,
+  `npm.cmd run check:heu-khoa-giang-vien-signed-uat-evidence-intake`,
+  `npm.cmd run check:heu-khoa-giang-vien-final-closure-gate`,
+  `npm.cmd run check:heu-khoa-giang-vien-owner-closure-ledger`,
+  `npm.cmd run check:heu-khoa-giang-vien-local-completion`,
+  `npm.cmd run check:heu-khoa-giang-vien-system-reporting-handoff`,
+  `npm.cmd run check:heu-khoa-giang-vien-reports-status-panel`,
+  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and `RV_KHOA_GIANG_VIEN_DELIVERY`
+  routing before the module is reported as a local package.
+- Boundary: PASS_LOCAL_AGGREGATOR only. It does not execute UAT, accept
+  evidence, approve class operation, approve report-view reliance, approve
+  dashboard reliance, approve access closure, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - ACCT System Report Coordination Lock
+
+- Scope: Added an accounting-only coordination lock so M09 accounting work
+  stays aligned with system build and reporting controls without overwriting
+  other modules.
+- Changed: `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: the accounting breakdown now carries
+  `ACCT-SYSTEM-REPORT-COORDINATION-LOCK`,
+  `accounting_coordination_lock=ACCT_SYSTEM_REPORT_COORDINATION`,
+  `system_backlog_reference=read_only`, `report_view_reference=read_only`,
+  `reports_read_only_reference=true` and `no_cross_module_overwrite=true`
+  while referencing M09/M10, P0-16/P5-02/P5-03 and the TTGDTX report views as
+  read-only coordination anchors.
+- Boundary: PASS_LOCAL control hardening only. It does not edit report
+  modules, import raw workbooks, change source data, create tasks, send email,
+  accept evidence, approve dashboard/report-view reliance, approve finance
+  reliance or mark production GO.
+
+## 2026-07-04 - ACCT-12 Final Owner Dependency Runtime Source
+
+- Scope: Added explicit provenance to
+  `ACCT-12-FINAL-OWNER-DEPENDENCY-LOCK` so final owner GO/NO-GO cannot be
+  discussed from label-only owner-ledger text.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md` and this
+  implementation log.
+- Result: the ACCT-12 final owner dependency lock now carries
+  `source=accounting_owner_closure_ledger_runtime` together with
+  `final_owner_dependency_lock=ACCT-12_FINAL_OWNER_DEPENDENCY`.
+- Boundary: PASS_LOCAL control hardening only. It does not execute UAT, accept
+  evidence, approve finance reliance, change account access, infer owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-12 Access Closure Dependency Runtime Source
+
+- Scope: Added explicit provenance to
+  `ACCT-12-ACCESS-CLOSURE-DEPENDENCY-LOCK` so accountant, privileged,
+  temporary and negative-account access closure cannot be discussed from
+  label-only owner-ledger text.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md` and this
+  implementation log.
+- Result: the ACCT-12 access closure dependency lock now carries
+  `source=accounting_owner_closure_ledger_runtime` together with
+  `access_closure_dependency_lock=ACCT-12_ACCESS_CLOSURE_DEPENDENCY`.
+- Boundary: PASS_LOCAL control hardening only. It does not change account
+  access, retain/revoke/block users, grant scope, accept evidence, approve
+  finance reliance, infer owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-12 Finance Reliance Dependency Runtime Source
+
+- Scope: Added explicit provenance to
+  `ACCT-12-FINANCE-RELIANCE-DEPENDENCY-LOCK` so finance reliance cannot be
+  discussed from label-only owner-ledger text.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md` and this
+  implementation log.
+- Result: the ACCT-12 finance reliance dependency lock now carries
+  `source=accounting_owner_closure_ledger_runtime` together with
+  `finance_reliance_dependency_lock=ACCT-12_FINANCE_RELIANCE_DEPENDENCY`.
+- Boundary: PASS_LOCAL control hardening only. It does not accept evidence,
+  approve finance reliance, post vouchers, move money, infer owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-04 - ACCT-12 Signed Route Evidence Runtime Source
+
+- Scope: Added explicit provenance to
+  `ACCT-12-SIGNED-ROUTE-EVIDENCE-INTAKE-PACKET` so signed-route evidence
+  intake cannot be treated as current owner-ledger evidence from label-only
+  text.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md` and this
+  implementation log.
+- Result: the ACCT-12 signed route evidence intake packet now carries
+  `source=accounting_owner_closure_ledger_runtime` together with
+  `signed_route_evidence_packet=ACCT-12_SIGNED_ROUTE_EVIDENCE_INTAKE`.
+- Boundary: PASS_LOCAL control hardening only. It does not execute UAT, accept
+  evidence, approve finance reliance, change account access, infer owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-11 Risk Handoff Runtime Source
+
+- Scope: Added explicit provenance to
+  `ACCT-11-RISK-EXTERNAL-EVIDENCE-HANDOFF-PACKET` so ACCT-12 finance reliance
+  cannot treat label-only risk handoff text as current runtime evidence.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md` and this
+  implementation log.
+- Result: the ACCT-11 risk external evidence handoff now carries
+  `source=accounting_risk_closure_ledger_runtime` together with
+  `risk_external_evidence_handoff_packet=ACCT-11_RISK_EXTERNAL_EVIDENCE_HANDOFF`
+  before `next_allowed_step=ACCT-12_FINANCE_RELIANCE_DEPENDENCY`.
+- Boundary: PASS_LOCAL control hardening only. It does not accept evidence,
+  approve risk closure, approve finance reliance, approve UAT, infer owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - ACCT-00 Scope Repair Owner Packet Lock
+
+- Scope: Inserted an explicit ACCT-00 owner packet lock between
+  `USER-SCOPE-REPAIR-OWNER-PACKET` and
+  `ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX` so safe labels and owner
+  packets cannot be treated as owner approval.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `components/settings/user-business-scope-settings.tsx`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: the local repair flow now emits and audits
+  `ACCT-00-SCOPE-REPAIR-OWNER-PACKET-LOCK` with
+  `scope_repair_owner_packet_lock=ACCT-00_SCOPE_REPAIR_OWNER_PACKET_LOCK`,
+  `required_inputs=safe_owner_repair_labels_generated,owner_action_packet_generated,role_codes_recorded,decision_count_recorded,secure_owner_lookup_channel_recorded,controlled_evidence_id_recorded`,
+  `required_dependency_record=safe_label,role_code,owner_label_mapped,owner_lane_confirmed,secure_owner_lookup_channel_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=safe_owner_repair_labels_missing,owner_action_packet_missing,role_codes_missing,decision_count_mismatch,owner_label_unmapped,secure_owner_lookup_channel_missing,controlled_evidence_id_missing,raw_profile_id_present`
+  and `next_allowed_step=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX`.
+  `check:heu-negative-control-account-queue` also mirrors the lock at runtime
+  with `source=negative_control_account_queue_runtime` before
+  `ACCT-00-NEGATIVE-ACCOUNT-DEPENDENCY-LOCK`.
+- Result extension: `check:heu-negative-control-account-queue` now also mirrors
+  `ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX` with
+  `scope_repair_owner_decision_matrix=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX`
+  and `ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST` with
+  `scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`, both marked
+  `source=negative_control_account_queue_runtime`, before
+  `ACCT-00-SCOPE-POST-REPAIR-VERIFICATION-PACKET`.
+- Result extension: the negative-control runtime also mirrors
+  `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK` with
+  `scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`,
+  `ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET` with
+  `scope_repair_execution_packet=ACCT-00_SCOPE_REPAIR_EXECUTION`, and
+  `ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET` with
+  `scope_post_repair_rerun_proof_packet=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF`,
+  all marked `source=negative_control_account_queue_runtime`.
+- Verification target: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/audit-heu-user-account-security.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-negative-control-owner-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is PASS_LOCAL control hardening only. It does not change scope,
+  create or link accounts, expose credentials, execute browser UAT,
+  accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - ACCT-00 Post-Repair External Handoff Order
+
+- Scope: Corrected the ACCT-00 post-repair verification order so
+  `ACCT-00-SCOPE-POST-REPAIR-VERIFICATION-PACKET` moves only to
+  `ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`; negative-account provisioning stays
+  behind the external closure handoff and
+  `ACCT-00-NEGATIVE-ACCOUNT-DEPENDENCY-LOCK`.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `components/settings/user-business-scope-settings.tsx`,
+  `scripts/audit-heu-user-account-security.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: post-repair verification now emits and documents
+  `scope_post_repair_verification_packet=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION`
+  with
+  `next_allowed_step=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`, while the
+  negative-account dependency lock still requires
+  `scope_external_closure_handoff_closed` and keeps
+  `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_PROVISIONING` only after the
+  dependency is closed.
+- Verification target: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/audit-heu-user-account-security.mjs`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is order/control-text hardening only. It does not change
+  scope, create or link accounts, expose credentials, execute browser UAT,
+  accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - Executive Active Focus Header Fast-Loop Dynamic Guard
+
+- Scope: Registered `check:heu-executive-active-focus-header-readiness` as a
+  focused fast-local-loop dynamic guard for STD-30 dashboard focus metadata.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=11; package_scripts=11; watched_paths=59`; the guard watches
+  `scripts/check-heu-executive-active-focus-header-readiness.mjs`,
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs` and
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`. It does not watch shared
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared control-file edits
+  do not over-trigger the executive guard.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-active-focus-header-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
   evidence, approve finance action, approve owner GO/NO-GO or mark production
   GO.
 
-## 2026-07-03 - STD-04 Executive Legal SOP Owner Action Queue
+## 2026-07-04 - Executive Finance Reliance Triage Fast-Loop Dynamic Guard
 
-- Added the executive dashboard Legal/SOP owner-action queue with
-  `data-heu-executive-legal-sop-queue="STD-04_LEGAL_SOP_OWNER_ACTION_QUEUE"`.
-- The queue exposes `LEGAL-STD-01` through `LEGAL-STD-06` for legal-basis
-  review, SOP owner signoff, invoice/chung-tu policy, evidence class, sensitive
-  metadata role scope and external owner decision authority.
-- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
-  guard verifies the Legal/SOP queue anchors, `DRAFT_CONTROL`,
-  `NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`, `NO_ACCESS_GRANT`, `NO_FINANCE_ACTION`,
-  `NO_PRODUCTION_GO`, all six `LEGAL-STD-*` rows and the blueprint/log
-  propagation.
-- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-04` is
-  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-05`.
-- This is local read-only Legal/SOP visibility only. It does not approve legal
-  position, issue official SOP, grant access, execute UAT, accept evidence,
-  approve finance action, approve owner GO/NO-GO or mark production GO.
+- Scope: Registered `check:heu-executive-finance-reliance-triage-readiness`
+  as a focused fast-local-loop dynamic guard for STD-26 finance reliance
+  checker metadata.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=12; package_scripts=12; watched_paths=61`; the guard watches
+  `scripts/check-heu-executive-finance-reliance-triage-readiness.mjs` and
+  `scripts/check-heu-finance-payment-scope-readiness.mjs`. It does not watch
+  shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-26 guard.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-finance-reliance-triage-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not post
+  vouchers, execute payment, issue bank instructions, approve finance reliance,
+  execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - STD-05 Executive Module Maturity Action Row
+## 2026-07-04 - Executive Focus Lane Separation Fast-Loop Dynamic Guard
 
-- Added the executive dashboard M01-M12 maturity action row with
-  `data-heu-executive-module-maturity="STD-05_MODULE_MATURITY_ACTION_ROW"`.
-- The row shows module code, status, owner lane, next required action and stop
-  rule so BGH can see which module is strong internal, PASS_LOCAL packaged,
-  read-only UAT gated, CAN_SUA, CHUA_DU_DIEU_KIEN or advisory only.
-- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
-  guard verifies the M01-M12 row, `NO_UAT_ACCEPTANCE`,
-  `NO_REPORT_VIEW_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO` and
-  `NO_PRODUCTION_GO` before the executive dashboard can be reported
-  PASS_LOCAL_UI.
-- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-05` is
-  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-06`.
-- This is local read-only module maturity visibility only. It does not accept
-  UAT, accept evidence, approve report-view reliance, approve dashboard
+- Scope: Registered `check:heu-executive-focus-lane-separation-readiness` as a
+  focused fast-local-loop dynamic guard for STD-20 AppShell lane metadata.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=13; package_scripts=13; watched_paths=63`; the guard watches
+  `scripts/check-heu-executive-focus-lane-separation-readiness.mjs` and
+  `components/layout/app-shell.tsx`. It does not watch shared
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-20 guard.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-focus-lane-separation-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Focus Mode Fast-Loop Dynamic Guard
+
+- Scope: Registered `check:heu-executive-focus-mode-readiness` as a focused
+  fast-local-loop dynamic guard for STD-17 query-param focus routing metadata.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=14; package_scripts=14; watched_paths=65`; the guard watches
+  `scripts/check-heu-executive-focus-mode-readiness.mjs` and `app/page.tsx`.
+  It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-17 guard.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-focus-mode-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, hide NO-GO status, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Focus Next Action Fast-Loop Dynamic Guard
+
+- Scope: Repaired the stale STD-18 focus next-action checker so its
+  section-order expectation includes the current `role_scope` lane, then
+  registered `check:heu-executive-focus-next-action-readiness` as a focused
+  fast-local-loop dynamic guard for STD-18 route-hint checker metadata.
+- Changed: `scripts/check-heu-executive-focus-next-action-readiness.mjs`,
+  `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=15; package_scripts=15; watched_paths=66`; the guard watches
+  `scripts/check-heu-executive-focus-next-action-readiness.mjs` only. It does
+  not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-18 guard.
+- Verification target: `node --check scripts/check-heu-executive-focus-next-action-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-focus-next-action-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, hide NO-GO status, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Department Role-Lane Map Fast-Loop Dynamic Guard
+
+- Scope: Registered `check:heu-executive-department-role-lane-map-readiness`
+  as a focused fast-local-loop dynamic guard for STD-32 checker metadata after
+  aligning the checker with dynamic `HEU_DEPARTMENT_ROLE_LANE_MAP` rendering.
+- Changed: `scripts/check-heu-executive-department-role-lane-map-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=16; package_scripts=16; watched_paths=67`; the guard watches
+  `scripts/check-heu-executive-department-role-lane-map-readiness.mjs` only.
+  It does not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-32 guard.
+- Verification target: `node --check scripts/check-heu-executive-department-role-lane-map-readiness.mjs`;
+  `node --check scripts/check-heu-executive-dashboard-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-department-role-lane-map-readiness`;
+  `npm.cmd run check:heu-executive-dashboard-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not create
+  accounts, assign roles, grant access, expand permissions, execute UAT, accept
+  evidence, approve finance action, issue legal conclusions, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Focus Scoped Navigator Fast-Loop Dynamic Guard
+
+- Scope: Registered `check:heu-executive-focus-scoped-navigator-readiness` as
+  a focused fast-local-loop dynamic guard for STD-22 visible-section checker
+  metadata after confirming the checker is local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=17; package_scripts=17; watched_paths=68`; the guard watches
+  `scripts/check-heu-executive-focus-scoped-navigator-readiness.mjs` only. It
+  does not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-22 guard.
+- Verification target: `node --check scripts/check-heu-executive-focus-scoped-navigator-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-focus-scoped-navigator-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, hide NO-GO status, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Finance Reliance Fast Index Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-finance-reliance-fast-index-readiness` as a focused
+  fast-local-loop dynamic guard for STD-35 finance reliance fast-index checker
+  metadata after confirming the checker is local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=18; package_scripts=18; watched_paths=69`; the guard watches
+  `scripts/check-heu-executive-finance-reliance-fast-index-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-finance-reliance-triage-readiness.mjs`,
+  `scripts/check-heu-finance-payment-scope-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-35 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-finance-reliance-fast-index-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-finance-reliance-fast-index-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not post
+  vouchers, move money, issue bank instructions, approve finance reliance,
+  hide NO-GO status, execute UAT, accept evidence, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-04 - Executive Finance Readonly Reliance Lock Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-finance-readonly-reliance-lock-readiness` as a focused
+  fast-local-loop dynamic guard for STD-41 finance readonly reliance lock
+  checker metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=28; package_scripts=28; watched_paths=79`; the guard watches
+  `scripts/check-heu-executive-finance-readonly-reliance-lock-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-finance-reliance-fast-index-readiness.mjs`,
+  `scripts/check-heu-executive-finance-reliance-triage-readiness.mjs`,
+  `scripts/check-heu-finance-payment-scope-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/finance/control-file edits
+  do not over-trigger the STD-41 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-finance-readonly-reliance-lock-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-finance-readonly-reliance-lock-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not clear
+  debt, issue invoices, post vouchers, execute payment, move money, issue bank
+  instructions, approve finance reliance, accept UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Report Dashboard Scope Contract Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-report-dashboard-scope-contract-readiness` as a
+  focused fast-local-loop dynamic guard for STD-39 report-dashboard scope
+  contract checker metadata after confirming the checker is local/static and
+  already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=29; package_scripts=29; watched_paths=80`; the guard watches
+  `scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-report-source-fast-index-readiness.mjs`,
+  `scripts/check-heu-executive-report-source-map-triage-readiness.mjs`,
+  `scripts/check-heu-reports-dashboard-scope-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/report/control-file edits
+  do not over-trigger the STD-39 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-report-dashboard-scope-contract-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not open
+  raw source, approve DQ evidence, approve report-view reliance, approve
+  dashboard reliance, execute UAT, accept evidence, approve finance action,
+  issue legal conclusions, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Report Source Fast Index Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-report-source-fast-index-readiness` as a focused
+  fast-local-loop dynamic guard for STD-33 report source fast-index checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=30; package_scripts=30; watched_paths=81`; the guard watches
+  `scripts/check-heu-executive-report-source-fast-index-readiness.mjs` only. It
+  does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`,
+  `scripts/check-heu-executive-report-source-map-triage-readiness.mjs`,
+  `scripts/check-heu-reports-dashboard-scope-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/report/control-file edits
+  do not over-trigger the STD-33 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-report-source-fast-index-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-report-source-fast-index-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not open
+  raw source, approve DQ evidence, approve report-view reliance, approve
+  dashboard reliance, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Report Source Map Triage Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-report-source-map-triage-readiness` as a focused
+  fast-local-loop dynamic guard for STD-24 report source-map triage checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=31; package_scripts=31; watched_paths=82`; the guard watches
+  `scripts/check-heu-executive-report-source-map-triage-readiness.mjs` only. It
+  does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`,
+  `scripts/check-heu-executive-report-source-fast-index-readiness.mjs`,
+  `scripts/check-heu-reports-dashboard-scope-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/report/control-file edits
+  do not over-trigger the STD-24 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-report-source-map-triage-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-report-source-map-triage-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not open
+  raw workbook, raw bank file or voucher source, approve report-view reliance,
+  approve dashboard reliance, approve finance action, approve statutory
+  accounting, execute UAT, accept evidence, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - Khoa Giang Vien Final Closure Gate Dynamic Guard
+
+- Scope: Registered `check:heu-khoa-giang-vien-final-closure-gate` as a
+  focused fast-local-loop dynamic guard for P10-08 final-closure checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_CLOSURE_GATE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=32; package_scripts=32; watched_paths=83`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-final-closure-gate.mjs` only. It does not
+  watch shared `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Khoa/Dao Tao/report/control-file edits
+  do not over-trigger the P10-08 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-final-closure-gate.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-final-closure-gate`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching payment, approve payroll, approve
+  report-view reliance, approve dashboard reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-04 - Executive Operating Brain Completion Dynamic Guard
+
+- Scope: Registered `check:heu-executive-operating-brain-completion-readiness`
+  as a focused fast-local-loop dynamic guard for STD-43 operating-brain
+  completion checker metadata after confirming the checker is local/static and
+  already PASS_LOCAL_EXECUTIVE_OPERATING_BRAIN_COMPLETION.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=33; package_scripts=33; watched_paths=84`; the guard watches
+  `scripts/check-heu-executive-operating-brain-completion-readiness.mjs` only.
+  It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/blueprint/control-file edits
+  do not over-trigger the STD-43 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-operating-brain-completion-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-operating-brain-completion-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not create
+  accounts, assign roles, grant access, expand permissions, mutate workflow
+  state, approve dashboard reliance, approve finance reliance, issue legal
+  conclusions, execute UAT, accept UAT, accept evidence, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Role Scope Focus Dynamic Guard
+
+- Scope: Registered `check:heu-executive-role-scope-focus-readiness` as a
+  focused fast-local-loop dynamic guard for STD-23 role-scope checker metadata
+  after confirming the checker is local/static and already
+  PASS_LOCAL_EXECUTIVE_ROLE_SCOPE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=35; package_scripts=35; watched_paths=86`; the guard watches
+  `scripts/check-heu-executive-role-scope-focus-readiness.mjs` only. It does
+  not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `components/layout/app-shell.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-focus-mode-readiness.mjs`,
+  `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/AppShell/blueprint/control-file edits
+  do not over-trigger the STD-23 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-role-scope-focus-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-role-scope-focus-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not create
+  accounts, assign roles, grant access, expand permissions, mutate workflow
+  state, execute UAT, accept UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Khoa Owner Evidence Handoff Proof Dynamic Guard
+
+- Scope: Registered `check:heu-khoa-giang-vien-owner-evidence-handoff-proof`
+  as a focused fast-local-loop dynamic guard for P10-13 owner-evidence handoff
+  checker metadata after confirming the checker is local/static and already
+  PASS_LOCAL_OWNER_EVIDENCE_HANDOFF_PROOF.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=36; package_scripts=36; watched_paths=87`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-owner-evidence-handoff-proof.mjs` only.
+  It does not watch shared
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_LOCAL_COMPLETION_GATE_20260704.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Khoa/Dao Tao/report-control edits do
+  not over-trigger the P10-13 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-owner-evidence-handoff-proof.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-owner-evidence-handoff-proof`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching completion, approve teaching payment,
+  approve payroll, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Admissions Document Review Queue Dynamic Guard
+
+- Scope: Registered `check:heu-admissions-document-review-queue` as a focused
+  fast-local-loop dynamic guard for M05 document-review checker metadata after
+  confirming the checker is local/static and already
+  PASS_LOCAL_REVIEW_QUEUE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=37; package_scripts=37; watched_paths=88`; the guard watches
+  `scripts/check-heu-admissions-document-review-queue.mjs` only. It does not
+  watch shared `docs/HEU_ADMISSIONS_DOCUMENT_REVIEW_REPORTING_QUEUE_20260704.md`,
+  `scripts/check-heu-documents-scope-readiness.mjs`,
+  `app/documents/page.tsx`, `components/reports/reports-overview.tsx`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared Admissions
+  document/report-control edits do not over-trigger the M05 guard.
+- Verification target:
+  `node --check scripts/check-heu-admissions-document-review-queue.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-admissions-document-review-queue`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not import
+  leads, mutate lead data, upload raw documents, execute UAT, accept handover,
+  accept document evidence, approve report-view reliance, approve dashboard
   reliance, approve finance action, approve owner GO/NO-GO or mark production
   GO.
 
+## 2026-07-05 - M05 Admissions Final Closure Gate Propagation
 
-## 2026-07-03 - P9-02 Dao Tao Training Module Completion Breakdown
+- Scope: Propagated `docs/HEU_ADMISSIONS_FINAL_MODULE_CLOSURE_GATE_20260704.md`
+  and `check:heu-admissions-final-closure-gate` into the current-state/log
+  chain so M05 final closure packaging is visible before any dynamic guard
+  registration.
+- Result: The final closure package carries
+  `ADMISSIONS_FINAL_CLOSURE_READY / NO_GO / BLOCKED`,
+  `ADMISSIONS_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED`,
+  ADM-CLOSE-01 through ADM-CLOSE-08, P3-UAT-01 through P3-UAT-08,
+  `PASS_LOCAL_CLOSURE_GATE`, the dependency lock and real operation remains NO-GO.
+- Verification target: `node --check scripts/check-heu-admissions-final-closure-gate.mjs`;
+  `npm.cmd run check:heu-admissions-final-closure-gate`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`.
+- Boundary: This is local read-only final-closure packaging only. It does not
+  import leads, mutate lead data, upload raw documents, execute UAT, accept handover,
+  accept document evidence, approve report-view reliance, approve dashboard reliance,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
 
-- Added `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` as the
-  PASS_LOCAL_BREAKDOWN map for M07 Dao Tao and P9-01 Short Course / Day Nghe.
-- The breakdown splits the training module into TRN-00 through TRN-10 covering
-  baseline scope, workspace scope, student/class/enrollment chain, attendance
-  lock, BHXH/chinh sach, meal/allowance, invoice/payment, report-view signoff,
-  role/negative-access, audit trace and owner closure.
-- Added `scripts/check-heu-training-module-completion-breakdown.mjs` and
-  `npm.cmd run check:heu-training-module-completion-breakdown` so the local
-  training work order and `TRAINING_MODULE_READY / NO_GO / BLOCKED` boundary
-  cannot silently disappear.
-- Propagated the training completion route into current-state, system backlog,
-  module readiness, framework review and production checklist references.
-- PASS_LOCAL boundary: this is training module control packaging only. It does
-  not approve class operation, attendance lock, BHXH decision, payment,
-  evidence acceptance, UAT acceptance, owner GO/NO-GO or production GO.
-- Boundary token: does not approve class operation.
+## 2026-07-05 - Admissions Final Closure Gate Dynamic Guard
 
-## 2026-07-03 - TRN-03 Short Course Attendance Lock Evidence Checklist
+- Scope: Registered `check:heu-admissions-final-closure-gate` as a focused
+  fast-local-loop dynamic guard for M05 final-closure checker metadata after
+  confirming the checker is local/static and already PASS_LOCAL_CLOSURE_GATE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=38; package_scripts=38; watched_paths=89`; the guard watches
+  `scripts/check-heu-admissions-final-closure-gate.mjs` only. It does not
+  watch shared `docs/HEU_ADMISSIONS_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_ADMISSIONS_DOCUMENT_REVIEW_REPORTING_QUEUE_20260704.md`,
+  `docs/HEU_ADMISSIONS_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_ADMISSIONS_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `components/reports/reports-overview.tsx`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Admissions final-closure/report
+  edits do not over-trigger the M05 guard.
+- Verification target:
+  `node --check scripts/check-heu-admissions-final-closure-gate.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-admissions-final-closure-gate`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not import
+  leads, mutate lead data, upload raw documents, execute UAT, accept handover,
+  accept document evidence, approve report-view reliance, approve dashboard
+  reliance, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
 
-- Added `docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-03 attendance lock and
-  exception-route UAT preparation.
-- The checklist defines SC-LOCK-EVID-01 through SC-LOCK-EVID-06 and
-  `SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED` for class/session
-  scope, lock state, signer, exception route, SC-UAT-01/02 evidence refs and
-  SC-SIGN-01 owner decision before finance reliance.
-- Added the visible `/short-course` panel with
-  `data-heu-short-course-attendance-lock-evidence="TRN-03_ATTENDANCE_LOCK_EVIDENCE"`
-  and propagated the checklist through the Short Course gap pack, training
-  module breakdown, backlog, current-state, module readiness and production
-  checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-03 attendance-lock evidence boundary cannot silently disappear.
-- PASS_LOCAL boundary: this does not lock attendance, approve attendance, alter
-  attendance, accept evidence, execute UAT, approve payment, approve owner
+## 2026-07-05 - Executive UAT Evidence Acceptance Lock Dynamic Guard
+
+- Scope: Registered `check:heu-executive-uat-evidence-acceptance-lock-readiness`
+  as a focused fast-local-loop dynamic guard for STD-42 UAT/evidence
+  acceptance-lock checker metadata after confirming the checker is local/static
+  and already PASS_LOCAL_UAT_EVIDENCE_ACCEPTANCE_LOCK.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=39; package_scripts=39; watched_paths=90`; the guard watches
+  `scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-uat-evidence-route-readiness.mjs`,
+  `scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs`,
+  `scripts/check-heu-executive-uat-evidence-triage-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared executive dashboard/evidence edits do
+  not over-trigger the STD-42 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-uat-evidence-acceptance-lock-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not collect
+  evidence, upload evidence, move raw evidence, execute UAT, accept UAT, accept
+  evidence, grant access, close access, expand permissions, approve finance
+  reliance, approve dashboard reliance, issue legal conclusions, approve owner
   GO/NO-GO or mark production GO.
-- Boundary token: alter attendance; owner GO/NO-GO.
 
-## 2026-07-03 - TRN-04 Short Course BHXH Policy Decision Checklist
+## 2026-07-05 - Khoa Signed UAT Evidence Intake Dynamic Guard
 
-- Added `docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-04 BHXH/chinh sach decision
-  UAT preparation.
-- The checklist defines SC-BHXH-EVID-01 through SC-BHXH-EVID-06 and
-  `SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED` for policy case scope,
-  eligibility basis, legal/SOP review, SC-UAT-03 evidence refs, SC-SIGN-02
-  owner/legal decision and downstream payment/report blocks.
-- Added the read-only `/short-course` panel with
-  `data-heu-short-course-bhxh-policy-decision="TRN-04_BHXH_POLICY_DECISION"`
-  and propagated the checklist through the Short Course gap pack, training
-  module breakdown, backlog, current-state, module readiness and production
-  checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-04 BHXH/chinh sach decision boundary cannot silently disappear.
-- PASS_LOCAL boundary: this does not approve BHXH/chinh sach, decide
-  eligibility, create policy effect, accept evidence, execute UAT, approve
-  payment, approve owner GO/NO-GO or mark production GO.
-- Boundary token: decide eligibility; create policy effect; approve payment;
-  owner GO/NO-GO.
+- Scope: Registered `check:heu-khoa-giang-vien-signed-uat-evidence-intake`
+  as a focused fast-local-loop dynamic guard for P10-07 signed-UAT evidence
+  checker metadata after confirming the checker is local/static and already
+  PASS_LOCAL_EVIDENCE_INTAKE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=40; package_scripts=40; watched_paths=91`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-signed-uat-evidence-intake.mjs` only. It
+  does not watch shared
+  `docs/HEU_KHOA_GIANG_VIEN_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_OWNER_SIGNOFF_MANIFEST_20260703.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_EVIDENCE_TRACE_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Khoa/Giang vien signed-evidence edits
+  do not over-trigger the P10-07 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-signed-uat-evidence-intake.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-signed-uat-evidence-intake`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching completion, approve teaching payment,
+  approve payroll, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - TRN-05 Short Course Meal Allowance Payment Boundary Checklist
+## 2026-07-05 - Admissions Signed UAT Evidence Intake Dynamic Guard
 
-- Added
-  `docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-05 meal/allowance and HR
-  payment boundary UAT preparation.
-- The checklist defines SC-MEAL-EVID-01 through SC-MEAL-EVID-06 and
-  `SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED` for formula version,
-  locked attendance source, TRN-04 policy dependency, exception handling,
-  SC-UAT-04 design-only evidence and SC-SIGN-03 blocked-payment owner decision.
-- Added the read-only `/short-course` panel with
-  `data-heu-short-course-meal-allowance-boundary="TRN-05_MEAL_ALLOWANCE_PAYMENT_BOUNDARY"`
-  and propagated the checklist through the Short Course gap pack, training
-  module breakdown, backlog, current-state, module readiness and production
-  checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-05 meal/allowance and HR payment boundary cannot silently disappear.
-- PASS_LOCAL boundary: this does not calculate allowance, approve
-  meal/allowance, approve HR payment, approve teacher payment, create payroll
-  effect, accept evidence, execute UAT, approve owner GO/NO-GO or mark
+- Scope: Registered `check:heu-admissions-signed-uat-evidence-intake` as a
+  focused fast-local-loop dynamic guard for M05 signed-UAT evidence checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_EVIDENCE_INTAKE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=41; package_scripts=41; watched_paths=92`; the guard watches
+  `scripts/check-heu-admissions-signed-uat-evidence-intake.mjs` only. It does
+  not watch shared
+  `docs/HEU_ADMISSIONS_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_ADMISSIONS_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `docs/HEU_ADMISSIONS_DOCUMENT_REVIEW_REPORTING_QUEUE_20260704.md`,
+  `components/reports/reports-overview.tsx`,
+  `scripts/check-heu-admissions-owner-closure-ledger.mjs`,
+  `scripts/check-heu-admissions-local-completion.mjs`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Admissions signed-evidence edits do
+  not over-trigger the M05 guard.
+- Verification target:
+  `node --check scripts/check-heu-admissions-signed-uat-evidence-intake.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-admissions-signed-uat-evidence-intake`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not import
+  leads, mutate lead data, upload real documents, upload raw evidence, upload
+  signed PDFs, expose raw Drive URLs, execute UAT, accept handover, accept
+  evidence, approve enrollment, approve report-view reliance, approve dashboard
+  reliance, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-05 - Short Course Final Closure Gate Dynamic Guard
+
+- Scope: Registered `check:heu-short-course-final-closure-gate` as a focused
+  fast-local-loop dynamic guard for P9-11 final-closure checker metadata after
+  confirming the checker is local/static and already PASS_LOCAL_CLOSURE_GATE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=44; package_scripts=44; watched_paths=95`; the guard watches
+  `scripts/check-heu-short-course-final-closure-gate.mjs` only. It does not
+  watch shared
+  `docs/HEU_SHORT_COURSE_FINAL_MODULE_CLOSURE_GATE_20260704.md`,
+  `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`,
+  `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`,
+  `docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx`,
+  `package.json` or `HEU_IMPLEMENTATION_LOG.md`, so shared Short Course/Dao Tao
+  edits do not over-trigger the P9-11 guard.
+- Verification target:
+  `node --check scripts/check-heu-short-course-final-closure-gate.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-short-course-final-closure-gate`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve attendance lock, approve BHXH/chinh sach,
+  approve payment, approve report-view reliance, approve dashboard reliance,
+  approve role UAT, approve access closure, approve owner GO/NO-GO or mark
   production GO.
-- Boundary token: calculate allowance; approve meal/allowance; approve HR
-  payment; approve teacher payment; create payroll effect; owner GO/NO-GO.
 
-## 2026-07-03 - TRN-06 Short Course Invoice Payment Verification Checklist
+## 2026-07-05 - Executive UAT Evidence Triage Dynamic Guard
 
-- Added
-  `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-06 invoice/payment verification
-  UAT preparation.
-- The checklist defines SC-PAY-EVID-01 through SC-PAY-EVID-06 and
-  `SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED` for invoice source
-  scope, payment/voucher match, reversal rule, period-lock rule, SC-UAT-05
-  verification evidence and SC-SIGN-04 blocked-verification owner decision.
-- Added the read-only `/short-course` panel with
-  `data-heu-short-course-invoice-payment-verification="TRN-06_INVOICE_PAYMENT_VERIFICATION"`
-  and propagated the checklist through the Short Course gap pack, training
-  module breakdown, backlog, current-state, module readiness and production
-  checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-06 invoice/payment verification boundary cannot silently disappear.
-- PASS_LOCAL boundary: this does not verify invoice/payment, post voucher,
-  approve payment, approve reversal, close period, create statutory accounting effect,
-  accept evidence, execute UAT, approve owner GO/NO-GO or mark production GO.
-- Boundary token: does not verify invoice/payment.
-
-## 2026-07-03 - TRN-07 Short Course Report View Source Reconciliation Checklist
-
-- Added
-  `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-07 report-view source
-  reconciliation UAT preparation.
-- The checklist defines SC-RV-EVID-01 through SC-RV-EVID-06 and
-  `SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED` for the
-  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` source-map row, DQ-RV-06 linkage,
-  upstream TRN-03 through TRN-06 blocker alignment, SC-UAT-06 signoff-blocked
-  proof, SC-SIGN-05 owner decision and RV-EVID-05 evidence attachment queue.
-- Added the read-only `/short-course` panel with
-  `data-heu-short-course-report-view-source-reconciliation="TRN-07_REPORT_VIEW_SOURCE_RECONCILIATION"`
-  and propagated the checklist through the Short Course gap pack, Report View
-  source map, training module breakdown, backlog, current-state, module
-  readiness and production checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-07 report-view source reconciliation boundary cannot silently
-  disappear.
-- PASS_LOCAL boundary: this does not approve report-view reliance, approve dashboard reliance, accept DQ evidence, accept source reconciliation, execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
-- Boundary token: does not approve report-view reliance.
-
-## 2026-07-03 - TRN-08 Short Course Role Negative Access Checklist
-
-- Added
-  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`
-  as the DRAFT_CONTROL evidence packet for TRN-08 role scope and
-  negative-access UAT preparation.
-- The checklist defines SC-ROLE-EVID-01 through SC-ROLE-EVID-06 and
-  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED` for Short Course route
-  guards, SHORT-SCOPE-APP-GUARD, SHORT-SCOPE-WORKFLOWS,
-  SHORT-SCOPE-ACTOR-LINK, negative-control denial, P6-04 role-scope UAT
-  alignment and P0-17 access closure handoff.
-- Added the read-only `/short-course` panel with
-  `data-heu-short-course-role-negative-access="TRN-08_ROLE_NEGATIVE_ACCESS"`
-  and propagated the checklist through the Short Course gap pack, training
-  module breakdown, backlog, current-state, module readiness and production
-  checklist references.
-- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
-  `check:heu-training-module-completion-breakdown` and release-gate coverage so
-  the TRN-08 role/negative-access boundary cannot silently disappear.
-- PASS_LOCAL boundary: this does not create accounts, assign real users, grant access, broaden scope, accept negative-control proof, accept role UAT, accept evidence, approve access closure, approve owner GO/NO-GO or mark production GO.
-- Boundary token: does not create accounts.
-
-## 2026-07-03 - TRN-08 Short Course Role Negative Access Dedicated Checker
-
-- Added `scripts/check-heu-short-course-role-negative-access.mjs` and
-  `check:heu-short-course-role-negative-access` so the TRN-08 role
-  negative-access packet can be checked directly before any Short Course
-  read-only user test or access-closure discussion.
-- The checker verifies
-  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`,
-  SC-ROLE-EVID-01 through SC-ROLE-EVID-06,
-  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED`, the `/short-course`
-  role/negative-access panel, `SHORT-SCOPE-APP-GUARD`,
-  `SHORT-SCOPE-WORKFLOWS`, `SHORT-SCOPE-ACTOR-LINK`, the negative-control
-  queue dependency, P6-04 role-scope dependency and production checklist
-  propagation.
-- Updated `scripts/check-heu-training-module-completion-breakdown.mjs` so the
-  training module completion check now requires the dedicated TRN-08 checker.
-- This is local checker packaging only. It does not create accounts, assign
-  real users, grant access, broaden scope, accept negative-control proof,
-  accept role UAT, accept evidence, approve access closure, approve owner
+- Scope: Registered `check:heu-executive-uat-evidence-triage-readiness` as a
+  focused fast-local-loop dynamic guard for STD-27 UAT/evidence triage checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_UAT_EVIDENCE_TRIAGE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=45; package_scripts=45; watched_paths=96`; the guard watches
+  `scripts/check-heu-executive-uat-evidence-triage-readiness.mjs` only. It
+  does not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-uat-evidence-route-readiness.mjs`,
+  `scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs`,
+  `scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared executive dashboard/evidence edits do
+  not over-trigger the STD-27 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-uat-evidence-triage-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-uat-evidence-triage-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not collect
+  evidence, upload evidence, move raw evidence, execute UAT, accept UAT, accept
+  evidence, grant access, close access, expand permissions, approve finance
+  reliance, approve dashboard reliance, issue legal conclusions, approve owner
   GO/NO-GO or mark production GO.
 
-## 2026-07-03 - Short Course External Owner Action Queue
+## 2026-07-05 - Role Lane Governance Dynamic Guard
 
-- Added `docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md` as the
-  PASS_LOCAL_OWNER_ACTION_QUEUE for the remaining Short Course / Day Nghe
-  real-operation blockers after TRN-00 through TRN-10 local packaging.
-- The queue defines `SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED` and
-  SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08 for attendance lock,
-  BHXH/chinh sach, meal/allowance, invoice/payment, report-view source
-  reconciliation, role/negative-access UAT, UAT result ledger completion and
-  final owner GO/NO-GO.
-- Added `scripts/check-heu-short-course-external-owner-action-queue.mjs` and
-  `check:heu-short-course-external-owner-action-queue` so the owner-action
-  queue, training breakdown linkage, gap-pack linkage and local-only boundary
-  cannot silently disappear.
-- Linked the queue from the Short Course gap pack and training module
-  completion breakdown while keeping real operation at NO-GO until signed owner
-  and UAT evidence exists outside Git/Codex/chat.
-- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
-  attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
-  payment, approve teacher payment, verify invoice/payment, approve report-view
-  reliance, grant access, approve owner GO/NO-GO or mark production GO.
+- Scope: Registered `check:heu-role-lane-governance` as a focused
+  fast-local-loop dynamic guard for STD-12 role-lane governance checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_ROLE_GUARD.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=46; package_scripts=46; watched_paths=97`; the guard watches
+  `scripts/check-heu-role-lane-governance.mjs` only. It does not watch shared
+  `lib/heu-role-lanes.ts`, `lib/executive-roles.ts`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared role-lane, executive helper or
+  blueprint edits do not over-trigger the STD-12 guard.
+- Verification target:
+  `node --check scripts/check-heu-role-lane-governance.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-role-lane-governance`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not create
+  accounts, grant access, expand permissions, execute finance, issue legal
+  conclusions, accept UAT, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - TRN-09/TRN-10 Short Course Evidence Trace And Owner Closure Alignment
+## 2026-07-05 - Khoa System Reporting Handoff Dynamic Guard
 
-- Updated `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` so
-  TRN-09 uses `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`
-  as the PASS_LOCAL_TEMPLATE for SC-UAT-LEDGER-01 through
-  SC-UAT-LEDGER-08, SC-REV-06 and SC-UAT-08 controlled evidence trace rows.
-- Updated TRN-10 so `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`
-  plus the UAT result ledger are the PASS_LOCAL_TEMPLATE for
-  `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED`, SC-SIGN-01 through SC-SIGN-06
-  and final owner/UAT closure planning.
-- Propagated the TRN-09/TRN-10 local-template conclusion through backlog,
-  current-state and framework review references while keeping real operation
-  NO-GO until signed owner/UAT evidence exists outside Git/Codex/chat.
-- Verification target: `npm.cmd run check:heu-training-module-completion-breakdown`.
-- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve access closure, approve report-view reliance, approve owner GO/NO-GO or mark production GO.
-- Boundary token: does not execute UAT.
+- Scope: Registered `check:heu-khoa-giang-vien-system-reporting-handoff` as a
+  focused fast-local-loop dynamic guard for P10-11 system-reporting checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_REPORTING_HANDOFF_INDEX.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=43; package_scripts=43; watched_paths=94`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-system-reporting-handoff.mjs` only. It
+  does not watch shared
+  `docs/HEU_KHOA_GIANG_VIEN_SYSTEM_REPORTING_HANDOFF_INDEX_20260704.md`,
+  `components/khoa/khoa-giang-vien-gap-pack.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared Khoa/Dao Tao/report-control edits do
+  not over-trigger the P10-11 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-system-reporting-handoff.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-system-reporting-handoff`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching completion, approve teaching payment,
+  approve payroll, approve report-view reliance, approve dashboard reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-05 - Executive UAT Evidence Fast Action Dynamic Guard
+
+- Scope: Registered `check:heu-executive-uat-evidence-fast-action-readiness`
+  as a focused fast-local-loop dynamic guard for STD-36 UAT/evidence
+  fast-action checker metadata after confirming the checker is local/static and
+  already PASS_LOCAL_UAT_EVIDENCE_FAST_ACTION_QUEUE.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=42; package_scripts=42; watched_paths=93`; the guard watches
+  `scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs` only.
+  It does not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-uat-evidence-route-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared executive dashboard/evidence edits do
+  not over-trigger the STD-36 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-uat-evidence-fast-action-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not collect
+  evidence, upload evidence, move raw evidence, execute UAT, accept UAT, accept
+  evidence, grant access, close access, expand permissions, approve finance
+  reliance, approve dashboard reliance, issue legal conclusions, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Khoa Reports Status Panel Dynamic Guard
+
+- Scope: Registered `check:heu-khoa-giang-vien-reports-status-panel` as a
+  focused fast-local-loop dynamic guard for P10-12 reports-status checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL_REPORT_STATUS_PANEL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=34; package_scripts=34; watched_paths=85`; the guard watches
+  `scripts/check-heu-khoa-giang-vien-reports-status-panel.mjs` only. It does
+  not watch shared `components/reports/reports-overview.tsx`,
+  `docs/HEU_KHOA_GIANG_VIEN_REPORTS_STATUS_PANEL_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_SYSTEM_REPORTING_HANDOFF_INDEX_20260704.md`,
+  `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md`,
+  `docs/HEU_DAO_TAO_LOCAL_READINESS_AGGREGATOR_20260704.md`,
+  `docs/HEU_REPORT_VIEW_SOURCE_MAP_20260628_V01_DRAFT.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared reports/Khoa/Dao Tao/report-control
+  edits do not over-trigger the P10-12 guard.
+- Verification target:
+  `node --check scripts/check-heu-khoa-giang-vien-reports-status-panel.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-khoa-giang-vien-reports-status-panel`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not execute
+  UAT, accept evidence, approve teacher profile reliance, approve class
+  delivery reliance, approve teaching payment, approve payroll, approve
+  report-view reliance, approve dashboard reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-04 - Executive Operating Brain Boundary Superset Checker
+
+- Scope: Updated `check:heu-executive-operating-brain-completion-readiness` so
+  the STD-43 dashboard anchor still requires every core
+  `PASS_LOCAL_EXECUTIVE_OPERATING_BRAIN_COMPLETION` boundary token through
+  `completionBoundaryTokens`, while `boundaryAttributePattern` allows later
+  read-only boundary extensions such as STD-44 effective-access metadata.
+- Changed: `scripts/check-heu-executive-operating-brain-completion-readiness.mjs`,
+  `docs/HEU_IMPLEMENTATION_LOG.md` and
+  `scripts/audit-heu-implementation-log.mjs`.
+- Result: the checker no longer fails when the executive dashboard keeps the
+  required STD-43 boundary tokens and also includes extra read-only tokens such
+  as `STD-44`, `EXECUTIVE_EFFECTIVE_ACCESS_READONLY`,
+  `LIVE_EXECUTIVE_PERMISSION_NO_GO`, `NO_APPROVAL_PERMISSION` or
+  `NO_PAYMENT_PERMISSION`.
+- Verification target:
+  `node --check scripts/check-heu-executive-operating-brain-completion-readiness.mjs`;
+  `npm.cmd run check:heu-executive-operating-brain-completion-readiness`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only checker hardening only. It does not create
+  accounts, assign roles, grant access, expand permissions, mutate workflow
+  state, approve dashboard reliance, approve finance reliance, issue legal
+  conclusions, execute UAT, accept UAT, accept evidence, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Global Focus Compact Labels Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-global-focus-compact-labels-readiness` as a focused
+  fast-local-loop dynamic guard for STD-31 compact-label checker metadata after
+  confirming the checker is local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=19; package_scripts=19; watched_paths=70`; the guard watches
+  `scripts/check-heu-executive-global-focus-compact-labels-readiness.mjs`
+  only. It does not watch shared `components/layout/app-shell.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared AppShell/dashboard/control-file edits
+  do not over-trigger the STD-31 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-global-focus-compact-labels-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-global-focus-compact-labels-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Global Focus Shortcuts Dynamic Guard
+
+- Scope: Registered `check:heu-executive-global-focus-shortcuts-readiness` as
+  a focused fast-local-loop dynamic guard for STD-19 global focus shortcut
+  checker metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=20; package_scripts=20; watched_paths=71`; the guard watches
+  `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs` only. It
+  does not watch shared `components/layout/app-shell.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared AppShell/dashboard/control-file edits
+  do not over-trigger the STD-19 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-global-focus-shortcuts-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Landing Role Gate Dynamic Guard
+
+- Scope: Registered `check:heu-executive-landing-role-gate-readiness` as a
+  focused fast-local-loop dynamic guard for STD-01 landing role-gate checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=21; package_scripts=21; watched_paths=72`; the guard watches
+  `scripts/check-heu-executive-landing-role-gate-readiness.mjs` only. It does
+  not watch shared `database/policies.sql`, `lib/executive-roles.ts`,
+  `app/page.tsx`,
+  `components/settings/user-scope-enforcement-panel.tsx`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared SQL/runtime/control-file edits do not
+  over-trigger the STD-01 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-landing-role-gate-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-landing-role-gate-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - Executive Legal SOP Required Answer Index Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-legal-sop-required-answer-index-readiness` as a focused
+  fast-local-loop dynamic guard for STD-34 Legal/SOP required-answer checker
+  metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=22; package_scripts=22; watched_paths=73`; the guard watches
+  `scripts/check-heu-executive-legal-sop-required-answer-index-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-legal-sop-authority-readiness.mjs`,
+  `scripts/check-heu-executive-legal-sop-triage-readiness.mjs`,
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/legal/control-file edits do
+  not over-trigger the STD-34 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-legal-sop-required-answer-index-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-legal-sop-required-answer-index-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not
+  provide legal advice, issue official SOP, approve workflow state, grant
+  access, expand permissions, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Legal SOP Evidence Authority Queue Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-legal-sop-evidence-authority-queue-readiness` as a
+  focused fast-local-loop dynamic guard for STD-40 Legal/SOP
+  evidence-authority queue checker metadata after confirming the checker is
+  local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=27; package_scripts=27; watched_paths=78`; the guard watches
+  `scripts/check-heu-executive-legal-sop-evidence-authority-queue-readiness.mjs`
+  only. It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-legal-sop-authority-readiness.mjs`,
+  `scripts/check-heu-executive-legal-sop-required-answer-index-readiness.mjs`,
+  `scripts/check-heu-executive-legal-sop-triage-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/legal/control-file edits do
+  not over-trigger the STD-40 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-legal-sop-evidence-authority-queue-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-legal-sop-evidence-authority-queue-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not
+  provide legal advice, issue official SOP, approve workflow state, execute
+  finance, accept UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Dashboard Permission Matrix Dynamic Guard
+
+- Scope: Registered
+  `check:heu-executive-dashboard-permission-matrix-readiness` as a focused
+  fast-local-loop dynamic guard for STD-38 permission checker metadata after
+  confirming the checker is local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=23; package_scripts=23; watched_paths=74`; the guard watches
+  `scripts/check-heu-executive-dashboard-permission-matrix-readiness.mjs` only.
+  It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`, `app/page.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-role-scope-focus-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard and route edits do not
+  over-trigger the STD-38 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-dashboard-permission-matrix-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-dashboard-permission-matrix-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not create
+  accounts, grant access, expand permissions, assign roles, mutate workflow
+  state, execute UAT, accept evidence, approve finance action, issue legal
+  conclusions, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Legal SOP Triage Dynamic Guard
+
+- Scope: Registered `check:heu-executive-legal-sop-triage-readiness` as a
+  focused fast-local-loop dynamic guard for STD-25 Legal/SOP checker metadata
+  after confirming the checker is local/static and already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=24; package_scripts=24; watched_paths=75`; the guard watches
+  `scripts/check-heu-executive-legal-sop-triage-readiness.mjs` only. It does
+  not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-legal-sop-authority-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/legal/control-file edits do
+  not over-trigger the STD-25 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-legal-sop-triage-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-legal-sop-triage-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not provide
+  legal advice, issue official SOP, approve workflow state, execute finance,
+  accept UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Executive Production Blocker Triage Dynamic Guard
+
+- Scope: Registered `check:heu-executive-production-blocker-triage-readiness`
+  as a focused fast-local-loop dynamic guard for STD-28 production blocker
+  triage checker metadata after confirming the checker is local/static and
+  already PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=26; package_scripts=26; watched_paths=77`; the guard watches
+  `scripts/check-heu-executive-production-blocker-triage-readiness.mjs` only.
+  It does not watch shared
+  `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `scripts/audit-heu-production-blocker-source.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/source/control-file edits do
+  not over-trigger the STD-28 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-production-blocker-triage-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-production-blocker-triage-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not collect
+  evidence, execute UAT, accept evidence, approve migration, approve waiver,
+  approve finance reliance, approve legal conclusion, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-04 - Executive Priority Command Strip Dynamic Guard
+
+- Scope: Registered `check:heu-executive-priority-command-strip-readiness` as a
+  focused fast-local-loop dynamic guard for STD-29 priority command strip
+  checker metadata after confirming the checker is local/static and already
+  PASS_LOCAL.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=25; package_scripts=25; watched_paths=76`; the guard watches
+  `scripts/check-heu-executive-priority-command-strip-readiness.mjs` only. It
+  does not watch shared `components/dashboard/executive-dashboard-overview.tsx`,
+  `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs`,
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md`, `package.json` or
+  `HEU_IMPLEMENTATION_LOG.md`, so shared dashboard/control-file edits do not
+  over-trigger the STD-29 guard.
+- Verification target:
+  `node --check scripts/check-heu-executive-priority-command-strip-readiness.mjs`;
+  `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `node --check scripts/audit-heu-implementation-log.mjs`;
+  `npm.cmd run check:heu-executive-priority-command-strip-readiness`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`.
+- Boundary: This is local read-only fast-loop routing only. It does not grant
+  access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - ACCT-00 Negative Account External Closure Dependency
+
+- Scope: Hardened `ACCT-00-NEGATIVE-ACCOUNT-DEPENDENCY-LOCK` so negative
+  account provisioning cannot start from scope post-repair verification or a
+  local PASS_LOCAL queue alone; the ACCT-00 scope external closure handoff must
+  be recorded first.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs` and
+  this implementation log.
+- Result: `check:heu-negative-control-account-queue` now emits
+  `negative_account_dependency_lock=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY` with
+  `required_inputs=scope_external_closure_handoff_closed,scope_post_repair_verification_closed,scope_baseline_closed,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_dependency_record=scope_external_closure_handoff_closed,missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,workspace_preference_inside_scope_confirmed,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded,post_repair_snapshot_recorded`
+  and
+  `blocked_if=scope_external_closure_handoff_closed=no,scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-negative-control-owner-action-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is dependency routing only. It does not change scope, create
+  or link accounts, expose credentials, execute browser UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative-Control Owner Action Fast-Loop Registration
+
+- Scope: Registered `check:heu-accounting-negative-control-owner-action-queue`
+  as a focused `check:heu-fast-local-loop` dynamic guard so changes to the
+  ACCT-00 negative-control owner-action queue or its checker are verified by
+  the fast PASS_LOCAL loop instead of appearing only as a manual candidate.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs` and this implementation log.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=10; package_scripts=10; watched_paths=54`; the new dynamic guard
+  watches `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`
+  and `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`
+  without duplicating the accounting module breakdown watched paths.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/check-heu-it-data-daily-control.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-negative-control-owner-action-queue`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is fast-loop registration only. It does not change scope,
+  create or link accounts, execute browser UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative-Control Owner Action Queue Check
+
+- Scope: Added a read-only ACCT-00 negative-control owner-action queue check so
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md` has a
+  direct PASS_LOCAL guard instead of being covered only through the broader
+  accounting breakdown and open-blocker checks.
+- Changed: `scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`,
+  `package.json`, `scripts/check-heu-accounting-local-readiness.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and this
+  implementation log.
+- Result: `check:heu-accounting-negative-control-owner-action-queue` verifies
+  the ACCT-00 owner-action routing for `missing_visibility=2`,
+  `missing_business_scope=2`, `ttgdtx_negative_candidates=0`,
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01`, scope-baseline dependency,
+  negative-account dependency, browser-denial dependency, final
+  negative-control proof decision and ACCT-12 handoff tokens.
+- Verification target: `node --check scripts/check-heu-accounting-negative-control-owner-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-local-readiness.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-accounting-negative-control-owner-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is owner-action queue packaging only. It does not change
+  scope, create or link accounts, expose passwords, execute browser UAT,
+  accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT-11 Final Risk Dependency Lock
+
+- Scope: Added an ACCT-11 final risk dependency lock so final risk decisions
+  cannot be inferred from partial risk evidence routing, local guard success or
+  owner silence before audit trace, hard-delete/cascade, backup/restore,
+  migration order, rollback/redaction, controlled evidence IDs and owner quorum
+  are recorded.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-FINAL-RISK-DEPENDENCY-LOCK` with
+  `final_risk_dependency_lock=ACCT-11_FINAL_RISK_DEPENDENCY`,
+  `required_inputs=audit_trace_closed,hard_delete_cascade_closed,backup_restore_proof_closed,migration_order_signed,rollback_redaction_proof_closed,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `required_dependency_record=audit_log_trigger_coverage_recorded,p6_06_findings_triaged,backup_id_recorded,restore_smoke_check_recorded,step90_step110_order_signed,rollback_path_recorded,redaction_path_recorded,protected_evidence_retained,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `blocked_if=audit_trace_closed=no,hard_delete_cascade_closed=no,backup_restore_proof_closed=no,migration_order_signed=no,rollback_redaction_proof_closed=no,controlled_evidence_ids_recorded=no,owner_quorum_recorded=no`
+  and `next_allowed_step=ACCT-11_FINAL_RISK_DECISION`.
+- Verification target: `node --check scripts/check-heu-accounting-risk-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is final risk dependency routing only. It does not accept
+  evidence, execute backup/restore, execute migration, infer owner waiver,
+  approve finance reliance, infer UAT pass, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT-12 Final Owner Dependency Lock
+
+- Scope: Added an ACCT-12 final owner dependency lock so final owner GO/NO-GO
+  cannot be inferred from finance reliance, access closure, signed route
+  evidence, final risk routing, P0-09 references or owner silence.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-FINAL-OWNER-DEPENDENCY-LOCK` with
+  `final_owner_dependency_lock=ACCT-12_FINAL_OWNER_DEPENDENCY`,
+  `source=accounting_owner_closure_ledger_runtime`,
+  `required_inputs=finance_reliance_decision_closed,access_closure_decision_closed,signed_route_evidence_closed,final_risk_decision_closed,p0_09_owner_packet_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded`,
+  `required_dependency_record=finance_reliance_decision_recorded,access_closure_decision_recorded,signed_route_evidence_packet_closed,final_risk_decision_packet_closed,p0_09_final_owner_packet_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded,blocker_state_recorded`,
+  `blocked_if=finance_reliance_decision_recorded=no,access_closure_decision_recorded=no,final_risk_decision_recorded=no,p0_09_final_owner_packet_recorded=no,owner_quorum_recorded=no,controlled_evidence_ids_recorded=no`
+  and `next_allowed_step=ACCT-12_FINAL_OWNER_DECISION`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is final owner dependency routing only. It does not accept
+  evidence, execute UAT, infer UAT pass, approve finance reliance, close
+  access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Access Closure Dependency Lock
+
+- Scope: Added an ACCT-12 access closure dependency lock so accountant,
+  privileged, temporary and negative-account access closure cannot be inferred
+  from finance reliance, signed route evidence, P0-17 references or owner
+  silence.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-ACCESS-CLOSURE-DEPENDENCY-LOCK` with
+  `access_closure_dependency_lock=ACCT-12_ACCESS_CLOSURE_DEPENDENCY`,
+  `required_inputs=finance_reliance_decision_closed,signed_route_evidence_closed,negative_control_dependency_closed,scope_baseline_closed,risk_closure_signed,p0_17_access_closure_route_recorded,owner_lane_confirmed`,
+  `required_dependency_record=finance_reliance_decision_recorded,finance_owner_recorded,accountant_access_decision_recorded,signed_route_evidence_packet_closed,negative_control_proof_dependency_lock_closed,scope_baseline_closed,final_risk_decision_packet_closed,p0_17_access_closure_route_recorded`,
+  `blocked_if=finance_reliance_decision_recorded=no,signed_route_evidence_closed=no,scope_baseline_closed=no,risk_closure_signed=no,p0_17_access_closure_route_recorded=no,owner_lane_confirmed=no`
+  and `next_allowed_step=ACCT-12_ACCESS_CLOSURE_DECISION`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is access closure dependency routing only. It does not create
+  accounts, grant scope, change access, reset passwords, send invite links,
+  accept evidence, execute UAT, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Finance Reliance Dependency Lock
+
+- Scope: Added an ACCT-12 finance reliance dependency lock so signed route
+  evidence, negative-control proof, P0-19 legal/finance, no-duplicate, final
+  risk, dashboard/Finance Desk and access-closure material cannot be treated as
+  finance-reliable until the owner lane records the required dependencies.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-FINANCE-RELIANCE-DEPENDENCY-LOCK` with
+  `finance_reliance_dependency_lock=ACCT-12_FINANCE_RELIANCE_DEPENDENCY`,
+  `required_inputs=signed_route_evidence_closed,negative_control_dependency_closed,legal_finance_gate_signed,no_duplicate_ledger_signed,risk_closure_signed,dashboard_finance_desk_signed,access_closure_route_recorded`,
+  `required_dependency_record=signed_route_evidence_packet_closed,negative_control_proof_dependency_lock_closed,p0_19_legal_finance_gate_signed,no_duplicate_ledger_signed,final_risk_decision_packet_closed,dashboard_finance_desk_signed,access_closure_route_recorded`,
+  `blocked_if=signed_route_evidence_closed=no,negative_control_proof_ready=no,legal_finance_gate_signed=no,no_duplicate_ledger_signed=no,risk_closure_signed=no,dashboard_finance_desk_signed=no,access_closure_route_recorded=no`
+  and `next_allowed_step=ACCT-12_FINANCE_RELIANCE_DECISION`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is finance reliance dependency routing only. It does not
+  accept evidence, execute UAT, infer UAT pass, approve finance reliance, post
+  vouchers, transfer money, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Negative-Control Proof Dependency Lock
+
+- Scope: Added an ACCT-12 negative-control proof dependency lock so signed
+  route evidence intake cannot reference generic `negative_control_proof_closed`
+  unless the ACCT-00 final negative-control proof decision packet is closed
+  with owner decision, route denials, reviewer, controlled evidence ID and
+  blocker state.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-NEGATIVE-CONTROL-PROOF-DEPENDENCY-LOCK` with
+  `negative_control_proof_dependency_lock=ACCT-12_NEGATIVE_CONTROL_PROOF_DEPENDENCY`,
+  `required_inputs=negative_control_final_proof_decision_packet_closed,negative_control_proof_decision_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded,blocker_state_recorded`,
+  `required_dependency_record=ACCT-00_NEGATIVE_CONTROL_FINAL_PROOF_DECISION_closed,negative_control_proof_ready_verified,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,linked_signed_route_evidence_packet_recorded`,
+  `blocked_if=negative_control_proof_ready=no,ttgdtx_negative_candidates=0,missing_visibility>0,missing_business_scope>0`
+  and `next_allowed_step=ACCT-12_SIGNED_ROUTE_EVIDENCE_INTAKE`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is ACCT-12 dependency routing only. It does not close
+  negative-control proof, accept evidence, execute UAT, infer UAT pass, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative-Control Final Proof Decision Packet
+
+- Scope: Added an ACCT-00 negative-control final proof decision packet so
+  route-by-route browser denials must be consolidated with controlled evidence
+  ID, reviewer, owner decision and blocker state before ACCT-12 can use
+  `negative_control_proof_closed`.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-CONTROL-FINAL-PROOF-DECISION-PACKET` with
+  `negative_control_final_proof_decision_packet=ACCT-00_NEGATIVE_CONTROL_FINAL_PROOF_DECISION`,
+  current `negative_control_proof_ready=no`,
+  `required_inputs=negative_browser_denial_closed,negative_browser_route_matrix_closed,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded`,
+  `allowed_decision_values=PASS,NO_GO,BLOCKED`,
+  `required_decision_record=negative_control_proof_decision_recorded,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded,blocker_state_recorded`
+  and `next_allowed_step=ACCT-12_SIGNED_ROUTE_EVIDENCE_INTAKE`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is final proof decision routing only. It does not accept
+  evidence, execute browser UAT, approve finance reliance, infer UAT pass,
+  infer owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Post-Execution Verification Packet
+
+- Scope: Added an ACCT-00 negative account post-execution verification packet
+  so `REAL_OUT_OF_SCOPE_NEGATIVE_01` must be verified as linked, non-target
+  scoped, excluded from TTGDTX, non-ALL visibility and settings-denial ready
+  before browser denial evidence can start.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-ACCOUNT-POST-EXECUTION-VERIFICATION-PACKET` with
+  `negative_account_post_execution_verification_packet=ACCT-00_NEGATIVE_ACCOUNT_POST_EXECUTION_VERIFICATION`,
+  current `negative_account_ready=no`,
+  `required_inputs=negative_account_execution_closed,auth_profile_link_recorded,non_target_business_scope_applied,target_segment_exclusion_verified,controlled_evidence_id_recorded`,
+  `required_verification_record=ttgdtx_negative_candidates>=1,negative_account_label_recorded,auth_profile_link_verified,non_target_business_scope_verified,target_segment_exclusion_verified,lead_visibility_non_all_verified,settings_permission_denial_ready,controlled_evidence_id_recorded`
+  and `next_allowed_step=ACCT-00_NEGATIVE_BROWSER_DENIAL`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is post-execution verification routing only. It does not
+  create users, link Auth, grant scope, reveal raw account IDs, accept
+  evidence, execute browser UAT, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Post-Repair Verification Packet
+
+- Scope: Added an ACCT-00 scope post-repair verification packet so owner-side
+  scope repair must prove zero missing visibility, zero missing business scope,
+  no broad non-admin visibility and no workspace mismatch before negative-control
+  account provisioning can proceed.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-user-scope-baseline-repair-queue` now prints
+  `ACCT-00-SCOPE-POST-REPAIR-VERIFICATION-PACKET` with
+  `scope_post_repair_verification_packet=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION`,
+  current `scope_baseline_closed=no`,
+  `required_inputs=scope_repair_execution_closed,post_repair_snapshot_recorded,controlled_evidence_id_recorded`,
+  `required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,workspace_preference_inside_scope_confirmed,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded`
+  and `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_PROVISIONING`.
+- Verification target: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is post-repair verification routing only. It does not change
+  lead visibility, grant business scope, set workspace preference, accept
+  evidence, create accounts, approve UAT, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Final Risk Decision Packet
+
+- Scope: Added an ACCT-11 final risk decision packet so Audit, IT_DATA, KHTC,
+  PHAP_CHE, BGH and process owners must record decision value, owner quorum,
+  residual risk, waiver/correction path, boundary acknowledgement and
+  controlled evidence IDs before ACCT-11 can feed ACCT-12 closure.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-FINAL-RISK-DECISION-PACKET` with
+  `final_risk_decision_packet=ACCT-11_FINAL_RISK_DECISION_PACKET`,
+  `allowed_decision_values=PASS,NO_GO,BLOCKED`,
+  `required_inputs=audit_trace_closed,hard_delete_cascade_closed,backup_restore_proof_closed,migration_order_signed,rollback_redaction_proof_closed,controlled_evidence_ids_recorded`
+  and
+  `required_decision_record=final_risk_decision_recorded,owner_quorum_recorded,residual_risk_statement_recorded,waiver_or_correction_recorded,boundary_acknowledged,controlled_evidence_ids_recorded`.
+- Verification target: `node --check scripts/check-heu-accounting-risk-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is final risk decision routing only. It does not accept
+  evidence, infer waiver approval, execute migration, approve finance reliance,
+  treat UAT as passed, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Signed Route Evidence Intake Packet
+
+- Scope: Added an ACCT-12 signed route evidence intake packet so each
+  UAT-ROUTE-01 through UAT-ROUTE-11 can be recorded with controlled evidence
+  ID, redaction reviewer, route result, owner signature, linked acceptance item
+  and blocker state before finance reliance, access closure or final owner
+  decision can be discussed.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-SIGNED-ROUTE-EVIDENCE-INTAKE-PACKET` with
+  `signed_route_evidence_packet=ACCT-12_SIGNED_ROUTE_EVIDENCE_INTAKE`,
+  `required_inputs=negative_control_proof_closed,route_execution_log_reviewed,controlled_evidence_storage_confirmed,owner_lane_confirmed`
+  and
+  `required_route_record=uat_route_id_recorded,controlled_evidence_id_recorded,redaction_reviewer_recorded,route_result_recorded,route_owner_signature_recorded,linked_acceptance_item_recorded,blocker_state_recorded`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is signed-route evidence intake routing only. It does not
+  execute UAT, accept evidence, infer UAT pass, approve finance reliance,
+  close access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Execution Packet
+
+- Scope: Added an ACCT-00 negative-account execution packet so
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01` create/link and non-target-scope execution
+  are recorded before browser denial evidence can support accounting UAT.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-ACCOUNT-EXECUTION-PACKET` with
+  `negative_account_execution_packet=ACCT-00_NEGATIVE_ACCOUNT_EXECUTION`,
+  `target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`,
+  `required_inputs=scope_repair_execution_closed,provisioning_decision_closed,target_account_label_recorded,secure_admin_channel_recorded`
+  and
+  `required_execution_record=auth_profile_link_recorded,non_target_business_scope_applied,target_segment_exclusion_verified,lead_visibility_non_all_verified,settings_permission_denial_ready,credential_boundary_acknowledged,controlled_evidence_id_recorded`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run audit:heu-role-scope-uat-pack`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`; `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is owner-side execution recording only. It does not create
+  users, link Auth, assign scope, reveal raw account IDs, expose credentials,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Repair Execution Packet
+
+- Scope: Added an ACCT-00 scope repair execution packet so owner-approved
+  visibility/business-scope repair has a pre/post snapshot record before
+  negative-control account provisioning or signed accounting browser UAT.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-user-scope-baseline-repair-queue` now prints
+  `ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET` with
+  `scope_repair_execution_packet=ACCT-00_SCOPE_REPAIR_EXECUTION` and
+  `required_execution_record=pre_repair_snapshot_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_verified,post_repair_snapshot_recorded,controlled_evidence_id_recorded`.
+- Verification target: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue -- --static-only`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run audit:heu-role-scope-uat-pack`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`; `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is owner-side execution recording only. It does not change
+  lead visibility, grant business scope, set workspace preference, expose raw
+  IDs, expose service-role keys, create accounts, approve UAT, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Hard Delete Cascade Closure Checklist
+
+- Scope: Added an ACCT-11 hard-delete/cascade closure checklist so P6-06
+  conversion-or-written-waiver proof is separated before backup/restore,
+  migration order, rollback/redaction proof or final risk decision.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this
+  implementation log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-HARD-DELETE-CASCADE-CLOSURE-CHECKLIST` with
+  `hard_delete_cascade_checklist=ACCT-11_HARD_DELETE_CASCADE_CLOSURE`,
+  `required_inputs=audit_trace_closed,p6_06_boundary_guard_passed,cascade_finding_register_reviewed,conversion_or_waiver_path_identified`
+  and
+  `required_closure=ttgdtx_hard_delete_boundary_recorded,p6_06_findings_triaged,conversion_or_written_waiver_recorded,protected_record_retention_recorded,cascade_execution_blocked,controlled_evidence_ids_recorded,owner_quorum_recorded`.
+- Verification target: `node --check scripts/check-heu-accounting-risk-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:hard-delete-boundary-guard`;
+  `npm.cmd run audit:hard-delete-conversion-decision-queue`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`; `npm.cmd run lint`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is closure routing only. It does not execute hard-delete,
+  execute cascade cleanup, infer owner waiver, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Audit Trace Closure Checklist
+
+- Scope: Added an ACCT-11 audit trace closure checklist so P6-03 audit-log
+  trigger coverage, sampled actor/entity/action/timestamp and before/after
+  usefulness are routed before backup/restore, migration, rollback/redaction or
+  final risk decision.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-AUDIT-TRACE-CLOSURE-CHECKLIST` with
+  `audit_trace_checklist=ACCT-11_AUDIT_TRACE_CLOSURE`,
+  `required_inputs=ttgdtx_write_trigger_coverage_confirmed,audit_trace_ui_confirmed,acceptance_matrix_reviewed,decision_manifest_reviewed`,
+  `required_closure=audit_log_trigger_coverage_recorded,sampled_actor_recorded,sampled_entity_recorded,sampled_action_recorded,sampled_timestamp_recorded,before_after_usefulness_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_raw_audit_payload=true`, `no_audit_log_mutation=true`,
+  `no_auto_acceptance=true` and `no_auto_production_go=true`.
+- Verification target: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:ttgdtx-audit-log`;
+  `npm.cmd run audit:ttgdtx-audit-trail-guard`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`; `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is PASS_LOCAL audit-trace proof routing only. It does not
+  mutate audit logs, paste raw audit payload, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Rollback Redaction Proof Checklist
+
+- Scope: Added an ACCT-11 rollback/redaction proof checklist so final risk
+  decision has an explicit checkpoint for rollback path, redaction path,
+  protected evidence retention and audit-history retention.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-ROLLBACK-REDACTION-PROOF-CHECKLIST` with
+  `rollback_redaction_checklist=ACCT-11_ROLLBACK_REDACTION_PROOF`,
+  `required_inputs=backup_restore_proof_closed,migration_order_signed,audit_trace_closed,protected_evidence_identified`,
+  `required_closure=rollback_path_recorded,redaction_path_recorded,protected_evidence_retained,audit_history_retained,cleanup_scope_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_hard_delete_execution=true`, `no_cascade_execution=true`,
+  `no_evidence_destruction=true`, `no_auto_acceptance=true` and
+  `no_auto_production_go=true`.
+- Verification target: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:hard-delete-boundary-guard`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`; `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is PASS_LOCAL rollback/redaction proof routing only. It does
+  not execute rollback, execute hard-delete, execute cascade cleanup, destroy
+  evidence, accept evidence, approve finance reliance, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - ACCT-11 Migration Order Signoff Checklist
+
+- Scope: Added an ACCT-11 Step90-Step110 migration-order signoff checklist so
+  signed migration order is explicitly routed after backup/restore proof and
+  before final ACCT-11 risk decision.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-MIGRATION-ORDER-SIGNOFF-CHECKLIST` with
+  `migration_order_checklist=ACCT-11_MIGRATION_ORDER_SIGNOFF`,
+  `required_inputs=backup_restore_proof_closed,audit_trace_closed,hard_delete_boundary_closed,rollback_redaction_path_defined`,
+  `required_closure=step90_step110_order_signed,signer_authority_recorded,migration_scope_recorded,exception_decisions_recorded,rollback_note_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_migration_execution=true`, `no_auto_migration_approval=true`,
+  `no_auto_acceptance=true` and `no_auto_production_go=true`.
+- Verification target: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`; `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is PASS_LOCAL signoff routing only. It does not execute
+  migration, approve migration, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Backup Restore Proof Checklist
+
+- Scope: Added an ACCT-11 backup/restore proof checklist so risk closure has a
+  separate owner-controlled checkpoint before Step90-Step110 migration order or
+  final ACCT-11 risk decision.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and this implementation
+  log.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-BACKUP-RESTORE-PROOF-CHECKLIST` with
+  `backup_restore_checklist=ACCT-11_BACKUP_RESTORE_PROOF`,
+  `required_inputs=audit_trace_closed,hard_delete_boundary_closed,restore_target_identified,rollback_redaction_path_defined`,
+  `required_closure=backup_id_recorded,restore_target_recorded,target_isolation_recorded,restore_smoke_check_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_raw_backup_or_database_export=true`, `no_migration_approval=true`,
+  `no_auto_acceptance=true` and `no_auto_production_go=true`.
+- Verification target: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run lint`; `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-accounting-local-readiness -- --summary`.
+- Boundary: This is PASS_LOCAL proof routing only. It does not execute
+  backup/restore, inspect raw dumps, approve migration, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Fast Loop Candidate Live-Env Defer
+
+- Scope: Adjusted fast-local-loop manual candidate ordering so local static
+  control checkers rank before process-runner aggregators and live-env/live-DB
+  checks that require `.env.local`, Supabase service role or network/database
+  reads.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATES` now prints
+  `candidate_tier_order=local_static,process_runner,live_env` and
+  `live_env_deferred=true`; `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_NEXT`
+  includes `candidate_tier=local_static` when a static checker is available, so
+  `check:heu-training-module-completion-breakdown` can be suggested before
+  live-env scope checkers such as `check:heu-finance-payment-scope-readiness`.
+- Verification target: `npm.cmd run check:heu-fast-local-loop -- --snapshot-only`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`.
+- Boundary: This is local operator-routing logic only. It does not read
+  Supabase, execute UAT, mutate business data, import leads, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
 
 ## 2026-07-03 - AI Dirty Scope Packaging Ledger
 
@@ -355,7 +3953,13 @@
   coordination so concurrent builders can see scope collisions, shared control
   file risk and the next safest packaging lane before staging.
 - Changed: `docs/HEU_AI_BUILD_COLLISION_TRIAGE_20260703.md`,
-  `scripts/check-heu-ai-build-collision-triage.mjs`, `package.json` and this
+  `scripts/check-heu-ai-build-collision-triage.mjs`,
+  `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs`, `package.json` and this
   implementation log.
 - Result: `check:heu-ai-build-collision-triage` reads live `git status` when
   the local runner permits Git child processes, groups dirty files into Short
@@ -369,6 +3973,251 @@
   data, create accounts, send email, create tasks, run migrations, execute UAT,
   accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
   production GO.
+- Fast-loop registration: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=9; package_scripts=9; watched_paths=53`; the
+  `ai_build_collision_triage=npm.cmd run check:heu-ai-build-collision-triage`
+  guard watches the AI build collision triage doc and checker before wider
+  dynamic guards run.
+- Verification target: `npm.cmd run check:heu-ai-build-collision-triage`;
+  `npm.cmd run check:heu-fast-local-loop -- --snapshot-only`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`.
+
+## 2026-07-03 - Fast Loop Candidate Lightweight Tie-Break
+
+- Scope: Adjusted the fast-local-loop manual candidate ranking so groups with
+  equal candidate counts are ordered by the lightest checker before aggregator
+  gates, keeping the operator next action fast and narrow.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_NEXT` now reports
+  `selection=largest_group_lightweight_first` and
+  `tie_break=lightweight_first`; when every candidate group has the same count,
+  scope-readiness or other lighter checks are suggested before slower
+  local-completion aggregators such as `check:heu-admissions-local-completion`.
+- Verification target: `npm.cmd run check:heu-fast-local-loop -- --snapshot-only`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`.
+- Boundary: This is local operator-routing logic only. It does not execute UAT,
+  mutate admission data, import leads, accept handover evidence, approve
+  dashboard reliance, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT-00 Negative Browser Route Matrix
+
+- Scope: Added an ACCT-00 negative browser route matrix so the
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01` owner lane must record lead, finance,
+  evidence, audit and settings denial results separately before negative
+  browser proof can support signed accounting UAT.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-BROWSER-ROUTE-MATRIX` with
+  `negative_route_matrix=ACCT-00_NEGATIVE_BROWSER_ROUTES`,
+  `route_count=5`, `required_routes=lead,finance,evidence,audit,settings`,
+  `expected_result=BLOCKED_OR_EMPTY_SCOPED_STATE`,
+  `required_closure=lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded`,
+  `no_raw_screenshot_or_pii=true`, `no_password_or_invite_link=true` and
+  `no_auto_acceptance=true`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is route-denial evidence routing only. It does not run
+  browser UAT, accept evidence, create accounts, set passwords, send
+  invite/reset links, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT-12 Finance Reliance Decision Checklist
+
+- Scope: Added an ACCT-12 finance reliance decision checklist so signed route
+  evidence cannot be treated as accountant/KHTC/BGH finance reliance, voucher
+  posting or bank-transfer permission without a separate owner-recorded
+  finance decision.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-FINANCE-RELIANCE-DECISION-CHECKLIST` with
+  `finance_reliance_checklist=ACCT-12_FINANCE_RELIANCE_DECISION`,
+  `required_inputs=scope_negative_control_closed,legal_finance_gate_signed,no_duplicate_ledger_signed,risk_closure_signed,dashboard_finance_desk_signed,access_closure_recorded`,
+  `required_closure=finance_reliance_decision_recorded,finance_owner_recorded,accountant_access_decision_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_finance_reliance_inference=true`, `no_voucher_posting=true`,
+  `no_bank_transfer=true` and `no_auto_approval=true`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is finance reliance decision routing only. It does not accept
+  evidence, approve finance reliance, post vouchers, transfer money, close
+  access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Access Closure Decision Checklist
+
+- Scope: Added an ACCT-12 access closure decision checklist so accountant
+  retain/revoke/block, privileged access review, temporary access removal and
+  negative-account access lock must be recorded before final owner GO/NO-GO or
+  accounting UAT reliance.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-ACCESS-CLOSURE-DECISION-CHECKLIST` with
+  `access_closure_checklist=ACCT-12_ACCESS_CLOSURE_DECISION`,
+  `required_inputs=scope_baseline_closed,negative_control_proof_closed,signed_route_evidence_closed,finance_reliance_decision_recorded,risk_closure_signed`,
+  `required_closure=accountant_retain_revoke_block_recorded,privileged_access_review_recorded,temporary_access_removed,negative_account_access_locked,access_closure_decision_recorded,controlled_evidence_ids_recorded,owner_quorum_recorded`,
+  `no_password_or_invite_link=true`, `no_auto_access_change=true`,
+  `no_finance_reliance_inference=true` and `no_auto_production_go=true`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is access closure decision routing only. It does not change
+  access, reset passwords, send invite links, revoke accounts, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Provisioning Checklist
+
+- Scope: Added an ACCT-00 negative account provisioning checklist so the
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01` owner lane must record account label,
+  non-target scope, TTGDTX exclusion, credential boundary and controlled
+  evidence ID before browser denial evidence or accounting UAT reliance.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-ACCOUNT-PROVISIONING-CHECKLIST` with
+  `negative_account_checklist=ACCT-00_NEGATIVE_ACCOUNT_PROVISIONING`,
+  `required_closure=target_account_label_recorded,non_target_business_scope_recorded,target_segment_exclusion_recorded,credential_boundary_acknowledged,controlled_evidence_id_recorded`,
+  `no_ttgdtx_scope=true`, `no_settings_or_permission_access=true`,
+  `no_password_or_invite_link=true` and `no_auto_account_create=true`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is provisioning routing only. It does not create accounts,
+  set passwords, send invite/reset links, grant scope, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT-00 Scope Baseline Owner Decision Checklist
+
+- Scope: Added an ACCT-00 scope baseline owner decision checklist so missing
+  lead visibility and business-scope repair must record owner lane, secure
+  admin channel and post-repair snapshot before negative-control account work
+  or signed accounting browser UAT can proceed.
+- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-user-scope-baseline-repair-queue` now prints
+  `ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST` with
+  `scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`,
+  `required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,post_repair_snapshot_recorded`,
+  `no_all_visibility_for_non_admin=true`, `no_password_or_invite_link=true`
+  and `no_auto_scope_change=true`.
+- Verification target: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
+  `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is scope-decision routing only. It does not change lead
+  visibility, grant business scope, create accounts, send invite/reset links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-12 Final Owner Decision Checklist
+
+- Scope: Added an ACCT-12 final owner decision checklist so route evidence,
+  finance reliance, owner quorum, access closure and final owner GO/NO-GO stay
+  separated before any accounting UAT reliance.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-FINAL-OWNER-DECISION-CHECKLIST` with
+  `owner_decision_checklist=ACCT-12_FINAL_OWNER_DECISION`,
+  `required_closure=finance_reliance_decision_recorded,final_owner_go_no_go_recorded,owner_quorum_recorded,access_closure_decision_recorded,controlled_evidence_ids_recorded`,
+  `no_finance_reliance_inference=true`, `no_uat_pass_inference=true` and
+  `no_auto_production_go=true`.
+- Verification target: `node --check scripts/check-heu-accounting-owner-closure-ledger.mjs`;
+  `node --check scripts/check-heu-accounting-module-breakdown.mjs`;
+  `node --check scripts/check-heu-accounting-open-blocker-action-queue.mjs`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is final owner decision routing only. It does not execute UAT,
+  accept evidence, approve finance reliance, close access, approve owner
+  GO/NO-GO or mark production GO.
 
 ## 2026-07-03 - Root Drive Department Confirmation Intake
 
@@ -449,6 +4298,185 @@
   BHXH/chinh sach, approve invoice/payment verification, approve finance
   reliance, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - ACCT-11 Final Risk Decision Checklist
+
+- Scope: Added an ACCT-11 final risk decision checklist so evidence intake,
+  owner quorum, waiver-or-correction state and production boundary
+  acknowledgement are separated before any accounting UAT reliance.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-RISK-FINAL-DECISION-CHECKLIST` with
+  `risk_decision_checklist=ACCT-11_FINAL_RISK_DECISION`,
+  `required_closure=final_risk_decision_recorded,owner_quorum_recorded,waiver_or_correction_recorded,boundary_acknowledged`,
+  `no_owner_waiver_inference=true`, `no_auto_migration_approval=true` and
+  `no_auto_production_go=true`.
+- Verification target: `node --check scripts/check-heu-accounting-risk-closure-ledger.mjs`;
+  `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is owner decision routing only. It does not accept evidence,
+  infer a waiver, approve migration, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Short Course Role Negative Access Fast Loop Dynamic Guard
+
+- Scope: Registered the existing TRN-08 Short Course role negative-access
+  checker as a focused fast-local-loop dynamic guard so checklist, panel and
+  Short Course attendance/payment audit edits run the role/negative-access
+  guard before wider runtime or handoff verification.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=8; package_scripts=8; watched_paths=51`; the new
+  `short_course_role_negative_access=npm.cmd run check:heu-short-course-role-negative-access`
+  guard watches the TRN-08 checker, role/negative-access checklist, visible
+  Short Course panel, attendance/payment gap pack and its focused audit script.
+- Verification target: `npm.cmd run check:heu-short-course-role-negative-access`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`.
+- Boundary: This is local guard routing only. It does not create accounts,
+  assign real users, grant access, broaden scope, execute role UAT, accept
+  evidence, approve access closure, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - Short Course Scope Fast Loop Dynamic Guard
+
+- Scope: Registered the existing Short Course scope-readiness checker as a
+  focused fast-local-loop dynamic guard so route, workflow and
+  sensitive-display edits run the Short Course scope check before wider
+  runtime or handoff verification.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_IT_DATA_DAILY_CONTROL_CHECK_20260703.md`,
+  `scripts/check-heu-it-data-daily-control.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=7; package_scripts=7; watched_paths=46`; the new
+  `short_course_scope=npm.cmd run check:heu-short-course-scope-readiness`
+  guard watches Short Course page, drilldown, intake, workflow action and
+  sensitive-display files without adding `package.json` as a broad trigger.
+- Verification target: `npm.cmd run check:heu-short-course-scope-readiness`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run check:heu-it-data-daily-control`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`.
+- Boundary: This is local guard routing only. It does not execute UAT, accept
+  evidence, approve attendance lock, approve BHXH/chinh sach, approve
+  invoice/payment verification, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Browser Denial Evidence Checklist
+
+- Scope: Added an ACCT-00 negative browser denial evidence checklist so the
+  owner-side negative-control proof has explicit route scope, expected denial
+  result, controlled evidence fields and no-raw-evidence boundaries before
+  signed accounting UAT.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-NEGATIVE-CONTROL-EVIDENCE-CHECKLIST` with
+  `negative_evidence_checklist=ACCT-00_NEGATIVE_BROWSER_DENIAL`,
+  `route_scope=lead,finance,evidence,audit,settings`,
+  `required_result=BLOCKED_OR_EMPTY_SCOPED_STATE`,
+  `required_closure=controlled_evidence_id_recorded,reviewer_recorded,route_result_recorded,owner_decision_recorded`,
+  `no_raw_screenshot_or_pii=true`, `no_password_or_invite_link=true` and
+  `no_auto_acceptance=true`.
+- Verification target: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
+  `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is evidence-intake routing only. It does not create accounts,
+  set passwords, send invite/reset links, execute browser UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Accounting Fast Loop Child Checker Coverage
+
+- Scope: Expanded the fast-local-loop accounting module breakdown guard so
+  child accounting checker edits route back through the focused module
+  breakdown lane before handoff.
+- Changed: `scripts/check-heu-fast-local-loop.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` now reports
+  `guards=6; package_scripts=6; watched_paths=37`; the
+  `check:heu-accounting-module-breakdown` dynamic guard watches local
+  readiness, risk-closure and owner-closure checker metadata, while
+  `check:heu-accounting-open-blocker-action-queue` and
+  `check:heu-accounting-no-duplicate-control-ledger` remain their own focused
+  guards for owner-blocker and ACCT-04..ACCT-09 no-duplicate control lanes.
+  Candidate output now excludes scripts already covered by any registered
+  dynamic guard watched path, so operator next actions do not repeat the same
+  accounting checker lane as a manual gap.
+- Verification target: `node --check scripts/check-heu-fast-local-loop.mjs`;
+  `node --check scripts/audit-heu-current-state-inventory.mjs`;
+  `npm.cmd run check:heu-fast-local-loop -- --snapshot-only`;
+  `npm.cmd run check:heu-fast-local-loop`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run check:heu-accounting-no-duplicate-control-ledger`.
+- Boundary: This is local guard routing only. It does not execute UAT, accept
+  evidence, approve finance reliance, approve payout, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - ACCT-12 Owner UAT Route Checklist
+
+- Scope: Added an ACCT-12 owner UAT route checklist so UAT-ROUTE-01 through
+  UAT-ROUTE-11, finance reliance closure and final owner GO/NO-GO are routed in
+  one ordered owner lane before any accounting UAT reliance.
+- Changed: `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-owner-closure-ledger` now prints
+  `ACCT-12-OWNER-UAT-ROUTE-CHECKLIST` with
+  `owner_route_checklist=ACCT-12_OWNER_UAT_ROUTE`,
+  `required_closure=pending_route_external_evidence=0,pending_route_owner=0,pending_acceptance_owner=0,finance_reliance_decision_recorded,final_owner_go_no_go_recorded`,
+  `no_raw_pii_or_payment_evidence=true` and `no_auto_approval=true`.
+- Verification target: `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is owner-route intake only. It does not execute UAT, accept
+  evidence, approve finance reliance, approve payout, approve migration,
+  approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - Business User Responsibility Register
 
 - Scope: Added a P0-17 business user responsibility register so unfinished
@@ -503,6 +4531,87 @@
   visibility, grant business scope, create accounts, assign real users, set
   passwords, send reset/invite links, execute UAT, accept evidence, approve
   finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-11 Risk Evidence Intake Checklist
+
+- Scope: Added an ACCT-11 risk evidence intake checklist so audit trace,
+  hard-delete/cascade, backup/restore, migration-order, rollback/redaction and
+  final risk decisions are routed in one controlled owner-evidence lane.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-RISK-EVIDENCE-INTAKE-CHECKLIST` with
+  `risk_evidence_checklist=ACCT-11_EVIDENCE_INTAKE`,
+  `required_closure=pending_risk_external_evidence=0,pending_risk_owner=0,pending_acceptance_owner=0,controlled_evidence_ids_recorded`,
+  `no_raw_backup_or_database_export=true` and `no_auto_acceptance=true`.
+- Verification target: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is evidence-intake routing only. It does not execute backup,
+  restore, migration, deletion, rollback or UAT, accept evidence, approve
+  waiver, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - ACCT-00 Pre-UAT Owner Checklist
+
+- Scope: Added a single ACCT-00 pre-UAT owner checklist so scope repair,
+  negative-control account creation/linking, non-target scope assignment,
+  browser denial evidence and controlled evidence ID closure are handled in
+  one ordered owner lane.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `ACCT-00-PRE-UAT-OWNER-CHECKLIST` with
+  `owner_checklist=ACCT-00_PRE_UAT`,
+  `required_closure=missing_visibility=0,missing_business_scope=0,ttgdtx_negative_candidates>=1,controlled_evidence_id_recorded`,
+  `no_password_or_invite_link=true` and `no_auto_fix=true`.
+- Verification target: `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is owner-action routing only. It does not create accounts,
+  set passwords, send invite/reset links, assign scope, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - Accounting Operator Readiness Summary
+
+- Scope: Việt hóa phần kết luận vận hành của accounting local readiness gate
+  để người vận hành đọc nhanh được trạng thái kế toán mà không mất các token
+  kiểm soát `ACCT_LOCAL_READY`, `NO_GO` và `PASS_LOCAL`.
+- Changed: `scripts/check-heu-accounting-local-readiness.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-local-readiness` now prints
+  `ACCT_LOCAL_SUMMARY`, `ACCT_LOCAL_BLOCKERS`, `ACCT_LOCAL_NEXT_ACTION`,
+  `TOM_TAT_KE_TOAN` and `VIEC_CAN_LAM_TIEP` on both `NO_GO` and `PASS_LOCAL`
+  paths. The breakdown checker now requires those machine-readable and
+  Vietnamese operator-summary tokens so the local triage contract does not
+  drift.
+- Verification target: `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is Vietnamese operator-summary packaging only. It does not
+  create accounts, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
 
 ## 2026-07-03 - P10-06 Khoa Giang Vien Evidence Trace Source Reconciliation
 
@@ -616,6 +4725,91 @@
   move/delete/archive-dispose files, approve legal basis, issue SOP, execute
   UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - ACCT-11 Risk Owner Packet
+
+- Scope: Added a safe owner-action packet to the ACCT-11 risk closure ledger so
+  pending audit, hard-delete/cascade, backup/restore, migration-order and
+  rollback/redaction blockers are routed without accepting evidence.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-risk-closure-ledger` now prints
+  `ACCT-11-RISK-OWNER-PACKET` with
+  `owner_action_packet=ACCT-11_RISK_CLOSURE`,
+  `owner_lanes=Audit,IT_DATA,KHTC,PHAP_CHE,BGH,process_owners`,
+  `pending_risk_external_evidence=9`, `pending_risk_owner=9`,
+  `pending_acceptance_owner=6` and `required_owner_decisions=15`. The checker
+  still returns `NO_GO` until controlled evidence IDs and owner decisions are
+  closed outside Git/Codex/chat.
+- Verification: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`; `npm.cmd run lint`;
+  `npm.cmd run build`; `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is risk-owner routing only. It does not execute backup,
+  restore, migration, deletion, rollback, UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT Negative-Control Owner Packet
+
+- Scope: Added a safe owner-action packet to the ACCT-00 negative-control
+  queue so the missing TTGDTX out-of-scope account blocker is routed without
+  exposing identities or secrets.
+- Changed: `scripts/check-heu-negative-control-account-queue.mjs`,
+  `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-negative-control-account-queue` now prints
+  `NEGATIVE-CONTROL-OWNER-PACKET` with
+  `owner_action_packet=target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`,
+  `target_segment=TC9_TTGDTX_LINKED`,
+  `ttgdtx_negative_candidates=0`, `baseline_missing_visibility=1` and the
+  required owner decisions to repair scope first, create/link the negative
+  account, assign a non-target scope, run browser denial evidence and record a
+  controlled evidence ID.
+- Verification: `npm.cmd run check:heu-negative-control-account-queue`;
+  `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`; `npm.cmd run lint`;
+  `npm.cmd run build`; `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is owner-side routing only. It does not create accounts, set
+  passwords, send reset/invite links, assign scope, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - ACCT Open Blocker Action Queue
+
+- Scope: Added a PASS_LOCAL queue that consolidates the current accounting
+  readiness NO-GO blockers for ACCT-00, ACCT-11 and ACCT-12 into owner-action
+  rows.
+- Changed: `docs/HEU_ACCOUNTING_OPEN_BLOCKER_ACTION_QUEUE_20260703.md`,
+  `scripts/check-heu-accounting-open-blocker-action-queue.mjs`,
+  `scripts/check-heu-accounting-local-readiness.mjs`, `package.json`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-local-readiness` now also verifies
+  `check:heu-accounting-open-blocker-action-queue`, which packages
+  ACCT-BLOCKER-01 through ACCT-BLOCKER-04 for the user-scope baseline,
+  negative-control account, ACCT-11 risk ledger and ACCT-12 owner/UAT ledger.
+  The queue records the current counts (`missing_visibility=1`,
+  `missing_business_scope=1`, `ttgdtx_negative_candidates=0`,
+  `pending_risk_external_evidence=9` and
+  `pending_route_external_evidence=11`) without closing those blockers.
+- Verification: `npm.cmd run check:heu-accounting-open-blocker-action-queue`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-implementation-log`; `npm.cmd run lint`;
+  `npm.cmd run build`; `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This is blocker routing only. It does not create accounts, execute
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
 ## 2026-07-03 - P10-05 Khoa Giang Vien Negative Access Checklist
 
 - Added `docs/HEU_KHOA_GIANG_VIEN_NEGATIVE_ACCESS_CHECKLIST_20260703.md` as
@@ -636,6 +4830,165 @@
   accounts, import real teacher data, execute UAT, accept evidence, approve
   teacher profile display, approve teacher profile reliance, approve teaching
   payment, approve payroll, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Short Course Risk Scope Guard
+
+- Scope: Hardened the Short Course dashboard and drilldown risk views so open
+  `short_risk_alerts` are scoped to the selected Short Course workspace before
+  they affect risk counts, exception summaries or drilldown rows.
+- Changed: `app/short-course/page.tsx`,
+  `app/short-course/drilldown/page.tsx`,
+  `scripts/check-heu-short-course-scope-readiness.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `/short-course` now counts and displays risk rows only when the risk
+  `entity_id` belongs to the scoped student, class, enrollment, attendance,
+  BHXH, invoice or payment chain. `/short-course/drilldown?type=risks` now uses
+  the same scoped entity chain, while the local scope checker verifies both
+  dashboard and drilldown guards.
+- Verification: `npm.cmd run check:heu-short-course-scope-readiness`;
+  `npm.cmd run check:heu-training-module-completion-breakdown`;
+  `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`;
+  `npm.cmd run audit:heu-vietnamese-text-encoding`; `npm.cmd run lint`;
+  `npm.cmd run build`.
+- Boundary: This is read-scope hardening only. It does not create evidence,
+  execute UAT, accept evidence, approve attendance lock, approve BHXH/chinh sach,
+  approve invoice/payment verification, approve owner GO/NO-GO or mark Short
+  Course production GO.
+
+## 2026-07-03 - ACCT Closure Pending Breakdown Output
+
+- Scope: Improved the ACCT-11 risk closure and ACCT-12 owner closure checkers
+  so the accounting readiness gate reports pending evidence/owner blockers by
+  ledger section instead of only total placeholders.
+- Changed: `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-owner-closure-ledger.mjs` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-risk-closure-ledger` now reports
+  `pending_risk_external_evidence`, `pending_risk_owner` and
+  `pending_acceptance_owner`; `check:heu-accounting-owner-closure-ledger` now
+  reports `pending_route_external_evidence`, `pending_route_owner` and
+  `pending_acceptance_owner`. The checks remain `NO_GO` until external
+  evidence IDs and owner decisions are closed outside Git/Codex/chat.
+- Verification: `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run check:heu-accounting-local-readiness`;
+  `npm.cmd run audit:heu-implementation-log`; `npm.cmd run lint`;
+  `npm.cmd run build`.
+- Boundary: This is diagnostic/readiness output only. It does not execute UAT,
+  create evidence, accept evidence, approve finance reliance, approve migration,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Settings Activation Email Build Fix
+
+- Scope: Fixed the Settings user activation/reset helper that blocked
+  `npm.cmd run build` while validating the accounting module package.
+- Changed: `app/settings/actions.ts` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `sendActivationEmail` now calls the existing Supabase
+  `resetPasswordForEmail` path with `passwordRecoveryRedirectUrl()` instead of
+  recursively calling itself, so TypeScript can infer a bounded helper result
+  and the user activation flow does not print or store reset links in
+  Git/Codex/chat.
+- Verification: `npm.cmd run build`; `npm.cmd run lint`;
+  `npm.cmd run audit:heu-user-account-security`;
+  `npm.cmd run check:heu-accounting-local-readiness`.
+- Boundary: This does not create users, set passwords, send links from
+  Codex/chat, accept UAT evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT No-Duplicate Control Ledger
+
+- Scope: Added a focused PASS_LOCAL no-duplicate ledger for the TTGDTX 9+
+  accounting money chain from P2-03 receivable through P2-17 payout.
+- Changed: `docs/HEU_ACCOUNTING_NO_DUPLICATE_CONTROL_LEDGER_20260703.md`,
+  `scripts/check-heu-accounting-no-duplicate-control-ledger.mjs`,
+  `scripts/check-heu-accounting-local-readiness.mjs`, `package.json`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_IMPLEMENTATION_LOG.md`.
+- Result: `check:heu-accounting-local-readiness` now runs
+  `check:heu-accounting-no-duplicate-control-ledger` after the
+  receivable/payment lifecycle audit and before payout execution checks, so the
+  local gate verifies active receivable, tuition voucher, reconciliation
+  payment, payment request and payout duplicate guards together.
+- Verification: `npm.cmd run check:heu-accounting-no-duplicate-control-ledger`;
+  `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run audit:heu-implementation-log`;
+  `npm.cmd run check:heu-accounting-local-readiness`; `npm.cmd run lint`.
+- Boundary: This is local no-duplicate packaging only. It does not create
+  receivables, record tuition payments, reconcile, create payment requests,
+  record payout, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT Transaction Integrity Gate Expansion
+
+- Scope: Expanded the accounting local readiness gate so ACCT-01 through
+  ACCT-06 integrity checks are executed inside the same PASS_LOCAL command
+  chain before signed accounting UAT or finance reliance is discussed.
+- Changed: `scripts/check-heu-accounting-local-readiness.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_IMPLEMENTATION_LOG.md` and
+  `scripts/check-heu-accounting-module-breakdown.mjs`.
+- Result: `npm.cmd run check:heu-accounting-local-readiness` now includes
+  `audit:ttgdtx-operating-control-ui`,
+  `audit:ttgdtx-contract-tuition-master-guard`,
+  `audit:ttgdtx-invoice-policy`, `audit:vnd-money-format`,
+  `audit:ttgdtx-period-lock-policy`,
+  `audit:ttgdtx-reconciliation-repair-safety` and
+  `audit:ttgdtx-receivable-payment-lifecycle` before payout/dashboard/risk
+  closure checks.
+- Verification: `npm.cmd run audit:ttgdtx-operating-control-ui`;
+  `npm.cmd run audit:ttgdtx-contract-tuition-master-guard`;
+  `npm.cmd run audit:ttgdtx-invoice-policy`; `npm.cmd run audit:vnd-money-format`;
+  `npm.cmd run audit:ttgdtx-period-lock-policy`;
+  `npm.cmd run audit:ttgdtx-reconciliation-repair-safety`;
+  `npm.cmd run audit:ttgdtx-receivable-payment-lifecycle`.
+- Boundary: This is local integrity gating only. It does not create
+  receivables, record payments, issue invoices/chung-tu, reconcile, lock
+  periods, approve payout, execute UAT, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT Local Readiness Gate
+
+- Scope: Added a consolidated PASS_LOCAL gate for the TTGDTX 9+ accounting
+  module so ACCT-00 through ACCT-12 can be checked through one command before
+  signed browser UAT or finance reliance is discussed.
+- Changed: `scripts/check-heu-accounting-local-readiness.mjs`, `package.json`,
+  `scripts/check-heu-accounting-risk-closure-ledger.mjs`,
+  `scripts/check-heu-accounting-owner-closure-ledger.mjs`,
+  `docs/HEU_ACCOUNTING_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`,
+  `docs/HEU_ACCOUNTING_RISK_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_UAT_OWNER_CLOSURE_LEDGER_20260703.md`,
+  `docs/HEU_ACCOUNTING_NEGATIVE_CONTROL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `scripts/check-heu-accounting-module-breakdown.mjs` and
+  `scripts/audit-heu-current-state-inventory.mjs`.
+- Result: `npm.cmd run check:heu-accounting-local-readiness` prints
+  `HEU_ACCOUNTING_WORKTREE`, preserves dirty worktree state as
+  `DIRTY_WARN_ONLY` by default, runs the focused accounting command chain and
+  reports `ACCT_LOCAL_READY / NO_GO / BLOCKED`. The current live result is
+  `NO_GO` because `check:heu-user-scope-baseline-repair-queue` still reports
+  `missing_visibility=1` and `missing_business_scope=1`, then
+  `check:heu-negative-control-account-queue` reports
+  `ttgdtx_negative_candidates=0` and owner create/link pending for
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01`; ACCT-11
+  `check:heu-accounting-risk-closure-ledger` reports pending external
+  evidence/owner decisions; ACCT-12
+  `check:heu-accounting-owner-closure-ledger` reports pending external
+  evidence/owner decisions.
+- Verification: `npm.cmd run check:heu-accounting-module-breakdown`;
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue`;
+  `npm.cmd run check:heu-accounting-risk-closure-ledger`;
+  `npm.cmd run check:heu-accounting-owner-closure-ledger`;
+  `npm.cmd run audit:heu-current-state-inventory`;
+  `npm.cmd run check:heu-accounting-local-readiness`; `npm.cmd run lint`.
+- Boundary: This is local readiness gating only. It does not create accounts,
+  handle passwords, execute UAT, accept evidence, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
 
 ## 2026-07-03 - P10-04 Khoa Giang Vien Teacher Profile Privacy Register
 
@@ -680,137 +5033,6 @@
   reliance, owner GO/NO-GO or production GO.
 - Boundary token: does not approve teaching payment.
 
-## 2026-07-03 - P10-02 Khoa Giang Vien Delivery Source Map
-
-- Added `docs/HEU_KHOA_GIANG_VIEN_DELIVERY_SOURCE_MAP_20260703.md` as the
-  DRAFT_CONTROL source map for `RV_KHOA_GIANG_VIEN_DELIVERY`.
-- The source map defines KHOA-SRC-01 through KHOA-SRC-08, KHOA-DQ-01 through
-  KHOA-DQ-08, KHOA-RV-EVID-01 through KHOA-RV-EVID-06,
-  `KHOA_DELIVERY_SOURCE_READY / NO_GO / BLOCKED` and
-  `RV_KHOA_GIANG_VIEN_DELIVERY / NO_GO / BLOCKED`.
-- Updated Report View Register, Report View Source Map, Data Master / Report
-  View Compatibility and SQL Object Master Map so Khoa/Giang vien has
-  FACULTY_DEPARTMENT_MASTER, TEACHER_PROFILE_MASTER and TEACHING_DELIVERY_MASTER
-  planning entries without running a production migration.
-- Extended `/khoa` with the read-only P10-02 source-map panel and added
-  `scripts/check-heu-khoa-giang-vien-source-map.mjs` plus
-  `check:heu-khoa-giang-vien-source-map` to guard the docs, UI and propagation.
-- PASS_LOCAL boundary: this does not approve class delivery reliance, teacher
-  profile reliance, teaching completion, attendance lock, teaching payment,
-  payroll, evidence acceptance, UAT acceptance, report-view reliance, owner
-  GO/NO-GO or production GO.
-- Boundary token: does not approve teaching payment.
-
-## 2026-07-03 - P10-01 Khoa Giang Vien Gap Pack
-
-- Added `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md` and
-  `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
-  M08 Khoa/Giang vien PASS_LOCAL foundation.
-- Added `components/khoa/khoa-giang-vien-gap-pack.tsx` and `app/khoa/page.tsx`
-  so `/khoa` exposes KHOA-GV-01 through KHOA-GV-08, KHOA-REV-01 through
-  KHOA-REV-06, KHOA-SIGN-01 through KHOA-SIGN-06 and KHOA-UAT-LEDGER-01 through
-  KHOA-UAT-LEDGER-08 with `KHOA_GV_READY / NO_GO / BLOCKED`,
-  `KHOA_REVIEW_READY / NO_GO / BLOCKED`, `KHOA_OWNER_READY / NO_GO / BLOCKED`
-  and `KHOA_UAT_RESULT_READY / NO_GO / BLOCKED`.
-- Added `scripts/check-heu-khoa-giang-vien-foundation.mjs` and
-  `check:heu-khoa-giang-vien-foundation` to verify the docs, UI route,
-  AppShell navigation, current-state, backlog and gap-matrix propagation.
-- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md`,
-  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
-  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so M08 is no
-  longer an undefined early placeholder; it is a controlled PASS_LOCAL
-  foundation that still requires signed Khoa/Giang vien UAT, teacher profile
-  privacy approval, source reconciliation, owner signoff manifest completion and
-  report-view owner signoff before reliance.
-- This is Khoa/Giang vien control packaging only. It does not approve class
-  delivery reliance, teacher profile reliance, teaching completion, attendance
-  lock, teaching payment, payroll, evidence acceptance, UAT acceptance, owner
-  GO/NO-GO or production GO.
-- Boundary token: does not approve class delivery reliance.
-
-## 2026-07-03 - Negative Control Account Queue Checker
-
-- Scope: Packaged the read-only P0-17 negative-control account queue for
-  out-of-scope browser/UAT planning.
-- Changed: `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md`,
-  `scripts/check-heu-negative-control-account-queue.mjs`,
-  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
-  implementation log.
-- Result: `check:heu-negative-control-account-queue` reports
-  `NEGATIVE_CONTROL_QUEUE_READY / NO_GO / BLOCKED`, target protected lanes,
-  non-ADMIN/BGH visibility baseline and candidate counts without printing
-  personal data, credentials or raw IDs.
-- Verification: `node --check scripts/check-heu-negative-control-account-queue.mjs`;
-  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
-  release checks before commit handoff.
-- Boundary: This is PASS_LOCAL owner-action queue packaging only. It does not
-  create accounts, assign real users, set passwords, send reset/invite links,
-  execute UAT, accept evidence, approve finance reliance, approve owner
-  GO/NO-GO or mark production GO.
-
-## 2026-07-03 - Position Assignment Owner Queue Checker
-
-- Scope: Packaged the read-only P0-17 owner queue for required HEU position
-  assignments.
-- Changed: `docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md`,
-  `scripts/check-heu-position-assignment-owner-queue.mjs`,
-  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
-  implementation log.
-- Result: `check:heu-position-assignment-owner-queue` reports
-  `POSITION_OWNER_QUEUE_READY / NO_GO / BLOCKED`, required seat counts,
-  candidate-profile evidence counts, scope-baseline findings and secure owner
-  action labels without printing personal data or raw IDs.
-- Verification: `node --check scripts/check-heu-position-assignment-owner-queue.mjs`;
-  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
-  release checks before commit handoff.
-- Boundary: This is PASS_LOCAL owner-action queue packaging only. It does not
-  create accounts, assign real users, set passwords, send reset/invite links,
-  approve position assignments, execute UAT, accept evidence, approve finance
-  reliance, approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - Settings Permission Matrix Runtime Readiness
-
-- Scope: Packaged the read-only Settings permission matrix runtime checker for
-  P0-17 owner-side readiness review.
-- Changed: `scripts/check-heu-settings-permission-matrix-readiness.mjs`,
-  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
-  implementation log.
-- Result: `check:heu-settings-permission-matrix-readiness` reports
-  `SETTINGS-MATRIX-APP-GUARD`, `SETTINGS-MATRIX-POSITIONS`,
-  `SETTINGS-MATRIX-PERMISSIONS`, `SETTINGS-MATRIX-ASSIGNMENTS`,
-  `SETTINGS-MATRIX-ROLE-RISK`, `SETTINGS-MATRIX-ACTIVE-USERS` and
-  `SETTINGS-MATRIX-SECRET-BOUNDARY` using counts and hashed row labels only.
-- Verification: `node --check scripts/check-heu-settings-permission-matrix-readiness.mjs`;
-  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
-  release checks before commit handoff.
-- Boundary: This is PASS_LOCAL checker packaging only. It does not create
-  accounts, assign real users, set passwords, send reset/invite links, approve
-  position assignments, execute UAT, accept evidence, approve finance reliance,
-  approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - User Scope Baseline Repair Checker Command
-
-- Scope: Packaged the read-only P0-17 scope baseline repair checker command so
-  owner-side repair can identify missing lead visibility and missing business
-  scope without exposing personal data or changing real user scope.
-- Changed: `scripts/check-heu-user-scope-baseline-repair-queue.mjs`,
-  `scripts/audit-heu-user-account-security.mjs`, `package.json` and this
-  implementation log. The queue document remains
-  `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md`.
-- Result: `check:heu-user-scope-baseline-repair-queue` reports
-  `USER_SCOPE_BASELINE_REPAIR_READY / NO_GO / BLOCKED` with safe owner repair
-  labels, counts for missing lead visibility and missing segment/partner scope,
-  and a fixed repair order `USER-SCOPE-REPAIR-01` through
-  `USER-SCOPE-REPAIR-04`. It is read-only and prints no secrets, emails, names,
-  phone numbers, service-role keys, reset links or raw IDs.
-- Verification: `node --check scripts/check-heu-user-scope-baseline-repair-queue.mjs`;
-  `npm.cmd run audit:heu-user-account-security`; run the broader P0-17 and
-  release checks before commit handoff.
-- Boundary: This is PASS_LOCAL checker packaging only. It does not create
-  accounts, assign real users, set passwords, send reset/invite links, change
-  lead visibility, add segment/partner scope, execute UAT, accept evidence,
-  approve owner GO/NO-GO or mark production GO.
-
 ## 2026-07-03 - IT/Data Fast Local Control Loop
 
 - Scope: Added a fast PASS_LOCAL loop for IT/Data to check the smallest
@@ -823,29 +5045,211 @@
   `scripts/audit-heu-implementation-log.mjs` and this implementation log.
 - Result: `npm.cmd run check:heu-fast-local-loop` prints
   `HEU_FAST_LOOP_WORKTREE`, `HEU_FAST_LOOP_WORKTREE_AREAS`,
-  `HEU_FAST_LOOP_AREA_SAMPLE`, `HEU_FAST_LOOP_NEXT_GUARDS`,
+  `HEU_FAST_LOOP_AREA_SAMPLE`, `HEU_FAST_LOOP_AREA_STATUS`,
+  `HEU_FAST_LOOP_TOP_AREA`, `HEU_FAST_LOOP_SLICE_QUEUE`,
+  `HEU_FAST_LOOP_SLICE_STATE`, `HEU_FAST_LOOP_NEXT_GUARDS`,
+  `HEU_FAST_LOOP_NEXT_ACTION`, `HEU_FAST_LOOP_OPERATOR_NEXT`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_TRIGGERS`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATES`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_GROUPS`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_NEXT`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_PATHS`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARDS`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY`,
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY_DETAIL`,
   `HEU_FAST_LOOP_WORKTREE_SAMPLE` and `HEU_FAST_LOOP_WORKTREE_SCOPE`, then runs
   daily control, current-state inventory and Vietnamese text encoding guards in
-  the default fast mode. The area summary groups dirty paths into `app`,
-  `components`, `docs`, `scripts`, `database` and `other`; area samples show up
-  to three changed paths per area before handoff. Next-guard hints route
-  app/components changes to `--runtime`, docs changes to current-state,
-  implementation-log and Vietnamese text audits, script changes to
+  the default fast mode. The
+  area summary groups dirty paths into `app`, `components`, `docs`, `scripts`,
+  `database` and `other`; area samples show up to three changed paths per area
+  before handoff; area status shows `staged`, `unstaged`, `untracked` and
+  `conflicted` counts per area; top area and slice queue sort dirty areas from
+  largest to smallest with `first_slice` and `first_guard` hints for the
+  largest dirty area before handoff; slice state labels the worktree as `CLEAN`,
+  `SINGLE_AREA_DIRTY`, `MIXED_AREA_DIRTY` or `CONFLICTED`; `-- --help` prints
+  `HEU_FAST_LOOP_HELP`, names `HEU_FAST_LOOP_OPERATOR_NEXT`, explains the
+  operator next format, skips git snapshot, skips guard execution and makes no
+  PASS_LOCAL claim; `-- --snapshot-only` prints `HEU_FAST_LOOP_SNAPSHOT_ONLY`,
+  skips guard execution and makes no PASS_LOCAL claim; next-guard hints route
+  app/components changes to
+  `--runtime`, docs changes to current-state, implementation-log and
+  Vietnamese text audits, report-catalog intake changes to
+  `check:heu-report-catalog-department-intake`, root-drive intake changes to
+  `check:heu-root-drive-department-confirmation-intake`, AI build collision
+  triage changes to `check:heu-ai-build-collision-triage`, Executive landing role gate / STD-01 landing role checker changes to
+  `check:heu-executive-landing-role-gate-readiness`, Executive active focus header / STD-30 dashboard focus metadata changes to
+  `check:heu-executive-active-focus-header-readiness`, Executive operating brain completion / STD-43 operating-brain completion checker changes to
+  `check:heu-executive-operating-brain-completion-readiness`, Executive role/scope focus / STD-23 role-scope checker changes to
+  `check:heu-executive-role-scope-focus-readiness`, Role lane governance / STD-12 role-lane governance checker changes to
+  `check:heu-role-lane-governance`, Executive production blocker triage / STD-28 checker changes to
+  `check:heu-executive-production-blocker-triage-readiness`, Executive priority command strip / STD-29 checker changes to
+  `check:heu-executive-priority-command-strip-readiness`, Executive finance reliance triage / STD-26 finance reliance checker changes to
+  `check:heu-executive-finance-reliance-triage-readiness`, Executive finance reliance fast index / STD-35 finance reliance checker changes to
+  `check:heu-executive-finance-reliance-fast-index-readiness`, Executive finance readonly reliance lock / STD-41 finance readonly reliance lock checker changes to
+  `check:heu-executive-finance-readonly-reliance-lock-readiness`, Executive UAT evidence triage / STD-27 UAT/evidence triage checker changes to
+  `check:heu-executive-uat-evidence-triage-readiness`, Executive UAT evidence fast action / STD-36 UAT/evidence fast-action checker changes to
+  `check:heu-executive-uat-evidence-fast-action-readiness`, Executive UAT evidence acceptance lock / STD-42 UAT/evidence acceptance-lock checker changes to
+  `check:heu-executive-uat-evidence-acceptance-lock-readiness`, Executive report dashboard scope contract / STD-39 report-dashboard scope contract checker changes to
+  `check:heu-executive-report-dashboard-scope-contract-readiness`, Executive report source fast index / STD-33 report source fast-index checker changes to
+  `check:heu-executive-report-source-fast-index-readiness`, Executive report source map triage / STD-24 report source-map triage checker changes to
+  `check:heu-executive-report-source-map-triage-readiness`, Executive global focus shortcuts / STD-19 shortcut checker changes to
+  `check:heu-executive-global-focus-shortcuts-readiness`, Executive global focus compact labels / STD-31 compact-label checker changes to
+  `check:heu-executive-global-focus-compact-labels-readiness`, Executive focus lane separation / STD-20 AppShell lane metadata changes to
+  `check:heu-executive-focus-lane-separation-readiness`, Executive focus mode / STD-17 query-param focus routing changes to
+`check:heu-executive-focus-mode-readiness`, Executive focus next action / STD-18 route-hint checker changes to
+  `check:heu-executive-focus-next-action-readiness`, Executive department role-lane map / STD-32 checker metadata changes to
+  `check:heu-executive-department-role-lane-map-readiness`, Executive focus scoped navigator / STD-22 visible-section checker changes to
+  `check:heu-executive-focus-scoped-navigator-readiness`, Executive Legal SOP required answer index / STD-34 Legal/SOP checker changes to
+  `check:heu-executive-legal-sop-required-answer-index-readiness`, Executive Legal SOP evidence authority queue / STD-40 Legal/SOP checker changes to
+  `check:heu-executive-legal-sop-evidence-authority-queue-readiness`, Executive Legal SOP triage / STD-25 Legal/SOP checker changes to
+  `check:heu-executive-legal-sop-triage-readiness`, Executive dashboard permission matrix / STD-38 permission checker changes to
+  `check:heu-executive-dashboard-permission-matrix-readiness`, TCHC records archive
+  changes to `check:heu-tchc-records-archive-system`, Short Course scope
+  route/workflow/privacy changes to `check:heu-short-course-scope-readiness`,
+  Short Course role/negative-access changes to
+  `check:heu-short-course-role-negative-access`, Short Course final closure
+  gate / P9-11 final-closure checker changes to
+  `check:heu-short-course-final-closure-gate`, Khoa/Giang vien final closure
+  gate / P10-08 final-closure checker changes to
+  `check:heu-khoa-giang-vien-final-closure-gate`, Khoa/Giang vien system
+  reporting handoff / P10-11 system-reporting checker changes to
+  `check:heu-khoa-giang-vien-system-reporting-handoff`, Khoa/Giang vien reports
+  status panel / P10-12 reports-status checker changes to
+  `check:heu-khoa-giang-vien-reports-status-panel`, Khoa/Giang vien owner
+  evidence handoff proof / P10-13 owner-evidence handoff checker changes to
+  `check:heu-khoa-giang-vien-owner-evidence-handoff-proof`, Admissions
+  document review/reporting queue / M05 document-review checker changes to
+  `check:heu-admissions-document-review-queue`, Admissions signed UAT evidence
+  intake / M05 signed-UAT evidence checker changes to
+  `check:heu-admissions-signed-uat-evidence-intake`, Admissions final module
+  closure gate / M05 final-closure checker changes to
+  `check:heu-admissions-final-closure-gate`, accounting module
+  breakdown changes to `check:heu-accounting-module-breakdown`, accounting open
+  blocker queue changes to `check:heu-accounting-open-blocker-action-queue`,
+  accounting no-duplicate ledger changes to
+  `check:heu-accounting-no-duplicate-control-ledger`,
+  script changes to
   `node --check` plus `npx.cmd eslint`, database changes to migration-order and
-  SQL object map audits, and handoff checks to `--strict-worktree`. Runtime mode
-  prints `HEU_FAST_LOOP_RUNTIME_PREFLIGHT` and returns `NO_GO` before
-  lint/build when an active Next dev/build process for this repo or `.next/lock`
-  would make build verification unreliable. Dirty worktree state is
-  `DIRTY_WARN_ONLY` by default so existing changes are preserved, while
-  `-- --security` adds the P0-17/P6-04 user-account security audit and
-  `-- --strict-worktree` returns `NO_GO` for clean handoff checks. The loop then
-  reports `HEU_FAST_LOCAL_LOOP_READY: PASS_LOCAL` or stops at the first `NO_GO`.
+  SQL object map audits, and handoff checks to `--strict-worktree`.
+  `HEU_FAST_LOOP_NEXT_ACTION` picks one first action such as
+  `split_one_slice=required` from the largest dirty area shown by
+  `HEU_FAST_LOOP_TOP_AREA` and `HEU_FAST_LOOP_SLICE_QUEUE` before runtime,
+  script, database, docs or handoff verification. Dynamic next actions may
+  report `dynamic_guards=` with the focused npm checks to run first.
+  `HEU_FAST_LOOP_OPERATOR_NEXT` gives one compact operator-facing action line
+  with `primary`, `commands`, `candidate_manual` and `stop_rule`; when
+  registered dynamic guards are triggered it prints
+  `primary=run_registered_dynamic_guards` while still surfacing the lightweight
+  manual candidate and `one_slice_before_runtime_or_handoff`.
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_TRIGGERS` shows the watched paths that triggered
+  each dynamic guard, or `none` when no registered dynamic guard path changed.
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATES` and
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_PATHS` show touched
+  `scripts/check-heu-*.mjs` files with matching `package.json` npm scripts that
+  are not registered as dynamic guards yet; the companion
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_GROUPS` line groups them by module
+  prefix with counts sorted largest first, for example `accounting`,
+  `short-course` or `tchc`; `HEU_FAST_LOOP_DYNAMIC_GUARD_CANDIDATE_NEXT`
+  selects a lightweight-first guard from the largest candidate group as a
+  concrete manual command, while candidate sample/path output is capped by
+  `sample_limit=8` and ordered by
+  `sample_order=largest_group_lightweight_first`, with
+  `candidate_tier_order=local_static,process_runner,live_env` and
+  `live_env_deferred=true`. The next line uses
+  `selection=largest_group_lightweight_first`, `tie_break=lightweight_first`,
+  `candidate_tier=local_static` when a static checker is available and
+  `run_manually_or_register_dynamic_guard` as the local next action instead
+  of auto-widening full-loop execution. If candidate groups have the same
+  count, the tie-break chooses the lighter checker before an aggregator.
+  Lightweight-first selection prefers module-breakdown, scope-readiness,
+  local-completion and foundation checks before slower or intentionally red
+  full readiness, owner closure or risk closure gates, and it defers live-env
+  or live-DB checks that require `.env.local`, Supabase service role or
+  network/database reads behind local static control checks.
+  `HEU_FAST_LOOP_DYNAMIC_GUARDS` appends focused checks from the registry,
+  currently `check:heu-report-catalog-department-intake` and
+  `check:heu-root-drive-department-confirmation-intake` and
+  `check:heu-ai-build-collision-triage` and
+  `check:heu-executive-landing-role-gate-readiness` and
+  `check:heu-executive-active-focus-header-readiness` and
+  `check:heu-executive-operating-brain-completion-readiness` and
+  `check:heu-executive-role-scope-focus-readiness` and
+  `check:heu-role-lane-governance` and
+  `check:heu-executive-production-blocker-triage-readiness` and
+  `check:heu-executive-priority-command-strip-readiness` and
+  `check:heu-executive-finance-reliance-triage-readiness` and
+  `check:heu-executive-finance-reliance-fast-index-readiness` and
+  `check:heu-executive-finance-readonly-reliance-lock-readiness` and
+  `check:heu-executive-uat-evidence-triage-readiness` and
+  `check:heu-executive-uat-evidence-fast-action-readiness` and
+  `check:heu-executive-uat-evidence-acceptance-lock-readiness` and
+  `check:heu-executive-report-dashboard-scope-contract-readiness` and
+  `check:heu-executive-report-source-fast-index-readiness` and
+  `check:heu-executive-report-source-map-triage-readiness` and
+  `check:heu-executive-global-focus-shortcuts-readiness` and
+  `check:heu-executive-global-focus-compact-labels-readiness` and
+  `check:heu-executive-focus-lane-separation-readiness` and
+  `check:heu-executive-focus-mode-readiness` and
+  `check:heu-executive-focus-next-action-readiness` and
+  `check:heu-executive-department-role-lane-map-readiness` and
+  `check:heu-executive-focus-scoped-navigator-readiness` and
+  `check:heu-executive-legal-sop-required-answer-index-readiness` and
+  `check:heu-executive-legal-sop-evidence-authority-queue-readiness` and
+  `check:heu-executive-legal-sop-triage-readiness` and
+  `check:heu-executive-dashboard-permission-matrix-readiness` and
+  `check:heu-tchc-records-archive-system` and
+  `check:heu-short-course-scope-readiness` and
+  `check:heu-short-course-role-negative-access` and
+  `check:heu-short-course-final-closure-gate` and
+  `check:heu-khoa-giang-vien-signed-uat-evidence-intake` and
+  `check:heu-khoa-giang-vien-final-closure-gate` and
+  `check:heu-khoa-giang-vien-system-reporting-handoff` and
+  `check:heu-khoa-giang-vien-reports-status-panel` and
+  `check:heu-khoa-giang-vien-owner-evidence-handoff-proof` and
+  `check:heu-admissions-document-review-queue` and
+  `check:heu-admissions-signed-uat-evidence-intake` and
+  `check:heu-admissions-final-closure-gate` and
+  `check:heu-accounting-module-breakdown` and
+  `check:heu-accounting-negative-control-owner-action-queue` and
+  `check:heu-accounting-open-blocker-action-queue` and
+  `check:heu-accounting-no-duplicate-control-ledger`, when the touched slice includes the
+  matching intake, Drive, AI build collision triage doc/checker files, Executive STD-01 landing role checker files, Executive STD-30 dashboard focus metadata doc/checker/component files, Executive STD-43 operating-brain completion checker files, Executive STD-23 role-scope focus checker files, Role lane governance STD-12 checker files, Executive STD-28 production blocker triage checker files, Executive STD-29 priority command strip checker files, Executive STD-26 finance reliance checker metadata files, Executive STD-35 finance reliance checker files, Executive STD-41 finance readonly reliance lock checker files, Executive STD-27 UAT/evidence triage checker files, Executive STD-36 UAT/evidence fast-action checker files, Executive STD-42 UAT/evidence acceptance lock checker files, Executive STD-39 report-dashboard scope contract checker files, Executive STD-33 report source fast-index checker files, Executive STD-24 report source-map triage checker files, Executive STD-19 shortcut checker files, Executive STD-31 compact-label checker files, Executive STD-20 AppShell lane metadata files, Executive STD-17 query-param focus route/checker files, Executive STD-18 route-hint checker files, Executive STD-32 checker metadata files, Executive STD-22 visible-section checker files, Executive STD-34 Legal/SOP required-answer checker files, Executive STD-40 Legal/SOP evidence-authority queue checker files, Executive STD-25 Legal/SOP triage checker files, Executive STD-38 dashboard permission matrix checker files, TCHC records archive doc/checker/route/SQL files or
+  Short Course route/workflow/privacy files or Short Course role/negative-access files or
+  Short Course P9-11 final-closure checker files or
+  Khoa/Giang vien P10-07 signed-UAT evidence checker files or
+  Khoa/Giang vien P10-08 final-closure checker files or
+  Khoa/Giang vien P10-11 system-reporting checker files or
+  Khoa/Giang vien P10-12 reports-status checker files or
+  Khoa/Giang vien P10-13 owner-evidence handoff checker files or
+  Admissions M05 document-review checker files or
+  Admissions M05 signed-UAT evidence checker files or
+  Admissions M05 final-closure checker files or
+  accounting breakdown/ledger/checker files or accounting negative-control owner-action queue doc/checker files or
+  accounting open-blocker files or no-duplicate SQL/audit ledger files.
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY` prints `READY` only when dynamic guard
+  names, hints and watched paths are unique, watched files exist and matching
+  `package.json` npm scripts are present; the companion
+  `HEU_FAST_LOOP_DYNAMIC_GUARD_REGISTRY_DETAIL` line lists each guard name and
+  watched path count; `NO_GO` stops before widening scope.
+  Runtime mode prints
+  `HEU_FAST_LOOP_RUNTIME_PREFLIGHT` and `HEU_FAST_LOOP_RUNTIME_BLOCKERS`, then
+  returns `NO_GO` before lint/build when an active Next dev/build process for
+  this repo or `.next/lock` would make build verification unreliable. Blocker
+  details list safe local process summaries such as `pid=1234:next-dev`,
+  `pid=1234:next-server`, `pid=1234:next-dev-worker` or
+  `pid=1234:npm-run-dev` so IT can close the right localhost dev process before
+  rerunning `--runtime`. Dirty worktree state is `DIRTY_WARN_ONLY` by default
+  so existing changes are preserved, while `-- --security` adds the
+  P0-17/P6-04 user-account security audit and `-- --strict-worktree` returns
+  `NO_GO` for clean handoff checks. The loop then reports
+  `HEU_FAST_LOCAL_LOOP_READY: PASS_LOCAL` or stops at the first `NO_GO`.
 - Verification: `npm.cmd run check:heu-fast-local-loop`;
   `npm.cmd run check:heu-it-data-daily-control`;
   `npm.cmd run audit:heu-current-state-inventory`;
   `npm.cmd run audit:heu-implementation-log`; run
   `npm.cmd run check:heu-fast-local-loop -- --runtime` only when UI, route,
-  server-action or shared runtime code changed; run
+  server-action or shared runtime code changed and no local Next dev/build
+  process or `.next/lock` blocks build verification; run
   `npm.cmd run check:heu-fast-local-loop -- --security` only when the current
   slice touches P0-17/P6-04 user, role, password or cutover controls.
 - Boundary: This is local read-only control-loop packaging only. It does not
@@ -979,6 +5383,31 @@
   PASS_LOCAL handoff.
 - Boundary: This is local signed UAT evidence intake packaging only. It does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-04 - M06 CTHSSV Owner Closure Ledger
+
+- Scope: Added the PASS_LOCAL_OWNER_CLOSURE_LEDGER for remaining CTHSSV owner
+  closure rows while preserving other-module boundaries.
+- Changed: `docs/HEU_CTHSSV_OWNER_CLOSURE_LEDGER_20260704.md`,
+  `app/cthssv/page.tsx`, `scripts/audit-heu-cthssv-module-readiness.mjs`,
+  `scripts/check-heu-cthssv-local-completion.mjs`,
+  `docs/HEU_CTHSSV_MODULE_COMPLETION_BREAKDOWN_20260703.md`,
+  `docs/HEU_CTHSSV_FINAL_MODULE_CLOSURE_GATE_20260703.md`,
+  `docs/HEU_CTHSSV_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md`,
+  `docs/HEU_CTHSSV_SIGNED_UAT_EVIDENCE_INTAKE_20260703.md`,
+  `docs/HEU_CTHSSV_PASS_LOCAL_REVIEW_DOSSIER_20260703.md`,
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`, `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md`.
+- Result: CTHSSV-CLOSURE-01 through CTHSSV-CLOSURE-08 now route signed owner
+  UAT, role/negative-access closure, controlled evidence/audit trace, signed
+  UAT evidence intake closure, signed final module closure, handover reliance
+  decision, finance gate proof and final owner quorum into
+  CTHSSV_OWNER_CLOSURE_READY / NO_GO / BLOCKED.
+- Verification: `npm.cmd run audit:heu-cthssv-module-readiness`; run
+  `npm.cmd run check:heu-cthssv-local-completion -- --runtime` before final
+  PASS_LOCAL handoff.
+- Boundary: This is local owner closure ledger packaging only. It does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO/NO-GO or mark production GO.
+
 ## 2026-07-03 - M06 CTHSSV PASS_LOCAL Review Dossier
 
 - Scope: Added the PASS_LOCAL_REVIEW_DOSSIER for local CTHSSV reviewer
@@ -1035,6 +5464,203 @@
   before final PASS_LOCAL handoff.
 - Boundary: This is local owner-signoff manifest packaging only. It does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - P10-02 Khoa Giang Vien Delivery Source Map
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_DELIVERY_SOURCE_MAP_20260703.md` as the
+  DRAFT_CONTROL source map for `RV_KHOA_GIANG_VIEN_DELIVERY`.
+- The source map defines KHOA-SRC-01 through KHOA-SRC-08, KHOA-DQ-01 through
+  KHOA-DQ-08, KHOA-RV-EVID-01 through KHOA-RV-EVID-06,
+  `KHOA_DELIVERY_SOURCE_READY / NO_GO / BLOCKED` and
+  `RV_KHOA_GIANG_VIEN_DELIVERY / NO_GO / BLOCKED`.
+- Updated Report View Register, Report View Source Map, Data Master / Report
+  View Compatibility and SQL Object Master Map so Khoa/Giang vien has
+  FACULTY_DEPARTMENT_MASTER, TEACHER_PROFILE_MASTER and TEACHING_DELIVERY_MASTER
+  planning entries without running a production migration.
+- Extended `/khoa` with the read-only P10-02 source-map panel and added
+  `scripts/check-heu-khoa-giang-vien-source-map.mjs` plus
+  `check:heu-khoa-giang-vien-source-map` to guard the docs, UI and propagation.
+- PASS_LOCAL boundary: this does not approve class delivery reliance, teacher
+  profile reliance, teaching completion, attendance lock, teaching payment,
+  payroll, evidence acceptance, UAT acceptance, report-view reliance, owner
+  GO/NO-GO or production GO.
+- Boundary token: does not approve teaching payment.
+
+## 2026-07-03 - TRN-09/TRN-10 Short Course Evidence Trace And Owner Closure Alignment
+
+- Updated `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` so
+  TRN-09 uses `docs/HEU_SHORT_COURSE_UAT_RESULT_LEDGER_TEMPLATE_20260703.md`
+  as the PASS_LOCAL_TEMPLATE for SC-UAT-LEDGER-01 through
+  SC-UAT-LEDGER-08, SC-REV-06 and SC-UAT-08 controlled evidence trace rows.
+- Updated TRN-10 so `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md`
+  plus the UAT result ledger are the PASS_LOCAL_TEMPLATE for
+  `SHORT_COURSE_OWNER_READY / NO_GO / BLOCKED`, SC-SIGN-01 through SC-SIGN-06
+  and final owner/UAT closure planning.
+- Propagated the TRN-09/TRN-10 local-template conclusion through backlog,
+  current-state and framework review references while keeping real operation
+  NO-GO until signed owner/UAT evidence exists outside Git/Codex/chat.
+- Verification target: `npm.cmd run check:heu-training-module-completion-breakdown`.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve access closure, approve report-view reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not execute UAT.
+
+## 2026-07-03 - TRN-08 Short Course Role Negative Access Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-08 role scope and
+  negative-access UAT preparation.
+- The checklist defines SC-ROLE-EVID-01 through SC-ROLE-EVID-06 and
+  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED` for Short Course route
+  guards, SHORT-SCOPE-APP-GUARD, SHORT-SCOPE-WORKFLOWS,
+  SHORT-SCOPE-ACTOR-LINK, negative-control denial, P6-04 role-scope UAT
+  alignment and P0-17 access closure handoff.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-role-negative-access="TRN-08_ROLE_NEGATIVE_ACCESS"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-08 role/negative-access boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, grant access, broaden scope, accept negative-control proof, accept role UAT, accept evidence, approve access closure, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not create accounts.
+
+## 2026-07-03 - TRN-08 Short Course Role Negative Access Dedicated Checker
+
+- Added `scripts/check-heu-short-course-role-negative-access.mjs` and
+  `check:heu-short-course-role-negative-access` so the TRN-08 role
+  negative-access packet can be checked directly before any Short Course
+  read-only user test or access-closure discussion.
+- The checker verifies
+  `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`,
+  SC-ROLE-EVID-01 through SC-ROLE-EVID-06,
+  `SC_ROLE_NEGATIVE_ACCESS_READY / NO_GO / BLOCKED`, the `/short-course`
+  role/negative-access panel, `SHORT-SCOPE-APP-GUARD`,
+  `SHORT-SCOPE-WORKFLOWS`, `SHORT-SCOPE-ACTOR-LINK`, the negative-control
+  queue dependency, P6-04 role-scope dependency and production checklist
+  propagation.
+- Updated `scripts/check-heu-training-module-completion-breakdown.mjs` so the
+  training module completion check now requires the dedicated TRN-08 checker.
+- This is local checker packaging only. It does not create accounts, assign
+  real users, grant access, broaden scope, accept negative-control proof,
+  accept role UAT, accept evidence, approve access closure, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Short Course External Owner Action Queue
+
+- Added `docs/HEU_SHORT_COURSE_EXTERNAL_OWNER_ACTION_QUEUE_20260703.md` as the
+  PASS_LOCAL_OWNER_ACTION_QUEUE for the remaining Short Course / Day Nghe
+  real-operation blockers after TRN-00 through TRN-10 local packaging.
+- The queue defines `SC_EXTERNAL_OWNER_ACTION_READY / NO_GO / BLOCKED` and
+  SC-OWNER-ACTION-01 through SC-OWNER-ACTION-08 for attendance lock,
+  BHXH/chinh sach, meal/allowance, invoice/payment, report-view source
+  reconciliation, role/negative-access UAT, UAT result ledger completion and
+  final owner GO/NO-GO.
+- Added `scripts/check-heu-short-course-external-owner-action-queue.mjs` and
+  `check:heu-short-course-external-owner-action-queue` so the owner-action
+  queue, training breakdown linkage, gap-pack linkage and local-only boundary
+  cannot silently disappear.
+- Linked the queue from the Short Course gap pack and training module
+  completion breakdown while keeping real operation at NO-GO until signed owner
+  and UAT evidence exists outside Git/Codex/chat.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
+  payment, approve teacher payment, verify invoice/payment, approve report-view
+  reliance, grant access, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - TRN-07 Short Course Report View Source Reconciliation Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-07 report-view source
+  reconciliation UAT preparation.
+- The checklist defines SC-RV-EVID-01 through SC-RV-EVID-06 and
+  `SC_REPORT_VIEW_SOURCE_RECONCILIATION_READY / NO_GO / BLOCKED` for the
+  `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` source-map row, DQ-RV-06 linkage,
+  upstream TRN-03 through TRN-06 blocker alignment, SC-UAT-06 signoff-blocked
+  proof, SC-SIGN-05 owner decision and RV-EVID-05 evidence attachment queue.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-report-view-source-reconciliation="TRN-07_REPORT_VIEW_SOURCE_RECONCILIATION"`
+  and propagated the checklist through the Short Course gap pack, Report View
+  source map, training module breakdown, backlog, current-state, module
+  readiness and production checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-07 report-view source reconciliation boundary cannot silently
+  disappear.
+- PASS_LOCAL boundary: this does not approve report-view reliance, approve dashboard reliance, accept DQ evidence, accept source reconciliation, execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not approve report-view reliance.
+
+## 2026-07-03 - TRN-06 Short Course Invoice Payment Verification Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-06 invoice/payment verification
+  UAT preparation.
+- The checklist defines SC-PAY-EVID-01 through SC-PAY-EVID-06 and
+  `SC_INVOICE_PAYMENT_VERIFICATION_READY / NO_GO / BLOCKED` for invoice source
+  scope, payment/voucher match, reversal rule, period-lock rule, SC-UAT-05
+  verification evidence and SC-SIGN-04 blocked-verification owner decision.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-invoice-payment-verification="TRN-06_INVOICE_PAYMENT_VERIFICATION"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-06 invoice/payment verification boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not verify invoice/payment, post voucher,
+  approve payment, approve reversal, close period, create statutory accounting effect,
+  accept evidence, execute UAT, approve owner GO/NO-GO or mark production GO.
+- Boundary token: does not verify invoice/payment.
+
+## 2026-07-03 - TRN-05 Short Course Meal Allowance Payment Boundary Checklist
+
+- Added
+  `docs/HEU_SHORT_COURSE_MEAL_ALLOWANCE_PAYMENT_BOUNDARY_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-05 meal/allowance and HR
+  payment boundary UAT preparation.
+- The checklist defines SC-MEAL-EVID-01 through SC-MEAL-EVID-06 and
+  `SC_MEAL_ALLOWANCE_BOUNDARY_READY / NO_GO / BLOCKED` for formula version,
+  locked attendance source, TRN-04 policy dependency, exception handling,
+  SC-UAT-04 design-only evidence and SC-SIGN-03 blocked-payment owner decision.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-meal-allowance-boundary="TRN-05_MEAL_ALLOWANCE_PAYMENT_BOUNDARY"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-05 meal/allowance and HR payment boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not calculate allowance, approve
+  meal/allowance, approve HR payment, approve teacher payment, create payroll
+  effect, accept evidence, execute UAT, approve owner GO/NO-GO or mark
+  production GO.
+- Boundary token: calculate allowance; approve meal/allowance; approve HR
+  payment; approve teacher payment; create payroll effect; owner GO/NO-GO.
+
+## 2026-07-03 - TRN-04 Short Course BHXH Policy Decision Checklist
+
+- Added `docs/HEU_SHORT_COURSE_BHXH_POLICY_DECISION_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-04 BHXH/chinh sach decision
+  UAT preparation.
+- The checklist defines SC-BHXH-EVID-01 through SC-BHXH-EVID-06 and
+  `SC_BHXH_POLICY_DECISION_READY / NO_GO / BLOCKED` for policy case scope,
+  eligibility basis, legal/SOP review, SC-UAT-03 evidence refs, SC-SIGN-02
+  owner/legal decision and downstream payment/report blocks.
+- Added the read-only `/short-course` panel with
+  `data-heu-short-course-bhxh-policy-decision="TRN-04_BHXH_POLICY_DECISION"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-04 BHXH/chinh sach decision boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not approve BHXH/chinh sach, decide
+  eligibility, create policy effect, accept evidence, execute UAT, approve
+  payment, approve owner GO/NO-GO or mark production GO.
+- Boundary token: decide eligibility; create policy effect; approve payment;
+  owner GO/NO-GO.
+
 ## 2026-07-03 - M06 CTHSSV UAT Result Ledger Template
 
 - Scope: Added the PASS_LOCAL template for M06 CTHSSV student/profile handover
@@ -1053,6 +5679,64 @@
   before final PASS_LOCAL handoff.
 - Boundary: This is local ledger-template packaging only. It does not execute UAT, accept evidence, approve enrollment, approve handover reliance, create student finance facts, approve finance action, approve owner GO/NO-GO or mark production GO.
 
+## 2026-07-03 - P3 Backlog UAT Execution Pack Release-Gate Repair
+
+- Corrected the P3-02 backlog wording so the release-gate required phrase
+  `signed role-scope UAT and handover decision still required` remains intact
+  while preserving the separate CTHSSV owner UAT blocker.
+- PASS_LOCAL boundary: this is backlog/log wording repair only. It does not
+  execute UAT, accept evidence, approve handover reliance, create finance facts,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P10-01 Khoa Giang Vien Gap Pack
+
+- Added `docs/HEU_KHOA_GIANG_VIEN_GAP_PACK_20260703.md` and
+  `docs/HEU_KHOA_GIANG_VIEN_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
+  M08 Khoa/Giang vien PASS_LOCAL foundation.
+- Added `components/khoa/khoa-giang-vien-gap-pack.tsx` and `app/khoa/page.tsx`
+  so `/khoa` exposes KHOA-GV-01 through KHOA-GV-08, KHOA-REV-01 through
+  KHOA-REV-06, KHOA-SIGN-01 through KHOA-SIGN-06 and KHOA-UAT-LEDGER-01 through
+  KHOA-UAT-LEDGER-08 with `KHOA_GV_READY / NO_GO / BLOCKED`,
+  `KHOA_REVIEW_READY / NO_GO / BLOCKED`, `KHOA_OWNER_READY / NO_GO / BLOCKED`
+  and `KHOA_UAT_RESULT_READY / NO_GO / BLOCKED`.
+- Added `scripts/check-heu-khoa-giang-vien-foundation.mjs` and
+  `check:heu-khoa-giang-vien-foundation` to verify the docs, UI route,
+  AppShell navigation, current-state, backlog and gap-matrix propagation.
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md` so M08 is no
+  longer an undefined early placeholder; it is a controlled PASS_LOCAL
+  foundation that still requires signed Khoa/Giang vien UAT, teacher profile
+  privacy approval, source reconciliation, owner signoff manifest completion and
+  report-view owner signoff before reliance.
+- This is Khoa/Giang vien control packaging only. It does not approve class
+  delivery reliance, teacher profile reliance, teaching completion, attendance
+  lock, teaching payment, payroll, evidence acceptance, UAT acceptance, owner
+  GO/NO-GO or production GO.
+- Boundary token: does not approve class delivery reliance.
+
+## 2026-07-03 - TRN-03 Short Course Attendance Lock Evidence Checklist
+
+- Added `docs/HEU_SHORT_COURSE_ATTENDANCE_LOCK_EVIDENCE_CHECKLIST_20260703.md`
+  as the DRAFT_CONTROL evidence packet for TRN-03 attendance lock and
+  exception-route UAT preparation.
+- The checklist defines SC-LOCK-EVID-01 through SC-LOCK-EVID-06 and
+  `SC_ATTENDANCE_LOCK_EVIDENCE_READY / NO_GO / BLOCKED` for class/session
+  scope, lock state, signer, exception route, SC-UAT-01/02 evidence refs and
+  SC-SIGN-01 owner decision before finance reliance.
+- Added the visible `/short-course` panel with
+  `data-heu-short-course-attendance-lock-evidence="TRN-03_ATTENDANCE_LOCK_EVIDENCE"`
+  and propagated the checklist through the Short Course gap pack, training
+  module breakdown, backlog, current-state, module readiness and production
+  checklist references.
+- Extended `audit:heu-short-course-attendance-payment-gap-pack`,
+  `check:heu-training-module-completion-breakdown` and release-gate coverage so
+  the TRN-03 attendance-lock evidence boundary cannot silently disappear.
+- PASS_LOCAL boundary: this does not lock attendance, approve attendance, alter
+  attendance, accept evidence, execute UAT, approve payment, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary token: alter attendance; owner GO/NO-GO.
+
 ## 2026-07-03 - M06 CTHSSV Cockpit Readiness
 
 - Scope: Built the M06 CTHSSV PASS_LOCAL cockpit for student/profile handover readiness.
@@ -1060,6 +5744,950 @@
 - Result: `/cthssv` reads existing Step38 `lead_handovers` plus scoped lead/document signals, exposes M06_CTHSSV quick access, handover queue, profile gap focus, CTHSSV_PROFILE_READY / NO_GO / BLOCKED acceptance and decision controls, and CTHSSV_UAT_RESULT_READY / NO_GO / BLOCKED result ledger.
 - Verification: `npm.cmd run audit:heu-cthssv-module-readiness`; run lint/build before final PASS_LOCAL handoff.
 - Boundary: This is local cockpit/readiness packaging only. It does not execute UAT, accept evidence, approve enrollment, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P9-02 Dao Tao Training Module Completion Breakdown
+
+- Added `docs/HEU_TRAINING_MODULE_COMPLETION_BREAKDOWN_20260703.md` as the
+  PASS_LOCAL_BREAKDOWN map for M07 Dao Tao and P9-01 Short Course / Day Nghe.
+- The breakdown splits the training module into TRN-00 through TRN-10 covering
+  baseline scope, workspace scope, student/class/enrollment chain, attendance
+  lock, BHXH/chinh sach, meal/allowance, invoice/payment, report-view signoff,
+  role/negative-access, audit trace and owner closure.
+- Added `scripts/check-heu-training-module-completion-breakdown.mjs` and
+  `npm.cmd run check:heu-training-module-completion-breakdown` so the local
+  training work order and `TRAINING_MODULE_READY / NO_GO / BLOCKED` boundary
+  cannot silently disappear.
+- Propagated the training completion route into current-state, system backlog,
+  module readiness, framework review and production checklist references.
+- PASS_LOCAL boundary: this is training module control packaging only. It does
+  not approve class operation, attendance lock, BHXH decision, payment,
+  evidence acceptance, UAT acceptance, owner GO/NO-GO or production GO.
+- Boundary token: does not approve class operation.
+
+## 2026-07-03 - P3-01 Pipeline Follow-up Scope Readiness Check
+
+- Added `scripts/check-heu-pipeline-followup-scope-readiness.mjs` and
+  `npm.cmd run check:heu-pipeline-followup-scope-readiness` as a read-only
+  Supabase readiness check.
+- The checker validates active leads, open follow-ups, lead activities,
+  admission segment links, actor profile links and terminal-lead follow-up
+  closure while hashing sample labels and hiding secrets/raw IDs.
+- PASS_LOCAL boundary: this is read-only data quality and scope-readiness
+  evidence only. It does not write lead or follow-up data, accept UAT/evidence,
+  grant access, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs
+
+- Converted the business-entry area in
+  `components/segments/segment-workspace-guide.tsx` into focused tabs so HOU,
+  TTGDTX, short-course and general admission segment workspaces show the
+  selected work item in one panel instead of equal-weight cards.
+- The guide exposes `data-heu-segment-workspace-guide-focus="P0-05_WORKSPACE_GUIDE_FOCUS"`,
+  `data-heu-segment-workspace-guide-tabs="P0-05_WORKSPACE_GUIDE_TABS"`,
+  `data-heu-segment-workspace-guide-panel="P0-05_WORKSPACE_GUIDE_PANEL"` and
+  `data-heu-segment-workspace-guide-overflow-guard="P0-05_WORKSPACE_GUIDE_NO_OVERFLOW"`.
+- Added `role="tablist"`, `role="tab"`, `role="tabpanel"`, Arrow/Home/End
+  keyboard navigation, `min-w-0`, `overflow-hidden`, `truncate`,
+  `break-words`, `aria-label` and `title` coverage so the selected business
+  item is clear and long labels stay contained.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the workspace-guide focus tabs
+  and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is selected-segment navigation/readability
+  hardening only. It does not create lead records, import data,
+  change role scope, broaden segment access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P1-11 Global Search No-Overflow Guard
+
+- Hardened the global AppShell search form in `components/layout/app-shell.tsx`
+  with `data-heu-global-quick-access-overflow-guard="P1-11_GLOBAL_SEARCH_NO_OVERFLOW"`
+  alongside `data-heu-global-quick-access="P1-11_SEARCH"`.
+- Added `overflow-hidden`, `shrink-0`, `aria-label` and `title` coverage so
+  the header search input and submit control stay contained on narrow screens.
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` and extended
+  `scripts/audit-ttgdtx-process-labels.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the global search no-overflow
+  marker fails locally if removed.
+- PASS_LOCAL boundary: this is read-only search/navigation hardening only. It
+  does not write search data, create lead records, change role scope,
+  grant access, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Segment Action Strip No-Overflow Guard
+
+- Hardened the top action strip in `app/segments/[id]/page.tsx` with
+  `data-heu-segment-workspace-action-strip="P0-05_SEGMENT_ACTION_STRIP"` and
+  `data-heu-segment-workspace-action-strip-overflow-guard="P0-05_SEGMENT_ACTION_STRIP_NO_OVERFLOW"`.
+- The guarded strip keeps the main segment actions visible for lead list, create
+  lead, import and business hub access without stretching the selected segment
+  workspace.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `line-clamp-2`,
+  `break-words`, `aria-label` and `title` coverage so long segment/action text
+  stays readable and contained.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the segment action strip and
+  no-overflow marker fail locally if removed.
+- PASS_LOCAL boundary: this is selected-segment navigation and no-overflow
+  hardening only. It does not create lead records, import data, change role scope,
+  broaden segment access, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard
+
+- Tightened `components/settings/position-assignment-matrix.tsx` so the
+  position matrix quick-access surface now exposes
+  `data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"`
+  alongside `data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"`.
+- Preserved the existing `data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"`
+  and guarded layout tokens `min-w-0`, `overflow-hidden`, `overflow-x-auto`,
+  `truncate`, `break-words` and `shrink-0`.
+- Extended `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the position quick-access
+  no-overflow marker fails locally if removed.
+- PASS_LOCAL boundary: this is read-only position-matrix navigation/display hardening only. It does not create accounts, send passwords, grant access, change role scope, approve role assignments for production, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard
+
+- Hardened `components/settings/user-access-workflow-guide.tsx` with
+  `data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"` and
+  `data-heu-user-access-workflow-overflow-guard="P0-17_USER_ACCESS_WORKFLOW_NO_OVERFLOW"`.
+- The guide stays mounted before `RealUserOnboardingPanel` and `UserCreateForm`
+  on `/settings` and `/settings/scopes`, so operators see the account workflow
+  and password-safety rules before using create/link forms.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words` and `shrink-0`
+  guards so long workflow/rule text stays inside the read-only guide.
+- Extended `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the guide marker, no-overflow
+  guard and mount order fail locally if removed.
+- PASS_LOCAL boundary: this is read-only account-workflow guidance and no-overflow hardening only. It does not create accounts, send passwords, grant access, change role scope, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P1-11 Search Route Shortcuts
+
+- Added `SearchRouteShortcuts` in `app/search/page.tsx` so users can open
+  daily work surfaces from `/search` even before they know the right keyword or
+  when a query returns no result.
+- The shortcuts cover workspace-scoped lead list, follow-up, documents and
+  pipeline, plus `/audit` and `/master-control`.
+- The panel exposes `data-heu-search-route-shortcuts="P1-11_SEARCH_ROUTE_SHORTCUTS"`,
+  `data-heu-search-route-shortcuts-overflow-guard="P1-11_SEARCH_ROUTE_SHORTCUTS_NO_OVERFLOW"`
+  and `data-heu-search-anchor-nav="leads followups documents pipeline audit master-control"`.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `line-clamp-2`,
+  `break-words`, `aria-label` and `title` guards so long route labels or
+  workspace notes do not stretch the search page.
+- Extended `scripts/audit-ttgdtx-process-labels.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the search route shortcuts fail
+  locally if removed.
+- PASS_LOCAL boundary: this is read-only search/navigation hardening only. It
+  does not write search data, create lead records, update follow-up or pipeline
+  status, change role scope, grant access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Segment Quick Access No-Overflow Guard
+
+- Tightened `components/segments/segment-operating-readiness.tsx` so the
+  selected segment workspace quick-access strip now exposes
+  `data-heu-segment-quick-access-overflow-guard="P0-05_WORKSPACE_QUICK_ACCESS_NO_OVERFLOW"`
+  alongside `data-heu-segment-quick-access="P0-05_WORKSPACE_QUICK_ACCESS"`.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `aria-label` and `title`
+  coverage to the Lead list, create Lead and import quick links so long
+  segment operation names stay inside the guarded strip and remain readable to
+  assistive/browser tooling.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-ttgdtx-release-gates.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the segment quick-access
+  no-overflow marker and link labels fail locally if removed.
+- PASS_LOCAL boundary: this is selected-segment navigation and no-overflow
+  hardening only. It does not create leads, import data, change role scope,
+  broaden segment access, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P8-01 HOU Scope Readiness Guard
+
+- Updated `app/hou/page.tsx` so `/hou` reads leads through
+  `getAdmissionWorkspaceContext`, `admissionWorkspaceSegmentIds` and
+  `applyAdmissionSegmentIds`, preserves `workspaceReturnTo`, and scopes HOU COM
+  payment-line/payment-batch reads back to visible HOU claim lines.
+- Updated `app/hou/actions.ts` so HOU COM claim review, payment-batch creation
+  and payment-batch status updates call `getHouClaimsWorkspaceScopeError` or
+  `getHouClaimLinesWorkspaceScopeError` before writes, requiring
+  `can_use_admission_workspace` plus `can_access_business_scope`.
+- Added `scripts/check-heu-hou-scope-readiness.mjs` and
+  `check:heu-hou-scope-readiness` for local, redacted HOU scope checks with
+  `HOU-SCOPE-APP-GUARD`, `HOU-SCOPE-LEAD-TAG`,
+  `HOU-SCOPE-PAYMENT-LINES` and related readiness statuses.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the HOU
+  scope guard, checker, Slice 10 and no-approval boundary fail locally if
+  removed.
+- PASS_LOCAL boundary: this is HOU scope-readiness hardening only. It does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO.
+
+## 2026-07-03 - P0-15 SOP State Backlog Matrix Propagation
+
+- Propagated the source SOP done checkpoint and checkpoint evidence matrix into
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` and
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`.
+- The routing docs now carry PASS_LOCAL done checkpoints, checkpoint evidence matrix, owner lane/source, checked artifact, record field and local stop rule before any slice can be reported `PASS_LOCAL`.
+- Extended `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so state/backlog/gap propagation
+  fails locally if those SOP routing tokens are omitted.
+- PASS_LOCAL boundary: this is SOP state/backlog/matrix propagation metadata only. It does not provide legal advice,
+  issue official SOP, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Detail Quick Access No-Overflow Guard
+
+- Tightened the read-only quick-access strip in `app/leads/[id]/page.tsx` with
+  `data-heu-lead-detail-quick-access="P0-05_LEAD_DETAIL_QUICK_ACCESS"` and
+  `data-heu-lead-detail-quick-access-overflow-guard="P0-05_LEAD_DETAIL_QUICK_ACCESS_NO_OVERFLOW"`.
+- Added `min-w-0`, `overflow-hidden`, `overflow-x-auto`, `shrink-0`,
+  `max-w-44`, `truncate`, `aria-label` and `title` coverage so long quick-open
+  labels stay inside the strip while remaining reachable.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the lead-detail quick-access
+  marker and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is lead-detail navigation and no-overflow hardening
+  only. It does not create lead records, write lead data, update lead status,
+  bypass P0-19, grant access, change role scope, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P5-02 Reports Overview No-Overflow Guard
+
+- Tightened `components/reports/reports-overview.tsx` so the read-only reports
+  overview has an explicit
+  `data-heu-reports-overview="P5-02_REPORTS_OVERVIEW"` marker and
+  `data-heu-reports-overview-overflow-guard="P5-02_REPORTS_OVERVIEW_NO_OVERFLOW"`.
+- Added `min-w-0`, `overflow-hidden`, `break-words`, `max-w-full` and
+  `max-w-xs` guards around KPI cards, report labels, counselor names and the
+  quick interpretation badge so long labels wrap inside the existing report
+  surface.
+- Extended `scripts/audit-heu-data-foundation.mjs` so the reports overview
+  marker, no-overflow guard and guarded text containers fail locally if removed.
+- PASS_LOCAL boundary: this is read-only report overview display hardening only.
+  It does not change report data, approve dashboard reliance, accept evidence,
+  execute UAT, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - P0-15 SOP Checkpoint Evidence Matrix Guard
+
+- Added a checkpoint evidence matrix to the source SOP loop in
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`.
+- The matrix maps `SOP-01` through `SOP-06` to owner lane/source, checked artifact,
+  record field and local stop rule so operators can prove check,
+  professional, legal/SOP, logic/data, verification and next-slice decisions
+  before reporting `PASS_LOCAL`.
+- It links the checkpoints to `SOP-CHECK`, `SOP-SCOPE`,
+  `SOP-PROFESSIONAL`, `SOP-LEGAL`, `SOP-LOGIC`, `SOP-VERIFY`,
+  `SOP-RESULT` and `SOP-NEXT`.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the source SOP
+  checkpoint evidence matrix and this log fail locally if the owner/artifact
+  matrix is omitted.
+- PASS_LOCAL boundary: this is SOP checkpoint evidence metadata only. It does not provide legal advice,
+  issue official SOP, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-13 Global Workspace Quick Strip
+
+- Expanded the shared workspace strip in `components/layout/app-shell.tsx` so
+  every guarded app page can open the daily workspace actions without returning
+  to the dashboard first.
+- The strip now covers workspace, lead list, create lead, follow-up, documents,
+  pipeline, import, segment hub and reports through the active `segment`
+  parameter using `withAdmissionSegmentParam`.
+- The strip exposes `data-heu-workspace-quick-links="P0-13_WORKSPACE_QUICK_LINKS"`,
+  `data-heu-workspace-quick-open="P0-13_WORKSPACE_QUICK_OPEN_DAILY"`,
+  `data-heu-workspace-quick-links-overflow-guard="P0-13_WORKSPACE_QUICK_LINKS_NO_OVERFLOW"`
+  and `data-heu-workspace-anchor-nav="workspace leads create followups documents pipeline import hub reports"`.
+- The quick links use a compact horizontal strip with `overflow-x-auto`,
+  `min-w-max`, `overflow-hidden`, `truncate`, `aria-label` and `title` so long
+  workspace labels do not stretch the header or hide the active page content.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the global quick strip and
+  no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is read-only workspace navigation/display hardening
+  only. It does not create lead records, import data, update pipeline/follow-up,
+  change role scope, grant access, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP PASS_LOCAL Definition-Of-Done Guard
+
+- Added a `PASS_LOCAL` / done checkpoint to the source SOP loop in
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`.
+- The checkpoint requires `SOP-01 CHECKED`, `SOP-02 PROFESSIONAL_CHECKED`,
+  `SOP-03 LEGAL_SOP_CHECKED`, `SOP-04 LOGIC_DATA_CHECKED`,
+  `SOP-05 VERIFIED_LOCAL` and `SOP-06 NEXT_DECIDED` before a slice can be
+  reported `PASS_LOCAL`.
+- It also requires `NO_GO` or `BLOCKED` instead of `PASS_LOCAL` when any done
+  checkpoint is false or missing, and blocks dependent steps until the blocker
+  is resolved.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the source SOP
+  definition-of-done text and this log fail locally if the done checkpoint is
+  omitted.
+- PASS_LOCAL boundary: this is SOP definition-of-done metadata only. It does not provide legal advice,
+  issue official SOP, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Stop/Continue Example Alignment
+
+- Added stop/continue examples to the source SOP slice result templates in
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`.
+- The examples clarify when `SOP-RESULT` is `PASS_LOCAL`, `NO_GO` or `BLOCKED`,
+  and how `SOP-NEXT` must name either the next small slice or the smallest blocker.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the source SOP
+  examples and this log fail locally if the stop/continue examples are omitted.
+- PASS_LOCAL boundary: this is SOP stop/continue example metadata only. It does not provide legal advice,
+  issue official SOP, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P6-03 Audit Focus Panel
+
+- Added `components/audit/audit-focus-panel.tsx` so `/audit` can show one
+  focused audit group at a time instead of rendering every guard and the full
+  audit table in one long page.
+- Updated `app/audit/page.tsx` to wrap the existing audit guards in
+  `AuditFocusPanel`, with groups for evidence redaction, P6-03 traceability,
+  P6-06 hard-delete/cascade and recent audit logs.
+- The panel exposes `data-heu-audit-focus-panel="P6-03_AUDIT_FOCUS_PANEL"`,
+  `data-heu-audit-focus-tabs="P6-03_AUDIT_FOCUS_TABS"`,
+  `data-heu-audit-focus-panel-content="P6-03_AUDIT_FOCUS_CONTENT"`,
+  `data-heu-audit-focus-overflow-guard="P6-03_AUDIT_FOCUS_NO_OVERFLOW"` and
+  `data-heu-audit-anchor-nav="evidence trace hard-delete log"`.
+- Tightened the tab buttons with `min-h-12`, `items-start`, `py-2` and
+  `break-words leading-5` so long audit group labels wrap inside the guarded
+  tab instead of being cut off.
+- Preserved the existing guard order in `/audit`: `ControlledEvidenceRedactionGuard`,
+  `TtgdtxAuditTrailGuard`, `TtgdtxAuditLogUatEvidenceChecklist`,
+  `HardDeleteBoundaryGuard`, `HardDeleteConversionDecisionQueue`,
+  `HardDeleteWaiverEvidenceChecklist` and `AuditLogTable`.
+- Extended `scripts/audit-ttgdtx-audit-trail-guard.mjs`,
+  `scripts/audit-hard-delete-boundary-guard.mjs`,
+  `scripts/audit-hard-delete-conversion-decision-queue.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the audit focus panel, tab roles,
+  keyboard controls, tab label wrap guard and no-overflow guard fail locally if
+  removed.
+- PASS_LOCAL boundary: this is read-only audit navigation/display hardening
+  only. It does not write audit rows, accept UAT, accept evidence, approve
+  hard-delete/cascade, change role scope, grant access, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Slice Result Template Alignment
+
+- Updated the source SOP slice result templates in
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`.
+- The templates now require `SOP-CHECK` worktree scope commands,
+  current-slice files, unrelated dirty/staged/untracked entries and
+  review-owner evidence for `SOP-PROFESSIONAL`, `SOP-LEGAL`, `SOP-LOGIC` and
+  `SOP-VERIFY`.
+- The review-owner evidence template requires owner lane/source, checked
+  artifact, `PASS/NO_GO/BLOCKED` result and advisory/DRAFT_CONTROL or external owner decision state.
+- Extended `scripts/audit-heu-implementation-log.mjs` so the source SOP
+  templates and this log fail locally if the template alignment is omitted.
+- PASS_LOCAL boundary: this is SOP handoff template metadata only. It does not provide legal advice,
+  issue official SOP, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P8/P9 Quick Access Label Wrap Guard
+
+- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` and
+  `components/short-course/short-course-attendance-payment-gap-pack.tsx` so
+  HOU and Short Course quick-access card labels and owner lines use
+  `break-words` with stable leading instead of truncating long control names.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
+  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
+  quick-access label/owner wrap guards fail locally if removed.
+- PASS_LOCAL boundary: this is read-only HOU/Short Course quick-access
+  readability and no-overflow hardening only. It does not approve HOU handover,
+  attendance lock, tuition ledger posting, invoice issuance, COM payout,
+  BHXH decision, meal/allowance payment, HR payment, finance action, execute UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Review-Owner Evidence Guard
+
+- Added the final-handoff SOP review-owner evidence rule requiring
+  `SOP-PROFESSIONAL`, `SOP-LEGAL`, `SOP-LOGIC` and `SOP-VERIFY` to name
+  owner lane/source, checked artifact, `PASS/NO_GO/BLOCKED` result and whether
+  the finding is advisory/DRAFT_CONTROL or requires an external owner decision.
+- Propagated that review-owner evidence rule into `AGENTS.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so AGENTS, backlog, checklist,
+  current-state and log coverage fail locally if the SOP review-owner evidence
+  rule is omitted.
+- PASS_LOCAL boundary: this is final-handoff SOP review-owner evidence metadata
+  only. It does not provide legal advice, issue official SOP, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Documents Quick Access Hub
+
+- Replaced the thin `/documents` module placeholder with a read-only quick
+  access hub in `app/documents/page.tsx`.
+- The hub exposes `data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS"`,
+  `data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"`,
+  `data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW"`
+  and `data-heu-documents-anchor-nav="leads import pipeline reports control settings"`.
+- Preserved workspace scope with `firstParam`, `withAdmissionSegmentParam`,
+  `workspaceSegmentId={requestedSegmentId}` and
+  `workspaceReturnTo={scopedHref("/documents")}`, including quick links to
+  leads with `quick=documents`, import, pipeline, reports, Master Control and
+  `settings-operating-masters`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the P0-14 documents quick access,
+  scoped links and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is read-only documents navigation only. It does not upload real documents, accept evidence, change role scope, grant access,
+  execute UAT, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Documents To Lead Filter Guard
+
+- Tightened `app/documents/page.tsx` so the lead entry opens
+  `/leads?quick=documents` through `scopedHref("/leads?quick=documents")`,
+  preserving the active `segment` parameter.
+- Extended `app/leads/page.tsx` to read `quick` from `searchParams` and pass
+  `initialQuickFilter={requestedQuickFilter}` into `LeadList`.
+- Extended `components/leads/lead-list.tsx` with
+  `normalizeLeadQuickFilter`, `initialQuickFilter` and
+  `data-heu-lead-list-initial-quick-filter="P0-05_LEAD_LIST_INITIAL_QUICK_FILTER"`
+  so the documents hub lands directly on the document-status lead group.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the documents-to-lead filter
+  route fails locally if removed.
+- PASS_LOCAL boundary: this is read-only documents-to-lead navigation/filter
+  hardening only. It does not upload real documents, accept evidence,
+  write lead data, change role scope, grant access, execute UAT, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Documents To Pipeline Anchor Guard
+
+- Tightened `app/documents/page.tsx` so the `Pipeline ho so` quick link opens
+  `scopedHref("/pipeline#pipeline-document-pending")` instead of the generic
+  `/pipeline` hub, preserving the active `segment` parameter.
+- The target anchor is produced by `pipelineColumnId("DOCUMENT_PENDING")` in
+  `components/pipeline/pipeline-board.tsx`, keeping the documents hub aligned
+  with the real pipeline status column.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the documents-to-pipeline
+  anchor route fails locally if removed.
+- PASS_LOCAL boundary: this is read-only documents-to-pipeline navigation
+  hardening only. It does not update lead status, write lead data,
+  upload real documents, accept evidence, change role scope, grant access, execute UAT,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP-CHECK Worktree Scope Guard
+
+- Added the final-handoff `SOP-CHECK` worktree-scope rule requiring
+  `git diff --name-only`, `git diff --cached --name-status` and
+  `git ls-files -o --exclude-standard` results, with current-slice files
+  separated from unrelated dirty, staged or untracked worktree entries.
+- Propagated that worktree-scope rule into `AGENTS.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so AGENTS, backlog, checklist,
+  current-state and log coverage fail locally if the `SOP-CHECK`
+  worktree-scope rule is omitted.
+- PASS_LOCAL boundary: this is final-handoff SOP-CHECK worktree-scope metadata
+  only. It does not stage files, unstage files, revert unrelated work, create commits,
+  approve UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - P0-05 Segment Step Focus Audit Token Alignment
+
+- Tightened `components/segments/segment-step-focus-panel.tsx` so the scoped
+  operation-step link exposes the exact audit-visible `aria-label` and `title`
+  token `Mo phan ${step.step_name}` while keeping
+  `withAdmissionSegmentParam` on the client-safe `lib/workspace-url.ts` helper.
+- Reused existing `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` coverage so the P0-05 segment step focus tabs,
+  scoped links and no-overflow guard fail locally if the tokens drift.
+- PASS_LOCAL boundary: this is segment workspace navigation and audit-token
+  alignment only. It does not create lead records, write lead data,
+  grant access, change role scope, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP-NEXT Continue-Or-Stop Guard
+
+- Added the final-handoff rule that `SOP-NEXT` must name the next small
+  PASS_LOCAL slice only when focused guards are green; otherwise it must name
+  the smallest blocker and must not continue into any step that depends on a
+  missing owner decision, failed audit or required real evidence/signature
+  outside the controlled evidence system.
+- Propagated that continue-or-stop rule into `AGENTS.md`,
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so AGENTS, backlog, checklist,
+  current-state and log coverage fail locally if the `SOP-NEXT`
+  continue-or-stop rule is omitted.
+- PASS_LOCAL boundary: this is final-handoff SOP-NEXT metadata only. It does not provide legal advice, issue official SOP, execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Step-Skip Stop Guard
+
+- Added the final-handoff rule that if any `SOP-01` through `SOP-06` step is
+  skipped, or `PASS_LOCAL` is recorded without current-state check,
+  professional owner review, PHAP_CHE legal/SOP route, IT_DATA/Audit logic-data
+  check and focused audit/lint/build result, the slice must report `NO_GO` or
+  `BLOCKED` instead of `PASS_LOCAL`.
+- Propagated that stop rule into `AGENTS.md`, `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so AGENTS, backlog, checklist,
+  current-state and log coverage fail locally if the SOP step-skip stop rule is
+  omitted.
+- PASS_LOCAL boundary: this is final-handoff SOP step-skip metadata only. It
+  does not provide legal advice, issue official SOP, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - P0-05 Segment Step Focus Panel
+
+- Added `components/segments/segment-step-focus-panel.tsx` as a client-side
+  tab panel for the remaining operation steps inside `/segments/[id]`.
+- Updated `components/segments/segment-operating-readiness.tsx` so
+  `data-heu-segment-operation-steps="P0-05_SCOPE_STEPS"` renders
+  `SegmentStepFocusPanel` with `steps={remainingSteps}` and
+  `segmentId={segmentId}` instead of showing every secondary operation card at
+  once.
+- The panel exposes `data-heu-segment-step-focus-panel="P0-05_SEGMENT_STEP_FOCUS_PANEL"`,
+  `data-heu-segment-step-group-tabs="P0-05_SEGMENT_STEP_GROUP_TABS"`,
+  `data-heu-segment-step-group-panel="P0-05_SEGMENT_STEP_GROUP_PANEL"` and
+  `data-heu-segment-step-overflow-guard="P0-05_SEGMENT_STEP_NO_OVERFLOW"`.
+- Added keyboard tab controls with `role="tablist"`, `role="tab"`,
+  `role="tabpanel"`, ArrowRight, ArrowDown, ArrowLeft, ArrowUp, Home and End,
+  while step links keep the active admission segment through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the segment step focus panel,
+  scoped step links and no-overflow guards fail locally if removed.
+- PASS_LOCAL boundary: this is segment workspace display and navigation
+  hardening only. It does not create lead records, write lead data,
+  grant access, change role scope, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-17 Settings Quick Access Backlog Alignment
+
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` so the P0-17 row records the
+  settings quick access markers
+  `data-heu-settings-quick-access="P0-17_SETTINGS_QUICK_ACCESS"`,
+  `data-heu-settings-quick-open="P0-17_SETTINGS_QUICK_OPEN_TOP8"` and
+  `data-heu-settings-quick-access-overflow-guard="P0-17_SETTINGS_QUICK_ACCESS_NO_OVERFLOW"`.
+- Extended `scripts/audit-heu-user-account-security.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the backlog alignment fails
+  locally if the read-only navigation or no-overflow guard is dropped from the
+  P0-17 control row.
+- PASS_LOCAL boundary: this is backlog and audit alignment only. It does not
+  create accounts, send passwords, grant access, change role scope,
+  approve finance reliance, execute UAT, accept evidence, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Unknown-Field Stop Guard
+
+- Added the final-handoff rule that if any `SOP Slice Result Record` field is
+  unknown, the slice must report `NO_GO` or `BLOCKED` instead of `PASS_LOCAL`.
+- Propagated that stop rule into `AGENTS.md`, `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so AGENTS, backlog, checklist,
+  current-state and log coverage fail locally if the unknown-field stop rule is
+  omitted.
+- PASS_LOCAL boundary: this is final-handoff SOP stop-rule metadata only. It
+  does not provide legal advice, issue official SOP, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - P0-13 Dashboard Urgent Lead Workspace Links
+
+- Tightened `components/dashboard/dashboard-overview.tsx` so the
+  `Lead can xu ly ngay` table keeps urgent lead detail links scoped with
+  `withAdmissionSegmentParam(`/leads/${lead.id}`, activeSegmentId)`.
+- Marked the urgent lead area with
+  `data-heu-dashboard-urgent-lead-links="P0-13_DASHBOARD_URGENT_LEAD_LINKS"`.
+- Added `aria-label` and `title` values for urgent lead links so the guarded
+  workspace-scoped target remains visible to browser and assistive tooling.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so dashboard urgent lead links
+  fail locally if they lose the workspace `segment` parameter.
+- PASS_LOCAL boundary: this is dashboard navigation scope hardening only. It
+  does not write lead data, update follow-up status, grant access, change role
+  scope, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Pipeline Status Workspace Return Guard
+
+- Tightened `components/pipeline/pipeline-status-form.tsx` so the inline
+  pipeline status form carries the active workspace in hidden
+  `active_admission_segment_id` and exposes
+  `data-heu-pipeline-status-workspace-return="P3-01_PIPELINE_STATUS_WORKSPACE_RETURN"`.
+- Updated `components/pipeline/pipeline-board.tsx` so every `PipelineCard`
+  passes `activeSegmentId` into `PipelineStatusForm`.
+- Updated `app/leads/[id]/actions.ts` so `updateLeadStatusAction` reads
+  `active_admission_segment_id` and revalidates the scoped pipeline route with
+  `withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId)`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the status form marker,
+  hidden workspace field, board prop flow and scoped revalidation fail locally
+  if removed.
+- PASS_LOCAL boundary: this is pipeline status workspace-return and
+  revalidation hardening only. It does not grant access, change role scope,
+  bypass P0-19, execute a real lead status update, create lead records,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - P2-05 TTGDTX Quick Fix Workspace Return Guard
+
+- Tightened `components/leads/ttgdtx-lead-quick-fix-form.tsx` so the P2-05
+  quick-fix form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-ttgdtx-quick-fix-workspace-return="P2-05_TTGDTX_QUICK_FIX_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `TtgdtxLeadQuickFixForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `updateTtgdtxLeadQuickFixAction`
+  reads `active_admission_segment_id`, computes `revalidationSegmentId`, falls
+  back to the server-side lead segment and revalidates `/leads/[id]`, `/leads`, `/ttgdtx/gate`,
+  `/ttgdtx/receivables`, `/ttgdtx/simulation` and `/ttgdtx/master` with
+  scoped URLs from `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the quick-fix form marker,
+  hidden workspace field, page prop flow and scoped TTGDTX revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is P2-05 TTGDTX quick-fix workspace-return
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  create receivables, collect tuition, approve finance action, execute UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard
+
+- Tightened `components/leads/status-update-form.tsx` so the lead-detail
+  status form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `StatusUpdateForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Reused the scoped `updateLeadStatusAction` revalidation path from the
+  pipeline status guard, including
+  `withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId)`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the detail status form marker,
+  hidden workspace field and page prop flow fail locally if removed.
+- PASS_LOCAL boundary: this is lead-detail status workspace-return hardening
+  only. It does not grant access, change role scope, bypass P0-19, execute a
+  real lead status update, create lead records, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Status Scoped Revalidation Guard
+
+- Tightened `app/leads/[id]/actions.ts` so `updateLeadStatusAction`
+  revalidates the scoped lead detail URL, scoped lead list, scoped follow-up
+  board and scoped reports route through `withAdmissionSegmentParam` after a
+  status update.
+- Preserved the existing unscoped revalidation for `/leads/[id]`, `/leads`,
+  `/pipeline`, `/followups`, `/reports` and `/` so existing navigation remains
+  compatible.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so scoped detail/list/follow-up
+  and report revalidation for lead status updates fail locally if removed.
+- PASS_LOCAL boundary: this is lead status scoped revalidation hardening only.
+  It does not grant access, change role scope, bypass P0-19, execute a real
+  lead status update, create lead records, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Activity Follow-up Workspace Revalidation Guard
+
+- Tightened `components/leads/activity-form.tsx` so the lead-detail activity
+  form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `ActivityForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `createLeadActivityAction` reads
+  `active_admission_segment_id`; when `next_followup_at` is submitted, it
+  revalidates `/followups`, `/pipeline` and their workspace-scoped URLs through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the activity form marker,
+  hidden workspace field, page prop flow and scoped follow-up/pipeline
+  revalidation fail locally if removed.
+- PASS_LOCAL boundary: this is lead activity follow-up workspace revalidation
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  execute a real lead activity submission, create lead records, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P0-05 Lead Activity Scoped Detail Revalidation Guard
+
+- Tightened `app/leads/[id]/actions.ts` so `createLeadActivityAction`
+  revalidates the scoped lead-detail URL through `withAdmissionSegmentParam`
+  after any activity submission, even when no follow-up date is created.
+- Preserved the existing follow-up and pipeline scoped revalidation path when
+  `next_followup_at` is submitted.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the activity scoped detail
+  revalidation fails locally if removed.
+- PASS_LOCAL boundary: this is lead activity scoped detail revalidation
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  execute a real lead activity submission, create lead records, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P0-05 Lead Document Workspace Return Guard
+
+- Tightened `components/leads/document-checklist.tsx` so each lead document
+  checklist form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `DocumentChecklist` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `updateLeadDocumentAction` reads
+  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
+  scoped lead-detail URL from `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the document form marker,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is lead document checklist workspace-return
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  upload real documents, accept evidence, create lead records, execute UAT,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Document Documents Hub Revalidation Guard
+
+- Tightened `app/leads/[id]/actions.ts` so `updateLeadDocumentAction`
+  revalidates `/documents`, the scoped `/documents` URL and scoped /documents through
+  `withAdmissionSegmentParam` after a lead document checklist update.
+- Preserved the existing lead-detail and scoped lead-detail revalidation so
+  the checklist row and the read-only documents hub refresh together.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the documents hub revalidation
+  fails locally if removed.
+- PASS_LOCAL boundary: this is lead document documents-hub revalidation
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  upload real documents, accept evidence, create lead records, execute UAT,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Condition Workspace Return Guard
+
+- Tightened `components/leads/lead-condition-checklist.tsx` so each condition
+  form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-lead-condition-workspace-return="P0-05_LEAD_CONDITION_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `LeadConditionChecklist` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `updateLeadConditionAction` reads
+  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
+  scoped lead-detail URL from `withAdmissionSegmentParam` while preserving
+  `/hou` revalidation.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the condition form marker,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is condition checklist workspace-return hardening only. It does not
+  grant access, change role scope, bypass P0-19, accept evidence,
+  approve COM, approve finance action, execute UAT, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - P3-02 Lead Handover Workspace Return Guard
+
+- Tightened `components/leads/lead-handover-panel.tsx` so create and update
+  handover forms carry hidden `active_admission_segment_id` and expose
+  `data-heu-lead-handover-create-workspace-return="P3-02_LEAD_HANDOVER_CREATE_WORKSPACE_RETURN"`
+  plus
+  `data-heu-lead-handover-update-workspace-return="P3-02_LEAD_HANDOVER_UPDATE_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `LeadHandoverPanel` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `createLeadHandoverAction` and
+  `updateLeadHandoverAction` read `active_admission_segment_id` and revalidate
+  both `/leads/[id]` and the scoped lead-detail URL from
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the handover form markers,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is lead handover workspace-return hardening only.
+  It does not grant access, change role scope, bypass P0-19, accept handover,
+  approve enrollment, create receivable, approve COM, approve finance action,
+  execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P8-01 HOU Lead Workspace Return Guard
+
+- Tightened `components/leads/hou-lead-form.tsx` so the HOU lead tracking form
+  carries hidden `active_admission_segment_id` and exposes
+  `data-heu-hou-lead-workspace-return="P8-01_HOU_LEAD_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `HouLeadForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `updateLeadHouAction` reads
+  `active_admission_segment_id` and revalidates `/leads/[id]`, `/leads`,
+  `/pipeline` and `/reports` with scoped URLs from `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the HOU lead form marker,
+  hidden workspace field, page prop flow and scoped revalidation fail locally
+  if removed.
+- PASS_LOCAL boundary: this is HOU lead workspace-return and revalidation
+  hardening only. It does not grant access, change role scope, bypass P0-19,
+  accept handover, approve HOU handover, approve tuition ledger posting,
+  approve invoice issuance, approve COM payout, approve finance action,
+  execute UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P8-01 HOU COM Claim Workspace Return Guard
+
+- Tightened `components/leads/hou-commission-claim-form.tsx` so the COM claim
+  creation form carries hidden `active_admission_segment_id` and exposes
+  `data-heu-hou-com-claim-workspace-return="P8-01_HOU_COM_CLAIM_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `HouCommissionClaimForm` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `createHouCommissionClaimAction`
+  reads `active_admission_segment_id` and revalidates both `/leads/[id]` and
+  the scoped lead-detail URL from `withAdmissionSegmentParam` while preserving
+  `/settings` revalidation.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the COM claim form marker,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is HOU COM claim workspace-return hardening only.
+  It does not grant access, change role scope, bypass P0-19, approve COM
+  payout, approve finance action, mark a claim PAID, execute UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P8-01 HOU Evidence Workspace Return Guard
+
+- Tightened `components/leads/hou-evidence-files.tsx` so the HOU evidence form
+  carries hidden `active_admission_segment_id` and exposes
+  `data-heu-hou-evidence-workspace-return="P8-01_HOU_EVIDENCE_WORKSPACE_RETURN"`.
+- Updated `app/leads/[id]/page.tsx` so `HouEvidenceFiles` receives
+  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
+- Updated `app/leads/[id]/actions.ts` so `createHouEvidenceFileAction` reads
+  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
+  scoped lead-detail URL from `withAdmissionSegmentParam` while preserving
+  `/settings` revalidation.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the HOU evidence form marker,
+  hidden workspace field, page prop flow and scoped detail revalidation fail
+  locally if removed.
+- PASS_LOCAL boundary: this is HOU evidence workspace-return hardening only.
+  It does not grant access, change role scope, bypass P0-19, upload raw
+  evidence, accept evidence, approve COM payout, approve finance action,
+  execute UAT, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-17 Settings Quick Access Guard
+
+- Added a read-only quick-access band in `app/settings/page.tsx` with
+  `data-heu-settings-quick-access="P0-17_SETTINGS_QUICK_ACCESS"`,
+  `data-heu-settings-quick-open="P0-17_SETTINGS_QUICK_OPEN_TOP8"`,
+  `data-heu-settings-quick-access-overflow-guard="P0-17_SETTINGS_QUICK_ACCESS_NO_OVERFLOW"`
+  and `data-heu-settings-anchor-nav="users create scope checklist source flow program dynamic hou security"`.
+- The band anchors the settings screen to `#settings-user-onboarding`,
+  `#settings-users`, `#settings-scopes`, `#settings-programs`,
+  `#settings-dynamic-config`, `#settings-hou-foundation`,
+  `#settings-hou-commission` and `#settings-operating-masters` so operators can
+  open the needed configuration block without scanning the full page.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `aria-label`, `title` and `scroll-mt-24` guards so long user, role, scope,
+  HOU/COM and checklist labels do not force horizontal overflow.
+- Extended `scripts/audit-heu-user-account-security.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so settings quick access, anchor
+  coverage and no-overflow guards fail locally if removed.
+- PASS_LOCAL boundary: this is settings navigation and no-overflow hardening
+  only. It does not create accounts, send passwords, grant access,
+  change role scope, approve finance reliance, execute UAT, accept evidence,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-06 Campaign Partner Workspace Metrics Guard
+
+- Tightened `app/campaigns/page.tsx` so campaign lead counts, enrolled counts
+  and conversion rates are computed from the `leads` query scoped by
+  `admissionWorkspaceSegmentIds(workspace)` and `applyAdmissionSegmentIds`.
+- Tightened `app/partners/page.tsx` so partner lead counts, enrolled counts and
+  conversion rates use the same active admission workspace filter instead of
+  counting all lead rows in the system.
+- Preserved the existing campaign/partner catalog rows and navigation; only the
+  lead-derived metrics now follow the selected workspace.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so campaign/partner scoped metrics
+  fail locally if the workspace filter is removed.
+- PASS_LOCAL boundary: this is campaign/partner metric scope hardening only. It
+  does not create campaign or partner records, write lead data, grant access,
+  change role scope, approve budget, approve COM, approve contract/legal
+  status, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-15 SOP Slice Result Handoff Propagation
+
+- Propagated the `SOP Slice Result Record` requirement from `AGENTS.md` into
+  the P0-15 final handoff wording in `docs/HEU_SYSTEM_BUILD_BACKLOG.md`,
+  `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` and
+  `docs/HEU_CURRENT_STATE_INVENTORY.md`.
+- The propagated handoff requirement carries `SOP-SCOPE`, `SOP-CHECK`,
+  `SOP-PROFESSIONAL`, `SOP-LEGAL`, `SOP-LOGIC`, `SOP-VERIFY`, `SOP-RESULT`
+  and `SOP-NEXT`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so backlog, checklist,
+  current-state and log coverage fail locally if the SOP result fields are
+  omitted from P0-15 handoff documentation.
+- PASS_LOCAL boundary: this is final-handoff SOP metadata propagation only. It
+  does not provide legal advice, issue official SOP, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - P0-06 Campaign Quick Access No-Overflow Guard
+
+- Added a read-only quick-access band in
+  `components/campaigns/campaigns-overview.tsx` with
+  `data-heu-campaign-quick-access="P0-06_CAMPAIGN_QUICK_ACCESS"`,
+  `data-heu-campaign-quick-open="P0-06_CAMPAIGN_QUICK_OPEN_TOP3"`,
+  `data-heu-campaign-quick-access-overflow-guard="P0-06_CAMPAIGN_QUICK_ACCESS_NO_OVERFLOW"`
+  and `data-heu-campaign-workspace-links="P0-06_CAMPAIGN_WORKSPACE_LINKS"`.
+- The band keeps `Tao chien dich` and `Xem lead` scoped through
+  `withAdmissionSegmentParam`, then anchors the top-three campaign cards and
+  the campaign table with stable row IDs.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `aria-label` and `title` guards so long campaign codes, source names and
+  campaign names do not force horizontal overflow.
+- Updated `app/campaigns/page.tsx` to pass `workspace.activeSegmentId` into
+  `CampaignsOverview`, preserving the selected admission workspace from the
+  campaign quick-access band.
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` so Campaign quick access is listed in
+  M05/process discovery and the P3 backlog.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so campaign quick access,
+  workspace links, top-three anchors and no-overflow guards fail locally if
+  removed.
+- PASS_LOCAL boundary: this is campaign navigation and no-overflow hardening
+  only. It does not create real campaign records, grant access,
+  change role scope, approve budget, launch ads, write lead data, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
 
 ## 2026-07-03 - System AI Trend Anti-Overflow Task Breakdown
 
@@ -1085,257 +6713,90 @@
   DB/schema changes, Supabase access changes, UAT execution, evidence acceptance,
   finance action, owner GO/NO-GO or production GO. Production: NO-GO.
 
-## 2026-07-03 - P3 Backlog UAT Execution Pack Release-Gate Repair
+## 2026-07-03 - P0-06 Campaign Partner Workspace Navigation Guard
 
-- Corrected the P3-02 backlog wording so the release-gate required phrase
-  `signed role-scope UAT and handover decision still required` remains intact
-  while preserving the separate CTHSSV owner UAT blocker.
-- PASS_LOCAL boundary: this is backlog/log wording repair only. It does not
-  execute UAT, accept evidence, approve handover reliance, create finance facts,
-  approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-17 Position Matrix Quick Access No-Overflow Guard
-
-- Tightened `components/settings/position-assignment-matrix.tsx` so the
-  position matrix quick-access surface now exposes
-  `data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"`
-  alongside `data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"`.
-- Preserved the existing `data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"`
-  and guarded layout tokens `min-w-0`, `overflow-hidden`, `overflow-x-auto`,
-  `truncate`, `break-words` and `shrink-0`.
-- Extended `scripts/audit-heu-user-account-security.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the position quick-access
-  no-overflow marker fails locally if removed.
-- PASS_LOCAL boundary: this is read-only position-matrix navigation/display hardening only. It does not create accounts, send passwords, grant access, change role scope, approve role assignments for production, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-05 Segment Workspace Guide Focus Tabs
-
-- Converted the business-entry area in
-  `components/segments/segment-workspace-guide.tsx` into focused tabs so HOU,
-  TTGDTX, short-course and general admission segment workspaces show the
-  selected work item in one panel instead of equal-weight cards.
-- The guide exposes `data-heu-segment-workspace-guide-focus="P0-05_WORKSPACE_GUIDE_FOCUS"`,
-  `data-heu-segment-workspace-guide-tabs="P0-05_WORKSPACE_GUIDE_TABS"`,
-  `data-heu-segment-workspace-guide-panel="P0-05_WORKSPACE_GUIDE_PANEL"` and
-  `data-heu-segment-workspace-guide-overflow-guard="P0-05_WORKSPACE_GUIDE_NO_OVERFLOW"`.
-- Added `role="tablist"`, `role="tab"`, `role="tabpanel"`, Arrow/Home/End
-  keyboard navigation, `min-w-0`, `overflow-hidden`, `truncate`,
-  `break-words`, `aria-label` and `title` coverage so the selected business
-  item is clear and long labels stay contained.
+- Tightened `app/campaigns/page.tsx` and `app/campaigns/new/page.tsx` so
+  campaign list/create routes read the active admission workspace with
+  `firstParam`, `getAdmissionWorkspaceContext` and `withAdmissionSegmentParam`.
+- Marked scoped campaign actions with
+  `data-heu-campaign-workspace-actions="P0-06_CAMPAIGN_WORKSPACE_ACTIONS"` and
+  preserved the selected workspace through `CampaignForm` cancel links and the
+  hidden `active_admission_segment_id` field marked by
+  `data-heu-campaign-workspace-return="P0-06_CAMPAIGN_WORKSPACE_RETURN"`.
+- Updated `app/campaigns/actions.ts` so successful campaign creation redirects
+  through `withAdmissionSegmentParam("/campaigns", activeAdmissionSegmentId)`.
+- Tightened `app/partners/page.tsx`, `app/partners/new/page.tsx`,
+  `components/partners/partners-overview.tsx` and
+  `components/partners/partner-form.tsx` so partner quick links, create links,
+  cancel links and return paths preserve the selected admission workspace.
+- Marked scoped partner actions with
+  `data-heu-partner-workspace-actions="P0-06_PARTNER_WORKSPACE_ACTIONS"`,
+  quick links with
+  `data-heu-partner-workspace-links="P0-06_PARTNER_WORKSPACE_LINKS"` and form
+  returns with
+  `data-heu-partner-workspace-return="P0-06_PARTNER_WORKSPACE_RETURN"`.
+- Updated `app/partners/actions.ts` so successful partner creation redirects
+  through `withAdmissionSegmentParam("/partners", activeAdmissionSegmentId)`.
 - Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the workspace-guide focus tabs
-  and no-overflow guard fail locally if removed.
-- PASS_LOCAL boundary: this is selected-segment navigation/readability
-  hardening only. It does not create lead records, import data,
-  change role scope, broaden segment access, execute UAT, accept evidence,
-  approve finance action, approve owner GO/NO-GO or mark production GO.
+  `scripts/audit-heu-implementation-log.mjs` so campaign/partner workspace
+  actions, quick links, cancel links and scoped redirects fail locally if
+  removed.
+- PASS_LOCAL boundary: this is campaign/partner navigation and workspace-return
+  hardening only. It does not create real campaign or partner records,
+  grant access, change role scope, approve COM, approve contract/legal status,
+  approve finance action, execute UAT, accept evidence, approve owner GO/NO-GO
+  or mark production GO.
 
-## 2026-07-03 - P0-17 User Access Workflow Guide No-Overflow Guard
+## 2026-07-03 - P0-06 Partner Quick Access Workspace Audit Alignment
 
-- Hardened `components/settings/user-access-workflow-guide.tsx` with
-  `data-heu-user-access-workflow-guide="P0-17_USER_ACCESS_WORKFLOW_GUIDE"` and
-  `data-heu-user-access-workflow-overflow-guard="P0-17_USER_ACCESS_WORKFLOW_NO_OVERFLOW"`.
-- The guide stays mounted before `RealUserOnboardingPanel` and `UserCreateForm`
-  on `/settings` and `/settings/scopes`, so operators see the account workflow
-  and password-safety rules before using create/link forms.
-- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words` and `shrink-0`
-  guards so long workflow/rule text stays inside the read-only guide.
-- Extended `scripts/audit-heu-user-account-security.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the guide marker, no-overflow
-  guard and mount order fail locally if removed.
-- PASS_LOCAL boundary: this is read-only account-workflow guidance and no-overflow hardening only. It does not create accounts, send passwords, grant access, change role scope, accept UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-14 Documents To Lead Filter Guard
-
-- Tightened `app/documents/page.tsx` so the lead entry opens
-  `/leads?quick=documents` through `scopedHref("/leads?quick=documents")`,
-  preserving the active `segment` parameter.
-- Extended `app/leads/page.tsx` to read `quick` from `searchParams` and pass
-  `initialQuickFilter={requestedQuickFilter}` into `LeadList`.
-- Extended `components/leads/lead-list.tsx` with
-  `normalizeLeadQuickFilter`, `initialQuickFilter` and
-  `data-heu-lead-list-initial-quick-filter="P0-05_LEAD_LIST_INITIAL_QUICK_FILTER"`
-  so the documents hub lands directly on the document-status lead group.
-- Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the documents-to-lead filter
-  route fails locally if removed.
-- PASS_LOCAL boundary: this is read-only documents-to-lead navigation/filter
-  hardening only. It does not upload real documents, accept evidence,
-  write lead data, change role scope, grant access, execute UAT, approve finance action,
-  approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-05 Lead Create Workspace Guard
-
-- Tightened `app/leads/new/page.tsx` so the create-lead no-workspace stop state
-  is explicitly marked with
-  `data-heu-lead-create-no-workspace-guard="P0-05_LEAD_CREATE_NO_WORKSPACE_GUARD"`.
-- Reused the shared `firstParam` and `withAdmissionSegmentParam` helpers for
-  create-lead workspace routing instead of keeping a local parser.
-- Tightened `components/leads/lead-form.tsx` with
-  `data-heu-lead-create-workspace-lock="P0-05_LEAD_CREATE_WORKSPACE_LOCK"` so
-  the locked hidden `admission_segment_id` field remains guarded.
-- Updated `app/leads/actions.ts` so successful create redirects through
-  `withAdmissionSegmentParam("/leads", admissionSegmentId)` after the existing
-  `can_use_admission_workspace`, role permission and segment-scope checks pass.
-- Extended `scripts/audit-heu-data-foundation.mjs` so no-workspace guard,
-  locked segment field, scoped cancel and scoped post-create redirect fail
-  locally if removed.
-- PASS_LOCAL boundary: this is create-lead navigation and workspace-scope guard
-  hardening only. It does not create real leads, grant access, change role
-  scope, execute UAT, accept evidence, approve finance action, approve owner
-  GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-05 Lead Workspace Deep-Link Guard
-
-- Tightened `components/leads/lead-list.tsx` so quick-open cards, mobile lead
-  links, table lead links and Enter-to-open search navigation use the
-  client-safe `lib/workspace-url.ts` `withAdmissionSegmentParam` helper through
-  the shared `leadHref` helper.
-- Updated `app/leads/page.tsx` to pass `workspace.activeSegmentId` into
-  `LeadList`, keeping lead detail links tied to the selected admission segment
-  workspace.
-- Added quick-open `aria-label` and `title` values so guarded lead opening has
-  a stable browser-assistive target while preserving the existing
-  `data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"` and
-  `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"` controls.
-- Extended `scripts/audit-heu-data-foundation.mjs` so the workspace deep-link
-  helper and `/leads` page prop fail locally if removed; the guard fails locally
-  before PASS_LOCAL if the scoped link path is removed.
-- PASS_LOCAL boundary: this is navigation scope preservation only. It does not
-  change role scope, grant access, write lead data, update lead status,
+- Fixed `scripts/audit-heu-data-foundation.mjs` so the P0-06 Partner Quick
+  Access guard checks the current workspace-scoped link architecture instead
+  of stale literal `/partners/new` and `/leads` hrefs.
+- The guard now requires `withAdmissionSegmentParam`, `partnerCreateHref`,
+  `leadsHref` and `data-heu-partner-workspace-links="P0-06_PARTNER_WORKSPACE_LINKS"`
+  in `components/partners/partners-overview.tsx`.
+- This is audit alignment for scoped navigation only. It does not change role
+  scope, grant access, write partner data, approve COM, approve contract,
   execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
   or mark production GO.
 
-## 2026-07-03 - P8-01 HOU Scope Readiness Guard
+## 2026-07-03 - P0-06 Partner Quick Access Guard
 
-- Updated `app/hou/page.tsx` so `/hou` reads leads through
-  `getAdmissionWorkspaceContext`, `admissionWorkspaceSegmentIds` and
-  `applyAdmissionSegmentIds`, preserves `workspaceReturnTo`, and scopes HOU COM
-  payment-line/payment-batch reads back to visible HOU claim lines.
-- Updated `app/hou/actions.ts` so HOU COM claim review, payment-batch creation
-  and payment-batch status updates call `getHouClaimsWorkspaceScopeError` or
-  `getHouClaimLinesWorkspaceScopeError` before writes, requiring
-  `can_use_admission_workspace` plus `can_access_business_scope`.
-- Added `scripts/check-heu-hou-scope-readiness.mjs` and
-  `check:heu-hou-scope-readiness` for local, redacted HOU scope checks with
-  `HOU-SCOPE-APP-GUARD`, `HOU-SCOPE-LEAD-TAG`,
-  `HOU-SCOPE-PAYMENT-LINES` and related readiness statuses.
-- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs`,
-  `scripts/audit-heu-implementation-log.mjs` and
-  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the HOU
-  scope guard, checker, Slice 10 and no-approval boundary fail locally if
-  removed.
-- PASS_LOCAL boundary: this is HOU scope-readiness hardening only. It does not approve HOU handover, tuition ledger posting, invoice issuance, COM payout, finance action, UAT acceptance, evidence acceptance, owner GO or production GO.
-
-## 2026-07-03 - P8/P9 Quick Access Label Wrap Guard
-
-- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` and
-  `components/short-course/short-course-attendance-payment-gap-pack.tsx` so
-  HOU and Short Course quick-access card labels and owner lines use
-  `break-words` with stable leading instead of truncating long control names.
-- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
-  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
-  quick-access label/owner wrap guards fail locally if removed.
-- PASS_LOCAL boundary: this is read-only HOU/Short Course quick-access
-  readability and no-overflow hardening only. It does not approve HOU handover,
-  attendance lock, tuition ledger posting, invoice issuance, COM payout,
-  BHXH decision, meal/allowance payment, HR payment, finance action, execute UAT,
-  accept evidence, approve owner GO/NO-GO or mark production GO.
-
-## 2026-07-03 - P0-14 Documents Quick Access Hub
-
-- Replaced the thin `/documents` module placeholder with a read-only quick
-  access hub in `app/documents/page.tsx`.
-- The hub exposes `data-heu-documents-quick-access="P0-14_DOCUMENTS_QUICK_ACCESS"`,
-  `data-heu-documents-quick-open="P0-14_DOCUMENTS_QUICK_OPEN_TOP6"`,
-  `data-heu-documents-quick-access-overflow-guard="P0-14_DOCUMENTS_QUICK_ACCESS_NO_OVERFLOW"`
-  and `data-heu-documents-anchor-nav="leads import pipeline reports control settings"`.
-- Preserved workspace scope with `firstParam`, `withAdmissionSegmentParam`,
-  `workspaceSegmentId={requestedSegmentId}` and
-  `workspaceReturnTo={scopedHref("/documents")}`, including quick links to
-  leads, import, pipeline, reports, Master Control and
-  `settings-operating-masters`.
+- Added a read-only quick-access band in
+  `components/partners/partners-overview.tsx` with
+  `data-heu-partner-quick-access="P0-06_PARTNER_QUICK_ACCESS"`,
+  `data-heu-partner-quick-open="P0-06_PARTNER_QUICK_OPEN_TOP3"` and
+  `data-heu-partner-quick-access-overflow-guard="P0-06_PARTNER_QUICK_ACCESS_NO_OVERFLOW"`.
+- The quick actions route operators to `/partners/new`, `/leads` and the
+  partner table, while the top-three partner/source cards use `partnerRowHref`
+  to jump to the matching row without adding a partner workflow action.
+- Release-gate coverage checks the workspace-scoped `partnerCreateHref` and
+  `leadsHref` links instead of unscoped literal hrefs.
+- Added `min-w-0`, `overflow-hidden`, `truncate`, `break-words`,
+  `aria-label` and `title` guards so long partner names, codes, source labels
+  and conversion summaries do not force horizontal overflow.
 - Extended `scripts/audit-heu-data-foundation.mjs`,
   `scripts/audit-heu-current-state-inventory.mjs`,
   `scripts/audit-heu-implementation-log.mjs` and
-  `scripts/audit-ttgdtx-release-gates.mjs` so the P0-14 documents quick access,
-  scoped links and no-overflow guard fail locally if removed.
-- PASS_LOCAL boundary: this is read-only documents navigation only. It does not upload real documents, accept evidence, change role scope, grant access,
-  execute UAT, approve finance action, approve owner GO/NO-GO or mark production GO.
-## 2026-07-03 - P0-05 Lead Detail Status Workspace Return Guard
-
-- Tightened `components/leads/status-update-form.tsx` so the lead-detail
-  status form carries hidden `active_admission_segment_id` and exposes
-  `data-heu-lead-detail-status-workspace-return="P0-05_LEAD_DETAIL_STATUS_WORKSPACE_RETURN"`.
-- Updated `app/leads/[id]/page.tsx` so `StatusUpdateForm` receives
-  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
-- Reused the scoped `updateLeadStatusAction` revalidation path, including
-  `withAdmissionSegmentParam("/pipeline", activeAdmissionSegmentId)`.
-- Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the detail status form marker,
-  hidden workspace field and page prop flow fail locally if removed.
-- PASS_LOCAL boundary: this is lead-detail status workspace-return hardening
-  only. It does not grant access, change role scope, bypass P0-19, execute a
-  real lead status update, create lead records, execute UAT, accept evidence,
+  `scripts/audit-ttgdtx-release-gates.mjs` so the partner/source quick-access
+  markers, table anchors and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is partner/source navigation and no-overflow
+  hardening only. It does not change role scope, grant access, write partner data,
+  approve COM, approve contract, execute UAT, accept evidence,
   approve finance action, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - P0-05 Lead Activity Follow-up Workspace Revalidation Guard
+## 2026-07-03 - Final Handoff SOP Result Record Guard
 
-- Tightened `components/leads/activity-form.tsx` so the lead-detail activity
-  form carries hidden `active_admission_segment_id` and exposes
-  `data-heu-lead-activity-followup-workspace-return="P0-05_LEAD_ACTIVITY_FOLLOWUP_WORKSPACE_RETURN"`.
-- Updated `app/leads/[id]/page.tsx` so `ActivityForm` receives
-  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
-- Updated `app/leads/[id]/actions.ts` so `createLeadActivityAction` reads
-  `active_admission_segment_id`; when `next_followup_at` is submitted, it
-  revalidates `/followups`, `/pipeline` and their workspace-scoped URLs through
-  `withAdmissionSegmentParam`.
-- Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the activity form marker,
-  hidden workspace field, page prop flow and scoped follow-up/pipeline
-  revalidation fail locally if removed.
-- PASS_LOCAL boundary: this is lead activity follow-up workspace revalidation
-  hardening only. It does not grant access, change role scope, bypass P0-19,
-  execute a real lead activity submission, create lead records, execute UAT,
-  accept evidence, approve finance action, approve owner GO/NO-GO or mark
-  production GO.
-
-## 2026-07-03 - P0-05 Lead Document Workspace Return Guard
-
-- Tightened `components/leads/document-checklist.tsx` so each lead document
-  checklist form carries hidden `active_admission_segment_id` and exposes
-  `data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN"`.
-- Updated `app/leads/[id]/page.tsx` so `DocumentChecklist` receives
-  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
-- Updated `app/leads/[id]/actions.ts` so `updateLeadDocumentAction` reads
-  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
-  workspace-scoped lead detail URL through `withAdmissionSegmentParam`.
-- Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the document checklist marker,
-  hidden workspace field, page prop flow and scoped detail revalidation fail
-  locally if removed.
-- PASS_LOCAL boundary: this is lead document checklist workspace-return
-  hardening only. It does not grant access, change role scope, bypass P0-19,
-  execute a real document update, upload or accept evidence, create lead records, execute UAT, approve finance action, approve owner GO/NO-GO or mark
-  production GO.
-
-## 2026-07-03 - P0-05 Lead Condition Workspace Return Guard
-
-- Tightened `components/leads/lead-condition-checklist.tsx` so each condition
-  form carries hidden `active_admission_segment_id` and exposes
-  `data-heu-lead-condition-workspace-return="P0-05_LEAD_CONDITION_WORKSPACE_RETURN"`.
-- Updated `app/leads/[id]/page.tsx` so `LeadConditionChecklist` receives
-  `activeSegmentId={lead.admission_segment_id}` from the scoped lead detail.
-- Updated `app/leads/[id]/actions.ts` so `updateLeadConditionAction` reads
-  `active_admission_segment_id` and revalidates both `/leads/[id]` and the
-  scoped lead-detail URL from `withAdmissionSegmentParam` while preserving
-  `/hou` revalidation.
-- Extended `scripts/audit-heu-data-foundation.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the condition form marker,
-  hidden workspace field, page prop flow and scoped detail revalidation fail
-  locally if removed.
-- PASS_LOCAL boundary: this is condition checklist workspace-return hardening only. It does not grant access, change role scope, bypass P0-19, accept evidence,
-  approve COM, approve finance action, execute UAT, approve owner GO/NO-GO or mark production GO.
+- Added the `SOP Slice Result Record` fields to the `AGENTS.md` final handoff
+  summary requirements: `SOP-SCOPE`, `SOP-CHECK`, `SOP-PROFESSIONAL`,
+  `SOP-LEGAL`, `SOP-LOGIC`, `SOP-VERIFY`, `SOP-RESULT` and `SOP-NEXT`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs` so final handoff
+  coverage fails locally if those SOP result fields are omitted from
+  `AGENTS.md`.
+- PASS_LOCAL boundary: this is final-handoff SOP metadata coverage only. It
+  does not provide legal advice, issue official SOP, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
 
 ## 2026-07-03 - P9-01 Short Course Quick Access No-Overflow Guard
 
@@ -1382,27 +6843,6 @@
   write lead data, execute import, execute UAT, accept evidence,
   approve finance action, approve owner GO/NO-GO or mark production GO.
 
-## 2026-07-03 - P0-14 Import Quick Access Guard
-
-- Tightened `components/import/lead-import-form.tsx` so `/import` exposes
-  workspace-scoped quick access for defaults, CSV input, submit and result
-  areas with `data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS"`.
-- Added `data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE"` so the
-  local CSV sample can be pasted into the controlled textarea without changing
-  the server import action or bypassing the final Import lead submit.
-- Added
-  `data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW"`,
-  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `aria-label` and
-  `title` guards so long workspace/source/flow/partner labels do not force
-  horizontal overflow.
-- Extended `scripts/audit-heu-data-foundation.mjs`,
-  `scripts/audit-heu-implementation-log.mjs` and
-  `scripts/audit-ttgdtx-release-gates.mjs` so the import quick-access marker,
-  sample paste affordance and no-overflow guard fail locally if removed.
-- PASS_LOCAL boundary: this is import navigation and no-overflow hardening
-  only. It does not change role scope, grant access, write lead data, execute import,
-  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
-  or mark production GO.
 ## 2026-07-03 - P8-01 HOU Quick Access No-Overflow Guard
 
 - Added a read-only `/hou` quick-access band in
@@ -1422,6 +6862,127 @@
   hardening only. It does not approve HOU handover, tuition ledger posting,
   invoice issuance, COM payout, finance action, execute UAT, accept evidence,
   approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Create Workspace Guard
+
+- Tightened `app/leads/new/page.tsx` so the create-lead no-workspace stop state
+  is explicitly marked with
+  `data-heu-lead-create-no-workspace-guard="P0-05_LEAD_CREATE_NO_WORKSPACE_GUARD"`.
+- Reused the shared `firstParam` and `withAdmissionSegmentParam` helpers for
+  create-lead workspace routing instead of keeping a local parser.
+- Tightened `components/leads/lead-form.tsx` with
+  `data-heu-lead-create-workspace-lock="P0-05_LEAD_CREATE_WORKSPACE_LOCK"` so
+  the locked hidden `admission_segment_id` field remains guarded.
+- Updated `app/leads/actions.ts` so successful create redirects through
+  `withAdmissionSegmentParam("/leads", admissionSegmentId)` after the existing
+  `can_use_admission_workspace`, role permission and segment-scope checks pass.
+- Extended `scripts/audit-heu-data-foundation.mjs` so no-workspace guard,
+  locked segment field, scoped cancel and scoped post-create redirect fail
+  locally if removed.
+- PASS_LOCAL boundary: this is create-lead navigation and workspace-scope guard
+  hardening only. It does not create real leads, grant access, change role
+  scope, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Import Quick Access Guard
+
+- Tightened `components/import/lead-import-form.tsx` so `/import` exposes
+  workspace-scoped quick access for defaults, CSV input, submit and result
+  areas with `data-heu-import-quick-access="P0-14_IMPORT_QUICK_ACCESS"`.
+- Added `data-heu-import-sample-paste="P0-14_IMPORT_SAMPLE_PASTE"` so the
+  local CSV sample can be pasted into the controlled textarea without changing
+  the server import action or bypassing the final Import lead submit.
+- Added
+  `data-heu-import-quick-access-overflow-guard="P0-14_IMPORT_QUICK_ACCESS_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `aria-label` and
+  `title` guards so long workspace/source/flow/partner labels do not force
+  horizontal overflow.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the import quick-access marker,
+  sample paste affordance and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is import navigation and no-overflow hardening
+  only. It does not change role scope, grant access, write lead data, execute
+  import, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - SOP Slice Result Record Guard
+
+- Added a `SOP Slice Result Record` to
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  and `docs/HEU_CODEX_OPERATING_PLAYBOOK.md`.
+- The record requires `SOP-SCOPE`, `SOP-CHECK`, `SOP-PROFESSIONAL`,
+  `SOP-LEGAL`, `SOP-LOGIC`, `SOP-VERIFY`, `SOP-RESULT` and `SOP-NEXT` before
+  any small slice is reported `PASS_LOCAL`.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the slice-result record and
+  local-only boundary fail locally if removed.
+- PASS_LOCAL boundary: this is SOP handoff metadata and audit coverage only. It
+  does not provide legal advice, issue official SOP, accept UAT/evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-05 Lead Detail Workspace Return Guard
+
+- Tightened `app/leads/[id]/page.tsx` so lead detail pages build a scoped
+  `currentLeadHref` with `withAdmissionSegmentParam` and use it for
+  `workspaceReturnTo={currentLeadHref}`.
+- Kept the TTGDTX quick-fix edit link scoped by adding
+  `lead.admission_segment_id` to the `ttgdtx-gate#p2-05-fix` href builder.
+- Preserved the existing scoped `leadListHref`, so detail-to-list, workspace
+  switch return and quick-fix navigation all stay tied to the lead admission
+  segment.
+- Extended `scripts/audit-heu-data-foundation.mjs` so lead detail workspace
+  return and quick-fix deep-link scope fail locally if removed.
+- PASS_LOCAL boundary: this is lead-detail navigation scope preservation only.
+  It does not change role scope, grant access, write lead data, update lead
+  status, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Real Data Metadata Probe Confirmation Addendum
+
+- Extended
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  with a metadata-only probe confirmation addendum for `META-01` through
+  `META-09`.
+- Captured safe count-only ambiguity for staff confirmation: environment/source
+  confirmation unresolved, publishable key/no user session/no service role
+  boundary, 86 objects checked, 73 count-visible, 13 blocked/error, core table
+  zero-count ambiguity, only 9 visible report-view rows, role/scope blocked/error
+  results, short-course summary views blocked/error/timeout and
+  `heu_finance_desk_summary` HTTP 204/null count.
+- Kept controlled evidence external: raw PII, bank data, passwords, service-role
+  keys, auth users, voucher files and screenshots with secrets stay outside
+  Git/Codex/chat.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the register addendum, metadata
+  probe ambiguity list and local-only boundary fail locally if removed.
+- PASS_LOCAL boundary: result is `PASS_LOCAL_REGISTER_HARDENING`. Production:
+  NO-GO. This does not import raw data, prove authenticated RLS, accept
+  evidence, execute UAT, approve report-view reliance, approve Finance Desk
+  readiness, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - P0-05 Lead Workspace Deep-Link Guard
+
+- Tightened `components/leads/lead-list.tsx` so quick-open cards, mobile lead
+  links, table lead links and Enter-to-open search navigation use the
+  client-safe `lib/workspace-url.ts` `withAdmissionSegmentParam` helper through
+  the shared `leadHref` helper.
+- Updated `app/leads/page.tsx` to pass `workspace.activeSegmentId` into
+  `LeadList`, keeping lead detail links tied to the selected admission segment
+  workspace.
+- Added quick-open `aria-label` and `title` values so guarded lead opening has
+  a stable browser-assistive target while preserving the existing
+  `data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"` and
+  `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"` controls.
+- Extended `scripts/audit-heu-data-foundation.mjs` so the workspace deep-link
+  helper and `/leads` page prop fail locally if removed.
+- PASS_LOCAL boundary: this is navigation scope preservation only. It does not
+  change role scope, grant access, write lead data, update lead status,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
 ## 2026-07-03 - P0-12 Local Route Smoke Guard
 
 - Hardened `scripts/smoke-heu-local-routes.mjs` so
@@ -1440,6 +7001,217 @@
   log in as a real user, execute signed UAT, accept evidence, call external
   environments, approve finance action, approve owner GO/NO-GO or mark
   production GO.
+
+## 2026-07-03 - P3-01 Pipeline Quick Access Guard
+
+- Tightened `components/pipeline/pipeline-board.tsx` so `/pipeline` exposes
+  workspace-scoped top-three quick-open cards, status anchor metrics and
+  priority signals for overdue, duplicate and unassigned leads with
+  `data-heu-pipeline-quick-access="P3-01_PIPELINE_QUICK_ACCESS"` and
+  `data-heu-pipeline-quick-open="P3-01_PIPELINE_QUICK_OPEN_TOP3"`.
+- Added
+  `data-heu-pipeline-quick-access-overflow-guard="P3-01_PIPELINE_QUICK_ACCESS_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
+  `aria-label` and `title` guards so long lead names, owner labels, phone
+  values and follow-up strings do not force horizontal overflow.
+- Updated `app/pipeline/page.tsx` to pass the active workspace segment into
+  `PipelineBoard`, keeping quick-open and lead-card links scoped through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the pipeline quick-access marker,
+  top-three quick-open behavior and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is pipeline navigation and no-overflow hardening
+  only. It does not change role scope, grant access, write lead data, update
+  lead status, execute UAT, accept evidence, approve finance action, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Pipeline Document Metric Guard
+
+- Tightened `components/pipeline/pipeline-board.tsx` so the pipeline quick
+  metric `Hồ sơ` uses `pipelineDocumentStatuses` and `documentStatusCount`.
+- The metric now counts both `DOCUMENT_PENDING` and `DOCUMENT_SUBMITTED`, while
+  still linking to the first operational document column through
+  `pipelineColumnId("DOCUMENT_PENDING")`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the pipeline document metric
+  fails locally if `DOCUMENT_SUBMITTED` is dropped from the count.
+- PASS_LOCAL boundary: this is read-only pipeline metric hardening only. It does
+  not update lead status, write lead data, upload real documents, accept
+  evidence, change role scope, grant access, execute UAT, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Required Reading Baseline Triad Guard
+
+- Added `docs/HEU_CURRENT_STATE_INVENTORY.md` and
+  `docs/HEU_SYSTEM_BUILD_BACKLOG.md` to `AGENTS.md` required reading beside
+  `docs/HEU_MODULE_READINESS_GAP_MATRIX_20260628_V01_DRAFT.md`.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs` so final handoff
+  coverage fails if the required-reading baseline omits any of the three live
+  SOP/PASS_LOCAL context documents: current-state inventory, system build
+  backlog or module readiness gap matrix.
+- PASS_LOCAL boundary: this is required-reading and audit coverage only. It
+  does not approve production, migration, UAT, evidence acceptance, legal
+  advice, official SOP issuance, finance action or owner GO/NO-GO.
+
+## 2026-07-03 - P0-15 Local Route Smoke Script
+
+- Added `scripts/smoke-heu-local-routes.mjs` and
+  `npm.cmd run smoke:heu-local-routes` so short-term local review can verify
+  the main app routes with one repeatable command.
+- The smoke accepts only HTTP `2xx` or `3xx` responses and reports redirect
+  targets, covering login, AI assistant, audit, campaigns, documents, search,
+  follow-up, leads, partners, pipeline, segments, import, settings, reports,
+  Master Control, HOU, Short Course, Finance Desk and TTGDTX routes.
+- PASS_LOCAL boundary: this is local route reachability evidence only. It does
+  not authenticate as real users, execute signed UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Follow-up Quick Access Guard
+
+- Tightened `components/followups/followup-board.tsx` so `/followups` exposes
+  top-three quick-open cards, overdue/today/upcoming anchor metrics and
+  workspace-scoped lead links with
+  `data-heu-followup-quick-access="P3-01_FOLLOWUP_QUICK_ACCESS"` and
+  `data-heu-followup-quick-open="P3-01_FOLLOWUP_QUICK_OPEN_TOP3"`.
+- Added
+  `data-heu-followup-quick-access-overflow-guard="P3-01_FOLLOWUP_QUICK_ACCESS_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
+  `aria-label` and `title` guards so long lead names, owner labels, phone
+  values and due-date strings do not force horizontal overflow.
+- Updated `app/followups/page.tsx` to pass the active workspace segment into
+  `FollowupBoard`, keeping quick-open lead links scoped through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the follow-up quick-access marker,
+  top-three quick-open behavior and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is follow-up navigation and no-overflow hardening
+  only. It does not change role scope, grant access, write lead data, update
+  follow-up status, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Follow-up Terminal Status Guard
+
+- Tightened `app/followups/page.tsx` so the open follow-up board excludes all
+  terminal lead statuses used by the readiness checker: `ENROLLED`, `LOST` and
+  `DUPLICATE`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` so the terminal-status filter fails
+  locally if `DUPLICATE` is removed from `/followups`.
+- PASS_LOCAL boundary: this is read-only follow-up query-scope hardening only.
+  It does not update lead status, write lead or follow-up data, close duplicate
+  records, execute UAT, accept evidence, approve finance action, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P6-01 Draft Scope Toggle Hard-Delete Audit Fix
+
+- Tightened `components/settings/user-business-scope-settings.tsx` so draft
+  segment and partner checkbox deselection no longer calls `Set.delete(...)`
+  in the UI state helper.
+- Kept the behavior equivalent by using array filtering for unchecked draft
+  scope IDs, avoiding a false `audit:hard-delete` hit while preserving the
+  no-business-hard-delete guard.
+- Verified all 62 `audit:*` scripts, `npm.cmd run lint`, `git diff --check`,
+  `npm.cmd run audit:heu-git-hygiene` and `npm.cmd run build`.
+- PASS_LOCAL boundary: this is UI draft-state and audit-safety hardening only.
+  It does not revoke real access, delete business data, change role scope,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-03 - SOP Governance Handoff Required Reading Guard
+
+- Added
+  `docs/HEU_REAL_DATA_LOGIC_PROFESSIONAL_LEGAL_CONFIRMATION_REGISTER_20260702.md`
+  to `AGENTS.md` required reading beside the Codex operating playbook and the
+  Legal/SOP/Governance control matrix.
+- Extended `scripts/audit-heu-final-handoff-coverage.mjs` so final handoff
+  coverage fails if the SOP/legal governance required-reading chain omits the
+  confirmation register.
+- Added the confirmation register to `scripts/audit-ttgdtx-release-gates.mjs`
+  required files so release-gate checks cannot pass without the `SOP-01`
+  through `SOP-06` source document.
+- PASS_LOCAL boundary: this is required-reading and audit coverage only. It
+  does not provide legal advice, issue official SOP, accept UAT/evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-13 Dashboard Quick Actions Guard
+
+- Tightened `components/dashboard/dashboard-overview.tsx` so the home dashboard
+  exposes workspace-aware quick actions for Lead, Follow-up, Create Lead or
+  workspace selection and Reports with
+  `data-heu-dashboard-quick-actions="P0-13_DASHBOARD_QUICK_ACTIONS"`.
+- Added
+  `data-heu-dashboard-quick-actions-overflow-guard="P0-13_DASHBOARD_QUICK_ACTIONS_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
+  `aria-label` and `title` guards so long workspace/action labels do not force
+  horizontal overflow.
+- Updated `app/page.tsx` to pass the active workspace segment and write-scope
+  state into `DashboardOverview`, keeping quick-action links scoped through
+  `withAdmissionSegmentParam`.
+- Extended `scripts/audit-heu-data-foundation.mjs`,
+  `scripts/audit-heu-current-state-inventory.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the dashboard quick-action
+  marker and no-overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is workspace navigation and no-overflow hardening
+  only. It does not change role scope, grant access, create leads, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P1-11 Search Quick Open Guard
+
+- Tightened `app/search/page.tsx` so result pages show the first three results
+  in a guarded quick-open panel with
+  `data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"`.
+- Added `data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"`,
+  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
+  `aria-label` and `title` guards so long result labels, codes and summaries
+  stay readable and keyboard/browser-assistive navigation has a stable target.
+- Updated the process-label checklist/current-state wording and local audits so
+  the quick-open panel and overflow guard fail locally if removed.
+- PASS_LOCAL boundary: this is navigation/discovery and no-overflow hardening
+  only. It does not write search data, change role scope, accept UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - P8-01 HOU UAT Result Ledger Guard
+
+- Added `docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
+  DRAFT_CONTROL result-ledger template for HOU signed UAT preparation.
+- Added HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06 with
+  `HOU_UAT_RESULT_READY / NO_GO / BLOCKED` decision values, linking each UAT
+  row back to HOU-LH control gates and controlled evidence references.
+- Added `data-heu-hou-uat-result-ledger="P8-01_UAT_RESULT_LEDGER"` to the HOU
+  gap-pack UI so operators can reach the ledger path from the same PASS_LOCAL
+  control surface.
+- Added `table-fixed`, `whitespace-normal`, `break-words` and `max-w-full`
+  guards so long evidence-reference and stop-condition text stays readable.
+- Propagated the HOU UAT result ledger into current-state, backlog,
+  module-readiness, production-checklist, AGENTS required reading and release
+  gate coverage.
+- PASS_LOCAL boundary: this prepares the HOU UAT result ledger only. It does not
+  execute UAT, accept evidence, approve HOU handover, approve tuition ledger
+  posting, approve invoice issuance, approve COM payout, approve owner GO or
+  mark production GO.
+
+## 2026-07-03 - TTGDTX Checklist P0 SOP Loop Alignment
+
+- Updated `docs/TTGDTX_9PLUS_PILOT_PRODUCTION_CHECKLIST.md` HEU P0 register
+  pack row so checklist handoff mirrors the current-state/backlog P0 SOP loop wording.
+- The checklist now records `PASS_LOCAL SOP Loop Gate`, `PASS_LOCAL SOP Loop`
+  anchor and RC-07A routing through `SOP-01` through `SOP-06` before any logged
+  slice.
+- Extended `scripts/audit-heu-p0-register-pack.mjs`,
+  `scripts/audit-heu-implementation-log.mjs` and
+  `scripts/audit-ttgdtx-release-gates.mjs` to guard this checklist alignment.
+- PASS_LOCAL boundary: this is checklist/audit propagation only. It does not approve production,
+  migration, UAT, evidence acceptance, legal advice, official SOP issuance,
+  finance action or owner GO/NO-GO.
 
 ## 2026-07-03 - P9-01 Short Course Control Propagation
 
@@ -1460,6 +7232,21 @@
 - PASS_LOCAL boundary: this is control-surface synchronization only. It does not execute UAT,
   accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO
   or mark production GO.
+
+## 2026-07-03 - P0 Register SOP Loop State Backlog Alignment
+
+- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` P0 register pack row so it
+  records the SOP-to-data `PASS_LOCAL SOP Loop Gate`, the
+  Legal/SOP/Governance `PASS_LOCAL SOP Loop` anchor and RC-07A routing through
+  `SOP-01` through `SOP-06` before any logged slice.
+- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` P0-16 with the same P0 register
+  pack SOP loop gate/anchor wording.
+- Extended `scripts/audit-heu-current-state-inventory.mjs`,
+  `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` to guard this propagation.
+- PASS_LOCAL boundary: this is current-state/backlog/audit propagation only. It
+  does not approve production, migration, UAT, evidence acceptance or legal advice.
+- It does not approve official SOP issuance, finance action or owner GO/NO-GO.
 
 ## 2026-07-03 - P9-01 Short Course UAT Result Ledger Guard
 
@@ -1482,6 +7269,22 @@
   accept evidence, approve attendance lock, approve payment, approve owner GO/NO-GO
   or mark production GO.
 
+## 2026-07-02 - SOP To Data PASS_LOCAL Loop Gate
+
+- Added a `PASS_LOCAL SOP Loop Gate` section to
+  `docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md` so every SOP-to-data
+  mapping slice routes through `SOP-01` through `SOP-06`.
+- The gate records the operating order: check current state, professional
+  review, legal/SOP review, logic/data review, focused PASS_LOCAL verification
+  and continue-or-stop.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the SOP-to-data loop gate stays
+  guarded locally.
+- PASS_LOCAL boundary: this is SOP-to-data mapping guard work only. It gives
+  no legal advice and does not issue official SOP.
+- It does not accept UAT/evidence, approve finance reliance, approve owner GO/NO-GO
+  or mark production GO.
+
 ## 2026-07-02 - P9-01 Short Course Owner Signoff Manifest
 
 - Added `docs/HEU_SHORT_COURSE_OWNER_SIGNOFF_MANIFEST_20260702.md` as the
@@ -1501,6 +7304,41 @@
   approve attendance lock, BHXH decision, meal/allowance payment, HR payment,
   invoice/payment verification, report-view reliance, UAT acceptance, evidence
   acceptance, owner GO/NO-GO or production GO.
+
+## 2026-07-02 - Legal SOP Governance SOP Loop Anchor
+
+- Added a `PASS_LOCAL SOP Loop` row to
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
+  so the legal/SOP/governance control matrix routes every small slice through
+  `SOP-01` through `SOP-06`: check current state, professional review,
+  legal/SOP review, logic/data review, focused PASS_LOCAL verification and
+  continue-or-stop.
+- Updated `docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md`
+  RC-07A so the root action queue names the real-data confirmation register
+  and Codex operating playbook before any logged slice.
+- Extended `scripts/audit-heu-p0-register-pack.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` to guard the Legal/SOP/Governance
+  SOP loop anchor.
+- PASS_LOCAL boundary: this is control-matrix/root-register anchoring only. It
+  gives no legal advice, no official SOP issuance, no UAT/evidence acceptance,
+  no finance reliance, no migration approval and no owner GO/NO-GO. It gives
+  no production GO.
+
+## 2026-07-02 - P3/P6-04 Admission Scope Quick Selection
+
+- Tightened `components/settings/user-business-scope-settings.tsx` so segment
+  and partner scope assignment uses controlled selections with `Chon tat ca` /
+  `Bo chon` quick actions for admission segments and partner scopes.
+- Purpose: after a real Tuyen Sinh / department user exists, ADMIN or delegated
+  scope managers can quickly assign all active admission segments or clear a
+  user's scope without manually ticking every row.
+- Count-only check showed the admission foundation exists, but active
+  `user_admission_segment_scopes` and `user_lead_visibility_scopes` are still
+  empty; this UI change does not create fake users or write any scope row by
+  itself.
+- PASS_LOCAL boundary: this is operator-speed UI only. It does not grant access,
+  approve signed UAT, accept handover evidence, approve finance reliance,
+  create leads, create students or mark production GO.
 
 ## 2026-07-02 - P9-01 Short Course Review Handoff
 
@@ -1525,119 +7363,6 @@
   approve attendance lock, BHXH decision, meal/allowance payment, HR payment,
   invoice/payment verification, report-view reliance, UAT acceptance, evidence
   acceptance, owner GO/NO-GO or production GO.
-
-## 2026-07-03 - P8-01 HOU UAT Result Ledger Guard
-
-- Added `docs/HEU_HOU_UAT_RESULT_LEDGER_TEMPLATE_20260703.md` as the
-  DRAFT_CONTROL result-ledger template for HOU signed UAT preparation.
-- Added HOU-UAT-LEDGER-01 through HOU-UAT-LEDGER-06 with
-  `HOU_UAT_RESULT_READY / NO_GO / BLOCKED` decision values, linking each UAT
-  row back to HOU-LH control gates and controlled evidence references.
-- Added `data-heu-hou-uat-result-ledger="P8-01_UAT_RESULT_LEDGER"` to the HOU
-  gap-pack UI so operators can reach the ledger path from the same PASS_LOCAL
-  control surface.
-- Added `table-fixed`, `whitespace-normal`, `break-words` and `max-w-full`
-  guards so long evidence-reference and stop-condition text stays readable.
-- Propagated the HOU UAT result ledger into current-state, backlog,
-  module-readiness, production-checklist, AGENTS required reading and release
-  gate coverage.
-- PASS_LOCAL boundary: this prepares the HOU UAT result ledger only. It does not
-  execute UAT, accept evidence, approve HOU handover, approve tuition ledger
-  posting, approve invoice issuance, approve COM payout, approve owner GO or
-  mark production GO.
-
-## 2026-07-02 - P8/P9 HOU Short Course Quick Scope Switch
-
-- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` with
-  `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"` and
-  `data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"` so the HOU
-  ledger/handover control pack can jump to the separate Short Course
-  attendance/payment surface without mixing module scope.
-- Tightened `components/short-course/short-course-attendance-payment-gap-pack.tsx`
-  with `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"`
-  and `data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"` so Short
-  Course operators can jump back to the separate HOU ledger/handover surface.
-- Added `min-w-0`, `overflow-hidden`, `break-words`, `truncate`, `shrink-0`
-  and `flex-wrap` guards around the quick-switch rows so long scope labels and
-  action buttons do not force horizontal overflow.
-- Added explicit `aria-label` and `title` text on the HOU, Short Course and
-  Master Control quick-switch links so keyboard/browser-assistive navigation
-  names the target control surface without changing data, scope or approvals.
-- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
-  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
-  cross-scope quick switch and overflow guards fail locally if removed.
-- Verification routes: `npm.cmd run audit:heu-hou-ledger-handover-gap-pack` and
-  `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`.
-- PASS_LOCAL boundary: this is read-only navigation packaging only. It does not
-  approve HOU handover, attendance lock, tuition ledger posting, invoice
-  issuance, COM payout, meal/allowance payment, HR payment, finance action, UAT
-  acceptance, evidence acceptance, owner GO/NO-GO or production GO.
-
-## 2026-07-03 - P1-11 Search Quick Open Guard
-
-- Tightened `app/search/page.tsx` so result pages show the first three results
-  in a guarded quick-open panel with
-  `data-heu-search-quick-open="P1-11_SEARCH_QUICK_OPEN"`.
-- Added `data-heu-search-quick-open-overflow-guard="P1-11_SEARCH_QUICK_OPEN_NO_OVERFLOW"`,
-  `min-w-0`, `overflow-hidden`, `truncate`, `break-words`, `shrink-0`,
-  `aria-label` and `title` guards so long result labels, codes and summaries
-  stay readable and keyboard/browser-assistive navigation has a stable target.
-- Updated the process-label checklist/current-state wording and local audits so
-  the quick-open panel and overflow guard fail locally if removed.
-- PASS_LOCAL boundary: this is navigation/discovery and no-overflow hardening
-  only. It does not write search data, change role scope, accept UAT, accept
-  evidence, approve finance action, approve owner GO/NO-GO or mark production
-  GO.
-
-## 2026-07-03 - P0 Register SOP Loop State Backlog Alignment
-
-- Updated `docs/HEU_CURRENT_STATE_INVENTORY.md` P0 register pack row so it
-  records the SOP-to-data `PASS_LOCAL SOP Loop Gate`, the
-  Legal/SOP/Governance `PASS_LOCAL SOP Loop` anchor and RC-07A routing through
-  `SOP-01` through `SOP-06` before any logged slice.
-- Updated `docs/HEU_SYSTEM_BUILD_BACKLOG.md` P0-16 with the same P0 register
-  pack SOP loop gate/anchor wording.
-- Extended `scripts/audit-heu-current-state-inventory.mjs`,
-  `scripts/audit-heu-p0-register-pack.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` to guard this propagation.
-- PASS_LOCAL boundary: this is current-state/backlog/audit propagation only. It
-  does not approve production, migration, UAT, evidence acceptance or legal advice.
-- It does not approve official SOP issuance, finance action or owner GO/NO-GO.
-
-## 2026-07-02 - SOP To Data PASS_LOCAL Loop Gate
-
-- Added a `PASS_LOCAL SOP Loop Gate` section to
-  `docs/HEU_SOP_TO_DATA_MAPPING_20260627_V01_DRAFT.md` so every SOP-to-data
-  mapping slice routes through `SOP-01` through `SOP-06`.
-- The gate records the operating order: check current state, professional
-  review, legal/SOP review, logic/data review, focused PASS_LOCAL verification
-  and continue-or-stop.
-- Extended `scripts/audit-heu-p0-register-pack.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` so the SOP-to-data loop gate stays
-  guarded locally.
-- PASS_LOCAL boundary: this is SOP-to-data mapping guard work only. It gives
-  no legal advice and does not issue official SOP.
-- It does not accept UAT/evidence, approve finance reliance, approve owner GO/NO-GO
-  or mark production GO.
-
-## 2026-07-02 - Legal SOP Governance SOP Loop Anchor
-
-- Added a `PASS_LOCAL SOP Loop` row to
-  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
-  so the legal/SOP/governance control matrix routes every small slice through
-  `SOP-01` through `SOP-06`: check current state, professional review,
-  legal/SOP review, logic/data review, focused PASS_LOCAL verification and
-  continue-or-stop.
-- Updated `docs/HEU_ROOT_CONTROL_ACTION_REGISTER_20260627_V01_DRAFT.md`
-  RC-07A so the root action queue names the real-data confirmation register
-  and Codex operating playbook before any logged slice.
-- Extended `scripts/audit-heu-p0-register-pack.mjs` and
-  `scripts/audit-heu-implementation-log.mjs` to guard the Legal/SOP/Governance
-  SOP loop anchor.
-- PASS_LOCAL boundary: this is control-matrix/root-register anchoring only. It
-  gives no legal advice, no official SOP issuance, no UAT/evidence acceptance,
-  no finance reliance, no migration approval and no owner GO/NO-GO. It gives
-  no production GO.
 
 ## 2026-07-02 - SOP Loop State Backlog Gap Alignment
 
@@ -1715,6 +7440,8 @@
   reset links in Git/Codex/chat.
 - Tightened the position matrix surface with
   `data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"` and
+  `data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"`
+  plus
   `data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"` so search,
   department filters, summary cards, assignment rows and password/reset panels
   stay fast to reach and do not force horizontal overflow.
@@ -1722,6 +7449,33 @@
   It does not create fake accounts, approve role assignments for production,
   approve UAT, approve finance reliance, approve migration order, approve owner
   GO/NO-GO or mark production GO.
+
+## 2026-07-02 - P8/P9 HOU Short Course Quick Scope Switch
+
+- Tightened `components/hou/hou-ledger-handover-gap-pack.tsx` with
+  `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"` and
+  `data-heu-hou-short-course-quick-link="HOU_TO_SHORT_COURSE"` so the HOU
+  ledger/handover control pack can jump to the separate Short Course
+  attendance/payment surface without mixing module scope.
+- Tightened `components/short-course/short-course-attendance-payment-gap-pack.tsx`
+  with `data-heu-hou-short-course-scope-switch="REAL-OPS-07_QUICK_SCOPE_SWITCH"`
+  and `data-heu-hou-short-course-quick-link="SHORT_COURSE_TO_HOU"` so Short
+  Course operators can jump back to the separate HOU ledger/handover surface.
+- Added `min-w-0`, `overflow-hidden`, `break-words`, `truncate`, `shrink-0`
+  and `flex-wrap` guards around the quick-switch rows so long scope labels and
+  action buttons do not force horizontal overflow.
+- Added explicit `aria-label` and `title` text on the HOU, Short Course and
+  Master Control quick-switch links so keyboard/browser-assistive navigation
+  names the target control surface without changing data, scope or approvals.
+- Extended `scripts/audit-heu-hou-ledger-handover-gap-pack.mjs` and
+  `scripts/audit-heu-short-course-attendance-payment-gap-pack.mjs` so the
+  cross-scope quick switch and overflow guards fail locally if removed.
+- Verification routes: `npm.cmd run audit:heu-hou-ledger-handover-gap-pack` and
+  `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`.
+- PASS_LOCAL boundary: this is read-only navigation packaging only. It does not
+  approve HOU handover, attendance lock, tuition ledger posting, invoice
+  issuance, COM payout, meal/allowance payment, HR payment, finance action, UAT
+  acceptance, evidence acceptance, owner GO/NO-GO or production GO.
 
 ## 2026-07-02 - P0-17 Organization Position Permission Matrix
 
@@ -1751,6 +7505,619 @@
 - PASS_LOCAL boundary: this is a DRAFT control matrix only. It does not create
   accounts, set passwords, send reset/invite links, approve UAT, approve finance reliance,
   approve migration order, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Settings Permission Matrix Runtime Readiness
+
+- Added `scripts/check-heu-settings-permission-matrix-readiness.mjs` and
+  `npm.cmd run check:heu-settings-permission-matrix-readiness` as a read-only
+  runtime guard for the Settings permission matrix.
+- The checker prints `SETTINGS-MATRIX-APP-GUARD`,
+  `SETTINGS-MATRIX-POSITIONS`, `SETTINGS-MATRIX-PERMISSIONS`,
+  `SETTINGS-MATRIX-ASSIGNMENTS`, `SETTINGS-MATRIX-ROLE-RISK`,
+  `SETTINGS-MATRIX-ACTIVE-USERS` and `SETTINGS-MATRIX-SECRET-BOUNDARY`.
+- It reads base tables for `heu_org_positions`,
+  `heu_position_permission_matrix`, `heu_position_assignments`, roles,
+  role permissions, departments and active profiles so service-role local
+  checks do not depend on authenticated view context.
+- Current local state reports `active_positions=73`,
+  `required_positions=15`, `required_unassigned=11` and
+  `position_matrix_permissions=1719`; required seat
+  `owner assignment pending` and not auto-filled by Codex/chat.
+- Extended `scripts/audit-heu-user-account-security.mjs` so this checker and
+  package command are required before user-account security passes locally.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set passwords,
+  send reset/invite links, approve UAT, approve finance reliance,
+  approve migration order, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Position Assignment Owner Queue
+
+- Added `docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md` as the
+  PASS_LOCAL owner-action queue for required HEU position seats before wider
+  user assignment.
+- Added `scripts/check-heu-position-assignment-owner-queue.mjs` and
+  `npm.cmd run check:heu-position-assignment-owner-queue` to count required
+  seats, unassigned required seats, role/department-matching candidate profiles
+  and candidate scope basics without printing emails, names, phone numbers or
+  raw IDs.
+- The checker prints `POSITION-OWNER-QUEUE-REQUIRED-SEATS`,
+  `POSITION-OWNER-QUEUE-CANDIDATES`, `POSITION-OWNER-QUEUE-CANDIDATE-SCOPE`,
+  `POSITION-OWNER-QUEUE-NO-AUTO-ASSIGN` and
+  `POSITION-OWNER-QUEUE-SECRET-BOUNDARY`.
+- Added `POSITION-OWNER-QUEUE-OWNER-DECISION-MATRIX` with
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX` so each
+  pending required position code must carry an owner-side decision record before
+  user create/link, scope repair or Settings/RPC assignment execution.
+- The matrix records
+  `required_owner_record=owner_lane,position_code,approved_person_label,auth_link_path,scope_baseline_path,secure_admin_channel,controlled_evidence_id`,
+  `required_per_position_record=position_code,default_role_code,department_code,approved_person_label,create_or_link_decision,scope_baseline_status,controlled_evidence_id`,
+  `blocked_if=owner_person_mapping_missing,auth_profile_link_missing,scope_baseline_missing,secure_admin_channel_missing,controlled_evidence_id_missing`
+  and
+  `next_allowed_step=P0-17_POSITION_OWNER_DECISION before USER-CREATE-OWNER-BATCH-PACKET before P0-17_POSITION_OWNER_EXECUTION_PACKET`.
+- Added `POSITION-OWNER-QUEUE-EXECUTION-PACKET` with
+  `position_owner_execution_packet=P0-17_POSITION_OWNER_EXECUTION_PACKET` so
+  the 11 remaining required seats are routed through
+  `OWNER-MAP-01 before AUTH-LINK-02 before PROFILE-SCOPE-03 before POSITION-ASSIGN-04`.
+- `next_required_order=OWNER-MAP-01 before AUTH-LINK-02 before PROFILE-SCOPE-03 before POSITION-ASSIGN-04`.
+- The packet records `positions_needing_owner_create_or_link=11`,
+  `positions_with_matching_active_profiles=0`,
+  `pending_required_position_codes=PHT_01,TUYEN_SINH_HEAD,CTHSSV_HEAD,KE_TOAN_TRUONG,AUDIT_HEAD,IT_DATA_HEAD,KHOA_HEAD,NGAN_HAN_HEAD,TCHC_VAN_THU_LUU_TRU,TCHC_HANH_CHINH_NHAN_SU,TCHC_CSVC_TAI_SAN`,
+  `required_inputs=owner_person_mapping_recorded,auth_profile_link_recorded,scope_baseline_verified,secure_admin_channel_recorded`
+  and
+  `required_execution_record=position_code_recorded,approved_person_label_recorded,auth_profile_link_verified,scope_baseline_verified,settings_rpc_assignment_recorded,post_assignment_snapshot_recorded,controlled_evidence_id_recorded`.
+- Current local state reports `required_positions=15`,
+  `unassigned_required_positions=11`, `positions_with_candidates=0` and
+  `positions_needing_create_or_link=11`.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the queue doc,
+  package command, read-only checker and no-mutation boundary are required.
+- PASS_LOCAL boundary: candidate evidence only supports owner review. This does
+  not create accounts, assign real users, set passwords, send reset/invite
+  links, approve UAT, approve finance reliance, approve migration order,
+  approve owner GO/NO-GO or mark production GO.
+- Boundary phrase: candidate evidence only supports owner approval review; does not create accounts; send reset/invite links are not sent; no UAT, finance reliance, migration order or production GO is approved.
+
+## 2026-07-03 - Negative Control Account Queue
+
+- Added `docs/HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md` as the
+  PASS_LOCAL owner-action queue for `REAL_OUT_OF_SCOPE_NEGATIVE_01` and
+  module negative checks before wider user/department expansion.
+- Added `scripts/check-heu-negative-control-account-queue.mjs` and
+  `npm.cmd run check:heu-negative-control-account-queue` to count safe
+  negative candidates for TTGDTX, HOU and Short Course without printing emails,
+  names, phone numbers or raw IDs.
+- The checker prints `NEGATIVE-CONTROL-BASELINE`,
+  `NEGATIVE-CONTROL-TTGDTX-QUEUE`, `NEGATIVE-CONTROL-MODULE-QUEUE`,
+  `NEGATIVE-CONTROL-NO-AUTO-CREATE` and
+  `NEGATIVE-CONTROL-SECRET-BOUNDARY`.
+- Current local state reports `ttgdtx_negative_candidates=0`, so owner
+  create/link remains pending for `REAL_OUT_OF_SCOPE_NEGATIVE_01`; HOU and
+  Short Course each have one candidate for owner review only.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the queue doc,
+  package command, read-only checker and no-mutation boundary are required.
+- PASS_LOCAL boundary: candidate evidence only supports owner approval review.
+  This does not create accounts, assign real users, set passwords, send
+  reset/invite links, approve UAT, approve finance reliance, approve migration
+  order, approve owner GO/NO-GO or mark production GO.
+- Boundary phrase: candidate evidence only supports owner approval review; does
+  not create accounts; set passwords are not set; send reset/invite links are
+  not sent; no UAT, finance reliance, migration order or production GO is
+  approved.
+
+## 2026-07-03 - User Activation Worksheet Guard
+
+- Added `docs/HEU_USER_ACTIVATION_WORKSHEET_20260703.md` as the PASS_LOCAL
+  owner-action worksheet for real-user activation order before any department
+  expansion.
+- Added `scripts/check-heu-user-activation-worksheet-readiness.mjs` and
+  `npm.cmd run check:heu-user-activation-worksheet-readiness` to verify the
+  worksheet, package command, Settings actions, Auth/profile link baseline,
+  scope baseline, owner-seat queue and negative-control queue without printing
+  emails, names, phone numbers or raw IDs.
+- The checker prints `ACTIVATION-WORKSHEET-AUTH-LINK`,
+  `ACTIVATION-WORKSHEET-SCOPE-BASELINE`,
+  `ACTIVATION-WORKSHEET-OWNER-SEATS`,
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL`,
+  `ACTIVATION-WORKSHEET-NO-AUTO-ACTION` and
+  `ACTIVATION-WORKSHEET-SECRET-BOUNDARY`.
+- Added activation closure packets to the worksheet doc and checker:
+  `ACTIVATION-WORKSHEET-SCOPE-CLOSURE-PACKET`,
+  `ACTIVATION-WORKSHEET-OWNER-SEAT-CLOSURE-PACKET` and
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL-CLOSURE-PACKET`.
+- Added the activation position-owner decision dependency:
+  `ACTIVATION-WORKSHEET-POSITION-OWNER-DECISION-MATRIX` with
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX`.
+- The packets print
+  `activation_scope_closure_packet=PROFILE-SCOPE-03_SCOPE_CLOSURE`,
+  `activation_owner_seat_closure_packet=OWNER-MAP-01_POSITION_ASSIGNMENT_CLOSURE`
+  and
+  `activation_negative_control_closure_packet=NEGATIVE-CONTROL-05_CLOSURE`
+  with required closure and verification records before `POSITION-ASSIGN-04`,
+  `NEGATIVE-CONTROL-05` or `P6-UAT-06` can proceed.
+- The activation order is `OWNER-MAP-01`, `AUTH-LINK-02`,
+  `PROFILE-SCOPE-03`, `POSITION-ASSIGN-04`, `NEGATIVE-CONTROL-05`,
+  `P6-UAT-06` and `ACCESS-CLOSURE-07`.
+- `REAL_OUT_OF_SCOPE_NEGATIVE_01` remains the TTGDTX negative-control label;
+  candidate evidence only supports owner approval review.
+- Current local state reports `active_profiles=6`,
+  `active_non_admin_bgh=3`, `required_positions=15`,
+  `unassigned_required_positions=11` and `ttgdtx_negative_candidates=0`.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the worksheet doc,
+  package command, read-only checker and no-mutation boundary are required.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, approve UAT, approve finance reliance,
+  approve migration order, approve owner GO/NO-GO or mark production GO.
+- Boundary phrase: does not create accounts; assign real users are not
+  assigned; set passwords are not set; send reset/invite links are not sent;
+  no UAT, finance reliance, migration order or production GO is approved.
+
+## 2026-07-03 - Activation Worksheet Negative-Control Gate
+
+- Updated `scripts/check-heu-user-activation-worksheet-readiness.mjs` so
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL` reports `NO_GO` when
+  `ttgdtx_negative_candidates=0`, even when `TC9_TTGDTX_LINKED` exists.
+- Updated `docs/HEU_USER_ACTIVATION_WORKSHEET_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the runtime
+  gate is explicit before browser UAT or wider department expansion.
+- Current local result: `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL: NO_GO`;
+  `ttgdtx_negative_candidates=0`; owner create/link pending for
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01`; activation worksheet remains NO_GO until at
+  least one usable out-of-scope candidate exists.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, approve UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; approve UAT; accept evidence; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary phrase: approve owner GO/NO-GO is not approved.
+
+## 2026-07-03 - Activation Worksheet Owner-Seat Gate
+
+- Updated `scripts/check-heu-user-activation-worksheet-readiness.mjs` so
+  `ACTIVATION-WORKSHEET-OWNER-SEATS` reports `NO_GO` while
+  `unassigned_required_positions>0`, even when matching active candidate
+  profiles exist for owner review.
+- Updated `docs/HEU_USER_ACTIVATION_WORKSHEET_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so candidate
+  evidence cannot be mistaken for completed position assignment readiness.
+- Current local result: `ACTIVATION-WORKSHEET-OWNER-SEATS: NO_GO`;
+  `required_positions=15`; `unassigned_required_positions=11`;
+  `matching_active_candidate_profiles=0`; owner position assignment pending;
+  activation worksheet remains NO_GO until all required positions are assigned
+  through owner-approved channel.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, approve UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; approve UAT; accept evidence; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary phrase: approve owner GO/NO-GO is not approved.
+
+## 2026-07-03 - Activation Worksheet Position Owner Decision Matrix Gate
+
+- Updated `scripts/check-heu-user-activation-worksheet-readiness.mjs` so
+  activation now emits
+  `ACTIVATION-WORKSHEET-POSITION-OWNER-DECISION-MATRIX` before any
+  create/link lane can be treated as ready.
+- The gate carries
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX`,
+  `required_dependency=owner_lane_recorded,position_code_recorded,approved_person_label_recorded,auth_link_path_recorded,scope_baseline_path_recorded,secure_admin_channel_recorded,controlled_evidence_id_recorded`
+  and
+  `next_allowed_step=P0-17_POSITION_OWNER_DECISION before USER-CREATE-OWNER-BATCH-PACKET before AUTH-LINK-02`.
+- Updated `docs/HEU_USER_ACTIVATION_WORKSHEET_20260703.md` so the
+  `OWNER-MAP-01` closure packet requires
+  `position_owner_decision_matrix_recorded` before Auth create/link or
+  Settings/RPC position assignment execution.
+- Current local result remains `NO_GO` while
+  `required_positions=15`, `unassigned_required_positions=11` and
+  `matching_active_candidate_profiles=0`.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, set passwords, send reset/invite links, accept evidence, approve UAT,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; link Auth; assign real users; set
+  passwords; send reset/invite links; accept evidence; approve UAT; approve
+  finance reliance; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - System-Wide Permission Expansion Register
+
+- Added `docs/HEU_SYSTEM_WIDE_PERMISSION_EXPANSION_REGISTER_20260703.md` as
+  the PASS_LOCAL register for expanding the same permission/audit model across
+  leads/import, pipeline/follow-ups, reports/dashboard, finance/payment, HOU,
+  Short Course, Settings/user activation and final audit handoff.
+- Added `scripts/check-heu-system-wide-permission-expansion-readiness.mjs` and
+  `npm.cmd run check:heu-system-wide-permission-expansion-readiness` to verify
+  the register, package scripts, module readiness scripts, audit-hook wiring
+  and live operation cutover gates without printing emails, names, phone
+  numbers or raw IDs.
+- The checker prints `SYSTEM-WIDE-EXPANSION-DOC`,
+  `SYSTEM-WIDE-EXPANSION-PACKAGE`,
+  `SYSTEM-WIDE-EXPANSION-MODULE-SCRIPTS`,
+  `SYSTEM-WIDE-EXPANSION-AUDIT-HOOKS`,
+  `SYSTEM-WIDE-EXPANSION-ACTIVATION-LINK`,
+  `SYSTEM-WIDE-EXPANSION-NEGATIVE-CONTROL`,
+  `SYSTEM-WIDE-EXPANSION-LIVE-OPERATION-GATE` and
+  `SYSTEM-WIDE-EXPANSION-NO-AUTO-ACTION`.
+- `SYSTEM-WIDE-EXPANSION-LIVE-OPERATION-GATE` runs
+  `check-heu-permission-scope-readiness.mjs`,
+  `check-heu-user-scope-baseline-repair-queue.mjs`,
+  `check-heu-user-create-readiness.mjs`,
+  `check-heu-user-activation-worksheet-readiness.mjs` and
+  `check-heu-user-operation-cutover-readiness.mjs`; current local result is
+  `NO_GO` with direct failed checks for `permission_scope`, `scope_repair`,
+  activation scope baseline, owner seats, TTGDTX negative-control, external
+  evidence, required positions and cutover scope baseline.
+- The live gate now prints `blocker_code_count`, up to 24 `blocker_codes` and
+  `remaining_blocker_codes` so activation/cutover closure packet blockers such
+  as `ACTIVATION-WORKSHEET-SCOPE-CLOSURE-PACKET` and
+  `USER-CUTOVER-OWNER-SEAT-CLOSURE-PACKET` are visible in the system-wide
+  summary.
+- The Settings lane now includes `check:heu-permission-scope-readiness`,
+  `check:heu-user-scope-baseline-repair-queue`,
+  `check:heu-user-create-readiness` and `USER-CREATE-OWNER-BATCH-PACKET`; the
+  system-wide summary reports `module_checks=13`, including direct
+  permission-scope, scope-repair and user-create readiness.
+- Expansion lanes include `EXPAND-CRM-LEADS-01`,
+  `EXPAND-PIPELINE-02`, `EXPAND-REPORTS-03`, `EXPAND-FINANCE-04`,
+  `EXPAND-HOU-05`, `EXPAND-SHORT-06`, `EXPAND-SETTINGS-07` and
+  `EXPAND-AUDIT-08`.
+- Every lane must start from `HEU_USER_ACTIVATION_WORKSHEET_20260703.md` and
+  must use `HEU_NEGATIVE_CONTROL_ACCOUNT_QUEUE_20260703.md` before any new
+  real-user, department or module widening.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the register doc,
+  package command, live checker and no-mutation boundary are required.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, approve UAT, approve finance reliance,
+  approve migration order, approve owner GO/NO-GO or mark production GO.
+- Boundary phrase: does not create accounts; assign real users are not
+  assigned; set passwords are not set; send reset/invite links are not sent;
+  no UAT, finance reliance, migration order or production GO is approved.
+
+## 2026-07-03 - User Permission Operation Cutover Gate
+
+- Added `docs/HEU_USER_PERMISSION_OPERATION_CUTOVER_GATE_20260703.md` as the
+  PASS_LOCAL gate that separates local audit success from real user/role/scope
+  operation readiness.
+- Added `scripts/check-heu-user-operation-cutover-readiness.mjs` and
+  `npm.cmd run check:heu-user-operation-cutover-readiness` to read live Auth,
+  profile, lead visibility, business scope, workspace preference, required
+  position assignment and TTGDTX negative-control state without printing emails,
+  names, phone numbers or raw IDs.
+- Added `components/settings/user-operation-cutover-panel.tsx` and mounted it
+  on `/settings` and `/settings/scopes` with
+  `data-heu-user-operation-cutover-panel="P0-17_USER_OPERATION_CUTOVER_GATE"`
+  so operators see the same cutover `NO_GO` blockers before using create/link
+  forms.
+- The checker prints `USER-CUTOVER-APP-GUARD`,
+  `USER-CUTOVER-AUTH-LINK`, `USER-CUTOVER-SCOPE-BASELINE`,
+  `USER-CUTOVER-REQUIRED-POSITIONS`,
+  `USER-CUTOVER-TTGDTX-NEGATIVE-CONTROL`,
+  `USER-CUTOVER-EXTERNAL-EVIDENCE` and `USER-CUTOVER-NO-AUTO-ACTION`.
+- Added the cutover closure packets
+  `P0-17_OWNER_SEAT_CLOSURE_PACKET`,
+  `P0-17_NEGATIVE_CONTROL_CLOSURE_PACKET` and
+  `P0-17_EXTERNAL_EVIDENCE_CLOSURE_PACKET` to the Settings cutover panel, the
+  cutover gate doc and `check-heu-user-operation-cutover-readiness.mjs`.
+- The checker now prints `USER-CUTOVER-OWNER-SEAT-CLOSURE-PACKET`,
+  `USER-CUTOVER-NEGATIVE-CONTROL-CLOSURE-PACKET` and
+  `USER-CUTOVER-EXTERNAL-EVIDENCE-CLOSURE-PACKET` with
+  `required_closure=required_positions_assigned,owner_approved_assignment_channel_recorded,post_assignment_snapshot_recorded,controlled_evidence_id_recorded`,
+  `required_verification_record=ttgdtx_negative_candidates>=1,negative_account_label_recorded,auth_profile_link_verified,non_target_business_scope_verified,target_segment_exclusion_verified,lead_visibility_non_all_verified,settings_permission_denial_ready,controlled_evidence_id_recorded` and
+  `required_closure=p6_04_signed_uat_reference_recorded,access_closure_reference_recorded,negative_control_browser_proof_reference_recorded,owner_cutover_decision_recorded`.
+- The cutover order is `CUTOVER-OWNER-SEATS-01`,
+  `CUTOVER-AUTH-LINK-02`, `CUTOVER-SCOPE-BASELINE-03`,
+  `CUTOVER-NEGATIVE-04`, `CUTOVER-P6-UAT-05` and
+  `CUTOVER-OWNER-GO-06`.
+- Current cutover decision: NO_GO. The live blocker snapshot is
+  `active_profiles=6`, `missing_visibility=2`, `missing_business_scope=2`,
+  `required_positions=15`, `unassigned_required_positions=11` and
+  `ttgdtx_negative_candidates=0`; external P6-04 UAT, access closure,
+  negative-control browser proof and owner cutover references remain pending.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the cutover gate
+  doc, package command, read-only checker and no-mutation boundary are
+  required.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary phrase: does not create accounts; assign real users are not
+  assigned; set passwords are not set; send reset/invite links are not sent;
+  no UAT, evidence acceptance, finance reliance, owner GO/NO-GO or production
+  GO is approved.
+
+## 2026-07-03 - User Cutover Position Owner Decision Matrix Gate
+
+- Updated `scripts/check-heu-user-operation-cutover-readiness.mjs` so cutover
+  emits `USER-CUTOVER-POSITION-OWNER-DECISION-MATRIX` before
+  `CUTOVER-OWNER-SEATS-01` or `CUTOVER-AUTH-LINK-02` can be treated as ready.
+- The cutover gate carries
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX`,
+  `required_dependency=owner_lane_recorded,position_code_recorded,approved_person_label_recorded,auth_link_path_recorded,scope_baseline_path_recorded,secure_admin_channel_recorded,controlled_evidence_id_recorded`
+  and
+  `next_allowed_step=P0-17_POSITION_OWNER_DECISION before CUTOVER-OWNER-SEATS-01 before CUTOVER-AUTH-LINK-02`.
+- Updated `docs/HEU_USER_PERMISSION_OPERATION_CUTOVER_GATE_20260703.md` so the
+  `P0-17_OWNER_SEAT_CLOSURE_PACKET` requires
+  `position_owner_decision_matrix_recorded` before operational cutover.
+- Current local result remains `NO_GO` while
+  `required_positions=15` and `unassigned_required_positions=11`.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, set passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; link Auth; assign real users; set
+  passwords; send reset/invite links; execute UAT; accept evidence; approve
+  finance reliance; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - User Scope Baseline Repair Queue
+
+- Added `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` as the
+  PASS_LOCAL queue for repairing the live active-profile scope baseline before
+  user operation cutover.
+- Added `scripts/check-heu-user-scope-baseline-repair-queue.mjs` and
+  `npm.cmd run check:heu-user-scope-baseline-repair-queue` to read live profile,
+  role, lead visibility, segment/partner scope and workspace preference state
+  without printing emails, names, phone numbers or raw IDs.
+- Linked the queue from `components/settings/user-operation-cutover-panel.tsx`
+  and extended `scripts/audit-heu-user-account-security.mjs` so the doc,
+  package command, UI reference, static guard and no-mutation boundary are
+  required.
+- The checker prints `USER-SCOPE-REPAIR-LEAD-VISIBILITY`,
+  `USER-SCOPE-REPAIR-BUSINESS-SCOPE`,
+  `USER-SCOPE-REPAIR-NO-BROAD-VISIBILITY`,
+  `USER-SCOPE-REPAIR-WORKSPACE`, `USER-SCOPE-REPAIR-OWNER-LABELS`,
+  `USER-SCOPE-REPAIR-NO-AUTO-ACTION` and
+  `USER-SCOPE-REPAIR-SECRET-BOUNDARY`.
+- `USER-SCOPE-REPAIR-OWNER-LABELS` prints `safe_owner_repair_labels` as
+  redacted hash labels plus role code for secure owner-side lookup only; the
+  labels are not owner approval and do not change scope data.
+- `USER-SCOPE-REPAIR-OWNER-PACKET` prints
+  `owner_action_packet=profile_count=2`,
+  `role_codes=DAO_TAO_LEAD,TCHC_LEAD` and `decision_count=4` so the current
+  blockers are routed as owner-side lanes with four missing decisions.
+- The repair order is `USER-SCOPE-REPAIR-01`, `USER-SCOPE-REPAIR-02`,
+  `USER-SCOPE-REPAIR-03` and `USER-SCOPE-REPAIR-04`.
+- Current live result remains `NO_GO`: `active_profiles=6`,
+  `active_non_admin_bgh=3`, `missing_visibility=2` and
+  `missing_business_scope=2`.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, change lead visibility, add
+  segment/partner scope, execute UAT, accept evidence, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; set passwords; change lead
+  visibility; add segment/partner scope.
+
+## 2026-07-03 - TCHC_LEAD Scope Owner Packet
+
+- Updated `scripts/check-heu-user-scope-baseline-repair-queue.mjs` so the
+  scope baseline queue prints `USER-SCOPE-REPAIR-OWNER-PACKET` after the safe
+  owner repair labels.
+- The packet reports `owner_action_packet=profile_count=2`,
+  `role_codes=DAO_TAO_LEAD,TCHC_LEAD`, `decision_count=4`,
+  `lead_visibility_choice_required`, `segment_or_partner_scope_required` and
+  `repair_order=USER-SCOPE-REPAIR-01 before USER-SCOPE-REPAIR-02 before USER-SCOPE-REPAIR-03`.
+- Updated `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the remaining
+  `DAO_TAO_LEAD` and `TCHC_LEAD` blockers are owner-side repair lanes with
+  four missing decisions, not separate untracked fixes.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, change lead visibility, add
+  segment/partner scope, approve UAT, accept evidence, approve owner GO/NO-GO
+  or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - In-App TCHC_LEAD Scope Repair Packet
+
+- Updated `components/settings/user-business-scope-settings.tsx` so the
+  `P0-17_SCOPE_BASELINE_REPAIR_HANDOFF` panel also renders
+  `USER-SCOPE-REPAIR-OWNER-PACKET`.
+- The in-app packet shows `owner_action_packet=profile_count`,
+  `role_codes`, `decision_count`, `lead_visibility_choice_required`,
+  `segment_or_partner_scope_required` and
+  `repair_order=USER-SCOPE-REPAIR-01 before USER-SCOPE-REPAIR-02 before USER-SCOPE-REPAIR-03`.
+- Added in-app ACCT-00 repair closure markers:
+  `data-heu-scope-repair-decision-checklist="ACCT-00_SCOPE_BASELINE_OWNER_DECISION"`,
+  `data-heu-scope-repair-execution-packet="ACCT-00_SCOPE_REPAIR_EXECUTION"`
+  and
+  `data-heu-scope-repair-post-verification="ACCT-00_SCOPE_POST_REPAIR_VERIFICATION"`.
+- The handoff now shows `required_closure`, `required_execution_record` and
+  `required_verification_record`, including `post_repair_snapshot_recorded`,
+  `controlled_evidence_id_recorded`,
+  `negative_control_queue_re_run_recorded` and
+  `next_allowed_step=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`.
+- Current external closure dependency:
+  `next_allowed_step=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the Settings UI
+  packet remains locally guarded alongside the scope repair checker output.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, change lead visibility, add
+  segment/partner scope, approve UAT, accept evidence, approve owner GO/NO-GO
+  or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Business Scope Required Save Guard
+
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction` reads
+  the target `users_profile` row with `roles(code)` before archiving or
+  upserting scope rows.
+- The action now computes `requiresBusinessScope` for active users outside
+  `ADMIN`, `BGH`, `HIEU_TRUONG` and `PHO_HIEU_TRUONG`; if both `segmentIds`
+  and `partnerIds` are empty, it redirects with `business_scope_required`.
+- Added the `business_scope_required` error message to `app/settings/page.tsx`
+  and `app/settings/scopes/page.tsx`, and updated
+  `components/settings/user-business-scope-settings.tsx` to say that empty
+  business scope is blocked before cutover.
+- UI token: empty business scope is blocked before cutover.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the server-side
+  guard, UI warning and error messages are locally required.
+- PASS_LOCAL boundary: this blocks incomplete scope saves only. It does not
+  create accounts, assign real users, set passwords, send reset/invite links,
+  change lead visibility, add segment/partner scope, approve UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Target Role ALL Lead Visibility Guard
+
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction` checks
+  the target `targetRoleCode` before saving scope rows; `leadVisibility`
+  `ALL` now redirects with `lead_visibility_all_admin_only` when the target role
+  is outside `privilegedScopeRoleCodes`.
+- Updated `components/settings/user-business-scope-settings.tsx` so
+  `selectedProfileRole` drives the default lead visibility and
+  `canAssignAllLeadVisibilityToSelectedUser` controls whether the `ALL` option
+  appears in the form and explanation list.
+- Updated `app/settings/page.tsx` and `app/settings/scopes/page.tsx` with the
+  shared message: ALL lead visibility is allowed only for ADMIN/BGH/executive
+  target users.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the server guard,
+  UI target-role guard, messages and this log section are locally required.
+- PASS_LOCAL boundary: this blocks over-broad lead visibility only. It does not
+  create accounts, assign real users, set passwords, send reset/invite links,
+  change lead visibility, add segment/partner scope, approve UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Position Assignment Scope Baseline Guard
+
+- Updated `app/settings/actions.ts` so `assignHeuPositionByEmailAction` loads
+  the target profile and runs `assertPositionAssignmentScopeBaseline` before
+  calling `assign_heu_position_by_email`.
+- The guard checks `user_lead_visibility_scopes`,
+  `user_admission_segment_scopes`, `user_partner_scopes` and
+  `user_admission_workspace_preferences` for active non-privileged target users.
+- Added `missing_position_assignment_user`, `position_scope_baseline_required`
+  and `position_scope_baseline_read_failed` messages to `app/settings/page.tsx`
+  and `app/settings/scopes/page.tsx`.
+- Updated `components/settings/position-assignment-matrix.tsx` with
+  `data-heu-position-assignment-scope-baseline="P0-17_POSITION_ASSIGNMENT_SCOPE_BASELINE_GUARD"`
+  so operators see that position assignment waits for explicit lead visibility,
+  business scope and valid active workspace.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the server guard,
+  RPC ordering, UI marker, error messages and this log section are locally
+  required.
+- PASS_LOCAL boundary: this blocks unsafe position assignment order only. It
+  does not create accounts, assign real users, set passwords, send reset/invite
+  links, change lead visibility, add segment/partner scope, approve UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Credential Handoff Scope Baseline Guard
+
+- Updated `app/settings/actions.ts` so `setUserTemporaryPasswordAction` and
+  `sendUserPasswordResetEmailAction` run `assertCredentialScopeBaseline` before
+  any password mutation or reset email is sent.
+- Replaced direct create/link activation email sending with
+  `activationEmailResultQueryForEmail`; activation email is deferred with
+  `activation_email_deferred_scope_baseline` or
+  `activation_email_deferred_scope_read_failed` until scope baseline can be
+  verified.
+- Added `credential_scope_baseline_required` and
+  `credential_scope_baseline_read_failed` messages to `app/settings/page.tsx`
+  and `app/settings/scopes/page.tsx`.
+- Updated `components/settings/position-assignment-matrix.tsx` with
+  `data-heu-credential-scope-baseline="P0-17_CREDENTIAL_SCOPE_BASELINE_GUARD"`
+  so credential handoff visibly waits for explicit lead visibility, business
+  scope and valid active workspace.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the credential
+  scope-baseline guard, activation deferral, UI marker, messages and this log
+  section are locally required.
+- PASS_LOCAL boundary: this blocks early credential handoff only. It does not
+  create accounts, assign real users, set passwords, send reset/invite links,
+  change lead visibility, add segment/partner scope, approve UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Profile Update Scope Baseline Guard
+
+- Updated `app/settings/actions.ts` so `updateUserProfileAction` validates the
+  target `role_id` and runs `assertProfileUpdateScopeBaseline` before updating
+  `users_profile` `role_id`, `department_id`, `manager_id` or `status`.
+- The guard reuses the active non-privileged profile baseline: explicit lead visibility,
+  business scope and valid active workspace must already be ready before a
+  profile can be saved as active non-ADMIN/BGH.
+- Added `profile_scope_baseline_required` and
+  `profile_scope_baseline_read_failed` messages to `app/settings/page.tsx` and
+  `app/settings/scopes/page.tsx`.
+- Updated `components/settings/user-business-scope-settings.tsx` and
+  `components/settings/user-settings-overview.tsx` with
+  `data-heu-profile-update-scope-baseline="P0-17_PROFILE_UPDATE_SCOPE_BASELINE_GUARD"`.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the server guard,
+  pre-update ordering, UI markers, messages and this log section are locally
+  required.
+- PASS_LOCAL boundary: this blocks unsafe profile update order only. It does
+  not create accounts, assign real users, set passwords, send reset/invite
+  links, change lead visibility, add segment/partner scope, approve UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change lead visibility; add segment/partner scope;
+  approve UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Scope Baseline Repair Handoff UI
+
+- Extended `components/settings/user-business-scope-settings.tsx` with
+  `data-heu-scope-baseline-repair-handoff="P0-17_SCOPE_BASELINE_REPAIR_HANDOFF"`.
+- The handoff counts visible active non-ADMIN/BGH users missing explicit lead
+  visibility or business scope and lets the operator open the affected user in
+  the existing scope form.
+- The handoff shows `USER-SCOPE-REPAIR-HANDOFF: NO_GO`,
+  `missing_visibility=2` and `missing_business_scope=2`, while keeping
+  `ALL` visibility admin-only through the existing scope action guard.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the UI marker,
+  no-overflow guard, owner-approval wording and PASS_LOCAL boundary are
+  required.
+- PASS_LOCAL boundary: this does not create accounts, assign real users, set
+  passwords, send reset/invite links, approve UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; approve UAT; accept evidence; approve owner GO/NO-GO;
+  mark production GO.
+
+## 2026-07-03 - Executive Role Scope Classification
+
+- Updated local scope/cutover/activation/negative-control/owner-queue readiness
+  scripts and `components/settings/user-business-scope-settings.tsx` so
+  `HIEU_TRUONG` and `PHO_HIEU_TRUONG` are counted as BGH-equivalent privileged
+  roles for daily non-ADMIN/BGH scope-baseline checks.
+- Corrected `scripts/check-heu-permission-scope-readiness.mjs` so
+  `PERMISSION-SCOPE-LEAD-VISIBILITY` uses active non-privileged profiles rather
+  than all active profiles.
+- Updated the live snapshot to `active_profiles=6`,
+  `active_non_admin_bgh=3`, `missing_visibility=2` and
+  `missing_business_scope=2`; the remaining scope repair lanes are
+  `DAO_TAO_LEAD` and `TCHC_LEAD`.
+- Extended `scripts/audit-heu-user-account-security.mjs` so the executive role
+  classification tokens remain locally guarded.
+- PASS_LOCAL boundary: this is classification/counting logic only. It does not
+  create accounts, assign real users, set passwords, send reset/invite links,
+  approve UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; approve UAT; accept evidence; approve owner GO/NO-GO;
+  mark production GO.
+
+## 2026-07-03 - Owner Queue Unique Scope Findings
+
+- Updated `scripts/check-heu-position-assignment-owner-queue.mjs` so
+  `POSITION-OWNER-QUEUE-CANDIDATE-SCOPE` reports unique candidate profiles
+  separately from `finding_count`.
+- Current live output remains `NO_GO`, but is now precise:
+  `Matching candidate profiles missing scope basics: 1`, `finding_count=2` and
+  `Sample hashed profile labels: 0319062ea6`.
+- Updated `docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md` and
+  `scripts/audit-heu-user-account-security.mjs` so the unique-count behavior is
+  locally guarded.
+- PASS_LOCAL boundary: this is owner-queue reporting only. It does not create
+  accounts, assign real users, set passwords, send reset/invite links, change
+  scope, approve UAT, accept evidence, approve owner GO/NO-GO or mark
+  production GO.
+- Boundary tokens: does not create accounts; assign real users; set passwords;
+  send reset/invite links; change scope; approve UAT; accept evidence; approve
+  owner GO/NO-GO; mark production GO.
 
 ## 2026-07-02 - P0-17 Auth User Profile Link Fallback
 
@@ -1837,6 +8204,135 @@
   owner GO/NO-GO, run production migration or mark production GO.
 - Boundary token: does not change role scope; execute UAT; approve finance
   action; mark production GO.
+
+## 2026-07-03 - P0-05 Lead Quick Filter Active Scope Guard
+
+- Tightened `components/leads/lead-list.tsx` so the action-oriented quick
+  filters `followup`, `unassigned` and `priority` only count leads that are not
+  in closed statuses `ENROLLED`, `LOST` or `DUPLICATE`.
+- Kept the `all` quick filter available for full list/history review and kept
+  the `documents` filter tied to controlled document lifecycle statuses
+  `DOCUMENT_PENDING` and `DOCUMENT_SUBMITTED`; `ELIGIBLE` stays outside the
+  document quick filter because it belongs to the eligibility/legal-tuition
+  gate.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the active-scope guard fails
+  locally if follow-up, unassigned or priority filters stop checking
+  `isActiveLead`.
+- PASS_LOCAL boundary: this is client-side quick-filter hardening only. It does not write lead data, update lead status, hide closed lead history, grant access, execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Lead Status Follow-up Date Clear Guard
+
+- Tightened `app/leads/[id]/actions.ts` so `updateLeadStatusAction` computes
+  `shouldCreateFollowup` and only keeps `next_followup_at` when the submitted
+  status is `FOLLOW_UP`.
+- The server action now creates a `lead_followups` row only when
+  `shouldCreateFollowup` is true, preventing stale follow-up dates from leaking
+  into document, eligibility, enrolled, lost or duplicate status updates.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the server-side lifecycle guard
+  fails locally if `next_followup_at` or follow-up row creation is no longer
+  tied to `FOLLOW_UP`.
+- PASS_LOCAL boundary: this is lead status lifecycle hardening only. It does not
+  create real leads, import data, send notifications, grant access, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P3-01 Lead Status Follow-up UX Guard
+
+- Tightened `components/leads/status-update-form.tsx` so the status selector
+  controls the follow-up date field in the browser before submit.
+- Added `data-heu-lead-status-followup-ux-guard="P3-01_STATUS_FOLLOWUP_UX_GUARD"`
+  and disabled `next_followup_at` unless the selected status is `FOLLOW_UP`,
+  matching the server-side `shouldCreateFollowup` guard in
+  `app/leads/[id]/actions.ts`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the
+  UI/server follow-up lifecycle alignment fails locally if the status form
+  stops disabling stale follow-up dates.
+- Adjusted `scripts/audit-ttgdtx-release-gates.mjs` so the
+  P3 backlog UAT execution pack check reads the P3-01 and P3-02 backlog rows in order without
+  adding a spurious `audit:heu-lead-lifecycle-handover-uat-pack=` token.
+- PASS_LOCAL boundary: this is lead status UX hardening only. It does not
+  create real leads, import data, send notifications, grant access, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P3-01 Pipeline Status Follow-up UX Guard
+
+- Tightened `components/pipeline/pipeline-status-form.tsx` so the
+  inline pipeline status selector controls the follow-up date field before submit.
+- Added `data-heu-pipeline-status-followup-ux-guard="P3-01_PIPELINE_STATUS_FOLLOWUP_UX_GUARD"`
+  and disabled `next_followup_at` unless the selected status is `FOLLOW_UP`,
+  matching the lead-detail status form and the server-side
+  `shouldCreateFollowup` guard in `app/leads/[id]/actions.ts`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so
+  pipeline UI/server follow-up lifecycle alignment fails locally if the pipeline
+  status form stops disabling stale follow-up dates.
+- PASS_LOCAL boundary: this is pipeline status UX hardening only. It does not
+  create real leads, import data, send notifications, grant access, execute UAT,
+  accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-03 - P3-01 Status Lost Reason UX Guard
+
+- Tightened `components/leads/status-update-form.tsx` and
+  `components/pipeline/pipeline-status-form.tsx` so the status selector controls
+  the `lost_reason` field before submit.
+- Added `data-heu-lead-status-lost-reason-ux-guard="P3-01_STATUS_LOST_REASON_UX_GUARD"`
+  and `data-heu-pipeline-status-lost-reason-ux-guard="P3-01_PIPELINE_STATUS_LOST_REASON_UX_GUARD"`
+  so lead detail and pipeline status updates disable `lost_reason` unless the
+  selected status is `LOST`.
+- Matched the server-side `app/leads/[id]/actions.ts` guard that requires and
+  saves `lost_reason` only for `LOST`.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so
+  UI/server lost-reason lifecycle alignment stays guarded.
+  UI/server lost-reason lifecycle alignment fails locally if stale lost reasons
+  can be submitted from the status forms.
+- PASS_LOCAL boundary: this is status UX hardening only. It does not create real leads, import data, send notifications, grant access, execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Lead Status P0-19 Enrollment UX Guard
+
+- Tightened `app/leads/[id]/page.tsx` so the lead detail page derives
+  `canUseEnrollmentStatus` from the current P0-19 major legal/tuition gate:
+  `legal_status=VERIFIED`, `tuition_status=CONFIGURED` and
+  `enrollment_gate=ALLOW_ENROLLMENT`.
+- Tightened `components/leads/status-update-form.tsx` so `ELIGIBLE` and
+  `ENROLLED` are disabled unless that gate is ready, while the current
+  `ELIGIBLE` or `ENROLLED` value can still be displayed if an existing lead is
+  already in that status.
+- Added `data-heu-lead-status-p019-enrollment-ux-guard="P3-01_STATUS_P019_ENROLLMENT_UX_GUARD"`
+  and corrected the lost-reason marker placement so
+  `data-heu-lead-status-lost-reason-ux-guard="P3-01_STATUS_LOST_REASON_UX_GUARD"`
+  sits on the actual `lost_reason` field group.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the lead-detail P0-19 enrollment UX alignment fails locally if the form stops reflecting the server-side P0-19 gate.
+- PASS_LOCAL boundary: this is lead-detail status UX hardening only. It does not
+  approve eligibility, approve enrollment, create handover, create receivable,
+  import data, send notifications, grant access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P3-01 Pipeline Status P0-19 Enrollment UX Guard
+
+- Tightened `app/pipeline/page.tsx` so the pipeline reads
+  `major_legal_tuition_gate_readable`, maps each lead by `interested_major` and
+  derives `canUseEnrollmentStatus` from `legal_status=VERIFIED`,
+  `tuition_status=CONFIGURED` and `enrollment_gate=ALLOW_ENROLLMENT`.
+- Tightened `components/pipeline/pipeline-board.tsx` and
+  `components/pipeline/pipeline-status-form.tsx` so each inline pipeline status
+  form receives that gate state and disables `ELIGIBLE` / `ENROLLED` unless
+  P0-19 allows enrollment.
+- Added `data-heu-pipeline-status-p019-enrollment-ux-guard="P3-01_PIPELINE_STATUS_P019_ENROLLMENT_UX_GUARD"`
+  and corrected the pipeline lost-reason marker placement so
+  `data-heu-pipeline-status-lost-reason-ux-guard="P3-01_PIPELINE_STATUS_LOST_REASON_UX_GUARD"`
+  sits on the actual `lost_reason` field group.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so pipeline P0-19 enrollment UX alignment fails locally if the inline pipeline form stops reflecting the server-side P0-19 gate.
+- PASS_LOCAL boundary: this is inline pipeline status UX hardening only. It does not approve eligibility, approve enrollment, create handover, create receivable, update finance, import data, send notifications, grant access, execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+- Explicit audit boundary: this does not create receivable or bypass the P0-19
+  legal/tuition enrollment gate.
 
 ## 2026-07-02 - Quick Access Overflow Guard
 
@@ -2144,6 +8640,17 @@
   user-creation setup after adding the server-only key, without committing
   env-like files, printing secret values or exposing raw Supabase error
   messages.
+- Added `USER-CREATE-OWNER-BATCH-PACKET` with
+  `user_create_owner_batch_packet=USER-CREATE-OWNER-BATCH-PACKET` so technical
+  Auth Admin readiness stays tied to owner-approved required-seat mapping before
+  real account create/link work.
+- The packet records `unassigned_required_positions=11`,
+  `pending_required_position_codes=PHT_01,TUYEN_SINH_HEAD,CTHSSV_HEAD,KE_TOAN_TRUONG,AUDIT_HEAD,IT_DATA_HEAD,KHOA_HEAD,NGAN_HAN_HEAD,TCHC_VAN_THU_LUU_TRU,TCHC_HANH_CHINH_NHAN_SU,TCHC_CSVC_TAI_SAN`,
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX`,
+  `required_inputs=position_owner_decision_matrix_recorded,owner_person_mapping_recorded,approved_email_channel_recorded,role_department_manager_recorded,secure_activation_channel_recorded,controlled_evidence_id_recorded`,
+  `required_execution_record=auth_user_created_or_linked,crm_profile_linked,activation_email_deferred_until_scope_ready,controlled_evidence_id_recorded`
+  and
+  `next_required_order=P0-17_POSITION_OWNER_DECISION before USER-CREATE-OWNER-BATCH-PACKET before AUTH-LINK-02 before PROFILE-SCOPE-03`.
 - Added `database/step112_admin_user_create_permission.sql` as a migration
   candidate so existing databases can grant/reactivate ADMIN `users.create`
   without rerunning the full seed file; it must not be run in production from
@@ -2154,6 +8661,36 @@
   real users, receive passwords, send invites, store secrets, approve UAT,
   accept evidence, approve finance action, approve owner GO/NO-GO or mark
   production GO. It must not mark production GO.
+
+## 2026-07-03 - User Create Owner Batch Save Guard
+
+- Updated `app/settings/actions.ts` so `createUserAccountAction` and
+  `linkAuthUserProfileAction` call `requireUserCreateOwnerBatchGate` before
+  Auth Admin create/link or CRM profile link.
+- Updated `components/settings/user-create-form.tsx` and
+  `components/settings/user-auth-profile-link-form.tsx` so operators must send
+  `user_create_owner_batch_ack=yes` and
+  `user_create_controlled_evidence_id` from the in-app forms.
+- Updated `scripts/check-heu-user-create-readiness.mjs` and
+  `docs/HEU_USER_CREATE_SERVER_KEY_TEMPLATE_20260702.md` so
+  `USER-CREATE-OWNER-BATCH-PACKET` requires
+  `position_owner_decision_matrix=P0-17_POSITION_OWNER_DECISION_MATRIX`,
+  `position_owner_decision_matrix_recorded`,
+  `controlled_evidence_id_recorded` and
+  `next_required_order=P0-17_POSITION_OWNER_DECISION before USER-CREATE-OWNER-BATCH-PACKET before AUTH-LINK-02 before PROFILE-SCOPE-03`.
+- Missing confirmation now redirects with
+  `user_create_owner_batch_ack_required`; missing or unsafe evidence redirects
+  with `user_create_controlled_evidence_id_required` or
+  `user_create_controlled_evidence_id_invalid`.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, grant scope, assign positions, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary phrase: does not create accounts, link Auth, assign real users,
+  grant scope, assign positions, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary tokens: approve owner GO/NO-GO; mark production GO.
 
 ## 2026-07-02 - Zero-Cost Background Build Guard
 
@@ -8758,3 +15295,2111 @@
 - This slice does not create users, send email, create tasks, call Supabase,
   run migrations, execute UAT, accept evidence, approve finance reliance,
   approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - P0-14 Lead Import Duplicate Phone Mask Guard
+
+- Updated `app/import/actions.ts` so duplicate import result messages call
+  `maskPhone(duplicatedPhone)` from `lib/sensitive-display.ts` before the
+  message is returned to the `ResultPanel`.
+- Extended `scripts/check-heu-lead-import-scope-readiness.mjs` with
+  `LEAD-IMPORT-SCOPE-DUPLICATE-PHONE-MASK` so the runtime scope checker also
+  verifies the server action does not return the full duplicate phone value.
+- Extended `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` so the masked phone guard cannot
+  drift out of the data-foundation/import control chain.
+- This is duplicate import result display hardening only. It does not change schema, import raw data, write extra lead data, grant access, change role scope, execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - M05 Admissions Local Completion Gate
+
+- Added `scripts/check-heu-admissions-local-completion.mjs` as a read-only M05 Admissions local completion gate for import, lead lifecycle, pipeline,
+  follow-up, documents scope, document review/reporting queue, reports/dashboard scope and lead-to-student handover controls.
+- Added `scripts/check-heu-documents-scope-readiness.mjs` as a documents metadata gate for `/documents`, lead document checklist workspace return, scoped document revalidation, `lead_documents` row scope, status domain, checked-document actor trace and document-ready lead review queue.
+- The checker reports document-ready leads that lack `lead_documents` as `DOCUMENTS-READY-LEAD-REVIEW-QUEUE`, requiring the owner to provide missing document evidence or correct the lead status; it never creates a backfill or invented evidence.
+- Added `docs/HEU_ADMISSIONS_DOCUMENT_REVIEW_REPORTING_QUEUE_20260704.md` and
+  `scripts/check-heu-admissions-document-review-queue.mjs` so the M05
+  document review/reporting queue is explicit before system/report consumers
+  read it. The queue names `RV_ADMISSIONS_DOCUMENT_REVIEW_QUEUE`,
+  `DQ-RV-05A`, `ADM-DOC-EVID-01` and
+  `ADMISSIONS_DOCUMENT_REVIEW_QUEUE_READY / NO_GO / BLOCKED`, with owner lane
+  `TUYEN_SINH` and support lanes `IT_DATA,CTHSSV,PHAP_CHE,AUDIT`.
+- Added a read-only `/documents` queue surface with
+  `data-heu-admissions-document-review-queue="M05_ADMISSIONS_DOCUMENT_REVIEW_QUEUE"`,
+  `data-heu-admissions-document-review-queue-overflow-guard="M05_ADMISSIONS_DOCUMENT_REVIEW_QUEUE_NO_OVERFLOW"`
+  and `data-heu-admissions-document-review-report-view="RV_ADMISSIONS_DOCUMENT_REVIEW_QUEUE"`.
+  The panel shows owner/report-view routing only and does not print raw lead
+  IDs, student names, phone numbers, emails, file URLs or document evidence.
+- Added a read-only `/reports` panel in
+  `components/reports/reports-overview.tsx` with
+  `data-heu-admissions-document-review-report-panel="M05_ADMISSIONS_DOCUMENT_REVIEW_REPORT_PANEL"`,
+  `data-heu-admissions-document-review-report-panel-overflow-guard="M05_ADMISSIONS_DOCUMENT_REVIEW_REPORT_PANEL_NO_OVERFLOW"`
+  and `data-heu-admissions-document-review-report-view="RV_ADMISSIONS_DOCUMENT_REVIEW_QUEUE"`.
+  The report panel shows `ADMISSIONS_DOCUMENT_REVIEW_QUEUE_READY`,
+  `review_required_count`, `DQ-RV-05A / ADM-DOC-EVID-01`, `NO_RAW_EVIDENCE`,
+  `NO_DASHBOARD_RELIANCE` and `NO_OWNER_GO` before linking back to the
+  controlled `/documents` queue.
+- `app/reports/page.tsx` now computes `documentReviewRequiredCount` from the
+  scoped lead set plus scoped `lead_documents.lead_id` rows filtered through
+  `leads.admission_segment_id`; the UI renders the count and never renders raw
+  lead IDs, student names, phones, emails, file URLs or document evidence.
+- Added `docs/HEU_ADMISSIONS_OWNER_CLOSURE_LEDGER_20260704.md` and
+  `scripts/check-heu-admissions-owner-closure-ledger.mjs` so M05 has a local
+  owner-closure ledger after PASS_LOCAL. The ledger keeps ADM-CLOSURE-01
+  through ADM-CLOSURE-08, `ADMISSIONS_OWNER_CLOSURE_READY / NO_GO / BLOCKED`,
+  signed P3-01/P3-02 UAT, document-evidence closure, P0-19 legal/finance
+  reliance proof, report-view reconciliation, role/workspace proof and final owner quorum
+  explicit without accepting any evidence or approval locally.
+- Added a read-only `/reports` owner-closure panel with
+  `data-heu-admissions-owner-closure-report-panel="M05_ADMISSIONS_OWNER_CLOSURE_REPORT_PANEL"`,
+  `data-heu-admissions-owner-closure-report-panel-overflow-guard="M05_ADMISSIONS_OWNER_CLOSURE_REPORT_PANEL_NO_OVERFLOW"`
+  and `data-heu-admissions-owner-closure-report-view="RV_ADMISSIONS_OWNER_CLOSURE"`.
+  The panel shows ADM-CLOSURE-01..08, signed P3-01/P3-02 and P0-19 proof
+  blockers only; it does not accept UAT, evidence, finance reliance or owner GO.
+- Added `docs/HEU_ADMISSIONS_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` and
+  `scripts/check-heu-admissions-signed-uat-evidence-intake.mjs` as the
+  metadata-only signed-UAT evidence intake route for M05. It records
+  ADM-UAT-EVID-01 through ADM-UAT-EVID-08,
+  `ADMISSIONS_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`,
+  `PASS_LOCAL_EVIDENCE_INTAKE`, P3-UAT-01 through P3-UAT-08,
+  ADM-CLOSURE-01 through ADM-CLOSURE-08, `RV_ADMISSIONS_DOCUMENT_REVIEW_QUEUE`,
+  `RV_ADMISSIONS_OWNER_CLOSURE`, P0-19, P6-04 and the controlled evidence
+  boundary. The intake forbids raw evidence, signed PDFs, raw Drive URLs,
+  student personal data and secrets in Git/Codex/chat, and does not execute
+  UAT, accept evidence, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+- The gate runs `check:heu-lead-import-scope-readiness`,
+  `check:heu-pipeline-followup-scope-readiness`,
+  `check:heu-documents-scope-readiness`,
+  `check:heu-admissions-document-review-queue`,
+  `check:heu-admissions-signed-uat-evidence-intake`,
+  `check:heu-admissions-owner-closure-ledger`,
+  `check:heu-reports-dashboard-scope-readiness`,
+  `audit:heu-data-foundation`, `audit:heu-lead-lifecycle-standard`,
+  `audit:heu-lead-handover-policy`,
+  `audit:heu-lead-lifecycle-handover-uat-pack`,
+  `audit:heu-current-state-inventory`, `audit:heu-implementation-log` and
+  `audit:ttgdtx-release-gates` before printing
+  `ADMISSIONS_LOCAL_COMPLETION_READY / NO_GO`.
+- Added `check:heu-admissions-local-completion` and
+  `check:heu-admissions-document-review-queue` plus
+  `check:heu-admissions-signed-uat-evidence-intake` plus
+  `check:heu-admissions-owner-closure-ledger` to `package.json` and wired the
+  checkers into `scripts/audit-heu-data-foundation.mjs` so the M05 gate,
+  evidence review/reporting queue, signed UAT evidence intake and owner closure ledger cannot drift out of
+  the admissions data-foundation chain.
+- This is local readiness packaging only. It does not import leads, mutate lead data, upload real documents, execute UAT, accept handover, accept evidence, approve dashboard reliance, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - HEU Standard System Blueprint
+
+- Added `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` as the controlled
+  system-wide blueprint for architecture, business operation, professional
+  ownership, legal/SOP control, data/report standards, executive dashboard
+  design and next implementation priorities.
+- The blueprint consolidates the current inventory, backlog, module readiness
+  gap matrix, framework review, real-data/professional/legal confirmation
+  register, Legal/SOP/Governance matrix, executive-role classification,
+  navigation shell and workspace-scope logic into one DRAFT_CONTROL design.
+- The next safe implementation slice is `STD-01`: add a read-only
+  `Dashboard Hieu truong/BGH` landing surface for `HIEU_TRUONG`,
+  `PHO_HIEU_TRUONG`, `BGH` and `ADMIN` instead of showing only the admissions
+  dashboard.
+- This is controlled design only. It does not approve production, UAT,
+  evidence acceptance, legal position, official SOP issuance, finance reliance,
+  access grant, migration, bank instruction, owner GO/NO-GO or production GO.
+
+## 2026-07-03 - STD-01 Executive Dashboard Quick Access
+
+- Added `lib/executive-roles.ts` so `ADMIN`, `BGH`, `HIEU_TRUONG` and
+  `PHO_HIEU_TRUONG` share one executive/BGH-equivalent classification.
+- Updated `lib/workspace.ts` and `app/page.tsx` so executive users can see the
+  all-segment read-only overview and land on `Dashboard Hieu truong/BGH`
+  instead of the admissions-only dashboard.
+- Added `components/dashboard/executive-dashboard-overview.tsx` with
+  `data-heu-executive-dashboard="STD-01_EXECUTIVE_DASHBOARD"` and
+  `data-heu-executive-quick-access="STD-01_EXECUTIVE_QUICK_ACCESS"` for
+  read-only module health, production blockers, report quick access,
+  permission-gated Master Control/Finance/Scope links and admissions signals.
+- Updated `components/layout/app-shell.tsx` so executive roles keep workspace
+  read quick links but do not receive the `Tao lead` workspace quick action.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-01`
+  as `PASS_LOCAL_UI` and route the next safe slice to `STD-02`.
+- This is local read-only dashboard and quick-access hardening only. It does
+  not create leads, create accounts, grant access, approve report-view
+  reliance, execute UAT, accept evidence, approve finance action, approve legal
+  position, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-01 Executive Landing Role Gate Hardening
+
+- Added `public.is_executive_role()` in `database/policies.sql` as the SQL
+  companion to `lib/executive-roles.ts` for `ADMIN`, `BGH`, `HIEU_TRUONG` and
+  `PHO_HIEU_TRUONG`.
+- Updated workspace, lead-visibility and scope-enforcement SQL so principal
+  and vice-principal roles reach the executive read-only landing posture instead
+  of being treated as normal admissions operators when a lower layer checks only
+  `BGH`.
+- Updated Settings user creation and scope display so non-admin users cannot
+  create/link `HIEU_TRUONG` or `PHO_HIEU_TRUONG`, and BGH-equivalent broad
+  visibility is labelled as `EXECUTIVE_READONLY` instead of ordinary
+  operational broad access.
+- Added `scripts/check-heu-executive-landing-role-gate-readiness.mjs` and
+  `check:heu-executive-landing-role-gate-readiness` to guard the SQL helper,
+  workspace/read visibility, Settings privileged-user lock, blueprint and log.
+- This is PASS_LOCAL role-gate hardening only. It does not create accounts,
+  grant access, expand permissions, mutate workflow state, execute UAT, accept
+  evidence, approve finance action, approve legal position, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-02 Executive Dashboard Readiness Guard
+
+- Added `scripts/check-heu-executive-dashboard-readiness.mjs` and
+  `check:heu-executive-dashboard-readiness` in `package.json`.
+- The checker verifies the shared executive-role helper, `HIEU_TRUONG` and
+  `PHO_HIEU_TRUONG` classification, workspace all-segment read scope,
+  `Dashboard Hieu truong/BGH` routing on `/`, executive no-create quick action
+  boundary, read-only dashboard anchors, permission-gated quick links,
+  production NO-GO wording, report-view reliance stop conditions, blueprint
+  propagation and this implementation-log boundary.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` to mark `STD-02`
+  as `PASS_LOCAL_GUARD` and route the next safe slice to `STD-03`.
+- The checker prints `EXECUTIVE_DASHBOARD_READY / NO_GO / BLOCKED:
+  PASS_LOCAL_UI` only for local UI/control readiness. It does not create
+  accounts, grant access, execute UAT, accept evidence, approve report-view
+  reliance, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-03 Executive Report Reliance Quick Status
+
+- Added the executive dashboard report-view reliance strip with
+  `data-heu-executive-report-reliance="STD-03_REPORT_RELIANCE_QUICK_STATUS"`.
+- The strip gives BGH/Hiệu trưởng quick access to `RV_TTGDTX_FINANCE_SUMMARY`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` and
+  `RV_AUDIT_RISK_CONTROL`, showing owner lane, decision state, DQ lock and
+  blocker before the user opens the underlying module or source map.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies `OWNER_SIGNOFF_PENDING`, `DQ-DM-05`,
+  `NO_DASHBOARD_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO`, the four
+  report-view codes and the blueprint/log propagation.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-03` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-04`.
+- This is local read-only report-reliance visibility only. It does not approve
+  report-view reliance, approve dashboard reliance, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-04 Executive Legal SOP Owner Action Queue
+
+- Added the executive dashboard Legal/SOP owner-action queue with
+  `data-heu-executive-legal-sop-queue="STD-04_LEGAL_SOP_OWNER_ACTION_QUEUE"`.
+- The queue exposes `LEGAL-STD-01` through `LEGAL-STD-06` for legal-basis
+  review, SOP owner signoff, invoice/chung-tu policy, evidence class, sensitive
+  metadata role scope and external owner decision authority.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the Legal/SOP queue anchors, `DRAFT_CONTROL`,
+  `NO_LEGAL_ADVICE`, `NO_OFFICIAL_SOP`, `NO_ACCESS_GRANT`, `NO_FINANCE_ACTION`,
+  `NO_PRODUCTION_GO`, all six `LEGAL-STD-*` rows and the blueprint/log
+  propagation.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-04` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-05`.
+- This is local read-only Legal/SOP visibility only. It does not approve legal
+  position, issue official SOP, grant access, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-05 Executive Module Maturity Action Row
+
+- Added the executive dashboard M01-M12 module maturity action row with
+  `data-heu-executive-module-maturity="STD-05_MODULE_MATURITY_ACTION_ROW"`.
+- The row exposes one compact status and one next owner action for `M01`
+  through `M12`, including Legal/SOP, User/Scope, Data Master, Workflow,
+  Admissions, CTHSSV, Short Course, Khoa/Giang vien, Finance, Reports, AI and
+  Audit/Risk.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-05 anchors, M01-M12 coverage, quick-access overflow
+  guard and `NO_UAT_ACCEPTANCE`, `NO_EVIDENCE_ACCEPTANCE`,
+  `NO_REPORT_VIEW_RELIANCE`, `NO_FINANCE_ACTION`, `NO_OWNER_GO` and
+  `NO_PRODUCTION_GO` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-05` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-06`.
+- This is local read-only module visibility only. It does not accept UAT,
+  accept evidence, approve report-view reliance, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-06 Executive Finance Read-Only Reliance Proof
+
+- Added the executive dashboard finance read-only reliance proof lane with
+  `data-heu-executive-finance-readonly="STD-06_FINANCE_READONLY_RELIANCE_PROOF"`.
+- The lane exposes `P2-18`, `P5-03`, `FIN-DAY1` and `ACCT-LOCAL` so BGH/KHTC
+  can see the exact missing signed browser UAT, source reconciliation,
+  Finance Day-1 evidence, accounting local readiness, negative-control proof
+  and owner closure dependencies before any finance reliance discussion.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-06 anchors, P2-18/P5-03/FIN-DAY1/ACCT-LOCAL proof
+  rows and `READ_ONLY`, `NO_VOUCHER`, `NO_PAYMENT`, `NO_BANK_INSTRUCTION`,
+  `NO_STATUTORY_ACCOUNTING`, `NO_FINANCE_RELIANCE` and `NO_PRODUCTION_GO`
+  boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-06` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-07`.
+- This is local read-only finance visibility only. It does not post vouchers,
+  move money, issue bank instructions, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-07 Executive Section Navigator
+
+- Added the executive dashboard section navigator with
+  `data-heu-executive-section-navigator="STD-07_EXECUTIVE_SECTION_NAVIGATOR"`.
+- The navigator exposes quick anchors for overview, quick access, report
+  reliance, finance proof, Legal/SOP, M01-M12 module maturity, blockers and
+  admissions signals under the `Executive focus` label so BGH can jump to the
+  needed section without scanning the full page.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-07 anchors, target section IDs, quick links,
+  `NO_HIDDEN_NO_GO`, `NO_APPROVAL_ACTION`, `NO_STATE_MUTATION` and
+  `NO_PRODUCTION_GO` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-07` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-08`.
+- This is local quick-navigation visibility only. It does not hide NO-GO
+  blockers, mutate workflow state, create approval actions, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-08 Executive Responsive Density And Section Order
+
+- Added the executive dashboard responsive density guard with
+  `data-heu-executive-responsive-density="STD-08_RESPONSIVE_DENSITY_SECTION_ORDER"`.
+- Tightened the executive dashboard with compact `space-y-3 sm:space-y-4`,
+  `p-3 sm:p-4` density, `scroll-mt-24` anchor offsets, a smaller Legal/SOP card
+  minimum height and tighter KPI/blocker/admissions grids for laptop and mobile
+  scanning.
+- Locked the explicit section order as overview, quick access, section
+  navigator, report reliance, finance proof, Legal/SOP, module maturity, KPIs,
+  blockers, admissions and segment overview.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the local
+  guard verifies the STD-08 density anchor, section order, `scroll-mt-24`,
+  compact spacing tokens, `NO_HIDDEN_BLOCKERS`, `NO_OVERLAP`,
+  `NO_PRODUCTION_GO` and `NO_APPROVAL_ACTION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-08` is
+  `PASS_LOCAL_UI` only and the next safe slice routes to `STD-09`.
+- This is local responsive layout hardening only. It does not hide blockers,
+  mutate workflow state, create approval actions, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-09 Executive Dashboard Visual QA Guard
+
+- Added the executive dashboard visual QA source guard with
+  `data-heu-executive-visual-qa="STD-09_EXECUTIVE_VISUAL_QA_SOURCE_GUARD"`,
+  `PASS_LOCAL_VISUAL_QA`, `AUTH_REQUIRED`, `NO_SCREENSHOT_CLAIM`,
+  `NO_UAT_ACCEPTANCE`, `NO_APPROVAL_ACTION` and `NO_PRODUCTION_GO` boundaries.
+- Added `scripts/check-heu-executive-dashboard-visual-qa.mjs` and
+  `check:heu-executive-dashboard-visual-qa` so local verification checks the
+  executive dashboard anchor targets, overflow-safe source layout tokens and
+  localhost-only `/` route behavior.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the main
+  dashboard guard verifies the STD-09 marker, desktop/mobile source viewport
+  labels, package script and visual QA boundary wording.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-09` is
+  `PASS_LOCAL_VISUAL_QA` only and the next safe slice routes to `STD-10`
+  authenticated desktop/mobile screenshot QA when an approved local test
+  account/session is available.
+- This is local source-layout and auth-route verification only. It does not
+  claim authenticated screenshots, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-11 Executive Priority Focus Rail
+
+- Added the executive dashboard priority focus rail with
+  `data-heu-executive-priority-focus="STD-11_EXECUTIVE_PRIORITY_FOCUS_RAIL"`.
+- The rail gives BGH one compact read-only lane for `FIN`, `LAW`, `RPT`, `ROL`
+  and `BLK` so Finance reliance, Legal/SOP, Report reliance, Role/scope and
+  Production blockers can be reached before scanning the full dashboard.
+- Updated the executive section order to
+  overview, section navigator, priority focus, quick access, report reliance,
+  finance proof, Legal/SOP, module maturity, KPIs, blockers, admissions and
+  segment overview.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` and
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs` so the local guards
+  verify the STD-11 marker, priority lane codes, `NO_HIDDEN_NO_GO`,
+  `NO_STATE_MUTATION`, `NO_APPROVAL_ACTION` and overflow boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-10` remains
+  `AUTH_REQUIRED` until an approved authenticated browser session exists, while
+  `STD-11` is the current PASS_LOCAL_UI quick-access hardening slice.
+- This is local read-only priority navigation only. It does not hide NO-GO
+  blockers, mutate workflow state, create approval actions, execute UAT, accept
+  evidence, approve finance action, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-12 Role Lane Governance Matrix
+
+- Added `lib/heu-role-lanes.ts` with `HEU_ROLE_LANE_MATRIX` and
+  `HEU_ROLE_LANE_BOUNDARY` for `HIEU_TRUONG`, `PHO_HIEU_TRUONG`, `BGH`,
+  `KHTC`, `PHAP_CHE`, `IT_DATA` and `AUDIT`.
+- Updated `lib/executive-roles.ts` so BGH-equivalent checks use
+  `normalizeHeuRoleCode` from the shared role-lane matrix before testing
+  executive roles.
+- Added `scripts/check-heu-role-lane-governance.mjs` and
+  `check:heu-role-lane-governance` so local verification checks role-lane
+  coverage, negative boundaries and package wiring before finance or operations
+  reliance is discussed.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs` so the main
+  executive dashboard guard also verifies the role-lane matrix, package script,
+  `PASS_LOCAL_ROLE_GUARD`, `NO_ACCESS_GRANT`, `NO_FINANCE_EXECUTION` and
+  `NO_LEGAL_CONCLUSION` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-12` is the
+  formal role-lane standardization slice after the executive read-only
+  dashboard and priority focus rail.
+- This is local role governance only. It does not grant access, create
+  accounts, expand permissions, execute finance, issue legal conclusions,
+  accept UAT, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-13 Report Source Map Reliance Guard
+
+- Added `data-heu-report-view-reliance-contract="STD-13_REPORT_VIEW_SOURCE_MAP_RELIANCE_CONTRACT"`
+  to `components/reports/report-view-source-map-panel.tsx` with
+  `DRAFT_CONTROL`, `DQ-DM-05`, `OWNER_SIGNOFF_PENDING`,
+  `CONTROLLED_EVIDENCE_REQUIRED`, `NO_DASHBOARD_RELIANCE`,
+  `NO_FINANCE_ACTION`, `NO_STATUTORY_ACCOUNTING`, `NO_UAT_ACCEPTANCE`,
+  `NO_OWNER_GO` and `NO_PRODUCTION_GO` boundaries.
+- Added `data-heu-report-view-dq-dm05-contract="STD-13_DQ_DM05_DASHBOARD_RELIANCE_LOCK"`
+  to `components/reports/data-master-report-view-bridge-panel.tsx` so the
+  DQ-DM-05 dashboard reliance lock is visible and locally guarded.
+- Extended `scripts/check-heu-reports-dashboard-scope-readiness.mjs` so the
+  reports/dashboard readiness guard checks the Report View Source Map panel,
+  Data Master / Report View bridge, executive dashboard report strip, source
+  map docs, blueprint and implementation log before running data-scope checks.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-13` is the
+  formal `PASS_LOCAL_REPORT_SOURCE_GUARD` report/source-map guard after the
+  executive dashboard and role-lane standardization slices.
+- This is local report/source-map contract hardening only. It does not approve
+  report-view reliance, approve dashboard reliance, read raw workbooks, read raw
+  bank files, read vouchers, accept evidence, execute UAT, approve finance
+  action, issue statutory accounting, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - STD-14 Legal SOP Authority Checklist
+
+- Added the executive Legal/SOP authority checklist with
+  `data-heu-executive-legal-sop-authority-checklist="STD-14_LEGAL_SOP_AUTHORITY_CHECKLIST"`.
+- The checklist requires `AUTH-LEGAL-BASIS`, `AUTH-SOP-VERSION`, `AUTH-MAKER`,
+  `AUTH-CHECKER`, `AUTH-APPROVER`, `AUTH-EVIDENCE` and `AUTH-SIGNER` before a
+  workflow can be treated as operationally reliable.
+- Updated `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md`
+  with the same STD-14 authority checklist so the UI and Legal/SOP matrix share
+  one DRAFT_CONTROL question set.
+- Added `scripts/check-heu-legal-sop-authority-readiness.mjs` and
+  `check:heu-legal-sop-authority-readiness`, then extended
+  `scripts/check-heu-executive-dashboard-readiness.mjs` so the main executive
+  dashboard guard verifies STD-14, package wiring, blueprint and log coverage.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-14` is the
+  formal `PASS_LOCAL_LEGAL_SOP_GUARD` for legal basis, SOP version,
+  maker/checker/approver, controlled evidence and external signer questions.
+- This is local Legal/SOP authority visibility only. It does not provide legal
+  advice, issue official SOP, grant access, approve finance action, accept UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-15 Finance Reliance Source Contract
+
+- Added the executive finance source contract with
+  `data-heu-executive-finance-source-contract="STD-15_FINANCE_RELIANCE_SOURCE_CONTRACT"`.
+- The contract exposes `FIN-SRC-01` through `FIN-SRC-05` for receivable,
+  collection, reconciliation, payment request and payout-evidence source routes.
+- Each row shows source route, owner lane, required controlled evidence and an
+  explicit stop rule before BGH/KHTC may rely on the number.
+- Extended `scripts/check-heu-executive-dashboard-readiness.mjs`,
+  `scripts/check-heu-executive-dashboard-visual-qa.mjs` and
+  `scripts/check-heu-finance-payment-scope-readiness.mjs` so local guards verify
+  `STD-15_FINANCE_RELIANCE_SOURCE_CONTRACT`, `SOURCE_MAP_REQUIRED`,
+  `NO_PAYMENT_EXECUTION` and `PASS_LOCAL_FINANCE_RELIANCE_GUARD` coverage.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-15` is the
+  formal finance read-only reliance source contract after Legal/SOP authority.
+- This is local finance reliance visibility only. It does not post vouchers,
+  execute payment, move money, issue bank instructions, approve statutory
+  accounting, accept UAT, accept evidence, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-16 Executive UAT Evidence Route
+
+- Added the executive UAT/evidence route checklist with
+  `data-heu-executive-uat-evidence-route="STD-16_UAT_EVIDENCE_ROUTE_CHECKLIST"`.
+- The checklist exposes `UAT-EVID-01` through `UAT-EVID-05` for P0-14
+  controlled evidence intake, P6-04 role/workspace UAT, P2-18 accounting
+  dashboard UAT, P5-03 Finance Desk UAT and the P0-09/P0-15 owner decision
+  package.
+- Added `scripts/check-heu-uat-evidence-route-readiness.mjs` and
+  `check:heu-uat-evidence-route-readiness`, then extended the executive
+  dashboard readiness and visual-QA guards to verify the STD-16 route,
+  `PASS_LOCAL_EVIDENCE_ROUTE`, `SIGNED_UAT_PENDING`,
+  `NO_EVIDENCE_ACCEPTANCE` and `NO_ACCESS_CLOSURE` boundaries.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-16` is the
+  formal evidence-route slice after finance reliance source mapping.
+- This is local UAT/evidence routing only. It does not collect evidence,
+  execute UAT, accept evidence, grant access, close access, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-17 Executive Focus Mode
+
+- Added the executive focus mode strip with
+  `data-heu-executive-focus-mode="STD-17_EXECUTIVE_FOCUS_MODE"` so BGH can use
+  `focus=reports`, `focus=finance`, `focus=evidence`, `focus=legal`,
+  `focus=modules` or `focus=blockers` instead of scanning every section.
+- Updated `app/page.tsx` to read the `focus` query parameter and pass it into
+  `ExecutiveDashboardOverview` as `focusMode`.
+- Added `scripts/check-heu-executive-focus-mode-readiness.mjs` and
+  `check:heu-executive-focus-mode-readiness` with `PASS_LOCAL_FOCUS_MODE`, then
+  extended the executive
+  dashboard readiness and visual-QA guards to verify `STD-17_EXECUTIVE_FOCUS_MODE`,
+  `FOCUS_QUERY_PARAM`, `NO_STATE_MUTATION`, `NO_HIDDEN_NO_GO` and the six focus
+  query links.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-17` is the
+  formal quick-focus layer after the UAT/evidence route checklist.
+- This is local query-param focus navigation only. It does not mutate workflow state,
+  hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-18 Executive Focus Next Action
+
+- Added the active-focus next-action card with
+  `data-heu-executive-focus-next-action="STD-18_EXECUTIVE_FOCUS_NEXT_ACTION"`
+  so BGH sees one owner lane, target section and stop rule for the selected
+  focus mode.
+- Added `NEXT-ALL`, `NEXT-RPT`, `NEXT-FIN`, `NEXT-EVD`, `NEXT-LAW`,
+  `NEXT-M12` and `NEXT-BLK` as read-only route hints for all focus modes.
+- Added `scripts/check-heu-executive-focus-next-action-readiness.mjs` and
+  `check:heu-executive-focus-next-action-readiness`, then extended the
+  executive dashboard readiness and visual-QA guards to verify
+  `STD-18_EXECUTIVE_FOCUS_NEXT_ACTION`, `PASS_LOCAL_NEXT_ACTION`,
+  `READ_ONLY_ROUTE_HINT`, `NO_STATE_MUTATION` and `NO_HIDDEN_NO_GO`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-18` is the
+  formal active-focus next-action layer after query-param focus mode.
+- This is local read-only route guidance only. It does not mutate workflow state,
+  hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-19 Executive Global Focus Shortcuts
+
+- Added executive-only AppShell focus shortcuts with
+  `data-heu-executive-global-focus-shortcuts="STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS"`
+  so BGH can jump from any screen to the executive dashboard focus modes.
+- Added `Tổng quan`, `Báo cáo`, `Tài chính`, `Bằng chứng`, `Phân quyền`,
+  `Pháp chế`, `M01-M12` and `Blocker` as read-only route hints that
+  still preserve the existing P0-13 workspace quick strip.
+- Added `scripts/check-heu-executive-global-focus-shortcuts-readiness.mjs` and
+  `check:heu-executive-global-focus-shortcuts-readiness`, then extended the
+  executive dashboard readiness guard to verify
+  `STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS`,
+  `PASS_LOCAL_GLOBAL_FOCUS_SHORTCUTS`, `EXECUTIVE_ONLY`,
+  `READ_ONLY_ROUTE_HINT`, `NO_ACCESS_GRANT` and `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-19` is the
+  formal global shortcut layer after active-focus next action.
+- This is local executive shortcut navigation only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-20 Executive Focus Lane Separation
+
+- Split the AppShell quick area into a dedicated executive focus lane and the
+  existing P0-13 workspace quick strip.
+- Added
+  `data-heu-executive-focus-lane-separation="STD-20_EXECUTIVE_FOCUS_LANE_SEPARATION"`
+  so BGH focus shortcuts remain visually separate from workspace actions such
+  as Lead, Follow-up, documents, pipeline, import and segment hub.
+- Kept `STD-19_EXECUTIVE_GLOBAL_FOCUS_SHORTCUTS` on the executive focus lane
+  while preserving `P0-13_WORKSPACE_QUICK_LINKS` on the workspace strip.
+- Added `scripts/check-heu-executive-focus-lane-separation-readiness.mjs` and
+  `check:heu-executive-focus-lane-separation-readiness`, then extended the
+  executive dashboard readiness and global-focus guards to verify
+  `PASS_LOCAL_FOCUS_LANE_SEPARATION`, `EXECUTIVE_ONLY`,
+  `SEPARATE_FROM_WORKSPACE`, `NO_ACCESS_GRANT` and
+  `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-20` is the
+  formal lane-separation layer after global focus shortcuts.
+- This is local executive navigation separation only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-21 AppShell Quick Lane Labels
+
+- Added compact AppShell lane labels with
+  `data-heu-quick-lane-labels="STD-21_QUICK_LANE_LABELS"` on the executive
+  focus lane and
+  `data-heu-workspace-quick-lane-label="STD-21_WORKSPACE_QUICK_LANE_LABEL"` on
+  the P0-13 workspace quick strip.
+- The labels stay short: `BGH focus` with `Read-only`, and `Workspace` with
+  `P0-13`, so users can scan the two shortcut rows without long helper copy.
+- Added `scripts/check-heu-appshell-quick-lane-labels-readiness.mjs` and
+  `check:heu-appshell-quick-lane-labels-readiness`, then extended the
+  executive dashboard readiness guard to verify `PASS_LOCAL_QUICK_LANE_LABELS`,
+  `COMPACT_LABELS`, `NO_LONG_COPY`, `NO_ACCESS_GRANT` and
+  `NO_PERMISSION_EXPANSION`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-21` is the
+  formal compact lane-label layer after lane separation.
+- This is local AppShell readability hardening only. It does not grant access,
+  expand permissions, mutate workflow state, execute UAT, accept evidence,
+  approve finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-22 Executive Focus Scoped Navigator
+
+- Added
+  `data-heu-executive-focus-scoped-navigator="STD-22_EXECUTIVE_FOCUS_SCOPED_NAVIGATOR"`
+  to the executive section navigator.
+- The navigator now uses `visibleSectionNavItems` from
+  `getExecutiveSectionNavItemsForFocus(currentFocusMode)` so BGH sees
+  persistent Overview/Priority/Next action/Quick access plus only the active
+  focus section links.
+- Added `scripts/check-heu-executive-focus-scoped-navigator-readiness.mjs` and
+  `check:heu-executive-focus-scoped-navigator-readiness`, then extended the
+  executive dashboard readiness and visual-QA source guards to verify
+  `PASS_LOCAL_FOCUS_SCOPED_NAVIGATOR`, `VISIBLE_SECTION_LINKS_ONLY` and
+  `NO_HIDDEN_TARGET_LINK`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-22` is the
+  formal focus-scoped navigator layer after compact lane labels.
+- This is local navigation-scope hardening only. It does not mutate workflow
+  state, hide NO-GO status, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-23 Executive Role Scope Focus
+
+- Added
+  `data-heu-executive-role-scope-decision="STD-23_EXECUTIVE_ROLE_SCOPE_DECISION_STRIP"`
+  to the executive dashboard so BGH can inspect the current role lane,
+  executive role matrix and correct-person/correct-work stop rules.
+- Added `focus=roles`, `NEXT-ROL`, the `ROL` navigator target and the AppShell
+  `Phân quyền` shortcut with
+  `data-heu-executive-role-scope-focus-shortcut="STD-23_EXECUTIVE_ROLE_SCOPE_FOCUS_SHORTCUT"`.
+- Added `EXEC-ROLE-01` through `EXEC-ROLE-04` for current role normalization,
+  executive read-only dashboard scope, professional lane separation and
+  negative access proof pending.
+- Added `scripts/check-heu-executive-role-scope-focus-readiness.mjs` and
+  `check:heu-executive-role-scope-focus-readiness`, then extended executive
+  dashboard readiness, focus-mode, global-focus, focus-scoped navigator and
+  visual-QA source guards with `PASS_LOCAL_EXECUTIVE_ROLE_SCOPE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-23` is the
+  formal role/scope focus layer after focus-scoped navigation.
+- This is local executive role/scope visibility only. It does not grant access,
+  expand permissions, create accounts, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Dependency Lock
+
+- Added `ACCT-00-NEGATIVE-ACCOUNT-DEPENDENCY-LOCK` to
+  `check:heu-negative-control-account-queue` so negative-account provisioning
+  is gated by post-repair verification, zero scope findings and owner evidence
+  routing.
+- The lock emits
+  `negative_account_dependency_lock=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY`,
+  `required_inputs=scope_post_repair_verification_closed,scope_baseline_closed,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_dependency_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,workspace_preference_inside_scope_confirmed,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded,post_repair_snapshot_recorded`,
+  `blocked_if=scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0`
+  and `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_PROVISIONING`.
+- Updated the ACCT-00 negative queue, owner-action queue, open-blocker queue
+  and module breakdown checks to require the dependency lock before owner-side
+  provisioning can be treated as eligible.
+- This is PASS_LOCAL control hardening only. It does not create accounts,
+  grant scope, change visibility, accept evidence, infer UAT pass, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Account Execution Dependency Input
+
+- Updated `ACCT-00-NEGATIVE-ACCOUNT-EXECUTION-PACKET` so execution now requires
+  `negative_account_dependency_lock_closed` instead of relying directly on
+  `scope_repair_execution_closed`.
+- The execution packet now emits and audits
+  `required_inputs=negative_account_dependency_lock_closed,provisioning_decision_closed,target_account_label_recorded,secure_admin_channel_recorded`
+  plus
+  `blocked_if=negative_account_dependency_lock_closed=no,scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0`.
+- Propagated the same dependency input through the ACCT-00 negative queue,
+  owner-action queue, open-blocker queue and accounting module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not create accounts,
+  link Auth, grant scope, accept evidence, infer UAT pass, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Negative Browser Evidence Dependency Lock
+
+- Added `ACCT-00-NEGATIVE-BROWSER-EVIDENCE-DEPENDENCY-LOCK` to
+  `check:heu-negative-control-account-queue` so browser denial evidence cannot
+  start while `negative_account_ready=no` or `ttgdtx_negative_candidates=0`.
+- The lock emits
+  `negative_browser_evidence_dependency_lock=ACCT-00_NEGATIVE_BROWSER_EVIDENCE_DEPENDENCY`,
+  `required_inputs=negative_account_post_execution_verification_closed,negative_account_ready,controlled_evidence_id_recorded,reviewer_recorded,owner_lane_confirmed`,
+  `required_dependency_record=ttgdtx_negative_candidates>=1,negative_account_label_recorded,auth_profile_link_verified,non_target_business_scope_verified,target_segment_exclusion_verified,lead_visibility_non_all_verified,settings_permission_denial_ready,controlled_evidence_id_recorded`,
+  `blocked_if=negative_account_ready=no,ttgdtx_negative_candidates=0,scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0`
+  and `next_allowed_step=ACCT-00_NEGATIVE_BROWSER_DENIAL`.
+- Propagated the same dependency lock through the ACCT-00 negative queue,
+  owner-action queue, open-blocker queue and accounting module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not run browser UAT,
+  accept evidence, infer UAT pass, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Repair Decision Dependency Lock
+
+- Added `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK` to
+  `check:heu-user-scope-baseline-repair-queue` so owner-side scope repair
+  execution cannot be treated as eligible from hash labels or PASS_LOCAL queue
+  output alone.
+- The lock emits
+  `scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`,
+  `required_inputs=scope_baseline_decision_checklist_closed,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded`,
+  `required_dependency_record=approved_visibility_choice_recorded,approved_business_scope_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_decision_checklist_closed=no,owner_lane_confirmed=no,lead_visibility_choice_recorded=no,business_scope_choice_recorded=no,secure_admin_channel_recorded=no`
+  and `next_allowed_step=ACCT-00_SCOPE_REPAIR_EXECUTION`.
+- Propagated the same dependency lock through the scope repair queue,
+  negative-control queue, owner-action queue, open-blocker queue and accounting
+  module breakdown guard.
+- This is PASS_LOCAL dependency hardening only. It does not change visibility,
+  grant scope, accept evidence, infer UAT pass, approve finance reliance,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Repair Owner Decision Matrix
+
+- Added `ACCT-00-SCOPE-REPAIR-OWNER-DECISION-MATRIX` to
+  `check:heu-user-scope-baseline-repair-queue` so the current safe hash labels
+  for `missing_visibility=2` and `missing_business_scope=2` must be mapped to
+  owner-side decisions before the baseline owner checklist can be treated as
+  ready.
+- The matrix emits
+  `scope_repair_owner_decision_matrix=ACCT-00_SCOPE_REPAIR_OWNER_DECISION_MATRIX`,
+  `profile_count=2`, `decision_count=4`,
+  `required_owner_record=owner_label_mapped,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id`,
+  `blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing`
+  and `next_allowed_step=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`.
+- Propagated the same owner-decision matrix through the scope repair queue,
+  negative-control queue, owner-action queue, open-blocker queue and accounting
+  module breakdown guard.
+- This is PASS_LOCAL owner-decision routing only. It does not change
+  visibility, grant scope, accept evidence, infer UAT pass, approve finance
+  reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-24 Executive Report Source Map Triage
+
+- Added
+  `data-heu-executive-report-source-map-triage="STD-24_EXECUTIVE_REPORT_SOURCE_MAP_TRIAGE"`
+  to the executive dashboard report focus.
+- Added `RPT-SRC-01` through `RPT-SRC-05` so BGH can check report-view
+  contract, `DQ-DM-05`, owner signoff route, controlled evidence reference and
+  reliance decision before trusting dashboard numbers.
+- Added `scripts/check-heu-executive-report-source-map-triage-readiness.mjs`
+  and `check:heu-executive-report-source-map-triage-readiness`, then extended
+  executive dashboard readiness, reports/dashboard scope and visual-QA guards
+  with `PASS_LOCAL_REPORT_SOURCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-24` is the
+  formal report/source-map triage layer after executive role/scope focus.
+- This is local report/source-map visibility only. It does not approve
+  report-view reliance, dashboard reliance, finance action, statutory
+  accounting, UAT, evidence acceptance, owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Owner Approval Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` so the scope
+  form renders
+  `data-heu-scope-owner-approval-ack="P0-17_SCOPE_OWNER_APPROVAL_ACK"` and
+  requires `scope_owner_approved=yes` before a lead-visibility,
+  admission-segment or partner-scope save can submit.
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction` checks
+  `scope_owner_approved` and redirects with `scope_owner_approval_required`
+  before any `user_admission_segment_scopes`, `user_partner_scopes` or
+  `user_lead_visibility_scopes` write when the owner-approved secure channel
+  confirmation is missing.
+- Updated `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the save
+  guard is tied to the current `DAO_TAO_LEAD` and `TCHC_LEAD` repair queue.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign positions,
+  set passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Controlled Evidence ID Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` so the scope
+  form renders
+  `data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"`
+  and requires `scope_controlled_evidence_id` before a lead-visibility,
+  admission-segment or partner-scope save can submit.
+- Updated `app/settings/actions.ts` so `updateUserBusinessScopesAction`
+  validates the safe evidence token before any `user_admission_segment_scopes`,
+  `user_partner_scopes` or `user_lead_visibility_scopes` write, returning
+  `scope_controlled_evidence_id_required` or
+  `scope_controlled_evidence_id_invalid` when the value is missing or unsafe.
+- The accepted token is recorded in the scope note as
+  `controlled_evidence_id=<safe token>` so the owner-side
+  `controlled_evidence_id_recorded` requirement is tied to the actual Settings
+  save path.
+- Added `lead_visibility_note_with_controlled_evidence=true` so
+  `user_lead_visibility_scopes` stores the same redacted
+  `controlled_evidence_id=<safe token>` note as segment/partner scope rows.
+- Updated `docs/HEU_USER_SCOPE_BASELINE_REPAIR_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` so the evidence
+  ID guard is tied to the current `DAO_TAO_LEAD` and `TCHC_LEAD` repair queue.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign positions,
+  set passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Position Assignment Owner Execution Save Guard
+
+- Updated `components/settings/position-assignment-matrix.tsx` so the position
+  assignment form renders
+  `data-heu-position-owner-execution-ack="P0-17_POSITION_OWNER_EXECUTION_ACK"`
+  and requires `position_owner_execution_ack=yes` before the operator can submit
+  the `assignHeuPositionByEmailAction` path.
+- Added
+  `data-heu-position-controlled-evidence-id="P0-17_POSITION_ASSIGNMENT_CONTROLLED_EVIDENCE_ID"`
+  and required `position_assignment_controlled_evidence_id` to the same form.
+- Updated `app/settings/actions.ts` so `assignHeuPositionByEmailAction` calls
+  `requirePositionOwnerExecutionGate` before `assign_heu_position_by_email` and
+  returns `position_owner_execution_ack_required`,
+  `position_controlled_evidence_id_required` or
+  `position_controlled_evidence_id_invalid` when the owner execution packet or
+  evidence reference is missing.
+- The accepted token is appended to `target_note` as
+  `controlled_evidence_id=<safe token>` with
+  `owner-approved position assignment channel confirmed`, tying
+  `settings_rpc_assignment_recorded` and `controlled_evidence_id_recorded` to
+  the actual Settings save path.
+- Updated `docs/HEU_POSITION_ASSIGNMENT_OWNER_QUEUE_20260703.md` and
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md`, plus the
+  position-owner checker and `audit:heu-user-account-security`, so the guard is
+  required locally while `unassigned_required_positions=11` remains an external
+  owner-mapping blocker.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users by itself, change scope, set passwords, send reset/invite links, execute
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+- Boundary tokens: assign real users by itself; execute UAT; approve finance
+  reliance; approve owner GO/NO-GO; mark production GO.
+
+## 2026-07-03 - Profile Update Owner Evidence Save Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` and
+  `components/settings/user-settings-overview.tsx` so both profile update forms
+  render `data-heu-profile-update-owner-ack="P0-17_PROFILE_UPDATE_OWNER_ACK"`
+  and require `profile_update_owner_ack=yes` before the operator can submit
+  role, department, manager or status changes.
+- Added
+  `data-heu-profile-update-controlled-evidence-id="P0-17_PROFILE_UPDATE_CONTROLLED_EVIDENCE_ID"`
+  and required `profile_update_controlled_evidence_id` to both forms.
+- Updated `app/settings/actions.ts` so `updateUserProfileAction` calls
+  `requireProfileUpdateOwnerGate` after `assertProfileUpdateScopeBaseline` and
+  before the `users_profile` update, returning
+  `profile_update_owner_ack_required`,
+  `profile_update_controlled_evidence_id_required` or
+  `profile_update_controlled_evidence_id_invalid` when the owner packet or safe
+  evidence token is missing.
+- The accepted token is a redacted controlled evidence reference only; raw
+  evidence stays outside Git/Codex/chat and outside the `users_profile` row.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security`, so both UI paths and the server ordering
+  remain required locally.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  set passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: assign real users; assign positions; execute UAT; approve
+  finance reliance; approve owner GO/NO-GO; mark production GO.
+- Boundary token: approve finance reliance.
+- Boundary phrase: does not create accounts, link Auth, assign real users,
+  assign positions, change lead visibility, add segment/partner scope, set
+  passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - Scope Post-Repair Rerun Proof UI Guard
+
+- Updated `components/settings/user-business-scope-settings.tsx` with
+  `data-heu-scope-post-repair-rerun-proof="ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF"`
+  in the same scope form that already requires
+  `scope_owner_approved=yes` and `scope_controlled_evidence_id`.
+- Added the required rerun packet:
+  `required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun`.
+- Added the required result packet:
+  `required_result_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,controlled_evidence_id_recorded`.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so post-repair proof remains visible before
+  cutover.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility by itself, add
+  segment/partner scope by itself, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO
+  or mark production GO.
+- Boundary tokens: change lead visibility by itself; add segment/partner scope
+  by itself; execute UAT; accept evidence; approve owner GO/NO-GO; mark
+  production GO.
+- Boundary token: add segment/partner scope by itself.
+- Boundary phrase: does not create accounts, link Auth, assign real users,
+  assign positions, change lead visibility by itself, add segment/partner scope
+  by itself, set passwords, send reset/invite links, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-03 - Negative Browser Route Matrix UI Guard
+
+- Updated `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-negative-browser-route-matrix="ACCT-00_NEGATIVE_BROWSER_ROUTES"` so
+  the user-permission cutover panel shows the negative-control browser routes.
+- Added the in-app route matrix tokens:
+  `negative_route_matrix=ACCT-00_NEGATIVE_BROWSER_ROUTES`,
+  `target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`, `route_count=5`,
+  `required_routes=lead,finance,evidence,audit,settings` and
+  `expected_result=BLOCKED_OR_EMPTY_SCOPED_STATE`.
+- Added the required closure record:
+  `required_closure=lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded`.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so the route matrix remains visible before
+  system-wide permission expansion.
+- PASS_LOCAL boundary: this does not run browser UAT, accept evidence, create
+  accounts, link Auth, assign real users, assign positions, change lead
+  visibility, add segment/partner scope, set passwords, send reset/invite
+  links, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+- Boundary tokens: run browser UAT; accept evidence; create accounts; link
+  Auth; approve finance reliance; approve owner GO/NO-GO; mark production GO.
+- Boundary tokens: change lead visibility; add segment/partner scope; set
+  passwords; send reset/invite links.
+
+## 2026-07-03 - Credential Handoff Owner Evidence Save Guard
+
+- Updated `components/settings/position-assignment-matrix.tsx` so both
+  credential forms render
+  `data-heu-credential-owner-handoff-ack="P0-17_CREDENTIAL_OWNER_HANDOFF_ACK"`
+  and require `credential_owner_handoff_ack=yes`.
+- Added
+  `data-heu-credential-controlled-evidence-id="P0-17_CREDENTIAL_CONTROLLED_EVIDENCE_ID"`
+  and required `credential_controlled_evidence_id` to both credential forms.
+- Updated `app/settings/actions.ts` so `setUserTemporaryPasswordAction` and
+  `sendUserPasswordResetEmailAction` call `requireCredentialOwnerHandoffGate`
+  after `assertCredentialScopeBaseline` and before `updateUserById` or
+  `resetPasswordForEmail`.
+- The server returns `credential_owner_handoff_ack_required`,
+  `credential_controlled_evidence_id_required` or
+  `credential_controlled_evidence_id_invalid` when the owner handoff packet or
+  safe evidence token is missing.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security`, so credential handoff remains
+  owner/evidence-gated in PASS_LOCAL.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  choose passwords, send reset/invite links by itself, execute UAT, accept
+  evidence, approve finance reliance, approve owner GO/NO-GO or mark production
+  GO.
+- Boundary tokens: choose passwords; send reset/invite links by itself; execute
+  UAT; accept evidence; approve owner GO/NO-GO; mark production GO.
+- Boundary token: assign real users.
+
+## 2026-07-03 - STD-25 Executive Legal SOP Triage
+
+- Added
+  `data-heu-executive-legal-sop-triage="STD-25_EXECUTIVE_LEGAL_SOP_TRIAGE"`
+  to the executive dashboard Legal/SOP focus before the authority checklist.
+- Added `LEGAL-TRIAGE-01` through `LEGAL-TRIAGE-05` so BGH can quickly check
+  legal basis, SOP version, maker/checker/approver route, controlled evidence
+  and external signer route before relying on any workflow.
+- Added `scripts/check-heu-executive-legal-sop-triage-readiness.mjs` and
+  `check:heu-executive-legal-sop-triage-readiness`, then extended executive
+  dashboard readiness, Legal/SOP authority and visual-QA guards with
+  `PASS_LOCAL_LEGAL_SOP_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-25` is the
+  formal Legal/SOP triage layer after report/source-map triage.
+- This is local Legal/SOP visibility only. It does not provide legal advice,
+  issue official SOP, approve workflow state, execute finance, accept UAT,
+  accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-26 Executive Finance Reliance Triage
+
+- Added
+  `data-heu-executive-finance-reliance-triage="STD-26_EXECUTIVE_FINANCE_RELIANCE_TRIAGE"`
+  to the executive dashboard Finance focus before the source-contract table.
+- Added `FIN-REL-01` through `FIN-REL-05` so BGH/KHTC can quickly check signed
+  P2-18/P5-03 route evidence, Finance Day-1 ledger, P6-04 role/scope proof,
+  owner reliance decision and the forbidden-action lock before trusting finance
+  numbers.
+- Added `scripts/check-heu-executive-finance-reliance-triage-readiness.mjs`
+  and `check:heu-executive-finance-reliance-triage-readiness`, then extended
+  executive dashboard readiness, finance/payment scope and visual-QA guards
+  with `PASS_LOCAL_FINANCE_RELIANCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-26` is the
+  formal Finance reliance triage layer after Legal/SOP triage.
+- This is local Finance reliance visibility only. It does not post vouchers,
+  execute payment, issue bank instructions, approve finance reliance, accept
+  UAT, accept evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-27 Executive UAT Evidence Triage
+
+- Added
+  `data-heu-executive-uat-evidence-closure-triage="STD-27_EXECUTIVE_UAT_EVIDENCE_CLOSURE_TRIAGE"`
+  to the executive dashboard UAT/evidence focus before the signed-route
+  checklist.
+- Added `UAT-CLOSE-01` through `UAT-CLOSE-05` so BGH can quickly check
+  controlled evidence location, signed UAT route state, role/access closure
+  dependency, finance/legal reliance dependency and final owner decision pack
+  before closing blockers.
+- Added `scripts/check-heu-executive-uat-evidence-triage-readiness.mjs` and
+  `check:heu-executive-uat-evidence-triage-readiness`, then extended executive
+  dashboard readiness, UAT/evidence route and visual-QA guards with
+  `PASS_LOCAL_UAT_EVIDENCE_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-27` is the
+  formal UAT/evidence closure triage layer after Finance reliance triage.
+- This is local UAT/evidence visibility only. It does not collect evidence,
+  does not execute UAT, does not accept evidence, grant access, close access,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-28 Executive Production Blocker Triage
+
+- Added
+  `data-heu-executive-production-blocker-triage="STD-28_EXECUTIVE_PRODUCTION_BLOCKER_TRIAGE"`
+  to the executive dashboard blockers focus before the raw production blocker
+  list.
+- Added `BLK-CLOSE-01` through `BLK-CLOSE-05` so BGH can quickly check
+  backup/restore proof, Step90-Step110 migration order signoff, signed UAT
+  route closure, finance/legal reliance closure and the final owner GO/NO-GO
+  packet before any production discussion.
+- Added
+  `scripts/check-heu-executive-production-blocker-triage-readiness.mjs` and
+  `check:heu-executive-production-blocker-triage-readiness`, then extended
+  executive dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_PRODUCTION_BLOCKER_TRIAGE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-28` is the
+  formal production blocker owner triage layer after UAT/evidence closure.
+- This is local production blocker visibility only. It does not collect
+  evidence, execute UAT, accept evidence, approve migration, does not approve
+  waiver, approve finance reliance, issue legal conclusion, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-29 Executive Priority Command Strip
+
+- Added
+  `data-heu-executive-priority-command-strip="STD-29_EXECUTIVE_PRIORITY_COMMAND_STRIP"`
+  to the executive dashboard priority focus rail.
+- Converted the priority focus cards from anchor-only links into
+  `focusHref(item.focusMode)` commands so BGH can open focused read-only views
+  for finance, UAT/evidence, Legal/SOP, reports, role/scope and blockers with
+  `VISIBLE_FOCUS_ONLY` instead of scanning the full dashboard.
+- Added
+  `scripts/check-heu-executive-priority-command-strip-readiness.mjs` and
+  `check:heu-executive-priority-command-strip-readiness`, then extended
+  executive dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_PRIORITY_COMMAND_STRIP`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-29` is the
+  formal quick-access command strip after production blocker triage.
+- This is local route-hint visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - STD-30 Executive Active Focus Header
+
+- Added
+  `data-heu-executive-active-focus-header="STD-30_EXECUTIVE_ACTIVE_FOCUS_HEADER"`
+  to the executive dashboard overview header.
+- The header now shows the current `focus` query state through
+  `ACTIVE_FOCUS_VISIBLE`, displays the selected focus label/description and
+  provides a `RETURN_TO_ALL` route hint through `focusHref("all")`.
+- Added `scripts/check-heu-executive-active-focus-header-readiness.mjs` and
+  `check:heu-executive-active-focus-header-readiness`, then extended executive
+  dashboard readiness and visual-QA guards with
+  `PASS_LOCAL_ACTIVE_FOCUS_HEADER`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-30` is the
+  formal active-focus header after the priority command strip.
+- This is local route-hint visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-31 Executive Global Focus Compact Labels
+
+- Replaced long AppShell executive focus labels with compact labels:
+  `Tổng quan`, `Báo cáo`, `Tài chính`, `Bằng chứng`, `Phân quyền`,
+  `Pháp chế`, `M01-M12` and `Blocker`.
+- Added
+  `data-heu-executive-focus-compact-labels="STD-31_EXECUTIVE_GLOBAL_FOCUS_COMPACT_LABELS"`
+  to the executive focus strip so compact labels have a dedicated PASS_LOCAL
+  guard separate from the existing STD-19 route shortcut guard.
+- Added `scripts/check-heu-executive-global-focus-compact-labels-readiness.mjs`
+  and `check:heu-executive-global-focus-compact-labels-readiness`, then
+  extended executive dashboard readiness and global-focus shortcut guards with
+  `PASS_LOCAL_GLOBAL_FOCUS_COMPACT_LABELS`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-31` is the
+  formal compact-label layer after the active focus header.
+- This is local route-label visibility only. It does not grant access, expand
+  permissions, mutate workflow state, execute UAT, accept evidence, approve
+  finance action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope Post-Repair Rerun Proof Packet
+
+- Added `ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET` to
+  `check:heu-user-scope-baseline-repair-queue` so post-repair verification
+  cannot proceed from a stale scope snapshot after owner-side scope repair.
+- The packet emits
+  `scope_post_repair_rerun_proof_packet=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF`,
+  `required_inputs=scope_repair_execution_closed,post_repair_snapshot_recorded,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_rerun_record=check_heu_user_scope_baseline_repair_queue_rerun,check_heu_negative_control_account_queue_rerun,check_heu_finance_payment_scope_readiness_rerun,check_heu_role_scope_uat_pack_rerun,check_heu_user_account_security_rerun`,
+  `required_result_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,ttgdtx_negative_candidates_recomputed,finance_payment_scope_ready_recorded,role_scope_pack_passed,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_closed=no,post_repair_snapshot_recorded=no,controlled_evidence_id_recorded=no,negative_control_queue_re_run_recorded=no`
+  and `next_allowed_step=ACCT-00_SCOPE_POST_REPAIR_VERIFICATION`.
+- Propagated the packet through the user-scope repair queue, negative-control
+  account queue, negative-control owner-action queue, open-blocker action queue
+  and accounting module breakdown checker.
+- PASS_LOCAL boundary: this does not change scope, create accounts, accept
+  evidence, execute UAT, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-00 Owner External Closure Handoff Packet
+
+- Added `ACCT-00-OWNER-EXTERNAL-CLOSURE-HANDOFF-PACKET` to
+  `check:heu-negative-control-account-queue` so ACCT-00 cannot hand off into
+  ACCT-12 from partial scope repair, missing negative account, missing browser
+  route denial or missing controlled evidence.
+- The packet emits
+  `owner_external_closure_handoff_packet=ACCT-00_OWNER_EXTERNAL_CLOSURE_HANDOFF`,
+  `required_inputs=scope_post_repair_verification_closed,negative_account_post_execution_verification_closed,negative_browser_denial_closed,negative_control_final_proof_decision_recorded,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,ttgdtx_negative_candidates>=1,negative_control_proof_decision_recorded,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,blocker_state_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=missing_visibility>0,missing_business_scope>0,ttgdtx_negative_candidates=0,negative_control_proof_ready=no,controlled_evidence_id_recorded=no`
+  and `next_allowed_step=ACCT-12_NEGATIVE_CONTROL_PROOF_DEPENDENCY`.
+- Propagated the handoff through the negative-control account queue,
+  negative-control owner-action queue, open-blocker action queue and accounting
+  module breakdown guard.
+- PASS_LOCAL boundary: this does not change scope, create accounts, run browser
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-11 Risk External Evidence Handoff Packet
+
+- Added `ACCT-11-RISK-EXTERNAL-EVIDENCE-HANDOFF-PACKET` to
+  `check:heu-accounting-risk-closure-ledger` so ACCT-12 finance reliance cannot
+  treat ACCT-11 as closed from final-risk decision routing alone.
+- The packet emits
+  `risk_external_evidence_handoff_packet=ACCT-11_RISK_EXTERNAL_EVIDENCE_HANDOFF`,
+  `risk_closure_ready=no`,
+  `required_inputs=audit_trace_closed,hard_delete_cascade_closed,backup_restore_proof_closed,migration_order_signed,rollback_redaction_proof_closed,final_risk_decision_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded`,
+  `required_owner_closure=pending_risk_external_evidence=0,pending_risk_owner=0,pending_acceptance_owner=0,audit_log_trigger_coverage_recorded,p6_06_findings_triaged,backup_id_recorded,restore_smoke_check_recorded,step90_step110_order_signed,rollback_path_recorded,redaction_path_recorded,protected_evidence_retained,final_risk_decision_recorded,owner_quorum_recorded,controlled_evidence_ids_recorded`,
+  `blocked_if=pending_risk_external_evidence>0,pending_risk_owner>0,pending_acceptance_owner>0,final_risk_decision_recorded=no,owner_quorum_recorded=no,controlled_evidence_ids_recorded=no`
+  and `next_allowed_step=ACCT-12_FINANCE_RELIANCE_DEPENDENCY`.
+- Propagated the handoff through the risk closure ledger, open-blocker action
+  queue and accounting module breakdown guard.
+- PASS_LOCAL boundary: this does not inspect raw backup/database exports,
+  accept evidence, approve migration, approve finance reliance, approve UAT,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-03 - ACCT-00 Scope External Closure Handoff Packet
+
+- Added `ACCT-00-SCOPE-EXTERNAL-CLOSURE-HANDOFF-PACKET` to
+  `check:heu-user-scope-baseline-repair-queue` so negative-account dependency
+  cannot rely on post-repair verification without final scope owner closure.
+- The packet emits
+  `scope_external_closure_handoff_packet=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF`,
+  `scope_baseline_closed=no`,
+  `required_inputs=scope_baseline_decision_checklist_closed,scope_repair_execution_closed,scope_post_repair_rerun_proof_closed,scope_post_repair_verification_closed,controlled_evidence_id_recorded,owner_lane_confirmed`,
+  `required_owner_closure=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,lead_visibility_choice_recorded,business_scope_choice_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_inside_scope_confirmed,post_repair_snapshot_recorded,negative_control_queue_re_run_recorded,controlled_evidence_id_recorded`,
+  `blocked_if=scope_baseline_closed=no,missing_visibility>0,missing_business_scope>0,non_admin_all_visibility>0,workspace_mismatch>0,controlled_evidence_id_recorded=no`
+  and `next_allowed_step=ACCT-00_NEGATIVE_ACCOUNT_DEPENDENCY`.
+- Propagated the handoff through the user-scope repair queue,
+  negative-control account queue, negative-control owner-action queue,
+  open-blocker action queue and accounting module breakdown guard.
+- PASS_LOCAL boundary: this does not change scope, create accounts, accept
+  evidence, execute UAT, approve finance reliance, approve owner GO/NO-GO or
+  mark production GO.
+
+## 2026-07-03 - ACCT-12 Negative-Control Scope Handoff Dependency
+
+- Tightened `ACCT-12-NEGATIVE-CONTROL-PROOF-DEPENDENCY-LOCK` so signed route
+  evidence intake cannot rely on ACCT-00 negative-control proof unless
+  `ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed` and `scope_baseline_closed`
+  are recorded first.
+- The dependency now requires
+  `required_inputs=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed,negative_control_final_proof_decision_packet_closed,negative_control_proof_decision_recorded,controlled_evidence_id_recorded,reviewer_recorded,owner_decision_recorded,blocker_state_recorded`,
+  `required_dependency_record=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed,ACCT-00_NEGATIVE_CONTROL_FINAL_PROOF_DECISION_closed,scope_baseline_closed,negative_control_proof_ready_verified,lead_route_denial_recorded,finance_route_denial_recorded,evidence_route_denial_recorded,audit_route_denial_recorded,settings_route_denial_recorded,linked_signed_route_evidence_packet_recorded`
+  and
+  `blocked_if=ACCT-00_SCOPE_EXTERNAL_CLOSURE_HANDOFF_closed=no,scope_baseline_closed=no,negative_control_proof_ready=no,ttgdtx_negative_candidates=0,missing_visibility>0,missing_business_scope>0`.
+- Propagated the dependency through the ACCT-12 owner closure ledger,
+  accounting module breakdown and open-blocker action queue guards.
+- PASS_LOCAL boundary: this does not close scope baseline, create accounts,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Role Permission Owner Evidence Save Guard
+
+- Added an owner/evidence save gate to `updateRolePermissionsAction` so Settings
+  role permission changes must pass `requireRolePermissionOwnerGate` before any
+  `role_permissions` revoke/update/upsert path runs.
+- The Settings form now requires
+  `data-heu-role-permission-owner-ack="P0-17_ROLE_PERMISSION_OWNER_ACK"`,
+  `role_permission_owner_ack=yes`,
+  `role_permission_owner_packet=P0-17_ROLE_PERMISSION_OWNER_PACKET`,
+  `role_permission_change_recorded`,
+  `data-heu-role-permission-controlled-evidence-id="P0-17_ROLE_PERMISSION_CONTROLLED_EVIDENCE_ID"`,
+  `role_permission_controlled_evidence_id` and
+  `controlled_evidence_id_recorded`.
+- The server rejects incomplete packets with
+  `role_permission_owner_ack_required`,
+  `role_permission_controlled_evidence_id_required` and
+  `role_permission_controlled_evidence_id_invalid`, then writes
+  `owner-approved role permission channel confirmed` and
+  `controlled_evidence_id=<safe token>` only after the safe evidence token is
+  present.
+- Updated `audit:heu-user-account-security` to lock the Role Permission Owner
+  Evidence Save Guard in code, UI, breakdown and implementation-log evidence.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  choose passwords, send reset/invite links, execute UAT, accept evidence,
+  approve finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: assign real users; change lead visibility; send reset/invite links.
+
+## 2026-07-04 - External Evidence Reference Lane UI Guard
+
+- Added an external evidence reference lane matrix to
+  `components/settings/user-operation-cutover-panel.tsx` so the Settings
+  cutover panel renders
+  `data-heu-external-evidence-reference-lanes="P0-17_EXTERNAL_EVIDENCE_REFERENCE_LANES"`.
+- The matrix records
+  `external_evidence_reference_lane_matrix=P0-17_EXTERNAL_EVIDENCE_REFERENCE_LANES`,
+  `reference_lane_count=4`, `pending_lanes=4`, `ready_lanes=0`,
+  `redacted_external_reference_recorded`, `p6_04_signed_uat_reference_recorded`,
+  `access_closure_reference_recorded`,
+  `negative_control_browser_proof_reference_recorded` and
+  `owner_cutover_decision_recorded`.
+- The four required lanes remain
+  `P6_04_SIGNED_UAT_REFERENCE:READY_EXTERNAL_REFERENCE`,
+  `ACCESS_CLOSURE_REFERENCE:READY_EXTERNAL_REFERENCE`,
+  `NEGATIVE_CONTROL_BROWSER_PROOF_REFERENCE:READY_EXTERNAL_REFERENCE` and
+  `OWNER_CUTOVER_DECISION_REFERENCE:READY_OWNER_SIGNOFF`.
+- Updated `audit:heu-user-account-security` so the external evidence lane
+  matrix stays attached to `USER-CUTOVER-EXTERNAL-EVIDENCE` and
+  `P0-17_EXTERNAL_EVIDENCE_CLOSURE_PACKET`.
+- PASS_LOCAL boundary: this does not upload evidence, accept evidence, execute
+  UAT, approve finance reliance, approve owner GO/NO-GO, mark production GO,
+  create accounts, link Auth, assign real users, assign positions, change lead
+  visibility, add segment/partner scope, choose passwords or send reset/invite
+  links.
+- Boundary tokens: execute UAT; change lead visibility; send reset/invite links.
+
+## 2026-07-04 - Activation Owner Seat Closure UI Guard
+
+- Added the activation owner-seat closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-owner-seat-closure="OWNER-MAP-01_POSITION_ASSIGNMENT_CLOSURE"`.
+- The matrix records
+  `activation_owner_seat_closure_packet=OWNER-MAP-01_POSITION_ASSIGNMENT_CLOSURE`,
+  `owner_seat_closure_status=NO_GO`, `required_positions=15`,
+  `unassigned_required_positions=11`, `matching_active_candidate_profiles=0`,
+  `ACTIVATION-WORKSHEET-OWNER-SEATS`,
+  `ACTIVATION-WORKSHEET-OWNER-SEAT-CLOSURE-PACKET` and
+  `ACTIVATION-WORKSHEET-POSITION-OWNER-DECISION-MATRIX`.
+- The matrix also locks
+  `required_closure=position_owner_decision_matrix_recorded,owner_person_mapping_recorded,auth_profile_link_recorded,position_assignment_recorded,post_assignment_snapshot_recorded,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=unassigned_required_positions=0,missing_role_positions=0,missing_department_positions=0`.
+- Updated `audit:heu-user-account-security` so the activation owner-seat
+  closure matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not assign real users, create accounts, link
+  Auth, assign positions, change lead visibility, add segment/partner scope,
+  set passwords, send reset/invite links, execute UAT, accept evidence, approve
+  finance reliance, approve owner GO/NO-GO or mark production GO.
+- Boundary tokens: link Auth; approve finance reliance.
+
+## 2026-07-04 - STD-32 Executive Department Role Lane Map
+
+- Added `HEU_DEPARTMENT_ROLE_LANE_MAP` and
+  `HEU_DEPARTMENT_ROLE_LANE_BOUNDARY` to `lib/heu-role-lanes.ts` so the
+  executive role/scope focus can show correct-person/correct-work ownership by
+  department without touching live permissions.
+- Added
+  `data-heu-executive-department-role-lane-map="STD-32_EXECUTIVE_DEPARTMENT_ROLE_LANE_MAP"`
+  to `components/dashboard/executive-dashboard-overview.tsx`, covering
+  `DEPT-TUYEN-SINH`, `DEPT-DAO-TAO`, `DEPT-CTHSSV`, `DEPT-KHOA-GV`,
+  `DEPT-TCHC`, `DEPT-KHTC`, `DEPT-PHAP-CHE`, `DEPT-IT-DATA` and `DEPT-AUDIT`
+  with owner lane, operating scope, required evidence and stop rule.
+- Added
+  `scripts/check-heu-executive-department-role-lane-map-readiness.mjs` and
+  `check:heu-executive-department-role-lane-map-readiness`, then extended
+  executive dashboard readiness, executive role/scope focus and role-lane
+  governance guards with `PASS_LOCAL_DEPARTMENT_ROLE_LANE_MAP`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-32` is the
+  formal executive oversight layer after compact focus labels.
+- PASS_LOCAL boundary: this does not create accounts, assign roles, grant
+  access, expand permissions, replace P6-04 signed role/scope UAT, execute UAT,
+  accept evidence, approve finance action, issue legal conclusions, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-33 Executive Report Source Fast Index
+
+- Added `ExecutiveReportSourceFastIndex` and
+  `executiveReportSourceFastIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Reports focus
+  shows one compact table for report-view, owner lane, source route, DQ gate,
+  evidence route and stop rule before the longer STD-24 triage cards.
+- Added
+  `data-heu-executive-report-source-fast-index="STD-33_EXECUTIVE_REPORT_SOURCE_FAST_INDEX"`
+  with `RPT-IDX-01` through `RPT-IDX-06` for
+  `RV_TTGDTX_FINANCE_SUMMARY`, `RV_TTGDTX_CONG_NO_THUC_THU`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`,
+  `RV_AUDIT_RISK_CONTROL` and `RV_AI_ALLOWED_CONTEXT`.
+- Added
+  `scripts/check-heu-executive-report-source-fast-index-readiness.mjs` and
+  `check:heu-executive-report-source-fast-index-readiness`, then extended
+  executive dashboard readiness, report source-map triage and reports dashboard
+  scope guards with `PASS_LOCAL_REPORT_SOURCE_FAST_INDEX`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-33` is the
+  formal report/source fast-index layer after STD-24 report source-map triage.
+- PASS_LOCAL boundary: this does not open raw source, does not accept DQ
+  evidence, does not approve report-view reliance, approve dashboard reliance,
+  execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
+  or mark production GO.
+
+## 2026-07-04 - STD-39 Executive Report Dashboard Scope Contract
+
+- Added `ExecutiveReportDashboardScopeContract` and
+  `executiveReportDashboardScopeContractRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Reports focus
+  states which report view feeds which executive dashboard consumer, under
+  which scope gate and source contract, before any dashboard number can be
+  relied on.
+- Added
+  `data-heu-executive-report-dashboard-scope-contract="STD-39_EXECUTIVE_REPORT_DASHBOARD_SCOPE_CONTRACT"`
+  with `RPT-SCOPE-01` through `RPT-SCOPE-06` for
+  `RV_TTGDTX_FINANCE_SUMMARY`, `RV_TTGDTX_CONG_NO_THUC_THU`,
+  `RV_HOU_LEDGER_SUMMARY`, `RV_SHORT_COURSE_ATTENDANCE_PAYMENT`,
+  `RV_AUDIT_RISK_CONTROL` and `RV_AI_ALLOWED_CONTEXT`.
+- Added
+  `scripts/check-heu-executive-report-dashboard-scope-contract-readiness.mjs`
+  and `check:heu-executive-report-dashboard-scope-contract-readiness`, then
+  extended executive dashboard readiness, report source fast-index,
+  report source-map triage, reports dashboard scope and visual QA guards with
+  `PASS_LOCAL_REPORT_DASHBOARD_SCOPE_CONTRACT`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-39` is the
+  formal report-view-to-dashboard scope contract layer after the report/source
+  fast index and before source-map triage.
+- PASS_LOCAL boundary: this does not open raw source, accept DQ evidence,
+  approve report-view reliance, approve dashboard reliance, execute UAT, accept
+  evidence, approve finance action, issue legal conclusions, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-34 Executive Legal SOP Required Answer Index
+
+- Added `ExecutiveLegalSopRequiredAnswerIndex` and
+  `executiveLegalSopRequiredAnswerIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Legal/SOP
+  focus shows a compact required-answer index before the longer STD-25 triage
+  and STD-14 authority cards.
+- Added
+  `data-heu-executive-legal-sop-required-answer-index="STD-34_EXECUTIVE_LEGAL_SOP_REQUIRED_ANSWER_INDEX"`
+  with `LAW-IDX-01` through `LAW-IDX-06` for F01 Lead to student, F02 TTGDTX
+  tuition, F03 Payment and payout, F06 Short Course, M02 Role and sensitive
+  access, and M10 Dashboard/report reliance.
+- Added
+  `scripts/check-heu-executive-legal-sop-required-answer-index-readiness.mjs`
+  and `check:heu-executive-legal-sop-required-answer-index-readiness`, then
+  extended executive dashboard readiness, Legal/SOP triage and Legal/SOP
+  authority guards with `PASS_LOCAL_LEGAL_SOP_REQUIRED_ANSWER_INDEX`.
+- Updated
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-34` is the formal
+  required-answer index for legal basis, SOP, maker, checker, approver,
+  evidence and external signer.
+- PASS_LOCAL boundary: this does not provide legal advice, issue official SOP,
+  approve workflow state, execute UAT, accept evidence, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-35 Executive Finance Reliance Fast Index
+
+- Added `ExecutiveFinanceRelianceFastIndex` and
+  `financeRelianceFastIndexRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Finance focus
+  shows one compact table before the longer STD-26 triage and STD-15 source
+  contract cards.
+- Added
+  `data-heu-executive-finance-reliance-fast-index="STD-35_EXECUTIVE_FINANCE_RELIANCE_FAST_INDEX"`
+  with `FIN-IDX-01` through `FIN-IDX-06` for P2-18 accounting dashboard,
+  P5-03 Finance Desk, Finance Day-1, ACCT local readiness, payment/payout and
+  role-scope negative proof.
+- Added
+  `scripts/check-heu-executive-finance-reliance-fast-index-readiness.mjs` and
+  `check:heu-executive-finance-reliance-fast-index-readiness`, then extended
+  executive dashboard readiness, finance reliance triage, finance payment
+  scope and visual QA guards with `PASS_LOCAL_FINANCE_RELIANCE_FAST_INDEX`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-35` is the
+  formal finance reliance fast-index layer for source contract, proof,
+  decision gate, forbidden action and next read-only route.
+- PASS_LOCAL boundary: this does not post vouchers, execute payment, move
+  money, issue bank instructions, approve finance reliance, accept UAT, accept
+  evidence, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-36 Executive UAT Evidence Fast Action Queue
+
+- Added `ExecutiveUatEvidenceFastAction` and `uatEvidenceFastActionRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the UAT/evidence
+  focus starts with a compact action queue before the longer STD-27 triage and
+  STD-16 route cards.
+- Added
+  `data-heu-executive-uat-evidence-fast-action="STD-36_EXECUTIVE_UAT_EVIDENCE_FAST_ACTION_QUEUE"`
+  with `UAT-FAST-01` through `UAT-FAST-06` for P0-14 controlled evidence
+  intake, P6-04 role/workspace proof, P2-18/P5-03 finance signed proof,
+  P0-19 legal/SOP confirmation, P6-03/P6-06 audit and cascade closure and
+  P0-09/P0-15 final owner packet.
+- Added
+  `scripts/check-heu-executive-uat-evidence-fast-action-readiness.mjs` and
+  `check:heu-executive-uat-evidence-fast-action-readiness`, then extended
+  executive dashboard readiness, UAT/evidence route and visual QA guards with
+  `PASS_LOCAL_UAT_EVIDENCE_FAST_ACTION_QUEUE`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-36` is the
+  formal UAT/evidence fast-action layer for owner lane, first action, evidence
+  key, read-only route and stop rule before any UAT/evidence closure discussion.
+- PASS_LOCAL boundary: this does not upload evidence, collect evidence, execute
+  UAT, accept evidence, grant access, close access, expand permissions, approve
+  finance reliance, issue legal conclusions, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - STD-37 Executive Dashboard Scope Visibility Invariant
+
+- Added `ExecutiveDashboardScopeVisibility` and `dashboardScopeVisibilityRows`
+  to `components/dashboard/executive-dashboard-overview.tsx` so the
+  Role/scope focus states the rule `Quyen o dau, dashboard o day`.
+- Added
+  `data-heu-executive-dashboard-scope-visibility="STD-37_EXECUTIVE_DASHBOARD_SCOPE_VISIBILITY_INVARIANT"`
+  with `SCOPE-VIS-01` through `SCOPE-VIS-05` for executive all-segment
+  read-only visibility, non-executive visible-segment scope, KHTC finance lane,
+  PHAP_CHE/SOP lane and IT_DATA/Audit evidence lane.
+- Added `scripts/check-heu-dashboard-scope-visibility-invariant-readiness.mjs`
+  and `check:heu-dashboard-scope-visibility-invariant-readiness`, then extended
+  executive dashboard readiness, role/scope focus and visual QA guards with
+  `PASS_LOCAL_DASHBOARD_SCOPE_VISIBILITY`.
+- The checker locks the code path through `lib/workspace.ts` and `app/page.tsx`:
+  `canSeeAllSegments` is derived from executive role, non-executive fallback is
+  limited by `visibleSegmentIds`, and dashboard metrics use
+  `admissionWorkspaceSegmentIds(workspace)` plus `applyAdmissionSegmentIds`.
+- PASS_LOCAL boundary: this does not grant access, expand permissions, open a
+  cross-scope dashboard, open raw source, mutate workflow state, execute UAT,
+  accept evidence, approve finance action, issue legal conclusions, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-38 Executive Dashboard Permission Matrix
+
+- Added `ExecutiveDashboardPermissionMatrix`,
+  `executiveDashboardPermissionMatrixRows`, `getDashboardPermissionSignal` and
+  `getDashboardPermissionHref` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Role/scope
+  focus shows route visibility from the dashboard runtime permissions.
+- Added
+  `data-heu-executive-dashboard-permission-matrix="STD-38_EXECUTIVE_DASHBOARD_PERMISSION_MATRIX"`
+  with `EXEC-PERM-01` through `EXEC-PERM-07` for executive overview, Master
+  Control, Finance Desk, scope control, report source map, Legal/SOP queue and
+  Audit/evidence route visibility.
+- The matrix locks `runtimePermissionGate`, `canOpenMasterControl`,
+  `canOpenFinanceDesk`, `canOpenScopeControl`, `master_control.read`,
+  `finance_desk.read`, `scope.manage_department`, `users.create`,
+  `permission_matrix.read` and `permission_matrix.manage`, then shows
+  `READ_ONLY_DASHBOARD_VISIBLE`, `ROUTE_VISIBLE_BY_PERMISSION` or
+  `ROUTE_LINK_BLOCKED_PENDING_PERMISSION` as the current signal.
+- Added
+  `scripts/check-heu-executive-dashboard-permission-matrix-readiness.mjs` and
+  `check:heu-executive-dashboard-permission-matrix-readiness`, then extended
+  executive dashboard readiness, role/scope focus and visual QA guards with
+  `PASS_LOCAL_EXECUTIVE_DASHBOARD_PERMISSION_MATRIX`.
+- PASS_LOCAL boundary: this does not create accounts, grant access, assign
+  roles, expand permissions, open raw source, mutate workflow state, execute
+  UAT, accept evidence, approve finance action, issue legal conclusions,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Activation Scope Closure UI Guard
+
+- Added the activation scope-closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-scope-closure="PROFILE-SCOPE-03_SCOPE_CLOSURE"`.
+- The matrix records
+  `activation_scope_closure_packet=PROFILE-SCOPE-03_SCOPE_CLOSURE`,
+  `scope_closure_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`, `ACTIVATION-WORKSHEET-SCOPE-BASELINE`,
+  `ACTIVATION-WORKSHEET-SCOPE-CLOSURE-PACKET`, `PROFILE-SCOPE-03` and
+  `next_allowed_step=POSITION-ASSIGN-04`.
+- The matrix also locks
+  `required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,active_workspace_inside_scope_recorded,owner_lane_confirmed,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0`.
+- Updated `audit:heu-user-account-security` so the activation scope-closure
+  matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, assign real users, create
+  accounts, link Auth, assign positions, set passwords, send reset/invite links,
+  execute UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary tokens: add segment/partner scope; create accounts; approve owner GO/NO-GO.
+
+## 2026-07-04 - Activation Negative-Control Closure UI Guard
+
+- Added the activation negative-control closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-activation-negative-control-closure="NEGATIVE-CONTROL-05_CLOSURE"`.
+- The matrix records
+  `activation_negative_control_closure_packet=NEGATIVE-CONTROL-05_CLOSURE`,
+  `negative_control_closure_status=NO_GO`,
+  `target_account_label=REAL_OUT_OF_SCOPE_NEGATIVE_01`,
+  `target_segment=TC9_TTGDTX_LINKED`, `ttgdtx_negative_candidates=0`,
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL`,
+  `ACTIVATION-WORKSHEET-NEGATIVE-CONTROL-CLOSURE-PACKET`,
+  `NEGATIVE-CONTROL-05` and `next_allowed_step=P6-UAT-06`.
+- The matrix also locks
+  `required_closure=negative_account_label_recorded,non_target_business_scope_recorded,target_segment_exclusion_recorded,settings_permission_denial_ready,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=ttgdtx_negative_candidates>=1,lead_visibility_non_all_verified,target_segment_exclusion_verified,negative_control_queue_re_run_recorded`.
+- Updated `audit:heu-user-account-security` so the activation negative-control
+  closure matrix cannot disappear while the worksheet remains blocked.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, change lead visibility, add segment/partner scope, grant target segment
+  access, run browser UAT, accept evidence, approve finance reliance, approve
+  owner GO/NO-GO or mark production GO.
+- Boundary exact tokens: assign real users; grant target segment access; approve owner GO/NO-GO.
+
+## 2026-07-04 - User Cutover Scope Baseline Closure UI Guard
+
+- Added the operational cutover scope-baseline closure matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-user-cutover-scope-baseline-closure="CUTOVER-SCOPE-BASELINE-03_SCOPE_BASELINE_CLOSURE"`.
+- The matrix records
+  `cutover_scope_baseline_closure_packet=CUTOVER-SCOPE-BASELINE-03_SCOPE_BASELINE_CLOSURE`,
+  `cutover_scope_baseline_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`, `USER-CUTOVER-SCOPE-BASELINE`,
+  `CUTOVER-SCOPE-BASELINE-03`, `CUTOVER-NEGATIVE-04` and
+  `next_allowed_step=CUTOVER-NEGATIVE-04`.
+- The matrix also locks
+  `required_closure=lead_visibility_choice_recorded,business_scope_choice_recorded,workspace_preference_inside_scope_confirmed,scope_repair_queue_rerun_recorded,controlled_evidence_id_recorded`
+  and
+  `required_verification_record=missing_visibility=0,missing_business_scope=0,non_admin_all_visibility=0,workspace_mismatch=0,scope_baseline_closed=true`.
+- Updated `audit:heu-user-account-security` so the operational cutover
+  scope-baseline closure matrix cannot disappear while cutover remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: add segment/partner scope; set workspace preference;
+  approve owner GO/NO-GO.
+
+## 2026-07-04 - Scope Baseline Owner Decision Checklist UI Guard
+
+- Added the ACCT-00 scope baseline owner-decision checklist matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-scope-baseline-owner-decision-checklist="ACCT-00_SCOPE_BASELINE_OWNER_DECISION"`.
+- The matrix records
+  `scope_decision_checklist=ACCT-00_SCOPE_BASELINE_OWNER_DECISION`,
+  `scope_baseline_owner_decision_status=NO_GO`,
+  `owner_action_packet=profile_count=2`, `decision_count=4`,
+  `role_codes=DAO_TAO_LEAD,TCHC_LEAD`, `USER-SCOPE-REPAIR-01`,
+  `USER-SCOPE-REPAIR-02`, `ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST`,
+  `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK` and
+  `next_allowed_step=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`.
+- The matrix also locks
+  `required_owner_record=owner_label_mapped,lead_visibility_choice_recorded,business_scope_choice_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`,
+  `required_per_label_record=safe_label,role_code,approved_visibility_choice_when_required,approved_segment_or_partner_scope_when_required,owner_reviewer,controlled_evidence_id`
+  and
+  `blocked_if=owner_label_unmapped,required_visibility_choice_missing,required_business_scope_choice_missing,secure_admin_channel_missing,controlled_evidence_id_missing`.
+- Updated `audit:heu-user-account-security` so the owner-decision checklist
+  matrix cannot disappear while the scope baseline remains blocked.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: change lead visibility; add segment/partner scope;
+  set workspace preference; create accounts; link Auth; assign real users.
+  run browser UAT; accept evidence; approve finance reliance; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.
+
+## 2026-07-05 - Data Confirmation Task Center Core Packaging Addendum
+
+- Scope: Packaged the Data Confirmation Task Center core as a single
+  PASS_LOCAL slice without opening production, finance, UAT or owner GO.
+- Schema anchor: `2026-07-05 - Data Confirmation Task Center Schema Contract`;
+  changed `database/step121_data_confirmation_task_center.sql` and
+  `scripts/check-heu-data-confirmation-task-center-schema.mjs`; check command
+  is `check:heu-data-confirmation-task-center-schema`; status is
+  `PASS_LOCAL_SCHEMA_CONTRACT`.
+- Schema result tokens: `heu_data_confirmation_tasks`,
+  `heu_data_confirmation_task_status_history`,
+  `heu_data_confirmation_task_center`,
+  `heu_data_confirmation_task_status_timeline`,
+  `route_data_confirmation_task`, `confirm_data_confirmation_task`,
+  `DCTC_SOURCE_PROVENANCE_LOCK_READY`, `source_record_label`,
+  `source_route`, `data_domain`, `dq_check_ref`,
+  `controlled_evidence_ref`, `due_date_or_batch`, `owner_decision_ref`,
+  `scope_gate_ref`, `ASSIGNEE_OR_OWNER_REQUIRED`,
+  `DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`,
+  `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `CONTROLLED_PILOT_DEPARTMENT_ONLY`, `CONFIRM_SUBMITTER_SCOPE_LOCK`,
+  status-timeline scope columns `assigned_user_id` and `owner_user_id`,
+  `CONFIRM_FROM_CHO_XAC_NHAN_ONLY`, `audit_trace_ref`, `DCTC_TASK`,
+  `DCTC_HISTORY`, `REPAIR_OR_OUT_OF_SCOPE_NOTE_REQUIRED`,
+  `CAN_SUA and KHONG_THUOC_TOI require confirmation note` and
+  `DA_KHOA lock requires note and controlled evidence ref`.
+- Runtime anchor: `2026-07-05 - Data Confirmation Task Center Runtime Route`;
+  changed `app/data-confirmation/page.tsx`,
+  `app/data-confirmation/actions.ts`, `components/layout/app-shell.tsx` and
+  `scripts/check-heu-data-confirmation-task-center-route.mjs`; check command
+  is `check:heu-data-confirmation-task-center-route`; status is
+  `PASS_LOCAL_RUNTIME_ROUTE`.
+- Runtime result tokens: `RLS_VIEW_ONLY`, `RPC_ROUTE_TO_CHO_XAC_NHAN`,
+  `CONTROLLED_PILOT_LANE_READY`, `CONTROLLED_PILOT_DEPARTMENT_ONLY`,
+  controlled department pilot lanes, `data_confirmation.read`,
+  `DCTC_READ_PERMISSION_REQUIRED`, `ASSIGNED_TO_ME`, `OWNED_BY_ME`,
+  `DCTC_DEPARTMENT_QUEUE_SCOPE_READY`, `department_code`,
+  `DEPARTMENT_QUERY_PARAM_FILTERS_QUEUE_AND_TIMELINE`,
+  `STATUS_HISTORY_TIMELINE_READY`, `STATUS_HISTORY_SCOPE_PARITY`,
+  `DCTC_AUDIT_TRACE_READY`, `NO_AUDIT_LOG_MUTATION`, `RPC_CONFIRM_ONLY`,
+  `DA_KHOA_LOCK_REQUIRES_NOTE_AND_EVIDENCE_REF`.
+- Core department register anchor:
+  `2026-07-05 - Core Department Data Confirmation Task Register`;
+  changed `HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`,
+  `check-heu-core-department-data-confirmation-task-register.mjs` and
+  `check:heu-core-department-data-confirmation-task-register`; status is
+  `CORE_DEPARTMENT_DATA_CONFIRMATION_READY / NO_GO / BLOCKED` with
+  `REAL_DATA_CONFIRMATION_READY: NO_GO` and `DCTC_STATUS_BRIDGE_READY`.
+- DCTC route locks: `2026-07-05 - DCTC Report Source Conflict Route Lock`,
+  `DCTC_REPORT_SOURCE_CONFLICT_ROUTE_READY`, `NO_GO_SOURCE_CONFLICT`,
+  `NO_REPORT_VIEW_RELIANCE_BEFORE_DCTC_OWNER_CONFIRMATION`,
+  `NO_DA_KHOA_AS_SIGNED_UAT_ACCEPTANCE`,
+  `2026-07-05 - DCTC Owner Assignee Pair Lock`,
+  `DCTC_OWNER_ASSIGNEE_PAIR_LOCK_READY`,
+  `OWNER_AND_ASSIGNEE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `2026-07-05 - DCTC Scope Gate Route Lock`,
+  `DCTC_SCOPE_GATE_REQUIRED_BEFORE_CHO_XAC_NHAN`,
+  `SCOPE_GATE_REF_REQUIRED_BEFORE_CHO_XAC_NHAN`, `owner_user_id`,
+  `assigned_user_id` and `scope_gate_ref`.
+- Executive DCTC anchor: `Data Confirmation Task Center`,
+  `STD-45_DATA_CONFIRMATION_TASK_CENTER`, `task_center_status`,
+  `CHO_XAC_NHAN`, `DUNG`, `CAN_SUA`, `KHONG_THUOC_TOI`, `DA_KHOA`,
+  `check-heu-executive-data-confirmation-task-center.mjs`,
+  `DCTC Canonical Department Task ID Alignment`,
+  `DCTC-TUYEN-SINH-001`, `DCTC-DAO-TAO-001`,
+  `DCTC-SHORT-COURSE-001`, `Whole-System Master Control Status Table`,
+  `MASTER_CONTROL_SYSTEM_STATUS_READY / NO_GO / BLOCKED`,
+  `WHOLE_SYSTEM_MASTER_CONTROL_STATUS_TABLE`,
+  `HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md`,
+  `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`,
+  `check:heu-role-position-operation-test-matrix`,
+  `DCTC Role-Aware User-Scope Blocker Alignment`, `missing_visibility=0`,
+  `missing_business_scope=0`, `department_lane_mismatch=0`,
+  `required_positions=15`, `unassigned_required_positions=11`,
+  `ttgdtx_negative_candidates=0`, `pending_external_evidence_lanes=4`.
+- Boundary: this does not change app runtime beyond the DCTC route shell, does
+  not auto-seed real tasks, does not import raw data, does not create accounts,
+  does not send email, does not accept evidence, does not approve UAT, finance
+  reliance, owner GO/NO-GO or production status. Production remains NO-GO.
+
+## 2026-07-04 - STD-44 Executive Effective Access Read-Only Gate
+
+- Added the executive effective-access read-only gate to
+  `components/dashboard/executive-dashboard-overview.tsx` with
+  `data-heu-executive-effective-access-readonly="STD-44_EXECUTIVE_EFFECTIVE_ACCESS_READONLY_GATE"`.
+- Added `EXEC-ACCESS-01` through `EXEC-ACCESS-06` so `HIEU_TRUONG`,
+  `PHO_HIEU_TRUONG` and `BGH` are checked against the read-only cockpit rule
+  before dashboard reliance.
+- Added
+  `scripts/check-heu-executive-effective-access-readonly-readiness.mjs` and
+  `check:heu-executive-effective-access-readonly-readiness`; the checker reads
+  active `role_permissions`, `user_scope_effective_access` and
+  `user_scope_enforcement_summary` without printing emails, names, raw user
+  IDs, secrets, bank data, vouchers or signed evidence.
+- The gate reports `PASS_LOCAL_EXECUTIVE_EFFECTIVE_ACCESS_READONLY_GUARD` for
+  the source/control packaging, and reports `LIVE_EXECUTIVE_PERMISSION_NO_GO`
+  when `BGH`, `HIEU_TRUONG` or `PHO_HIEU_TRUONG` still has active approve,
+  pay, manage, create, update, delete, check, verify, lock, issue,
+  sensitive-read or other action permissions.
+- Updated executive dashboard readiness, visual QA and the standard blueprint
+  so `STD-43` completion depends on the live `STD-44` executive read-only gate.
+- Added `database/step120_executive_readonly_permission_lock.sql` and
+  `scripts/apply-heu-executive-readonly-soft-revoke.mjs` for
+  `EXEC-ACCESS-REVOKE-01`; the apply script defaults to `MODE=DRY_RUN`, requires
+  `--confirm=EXECUTIVE_READONLY_SOFT_REVOKE_20260704`, soft-revokes by setting
+  `role_permissions.status = INACTIVE` and `heu_position_permission_matrix.status
+  = INACTIVE`, and keeps `hard_delete=false` plus `admin_role_untouched=true`.
+- Applied the controlled live soft-revoke after dry-run: `role_permission_rows=98`
+  and `position_permission_rows=12`; follow-up STD-44 live check reports
+  `EXEC-EFFECTIVE-ACCESS-BGH`, `EXEC-EFFECTIVE-ACCESS-HIEU_TRUONG`,
+  `EXEC-EFFECTIVE-ACCESS-PHO_HIEU_TRUONG` and
+  `EXEC-EFFECTIVE-ACCESS-LIVE-READONLY-GATE` as `READY`.
+- PASS_LOCAL boundary: the checker remains read-only and does not change role permissions;
+  the apply script only performs reversible soft-revoke for the
+  three executive roles and does not create accounts, assign roles, grant
+  access, expand permissions, execute UAT, accept evidence, approve finance
+  action, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-42 Executive UAT Evidence Acceptance Lock
+
+- Added `STD-42_EXECUTIVE_UAT_EVIDENCE_ACCEPTANCE_LOCK` to the executive
+  dashboard evidence focus between the STD-36 fast action queue and the STD-27
+  closure triage.
+- Added `UAT-LOCK-01` through `UAT-LOCK-06` so BGH can distinguish visible
+  route status from signed acceptance for P0-14 controlled evidence intake,
+  P6-04 role/scope UAT proof, P2-18/P5-03 finance UAT, P0-19 legal/SOP
+  confirmation, P6-03/P6-06 audit/cascade closure and the P0-09/P0-15 final
+  owner packet.
+- Added the dashboard marker
+  `data-heu-executive-uat-evidence-acceptance-lock="STD-42_EXECUTIVE_UAT_EVIDENCE_ACCEPTANCE_LOCK"`
+  with `PASS_LOCAL_UAT_EVIDENCE_ACCEPTANCE_LOCK`, `ACCEPTANCE_LOCK`,
+  `REDACTION_REVIEW_REQUIRED`, `NO_RAW_EVIDENCE_MOVEMENT`,
+  `NO_UAT_ACCEPTANCE`, `NO_EVIDENCE_ACCEPTANCE`, `NO_OWNER_GO` and
+  `NO_PRODUCTION_GO` boundaries.
+- Added
+  `scripts/check-heu-executive-uat-evidence-acceptance-lock-readiness.mjs`,
+  `check:heu-executive-uat-evidence-acceptance-lock-readiness`, and wired the
+  STD-42 tokens into the executive dashboard, visual QA, UAT/evidence route,
+  fast-action and triage readiness guards.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-42` is the
+  formal acceptance-lock standard before any UAT/evidence closure discussion.
+- PASS_LOCAL boundary: this does not collect evidence, upload evidence, move
+  raw evidence, execute UAT, accept UAT, accept evidence, grant access, close
+  access, expand permissions, approve finance reliance, approve dashboard
+  reliance, issue legal conclusions, approve owner GO/NO-GO or mark production
+  GO.
+
+## 2026-07-04 - STD-43 Executive Operating Brain Completion Gate
+
+- Added `STD-43_EXECUTIVE_OPERATING_BRAIN_COMPLETION_GATE` to the executive
+  dashboard overview so BGH can see the whole read-only operating brain in one
+  place before drilling into focused sections.
+- Added the dashboard marker
+  `data-heu-executive-operating-brain-completion="STD-43_EXECUTIVE_OPERATING_BRAIN_COMPLETION_GATE"`.
+  The marker carries `PASS_LOCAL_EXECUTIVE_OPERATING_BRAIN_COMPLETION`.
+- Added `BRAIN-GATE-01` through `BRAIN-GATE-06` for executive landing,
+  role/scope dashboard visibility, report/source reliance map, Legal/SOP
+  authority backbone, finance read-only reliance lock and UAT/evidence
+  acceptance lock, plus `BRAIN-GATE-07` for the live STD-44 executive
+  effective-access read-only gate.
+- The gate carries `Quyen o dau thi chi duoc xem dashboard o day` and links the
+  objective to STD-01, STD-37, STD-38, STD-39, STD-40, STD-41, STD-42 and
+  STD-44 with
+  `SCOPE_BOUND_DASHBOARD`, `ROUTE_VISIBILITY_MATRIX`,
+  `REPORT_VIEW_TO_DASHBOARD_SCOPE`, `EVIDENCE_AUTHORITY_QUEUE`,
+  `RELIANCE_LOCK`, `ACCEPTANCE_LOCK`,
+  `EXECUTIVE_EFFECTIVE_ACCESS_READONLY` and `LIVE_EXECUTIVE_PERMISSION_NO_GO`.
+- Added
+  `scripts/check-heu-executive-operating-brain-completion-readiness.mjs`,
+  `check:heu-executive-operating-brain-completion-readiness`, and wired the
+  STD-43 marker into the executive dashboard readiness and visual QA guards.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-43` is the
+  formal completion gate for the Dashboard Hieu truong/BGH operating brain.
+- PASS_LOCAL boundary: this does not create accounts, assign roles, grant
+  access, expand permissions, mutate workflow state, approve dashboard
+  reliance, approve report-view reliance, approve finance reliance, issue legal
+  conclusions, execute UAT, accept UAT, accept evidence, approve owner
+  GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-41 Executive Finance Readonly Reliance Lock
+
+- Added `ExecutiveFinanceReadonlyRelianceLock` and
+  `financeReadonlyRelianceLockRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Finance focus
+  separates visible read-only use from reliance or execution.
+- Added
+  `data-heu-executive-finance-readonly-reliance-lock="STD-41_EXECUTIVE_FINANCE_READONLY_RELIANCE_LOCK"`
+  with `FIN-LOCK-01` through `FIN-LOCK-06` for P2-18 accounting dashboard,
+  P5-03 Finance Desk, collection/reconciliation, payment request/payout,
+  ACCT local + Finance Day-1 and role/scope-bound finance visibility.
+- Added
+  `scripts/check-heu-executive-finance-readonly-reliance-lock-readiness.mjs`
+  and `check:heu-executive-finance-readonly-reliance-lock-readiness`, then
+  extended executive dashboard readiness, finance fast-index, finance triage,
+  finance/payment scope and visual-QA guards with
+  `PASS_LOCAL_FINANCE_READONLY_RELIANCE_LOCK`.
+- Updated `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-41` is the
+  formal read-only reliance lock for visible finance blocker views versus
+  forbidden finance actions.
+- PASS_LOCAL boundary: this does not clear debt, issue invoices, post vouchers,
+  execute payment, move money, issue bank instructions, approve finance
+  reliance, accept UAT, accept evidence, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - M06 CTHSSV Reports Status Panel
+
+- Scope: Added the `/reports` read-only CTHSSV status panel for
+  `RV_CTHSSV_HANDOVER_STATUS` so reporting users can see the local blocker lane
+  and route back to `/cthssv` without opening raw handover/evidence data.
+- Updated `components/reports/reports-overview.tsx` with
+  `data-heu-cthssv-report-status-panel="M06_CTHSSV_REPORT_STATUS_PANEL"`,
+  `data-heu-cthssv-report-status-panel-overflow-guard="M06_CTHSSV_REPORT_STATUS_PANEL_NO_OVERFLOW"`
+  and `data-heu-cthssv-report-status-report-view="RV_CTHSSV_HANDOVER_STATUS"`.
+- Updated `scripts/check-heu-reports-dashboard-scope-readiness.mjs`,
+  `scripts/audit-heu-cthssv-module-readiness.mjs` and
+  `scripts/check-heu-cthssv-local-completion.mjs` so the panel remains tied to
+  `CTHSSV_REPORTING_HANDOFF_READY`, `DQ-RV-10 / RV-EVID-08`,
+  `NO_REPORT_VIEW_RELIANCE`, `NO_DASHBOARD_RELIANCE` and `NO_OWNER_GO`.
+- Updated the CTHSSV reporting handoff index, Report View Register, Source Map,
+  current-state inventory, backlog, readiness gap matrix and production
+  checklist with the P3-02J local-only report status row.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV Owner Evidence Handoff Proof
+
+- Scope: Added the PASS_LOCAL owner evidence handoff proof packet so M06
+  owners have a controlled list of signer lanes, evidence refs, rerun commands
+  and blocker states to complete outside Git/Codex/chat after local CTHSSV
+  checks pass.
+- Added `docs/HEU_CTHSSV_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md` with
+  `CTHSSV-HANDOFF-PROOF-01` through `CTHSSV-HANDOFF-PROOF-08`,
+  `CTHSSV_OWNER_EVIDENCE_HANDOFF_READY / NO_GO / BLOCKED`,
+  `proof_item`, `owner_lane`, `required_controlled_evidence_ref`,
+  `linked_local_gate`, `rerun_command`, `decision_value`, `blocker_state` and
+  `forbidden_interpretation`.
+- Added the `/cthssv` read-only panel
+  `data-heu-cthssv-owner-evidence-handoff-proof="M06_CTHSSV"` so the cockpit
+  exposes the proof packet without storing raw evidence.
+- Updated `scripts/audit-heu-cthssv-module-readiness.mjs` and
+  `scripts/check-heu-cthssv-local-completion.mjs`, plus the CTHSSV module
+  breakdown, external owner action queue, current-state inventory, backlog,
+  readiness gap matrix and production checklist with the P3-02K local-only
+  proof row.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV External Execution Proof Alignment
+
+- Scope: Aligned the external execution handoff packet with the owner evidence
+  handoff proof packet so CTHSSV-EXEC-04 and CTHSSV-EXEC-08 cannot be treated
+  as ready without CTHSSV-HANDOFF-PROOF-01 through CTHSSV-HANDOFF-PROOF-08.
+- Updated `docs/HEU_CTHSSV_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260704.md` with
+  `PASS_LOCAL_EXTERNAL_EXECUTION_PROOF_ALIGNMENT`,
+  `linked_owner_evidence_proof`, `owner_evidence_handoff_result`,
+  `docs/HEU_CTHSSV_OWNER_EVIDENCE_HANDOFF_PROOF_20260704.md` and
+  `npm.cmd run check:heu-reports-dashboard-scope-readiness` in the external
+  rerun chain.
+- Updated the `/cthssv` external execution panel copy so
+  `data-heu-cthssv-external-execution-handoff="M06_CTHSSV"` surfaces owner
+  evidence handoff proof alongside signed evidence, closure rows and final
+  quorum rerun fields.
+- Propagated P3-02L into current-state inventory, system backlog, readiness
+  gap matrix, production checklist, module completion breakdown and
+  `scripts/audit-heu-cthssv-module-readiness.mjs`.
+- PASS_LOCAL boundary: this does not send real email, create real
+  tasks/tickets, assign real accounts, execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV Aggregate Proof Reflection
+
+- Scope: Reflected P3-02L external execution proof alignment inside the
+  aggregate M06/P3-02 readiness packet and `/cthssv` aggregate panel so the
+  aggregate story cannot omit CTHSSV-HANDOFF-PROOF-01 through
+  CTHSSV-HANDOFF-PROOF-08.
+- Updated `docs/HEU_CTHSSV_AGGREGATE_READINESS_ALIGNMENT_20260704.md` with
+  `PASS_LOCAL_AGGREGATE_PROOF_REFLECTION`, P3-02L,
+  `PASS_LOCAL_EXTERNAL_EXECUTION_PROOF_ALIGNMENT`,
+  `linked_owner_evidence_proof_items` and
+  `linked_external_execution_proof_alignment`.
+- Updated the `/cthssv` aggregate panel copy so
+  `data-heu-cthssv-aggregate-readiness-alignment="M06_CTHSSV"` surfaces
+  P3-02E through P3-02L and proof alignment.
+- Propagated P3-02M into current-state inventory, system backlog, readiness
+  gap matrix, production checklist, module completion breakdown and
+  `scripts/audit-heu-cthssv-module-readiness.mjs`.
+- PASS_LOCAL boundary: this does not send real email, create real
+  tasks/tickets, assign real accounts, execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - STD-40 Executive Legal SOP Evidence Authority Queue
+
+- Added `ExecutiveLegalSopEvidenceAuthorityQueue` and
+  `executiveLegalSopEvidenceAuthorityQueueRows` to
+  `components/dashboard/executive-dashboard-overview.tsx` so the Legal/SOP
+  focus shows missing evidence and authority before STD-25 triage and STD-14
+  authority cards.
+- Added
+  `data-heu-executive-legal-sop-evidence-authority-queue="STD-40_EXECUTIVE_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE"`
+  with `LAW-QUEUE-01` through `LAW-QUEUE-06` for legal-basis hold, SOP version
+  hold, maker/checker/approver hold, controlled-evidence hold, external signer
+  hold and dashboard/report reliance legal hold.
+- Added
+  `scripts/check-heu-executive-legal-sop-evidence-authority-queue-readiness.mjs`
+  and `check:heu-executive-legal-sop-evidence-authority-queue-readiness`, then
+  extended executive dashboard readiness, Legal/SOP required-answer, Legal/SOP
+  triage, Legal/SOP authority and visual-QA guards with
+  `PASS_LOCAL_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`.
+- Updated
+  `docs/HEU_LEGAL_SOP_GOVERNANCE_CONTROL_MATRIX_20260628_V01_DRAFT.md` and
+  `docs/HEU_STANDARD_SYSTEM_BLUEPRINT_20260703.md` so `STD-40` is the formal
+  evidence-authority queue for legal basis, SOP version, maker/checker/approver,
+  controlled evidence, external signer and report/dashboard reliance holds.
+- Corrected the STD-40 blueprint row to carry machine-readable
+  `STD-40_EXECUTIVE_LEGAL_SOP_EVIDENCE_AUTHORITY_QUEUE`, `LAW-QUEUE-01`,
+  `LAW-QUEUE-06`, `NO_RAW_EVIDENCE_MOVEMENT`, `NO_EVIDENCE_ACCEPTANCE` and
+  `NO_UAT_ACCEPTANCE` tokens required by the local readiness guards.
+- PASS_LOCAL boundary: this does not provide legal advice, issue official SOP,
+  approve workflow state, execute finance, accept UAT, accept evidence, approve
+  owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - P9-10 Short Course Signed UAT Evidence Intake
+
+- Added `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` as the
+  PASS_LOCAL_EVIDENCE_INTAKE route for Short Course signed UAT evidence refs.
+- Added SC-UAT-EVID-01 through SC-UAT-EVID-08 and
+  `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED` for storage class, owner
+  lane, linked UAT/review/signoff/report-view cases, redaction reviewer,
+  signed date, result and blocker state outside Git/Codex/chat.
+- Added the `/short-course` read-only panel with
+  `data-heu-short-course-signed-uat-evidence-intake="P9-10_SIGNED_UAT_EVIDENCE_INTAKE"`
+  and
+  `data-heu-short-course-signed-uat-evidence-overflow-guard="P9-10_SHORT_COURSE_SIGNED_UAT_EVIDENCE_NO_OVERFLOW"`.
+- Added `scripts/check-heu-short-course-signed-uat-evidence-intake.mjs` and
+  `check:heu-short-course-signed-uat-evidence-intake`.
+- Propagated P9-10 into the Short Course gap pack, UAT result ledger, owner
+  signoff manifest, external owner action queue, report-view source map,
+  current-state inventory, system backlog, readiness gap matrix, production
+  checklist and Dao Tao local readiness aggregator.
+- Aligned the Short Course UAT result-ledger boundary sentence to the TTGDTX
+  release-gate exact token while keeping this as PASS_LOCAL control packaging
+  only.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
+  payment, approve teacher payment, verify invoice/payment, approve report-view
+  reliance, approve dashboard reliance, approve role UAT, approve access
+  closure, approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV System Reporting Handoff Index
+
+- Added `docs/HEU_CTHSSV_SYSTEM_REPORTING_HANDOFF_INDEX_20260704.md` as the
+  PASS_LOCAL system/reporting handoff index for `RV_CTHSSV_HANDOVER_STATUS`,
+  `DQ-RV-10` and `RV-EVID-08`.
+- Added CTHSSV-RPT-01 through CTHSSV-RPT-08 for report-view identity, source
+  object boundary, data quality check, owner signoff route, evidence attachment
+  route, dashboard reliance stop, finance/report separation and final reporting
+  handoff closure.
+- Added `/cthssv` panel marker
+  `data-heu-cthssv-system-reporting-handoff="M06_CTHSSV"` with
+  `CTHSSV_REPORTING_HANDOFF_READY / NO_GO / BLOCKED`.
+- Updated the Report View Register and Source Map with
+  `RV_CTHSSV_HANDOVER_STATUS`, `KPI_CTHSSV_HANDOVER_BLOCKERS`, `DQ-RV-10` and
+  `RV-EVID-08` as CTHSSV-only planning/control rows.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - M06 CTHSSV External Execution Handoff Packet
+
+- Added `docs/HEU_CTHSSV_EXTERNAL_EXECUTION_HANDOFF_PACKET_20260704.md` as the
+  PASS_LOCAL external-execution packet for CTHSSV owner lanes, secure owner
+  channel, required evidence ref, rerun command, decision value and blocker
+  state.
+- Added CTHSSV-EXEC-01 through CTHSSV-EXEC-08 for signed owner UAT, role and
+  negative-access proof, evidence/audit trace, signed evidence and closure
+  rows, handover reliance decision, report-view reliance signoff, finance gate
+  proof and final owner quorum rerun.
+- Added `/cthssv` panel marker
+  `data-heu-cthssv-external-execution-handoff="M06_CTHSSV"` with
+  `CTHSSV_EXTERNAL_EXECUTION_READY / NO_GO / BLOCKED`.
+- Updated current-state, system backlog, module readiness gap matrix and
+  production checklist with the P3-02H CTHSSV-only handoff row.
+- PASS_LOCAL boundary: this does not send real email, create real
+  tasks/tickets, assign real accounts, execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, approve finance action, approve owner GO/NO-GO or mark
+  production GO.
+
+## 2026-07-04 - M06 CTHSSV Aggregate Readiness Alignment
+
+- Added `docs/HEU_CTHSSV_AGGREGATE_READINESS_ALIGNMENT_20260704.md` as the
+  PASS_LOCAL aggregate-alignment packet for M06/P3-02 row, cockpit, owner,
+  evidence, reporting, execution and final NO_GO preservation.
+- Added CTHSSV-AGG-01 through CTHSSV-AGG-08 for aggregate M06/P3-02 row,
+  cockpit source map, owner/evidence chain, system/reporting chain, external
+  execution chain, finance/enrollment boundary, local command chain and final
+  NO_GO preservation.
+- Added `/cthssv` panel marker
+  `data-heu-cthssv-aggregate-readiness-alignment="M06_CTHSSV"` with
+  `CTHSSV_AGGREGATE_ALIGNMENT_READY / NO_GO / BLOCKED`.
+- Updated current-state, system backlog, module readiness gap matrix and
+  production checklist with the P3-02I CTHSSV-only aggregate alignment row.
+- PASS_LOCAL boundary: this does not execute UAT, accept evidence, approve
+  enrollment, approve handover reliance, approve report-view reliance, approve
+  dashboard reliance, create student finance facts, approve finance action,
+  approve owner GO/NO-GO or mark production GO.
+
+## 2026-07-04 - Role Position Operation Test Matrix
+
+- Added `docs/HEU_ROLE_POSITION_OPERATION_TEST_MATRIX_20260704.md` as the
+  pre-guide operation test matrix for each role/position and phong.
+- Added `scripts/check-heu-role-position-operation-test-matrix.mjs` and
+  `check:heu-role-position-operation-test-matrix` to guard that the matrix,
+  upstream activation/cutover blockers and guide-draft lock stay connected.
+- The matrix records
+  `ROLE_POSITION_OPERATION_TEST_MATRIX_READY / NO_GO / BLOCKED`,
+  `Guide writing decision: NO_GO`, `GUIDE-DRAFT-LOCK-01`,
+  `no_user_guide_finalization=true` and
+  `required_test_evidence=login_result,workspace_banner,lead_list_visibility,create_or_update_denial,finance_denial,settings_denial,audit_trace,negative_control_result,controlled_evidence_id`.
+- It covers `ADMIN`, `IT_DATA`, `BGH`, `HIEU_TRUONG`,
+  `PHO_HIEU_TRUONG`, `DAO_TAO_LEAD`, `TCHC_LEAD`, `CTHSSV_LEAD`,
+  `KHTC`, `PHAP_CHE`, `AUDIT`, department lanes and
+  `REAL_OUT_OF_SCOPE_NEGATIVE_01`.
+- It keeps current blockers visible: `missing_visibility=2`,
+  `missing_business_scope=2`, `required_positions=15`,
+  `unassigned_required_positions=11`, `ttgdtx_negative_candidates=0` and
+  `pending_external_evidence_lanes=4`.
+- Updated `audit:heu-user-account-security` so final user guides cannot be
+  treated as ready without the role-position operation test matrix.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  set workspace preference, set passwords, send reset/invite links, run browser
+  UAT, accept evidence, approve finance reliance, approve owner GO/NO-GO, write
+  final user guides or mark production GO.
+- Boundary exact tokens: create accounts; link Auth; assign real users; change
+  lead visibility; add segment/partner scope; run browser UAT; accept evidence.
+- Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO;
+  write final user guides; mark production GO.
+
+## 2026-07-05 - Core Department Confirmation Reports Panel
+
+- Updated `components/reports/reports-overview.tsx` with a read-only core
+  department data-confirmation task panel for `/reports`.
+- Added
+  `data-heu-core-department-confirmation-report-panel="P0-17_CORE_DEPARTMENT_CONFIRMATION_REPORT_PANEL"`,
+  `data-heu-core-department-confirmation-report-view="CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER"`
+  and
+  `data-heu-core-department-confirmation-report-boundary="PASS_LOCAL_TASK_REGISTER READ_ONLY PENDING_DEPARTMENT_CONFIRMATION REAL_DATA_CONFIRMATION_READY_NO_GO NO_DATABASE_MUTATION NO_REAL_TASK_CREATION NO_EMAIL_SEND NO_EVIDENCE_ACCEPTANCE NO_UAT_ACCEPTANCE NO_OWNER_GO NO_PRODUCTION_GO"`.
+- Updated `scripts/check-heu-reports-dashboard-scope-readiness.mjs` so
+  `check:heu-reports-dashboard-scope-readiness` requires the new panel.
+- The panel shows `CORE_DEPARTMENT_DATA_CONFIRMATION_READY`,
+  `REAL_DATA_CONFIRMATION_READY: NO_GO`, `PENDING_DEPARTMENT_CONFIRMATION`,
+  `DCTC-KHTC-001`, `DCTC-TUYEN-SINH-001`, `DCTC-CTHSSV-001`,
+  `DCTC-DAO-TAO-001`, `DCTC-KHOA-001`, `DCTC-SHORT-COURSE-001`,
+  `DCTC-IT-DATA-001`, `DCTC-AUDIT-001` and `DCTC-BGH-001`.
+- It keeps current blockers visible: `required_positions=15`,
+  `unassigned_required_positions=11`, `missing_visibility=2` and
+  `missing_business_scope=2`.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  mutate database rows, send email, create tickets, accept evidence, approve
+  UAT, approve report-view reliance, approve dashboard reliance, approve
+  finance reliance, approve owner GO/NO-GO, write final user guides or mark
+  production GO.
+- Boundary exact tokens: create accounts; link Auth; assign real users; assign
+  positions; change lead visibility; add segment/partner scope; mutate
+  database rows; send email; create tickets; accept evidence; approve UAT;
+  approve report-view reliance; approve dashboard reliance; approve finance
+  reliance; approve owner GO/NO-GO; write final user guides; mark production GO.
+- Boundary exact tokens: approve finance reliance.
+
+## 2026-07-05 - Core Department Data Confirmation Task Register
+
+- Added `docs/HEU_CORE_DEPARTMENT_DATA_CONFIRMATION_TASK_REGISTER_20260705.md`
+  as the shared metadata-only task register for real-data confirmation by
+  department.
+- Added `scripts/check-heu-core-department-data-confirmation-task-register.mjs`
+  and `check:heu-core-department-data-confirmation-task-register`.
+- The register records
+  `CORE_DEPARTMENT_DATA_CONFIRMATION_READY / NO_GO / BLOCKED`,
+  `REAL_DATA_CONFIRMATION_READY: NO_GO`,
+  `PENDING_DEPARTMENT_CONFIRMATION`, `CONFIRMED_BY_DEPARTMENT`,
+  `RETURNED_FOR_REPAIR`, `BLOCKED_BY_SCOPE` and
+  `SIGNED_UAT_READY_EXTERNAL`.
+- It requires
+  `required_task_record=source_record_label,department_owner_lane,assigned_user_label,required_route,scope_gate,confirmation_status,controlled_evidence_id,audit_log_ref,due_date_or_batch,owner_decision_ref`
+  before a department data-confirmation task can be treated as routed.
+- It covers KHTC/Accounting, TUYEN_SINH, CTHSSV, DAO_TAO, KHOA,
+  SHORT_COURSE, IT_DATA, AUDIT and BGH lanes and keeps current blockers
+  visible: `missing_visibility=2`, `missing_business_scope=2`,
+  `required_positions=15`, `unassigned_required_positions=11`,
+  `ttgdtx_negative_candidates=0` and `pending_external_evidence_lanes=4`.
+- Updated `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so the common department confirmation task
+  register cannot disappear from the user/permission rollout.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change lead visibility, add segment/partner scope,
+  mutate database rows, send email, create tickets, accept evidence, approve
+  UAT, approve finance reliance, approve owner GO/NO-GO, write final user
+  guides or mark production GO.
+- Boundary exact tokens: does not create accounts; link Auth; assign real
+  users; assign positions; change lead visibility; add segment/partner scope;
+  mutate database rows; send email; create tickets; accept evidence; approve
+  UAT; approve finance reliance; approve owner GO/NO-GO; write final user
+  guides; mark production GO.
+- Boundary exact tokens: assign real users; approve UAT; write final user guides.
+
+## 2026-07-05 - Auth Password Self-Service Guard
+
+- Added `/auth/forgot-password` with
+  `data-heu-self-service-password-reset="P0-17_SELF_SERVICE_PASSWORD_RESET"` so
+  a user can request a Supabase reset email without IT/Admin using Settings.
+- Added `data-heu-self-service-password-reset-entry="P0-17_SELF_SERVICE_PASSWORD_RESET_ENTRY"`
+  to the login form.
+- Added `data-heu-self-service-password-change="P0-17_SELF_SERVICE_PASSWORD_CHANGE"`
+  to `components/layout/app-shell.tsx` so authenticated users can open
+  `/auth/update-password` directly.
+- Added `data-heu-self-service-password-update="P0-17_SELF_SERVICE_PASSWORD_UPDATE"`
+  to the existing update-password form.
+- Added `scripts/check-heu-auth-password-self-service-readiness.mjs` and
+  `check:heu-auth-password-self-service-readiness`.
+- Updated `docs/HEU_AUTH_PASSWORD_RESET_HANDOFF_20260703.md`,
+  `docs/HEU_PERMISSION_SCOPE_OPERATION_BREAKDOWN_20260703.md` and
+  `audit:heu-user-account-security` so the self-service password route cannot
+  disappear from local account-security checks.
+- PASS_LOCAL boundary: this does not create accounts, link Auth, assign real
+  users, assign positions, change scope, change lead visibility, add
+  segment/partner scope, collect passwords, store reset links, execute UAT,
+  accept evidence, approve finance reliance, approve owner GO/NO-GO or mark
+  production GO.
+- Boundary exact tokens: does not create accounts; change scope; collect
+  passwords; store reset links; accept evidence; approve owner GO/NO-GO; mark
+  production GO.
+- Boundary exact tokens: assign real users; mark production GO.
+
+## 2026-07-04 - Scope Repair Execution Packet UI Guard
+
+- Added the ACCT-00 scope repair execution-packet matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-scope-repair-execution-packet="ACCT-00_SCOPE_REPAIR_EXECUTION"`.
+- The matrix records
+  `scope_repair_execution_packet=ACCT-00_SCOPE_REPAIR_EXECUTION`,
+  `scope_repair_execution_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`, `ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET`,
+  `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK`,
+  `ACCT-00-SCOPE-POST-REPAIR-RERUN-PROOF-PACKET` and
+  `next_allowed_step=ACCT-00_SCOPE_POST_REPAIR_RERUN_PROOF`.
+- The matrix also locks
+  `required_inputs=owner_lane_confirmed,lead_visibility_choice_recorded,business_scope_choice_recorded,secure_admin_channel_recorded`
+  and
+  `required_execution_record=pre_repair_snapshot_recorded,approved_visibility_choice_applied,approved_business_scope_applied,workspace_preference_verified,post_repair_snapshot_recorded,controlled_evidence_id_recorded`.
+- Updated `audit:heu-user-account-security` so the execution-packet matrix
+  cannot disappear before post-repair rerun proof.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: change lead visibility; add segment/partner scope;
+  set workspace preference; create accounts; link Auth; assign real users.
+  run browser UAT; accept evidence; approve finance reliance; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.
+
+## 2026-07-04 - Scope Repair Decision Dependency Lock UI Guard
+
+- Added the ACCT-00 scope repair decision dependency-lock matrix to
+  `components/settings/user-operation-cutover-panel.tsx` with
+  `data-heu-scope-repair-decision-dependency-lock="ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY"`.
+- The matrix records
+  `scope_repair_decision_dependency_lock=ACCT-00_SCOPE_REPAIR_DECISION_DEPENDENCY`,
+  `scope_repair_dependency_status=NO_GO`, `missing_visibility=2`,
+  `missing_business_scope=2`, `non_admin_all_visibility=0`,
+  `workspace_mismatch=0`,
+  `ACCT-00-SCOPE-REPAIR-DECISION-DEPENDENCY-LOCK`,
+  `ACCT-00-SCOPE-BASELINE-DECISION-CHECKLIST`,
+  `ACCT-00-SCOPE-REPAIR-EXECUTION-PACKET` and
+  `next_allowed_step=ACCT-00_SCOPE_REPAIR_EXECUTION`.
+- The matrix also locks
+  `required_dependency_record=approved_visibility_choice_recorded,approved_business_scope_recorded,owner_lane_confirmed,secure_admin_channel_recorded,controlled_evidence_id_recorded`
+  and
+  `blocked_if=scope_baseline_decision_checklist_closed=no,owner_lane_confirmed=no,lead_visibility_choice_recorded=no,business_scope_choice_recorded=no,secure_admin_channel_recorded=no`.
+- Updated `audit:heu-user-account-security` so the dependency-lock matrix
+  cannot disappear before scope repair execution.
+- PASS_LOCAL boundary: this does not change lead visibility, add
+  segment/partner scope, set workspace preference, create accounts, link Auth,
+  assign real users, assign positions, set passwords, send reset/invite links,
+  run browser UAT, accept evidence, approve finance reliance, approve owner
+  GO/NO-GO or mark production GO.
+- Boundary exact tokens: change lead visibility; add segment/partner scope;
+  set workspace preference; create accounts; link Auth; assign real users.
+  run browser UAT; accept evidence; approve finance reliance; approve owner
+  GO/NO-GO; mark production GO.
+- Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.

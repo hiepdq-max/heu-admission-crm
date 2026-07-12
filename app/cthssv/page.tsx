@@ -16,12 +16,14 @@ import {
 
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
+import {
+  getHEUWorkspaceContext,
+  heuWorkspaceSegmentIds,
+} from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
 import {
-  admissionWorkspaceSegmentIds,
   applyAdmissionSegmentIds,
   firstParam,
-  getAdmissionWorkspaceContext,
   withAdmissionSegmentParam,
 } from "@/lib/workspace";
 
@@ -841,27 +843,19 @@ export default async function CthssvPage({ searchParams }: CthssvPageProps) {
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const requestedSegmentId = firstParam(resolvedSearchParams.segment);
-  const workspace = await getAdmissionWorkspaceContext(
-    supabase,
-    user.id,
+  const heuWorkspace = await getHEUWorkspaceContext(supabase, user.id, {
     requestedSegmentId,
-  );
-  const segmentFilterIds = admissionWorkspaceSegmentIds(workspace);
+    includeActionPermissions: true,
+  });
+  const workspace = heuWorkspace.admissionWorkspace;
+  const segmentFilterIds = heuWorkspaceSegmentIds(heuWorkspace);
   const scopedHref = (href: string) =>
     withAdmissionSegmentParam(href, workspace.activeSegmentId);
 
-  const [{ data: currentRoleCode }, { data: canAcceptCthssv }] =
-    await Promise.all([
-      supabase.rpc("current_user_role_code"),
-      supabase.rpc("has_permission", {
-        permission_name: "handover.accept_cthssv",
-      }),
-    ]);
-
   const canOpenCthssv =
-    currentRoleCode === "ADMIN" ||
-    currentRoleCode === "BGH" ||
-    Boolean(canAcceptCthssv);
+    heuWorkspace.roleCode === "ADMIN" ||
+    heuWorkspace.roleCode === "BGH" ||
+    heuWorkspace.actionGate.canAcceptCthssvHandover;
 
   let handovers: CthssvHandoverRow[] = [];
   let handoverLoadError: string | null = null;

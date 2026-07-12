@@ -93,7 +93,9 @@ Codex, AI or a local PASS_LOCAL guard must not:
 - `docs/HEU_SHORT_COURSE_INVOICE_PAYMENT_VERIFICATION_CHECKLIST_20260703.md`
 - `docs/HEU_SHORT_COURSE_REPORT_VIEW_SOURCE_RECONCILIATION_CHECKLIST_20260703.md`
 - `docs/HEU_SHORT_COURSE_ROLE_NEGATIVE_ACCESS_CHECKLIST_20260703.md`
+- `docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md`
 - `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md`
+- `npm.cmd run check:heu-short-course-signed-uat-evidence-intake`
 - `npm.cmd run audit:heu-short-course-attendance-payment-gap-pack`
 
 Passing this audit means only that the Short Course gap-pack structure exists
@@ -236,7 +238,24 @@ and owner signoff rows, with controlled evidence references outside
 Codex/chat. It does not execute UAT, accept evidence or approve owner
 GO/NO-GO.
 
-## 12. Mail/Drive Payment Intake Sample
+## 12. Signed UAT Evidence Intake
+
+Signed Short Course UAT evidence references are prepared through
+`docs/HEU_SHORT_COURSE_SIGNED_UAT_EVIDENCE_INTAKE_20260704.md` with
+`PASS_LOCAL_EVIDENCE_INTAKE`, `SC_SIGNED_UAT_EVIDENCE_READY / NO_GO / BLOCKED`
+and SC-UAT-EVID-01 through SC-UAT-EVID-08. The intake links SC-UAT-01 through
+SC-UAT-08, SC-UAT-LEDGER-01 through SC-UAT-LEDGER-08, SC-REV-01 through
+SC-REV-06, SC-SIGN-01 through SC-SIGN-06, SC-ROLE-EVID-01 through
+SC-ROLE-EVID-06 and `RV_SHORT_COURSE_ATTENDANCE_PAYMENT` into one external
+evidence-reference route.
+
+Passing the local intake check does not execute UAT, accept evidence, approve
+attendance lock, approve BHXH/chinh sach, approve meal/allowance, approve HR
+payment, approve teacher payment, verify invoice/payment, approve report-view
+reliance, approve dashboard reliance, approve role UAT, approve access closure,
+approve owner GO/NO-GO or mark production GO.
+
+## 13. Mail/Drive Payment Intake Sample
 
 The sample file
 `docs/HEU_SHORT_COURSE_PAYMENT_MAIL_DRIVE_INTAKE_SAMPLE_20260701.md` records a
