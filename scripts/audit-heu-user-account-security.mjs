@@ -220,19 +220,18 @@ forbidText(
   formPath,
 );
 
-requireAllText(
+forbidText(
   actions,
   [
     "unsafeTemporaryPasswords",
-    "password123",
-    "heu123456",
     "normalizePasswordSignal",
     "isUnsafeTemporaryPassword",
-    "emailLocalPart",
-    "nameParts",
     "unsafe_temporary_password",
+    "setUserTemporaryPasswordAction",
+    "auth.admin.updateUserById",
+    'textValue(formData, "password")',
   ],
-  "server-side unsafe temporary password guard",
+  "operator-known temporary password write path",
   actionsPath,
 );
 
@@ -302,11 +301,8 @@ requireAllText(
     "target_position_code",
     "target_email",
     "not_allowed_position_assignment",
-    "setUserTemporaryPasswordAction",
     "sendUserPasswordResetEmailAction",
-    "adminClient.auth.admin.updateUserById",
     "resetPasswordForEmail",
-    "isUnsafeTemporaryPassword",
     "missing_password_reset_data",
     "missing_password_user",
     "profileHasActivePosition",
@@ -367,10 +363,9 @@ requireAllText(
 requireAllText(
   settingsPage,
   [
-    "unsafe_temporary_password",
-    "Mật khẩu tạm quá dễ đoán",
-    "email/tên user",
-    "kênh bảo mật",
+    "user_activation_not_ready",
+    "user_position_not_ready",
+    "gửi email recovery",
     "RealUserOnboardingPanel",
     "<RealUserOnboardingPanel />",
     "<UserCreateForm",
@@ -465,7 +460,6 @@ requireAllText(
     'data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"',
     "Ma trận vị trí và user",
     "assignHeuPositionByEmailAction",
-    "setUserTemporaryPasswordAction",
     "sendUserPasswordResetEmailAction",
     "heu-position-user-email-options",
     "min-w-0",
@@ -474,13 +468,25 @@ requireAllText(
     "truncate",
     "overflow-x-auto",
     "shrink-0",
-    "Không hiển thị, không log",
-    "không gửi mật khẩu thô",
-    "SUPABASE_SERVICE_ROLE_KEY",
+    "App không thu hoặc đặt mật khẩu tạm",
+    "email recovery",
     "Step 114",
     "PASS_LOCAL",
   ],
   "position assignment matrix UI guard",
+  positionMatrixPath,
+);
+
+forbidText(
+  positionMatrix,
+  [
+    "setUserTemporaryPasswordAction",
+    'name="password"',
+    'type="password"',
+    "set-password-value",
+    "Đặt mật khẩu tạm",
+  ],
+  "operator-known temporary password UI",
   positionMatrixPath,
 );
 
@@ -701,15 +707,11 @@ requireAllText(
     "requireUserCredentialManage",
     "assignHeuPositionByEmailAction",
     "assign_heu_position_by_email",
-    "setUserTemporaryPasswordAction",
     "sendUserPasswordResetEmailAction",
     "not_allowed_create_privileged_user",
-    "isUnsafeTemporaryPassword",
     "findAuthUserIdByEmail",
-    "updateUserById",
     "resetPasswordForEmail",
     "position_assigned=1#position-matrix",
-    "password_updated=1#position-password",
     "password_email_sent=1#position-password",
     "profileHasActivePosition",
     "user_position_requires_active_profile",
@@ -717,6 +719,18 @@ requireAllText(
     "user_position_not_ready",
   ],
   "position assignment and credential handoff actions",
+  actionsPath,
+);
+
+forbidText(
+  actions,
+  [
+    "setUserTemporaryPasswordAction",
+    "auth.admin.updateUserById",
+    'textValue(formData, "password")',
+    "password_updated=1",
+  ],
+  "operator credential write path",
   actionsPath,
 );
 

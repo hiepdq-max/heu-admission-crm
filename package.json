@@ -26,6 +26,7 @@
     "check:heu-user-scope-baseline-repair-queue": "node scripts/check-heu-user-scope-baseline-repair-queue.mjs",
     "check:heu-user-pilot-scope-save-guard": "node scripts/check-heu-user-pilot-scope-save-guard.mjs",
     "check:heu-settings-permission-matrix-readiness": "node scripts/check-heu-settings-permission-matrix-readiness.mjs",
+    "check:heu-effective-position-permission-dry-run": "node scripts/check-heu-effective-position-permission-dry-run.mjs",
     "check:heu-tchc-position-report-foundation": "node scripts/check-heu-tchc-position-report-foundation.mjs",
     "check:heu-tchc-legal-compliance-foundation": "node scripts/check-heu-tchc-legal-compliance-foundation.mjs",
     "check:heu-tchc-records-archive-system": "node scripts/check-heu-tchc-records-archive-system.mjs",

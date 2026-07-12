@@ -4,7 +4,10 @@ import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
 const repoRoot = process.cwd();
-const envPath = path.join(repoRoot, ".env.local");
+const envPath = path.resolve(
+  repoRoot,
+  process.env.HEU_ENV_FILE || ".env.local",
+);
 const requiredEnvKeys = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
@@ -194,8 +197,10 @@ function checkAppGuards() {
       matrixComponent.includes("assignHeuPositionByEmailAction")
         ? "assign-action-ui-ok"
         : null,
-      matrixComponent.includes("setUserTemporaryPasswordAction")
-        ? "temp-password-ui-ok"
+      !matrixComponent.includes("setUserTemporaryPasswordAction") &&
+      !matrixComponent.includes('name="password"') &&
+      matrixComponent.includes("App không thu hoặc đặt mật khẩu tạm")
+        ? "operator-password-ui-blocked-ok"
         : null,
       matrixComponent.includes("sendUserPasswordResetEmailAction")
         ? "reset-email-ui-ok"
@@ -205,8 +210,10 @@ function checkAppGuards() {
       actions.includes("not_allowed_position_assignment")
         ? "assignment-error-ok"
         : null,
-      actions.includes("isUnsafeTemporaryPassword")
-        ? "unsafe-password-guard-ok"
+      !actions.includes("setUserTemporaryPasswordAction") &&
+      !actions.includes("auth.admin.updateUserById") &&
+      !actions.includes("isUnsafeTemporaryPassword")
+        ? "operator-password-write-blocked-ok"
         : null,
       sqlSource.includes("public.can_read_permission_matrix()")
         ? "read-function-ok"
@@ -299,7 +306,11 @@ if (missingKeys.length === 0) {
         (query) => query.eq("status", "ACTIVE"),
       ),
       fetchAllRows(adminClient, "roles", "id,code,name"),
-      fetchAllRows(adminClient, "role_permissions", "role_id,permission"),
+      fetchAllRows(
+        adminClient,
+        "active_role_permissions",
+        "role_id,permission",
+      ),
       fetchAllRows(
         adminClient,
         "admission_departments",
