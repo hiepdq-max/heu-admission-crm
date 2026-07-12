@@ -34,6 +34,9 @@ const positionMatrix = readRequired(
 const positionMatrixSql = readRequired(
   "database/step114_organization_position_permission_matrix.sql",
 );
+const auditHelperStart = actions.indexOf(
+  "async function writeControlledUserAudit",
+);
 
 const createStart = actions.indexOf(
   "export async function createUserAccountAction",
@@ -58,6 +61,10 @@ const credentialActions =
 const assignStart = actions.indexOf(
   "export async function assignHeuPositionByEmailAction",
 );
+const auditHelper =
+  auditHelperStart >= 0 && assignStart > auditHelperStart
+    ? actions.slice(auditHelperStart, assignStart)
+    : "";
 const assignEnd = actions.indexOf(
   "export async function setUserTemporaryPasswordAction",
 );
@@ -144,7 +151,30 @@ requireTokens(assignAction, "one-account-one-position action guard", [
   '.update({ status: "INACTIVE" })',
   '.from("heu_position_assignments")',
   "existingPositionId !== targetPositionResult.data?.id",
+  "writeControlledUserAudit",
+  "HEU_USER_POSITION_ACTIVATED",
+  "activation_audit_log_failed",
 ]);
+
+requireTokens(credentialActions, "activation audit trail", [
+  "writeControlledUserAudit",
+  "HEU_USER_ACTIVATION_EMAIL_INTENT",
+  "HEU_USER_ACTIVATION_EMAIL_FAILED",
+  "HEU_USER_ACTIVATION_EMAIL_SENT",
+  "activation_audit_log_failed",
+]);
+
+requireTokens(auditHelper, "metadata-only activation audit helper", [
+  '.from("audit_logs")',
+  'entity_type: "users_profile"',
+  'note: "HEU_USER_ACTIVATION_CONTROL"',
+]);
+
+for (const forbidden of ["target_email", "full_name", "phone", "password", "token"]) {
+  if (auditHelper.includes(forbidden)) {
+    failures.push(`activation audit helper contains forbidden field: ${forbidden}`);
+  }
+}
 
 requireTokens(updateProfileAction, "manual activation guard", [
   'targetProfileState?.status !== "ACTIVE" && status === "ACTIVE"',

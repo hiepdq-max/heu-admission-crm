@@ -114,6 +114,8 @@ type SettingsPageProps = {
 };
 
 const errorMessages: Record<string, string> = {
+  activation_audit_log_failed:
+    "Khong ghi duoc audit log activation. Auth user tiep tuc bi khoa va luong kich hoat dung lai.",
   activation_requires_position_assignment:
     "Khong kich hoat user truc tiep. Hay gan vi tri de app kich hoat profile trong luong co kiem soat.",
   active_user_without_position_requires_review:

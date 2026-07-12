@@ -318,8 +318,17 @@ requireAllText(
     "auth_user_activation_unlock_failed",
     "needsControlledActivation",
     'ban_duration: "none"',
+    "writeControlledUserAudit",
+    '.from("audit_logs")',
+    'entity_type: "users_profile"',
+    'note: "HEU_USER_ACTIVATION_CONTROL"',
+    "HEU_USER_POSITION_ACTIVATED",
+    "HEU_USER_ACTIVATION_EMAIL_INTENT",
+    "HEU_USER_ACTIVATION_EMAIL_FAILED",
+    "HEU_USER_ACTIVATION_EMAIL_SENT",
+    "activation_audit_log_failed",
   ],
-  "position assignment and password-reset server guard",
+  "position assignment, password-reset and activation audit server guard",
   actionsPath,
 );
 
