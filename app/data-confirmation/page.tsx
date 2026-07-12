@@ -13,6 +13,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
 import { createClient } from "@/lib/supabase/server";
+import { getVisibleTaskCenterLanes } from "@/lib/task-center-contract";
 import { firstParam, withAdmissionSegmentParam } from "@/lib/workspace";
 
 type DataConfirmationPageProps = {
@@ -105,7 +106,16 @@ export default async function DataConfirmationPage({
     "/data-confirmation",
     workspace.activeSegmentId,
   );
-  const canOpenTaskCenter = heuWorkspace.actionGate.canReadScopedData;
+  const visibleTaskCenterLanes = getVisibleTaskCenterLanes(
+    heuWorkspace.roleCode,
+    heuWorkspace.actionGate,
+  );
+  const canOpenTaskCenter =
+    heuWorkspace.actionGate.canReadScopedData ||
+    visibleTaskCenterLanes.length > 0;
+  const usesReadonlyFallback =
+    !heuWorkspace.actionGate.canReadScopedData &&
+    visibleTaskCenterLanes.length > 0;
   const canReviewScopedDraft = heuWorkspace.actionGate.canReviewScopedDraft;
 
   return (
@@ -130,6 +140,9 @@ export default async function DataConfirmationPage({
         data-heu-data-confirmation-scope="HEU_WORKSPACE_CONTEXT_SCOPE_FIRST"
         data-heu-data-confirmation-statuses="CHO_XAC_NHAN_DUNG_CAN_SUA_KHONG_THUOC_TOI_DA_KHOA"
         data-heu-data-confirmation-boundary="READ_ONLY_NO_REAL_DATA_MUTATION"
+        data-heu-task-center-role-fallback={
+          usesReadonlyFallback ? "ROLE_MAPPED_REF_ONLY" : "WORKSPACE_SCOPED"
+        }
       >
         <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
           <div className="rounded-lg border border-zinc-200 bg-white p-5">
@@ -140,10 +153,10 @@ export default async function DataConfirmationPage({
                   Trung tam viec can xac nhan
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-zinc-600">
-                  Route nay la buoc nho de moi user vao dung cong viec cua
-                  phong ban minh. Hien tai chi hien khung van hanh va trang
-                  thai chuan; task that se chi duoc bat khi co data contract,
-                  audit log va owner gate.
+                  Route nay hien lane cong viec dung theo role/phong ban.
+                  Khi chua co bang Task Center live, he thong chi hien task
+                  mau ref-only de UAT giao dien va pham vi; khong doc du lieu
+                  nghiep vu, khong ghi va khong tu dong hoa.
                 </p>
               </div>
             </div>

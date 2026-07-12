@@ -33,6 +33,7 @@ import {
   getTaskCenterFallbackLane,
   getVisibleTaskCenterLanes,
   resolveTaskCenterLaneStatus,
+  taskCenterLaneHref,
   type TaskCenterLaneStatus,
   type TaskCenterVisibleLane,
 } from "@/lib/task-center-contract";
@@ -115,7 +116,10 @@ export function DepartmentTaskInbox({
             scopeDecision,
             actionGate,
           );
-          const href = withAdmissionSegmentParam(lane.href, activeSegmentId);
+          const href = withAdmissionSegmentParam(
+            taskCenterLaneHref(lane, roleCode),
+            activeSegmentId,
+          );
 
           return (
             <article
