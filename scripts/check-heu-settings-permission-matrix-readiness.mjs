@@ -199,7 +199,9 @@ function checkAppGuards() {
         : null,
       !matrixComponent.includes("setUserTemporaryPasswordAction") &&
       !matrixComponent.includes('name="password"') &&
-      matrixComponent.includes("App không thu hoặc đặt mật khẩu tạm")
+      matrixComponent.includes(
+        'data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"',
+      )
         ? "operator-password-ui-blocked-ok"
         : null,
       matrixComponent.includes("sendUserPasswordResetEmailAction")
@@ -211,8 +213,8 @@ function checkAppGuards() {
         ? "assignment-error-ok"
         : null,
       !actions.includes("setUserTemporaryPasswordAction") &&
-      !actions.includes("auth.admin.updateUserById") &&
-      !actions.includes("isUnsafeTemporaryPassword")
+      !actions.includes("isUnsafeTemporaryPassword") &&
+      !actions.includes("password:")
         ? "operator-password-write-blocked-ok"
         : null,
       sqlSource.includes("public.can_read_permission_matrix()")
