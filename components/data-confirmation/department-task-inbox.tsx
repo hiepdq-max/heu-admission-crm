@@ -20,6 +20,7 @@ import {
   TASK_CENTER_MOCK_READONLY_LIST,
   TASK_CENTER_NO_AI_OR_AUTOMATION,
   TASK_CENTER_NO_TASK_MUTATION,
+  resolveTaskCenterMockActionHref,
 } from "@/lib/task-center-mock-read-model";
 import {
   createTaskCenterUiFallbackSource,
@@ -242,6 +243,17 @@ export function DepartmentTaskInbox({
                   <div className="mt-1 text-xs leading-5 text-zinc-500">
                     {task.safeSummary}
                   </div>
+                  <Button asChild className="mt-3" size="sm" variant="outline">
+                    <Link
+                      href={withAdmissionSegmentParam(
+                        resolveTaskCenterMockActionHref(task),
+                        activeSegmentId,
+                      )}
+                      data-heu-task-center-pilot-action={task.taskId}
+                    >
+                      Mở việc
+                    </Link>
+                  </Button>
                 </div>
                 <div className="text-zinc-700">
                   {task.departmentCode}
