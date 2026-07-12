@@ -197,8 +197,10 @@ function checkAppGuards() {
       matrixComponent.includes("assignHeuPositionByEmailAction")
         ? "assign-action-ui-ok"
         : null,
-      matrixComponent.includes("setUserTemporaryPasswordAction")
-        ? "temp-password-ui-ok"
+      !matrixComponent.includes("setUserTemporaryPasswordAction") &&
+      !matrixComponent.includes('name="password"') &&
+      matrixComponent.includes("App không thu hoặc đặt mật khẩu tạm")
+        ? "operator-password-ui-blocked-ok"
         : null,
       matrixComponent.includes("sendUserPasswordResetEmailAction")
         ? "reset-email-ui-ok"
@@ -208,8 +210,10 @@ function checkAppGuards() {
       actions.includes("not_allowed_position_assignment")
         ? "assignment-error-ok"
         : null,
-      actions.includes("isUnsafeTemporaryPassword")
-        ? "unsafe-password-guard-ok"
+      !actions.includes("setUserTemporaryPasswordAction") &&
+      !actions.includes("auth.admin.updateUserById") &&
+      !actions.includes("isUnsafeTemporaryPassword")
+        ? "operator-password-write-blocked-ok"
         : null,
       sqlSource.includes("public.can_read_permission_matrix()")
         ? "read-function-ok"

@@ -141,12 +141,9 @@ const errorMessages: Record<string, string> = {
   user_already_has_active_position:
     "Một tài khoản chỉ được giữ một vị trí ACTIVE. Người kiêm nhiệm phải dùng tài khoản vận hành riêng cho từng vị trí.",
   user_position_not_ready:
-    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi đặt hoặc gửi email mật khẩu.",
+    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi gửi email recovery.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
-  weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
-  unsafe_temporary_password:
-    "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   auth_user_lookup_failed:

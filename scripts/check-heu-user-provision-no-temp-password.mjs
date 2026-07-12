@@ -49,7 +49,7 @@ const createAction =
     ? actions.slice(createStart, createEnd)
     : "";
 const credentialStart = actions.indexOf(
-  "export async function setUserTemporaryPasswordAction",
+  "export async function sendUserPasswordResetEmailAction",
 );
 const credentialEnd = actions.indexOf(
   "export async function updateUserProfileAction",
@@ -65,9 +65,7 @@ const auditHelper =
   auditHelperStart >= 0 && assignStart > auditHelperStart
     ? actions.slice(auditHelperStart, assignStart)
     : "";
-const assignEnd = actions.indexOf(
-  "export async function setUserTemporaryPasswordAction",
-);
+const assignEnd = credentialStart;
 const assignAction =
   assignStart >= 0 && assignEnd > assignStart
     ? actions.slice(assignStart, assignEnd)
@@ -126,6 +124,26 @@ requireTokens(credentialActions, "activation gate", [
   "auth_user_activation_unlock_failed",
   "ban_duration: pendingActivationBanDuration",
 ]);
+
+for (const forbidden of [
+  "setUserTemporaryPasswordAction",
+  'textValue(formData, "password")',
+  "unsafeTemporaryPasswords",
+  "isUnsafeTemporaryPassword",
+  "password_updated=1",
+]) {
+  if (actions.includes(forbidden)) {
+    failures.push(`settings actions contain operator password write: ${forbidden}`);
+  }
+}
+
+if (
+  /auth\.admin\.updateUserById\([\s\S]{0,500}\{\s*password\s*[:,]/.test(
+    actions,
+  )
+) {
+  failures.push("settings actions contain operator password write payload");
+}
 
 if (
   credentialActions.indexOf("user_activation_not_ready") >
@@ -207,7 +225,21 @@ requireTokens(positionMatrix, "position-scoped Smart guidance", [
   'data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"',
   "Một tài khoản vận hành = một vị trí ACTIVE",
   "Smart quản trị đi theo đúng vị trí và scope",
+  "App không thu hoặc đặt mật khẩu tạm",
+  "sendUserPasswordResetEmailAction",
 ]);
+
+for (const forbidden of [
+  "setUserTemporaryPasswordAction",
+  'name="password"',
+  'type="password"',
+  "set-password-value",
+  "Đặt mật khẩu tạm",
+]) {
+  if (positionMatrix.includes(forbidden)) {
+    failures.push(`position matrix contains operator password input: ${forbidden}`);
+  }
+}
 
 requireTokens(positionMatrixSql, "database one-account-one-position guard", [
   "idx_heu_position_assignments_active_user",
@@ -258,7 +290,7 @@ if (failures.length > 0) {
 }
 
 console.log("HEU_USER_PROVISION_NO_TEMP_PASSWORD: PASS_LOCAL");
-console.log("Operator-known temporary password: NO_GO");
+console.log("Operator-known temporary password: BLOCKED_BY_CODE");
 console.log("Email at provisioning time: NO_GO");
 console.log("One account / one ACTIVE position: PASS_LOCAL_GUARDED");
 console.log("Position Smart mode: DRAFT_CHECK_SUGGEST_ONLY");
