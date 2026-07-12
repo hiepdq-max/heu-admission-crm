@@ -6,6 +6,7 @@ const root = process.cwd();
 const files = {
   directory: path.join(root, "lib", "demo-role-directory.ts"),
   page: path.join(root, "app", "demo", "page.tsx"),
+  workbench: path.join(root, "components", "demo", "demo-workbench.tsx"),
   login: path.join(root, "app", "login", "page.tsx"),
 };
 
@@ -17,6 +18,7 @@ for (const [name, file] of Object.entries(files)) {
 
 const directory = fs.readFileSync(files.directory, "utf8");
 const page = fs.readFileSync(files.page, "utf8");
+const workbench = fs.readFileSync(files.workbench, "utf8");
 const login = fs.readFileSync(files.login, "utf8");
 
 const requiredKeys = [
@@ -60,8 +62,20 @@ if (!login.includes("isHeuDemoRoleLoginEnabled")) {
   throw new Error("HEU-DEMO-ROLE-LOGIN: login link is not flag-gated");
 }
 
+for (const token of [
+  "data-heu-demo-workbench=\"LOCAL_SESSION_ONLY\"",
+  "setItems",
+  "setActiveLane",
+  "onSubmit={addItem}",
+  "onClick={() => toggleItem(item.id)}",
+]) {
+  if (!workbench.includes(token)) {
+    throw new Error(`HEU-DEMO-ROLE-LOGIN: missing functional workbench token ${token}`);
+  }
+}
+
 const forbidden = /from ["']@\/lib\/supabase|createClient|supabase\.|signInWithPassword|signOut|password|\.insert\(|\.update\(|\.delete\(|\.rpc\(|fetch\(/i;
-for (const [name, source] of Object.entries({ directory, page })) {
+for (const [name, source] of Object.entries({ directory, page, workbench })) {
   if (forbidden.test(source)) {
     throw new Error(`HEU-DEMO-ROLE-LOGIN: forbidden runtime token in ${name}`);
   }
