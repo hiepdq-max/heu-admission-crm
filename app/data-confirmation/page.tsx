@@ -9,10 +9,12 @@ import {
 } from "lucide-react";
 
 import { DepartmentTaskInbox } from "@/components/data-confirmation/department-task-inbox";
+import { AdmissionPilotTaskLiveSummaryPanel } from "@/components/data-confirmation/admission-pilot-task-live-summary";
 import { TaskCenterLiveReadonlyList } from "@/components/data-confirmation/task-center-live-readonly-list";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
+import { readAdmissionPilotTaskLiveSummary } from "@/lib/admission-pilot-task-read-model";
 import { createClient } from "@/lib/supabase/server";
 import { getVisibleTaskCenterLanes } from "@/lib/task-center-contract";
 import { readTaskCenterLiveReadonly } from "@/lib/task-center-live-readonly-adapter";
@@ -128,6 +130,18 @@ export default async function DataConfirmationPage({
     ),
     admissionSegmentId: workspace.activeSegmentId,
   });
+  const admissionLaneVisible = visibleTaskCenterLanes.some(
+    (lane) => lane.id === "admission",
+  );
+  const admissionPilotTaskSummary = await readAdmissionPilotTaskLiveSummary(
+    supabase,
+    {
+      enabled:
+        admissionLaneVisible &&
+        heuWorkspace.scopeDecision !== "NO_MATCHING_SCOPE",
+      admissionSegmentId: workspace.activeSegmentId,
+    },
+  );
 
   return (
     <AppShell
@@ -224,6 +238,11 @@ export default async function DataConfirmationPage({
               activeSegmentId={workspace.activeSegmentId}
               visibleSegmentCount={heuWorkspace.visibleSegmentIds.length}
               actionGate={heuWorkspace.actionGate}
+            />
+
+            <AdmissionPilotTaskLiveSummaryPanel
+              result={admissionPilotTaskSummary}
+              activeSegmentId={workspace.activeSegmentId}
             />
 
             <TaskCenterLiveReadonlyList result={liveTaskCenter} />
