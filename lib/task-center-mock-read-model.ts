@@ -33,7 +33,24 @@ export type TaskCenterMockTask = {
   safeSummary: string;
   dueLabel: string;
   ownerHint: string;
+  actionHref: string;
 };
+
+export const TASK_CENTER_PILOT_ACTION_HREF_ALLOWLIST = new Set([
+  "/leads?quick=unassigned",
+  "/leads?quick=documents",
+  "/cthssv",
+  "/khoa",
+  "/ttgdtx/accounting-dashboard",
+  "/settings/scopes",
+  "/data-confirmation",
+]);
+
+export function resolveTaskCenterMockActionHref(task: TaskCenterMockTask) {
+  return TASK_CENTER_PILOT_ACTION_HREF_ALLOWLIST.has(task.actionHref)
+    ? task.actionHref
+    : "/data-confirmation";
+}
 
 export const TASK_CENTER_MOCK_TASKS = [
   {
@@ -51,6 +68,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Metadata live đang có 10 lead nhưng chưa có actor Tuyển sinh ACTIVE; cần Owner xác nhận trước cutover.",
     dueLabel: "Ưu tiên 1",
     ownerHint: "Trưởng phòng Tuyển sinh + IT_DATA",
+    actionHref: "/leads?quick=unassigned",
   },
   {
     taskId: "PILOT-ADMISSION-DOCUMENT-002",
@@ -67,6 +85,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Có 1 lead ở trạng thái nộp hồ sơ hoặc cao hơn nhưng chưa có document metadata; không tải hồ sơ gốc vào task.",
     dueLabel: "Ưu tiên 2",
     ownerHint: "Tuyển sinh + CTHSSV",
+    actionHref: "/leads?quick=documents",
   },
   {
     taskId: "PILOT-ADMISSION-HANDOVER-003",
@@ -83,6 +102,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Chỉ mở bàn giao sau khi actor và document metadata hợp lệ; không tạo công nợ hoặc kết luận nhập học.",
     dueLabel: "Ưu tiên 3",
     ownerHint: "Tuyển sinh + CTHSSV + Audit",
+    actionHref: "/leads?quick=documents",
   },
   {
     taskId: "PILOT-CTHSSV-001",
@@ -99,6 +119,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "CTHSSV chỉ xác nhận metadata/ref sau khi nhận packet bàn giao hợp lệ; không đọc hồ sơ thô tại fallback.",
     dueLabel: "Sau bàn giao",
     ownerHint: "CTHSSV + Audit",
+    actionHref: "/cthssv",
   },
   {
     taskId: "PILOT-TRAINING-001",
@@ -115,6 +136,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Đào tạo/Khoa chỉ nhận ref đã được CTHSSV xác nhận; chưa xếp lớp hoặc ghi dữ liệu thật.",
     dueLabel: "Sau CTHSSV",
     ownerHint: "Đào tạo/Khoa",
+    actionHref: "/khoa",
   },
   {
     taskId: "PILOT-FINANCE-READONLY-001",
@@ -131,6 +153,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Kế toán chỉ xem và chuẩn bị đối soát nháp; không ghi thu, không duyệt và không chuyển tiền.",
     dueLabel: "Read-only",
     ownerHint: "Kế toán + Audit",
+    actionHref: "/ttgdtx/accounting-dashboard",
   },
   {
     taskId: "PILOT-CONTROL-001",
@@ -147,6 +170,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Xác nhận mỗi account đúng một vị trí và không có quyền rộng mặc định trước khi mở UAT.",
     dueLabel: "Hằng ngày",
     ownerHint: "IT_DATA + Audit",
+    actionHref: "/settings/scopes",
   },
   {
     taskId: "PILOT-GENERAL-001",
@@ -163,6 +187,7 @@ export const TASK_CENTER_MOCK_TASKS = [
       "Role chưa map lane nghiệp vụ nên chỉ hiển thị checklist hệ thống, không fallback sang dữ liệu phòng khác.",
     dueLabel: "Sau khi IT_DATA gán scope",
     ownerHint: "IT_DATA",
+    actionHref: "/data-confirmation",
   },
 ] as const satisfies readonly TaskCenterMockTask[];
 
