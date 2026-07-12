@@ -47,6 +47,20 @@ type CurrentProfileRow = {
 };
 
 const errorMessages: Record<string, string> = {
+  activation_requires_position_assignment:
+    "Khong kich hoat user truc tiep. Hay gan vi tri de app kich hoat profile trong luong co kiem soat.",
+  active_user_without_position_requires_review:
+    "Profile ACTIVE nhung chua co vi tri. Dung thao tac va de IT_DATA/Audit kiem tra truoc khi gan.",
+  auth_user_activation_lock_failed:
+    "Khong khoa duoc Auth user truoc khi gan vi tri. User van bi chan kich hoat.",
+  auth_user_activation_unlock_failed:
+    "Khong mo khoa duoc Auth user. Email kich hoat chua duoc gui.",
+  auth_user_requires_controlled_link:
+    "Auth user da ton tai. Khong duoc ghi de profile; can IT_DATA/Audit xu ly theo luong link co kiem soat.",
+  manual_auth_link_disabled:
+    "Da khoa luong link Auth legacy vi RPC cu tu dat profile ACTIVE.",
+  profile_activation_failed:
+    "Khong kich hoat duoc profile trong luong gan vi tri; Auth user van bi khoa.",
   missing_new_user_data:
     "Thieu email, ho ten hoac role cua user moi.",
   missing_new_user_department:
