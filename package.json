@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "check:heu-auth-magiclink-token-hash-callback": "node scripts/check-heu-auth-magiclink-token-hash-callback.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
