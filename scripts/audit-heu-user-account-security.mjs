@@ -228,12 +228,19 @@ forbidText(
     "isUnsafeTemporaryPassword",
     "unsafe_temporary_password",
     "setUserTemporaryPasswordAction",
-    "auth.admin.updateUserById",
     'textValue(formData, "password")',
   ],
   "operator-known temporary password write path",
   actionsPath,
 );
+
+if (
+  /auth\.admin\.updateUserById\([\s\S]{0,500}\{\s*password\s*[:,]/.test(
+    actions,
+  )
+) {
+  fail(`${actionsPath}: forbidden operator-known password update payload`);
+}
 
 requireAllText(
   permissionsSource,
@@ -262,8 +269,9 @@ requireAllText(
     "not_allowed_create_privileged_user",
     "adminClient.auth.admin.createUser",
     "email_confirm: true",
-    "existingProfile?.status !== \"ACTIVE\"",
-    "status: resolvedProfileStatus",
+    "ban_duration: pendingActivationBanDuration",
+    "auth_user_requires_controlled_link",
+    'status: "INACTIVE"',
     "missing_new_user_department",
     '.from("users_profile")',
     "adminClient.auth.admin.deleteUser",
@@ -278,17 +286,13 @@ requireAllText(
   actions,
   [
     "isExistingAuthUserError",
-    "findAuthUserIdByEmail",
-    "auth_user_lookup_failed",
-    "auth_user_exists_but_not_found",
     "upsertUserProfileForAuthUser",
     "createdAuthUser",
-    "linkedExistingAuthUser",
-    "existingProfile",
-    "resolvedProfileStatus",
-    "profile_linked=1&auth_user_existing=1",
+    "auth_user_requires_controlled_link",
+    "manual_auth_link_disabled",
+    "ban_duration: pendingActivationBanDuration",
   ],
-  "existing Supabase Auth user profile-link fallback guard",
+  "existing Supabase Auth user overwrite and legacy-link guard",
   actionsPath,
 );
 
@@ -308,6 +312,12 @@ requireAllText(
     "profileHasActivePosition",
     "user_position_not_ready",
     "user_already_has_active_position",
+    "active_user_without_position_requires_review",
+    "activation_requires_position_assignment",
+    "auth_user_activation_lock_failed",
+    "auth_user_activation_unlock_failed",
+    "needsControlledActivation",
+    'ban_duration: "none"',
   ],
   "position assignment and password-reset server guard",
   actionsPath,
@@ -333,6 +343,10 @@ requireAllText(
 requireAllText(
   linkForm,
   [
+    'data-heu-manual-auth-link-status="NO_GO"',
+    'data-heu-manual-auth-link="BLOCKED_LEGACY_ACTIVE_PROFILE_RPC"',
+    'type="button"',
+    "disabled",
     "financeDayOneManualLinkChecks",
     'data-heu-finance-day-one-manual-auth-link="P0-17-P6-04"',
     "Finance Day-1 accounting user manual Auth link",
@@ -457,6 +471,7 @@ requireAllText(
     'data-heu-position-matrix-overflow-guard="P0-17_NO_OVERFLOW"',
     'data-heu-position-matrix-quick-access="P0-17_POSITION_QUICK_ACCESS"',
     'data-heu-position-matrix-quick-access-overflow-guard="P0-17_POSITION_QUICK_ACCESS_NO_OVERFLOW"',
+    'data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"',
     'data-heu-position-group-filters="ALL BGH DAO_TAO TUYEN_SINH CTHSSV KHTC PHAP_CHE AUDIT IT_DATA KHOA NGAN_HAN HR"',
     "Ma trận vị trí và user",
     "assignHeuPositionByEmailAction",
@@ -488,6 +503,13 @@ forbidText(
   ],
   "operator-known temporary password UI",
   positionMatrixPath,
+);
+
+requireAllText(
+  form,
+  ['data-heu-auth-activation-lock="BANNED_UNTIL_POSITION_AND_EMAIL"'],
+  "deferred Auth activation lock UI guard",
+  formPath,
 );
 
 requireSection(implementationLog, "2026-07-02 - P0-17 Position Assignment Control UI", [
@@ -709,14 +731,17 @@ requireAllText(
     "assign_heu_position_by_email",
     "sendUserPasswordResetEmailAction",
     "not_allowed_create_privileged_user",
-    "findAuthUserIdByEmail",
     "resetPasswordForEmail",
     "position_assigned=1#position-matrix",
     "password_email_sent=1#position-password",
     "profileHasActivePosition",
-    "user_position_requires_active_profile",
     "user_already_has_active_position",
     "user_position_not_ready",
+    "active_user_without_position_requires_review",
+    "activation_requires_position_assignment",
+    "auth_user_activation_lock_failed",
+    "auth_user_activation_unlock_failed",
+    "pendingActivationBanDuration",
   ],
   "position assignment and credential handoff actions",
   actionsPath,
@@ -726,7 +751,6 @@ forbidText(
   actions,
   [
     "setUserTemporaryPasswordAction",
-    "auth.admin.updateUserById",
     'textValue(formData, "password")',
     "password_updated=1",
   ],
