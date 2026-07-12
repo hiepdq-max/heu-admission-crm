@@ -78,10 +78,32 @@ Target output:
 | `visible_segment_ids` | Explicit segments visible to the actor |
 | `allowed_permission_codes` | Requested codes that pass the effective-position formula |
 | `denied_permission_codes` | Requested codes that do not pass or cannot be proved |
+| `block_reason_codes` | Bounded machine codes for fail-closed comparison; no raw error text |
+| `scope_source` | `REQUESTED_VALIDATED`, `PERSISTED_ACTIVE`, `ONLY_VISIBLE`, `ALL_READONLY` or `NONE` |
 | `no_secret_boundary` | Always true; no PII, credential or raw evidence returned |
 
 No full profile row, email, phone, CCCD, bank field, password, token, secret,
 raw lead, raw student, payment payload or evidence payload may be returned.
+
+All returned code arrays must be de-duplicated and sorted so dual-read output is
+deterministic. Unknown permission codes are denied and reported only through a
+bounded reason code; they never cause a broader lookup or dynamic SQL.
+
+### 3.1 Segment selection precedence
+
+The server adapter may pass an explicit route selection or the active workspace
+cookie as `requested_segment_id`. The cookie is untrusted input, not authority.
+The RPC must apply this exact order:
+
+1. Use the requested segment only after proving it is in the actor's explicit
+   visible scope.
+2. Otherwise use exactly one persisted active workspace; multiple persisted
+   active rows are `BLOCKED`.
+3. Otherwise select the segment only when exactly one visible segment exists.
+4. Executive all-segment read-only context returns a null active segment unless
+   a requested segment was validated.
+5. Any other ambiguous or missing case returns `NO_SCOPE` or `BLOCKED`; never
+   select the first row and never broaden to all segments.
 
 ## 4. Effective Permission Formula
 
@@ -125,6 +147,11 @@ The later SQL review must enforce all of these controls:
 - Validate and de-duplicate requested permission codes.
 - Limit requested permission codes to at most 32.
 - Use static SQL only; no dynamic SQL from request values.
+- Declare the read-only function `STABLE`; `SECURITY INVOKER` is preferred.
+- Use the database transaction clock for delegation windows with
+  `starts_at <= now()` and `(ends_at is null or now() < ends_at)`.
+- Return bounded reason codes instead of relation names, raw SQL errors or row
+  identifiers.
 - Return only current-actor context and requested permission decisions.
 - Keep RLS enabled on business tables; this RPC does not become a broad data
   reader or replace business-table RLS.
@@ -149,6 +176,21 @@ account, position, workspace and route before and after the adapter change.
 No shared static cache may store context or permissions across users,
 positions, departments or workspaces. Request-level memoization is allowed only
 after the context key includes actor, position, workspace and contract version.
+
+The adapter feature switch is server-only:
+
+```text
+HEU_ENABLE_EFFECTIVE_POSITION_CONTEXT_RPC=false
+```
+
+It must default to false, must never use a `NEXT_PUBLIC_` prefix and must not be
+read by browser code. Personalized context is `no-store`; no CDN, shared fetch
+cache or cross-request process cache is allowed.
+
+During dual-read, make at most one candidate RPC call per request. Do not retry
+inside the request. Timeout, transport error, malformed payload, unknown
+contract version or oversized response keeps the existing fan-out result
+authoritative and records a compact comparison failure only.
 
 ## 7. Query And Index Review
 
@@ -186,6 +228,33 @@ an index in a separate reviewed migration with backup and rollback.
    authoritative action gate.
 10. Keep `public.has_permission(text)` for RLS until a separate RLS migration
     is reviewed; do not replace all policies in this slice.
+
+The first adapter must reject payloads over 8 KiB, unknown contract versions,
+unsorted/duplicate code arrays and any response containing a permission code
+that was not requested.
+
+## 8.1 Mandatory negative test matrix
+
+Before the candidate can become authoritative, synthetic tests must cover:
+
+1. missing `auth.uid()`;
+2. inactive profile;
+3. zero and multiple active position assignments;
+4. inactive position, role mismatch and department mismatch;
+5. inactive, future, expired and revoked delegation;
+6. requested segment outside scope and ambiguous persisted active workspace;
+7. mixed HOU/non-HOU scope;
+8. duplicate, unknown and more than 32 requested permission codes;
+9. malformed, oversized and unknown-version RPC payload;
+10. candidate grants any permission denied by the old result;
+11. RPC timeout/error with old fan-out remaining authoritative;
+12. two different users in the same process receiving isolated no-store
+    results.
+
+Comparison logs contain only contract version, route code, requested-code
+count, allowed/denied counts, bounded reason codes, duration bucket and outcome.
+They must not contain raw user ID, email, name, segment UUID, token, SQL error or
+permission payload.
 
 ## 9. Rollback
 
