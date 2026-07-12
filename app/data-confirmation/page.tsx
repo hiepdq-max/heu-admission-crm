@@ -8,6 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import { DepartmentTaskInbox } from "@/components/data-confirmation/department-task-inbox";
 import { AppShell } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
 import { getHEUWorkspaceContext } from "@/lib/heu-workspace-context";
@@ -193,6 +194,14 @@ export default async function DataConfirmationPage({
           </div>
         ) : (
           <>
+            <DepartmentTaskInbox
+              roleCode={heuWorkspace.roleCode}
+              scopeDecision={heuWorkspace.scopeDecision}
+              activeSegmentId={workspace.activeSegmentId}
+              visibleSegmentCount={heuWorkspace.visibleSegmentIds.length}
+              actionGate={heuWorkspace.actionGate}
+            />
+
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
               {confirmationStatuses.map((status) => (
                 <article
