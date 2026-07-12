@@ -34,19 +34,6 @@ const createUserPermission = "users.create";
 const userManagePermission = "users.manage";
 const positionMatrixManagePermission = "permission_matrix.manage";
 const privilegedUserRoleCodes = new Set(["ADMIN", "BGH"]);
-const unsafeTemporaryPasswords = new Set([
-  "12345678",
-  "123456789",
-  "1234567890",
-  "admin123",
-  "admin1234",
-  "changeme",
-  "heu123456",
-  "password",
-  "password123",
-  "qwerty123",
-  "welcome1",
-]);
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 type SettingsReturnPath = "/settings" | "/settings/scopes";
@@ -101,30 +88,6 @@ async function requireSettingsAuthenticatedUser(
   }
 
   return user;
-}
-
-function normalizePasswordSignal(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
-}
-
-function isUnsafeTemporaryPassword(
-  password: string,
-  email: string,
-  fullName: string,
-) {
-  const normalizedPassword = normalizePasswordSignal(password);
-  const emailLocalPart = normalizePasswordSignal(email.split("@")[0] ?? "");
-  const nameParts = fullName
-    .split(/\s+/)
-    .map(normalizePasswordSignal)
-    .filter((part) => part.length >= 4);
-
-  return (
-    unsafeTemporaryPasswords.has(normalizedPassword) ||
-    /^(.)\1{7,}$/.test(password) ||
-    (emailLocalPart.length >= 4 && normalizedPassword.includes(emailLocalPart)) ||
-    nameParts.some((part) => normalizedPassword.includes(part))
-  );
 }
 
 function isMissingRolePermissionSoftRevokeMigration(message: string) {
@@ -372,88 +335,6 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
   revalidatePath("/settings");
   revalidatePath("/settings/scopes");
   redirect(`${returnPath}?position_assigned=1#position-matrix`);
-}
-
-export async function setUserTemporaryPasswordAction(formData: FormData) {
-  const returnPath = settingsReturnPath(textValue(formData, "return_to"));
-  const email = textValue(formData, "email")?.toLowerCase();
-  const password = textValue(formData, "password");
-  const { supabase, currentRoleCode } =
-    await requireUserCredentialManage(returnPath);
-
-  if (!email || !password) {
-    redirect(`${returnPath}?error=missing_password_reset_data`);
-  }
-
-  const { data: profile, error: profileError } = await loadProfileForEmail(
-    supabase,
-    email,
-  );
-
-  if (profileError) {
-    redirect(`${returnPath}?error=${encodeURIComponent(profileError.message)}`);
-  }
-
-  if (!profile) {
-    redirect(`${returnPath}?error=missing_password_user`);
-  }
-
-  if (profile.status !== "ACTIVE" || !profile.department_id) {
-    redirect(`${returnPath}?error=user_activation_not_ready`);
-  }
-
-  if (!(await profileHasActivePosition(supabase, profile.id))) {
-    redirect(`${returnPath}?error=user_position_not_ready`);
-  }
-
-  const targetRoleCode = profile.roles?.code ?? "";
-
-  if (
-    currentRoleCode !== "ADMIN" &&
-    privilegedUserRoleCodes.has(targetRoleCode)
-  ) {
-    redirect(`${returnPath}?error=not_allowed_create_privileged_user`);
-  }
-
-  if (password.length < 8) {
-    redirect(`${returnPath}?error=weak_password`);
-  }
-
-  if (isUnsafeTemporaryPassword(password, email, profile.full_name)) {
-    redirect(`${returnPath}?error=unsafe_temporary_password`);
-  }
-
-  let adminClient: AdminClient;
-
-  try {
-    adminClient = createAdminClient();
-  } catch {
-    redirect(`${returnPath}?error=missing_service_role_key`);
-  }
-
-  let authUserId: string | null = null;
-
-  try {
-    authUserId = await findAuthUserIdByEmail(adminClient, email);
-  } catch {
-    redirect(`${returnPath}?error=auth_user_lookup_failed`);
-  }
-
-  if (!authUserId) {
-    redirect(`${returnPath}?error=auth_user_exists_but_not_found`);
-  }
-
-  const { error } = await adminClient.auth.admin.updateUserById(authUserId, {
-    password,
-  });
-
-  if (error) {
-    redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
-  }
-
-  revalidatePath("/settings");
-  revalidatePath("/settings/scopes");
-  redirect(`${returnPath}?password_updated=1#position-password`);
 }
 
 export async function sendUserPasswordResetEmailAction(formData: FormData) {

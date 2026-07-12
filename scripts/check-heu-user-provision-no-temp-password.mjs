@@ -43,7 +43,7 @@ const createAction =
     ? actions.slice(createStart, createEnd)
     : "";
 const credentialStart = actions.indexOf(
-  "export async function setUserTemporaryPasswordAction",
+  "export async function sendUserPasswordResetEmailAction",
 );
 const credentialEnd = actions.indexOf(
   "export async function updateUserProfileAction",
@@ -84,6 +84,19 @@ requireTokens(credentialActions, "activation gate", [
   "resetPasswordForEmail",
 ]);
 
+for (const forbidden of [
+  "setUserTemporaryPasswordAction",
+  "auth.admin.updateUserById",
+  'textValue(formData, "password")',
+  "unsafeTemporaryPasswords",
+  "isUnsafeTemporaryPassword",
+  "password_updated=1",
+]) {
+  if (actions.includes(forbidden)) {
+    failures.push(`settings actions contain operator password write: ${forbidden}`);
+  }
+}
+
 if (
   credentialActions.indexOf("user_activation_not_ready") >
   credentialActions.indexOf("resetPasswordForEmail")
@@ -110,7 +123,21 @@ requireTokens(positionMatrix, "position-scoped Smart guidance", [
   'data-heu-position-smart-mode="DRAFT_CHECK_SUGGEST_ONLY"',
   "Một tài khoản vận hành = một vị trí ACTIVE",
   "Smart quản trị đi theo đúng vị trí và scope",
+  "App không thu hoặc đặt mật khẩu tạm",
+  "sendUserPasswordResetEmailAction",
 ]);
+
+for (const forbidden of [
+  "setUserTemporaryPasswordAction",
+  'name="password"',
+  'type="password"',
+  "set-password-value",
+  "Đặt mật khẩu tạm",
+]) {
+  if (positionMatrix.includes(forbidden)) {
+    failures.push(`position matrix contains operator password input: ${forbidden}`);
+  }
+}
 
 requireTokens(positionMatrixSql, "database one-account-one-position guard", [
   "idx_heu_position_assignments_active_user",
@@ -160,7 +187,7 @@ if (failures.length > 0) {
 }
 
 console.log("HEU_USER_PROVISION_NO_TEMP_PASSWORD: PASS_LOCAL");
-console.log("Operator-known temporary password: NO_GO");
+console.log("Operator-known temporary password: BLOCKED_BY_CODE");
 console.log("Email at provisioning time: NO_GO");
 console.log("One account / one ACTIVE position: PASS_LOCAL_GUARDED");
 console.log("Position Smart mode: DRAFT_CHECK_SUGGEST_ONLY");

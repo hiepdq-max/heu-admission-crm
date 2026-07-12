@@ -35,7 +35,6 @@ type ScopePageProps = {
     profile_linked?: string;
     auth_user_existing?: string;
     position_assigned?: string;
-    password_updated?: string;
     password_email_sent?: string;
     error?: string;
   }>;
@@ -58,15 +57,12 @@ const errorMessages: Record<string, string> = {
   user_already_has_active_position:
     "Một tài khoản chỉ được giữ một vị trí ACTIVE. Người kiêm nhiệm phải dùng tài khoản vận hành riêng cho từng vị trí.",
   user_position_not_ready:
-    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi đặt hoặc gửi email mật khẩu.",
+    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi gửi email recovery.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
   missing_role: "Thiếu role cần gán cho user mới.",
   not_allowed_scope: "Bạn không có quyền phân phạm vi cho tài khoản này.",
-  weak_password: "Mật khẩu tạm cần tối thiểu 8 ký tự.",
-  unsafe_temporary_password:
-    "Mật khẩu tạm quá dễ đoán hoặc chứa email/tên user. Hãy tạo mật khẩu tạm riêng và gửi qua kênh bảo mật.",
   missing_service_role_key:
     "Chưa cấu hình SUPABASE_SERVICE_ROLE_KEY nên app chưa thể tạo tài khoản đăng nhập tự động.",
   auth_user_lookup_failed:
@@ -84,7 +80,7 @@ const errorMessages: Record<string, string> = {
   not_allowed_position_assignment:
     "Bạn chưa có quyền permission_matrix.manage để gán vị trí chuẩn.",
   missing_password_reset_data:
-    "Thiếu email hoặc mật khẩu tạm cần xử lý.",
+    "Thiếu email cần gửi recovery.",
   missing_password_user:
     "Email này chưa có profile trong CRM. Hãy tạo/link Auth user vào users_profile trước.",
   invalid_lead_visibility: "Mức hiển thị lead không hợp lệ.",
@@ -280,11 +276,9 @@ export default async function ScopeSettingsPage({
           ? "Đã liên kết Auth user vào CRM."
           : params?.position_assigned
             ? "Đã gán user vào vị trí chuẩn."
-            : params?.password_updated
-              ? "Đã đặt mật khẩu tạm mới cho user."
-              : params?.password_email_sent
-                ? "Đã gửi email đặt lại mật khẩu qua Supabase Auth."
-                : undefined;
+            : params?.password_email_sent
+              ? "Đã gửi email đặt lại mật khẩu qua Supabase Auth."
+              : undefined;
 
   return (
     <AppShell
@@ -359,7 +353,6 @@ export default async function ScopeSettingsPage({
           }))}
           canManageAssignments={canManagePositionMatrix}
           canManagePasswords={canManagePasswords}
-          hasServiceRoleKey={hasServiceRoleKey}
           returnPath="/settings/scopes"
           loadError={positionMatrixRowsError?.message}
         />

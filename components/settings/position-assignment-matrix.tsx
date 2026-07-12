@@ -14,7 +14,6 @@ import {
 import {
   assignHeuPositionByEmailAction,
   sendUserPasswordResetEmailAction,
-  setUserTemporaryPasswordAction,
 } from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
 
@@ -52,7 +51,6 @@ type PositionAssignmentMatrixProps = {
   users: PositionAssignmentUserOption[];
   canManageAssignments: boolean;
   canManagePasswords: boolean;
-  hasServiceRoleKey: boolean;
   returnPath?: "/settings" | "/settings/scopes";
   loadError?: string;
 };
@@ -226,7 +224,6 @@ export function PositionAssignmentMatrix({
   users,
   canManageAssignments,
   canManagePasswords,
-  hasServiceRoleKey,
   returnPath = "/settings/scopes",
   loadError,
 }: PositionAssignmentMatrixProps) {
@@ -580,66 +577,10 @@ export function PositionAssignmentMatrix({
                 </h3>
               </div>
               <p className="mt-1 break-words text-xs leading-5 text-zinc-500">
-                Chỉ xử lý cho email đã có profile. Không hiển thị, không log và
-                không gửi mật khẩu thô qua chat/email thường.
+                App không thu hoặc đặt mật khẩu tạm. User tự đặt mật khẩu qua
+                email recovery sau khi profile, scope và vị trí đạt gate.
               </p>
             </div>
-
-            <form
-              action={setUserTemporaryPasswordAction}
-              className="min-w-0 space-y-3 overflow-hidden rounded-lg border border-zinc-200 bg-white p-4"
-            >
-              <input type="hidden" name="return_to" value={returnPath} />
-              <div className="space-y-2">
-                <label
-                  htmlFor="set-password-email"
-                  className="text-xs font-medium text-zinc-700"
-                >
-                  Email user
-                </label>
-                <input
-                  id="set-password-email"
-                  name="email"
-                  type="email"
-                  list="heu-position-user-email-options"
-                  className={inputClass}
-                  placeholder="user@heuschool.edu.vn"
-                  disabled={!canManagePasswords || !hasServiceRoleKey}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="set-password-value"
-                  className="text-xs font-medium text-zinc-700"
-                >
-                  Mật khẩu tạm mới
-                </label>
-                <input
-                  id="set-password-value"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  minLength={8}
-                  className={inputClass}
-                  placeholder="Tối thiểu 8 ký tự"
-                  disabled={!canManagePasswords || !hasServiceRoleKey}
-                  required
-                />
-              </div>
-              <Button
-                type="submit"
-                size="sm"
-                disabled={!canManagePasswords || !hasServiceRoleKey}
-              >
-                Đặt mật khẩu tạm
-              </Button>
-              {!hasServiceRoleKey ? (
-                <p className="text-xs leading-5 text-amber-700">
-                  Thiếu SUPABASE_SERVICE_ROLE_KEY nên không thể đặt mật khẩu từ app.
-                </p>
-              ) : null}
-            </form>
 
             <form
               action={sendUserPasswordResetEmailAction}
