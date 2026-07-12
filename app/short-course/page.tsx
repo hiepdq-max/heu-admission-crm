@@ -18,6 +18,7 @@ import {
 } from "@/components/short-course/short-course-dashboard";
 import { ShortCourseAttendancePaymentGapPack } from "@/components/short-course/short-course-attendance-payment-gap-pack";
 import { Button } from "@/components/ui/button";
+import { isPilotBlockedFromNonCoreRoute } from "@/lib/pilot-route-boundary";
 import { createClient } from "@/lib/supabase/server";
 import {
   firstParam,
@@ -349,6 +350,11 @@ export default async function ShortCoursePage({
 
   if (!user) {
     redirect("/login");
+  }
+
+  const { data: pilotRoleCode } = await supabase.rpc("current_user_role_code");
+  if (isPilotBlockedFromNonCoreRoute(pilotRoleCode as string | null)) {
+    redirect("/");
   }
 
   const resolvedSearchParams = searchParams ? await searchParams : {};
