@@ -9,6 +9,7 @@ const requiredTokens = [
   "ROLLBACK_SCOPED_LEAD_ACTOR_REPAIR",
   "HEU_ACTOR_REPAIR_EXPECTED_COUNT",
   "HEU_ACTOR_REPAIR_SNAPSHOT_PATH",
+  "HEU_ACTOR_REPAIR_OPERATOR_USER_ID",
   "HEU-ADM-ACTOR-",
   'position_code", "TUYEN_SINH_HEAD',
   "targetProfile?.status !== \"ACTIVE\"",
@@ -22,6 +23,7 @@ const requiredTokens = [
   "restored === snapshot.rows.length",
   'action: "HEU_ADMISSION_ACTOR_REASSIGNED"',
   'entity_type: "leads"',
+  '["ADMIN", "IT_DATA", "AUDIT", "IT_DATA_HEAD"]',
   "hard_delete=0",
 ];
 const forbiddenPatterns = [

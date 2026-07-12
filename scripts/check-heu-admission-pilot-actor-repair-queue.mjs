@@ -55,7 +55,7 @@ const [leadsResult, positionsResult, assignmentsResult, profilesResult, scopesRe
       .from("heu_position_assignments")
       .select("position_id,user_id,assignment_status,status")
       .eq("status", "ACTIVE"),
-    client.from("users_profile").select("id,status"),
+    client.from("users_profile").select("id,status,roles(code)"),
     client
       .from("user_admission_segment_scopes")
       .select("user_id,segment_id,status")
@@ -104,13 +104,26 @@ const excludedOutOfScopeRows = repairRows.length - eligibleRepairRows.length;
 const uniqueCurrentActors = new Set(
   repairRows.map((lead) => lead.assigned_to).filter(Boolean),
 );
+const allowedOperatorRoles = new Set([
+  "ADMIN",
+  "IT_DATA",
+  "AUDIT",
+  "IT_DATA_HEAD",
+]);
+const eligibleOperators = [...profiles.values()].filter((profile) => {
+  const roleCode = Array.isArray(profile.roles)
+    ? profile.roles[0]?.code
+    : profile.roles?.code;
+  return profile.status === "ACTIVE" && allowedOperatorRoles.has(roleCode);
+});
 
 const ready =
   Boolean(position) &&
   Boolean(assignment) &&
   targetProfile?.status === "ACTIVE" &&
   targetScopes.size > 0 &&
-  eligibleRepairRows.length > 0;
+  eligibleRepairRows.length > 0 &&
+  eligibleOperators.length > 0;
 
 console.log("HEU admission pilot actor repair queue (READ_ONLY)");
 console.log(
@@ -123,12 +136,13 @@ console.log(
     `target_assignment_present=${Boolean(assignment)}`,
     `target_profile_active=${targetProfile?.status === "ACTIVE"}`,
     `target_active_segment_scopes=${targetScopes.size}`,
+    `eligible_control_operators=${eligibleOperators.length}`,
   ].join("; "),
 );
 console.log(
   ready
     ? "READY ACTOR-REPAIR-QUEUE: snapshot and soft rollback plan may be prepared; no mutation executed."
-    : "NO_GO ACTOR-REPAIR-QUEUE: target owner/scope is not ready; no mutation executed.",
+    : "NO_GO ACTOR-REPAIR-QUEUE: target owner/scope or controlled operator is not ready; no mutation executed.",
 );
 
 if (!ready) process.exitCode = 1;
