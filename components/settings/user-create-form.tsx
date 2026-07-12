@@ -87,9 +87,9 @@ function UserCreateSubmitButton({
         <UserPlus className="size-4" />
       )}
       {pending
-        ? "Đang tạo user..."
+        ? "Đang tạo user chờ kích hoạt..."
         : canCreateAuthUser
-          ? "Tạo user"
+          ? "Tạo user chưa kích hoạt"
           : disabledButtonLabel}
     </Button>
   );
@@ -200,11 +200,11 @@ export function UserCreateForm({
       <div className="border-b border-zinc-200 p-5">
         <div className="flex items-center gap-2">
           <UserPlus className="size-4 text-zinc-500" />
-          <h2 className="text-base font-semibold">Tạo tài khoản user</h2>
+          <h2 className="text-base font-semibold">Tạo user chưa kích hoạt</h2>
         </div>
         <p className="mt-1 text-sm leading-6 text-zinc-500">
-          Tạo tài khoản đăng nhập Supabase Auth, sau đó gắn profile, phòng ban,
-          role và người quản lý trong CRM. Chức năng này chỉ dành cho ADMIN.
+          App tạo Auth user không có mật khẩu và profile INACTIVE. Sau khi gắn
+          scope đầy đủ, IT_DATA mới chuyển ACTIVE và gửi email đặt mật khẩu.
         </p>
       </div>
 
@@ -254,32 +254,17 @@ export function UserCreateForm({
             />
           </div>
 
-          <div className="space-y-2">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-zinc-700"
-            >
-              Mật khẩu tạm <span className="text-rose-600">*</span>
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              aria-describedby="temporary-password-help"
-              className={inputClass}
-              placeholder="Tối thiểu 8 ký tự"
-            />
-            <p
-              id="temporary-password-help"
-              className="text-xs leading-5 text-amber-700"
-            >
-              Dùng mật khẩu tạm riêng cho user mới, không dùng mật khẩu thật,
-              không gửi qua Codex/chat, email thường, ghi chú hay file đính kèm.
-              Yêu cầu đổi mật khẩu qua kênh bảo mật sau lần đăng nhập đầu.
-              Không hiển thị key, không ghi log mật khẩu tạm.
+          <div
+            className="rounded-md border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900"
+            data-heu-user-create-deferred-activation="NO_TEMP_PASSWORD_NO_EMAIL"
+            data-heu-auth-activation-lock="BANNED_UNTIL_POSITION_AND_EMAIL"
+          >
+            <p className="font-semibold">Provision trước, kích hoạt sau</p>
+            <p className="mt-1 text-xs leading-5 text-sky-800">
+              App không thu mật khẩu tạm và không gửi email lúc tạo. User mới
+              ở trạng thái INACTIVE. Chỉ gửi email đặt mật khẩu sau khi role,
+              department và scope đã được kiểm tra. Không sao chép link, OTP,
+              token hoặc mật khẩu vào Git/Codex/chat.
             </p>
           </div>
 

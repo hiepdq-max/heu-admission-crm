@@ -47,8 +47,34 @@ type CurrentProfileRow = {
 };
 
 const errorMessages: Record<string, string> = {
+  activation_audit_log_failed:
+    "Khong ghi duoc audit log activation. Auth user tiep tuc bi khoa va luong kich hoat dung lai.",
+  activation_requires_position_assignment:
+    "Khong kich hoat user truc tiep. Hay gan vi tri de app kich hoat profile trong luong co kiem soat.",
+  active_user_without_position_requires_review:
+    "Profile ACTIVE nhung chua co vi tri. Dung thao tac va de IT_DATA/Audit kiem tra truoc khi gan.",
+  auth_user_activation_lock_failed:
+    "Khong khoa duoc Auth user truoc khi gan vi tri. User van bi chan kich hoat.",
+  auth_user_activation_unlock_failed:
+    "Khong mo khoa duoc Auth user. Email kich hoat chua duoc gui.",
+  auth_user_requires_controlled_link:
+    "Auth user da ton tai. Khong duoc ghi de profile; can IT_DATA/Audit xu ly theo luong link co kiem soat.",
+  manual_auth_link_disabled:
+    "Da khoa luong link Auth legacy vi RPC cu tu dat profile ACTIVE.",
+  profile_activation_failed:
+    "Khong kich hoat duoc profile trong luong gan vi tri; Auth user van bi khoa.",
   missing_new_user_data:
-    "Thiếu email, họ tên, mật khẩu tạm hoặc role của user mới.",
+    "Thieu email, ho ten hoac role cua user moi.",
+  missing_new_user_department:
+    "User nghiep vu phai co phong ban truoc khi provision.",
+  user_activation_not_ready:
+    "User phai ACTIVE va co phong ban truoc khi gui email dat mat khau.",
+  user_position_requires_active_profile:
+    "Hãy lưu scope, sau đó chuyển profile ACTIVE trước khi gắn vị trí. User vẫn chưa có credential ở bước này.",
+  user_already_has_active_position:
+    "Một tài khoản chỉ được giữ một vị trí ACTIVE. Người kiêm nhiệm phải dùng tài khoản vận hành riêng cho từng vị trí.",
+  user_position_not_ready:
+    "Chưa được cấp credential: user phải có đúng một vị trí ACTIVE trước khi đặt hoặc gửi email mật khẩu.",
   missing_auth_link_data:
     "Thiếu email, họ tên hoặc role để liên kết Auth user vào CRM.",
   missing_user: "Thiếu user cần cập nhật phạm vi.",
@@ -265,7 +291,7 @@ export default async function ScopeSettingsPage({
     : params?.updated
       ? "Đã cập nhật phân công phòng ban/nhiệm vụ."
       : params?.user_created
-        ? "Đã tạo tài khoản user mới."
+        ? "Đã tạo Auth user không mật khẩu và profile INACTIVE. Chưa gửi email."
         : params?.profile_linked
           ? "Đã liên kết Auth user vào CRM."
           : params?.position_assigned

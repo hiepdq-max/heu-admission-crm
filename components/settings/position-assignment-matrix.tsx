@@ -340,6 +340,29 @@ export function PositionAssignmentMatrix({
           </div>
         ) : null}
 
+        <div
+          data-heu-one-account-one-position="ENFORCED"
+          data-heu-position-smart-mode="DRAFT_CHECK_SUGGEST_ONLY"
+          data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"
+          className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950"
+        >
+          <h3 className="font-semibold">
+            Một tài khoản vận hành = một vị trí ACTIVE
+          </h3>
+          <p className="mt-1 leading-6 text-sky-900">
+            Người kiêm nhiệm dùng tài khoản vận hành riêng cho từng vị trí; hệ
+            thống không cộng dồn quyền BGH, Trưởng phòng hoặc nhân viên vào một
+            tài khoản. Trình tự pilot: provision INACTIVE, lưu scope, chuyển
+            ACTIVE khi chưa có credential, gắn vị trí, rồi mới gửi email đặt
+            mật khẩu.
+          </p>
+          <p className="mt-2 text-xs leading-5 text-sky-800">
+            Smart quản trị đi theo đúng vị trí và scope: chỉ kiểm tra, gợi ý,
+            soạn nháp; không tự ghi dữ liệu thật, phê duyệt, gửi email, chi tiền
+            hoặc mở production.
+          </p>
+        </div>
+
         <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
             label="Tổng vị trí"
