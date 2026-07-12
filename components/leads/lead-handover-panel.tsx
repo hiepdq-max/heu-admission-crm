@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import {
   ArrowRightLeft,
+  AlertTriangle,
   CheckCircle2,
   ClipboardCheck,
   Clock3,
@@ -44,7 +45,16 @@ type LeadHandoverPanelProps = {
   leadId: string;
   handovers: LeadHandoverRow[];
   users: LookupRow[];
+  readiness: LeadHandoverReadiness;
   loadError?: string;
+};
+
+export type LeadHandoverReadiness = {
+  leadStatus: string;
+  programSelected: boolean;
+  requiredCount: number;
+  checkedRequiredCount: number;
+  ready: boolean;
 };
 
 type HandoverAcceptanceItem = {
@@ -232,9 +242,11 @@ function fieldError(state: HandoverFormState, name: string) {
 function CreateHandoverForm({
   leadId,
   activeTypes,
+  readiness,
 }: {
   leadId: string;
   activeTypes: Set<string>;
+  readiness: LeadHandoverReadiness;
 }) {
   const [state, formAction, isPending] = useActionState(
     createLeadHandoverAction,
@@ -291,7 +303,7 @@ function CreateHandoverForm({
         </div>
 
         <div className="flex items-end">
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={isPending || !readiness.ready}>
             {isPending ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
@@ -301,6 +313,13 @@ function CreateHandoverForm({
           </Button>
         </div>
       </div>
+
+      {!readiness.ready ? (
+        <p className="mt-3 text-xs font-medium text-amber-800">
+          Nút bàn giao được mở khi trạng thái lead, chương trình và toàn bộ hồ
+          sơ bắt buộc đã được kiểm tra hợp lệ.
+        </p>
+      ) : null}
 
       {state.error ? (
         <div className="mt-3 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
@@ -412,6 +431,7 @@ export function LeadHandoverPanel({
   leadId,
   handovers,
   users,
+  readiness,
   loadError,
 }: LeadHandoverPanelProps) {
   const userMap = toMap(users);
@@ -442,6 +462,62 @@ export function LeadHandoverPanel({
       </div>
 
       <div className="space-y-5 p-5">
+        <div
+          className={`rounded-md border p-4 ${
+            readiness.ready
+              ? "border-emerald-200 bg-emerald-50"
+              : "border-amber-200 bg-amber-50"
+          }`}
+          data-heu-handover-readiness={readiness.ready ? "READY" : "BLOCKED"}
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3">
+              {readiness.ready ? (
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-emerald-700" />
+              ) : (
+                <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-700" />
+              )}
+              <div>
+                <p className="font-semibold text-zinc-950">
+                  {readiness.ready
+                    ? "Hồ sơ đã sẵn sàng để yêu cầu bàn giao"
+                    : "Hồ sơ chưa sẵn sàng bàn giao"}
+                </p>
+                <p className="mt-1 text-sm text-zinc-700">
+                  {readiness.checkedRequiredCount}/{readiness.requiredCount} hồ
+                  sơ bắt buộc đã CHECKED đầy đủ người và thời điểm kiểm tra.
+                </p>
+                {!readiness.programSelected ? (
+                  <p className="mt-1 text-sm text-amber-800">
+                    Chưa chọn chương trình quan tâm cho lead.
+                  </p>
+                ) : null}
+                {!["DOCUMENT_SUBMITTED", "ELIGIBLE", "ENROLLED"].includes(
+                  readiness.leadStatus,
+                ) ? (
+                  <p className="mt-1 text-sm text-amber-800">
+                    Trạng thái lead hiện tại chưa cho phép bàn giao.
+                  </p>
+                ) : null}
+                {readiness.programSelected && readiness.requiredCount === 0 ? (
+                  <p className="mt-1 text-sm text-amber-800">
+                    Chưa cấu hình checklist bắt buộc phù hợp với chương trình.
+                  </p>
+                ) : null}
+                <p className="mt-2 text-xs text-zinc-600">
+                  Server sẽ kiểm tra lại packet và P0-19 khi gửi; giao diện này
+                  không thay thế kiểm soát nghiệp vụ.
+                </p>
+              </div>
+            </div>
+            <a
+              href="#documents"
+              className="shrink-0 text-sm font-medium text-blue-700 underline-offset-4 hover:underline"
+            >
+              Kiểm tra checklist hồ sơ
+            </a>
+          </div>
+        </div>
         <div
           className="border-l-2 border-sky-300 bg-sky-50/70 p-4 text-sm"
           data-heu-lead-handover-acceptance-matrix="P3-02"
@@ -552,7 +628,11 @@ export function LeadHandoverPanel({
           </div>
         ) : null}
 
-        <CreateHandoverForm leadId={leadId} activeTypes={activeTypes} />
+        <CreateHandoverForm
+          leadId={leadId}
+          activeTypes={activeTypes}
+          readiness={readiness}
+        />
 
         <div className="space-y-3">
           <h4 className="text-sm font-semibold">Lịch sử bàn giao</h4>
