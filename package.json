@@ -13,6 +13,7 @@
     "check:heu-cthssv-local-completion": "node scripts/check-heu-cthssv-local-completion.mjs",
     "check:heu-lead-import-scope-readiness": "node scripts/check-heu-lead-import-scope-readiness.mjs",
     "check:heu-admission-pilot-lifecycle-uat": "node scripts/check-heu-admission-pilot-lifecycle-uat.mjs",
+    "check:heu-admission-pilot-actor-repair-queue": "node scripts/check-heu-admission-pilot-actor-repair-queue.mjs",
     "check:heu-hou-scope-readiness": "node scripts/check-heu-hou-scope-readiness.mjs",
     "check:heu-short-course-scope-readiness": "node scripts/check-heu-short-course-scope-readiness.mjs",
     "check:heu-short-course-role-negative-access": "node scripts/check-heu-short-course-role-negative-access.mjs",
