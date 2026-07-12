@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 
+import { DemoWorkbench } from "@/components/demo/demo-workbench";
 import {
   getHeuDemoRole,
   getHeuDemoRoleDirectory,
@@ -94,33 +95,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps) {
           </aside>
 
           <section className="space-y-6">
-            <div className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <p className="font-mono text-xs font-semibold text-blue-700">
-                    DEMO_ROLE / {selectedRole.roleCode}
-                  </p>
-                  <h2 className="mt-2 text-2xl font-semibold">{selectedRole.title}</h2>
-                  <p className="mt-2 text-sm text-slate-600">
-                    {selectedRole.department} · {selectedRole.scope}
-                  </p>
-                </div>
-                <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700">
-                  KHÔNG GHI DỮ LIỆU
-                </span>
-              </div>
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                {selectedRole.lanes.map((lane) => (
-                  <article key={lane} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-sm font-semibold text-slate-800">{lane}</p>
-                    <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-                      <CheckCircle2 className="size-4 text-blue-600" />
-                      3 mục mô phỏng
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
+            <DemoWorkbench key={selectedRole.key} role={selectedRole} />
 
             <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-950">
               <p className="font-semibold">Ranh giới kiểm thử</p>
