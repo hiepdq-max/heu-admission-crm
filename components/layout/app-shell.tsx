@@ -828,7 +828,10 @@ export async function AppShell({
           </header>
 
           {workspace ? (
-            <div className="border-b border-zinc-200 bg-white px-4 py-3 lg:px-8">
+            <div
+              id="p0-13-workspace"
+              className="scroll-mt-4 border-b border-zinc-200 bg-white px-4 py-3 lg:px-8"
+            >
               <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                   <div className="min-w-0">
