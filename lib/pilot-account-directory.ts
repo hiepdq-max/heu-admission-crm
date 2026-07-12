@@ -34,7 +34,7 @@ function parsePilotAccounts(value: string | undefined): HeuPilotAccount[] {
           item.roleLabel &&
           item.scopeLabel,
       )
-      .slice(0, 7);
+      .slice(0, 12);
   } catch {
     return [];
   }
