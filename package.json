@@ -13,6 +13,8 @@
     "check:heu-cthssv-local-completion": "node scripts/check-heu-cthssv-local-completion.mjs",
     "check:heu-lead-import-scope-readiness": "node scripts/check-heu-lead-import-scope-readiness.mjs",
     "check:heu-admission-pilot-lifecycle-uat": "node scripts/check-heu-admission-pilot-lifecycle-uat.mjs",
+    "check:heu-admission-pilot-lifecycle-live-readiness": "node scripts/check-heu-admission-pilot-lifecycle-live-readiness.mjs",
+    "check:heu-admission-pilot-lifecycle-live-readiness-static": "node scripts/check-heu-admission-pilot-lifecycle-live-readiness-static.mjs",
     "check:heu-admission-pilot-actor-repair-queue": "node scripts/check-heu-admission-pilot-actor-repair-queue.mjs",
     "check:heu-admission-actor-repair-controlled-apply": "node scripts/check-heu-admission-actor-repair-controlled-apply.mjs",
     "apply:heu-pilot-accounting-readonly-scope": "node scripts/apply-heu-pilot-accounting-readonly-scope.mjs",
