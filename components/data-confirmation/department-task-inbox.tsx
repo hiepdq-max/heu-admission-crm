@@ -92,12 +92,12 @@ export function DepartmentTaskInbox({
               HEU-Data-003 · Department Task Inbox MVP
             </p>
             <h2 className="mt-1 text-base font-semibold text-zinc-950">
-              Viec cua toi theo phong ban
+              Việc của tôi theo phòng ban
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-600">
-              Inbox nay chi hien lane cong viec dua tren role, workspace va
-              action gate. No khong query bang task that, khong luu raw PII,
-              khong goi AI va khong tao automation step.
+              Inbox này chỉ hiện lane công việc dựa trên role, workspace và
+              action gate. Không query bảng task thật, không lưu raw PII,
+              không gọi AI và không tạo automation step.
             </p>
           </div>
           <div className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
@@ -194,21 +194,21 @@ export function DepartmentTaskInbox({
               HEU-Data-009 - UI fallback wiring
             </p>
             <h3 className="mt-1 text-sm font-semibold text-zinc-950">
-              Task mau theo lane dang hien
+              Checklist pilot theo lane đang hiển thị
             </h3>
             <p className="mt-1 max-w-3xl text-sm leading-6 text-zinc-600">
-              Danh sach mau chi de UAT UI/scope; khong phai task that. UI
-              dang di qua fallback source: adapter skeleton bi khoa mac dinh,
-              nen hien mock data va khong doc database, khong goi AI, khong
-              tao automation va khong co nut sua/duyet.
+              Danh sách này chỉ để UAT UI/scope; không phải task live. UI đang
+              đi qua fallback source vì adapter database bị khóa mặc định;
+              không đọc database, không gọi AI, không tạo automation và không
+              có nút sửa/duyệt.
             </p>
           </div>
           <div className="flex flex-col gap-1 text-xs">
             <span className="inline-flex w-fit rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 font-medium text-sky-700">
-              Dữ liệu mẫu an toàn
+              Checklist pilot an toàn
             </span>
             <span className="text-zinc-500">
-              Trạng thái: Chưa kết nối dữ liệu thật
+              Trạng thái: Chưa kết nối dữ liệu Task Center live
             </span>
           </div>
         </div>
