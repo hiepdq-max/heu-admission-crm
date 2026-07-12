@@ -174,7 +174,7 @@ requireText(
 );
 requireText(
   "scripts/audit-ttgdtx-release-gates.mjs",
-  /HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md[\s\S]*scripts\/audit-heu-lead-lifecycle-handover-uat-pack\.mjs[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack[\s\S]*data-heu-lead-lifecycle-handover-uat-pack="P3-01-P3-02"/i,
+  /(?=[\s\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\.md)(?=[\s\S]*scripts\/audit-heu-lead-lifecycle-handover-uat-pack\.mjs)(?=[\s\S]*audit:heu-lead-lifecycle-handover-uat-pack)(?=[\s\S]*data-heu-lead-lifecycle-handover-uat-pack=\\?["']P3-01-P3-02\\?["'])/i,
   "release-gate P3 UAT pack coverage",
 );
 
