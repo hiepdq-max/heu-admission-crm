@@ -109,10 +109,23 @@ export const TASK_CENTER_REQUIRED_COLUMNS = [
 ] as const;
 
 export const TASK_CENTER_ROLE_GROUPS = {
-  admission: ["TUYEN_SINH", "ADMISSION_HEAD", "TEAM_LEAD", "COUNSELOR"],
+  admission: [
+    "TUYEN_SINH",
+    "ADMISSION_HEAD",
+    "PILOT_ADMISSION_HEAD",
+    "TEAM_LEAD",
+    "COUNSELOR",
+    "PILOT_COUNSELOR",
+  ],
   cthssv: ["CTHSSV", "CTHSSV_LEAD"],
   training: ["DAO_TAO", "KHOA", "KHOA_BO_MON", "NGAN_HAN", "HR"],
-  finance: ["KHTC", "ACCOUNTING", "ACCOUNTING_LEAD"],
+  finance: [
+    "KHTC",
+    "ACCOUNTING",
+    "ACCOUNTING_LEAD",
+    "PILOT_ACCOUNTING_LEAD_READONLY",
+    "PILOT_ACCOUNTING_READONLY",
+  ],
   control: ["BGH", "IT_DATA", "AUDIT", "PHAP_CHE", "ADMIN"],
 } as const;
 
