@@ -229,6 +229,10 @@ const riskEscalationRules: Record<string, string> = {
 };
 
 const tokenLabels: Record<string, string> = {
+  PILOT_ACCOUNTING_LEAD_READONLY: "Quản lý kế toán - pilot chỉ đọc",
+  PILOT_ACCOUNTING_READONLY: "Kế toán - pilot chỉ đọc",
+  PILOT_ADMISSION_HEAD: "Trưởng phòng tuyển sinh - pilot",
+  PILOT_COUNSELOR: "Tư vấn tuyển sinh - pilot",
   ACCOUNTING_LEAD: "Trưởng nhóm kế toán",
   ACCOUNTING_STAFF: "Nhân viên kế toán",
   ADMIN: "Quản trị hệ thống",
