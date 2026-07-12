@@ -119,6 +119,9 @@ requireTokens("DCTC-APP-SHELL-MENU", appShell, [
   "allowedRoleCodes: HEU_APP_SHELL_ALL_WORK_ROLE_CODES",
   'data-heu-app-shell-role-scope-menu="HEU_APP_SHELL_ROLE_SCOPE_MENU"',
   "hasAccessRule",
+  'accessMode?: "ANY" | "ALL"',
+  'item.accessMode === "ALL"',
+  "return isRoleAllowed && isPermissionAllowed",
   "HEU_APP_SHELL_LEAD_WRITE_PERMISSIONS.some",
 ]);
 
