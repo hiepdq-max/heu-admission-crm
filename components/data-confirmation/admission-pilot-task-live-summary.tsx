@@ -15,19 +15,27 @@ export function AdmissionPilotTaskLiveSummaryPanel({
 }: Props) {
   if (result.status !== "READY") return null;
 
+  const firstBlockedPacketHref = result.firstBlockedLeadId
+    ? `/leads/${result.firstBlockedLeadId}#documents`
+    : "/leads?quick=documents";
+
   const tasks = [
     {
       code: "PILOT-ADMISSION-ACTOR-001",
       label: "Lead chưa có người phụ trách",
       value: result.missingActorCount,
       href: "/leads?quick=unassigned",
+      actionLabel: "Mở danh sách đúng scope",
       icon: UserRoundX,
     },
     {
       code: "PILOT-ADMISSION-DOCUMENT-002",
       label: "Lead còn thiếu hồ sơ CHECKED",
       value: result.documentBlockedCount,
-      href: "/leads?quick=documents",
+      href: firstBlockedPacketHref,
+      actionLabel: result.firstBlockedLeadId
+        ? "Mở thẳng checklist cần kiểm tra"
+        : "Mở danh sách đúng scope",
       icon: FileWarning,
     },
     {
@@ -35,6 +43,7 @@ export function AdmissionPilotTaskLiveSummaryPanel({
       label: "Packet đủ điều kiện bàn giao",
       value: result.handoverReadyCount,
       href: "/leads?quick=documents",
+      actionLabel: "Mở danh sách đúng scope",
       icon: ClipboardCheck,
     },
   ] as const;
@@ -82,11 +91,18 @@ export function AdmissionPilotTaskLiveSummaryPanel({
               <p className="mt-3 text-sm font-medium text-zinc-900">
                 {task.label}
               </p>
-              <p className="mt-1 text-xs text-zinc-500">Mở danh sách đúng scope</p>
+              <p className="mt-1 text-xs text-zinc-500">{task.actionLabel}</p>
             </Link>
           );
         })}
       </div>
+      {result.documentBlockedCount > 0 ? (
+        <p className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-900">
+          Owner chỉ chuyển giấy tờ sang CHECKED khi đã xem evidence được phép,
+          ghi nhận người và thời điểm kiểm tra. Không dùng nút này để tự động
+          chấp nhận hồ sơ hoặc thay quyết định CTHSSV.
+        </p>
+      ) : null}
     </section>
   );
 }
