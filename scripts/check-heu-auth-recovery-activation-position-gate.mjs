@@ -12,9 +12,13 @@ const read = (file) => {
   return readFileSync(full, "utf8");
 };
 const actionPath = "app/auth/forgot-password/actions.ts";
+const originPath = "lib/auth-recovery-origin.ts";
+const settingsActionPath = "app/settings/actions.ts";
 const formPath = "app/auth/forgot-password/forgot-password-form.tsx";
 const loginPath = "components/auth/login-form.tsx";
 const action = read(actionPath);
+const origin = read(originPath);
+const settingsAction = read(settingsActionPath);
 const form = read(formPath);
 const login = read(loginPath);
 const requireTokens = (source, file, tokens) => tokens.forEach((token) => {
@@ -33,6 +37,12 @@ requireTokens(action, actionPath, [
   ".limit(2)",
   "assignments?.length !== 1",
   "adminClient.auth.resetPasswordForEmail",
+  'import { recoveryRedirectUrl } from "@/lib/auth-recovery-origin"',
+  "redirectTo: await recoveryRedirectUrl()",
+  "catch {",
+  "return { submitted: true }",
+]);
+requireTokens(origin, originPath, [
   "configuredRecoveryOrigin",
   "process.env.NEXT_PUBLIC_SITE_URL",
   "process.env.VERCEL_URL",
@@ -42,8 +52,12 @@ requireTokens(action, actionPath, [
   'parsed.hostname !== "127.0.0.1"',
   'origin.protocol !== "http:"',
   'origin.protocol !== "https:"',
-  "catch {",
-  "return { submitted: true }",
+  'requestHeaders.get("host")',
+  'requestHeaders.get("x-forwarded-proto")',
+]);
+requireTokens(settingsAction, settingsActionPath, [
+  'import { recoveryRedirectUrl } from "@/lib/auth-recovery-origin"',
+  "redirectTo: await recoveryRedirectUrl()",
 ]);
 requireTokens(form, formPath, [
   "requestPasswordRecoveryAction",
@@ -56,9 +70,13 @@ requireTokens(login, loginPath, ['href="/auth/forgot-password"']);
 
 for (const forbidden of ["console.log", "console.error", "serviceRoleKey", "SUPABASE_SERVICE_ROLE_KEY"]) {
   if (action.includes(forbidden)) failures.push(`${actionPath}: forbidden ${forbidden}`);
+  if (origin.includes(forbidden)) failures.push(`${originPath}: forbidden ${forbidden}`);
 }
 if (/resetPasswordForEmail/.test(form)) failures.push(`${formPath}: browser email send forbidden`);
 if (/profileError[^]*return\s+\{\s*(?:error|message)/.test(action)) failures.push(`${actionPath}: differentiated external error forbidden`);
+for (const forbidden of ["x-forwarded-host", "requestOrigin", "passwordRecoveryRedirectUrl"]) {
+  if (settingsAction.includes(forbidden)) failures.push(`${settingsActionPath}: forbidden ${forbidden}`);
+}
 
 if (failures.length) {
   console.error("HEU Auth recovery activation/position gate: FAIL");
