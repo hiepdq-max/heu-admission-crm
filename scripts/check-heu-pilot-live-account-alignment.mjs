@@ -10,6 +10,17 @@ const envPath = path.resolve(
   process.env.HEU_ENV_FILE || ".env.local",
 );
 const contractOnly = process.env.HEU_ALIGNMENT_MODE === "contract";
+const alignmentPhase =
+  process.env.HEU_ALIGNMENT_PHASE === "staged" ? "staged" : "active";
+const stagedAccountCodes = new Set([
+  "heu-system-admin",
+  "tuyen-sinh-truong-phong",
+  "tuyen-sinh-ctv",
+  "khtc-quan-ly",
+  "khtc-thu-chi",
+  "khtc-ngan-hang",
+  "tchc-pho-phong",
+]);
 
 const expectedAccounts = new Map([
   ["heu-system-admin", {
@@ -28,35 +39,35 @@ const expectedAccounts = new Map([
   }],
   ["tuyen-sinh-truong-phong", {
     positionCode: "TUYEN_SINH_HEAD",
-    roleCode: "ADMISSION_HEAD",
+    roleCode: "PILOT_ADMISSION_HEAD",
     departmentCode: "ADMISSION",
     scopePolicy: "ADMISSION_DEPARTMENT",
     expectedProfileStatus: "ACTIVE",
   }],
   ["tuyen-sinh-ctv", {
     positionCode: "TUYEN_SINH_01",
-    roleCode: "COUNSELOR",
+    roleCode: "PILOT_COUNSELOR",
     departmentCode: "ADMISSION",
     scopePolicy: "BLOCKED_OUT_OF_7_DAY_SCOPE",
     expectedProfileStatus: "INACTIVE",
   }],
   ["khtc-quan-ly", {
     positionCode: "KE_TOAN_DEPUTY",
-    roleCode: "ACCOUNTING_LEAD",
+    roleCode: "PILOT_ACCOUNTING_LEAD_READONLY",
     departmentCode: "ACCOUNTING",
     scopePolicy: "NO_BUSINESS_SCOPE",
     expectedProfileStatus: "ACTIVE",
   }],
   ["khtc-thu-chi", {
     positionCode: "KE_TOAN_01",
-    roleCode: "ACCOUNTING",
+    roleCode: "PILOT_ACCOUNTING_READONLY",
     departmentCode: "ACCOUNTING",
     scopePolicy: "NO_BUSINESS_SCOPE",
     expectedProfileStatus: "ACTIVE",
   }],
   ["khtc-ngan-hang", {
     positionCode: "KE_TOAN_02",
-    roleCode: "ACCOUNTING",
+    roleCode: "PILOT_ACCOUNTING_READONLY",
     departmentCode: "ACCOUNTING",
     scopePolicy: "NO_BUSINESS_SCOPE",
     expectedProfileStatus: "ACTIVE",
@@ -136,7 +147,10 @@ function assertContract() {
 
   if (
     expectedAccounts.get("heu-system-admin")?.roleCode !== "IT_DATA_HEAD" ||
-    expectedAccounts.get("khtc-quan-ly")?.roleCode !== "ACCOUNTING_LEAD" ||
+    expectedAccounts.get("tuyen-sinh-truong-phong")?.roleCode !==
+      "PILOT_ADMISSION_HEAD" ||
+    expectedAccounts.get("khtc-quan-ly")?.roleCode !==
+      "PILOT_ACCOUNTING_LEAD_READONLY" ||
     expectedAccounts.get("tuyen-sinh-ctv")?.scopePolicy !==
       "BLOCKED_OUT_OF_7_DAY_SCOPE"
   ) {
@@ -357,6 +371,11 @@ if (
 const authEmails = new Set(
   authResult.users.map((user) => user.email?.toLowerCase()).filter(Boolean),
 );
+const authByEmail = new Map(
+  authResult.users
+    .filter((user) => user.email)
+    .map((user) => [user.email.toLowerCase(), user]),
+);
 const profileByEmail = new Map(
   profilesResult.rows.map((profile) => [profile.email.toLowerCase(), profile]),
 );
@@ -375,8 +394,15 @@ for (const [accountCode, expected] of expectedAccounts) {
   const directory = directoryById.get(accountCode);
   if (!directory) continue;
 
-  if (!authEmails.has(directory.email)) {
+  const authUser = authByEmail.get(directory.email);
+  if (!authEmails.has(directory.email) || !authUser) {
     addFinding(findings, accountCode, "AUTH_MISSING");
+  } else if (
+    alignmentPhase === "staged" &&
+    stagedAccountCodes.has(accountCode) &&
+    (!authUser.banned_until || Date.parse(authUser.banned_until) <= Date.now())
+  ) {
+    addFinding(findings, accountCode, "AUTH_NOT_BANNED_STAGED");
   }
 
   const profile = profileByEmail.get(directory.email);
@@ -385,7 +411,11 @@ for (const [accountCode, expected] of expectedAccounts) {
     continue;
   }
 
-  if (profile.status !== expected.expectedProfileStatus) {
+  const expectedProfileStatus =
+    alignmentPhase === "staged" && stagedAccountCodes.has(accountCode)
+      ? "INACTIVE"
+      : expected.expectedProfileStatus;
+  if (profile.status !== expectedProfileStatus) {
     addFinding(findings, accountCode, "PROFILE_STATUS_MISMATCH");
   }
   if (roleById.get(profile.role_id) !== expected.roleCode) {
@@ -469,6 +499,7 @@ const alignedCount = [...expectedAccounts.keys()].filter(
 ).length;
 
 console.log(`pilot_accounts=9`);
+console.log(`alignment_phase=${alignmentPhase}`);
 console.log(`aligned_accounts=${alignedCount}`);
 console.log(`finding_count=${findings.length}`);
 console.log("raw_identity_output=BLOCKED");
