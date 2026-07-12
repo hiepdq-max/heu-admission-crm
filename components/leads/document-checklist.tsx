@@ -13,6 +13,7 @@ type ChecklistRow = {
   id: string;
   document_code: string;
   document_name: string;
+  applies_to_program: string | null;
   is_required: boolean;
   sort_order: number;
 };
@@ -24,6 +25,7 @@ type LeadDocumentRow = {
   status: string;
   file_url: string | null;
   note: string | null;
+  checked_by: string | null;
   checked_at: string | null;
 };
 

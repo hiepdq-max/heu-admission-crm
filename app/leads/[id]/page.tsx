@@ -143,6 +143,7 @@ type ChecklistRow = {
   id: string;
   document_code: string;
   document_name: string;
+  applies_to_program: string | null;
   is_required: boolean;
   sort_order: number;
 };
@@ -154,6 +155,7 @@ type LeadDocumentRow = {
   status: string;
   file_url: string | null;
   note: string | null;
+  checked_by: string | null;
   checked_at: string | null;
 };
 
@@ -341,13 +343,17 @@ export default async function LeadDetailPage({ params }: PageProps) {
     supabase.from("roles").select("id,code").returns<RoleLookupRow[]>(),
     supabase
       .from("enrollment_checklists")
-      .select("id,document_code,document_name,is_required,sort_order")
+      .select(
+        "id,document_code,document_name,applies_to_program,is_required,sort_order",
+      )
       .eq("status", "ACTIVE")
       .order("sort_order", { ascending: true })
       .returns<ChecklistRow[]>(),
     supabase
       .from("lead_documents")
-      .select("id,checklist_id,document_type,status,file_url,note,checked_at")
+      .select(
+        "id,checklist_id,document_type,status,file_url,note,checked_by,checked_at",
+      )
       .eq("lead_id", lead.id)
       .returns<LeadDocumentRow[]>(),
     supabase
@@ -546,6 +552,44 @@ export default async function LeadDetailPage({ params }: PageProps) {
       return !document || !readyDocumentStatuses.has(document.status);
     })
     .map((item) => item.document_name);
+  const normalizedInterestedProgram = lead.interested_program
+    ?.trim()
+    .toUpperCase();
+  const handoverRequiredChecklistRows = requiredChecklistRows.filter((item) => {
+    const appliesToProgram = item.applies_to_program?.trim().toUpperCase();
+
+    return (
+      !appliesToProgram ||
+      (!!normalizedInterestedProgram && appliesToProgram === normalizedInterestedProgram)
+    );
+  });
+  const handoverCheckedRequiredCount = handoverRequiredChecklistRows.filter(
+    (item) => {
+      const document = documentByChecklistId.get(item.id);
+
+      return (
+        document?.status === "CHECKED" &&
+        !!document.checked_by &&
+        !!document.checked_at
+      );
+    },
+  ).length;
+  const handoverReadyLeadStatuses = new Set([
+    "DOCUMENT_SUBMITTED",
+    "ELIGIBLE",
+    "ENROLLED",
+  ]);
+  const handoverReadiness = {
+    leadStatus: lead.status,
+    programSelected: !!normalizedInterestedProgram,
+    requiredCount: handoverRequiredChecklistRows.length,
+    checkedRequiredCount: handoverCheckedRequiredCount,
+    ready:
+      handoverReadyLeadStatuses.has(lead.status) &&
+      !!normalizedInterestedProgram &&
+      handoverRequiredChecklistRows.length > 0 &&
+      handoverCheckedRequiredCount === handoverRequiredChecklistRows.length,
+  };
   const conditionCheckByCode = new Map(
     conditionChecks.map((check) => [check.condition_code, check]),
   );
@@ -746,6 +790,7 @@ export default async function LeadDetailPage({ params }: PageProps) {
         leadId={lead.id}
         handovers={handoversResult.data ?? []}
         users={toLookup(userRowsResult.data, "full_name")}
+        readiness={handoverReadiness}
         loadError={handoversResult.error?.message}
       />
       <div id="conditions" className="scroll-mt-24">
