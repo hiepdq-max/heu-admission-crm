@@ -15,22 +15,23 @@ function requireTokens(label, tokens) {
 }
 
 requireTokens("control contract", [
-  "HEU-USER-PILOT-002-ANONYMOUS-ACCOUNT-POSITION-ACTIVATION-PACKET",
+  "HEU-USER-PILOT-002-NINE-ACCOUNT-POSITION-SCOPE-CONTRACT",
   "Stage D - internal controlled test only",
   "Production status: NO-GO",
-  "Every row is one independent Auth account and one active operating position",
+  "Every row is one independent Auth account and exactly one operating position",
   "No account may union two positions, departments or workspaces",
-  "controlled_people=7",
-  "pilot_accounts=8",
-  "dual_role_people=1",
-  "positions_with_matching_active_profiles=0",
-  "positions_needing_owner_create_or_link=11",
+  "pilot_accounts=9",
+  "auth_accounts_found=5",
+  "profiles_found=3",
+  "active_position_assignments_found=2",
+  "accounts_with_broad_lead_visibility=1",
+  "required_new_position_master_rows=2",
   "database_write=NOT_PERFORMED",
 ]);
 
 requireTokens("activation guards", [
-  "Provision the Auth user without a password and without sending email",
-  "Create or link the CRM profile as `INACTIVE`",
+  "Provision Auth without a temporary/default password",
+  "Create or link the profile as `INACTIVE`",
   "Assign exactly one `ACTIVE_ASSIGNED` position",
   "no broad fallback is allowed",
   "DRAFT_CHECK_SUGGEST",
@@ -38,14 +39,15 @@ requireTokens("activation guards", [
 ]);
 
 const expectedRows = new Map([
-  ["PILOT-EXEC-01", ["HT", "BGH", "HEU:EXECUTIVE", "READ_ONLY", "VERIFY_EXISTING_OR_CREATE"]],
-  ["PILOT-ADMISSION-HEAD-01", ["TUYEN_SINH_HEAD", "PHONG_TUYEN_SINH", "HEU:ADMISSION", "OPERATIONAL_DRAFT", "CREATE_OR_LINK"]],
-  ["PILOT-ACCOUNTING-OPS-01", ["KE_TOAN_01", "PHONG_KHTC", "HEU:FINANCE", "READ_ONLY_DRAFT", "CREATE_OR_LINK"]],
-  ["PILOT-ACCOUNTING-OPS-02", ["KE_TOAN_02", "PHONG_KHTC", "HEU:FINANCE", "READ_ONLY_DRAFT", "CREATE_OR_LINK"]],
-  ["PILOT-ACCOUNTING-MANAGER-01", ["KE_TOAN_03", "PHONG_KHTC", "HEU:FINANCE", "READ_ONLY_NO_APPROVE", "CREATE_OR_LINK"]],
-  ["PILOT-TCHC-HEAD-01", ["TCHC_HEAD", "TCHC", "HEU:TCHC", "OPERATIONAL_DRAFT", "VERIFY_EXISTING_OR_CREATE"]],
+  ["PILOT-SYSTEM-ADMIN-01", ["HEU_SYSTEM_ADMIN", "IT_DATA", "HEU:SYSTEM", "CONTROL_ONLY_NO_BUSINESS_DATA", "POSITION_MASTER_REQUIRED"]],
+  ["PILOT-EXEC-01", ["HT", "LEADERSHIP", "HEU:EXECUTIVE", "READ_ONLY", "VERIFY_EXISTING"]],
+  ["PILOT-ADMISSION-HEAD-01", ["TUYEN_SINH_HEAD", "ADMISSION", "HEU:ADMISSION", "OPERATIONAL_DRAFT", "CREATE_OR_LINK"]],
+  ["PILOT-ADMISSION-CTV-HOLD-01", ["TUYEN_SINH_01", "ADMISSION", "NO_ACTIVE_WORKSPACE", "BLOCKED_OUT_OF_7_DAY_SCOPE", "VERIFY_AUTH_OR_CREATE"]],
+  ["PILOT-ACCOUNTING-MANAGER-01", ["KE_TOAN_DEPUTY", "ACCOUNTING", "HEU:FINANCE", "READ_ONLY_DRAFT_NO_APPROVE", "POSITION_MASTER_REQUIRED"]],
+  ["PILOT-ACCOUNTING-OPS-01", ["KE_TOAN_01", "ACCOUNTING", "HEU:FINANCE", "READ_ONLY_DRAFT", "CREATE_OR_LINK"]],
+  ["PILOT-ACCOUNTING-OPS-02", ["KE_TOAN_02", "ACCOUNTING", "HEU:FINANCE", "READ_ONLY_DRAFT", "CREATE_OR_LINK"]],
+  ["PILOT-TCHC-HEAD-01", ["TCHC_HEAD", "TCHC", "HEU:TCHC", "OPERATIONAL_DRAFT", "VERIFY_EXISTING"]],
   ["PILOT-TCHC-DEPUTY-01", ["TCHC_DEPUTY", "TCHC", "HEU:TCHC", "OPERATIONAL_DRAFT_NO_FINAL_APPROVE", "CREATE_OR_LINK"]],
-  ["PILOT-HOU-RECRUITMENT-CTV-01", ["TUYEN_SINH_01", "PHONG_TUYEN_SINH", "HOU:ADMISSION:OWN", "OWN_LEADS_ONLY_NO_COM", "BLOCKED_LEGAL_SCOPE"]],
 ]);
 
 const rows = packet
@@ -61,7 +63,15 @@ const accountCodes = new Set();
 const positionCodes = new Set();
 
 for (const row of rows) {
-  const [accountCode, positionCode, departmentCode, workspaceScope, initialAccess, activationState, smartMode] = row;
+  const [
+    accountCode,
+    positionCode,
+    departmentCode,
+    workspaceScope,
+    initialAccess,
+    activationState,
+    smartMode,
+  ] = row;
   const expected = expectedRows.get(accountCode);
 
   if (!expected) {
@@ -79,7 +89,13 @@ for (const row of rows) {
   }
   positionCodes.add(positionCode);
 
-  const actual = [positionCode, departmentCode, workspaceScope, initialAccess, activationState];
+  const actual = [
+    positionCode,
+    departmentCode,
+    workspaceScope,
+    initialAccess,
+    activationState,
+  ];
   if (actual.some((value, index) => value !== expected[index])) {
     failures.push(`mapping mismatch for ${accountCode}`);
   }
@@ -99,7 +115,7 @@ for (const accountCode of expectedRows.keys()) {
   }
 }
 
-const highConfidenceRestrictedPatterns = [
+const restrictedPatterns = [
   /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i,
   /\b0\d{9,10}\b/,
   /\b\d{12}\b/,
@@ -109,7 +125,7 @@ const highConfidenceRestrictedPatterns = [
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
 ];
 
-for (const pattern of highConfidenceRestrictedPatterns) {
+for (const pattern of restrictedPatterns) {
   if (pattern.test(packet)) {
     failures.push(`restricted value pattern found: ${pattern}`);
   }
@@ -123,8 +139,11 @@ if (failures.length > 0) {
 }
 
 console.log("HEU_USER_PILOT_002: PASS_LOCAL");
-console.log("anonymous_accounts=8");
-console.log("independent_positions=8");
+console.log("pilot_accounts=9");
+console.log("independent_positions=9");
+console.log("position_master_gaps=2");
+console.log("broad_default_scope=BLOCKED");
+console.log("hou_workspace=BLOCKED_OUT_OF_7_DAY_SCOPE");
 console.log("smart_mode=DRAFT_CHECK_SUGGEST");
 console.log("real_identity_mapping=OUTSIDE_GIT_OWNER_CHANNEL");
 console.log("database_write=NOT_PERFORMED");

@@ -1,6 +1,6 @@
-# HEU User Pilot 002 Anonymous Account Position Activation Packet
+# HEU User Pilot 002 - Nine Account Position And Scope Contract
 
-Task ID: HEU-USER-PILOT-002-ANONYMOUS-ACCOUNT-POSITION-ACTIVATION-PACKET
+Task ID: HEU-USER-PILOT-002-NINE-ACCOUNT-POSITION-SCOPE-CONTRACT
 Date: 2026-07-12
 Status: DRAFT_CONTROL
 Stage: Stage D - internal controlled test only
@@ -8,173 +8,120 @@ Production status: NO-GO
 
 ## 1. Purpose
 
-This packet converts the first approved operating lanes into eight anonymous
-pilot accounts. Real names, emails and identity mapping remain outside Git,
-Codex and chat in the controlled owner channel.
+This packet locks the nine approved pilot account lanes for the seven-day
+`USER_CORE + ADMISSION_PILOT` scope. Real names, emails and identity mapping
+remain outside Git in the controlled owner channel.
 
-The packet does not create an Auth user, activate a profile, assign a position,
-grant scope, send email, set a password, run SQL, migrate data or approve UAT.
+Every row is one independent Auth account and exactly one operating position.
+No account may union two positions, departments or workspaces. This packet does
+not create Auth users, write Supabase data, send email, set passwords, run SQL,
+approve UAT or open Production.
 
-## 2. Live Readiness Snapshot
+## 2. Read-Only Live Snapshot
 
-Read-only checks on 2026-07-12 reported:
+The metadata-only query on 2026-07-12 reported:
 
 ```text
-controlled_people=7
-pilot_accounts=8
-dual_role_people=1
-active_profiles=6
-active_position_assignments=5
-required_positions=15
-assigned_required_positions=4
-unassigned_required_positions=11
-positions_with_matching_active_profiles=0
-positions_needing_owner_create_or_link=11
-profiles_missing_lead_visibility=2
-profiles_missing_business_scope=2
-fail_closed_profiles=1
+pilot_accounts=9
+auth_accounts_found=5
+profiles_found=3
+active_position_assignments_found=2
+accounts_with_broad_lead_visibility=1
+required_new_position_master_rows=2
 database_write=NOT_PERFORMED
 ```
 
-This snapshot contains counts and position codes only. It is not an owner
-assignment decision and must be refreshed before controlled activation.
+The two required position-master rows are `HEU_SYSTEM_ADMIN` and
+`KE_TOAN_DEPUTY`. Their accounts remain fail-closed until a separately
+reviewed position-master change is approved and applied with backup/rollback.
 
-## 3. Anonymous Pilot Account Register
-
-Every row is one independent Auth account and one active operating position.
-No account may union two positions, departments or workspaces.
+## 3. Anonymous Nine-Account Register
 
 | Account code | Position code | Department code | Workspace scope | Initial access | Activation state | Smart mode |
 | --- | --- | --- | --- | --- | --- | --- |
-| PILOT-EXEC-01 | HT | BGH | HEU:EXECUTIVE | READ_ONLY | VERIFY_EXISTING_OR_CREATE | DRAFT_CHECK_SUGGEST |
-| PILOT-ADMISSION-HEAD-01 | TUYEN_SINH_HEAD | PHONG_TUYEN_SINH | HEU:ADMISSION | OPERATIONAL_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
-| PILOT-ACCOUNTING-OPS-01 | KE_TOAN_01 | PHONG_KHTC | HEU:FINANCE | READ_ONLY_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
-| PILOT-ACCOUNTING-OPS-02 | KE_TOAN_02 | PHONG_KHTC | HEU:FINANCE | READ_ONLY_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
-| PILOT-ACCOUNTING-MANAGER-01 | KE_TOAN_03 | PHONG_KHTC | HEU:FINANCE | READ_ONLY_NO_APPROVE | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
-| PILOT-TCHC-HEAD-01 | TCHC_HEAD | TCHC | HEU:TCHC | OPERATIONAL_DRAFT | VERIFY_EXISTING_OR_CREATE | DRAFT_CHECK_SUGGEST |
+| PILOT-SYSTEM-ADMIN-01 | HEU_SYSTEM_ADMIN | IT_DATA | HEU:SYSTEM | CONTROL_ONLY_NO_BUSINESS_DATA | POSITION_MASTER_REQUIRED | DRAFT_CHECK_SUGGEST |
+| PILOT-EXEC-01 | HT | LEADERSHIP | HEU:EXECUTIVE | READ_ONLY | VERIFY_EXISTING | DRAFT_CHECK_SUGGEST |
+| PILOT-ADMISSION-HEAD-01 | TUYEN_SINH_HEAD | ADMISSION | HEU:ADMISSION | OPERATIONAL_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
+| PILOT-ADMISSION-CTV-HOLD-01 | TUYEN_SINH_01 | ADMISSION | NO_ACTIVE_WORKSPACE | BLOCKED_OUT_OF_7_DAY_SCOPE | VERIFY_AUTH_OR_CREATE | DRAFT_CHECK_SUGGEST |
+| PILOT-ACCOUNTING-MANAGER-01 | KE_TOAN_DEPUTY | ACCOUNTING | HEU:FINANCE | READ_ONLY_DRAFT_NO_APPROVE | POSITION_MASTER_REQUIRED | DRAFT_CHECK_SUGGEST |
+| PILOT-ACCOUNTING-OPS-01 | KE_TOAN_01 | ACCOUNTING | HEU:FINANCE | READ_ONLY_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
+| PILOT-ACCOUNTING-OPS-02 | KE_TOAN_02 | ACCOUNTING | HEU:FINANCE | READ_ONLY_DRAFT | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
+| PILOT-TCHC-HEAD-01 | TCHC_HEAD | TCHC | HEU:TCHC | OPERATIONAL_DRAFT | VERIFY_EXISTING | DRAFT_CHECK_SUGGEST |
 | PILOT-TCHC-DEPUTY-01 | TCHC_DEPUTY | TCHC | HEU:TCHC | OPERATIONAL_DRAFT_NO_FINAL_APPROVE | CREATE_OR_LINK | DRAFT_CHECK_SUGGEST |
-| PILOT-HOU-RECRUITMENT-CTV-01 | TUYEN_SINH_01 | PHONG_TUYEN_SINH | HOU:ADMISSION:OWN | OWN_LEADS_ONLY_NO_COM | BLOCKED_LEGAL_SCOPE | DRAFT_CHECK_SUGGEST |
 
-## 4. Mapping Decisions
+## 4. Locked Decisions
 
-### 4.1 Executive and admissions dual role
+- The principal account owns only `HT`; it does not inherit the admissions
+  head position.
+- The admissions head uses a separate account and `TUYEN_SINH_HEAD`.
+- The system administrator uses `HEU_SYSTEM_ADMIN`, not an admissions seat
+  and not a broad business workspace.
+- The accounting manager uses `KE_TOAN_DEPUTY`; it is not silently mapped to
+  `KE_TOAN_TRUONG` or a generic accounting operator.
+- The two accounting operators use `KE_TOAN_01` and `KE_TOAN_02`.
+- `TCHC_HEAD` and `TCHC_DEPUTY` remain independent accounts.
+- The recruitment CTV account is registered as `TUYEN_SINH_01`, but receives
+  `NO_ACTIVE_WORKSPACE` during this seven-day scope. HOU, COM and HOU student
+  data remain blocked.
+- Every account uses `DRAFT_CHECK_SUGGEST`; no AI runtime or autonomous write
+  is permitted.
 
-- `PILOT-EXEC-01` and `PILOT-ADMISSION-HEAD-01` are always separate Auth
-  accounts, even when the controlled owner channel maps them to one person.
-- The executive account is read-only and cannot mutate admissions data.
-- The admissions-head account operates only in the approved admissions scope.
-- The two accounts never share an `accountScopeKey` and never union permissions.
+## 5. Activation Gate
 
-### 4.2 Accounting pilot
+Process one account at a time:
 
-- `KE_TOAN_01` and `KE_TOAN_02` are temporary under-privileged mappings for
-  the two accounting operating lanes.
-- `KE_TOAN_03` is a temporary under-privileged mapping for the accounting
-  manager pilot. It does not assert the formal title of chief accountant or
-  grant `ACCOUNTING_LEAD`, approval, posting, payment or debt-clear authority.
-- A future owner-approved position-master slice may add exact specialty and
-  deputy-manager position codes. Until then all three finance accounts remain
-  read-only or draft-only.
+1. Record the real identity-to-account mapping outside Git.
+2. Confirm the exact position, role, department and owner reference.
+3. Provision Auth without a temporary/default password.
+4. Create or link the profile as `INACTIVE`.
+5. Save an explicit workspace/business scope; no broad fallback is allowed.
+6. Assign exactly one `ACTIVE_ASSIGNED` position.
+7. Intersect role permissions with position permissions.
+8. Move the profile to `ACTIVE` only after scope and position checks pass.
+9. Use the controlled recovery/activation email channel.
+10. Run positive and negative route UAT and record redacted evidence.
 
-### 4.3 TCHC pilot
-
-- `TCHC_HEAD` and `TCHC_DEPUTY` are separate accounts and positions.
-- The deputy account cannot inherit final approval from the head account.
-- Any existing `TCHC_HEAD` assignment must be verified by controlled owner
-  evidence before it is reused.
-
-### 4.4 HOU recruitment CTV pilot
-
-- HOU remains separated from internal HEU training data.
-- `TUYEN_SINH_01` is used only as an under-privileged recruitment operator
-  position with `HOU:ADMISSION:OWN` scope.
-- The account sees only its own assigned HOU recruitment lead metadata.
-- It cannot read COM rates, finance data, bank data, broad HOU student data or
-  another operator's leads.
-- Activation remains `BLOCKED_LEGAL_SCOPE` until owner and PHAP_CHE confirm the
-  contract/authority, data-processing boundary and permitted workspace.
-
-## 5. Activation Order
-
-The operator must process one account at a time:
-
-1. Record the real identity mapping outside Git/Codex/chat.
-2. Confirm position, department, workspace and owner evidence reference.
-3. Provision the Auth user without a password and without sending email.
-4. Create or link the CRM profile as `INACTIVE`.
-5. Save explicit business scope; no broad fallback is allowed.
-6. Move the profile to `ACTIVE` only while it still has no credential.
-7. Assign exactly one `ACTIVE_ASSIGNED` position.
-8. Re-run scope, position and negative-access checks.
-9. Only then make the account credential-eligible through the approved Auth
-   recovery/activation channel.
-10. Run first-login UAT and keep evidence outside Git/Codex/chat.
-
-Stop immediately if an account has zero or more than one active position, no
-department, no explicit scope, an `ALL` business scope, or an owner-evidence
+Stop if an account has zero or multiple active positions, an `ALL` business
+scope, a role/department mismatch, missing owner evidence or a position-master
 gap.
 
-## 6. Per-Account Gate
+## 6. Negative Access Contract
 
-| Gate | Required result before credential eligibility |
-| --- | --- |
-| Identity mapping | Controlled owner reference exists outside Git |
-| Profile | `ACTIVE` only after scope is saved; no credential yet |
-| Position | Exactly one `ACTIVE_ASSIGNED` position |
-| Department | Matches the position master |
-| Workspace | Explicit and no broad fallback |
-| Role/permission | Position matrix intersects active role/delegation |
-| Smart | `DRAFT_CHECK_SUGGEST`; no runtime AI/API call |
-| Negative access | Forbidden route/action is blocked |
-| Audit | Actor/action/object/ref metadata is recorded |
-| Rollback | Status-based disable path is recorded |
-
-## 7. Negative Access Tests
-
-- Executive account cannot create, edit, approve, pay or import.
-- Admissions-head account cannot see finance, TCHC or another department's
-  unrestricted data.
+- System admin cannot read unrestricted lead, student or finance business rows.
+- Principal is read-only and cannot create, approve, pay or import.
+- Admissions head cannot access finance or TCHC data.
+- CTV hold account receives no business rows while HOU is outside scope.
 - Accounting accounts cannot approve, post, pay, clear debt or view HOU COM.
-- Accounting manager pilot cannot act as `ACCOUNTING_LEAD`.
-- TCHC deputy cannot use final owner approval.
-- HOU recruitment CTV cannot see non-HOU data, other operators' leads, COM or
-  finance data.
-- Any account with missing scope or position receives a safe no-scope/blocked
-  state and no business rows.
+- TCHC deputy cannot perform final owner approval.
+- Missing scope or position returns blocked/no-scope/empty scoped state.
 
-## 8. Rollback
+## 7. Rollback
 
 Rollback is status-based and never hard-deletes original records:
 
-1. Disable credential/recovery eligibility.
+1. Disable credential eligibility.
 2. Set the profile to `INACTIVE`.
 3. Soft-revoke the active position assignment.
 4. Soft-revoke business scope and workspace preference.
-5. Record rollback actor, reason, object ref and timestamp in the controlled
-   audit channel.
+5. Record actor, reason, object reference and timestamp in the audit channel.
 
-No rollback step may delete Auth, profile, finance, evidence or audit history.
-
-## 9. Verification
+## 8. Verification
 
 ```powershell
-node scripts/check-heu-user-pilot-anonymous-activation-packet.mjs
+npm.cmd run check:heu-user-pilot-9-position-contract
 npm.cmd run check:heu-user-provision-no-temp-password
 npm.cmd run check:heu-user-pilot-scope-save-guard
 npm.cmd run check:heu-settings-permission-matrix-readiness
 npm.cmd run check:heu-effective-position-permission-dry-run
 ```
 
-Real-user activation, email delivery, Supabase redirect allowlist, owner UAT,
-finance reliance and Production remain `NO_GO`.
-
-## 10. Decision
+## 9. Decision
 
 | Item | Result |
 | --- | --- |
-| Anonymous eight-account packet | DAT_TAM_THOI after static checker PASS |
-| Real identity mapping | OUTSIDE_GIT_OWNER_CHANNEL |
-| Account creation | NO_GO until per-account owner mapping |
-| Database/migration | NOT_PERFORMED |
-| Email/credential delivery | NO_GO until controlled test |
+| Nine account/position mapping | DAT_TAM_THOI after static checker PASS |
+| Existing live account alignment | CAN_SUA |
+| New position-master rows | NO_GO until separate reviewed change |
+| Database write/migration | NOT_PERFORMED |
+| HOU/COM/finance mutation | NO_GO |
 | Production | NO-GO |
