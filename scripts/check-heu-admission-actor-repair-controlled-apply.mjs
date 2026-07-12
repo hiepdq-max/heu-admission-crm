@@ -13,6 +13,7 @@ const requiredTokens = [
   "HEU-ADM-ACTOR-",
   'position_code", "TUYEN_SINH_HEAD',
   "targetProfile?.status !== \"ACTIVE\"",
+  "currentAssignee.department_id !== targetProfile?.department_id",
   "created_by_mutation=0",
   "HEU_ADMISSION_ACTOR_REASSIGNED",
   "HEU_ADMISSION_ACTOR_REPAIR_ROLLBACK",

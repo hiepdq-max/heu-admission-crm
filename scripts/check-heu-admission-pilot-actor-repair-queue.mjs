@@ -55,7 +55,7 @@ const [leadsResult, positionsResult, assignmentsResult, profilesResult, scopesRe
       .from("heu_position_assignments")
       .select("position_id,user_id,assignment_status,status")
       .eq("status", "ACTIVE"),
-    client.from("users_profile").select("id,status,roles(code)"),
+    client.from("users_profile").select("id,status,department_id,roles(code)"),
     client
       .from("user_admission_segment_scopes")
       .select("user_id,segment_id,status")
@@ -94,7 +94,12 @@ const repairRows = leads.filter((lead) => {
   const assignedProfile = lead.assigned_to
     ? profiles.get(lead.assigned_to)
     : null;
-  return lead.assigned_to && assignedProfile?.status !== "ACTIVE";
+  return Boolean(
+    lead.assigned_to &&
+      (assignedProfile?.status !== "ACTIVE" ||
+        !assignedProfile?.department_id ||
+        assignedProfile.department_id !== targetProfile?.department_id),
+  );
 });
 const eligibleRepairRows = repairRows.filter(
   (lead) =>

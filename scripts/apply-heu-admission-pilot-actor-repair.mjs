@@ -133,7 +133,7 @@ if (process.exitCode !== 1) {
             .from("heu_position_assignments")
             .select("position_id,user_id,assignment_status,status")
             .eq("status", "ACTIVE"),
-          client.from("users_profile").select("id,status,role_id"),
+          client.from("users_profile").select("id,status,role_id,department_id"),
           client
             .from("user_admission_segment_scopes")
             .select("user_id,segment_id,status")
@@ -175,9 +175,14 @@ if (process.exitCode !== 1) {
           const currentAssignee = lead.assigned_to
             ? profiles.get(lead.assigned_to)
             : null;
-          return (
+          const assigneeNeedsRepair = Boolean(
             lead.assigned_to &&
-            currentAssignee?.status !== "ACTIVE" &&
+              (currentAssignee?.status !== "ACTIVE" ||
+                !currentAssignee?.department_id ||
+                currentAssignee.department_id !== targetProfile?.department_id),
+          );
+          return (
+            assigneeNeedsRepair &&
             lead.admission_segment_id &&
             targetScopes.has(lead.admission_segment_id)
           );
