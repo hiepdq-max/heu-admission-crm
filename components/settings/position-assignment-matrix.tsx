@@ -343,6 +343,7 @@ export function PositionAssignmentMatrix({
         <div
           data-heu-one-account-one-position="ENFORCED"
           data-heu-position-smart-mode="DRAFT_CHECK_SUGGEST_ONLY"
+          data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"
           className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-950"
         >
           <h3 className="font-semibold">
