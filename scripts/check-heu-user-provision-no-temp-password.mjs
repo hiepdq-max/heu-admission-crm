@@ -22,6 +22,9 @@ function requireTokens(content, label, tokens) {
 
 const actions = readRequired("app/settings/actions.ts");
 const form = readRequired("components/settings/user-create-form.tsx");
+const linkForm = readRequired(
+  "components/settings/user-auth-profile-link-form.tsx",
+);
 const callback = readRequired("app/auth/callback/route.ts");
 const updatePassword = readRequired("app/auth/update-password/page.tsx");
 const policies = readRequired("database/policies.sql");
@@ -30,6 +33,9 @@ const positionMatrix = readRequired(
 );
 const positionMatrixSql = readRequired(
   "database/step114_organization_position_permission_matrix.sql",
+);
+const auditHelperStart = actions.indexOf(
+  "async function writeControlledUserAudit",
 );
 
 const createStart = actions.indexOf(
@@ -52,16 +58,47 @@ const credentialActions =
   credentialStart >= 0 && credentialEnd > credentialStart
     ? actions.slice(credentialStart, credentialEnd)
     : "";
+const assignStart = actions.indexOf(
+  "export async function assignHeuPositionByEmailAction",
+);
+const auditHelper =
+  auditHelperStart >= 0 && assignStart > auditHelperStart
+    ? actions.slice(auditHelperStart, assignStart)
+    : "";
+const assignEnd = actions.indexOf(
+  "export async function setUserTemporaryPasswordAction",
+);
+const assignAction =
+  assignStart >= 0 && assignEnd > assignStart
+    ? actions.slice(assignStart, assignEnd)
+    : "";
+const updateProfileStart = actions.indexOf(
+  "export async function updateUserProfileAction",
+);
+const updateProfileAction =
+  updateProfileStart >= 0 && createStart > updateProfileStart
+    ? actions.slice(updateProfileStart, createStart)
+    : "";
+const linkStart = actions.indexOf(
+  "export async function linkAuthUserProfileAction",
+);
+const linkEnd = actions.indexOf(
+  "export async function updateRolePermissionsAction",
+);
+const linkAction =
+  linkStart >= 0 && linkEnd > linkStart
+    ? actions.slice(linkStart, linkEnd)
+    : "";
 
 requireTokens(createAction, "deferred user provisioning action", [
   "adminClient.auth.admin.createUser",
   "email_confirm: true",
+  "ban_duration: pendingActivationBanDuration",
   "upsertUserProfileForAuthUser",
   "adminClient.auth.admin.deleteUser",
   "createdAuthUser",
-  "linkedExistingAuthUser",
-  'existingProfile?.status !== "ACTIVE"',
-  "status: resolvedProfileStatus",
+  "auth_user_requires_controlled_link",
+  'status: "INACTIVE"',
   "missing_new_user_department",
 ]);
 
@@ -69,6 +106,9 @@ for (const forbidden of [
   'textValue(formData, "password")',
   "auth.admin.inviteUserByEmail",
   "unsafe_temporary_password",
+  "linkedExistingAuthUser",
+  "resolvedProfileStatus",
+  "existingProfile?.status",
 ]) {
   if (createAction.includes(forbidden)) {
     failures.push(`create-user action contains forbidden token: ${forbidden}`);
@@ -82,6 +122,9 @@ requireTokens(credentialActions, "activation gate", [
   "profileHasActivePosition",
   "user_position_not_ready",
   "resetPasswordForEmail",
+  'ban_duration: "none"',
+  "auth_user_activation_unlock_failed",
+  "ban_duration: pendingActivationBanDuration",
 ]);
 
 if (
@@ -98,16 +141,70 @@ if (
   failures.push("active-position gate must run before reset email");
 }
 
-requireTokens(actions, "one-account-one-position action guard", [
-  "user_position_requires_active_profile",
+requireTokens(assignAction, "one-account-one-position action guard", [
   "user_already_has_active_position",
+  "active_user_without_position_requires_review",
+  "needsControlledActivation",
+  "auth_user_activation_lock_failed",
+  '{ ban_duration: pendingActivationBanDuration }',
+  '.update({ status: "ACTIVE" })',
+  '.update({ status: "INACTIVE" })',
   '.from("heu_position_assignments")',
-  'existingPositionId !== targetPositionResult.data.id',
+  "existingPositionId !== targetPositionResult.data?.id",
+  "writeControlledUserAudit",
+  "HEU_USER_POSITION_ACTIVATED",
+  "activation_audit_log_failed",
+]);
+
+requireTokens(credentialActions, "activation audit trail", [
+  "writeControlledUserAudit",
+  "HEU_USER_ACTIVATION_EMAIL_INTENT",
+  "HEU_USER_ACTIVATION_EMAIL_FAILED",
+  "HEU_USER_ACTIVATION_EMAIL_SENT",
+  "activation_audit_log_failed",
+]);
+
+requireTokens(auditHelper, "metadata-only activation audit helper", [
+  '.from("audit_logs")',
+  'entity_type: "users_profile"',
+  'note: "HEU_USER_ACTIVATION_CONTROL"',
+]);
+
+for (const forbidden of ["target_email", "full_name", "phone", "password", "token"]) {
+  if (auditHelper.includes(forbidden)) {
+    failures.push(`activation audit helper contains forbidden field: ${forbidden}`);
+  }
+}
+
+requireTokens(updateProfileAction, "manual activation guard", [
+  'targetProfileState?.status !== "ACTIVE" && status === "ACTIVE"',
+  "activation_requires_position_assignment",
+]);
+
+requireTokens(linkAction, "legacy Auth link server guard", [
+  'currentRoleCode === "ADMIN"',
+  "manual_auth_link_disabled",
+  "upsert_user_profile_from_auth",
+]);
+
+if (
+  linkAction.indexOf("manual_auth_link_disabled") >
+  linkAction.indexOf("upsert_user_profile_from_auth")
+) {
+  failures.push("legacy Auth link must be blocked before the active-profile RPC");
+}
+
+requireTokens(linkForm, "legacy Auth link UI guard", [
+  'type="button"',
+  "disabled",
+  'data-heu-manual-auth-link-status="NO_GO"',
+  'data-heu-manual-auth-link="BLOCKED_LEGACY_ACTIVE_PROFILE_RPC"',
 ]);
 
 requireTokens(positionMatrix, "position-scoped Smart guidance", [
   'data-heu-one-account-one-position="ENFORCED"',
   'data-heu-position-smart-mode="DRAFT_CHECK_SUGGEST_ONLY"',
+  'data-heu-position-activation-flow="AUTH_BANNED ASSIGN_POSITION ACTIVATE_PROFILE SEND_RESET_EMAIL UNBAN_ON_SUCCESS"',
   "Một tài khoản vận hành = một vị trí ACTIVE",
   "Smart quản trị đi theo đúng vị trí và scope",
 ]);
@@ -120,6 +217,7 @@ requireTokens(positionMatrixSql, "database one-account-one-position guard", [
 
 requireTokens(form, "deferred-activation form", [
   "NO_TEMP_PASSWORD_NO_EMAIL",
+  "BANNED_UNTIL_POSITION_AND_EMAIL",
   "App không thu mật khẩu tạm",
   "không gửi email lúc tạo",
   "Tạo user chưa kích hoạt",
