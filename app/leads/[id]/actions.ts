@@ -1993,6 +1993,82 @@ const handoverConfig: Record<
   },
 };
 
+const handoverReadyLeadStatuses = new Set([
+  "DOCUMENT_SUBMITTED",
+  "ELIGIBLE",
+  "ENROLLED",
+]);
+
+async function readLeadHandoverPacketBlocker(
+  supabase: SupabaseServerClient,
+  leadId: string,
+) {
+  const { data: lead, error: leadError } = await supabase
+    .from("leads")
+    .select("status,interested_program")
+    .eq("id", leadId)
+    .eq("is_deleted", false)
+    .maybeSingle<{ status: string; interested_program: string | null }>();
+
+  if (leadError || !lead) {
+    return "Chưa đọc được trạng thái lead để kiểm tra packet bàn giao.";
+  }
+  if (!handoverReadyLeadStatuses.has(lead.status)) {
+    return "Lead phải ở trạng thái đã nộp hồ sơ, đủ điều kiện hoặc đã nhập học trước khi bàn giao.";
+  }
+  if (!lead.interested_program) {
+    return "Lead chưa có chương trình quan tâm nên chưa xác định được checklist hồ sơ bắt buộc.";
+  }
+
+  const [checklistsResult, documentsResult] = await Promise.all([
+    supabase
+      .from("enrollment_checklists")
+      .select("id,applies_to_program")
+      .eq("is_required", true)
+      .eq("status", "ACTIVE"),
+    supabase
+      .from("lead_documents")
+      .select("checklist_id,status,checked_by,checked_at")
+      .eq("lead_id", leadId),
+  ]);
+
+  if (checklistsResult.error || documentsResult.error) {
+    return "Chưa đọc được checklist/document metadata để kiểm tra packet bàn giao.";
+  }
+
+  const normalizedProgram = lead.interested_program.trim().toUpperCase();
+  const requiredChecklistIds = new Set(
+    (checklistsResult.data ?? [])
+      .filter((row) => {
+        const appliesToProgram = row.applies_to_program?.trim().toUpperCase();
+        return !appliesToProgram || appliesToProgram === normalizedProgram;
+      })
+      .map((row) => row.id),
+  );
+  if (requiredChecklistIds.size === 0) {
+    return "Chưa cấu hình checklist hồ sơ bắt buộc cho chương trình của lead.";
+  }
+
+  const checkedChecklistIds = new Set(
+    (documentsResult.data ?? [])
+      .filter(
+        (row) =>
+          row.checklist_id &&
+          row.status === "CHECKED" &&
+          row.checked_by &&
+          row.checked_at,
+      )
+      .map((row) => row.checklist_id),
+  );
+  const missingRequiredCount = [...requiredChecklistIds].filter(
+    (checklistId) => !checkedChecklistIds.has(checklistId),
+  ).length;
+
+  return missingRequiredCount > 0
+    ? `Packet bàn giao còn thiếu ${missingRequiredCount} hồ sơ bắt buộc đã CHECKED.`
+    : null;
+}
+
 export async function createLeadHandoverAction(
   _previousState: HandoverFormState,
   formData: FormData,
@@ -2018,6 +2094,13 @@ export async function createLeadHandoverAction(
   if (!handoverType || !handoverConfig[handoverType]) {
     return formError("Vui lòng chọn đúng loại bàn giao.", fields, {
       handover_type: "Chọn loại bàn giao.",
+    });
+  }
+
+  const packetBlocker = await readLeadHandoverPacketBlocker(supabase, leadId);
+  if (packetBlocker) {
+    return formError(packetBlocker, fields, {
+      handover_type: "Hồ sơ chưa đủ điều kiện bàn giao.",
     });
   }
 
@@ -2146,6 +2229,13 @@ export async function updateLeadHandoverAction(
   }
 
   if (handoverStatus === "ACCEPTED") {
+    const packetBlocker = await readLeadHandoverPacketBlocker(supabase, leadId);
+    if (packetBlocker) {
+      return formError(packetBlocker, fields, {
+        handover_status: "Packet hồ sơ chưa đủ điều kiện để nhận bàn giao.",
+      });
+    }
+
     const config = handoverConfig[handover.handover_type];
     const gateTargets: Array<"handover" | "finance"> =
       config?.toDepartment === "ACCOUNTING"
