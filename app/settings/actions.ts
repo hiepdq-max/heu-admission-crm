@@ -115,7 +115,7 @@ async function upsertUserProfileForAuthUser(
 
 async function requirePositionMatrixManage(returnPath: SettingsReturnPath) {
   const supabase = await createClient();
-  await requireSettingsAuthenticatedUser(supabase);
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const [{ data: currentRoleCode }, { data: canManagePositionMatrix }] =
     await Promise.all([
@@ -129,12 +129,12 @@ async function requirePositionMatrixManage(returnPath: SettingsReturnPath) {
     redirect(`${returnPath}?error=not_allowed_position_assignment`);
   }
 
-  return { supabase };
+  return { supabase, user };
 }
 
 async function requireUserCredentialManage(returnPath: SettingsReturnPath) {
   const supabase = await createClient();
-  await requireSettingsAuthenticatedUser(supabase);
+  const user = await requireSettingsAuthenticatedUser(supabase);
 
   const [
     { data: currentRoleCode },
@@ -154,7 +154,7 @@ async function requireUserCredentialManage(returnPath: SettingsReturnPath) {
     redirect(`${returnPath}?error=not_allowed_create_user`);
   }
 
-  return { supabase, currentRoleCode };
+  return { supabase, currentRoleCode, user };
 }
 
 async function loadProfileForEmail(
@@ -191,12 +191,32 @@ async function profileHasActivePosition(
   return !error && Boolean(data?.length);
 }
 
+async function writeControlledUserAudit(
+  adminClient: AdminClient,
+  input: {
+    actorUserId: string;
+    targetUserId: string;
+    action: string;
+    newValue: Record<string, string | boolean | null>;
+  },
+) {
+  return adminClient.from("audit_logs").insert({
+    user_id: input.actorUserId,
+    action: input.action,
+    entity_type: "users_profile",
+    entity_id: input.targetUserId,
+    old_value: null,
+    new_value: input.newValue,
+    note: "HEU_USER_ACTIVATION_CONTROL",
+  });
+}
+
 export async function assignHeuPositionByEmailAction(formData: FormData) {
   const returnPath = settingsReturnPath(textValue(formData, "return_to"));
   const positionCode = normalizeMasterCode(textValue(formData, "position_code"));
   const email = textValue(formData, "email")?.toLowerCase();
   const note = textValue(formData, "assignment_note");
-  const { supabase } = await requirePositionMatrixManage(returnPath);
+  const { supabase, user } = await requirePositionMatrixManage(returnPath);
 
   if (!positionCode || !email) {
     redirect(`${returnPath}?error=missing_position_assignment_data`);
@@ -306,6 +326,24 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
     redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
   }
 
+  if (needsControlledActivation && adminClient) {
+    const { error: auditError } = await writeControlledUserAudit(adminClient, {
+      actorUserId: user.id,
+      targetUserId: targetProfile.id,
+      action: "HEU_USER_POSITION_ACTIVATED",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        assignment_status: "ACTIVE_ASSIGNED",
+        position_code: positionCode,
+      },
+    });
+
+    if (auditError) {
+      redirect(`${returnPath}?error=activation_audit_log_failed`);
+    }
+  }
+
   revalidatePath("/settings");
   revalidatePath("/settings/scopes");
   redirect(`${returnPath}?position_assigned=1#position-matrix`);
@@ -314,7 +352,7 @@ export async function assignHeuPositionByEmailAction(formData: FormData) {
 export async function sendUserPasswordResetEmailAction(formData: FormData) {
   const returnPath = settingsReturnPath(textValue(formData, "return_to"));
   const email = textValue(formData, "email")?.toLowerCase();
-  const { supabase, currentRoleCode } =
+  const { supabase, currentRoleCode, user } =
     await requireUserCredentialManage(returnPath);
 
   if (!email) {
@@ -359,6 +397,25 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
     redirect(`${returnPath}?error=missing_service_role_key`);
   }
 
+  const { error: auditIntentError } = await writeControlledUserAudit(
+    adminClient,
+    {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_INTENT",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "PENDING",
+      },
+    },
+  );
+
+  if (auditIntentError) {
+    redirect(`${returnPath}?error=activation_audit_log_failed`);
+  }
+
   const { error: unbanError } = await adminClient.auth.admin.updateUserById(
     profile.id,
     { ban_duration: "none" },
@@ -376,7 +433,40 @@ export async function sendUserPasswordResetEmailAction(formData: FormData) {
     await adminClient.auth.admin.updateUserById(profile.id, {
       ban_duration: pendingActivationBanDuration,
     });
+    await writeControlledUserAudit(adminClient, {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_FAILED",
+      newValue: {
+        auth_banned: true,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "FAILED",
+      },
+    });
     redirect(`${returnPath}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  const { error: auditSentError } = await writeControlledUserAudit(
+    adminClient,
+    {
+      actorUserId: user.id,
+      targetUserId: profile.id,
+      action: "HEU_USER_ACTIVATION_EMAIL_SENT",
+      newValue: {
+        auth_banned: false,
+        profile_status: "ACTIVE",
+        active_position_verified: true,
+        email_delivery: "REQUEST_ACCEPTED",
+      },
+    },
+  );
+
+  if (auditSentError) {
+    await adminClient.auth.admin.updateUserById(profile.id, {
+      ban_duration: pendingActivationBanDuration,
+    });
+    redirect(`${returnPath}?error=activation_audit_log_failed`);
   }
 
   revalidatePath("/settings");
