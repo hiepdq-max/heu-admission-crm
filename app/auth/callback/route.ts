@@ -13,6 +13,8 @@ function safeNextPath(value: string | null) {
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
+  const tokenHash = requestUrl.searchParams.get("token_hash");
+  const authType = requestUrl.searchParams.get("type");
   const callbackError =
     requestUrl.searchParams.get("error_description") ??
     requestUrl.searchParams.get("error");
@@ -24,14 +26,21 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  if (!code) {
+  const hasMagicLinkToken = Boolean(tokenHash) && authType === "magiclink";
+
+  if (!code && !hasMagicLinkToken) {
     return NextResponse.redirect(
       new URL("/login?auth_error=missing_auth_code", requestUrl.origin),
     );
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { error } = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : await supabase.auth.verifyOtp({
+        token_hash: tokenHash!,
+        type: "magiclink",
+      });
 
   if (error) {
     return NextResponse.redirect(
