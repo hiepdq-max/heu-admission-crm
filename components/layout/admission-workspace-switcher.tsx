@@ -1,4 +1,5 @@
 import { Route } from "lucide-react";
+import Link from "next/link";
 
 import { setAdmissionWorkspaceAction } from "@/app/workspace/actions";
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,15 @@ export function AdmissionWorkspaceSwitcher({
 }: AdmissionWorkspaceSwitcherProps) {
   if (options.length === 0) {
     return (
-      <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-        Chưa được phân đối tượng tuyển sinh
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+          Chưa được phân đối tượng tuyển sinh
+        </div>
+        <Button asChild variant="outline" size="sm">
+          <Link href="/settings/scopes#user-scope-management">
+            Phân phạm vi user
+          </Link>
+        </Button>
       </div>
     );
   }

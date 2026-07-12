@@ -107,9 +107,22 @@ export default async function NewLeadPage({ searchParams }: NewLeadPageProps) {
                   hoặc trưởng phòng cần phân phạm vi user trước.
                 </p>
               ) : null}
-              <Button asChild className="mt-4">
-                <Link href="/leads">Quay lại danh sách lead</Link>
-              </Button>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {workspace.segmentOptions.length === 0 ? (
+                  <Button asChild>
+                    <Link href="/settings/scopes#user-scope-management">
+                      Phân phạm vi user
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button asChild>
+                    <Link href="#p0-13-workspace">Đi tới P0-13</Link>
+                  </Button>
+                )}
+                <Button asChild variant="outline">
+                  <Link href="/leads">Quay lại danh sách lead</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
