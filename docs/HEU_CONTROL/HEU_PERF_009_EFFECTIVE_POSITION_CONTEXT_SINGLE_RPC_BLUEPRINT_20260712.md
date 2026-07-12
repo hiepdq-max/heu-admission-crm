@@ -134,6 +134,25 @@ There is no BGH role-name bypass. Executive access must be represented by the
 approved position matrix and returns `ALL_READONLY`; mutation permissions still
 require explicit effective permission and module gates.
 
+### 4.1 Bootstrap and break-glass boundary
+
+The `ADMIN` role, a bootstrap account, an owner account or a service account is
+not exempt from the one-active-position rule. An active profile with zero or
+multiple active assignments always returns `BLOCKED`; role-only fallback is
+forbidden.
+
+Daily administration must use a separate positioned `IT_DATA` operating
+account. A bootstrap or break-glass identity must remain Auth-banned and its
+profile `INACTIVE` outside an approved incident window. It may not be activated
+until a dedicated break-glass position and least-privilege matrix have been
+approved by Owner + IT_DATA + Audit.
+
+Any later break-glass procedure must be time-bound, require a reason/ticket,
+record activation and re-lock events in the audit log, and re-ban the Auth user
+at the end of the window. If a dedicated approved position does not exist, the
+only valid decision is `BLOCKED`; the system must not map the account to an
+unrelated department position.
+
 ## 5. RPC Security Boundary
 
 The later SQL review must enforce all of these controls:
