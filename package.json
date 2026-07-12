@@ -54,6 +54,7 @@
     "check:heu-task-center-live-schema-readiness": "node scripts/check-heu-task-center-live-schema-readiness.mjs",
     "check:heu-task-center-live-readonly-adapter": "node scripts/check-heu-task-center-live-readonly-adapter.mjs",
     "check:heu-task-center-live-readonly-ui": "node scripts/check-heu-task-center-live-readonly-ui.mjs",
+    "check:heu-task-center-pilot-checklist-fallback": "node scripts/check-heu-task-center-pilot-checklist-fallback.mjs",
     "check:heu-task-center-step121-migration-gate": "node scripts/check-heu-task-center-step121-migration-gate.mjs",
     "check:heu-task-center-step121-restore-preflight": "node scripts/check-heu-task-center-step121-restore-preflight.mjs",
     "check:heu-task-center-step121-restore-preflight-static": "node scripts/check-heu-task-center-step121-restore-preflight-static.mjs",
