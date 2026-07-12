@@ -1,0 +1,79 @@
+{
+  "pack_id": "HEU_ADMISSION_PILOT_LIFECYCLE_UAT_V1",
+  "classification": "SYNTHETIC_NO_PII",
+  "mode": "LOCAL_ONLY_NO_DATABASE",
+  "production_use": "NO_GO",
+  "workspace_code": "TC9_TTGDTX_LINKED",
+  "cases": [
+    {
+      "case_id": "ADM-UAT-01",
+      "expected": "ALLOW",
+      "transitions": ["NEW", "ASSIGNED", "CONTACTED", "FOLLOW_UP", "DOCUMENT_PENDING", "DOCUMENT_SUBMITTED", "ELIGIBLE", "ENROLLED"],
+      "next_followup_at": "2026-07-13T02:00:00Z",
+      "handover": {
+        "status": "ACCEPTED",
+        "from_department": "ADMISSION",
+        "to_department": "CTHSSV",
+        "receiver_scope": "TC9_TTGDTX_LINKED",
+        "controlled_evidence_ref": "EV-UAT-ADM-001"
+      }
+    },
+    {
+      "case_id": "ADM-UAT-02",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ENROLLED"],
+      "expected_reason": "INVALID_TRANSITION"
+    },
+    {
+      "case_id": "ADM-UAT-03",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ASSIGNED", "CONTACTED", "FOLLOW_UP"],
+      "expected_reason": "FOLLOW_UP_DATE_REQUIRED"
+    },
+    {
+      "case_id": "ADM-UAT-04",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ASSIGNED", "LOST"],
+      "expected_reason": "LOST_REASON_REQUIRED"
+    },
+    {
+      "case_id": "ADM-UAT-05",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ASSIGNED", "CONTACTED", "DOCUMENT_PENDING", "DOCUMENT_SUBMITTED"],
+      "handover": {
+        "status": "ACCEPTED",
+        "from_department": "ADMISSION",
+        "to_department": "CTHSSV",
+        "receiver_scope": "OTHER_WORKSPACE",
+        "controlled_evidence_ref": "EV-UAT-ADM-005"
+      },
+      "expected_reason": "HANDOVER_SCOPE_MISMATCH"
+    },
+    {
+      "case_id": "ADM-UAT-06",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ASSIGNED", "CONTACTED", "DOCUMENT_PENDING", "DOCUMENT_SUBMITTED"],
+      "handover": {
+        "status": "ACCEPTED",
+        "from_department": "ADMISSION",
+        "to_department": "CTHSSV",
+        "receiver_scope": "TC9_TTGDTX_LINKED"
+      },
+      "expected_reason": "CONTROLLED_EVIDENCE_REQUIRED"
+    },
+    {
+      "case_id": "ADM-UAT-07",
+      "expected": "ALLOW",
+      "transitions": ["NEW", "ASSIGNED", "DUPLICATE"],
+      "duplicate_of_ref": "LEAD-UAT-MASTER-001",
+      "archive_only": true
+    },
+    {
+      "case_id": "ADM-UAT-08",
+      "expected": "BLOCK",
+      "transitions": ["NEW", "ASSIGNED", "CONTACTED"],
+      "forbidden_side_effects": ["CREATE_RECEIVABLE"],
+      "expected_reason": "FINANCE_MUTATION_FORBIDDEN"
+    }
+  ]
+}
