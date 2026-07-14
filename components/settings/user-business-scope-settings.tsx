@@ -629,6 +629,35 @@ export function UserBusinessScopeSettings({
                       </div>
                     </div>
 
+                    <div className="mt-4 grid gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 lg:grid-cols-[1fr_1fr]">
+                      <label className="flex items-start gap-2 lg:col-span-2">
+                        <input
+                          type="checkbox"
+                          data-heu-scope-owner-approval-ack="P0-17_SCOPE_OWNER_APPROVAL_ACK"
+                          name="scope_owner_approved"
+                          value="yes"
+                          required
+                          className="mt-1 size-4"
+                        />
+                        <span>
+                          Owner-approved secure channel confirmed. Chỉ lưu phạm vi sau khi owner đã xác nhận.
+                        </span>
+                      </label>
+                      <label className="lg:col-span-2">
+                        <span className="font-semibold">Controlled Evidence ID</span>
+                        <input
+                          data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"
+                          name="scope_controlled_evidence_id"
+                          required
+                          placeholder="CE-SCOPE-20260703-001"
+                          className={`${selectClass} mt-2`}
+                        />
+                        <span className="mt-1 block text-xs text-amber-800">
+                          Use a safe redacted reference only; không nhập email, mật khẩu, ID thật hoặc dữ liệu cá nhân.
+                        </span>
+                      </label>
+                    </div>
+
                     <div className="mt-4 rounded-md border border-zinc-200 bg-zinc-50 p-3">
                       <label
                         htmlFor={`lead-visibility-${selectedUser.id}`}
