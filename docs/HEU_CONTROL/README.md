@@ -57,6 +57,7 @@ Grouped view:
 |---|---|---|---|
 | V01 | 2026-07-07 | Created HEU_CONTROL bootstrap package for Git scope classification and PR split routing | `git status --porcelain=v1 -uall`; `git rev-parse --short HEAD`; file existence check |
 | V02 | 2026-07-13 | Added the docs-only Architecture Freeze V1 route before Drive inventory or controlled data import | `HEU-FRAMEWORK-001`; metadata-only; no migration, deployment or raw-data intake |
+| V03 | 2026-07-14 | Added live scope repair preflight and owner decision queue without exposing PII or mutating Supabase | `HEU-USER-012`; read-only preflight; `missing_visibility=7`; `missing_business_scope=7`; `workspace_mismatch=1`; production NO-GO |
 
 ## 5. Audit Note
 
