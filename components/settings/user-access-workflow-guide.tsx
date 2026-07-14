@@ -12,41 +12,41 @@ import {
 const workflowSteps = [
   {
     code: "01",
-    title: "Kiem tra vi tri",
-    body: "Mo Ma tran vi tri va user, chon dung vi tri trong dinh bien. Uu tien gan cap quan ly truoc de he thong co du tuyen bao cao.",
+    title: "Kiểm tra vị trí",
+    body: "Mở Ma trận vị trí và user, chọn đúng vị trí trong định biên. Ưu tiên gán cấp quản lý trước để hệ thống có đủ tuyến báo cáo.",
     icon: ShieldCheck,
   },
   {
     code: "02",
-    title: "Tao hoac link Auth user",
-    body: "Neu user chua co tai khoan dang nhap thi dung Tao tai khoan user. Neu Auth da duoc tao thu cong thi dung Lien ket Auth user.",
+    title: "Tạo hoặc liên kết Auth user",
+    body: "Nếu user chưa có tài khoản đăng nhập thì dùng Tạo tài khoản user. Nếu Auth đã được tạo thủ công thì dùng Liên kết Auth user.",
     icon: UserPlus,
   },
   {
     code: "03",
-    title: "Gan email vao vi tri",
-    body: "Nhap email vao cot Gan nhanh trong ma tran. He thong tu dong dong bo role, phong ban va nguoi quan ly theo vi tri chuan.",
+    title: "Gán email vào vị trí",
+    body: "Nhập email vào cột Gán nhanh trong ma trận. Hệ thống tự động đồng bộ role, phòng ban và người quản lý theo vị trí chuẩn.",
     icon: Link2,
   },
   {
     code: "04",
-    title: "Gui email reset mat khau",
-    body: "Dung Email dat lai mat khau de user tu dat mat khau rieng. Mat khau tam chi dung khi can xu ly truc tiep co kiem soat.",
+    title: "Gửi email đặt lại mật khẩu",
+    body: "Dùng Email đặt lại mật khẩu để user tự đặt mật khẩu riêng. Mật khẩu tạm chỉ dùng khi cần xử lý trực tiếp có kiểm soát.",
     icon: KeyRound,
   },
   {
     code: "05",
-    title: "Kiem tra sau dang nhap",
-    body: "Cho user dang nhap thu va kiem tra menu, du lieu, scope. Neu sai quyen, sua lai vi tri/role/scope thay vi mo rong quyen thu cong.",
+    title: "Kiểm tra sau đăng nhập",
+    body: "Cho user đăng nhập thử và kiểm tra menu, dữ liệu, scope. Nếu sai quyền, sửa lại vị trí/role/scope thay vì mở rộng quyền thủ công.",
     icon: CheckCircle2,
   },
 ];
 
 const quickRules = [
-  "Mot nguoi mot tai khoan rieng, khong dung chung tai khoan.",
-  "Khong gui mat khau qua Codex/chat/email thuong hoac file dinh kem.",
-  "Khong gan ADMIN neu user khong lam nhiem vu quan tri he thong.",
-  "Khong bo qua ma tran vi tri, vi day la diem dong bo role/phong ban/quan ly.",
+  "Mỗi người một tài khoản riêng, không dùng chung tài khoản.",
+  "Không gửi mật khẩu qua Codex/chat/email thường hoặc file đính kèm.",
+  "Không gán ADMIN nếu user không làm nhiệm vụ quản trị hệ thống.",
+  "Không bỏ qua ma trận vị trí, vì đây là điểm đồng bộ role/phòng ban/người quản lý.",
 ];
 
 export function UserAccessWorkflowGuide() {
@@ -65,15 +65,15 @@ export function UserAccessWorkflowGuide() {
                 className="h-4 w-4 shrink-0"
                 aria-hidden="true"
               />
-              <span className="truncate">Huong dan thao tac nhanh</span>
+              <span className="truncate">Hướng dẫn thao tác nhanh</span>
             </div>
             <h2 className="break-words text-xl font-semibold text-zinc-950">
-              Tao/link user, gan quyen va ban giao mat khau
+              Tạo/liên kết user, gán quyền và bàn giao mật khẩu
             </h2>
             <p className="max-w-4xl break-words text-sm leading-6 text-zinc-600">
-              Thu tu chuan: Tao hoac link Auth user - Gan vao Ma tran vi tri -
-              He thong dong bo role/phong ban/quan ly - Gui email reset de user
-              tu dat mat khau.
+              Thứ tự chuẩn: Tạo hoặc liên kết Auth user - Gán vào Ma trận vị trí -
+              Hệ thống đồng bộ role/phòng ban/người quản lý - Gửi email đặt lại
+              mật khẩu để user tự đặt mật khẩu.
             </p>
           </div>
           <div className="min-w-0 overflow-hidden rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 lg:max-w-sm">
@@ -83,8 +83,8 @@ export function UserAccessWorkflowGuide() {
                 aria-hidden="true"
               />
               <span className="break-words">
-                Day la luong quan tri tai khoan. Chi ADMIN hoac nguoi duoc uy
-                quyen moi thuc hien.
+                Đây là luồng quản trị tài khoản. Chỉ ADMIN hoặc người được ủy
+                quyền mới được thực hiện.
               </span>
             </div>
           </div>
@@ -126,20 +126,20 @@ export function UserAccessWorkflowGuide() {
               className="h-4 w-4 shrink-0"
               aria-hidden="true"
             />
-            <span className="truncate">Dung form nao?</span>
+            <span className="truncate">Dùng form nào?</span>
           </h3>
           <div className="mt-3 space-y-2 text-sm leading-6 text-emerald-900">
             <p className="break-words">
-              <strong>Tao tai khoan user:</strong> dung khi nhan su chua co Auth
+              <strong>Tạo tài khoản user:</strong> dùng khi nhân sự chưa có Auth
               user trong Supabase.
             </p>
             <p className="break-words">
-              <strong>Lien ket Auth user da tao thu cong:</strong> dung khi Auth
-              da co san va chi can tao/cap nhat profile trong CRM.
+              <strong>Liên kết Auth user đã tạo thủ công:</strong> dùng khi Auth
+              đã có sẵn và chỉ cần tạo/cập nhật profile trong CRM.
             </p>
             <p className="break-words">
-              <strong>Ma tran vi tri va user:</strong> dung de gan chinh thuc
-              email vao vi tri, role, phong ban va tuyen quan ly.
+              <strong>Ma trận vị trí và user:</strong> dùng để gán chính thức
+              email vào vị trí, role, phòng ban và tuyến quản lý.
             </p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function UserAccessWorkflowGuide() {
               className="h-4 w-4 shrink-0"
               aria-hidden="true"
             />
-            <span className="truncate">Diem can chan</span>
+            <span className="truncate">Điểm cần chặn</span>
           </h3>
           <ul className="mt-3 space-y-2 text-sm leading-6 text-red-900">
             {quickRules.map((rule) => (
