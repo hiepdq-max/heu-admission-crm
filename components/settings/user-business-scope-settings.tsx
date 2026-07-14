@@ -640,11 +640,12 @@ export function UserBusinessScopeSettings({
                           className="mt-1 size-4"
                         />
                         <span>
-                          Owner-approved secure channel confirmed. Chỉ lưu phạm vi sau khi owner đã xác nhận.
+                          Đã xác nhận kênh bảo mật được owner phê duyệt. Chỉ lưu
+                          phạm vi sau khi owner đã xác nhận.
                         </span>
                       </label>
                       <label className="lg:col-span-2">
-                        <span className="font-semibold">Controlled Evidence ID</span>
+                        <span className="font-semibold">Mã bằng chứng kiểm soát</span>
                         <input
                           data-heu-scope-controlled-evidence-id="P0-17_SCOPE_CONTROLLED_EVIDENCE_ID"
                           name="scope_controlled_evidence_id"
@@ -653,7 +654,8 @@ export function UserBusinessScopeSettings({
                           className={`${selectClass} mt-2`}
                         />
                         <span className="mt-1 block text-xs text-amber-800">
-                          Use a safe redacted reference only; không nhập email, mật khẩu, ID thật hoặc dữ liệu cá nhân.
+                          Chỉ dùng mã tham chiếu đã ẩn danh; không nhập email,
+                          mật khẩu, ID thật hoặc dữ liệu cá nhân.
                         </span>
                       </label>
                     </div>
