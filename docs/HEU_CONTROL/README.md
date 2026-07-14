@@ -25,6 +25,7 @@ signoff.
 | `GIT_STATUS_CLASSIFICATION_20260707.md` | Current dirty worktree classification by file group, status, risk, and review lane | IT_DATA + Audit |
 | `PR_SPLIT_REGISTER_20260707.md` | Proposed small PR split and handling order | IT_DATA + module owners + Audit |
 | `ROLLBACK_AND_BACKUP_NOTE_20260707.md` | Backup, rollback, and no-run boundaries before touching high-risk groups | IT_DATA + Audit + PHAP_CHE + KHTC where applicable |
+| `HEU_FRAMEWORK_001_ARCHITECTURE_FREEZE_V1_20260713.md` | Architecture V1 freeze, Drive top-level mapping, import gates and versioned data-confirmation contract | BGH + IT_DATA + Audit + PHAP_CHE + module owners |
 
 ## 3. Current Worktree Summary
 
@@ -55,6 +56,8 @@ Grouped view:
 | Version | Date | Change | Local evidence |
 |---|---|---|---|
 | V01 | 2026-07-07 | Created HEU_CONTROL bootstrap package for Git scope classification and PR split routing | `git status --porcelain=v1 -uall`; `git rev-parse --short HEAD`; file existence check |
+| V02 | 2026-07-13 | Added the docs-only Architecture Freeze V1 route before Drive inventory or controlled data import | `HEU-FRAMEWORK-001`; metadata-only; no migration, deployment or raw-data intake |
+| V03 | 2026-07-14 | Added live scope repair preflight and owner decision queue without exposing PII or mutating Supabase | `HEU-USER-012`; read-only preflight; `missing_visibility=7`; `missing_business_scope=7`; `workspace_mismatch=1`; production NO-GO |
 
 ## 5. Audit Note
 

@@ -418,9 +418,9 @@ function FinanceDeskReadOnlyBoundary() {
             import, công nợ, thu học phí, đối soát, đề nghị chi và hồ sơ minh
             chứng. Mọi sửa số liệu tiền phải quay về đúng bước gốc P2;
             dashboard không tự phê duyệt, không thay thế chứng từ kế toán và
-            không khởi tạo lệnh chuyển tiền. Production remains NO-GO until
-            backup/restore evidence, signed UAT, migration approval and owner
-            Go/No-Go exist outside Codex/chat.
+            không khởi tạo lệnh chuyển tiền. Production vẫn ở trạng thái NO-GO
+            cho đến khi có bằng chứng backup/restore, UAT đã ký, phê duyệt
+            migration và quyết định Go/No-Go của owner ngoài Codex/chat.
           </p>
         </div>
       </div>

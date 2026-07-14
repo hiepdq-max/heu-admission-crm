@@ -13,6 +13,15 @@ function textValue(formData: FormData, key: string) {
   return value.length > 0 ? value : null;
 }
 
+function normalizeControlledEvidenceId(value: string | null) {
+  return value
+    ?.trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9_-]+/g, "_")
+    .replace(/^[_-]+|[_-]+$/g, "")
+    .slice(0, 80) ?? "";
+}
+
 const allowedLeadVisibility = new Set(["OWN", "TEAM", "DEPARTMENT", "ALL"]);
 const createUserPermission = "users.create";
 const userManagePermission = "users.manage";
@@ -774,6 +783,23 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
     redirect(`${returnPath}?error=invalid_lead_visibility`);
   }
 
+  const scopeOwnerApproved = formData.get("scope_owner_approved") === "yes";
+  const scopeControlledEvidenceId = normalizeControlledEvidenceId(
+    textValue(formData, "scope_controlled_evidence_id"),
+  );
+
+  if (!scopeOwnerApproved) {
+    redirect(`${returnPath}?error=scope_owner_approval_required`);
+  }
+
+  if (!scopeControlledEvidenceId) {
+    redirect(`${returnPath}?error=scope_controlled_evidence_id_required`);
+  }
+
+  if (!/^[A-Z0-9][A-Z0-9_-]{5,79}$/.test(scopeControlledEvidenceId)) {
+    redirect(`${returnPath}?error=scope_controlled_evidence_id_invalid`);
+  }
+
   const { data: canManage, error: canManageError } = await supabase.rpc(
     "can_manage_user_scope",
     { target_user_id: targetUserId },
@@ -811,7 +837,7 @@ export async function updateUserBusinessScopesAction(formData: FormData) {
         .filter(Boolean),
     ),
   );
-  const scopeUpdateNote = `[${new Date().toISOString()}] Updated from settings scope form by ${user.id}.`;
+  const scopeUpdateNote = `[${new Date().toISOString()}] Updated from settings scope form by ${user.id}; owner-approved scope channel confirmed; controlled_evidence_id=${scopeControlledEvidenceId}; lead_visibility=${leadVisibility}.`;
 
   const { error: segmentArchiveError } = await supabase
     .from("user_admission_segment_scopes")

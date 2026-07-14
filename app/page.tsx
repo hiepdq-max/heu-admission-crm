@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { FileCheck2, Plus, Search } from "lucide-react";
 
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview";
+import { TaskCenterQuickActions } from "@/components/task-center/task-center-quick-actions";
 import {
   ExecutiveDashboardOverview,
   type ExecutiveDashboardPermissions,
@@ -148,6 +149,7 @@ export default async function Home({ searchParams }: HomePageProps) {
     urgentLeadsResult,
     userRowsResult,
     currentRoleResult,
+    taskReadPermissionResult,
     segmentRowsResult,
     segmentScopeRowsResult,
     segmentLeadRowsResult,
@@ -249,6 +251,9 @@ export default async function Home({ searchParams }: HomePageProps) {
       .returns<UrgentLeadRow[]>(),
     supabase.from("users_profile").select("id,full_name"),
     supabase.rpc("current_user_role_code"),
+    supabase.rpc("has_permission", {
+      permission_name: "data_confirmation.read",
+    }),
     supabase
       .from("admission_segments")
       .select(
@@ -294,6 +299,7 @@ export default async function Home({ searchParams }: HomePageProps) {
     count: pipelineResults[index]?.count ?? 0,
   }));
   const roleCode = (currentRoleResult.data as string | null) ?? null;
+  const canReadTasks = Boolean(taskReadPermissionResult.data);
   const isExecutiveDashboard = isExecutiveRole(roleCode);
   const visibleSegmentRowsBase = filterAdmissionSegmentsByScope(
     segmentRowsResult.data ?? [],
@@ -481,6 +487,11 @@ export default async function Home({ searchParams }: HomePageProps) {
         )
       }
     >
+      <TaskCenterQuickActions
+        activeSegmentId={workspace.activeSegmentId}
+        canReadTasks={canReadTasks}
+        isExecutive={isExecutiveDashboard}
+      />
       {isExecutiveDashboard ? (
         <ExecutiveDashboardOverview
           roleCode={roleCode}
@@ -494,15 +505,15 @@ export default async function Home({ searchParams }: HomePageProps) {
           segmentOverview={segmentOverview}
         />
       ) : (
-        <DashboardOverview
-          kpis={kpis}
-          pipeline={pipeline}
-          urgentLeads={urgentLeads}
-          activities={activities}
-          activeSegmentId={workspace.activeSegmentId}
-          canWriteInWorkspace={canWriteInWorkspace}
-          segmentOverview={segmentOverview}
-        />
+        <>
+          <DashboardOverview
+            kpis={kpis}
+            pipeline={pipeline}
+            urgentLeads={urgentLeads}
+            activities={activities}
+            segmentOverview={segmentOverview}
+          />
+        </>
       )}
     </AppShell>
   );
