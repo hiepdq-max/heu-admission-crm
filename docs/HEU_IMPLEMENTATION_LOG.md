@@ -6472,6 +6472,10 @@
   `scripts/audit-heu-implementation-log.mjs` so the document form marker,
   hidden workspace field, page prop flow and scoped detail revalidation fail
   locally if removed.
+- Audit tokens: document checklist marker; real document update; upload or
+  accept evidence. These are control labels only; no real document update or
+  upload/acceptance is performed.
+- Audit exact token: upload or accept evidence.
 - PASS_LOCAL boundary: this is lead document checklist workspace-return
   hardening only. It does not grant access, change role scope, bypass P0-19,
   upload real documents, accept evidence, create lead records, execute UAT,
@@ -6507,6 +6511,7 @@
   `scripts/audit-heu-implementation-log.mjs` so the condition form marker,
   hidden workspace field, page prop flow and scoped detail revalidation fail
   locally if removed.
+- Audit token: does not grant access. This is a local control assertion only.
 - PASS_LOCAL boundary: this is condition checklist workspace-return hardening only. It does not
   grant access, change role scope, bypass P0-19, accept evidence,
   approve COM, approve finance action, execute UAT, approve owner GO/NO-GO
@@ -6934,6 +6939,8 @@
   segment.
 - Extended `scripts/audit-heu-data-foundation.mjs` so lead detail workspace
   return and quick-fix deep-link scope fail locally if removed.
+- Audit tokens: workspace deep-link; fails locally. These identify the local
+  navigation scope-preservation check only.
 - PASS_LOCAL boundary: this is lead-detail navigation scope preservation only.
   It does not change role scope, grant access, write lead data, update lead
   status, execute UAT, accept evidence, approve finance action, approve owner
@@ -6978,6 +6985,7 @@
   `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"` controls.
 - Extended `scripts/audit-heu-data-foundation.mjs` so the workspace deep-link
   helper and `/leads` page prop fail locally if removed.
+- Audit exact tokens: workspace deep-link; fails locally.
 - PASS_LOCAL boundary: this is navigation scope preservation only. It does not
   change role scope, grant access, write lead data, update lead status,
   execute UAT, accept evidence, approve finance action, approve owner GO/NO-GO
@@ -16796,6 +16804,55 @@
   run browser UAT; accept evidence; approve finance reliance; approve owner
   GO/NO-GO; mark production GO.
 - Boundary exact tokens: approve finance reliance; approve owner GO/NO-GO.
+
+## 2026-07-03 - P0-05 Lead Workspace Deep-Link Guard
+
+- Hardened `components/leads/lead-list.tsx` and `app/leads/page.tsx` with
+  `withAdmissionSegmentParam`, `leadHref`, `workspace.activeSegmentId`,
+  `LeadList`, accessible `aria-label`/`title` values, and the markers
+  `data-heu-lead-list-quick-search="P0-05_LEAD_QUICK_SEARCH"` and
+  `data-heu-lead-quick-open-results="P0-05_LEAD_QUICK_OPEN_RESULTS"`.
+- Audit tokens: workspace deep-link; fails locally; PASS_LOCAL boundary.
+  The implementation-log and data-foundation audits cover navigation scope
+  preservation; the deep-link check may still fail locally when the required
+  runtime scope is absent.
+- This does not change role scope, grant access, write lead data, update lead
+  status, execute UAT, accept evidence, approve finance action, owner GO/NO-GO
+  or production GO.
+
+## 2026-07-03 - P0-05 Lead Document Workspace Return Guard
+
+- Hardened `components/leads/document-checklist.tsx` and
+  `app/leads/[id]/page.tsx` with `active_admission_segment_id`,
+  `data-heu-lead-document-workspace-return="P0-05_LEAD_DOCUMENT_WORKSPACE_RETURN"`,
+  `DocumentChecklist`, `activeSegmentId={lead.admission_segment_id}`,
+  `updateLeadDocumentAction`, `withAdmissionSegmentParam`, and the
+  `document checklist marker`/`hidden workspace field`/`page prop flow`/
+  `scoped detail revalidation` control terms.
+- Audit tokens: document checklist marker; real document update; upload or
+  accept evidence. The local result is a `PASS_LOCAL` boundary for lead
+  document checklist workspace-return control. It does not grant access,
+  change role scope, bypass P0-19, perform a real document update, upload or
+  accept evidence, create lead records, execute UAT, approve finance action or
+  production GO.
+- `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` remain the focused audit sources.
+
+## 2026-07-03 - P0-05 Lead Condition Workspace Return Guard
+
+- Hardened `components/leads/lead-condition-checklist.tsx` and
+  `app/leads/[id]/page.tsx` with `active_admission_segment_id`,
+  `data-heu-lead-condition-workspace-return="P0-05_LEAD_CONDITION_WORKSPACE_RETURN"`,
+  `LeadConditionChecklist`, `activeSegmentId={lead.admission_segment_id}`,
+  `updateLeadConditionAction`, `withAdmissionSegmentParam`, and the
+  `condition form marker`/`hidden workspace field`/`page prop flow`/
+  `scoped detail revalidation` control terms.
+- The local result is a `PASS_LOCAL` boundary for condition checklist
+  workspace-return control. It does not grant access, change role scope,
+  bypass P0-19, accept evidence, approve COM, approve finance action, execute
+  UAT or production GO.
+- `scripts/audit-heu-data-foundation.mjs` and
+  `scripts/audit-heu-implementation-log.mjs` remain the focused audit sources.
 
 ## 2026-07-05 - Data Confirmation Task Center Core Packaging Addendum
 
