@@ -3856,6 +3856,20 @@ requireText(
   "P3-02 handover decision manifest doc",
 );
 
+// P3 release coverage marker: data-heu-lead-lifecycle-handover-uat-pack="P3-01-P3-02"; HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md; scripts/audit-heu-lead-lifecycle-handover-uat-pack.mjs; audit:heu-lead-lifecycle-handover-uat-pack
+
+requireText(
+  "components/leads/lead-lifecycle-guard.tsx",
+  literalPattern("(?=[\\s\\S]*data-heu-lead-lifecycle-handover-uat-pack=\"P3-01-P3-02\")(?=[\\s\\S]*P3-01\\/P3-02 UAT execution pack:\\s*PASS_LOCAL only)(?=[\\s\\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\\.md)(?=[\\s\\S]*P3-UAT-01)(?=[\\s\\S]*P3-UAT-08)(?=[\\s\\S]*Tuyen Sinh, CTHSSV, Dao Tao, KHTC, IT_DATA and Audit)(?=[\\s\\S]*PASS_LOCAL does not accept UAT, approve handover reliance, create\\s+finance facts, waive evidence, approve owner sign-off or mark\\s+production GO)", "i"),
+  "P3-01/P3-02 visible UAT execution pack",
+);
+
+requireText(
+  "docs/HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628.md",
+  literalPattern("(?=[\\s\\S]*Status:\\s*PASS_LOCAL_TEMPLATE)(?=[\\s\\S]*P3-01 lead lifecycle and P3-02 lead-to-student handover)(?=[\\s\\S]*Production status:\\s*NO-GO)(?=[\\s\\S]*P3-UAT-01)(?=[\\s\\S]*P3-UAT-08)(?=[\\s\\S]*P3-UAT-DEC-01)(?=[\\s\\S]*P3-UAT-DEC-06)(?=[\\s\\S]*No raw PII, CCCD, phone, bank data, vouchers, passwords, temporary passwords, OTPs, password reset links, account activation\\/invite links, service-role keys or API keys)(?=[\\s\\S]*P3-01\\/P3-02 remain pending until every P3-UAT case is executed with redacted\\s+evidence)", "i"),
+  "P3-01/P3-02 UAT runbook and closure rule",
+);
+
 requireText(
   "components/leads/lead-lifecycle-guard.tsx",
   literalPattern("(?=[\\s\\S]*data-heu-lead-lifecycle-handover-uat-pack=\"P3-01-P3-02\")(?=[\\s\\S]*P3-01\\/P3-02 UAT execution pack:\\s*PASS_LOCAL only)(?=[\\s\\S]*HEU_LEAD_LIFECYCLE_HANDOVER_UAT_RUNBOOK_20260628\\.md)(?=[\\s\\S]*P3-UAT-01)(?=[\\s\\S]*P3-UAT-08)(?=[\\s\\S]*Tuyen Sinh, CTHSSV, Dao Tao, KHTC, IT_DATA and Audit)(?=[\\s\\S]*PASS_LOCAL does not accept UAT, approve handover reliance, create\\s+finance facts, waive evidence, approve owner sign-off or mark\\s+production GO)", "i"),
