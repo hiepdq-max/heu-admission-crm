@@ -105,7 +105,12 @@ type SegmentOptionRow = {
 };
 
 type StatusFilter = TaskCenterStatus | "ALL";
-type QueueScope = "VISIBLE" | "ASSIGNED_TO_ME" | "OWNED_BY_ME";
+type QueueScope =
+  | "VISIBLE"
+  | "ASSIGNED_TO_ME"
+  | "OWNED_BY_ME"
+  | "DEPARTMENT_QUEUE"
+  | "BLOCKED_OR_OVERDUE";
 
 const statuses: {
   code: TaskCenterStatus;
@@ -237,6 +242,15 @@ function formatDate(value: string | null | undefined) {
     month: "2-digit",
     year: "2-digit",
   }).format(new Date(value));
+}
+
+function isOverdueMetadata(value: string | null | undefined) {
+  if (!value) {
+    return false;
+  }
+
+  const due = Date.parse(value);
+  return Number.isFinite(due) && due < Date.now();
 }
 
 function filterHref(params: {
@@ -940,7 +954,10 @@ export default async function DataConfirmationPage({
     ? departmentParam
     : undefined;
   const activeScope: QueueScope =
-    scopeParam === "ASSIGNED_TO_ME" || scopeParam === "OWNED_BY_ME"
+    scopeParam === "ASSIGNED_TO_ME" ||
+    scopeParam === "OWNED_BY_ME" ||
+    scopeParam === "DEPARTMENT_QUEUE" ||
+    scopeParam === "BLOCKED_OR_OVERDUE"
       ? scopeParam
       : "VISIBLE";
 
@@ -1085,11 +1102,23 @@ export default async function DataConfirmationPage({
       timelineQuery = timelineQuery.eq("owner_user_id", user.id);
     }
 
+    if (activeScope === "BLOCKED_OR_OVERDUE") {
+      timelineQuery = timelineQuery.in("next_status", ["CAN_SUA"]);
+    }
+
     const { data: timelineRows, error: timelineError } = await timelineQuery
       .order("created_at", { ascending: false })
       .limit(30)
       .returns<DataConfirmationHistoryRow[]>();
     taskRows = rows ?? [];
+    if (activeScope === "BLOCKED_OR_OVERDUE") {
+      taskRows = taskRows.filter(
+        (row) =>
+          row.blocker_state === "BLOCKED_BY_SCOPE" ||
+          row.blocker_state === "RETURNED_FOR_REPAIR" ||
+          isOverdueMetadata(row.due_date_or_batch),
+      );
+    }
     historyRows = timelineRows ?? [];
     schemaReady = !error;
     timelineReady = !timelineError;
